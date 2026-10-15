@@ -1,0 +1,21 @@
+{
+    "CmajorVersion": 1,
+    "ID": "dev.njohrr.synth",
+    "version": "1.0",
+    "name": "Njohrr",
+    "description": "Njohrr synthesizer",
+    "manufacturer": "Njohrr",
+    "category": "synth",
+    "isInstrument": true,
+    "source": "Eisenpuls_Synth.cmajor",
+    "view": {
+        "src": "index.js",
+        "width": 1180,
+        "height": 760,
+        "resizable": false
+    },
+    "plugin": {
+        "pluginCode": "Njsy",
+        "manufacturerCode": "Njhr"
+    }
+}

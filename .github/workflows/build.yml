@@ -1,0 +1,27 @@
+name: Build VST3
+on: [workflow_dispatch, push]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libfreetype6-dev libfontconfig1-dev libgtk-3-dev libwebkit2gtk-4.1-dev ninja-build
+      - name: Get JUCE
+        run: |
+          git init JUCE
+          git -C JUCE fetch --depth 1 https://github.com/juce-framework/JUCE.git 454fe891acc8204f99f4ef1e3a28c84b1a4da145
+          git -C JUCE checkout FETCH_HEAD
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DJUCE_PATH=${{ github.workspace }}/JUCE
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Njohrr-VST3-${{ runner.os }}
+          path: build/Njohrr_artefacts/Release/VST3/
