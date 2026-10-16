@@ -1737,6 +1737,9 @@ processor Eisenpuls_Synth
         int mi = clamp (idx, 0, 0);
         smpHas.at (mi) = false;
         smpLen.at (mi) = 0;
+        int base = mi * 96000;
+        for (int i = 0; i < 96000; ++i)
+            smpBuf.at (base + i) = 0.0f;
 
         for (int k = 0; k < 8; ++k)
         {
@@ -1783,6 +1786,9 @@ processor Eisenpuls_Synth
         int si = clamp (idx, 0, 0);
         s2Has.at (si) = false;
         s2Len.at (si) = 0;
+        int base = si * 96000;
+        for (int i = 0; i < 96000; ++i)
+            s2Buf.at (base + i) = 0.0f;
 
         for (int k = 0; k < 8; ++k)
         {
@@ -1829,6 +1835,9 @@ processor Eisenpuls_Synth
         int wi = clamp (idx, 0, 0);
         wtHas.at (wi) = false;
         wtLen.at (wi) = 0;
+        int base = wi * 96000;
+        for (int i = 0; i < 96000; ++i)
+            wtBuf.at (base + i) = 0.0f;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 0);
@@ -1919,6 +1928,9 @@ processor Eisenpuls_Synth
         int wi = clamp (idx, 0, 0);
         wt2Has.at (wi) = false;
         wt2Len.at (wi) = 0;
+        int base = wi * 96000;
+        for (int i = 0; i < 96000; ++i)
+            wt2Buf.at (base + i) = 0.0f;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 1);
@@ -2009,6 +2021,9 @@ processor Eisenpuls_Synth
         int wi = clamp (idx, 0, 0);
         wt3Has.at (wi) = false;
         wt3Len.at (wi) = 0;
+        int base = wi * 96000;
+        for (int i = 0; i < 96000; ++i)
+            wt3Buf.at (base + i) = 0.0f;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 2);
