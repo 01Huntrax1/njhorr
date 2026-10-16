@@ -1998,6 +1998,7 @@ class EisenpulsPatchView extends HTMLElement {
          background: linear-gradient(#2c3035, #1b1d20); border: 2px solid var(--line); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 6px rgba(0,0,0,0.6); }
   .logo { font-weight: 900; font-size: calc(var(--u) * 19); letter-spacing: 0.12em; color: var(--yel); text-transform: uppercase; text-shadow: 0 2px 0 #000; font-family: Impact, "Arial Black", "Bahnschrift", sans-serif; }
   .model { font-weight: 800; font-size: calc(var(--u) * 10); letter-spacing: 0.3em; color: #111; background: var(--yel); padding: calc(var(--u) * 2) calc(var(--u) * 9); border-radius: 1px; }
+  .version { flex: 0 0 auto; align-self: center; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--u) * 8); font-weight: 700; letter-spacing: 0.08em; color: var(--dim); border: 1px solid var(--line); padding: calc(var(--u) * 2) calc(var(--u) * 5); border-radius: 2px; }
   .tabs { display: flex; gap: calc(var(--u) * 3); flex: 0 0 auto; }
   .tab { font-family: inherit; font-size: calc(var(--u) * 9.5); font-weight: 800; letter-spacing: 0.06em; padding: calc(var(--u) * 5) calc(var(--u) * 7); border: 1px solid var(--line); border-radius: 1px; background: var(--panel2); color: var(--ink); cursor: pointer; white-space: nowrap; }
   .tab.on { background: var(--yel); color: #111; border-color: var(--yel); }
@@ -2434,7 +2435,7 @@ class EisenpulsPatchView extends HTMLElement {
 </style>
 <div class="shell">
   <div class="top">
-    <span class="logo">NJOHRR</span><span class="model">SYNTH</span>
+    <span class="logo">NJOHRR</span><span class="model">SYNTH</span><span class="version">V1.0.0</span>
     <div class="tabs"><button type="button" class="tab on" data-page="sound">SOUND</button><button type="button" class="tab" data-page="flt">FILTER</button><button type="button" class="tab" data-page="smp">SAMPLER</button><button type="button" class="tab" data-page="s2">SAMPLER 2</button><button type="button" class="tab" data-page="wt1">WT 1</button><button type="button" class="tab" data-page="wt2">WT 2</button><button type="button" class="tab" data-page="wt3">WT 3</button><button type="button" class="tab" data-page="lfo">LFO</button><button type="button" class="tab" data-page="env">ENV</button><button type="button" class="tab" data-page="mod">MOD</button><button type="button" class="tab" data-page="mix">MIXER</button><button type="button" class="tab" data-page="fx">FX</button></div>
     <div class="vu"><div class="vu-fill"></div></div>
     <div class="lcd"><span class="lcd-mode">SYNTH</span><span class="lcd-name">--</span><span class="lcd-val">--</span></div><span class="led"></span>
