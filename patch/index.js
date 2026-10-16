@@ -741,6 +741,9 @@ class EisenpulsPatchView extends HTMLElement {
     constructor (patchConnection) {
         super();
         this.pc = patchConnection;
+        // Each plugin instance gets its own browser-storage namespace. WebViews can
+        // share localStorage, so fixed keys made one instance overwrite another.
+        this._storageNamespace = "emx2.instance." + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + ".";
         this._controls = new Map();
         this._animFrame = null;
         this._paramListener = null;
@@ -867,7 +870,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- sample memory (autosave to browser storage) ----------
-    key (idx) { return STORE_PREFIX + idx; }
+    key (idx) { return this._storageNamespace + STORE_PREFIX + idx; }
 
     loadStore () {
         for (let i = 0; i < MEM_COUNT; i++) {
@@ -1139,7 +1142,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- sampler 2 (own page, level and memory bank) ----------
-    s2Key (idx) { return S2_PREFIX + idx; }
+    s2Key (idx) { return this._storageNamespace + S2_PREFIX + idx; }
 
     curS2 () {
         const c = this._controls.get("param193");
@@ -1323,7 +1326,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- dedicated wavetable oscillators (3 engines: own page, level and memory bank each) ----------
-    wtKey (e, idx) { return WT_ENG[e].prefix + idx; }
+    wtKey (e, idx) { return this._storageNamespace + WT_ENG[e].prefix + idx; }
 
     curWt (e) {
         const c = this._controls.get("param" + WT_ENG[e].mem);
