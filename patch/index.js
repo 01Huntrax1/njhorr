@@ -1896,7 +1896,7 @@ class EisenpulsPatchView extends HTMLElement {
         const cfg = WT_ENG[e];
         const wcells = Array.from({ length: WT_COUNT }, (_, i) => `<button type="button" class="wc" data-e="${e}" data-i="${i}">${i + 1}</button>`).join("");
         const label = "Wavetable " + (e + 1);
-        const strip = `<div class="wt-top"><div class="memstrip"><div class="ms-main"><div class="dz dz-wtl" data-e="${e}"><span class="dz-txt">${WT_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected wavetable">&times;</span></div><div class="wt-status" data-e="${e}">READY</div></div><button type="button" class="pb dz-lib" data-slot="wt${e}" title="Open the wavetable library">LIBRARY</button><div class="cgrid ms-hid">${this.controlHTML(cfg.mem)}</div><div class="wmem">${wcells}</div></div><div class="wt-cv"><canvas class="wt-canvas" data-e="${e}" width="600" height="120"></canvas><div class="wtrow"><span class="lbl">Table</span><span class="val wt-info" data-e="${e}">--</span></div></div></div>`;
+        const strip = `<div class="wt-top"><div class="memstrip"><div class="ms-main"><div class="dz dz-wtl" data-e="${e}"><span class="dz-txt">${WT_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected wavetable">&times;</span></div><div class="wt-status" data-e="${e}">READY</div></div><button type="button" class="pb dz-lib" data-slot="wt${e}" title="Open the sound vault">VAULT</button><div class="cgrid ms-hid">${this.controlHTML(cfg.mem)}</div><div class="wmem">${wcells}</div></div><div class="wt-cv"><canvas class="wt-canvas" data-e="${e}" width="600" height="120"></canvas><div class="wtrow"><span class="lbl">Table</span><span class="val wt-info" data-e="${e}">--</span></div></div></div>`;
         return `<section class="card w-osc"><h2>${label} Oscillator</h2>${strip}<div class="cgrid">${cfg.ids.map(i => this.controlHTML(i, true)).join("")}</div></section>`
             + `<section class="card w-uni"><h2>${label} Unison</h2><div class="cgrid">${cfg.uni.map(i => this.controlHTML(i, true)).join("")}</div></section>`
             + `<section class="card w-warp"><h2>${label} Warp</h2><div class="cgrid">${cfg.warp.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
@@ -1937,7 +1937,7 @@ class EisenpulsPatchView extends HTMLElement {
 
     getHTML () {
         const cells = Array.from({ length: MEM_COUNT }, (_, i) => `<button type="button" class="mc" data-i="${i}">${i + 1}</button>`).join("");
-        const memStrip = `<div class="memstrip"><div class="ms-main"><div class="dz dz-smp"><span class="dz-txt">${SMP_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected memory">&times;</span></div><div class="mgr-status">READY</div></div><button type="button" class="pb dz-lib" data-slot="smp" title="Open the sample library">LIBRARY</button><div class="cgrid ms-ctl">${MEM_IDS.map(i => this.controlHTML(i, true)).join("")}</div><div class="memgrid">${cells}</div></div>`;
+        const memStrip = `<div class="memstrip"><div class="ms-main"><div class="dz dz-smp"><span class="dz-txt">${SMP_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected memory">&times;</span></div><div class="mgr-status">READY</div></div><button type="button" class="pb dz-lib" data-slot="smp" title="Open the sound vault">VAULT</button><div class="cgrid ms-ctl">${MEM_IDS.map(i => this.controlHTML(i, true)).join("")}</div><div class="memgrid">${cells}</div></div>`;
         const synth = SYNTH_CARDS.map(c => this.card(c[0], c[2], c[1])).join("");
         const fcv = k => `<canvas class="flt-canvas" data-f="${k}" width="600" height="${k === "c" ? 200 : 290}"></canvas>`;
         const fltPage = this.card("Filter 1", FLT_CARDS[0][2], "x-f1", "", fcv("1"))
@@ -1947,7 +1947,7 @@ class EisenpulsPatchView extends HTMLElement {
         const oscCard = `<section class="card m-osc"><h2><span class="osc-title">Sample Oscillator</span></h2>${memStrip}<div class="cgrid">${SMP_IDS.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
         const smpPage = oscCard;
         const scells = Array.from({ length: S2_COUNT }, (_, i) => `<button type="button" class="sc" data-i="${i}">${i + 1}</button>`).join("");
-        const s2Strip = `<div class="memstrip"><div class="ms-main"><div class="dz dz-s2"><span class="dz-txt">${S2_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected memory">&times;</span></div><div class="s2-status">READY</div></div><button type="button" class="pb dz-lib" data-slot="s2" title="Open the sample library">LIBRARY</button><div class="cgrid ms-hid">${this.controlHTML(193)}</div><div class="smem">${scells}</div></div>`;
+        const s2Strip = `<div class="memstrip"><div class="ms-main"><div class="dz dz-s2"><span class="dz-txt">${S2_DZ_EMPTY}</span><span class="dz-clr" title="Clear selected memory">&times;</span></div><div class="s2-status">READY</div></div><button type="button" class="pb dz-lib" data-slot="s2" title="Open the sound vault">VAULT</button><div class="cgrid ms-hid">${this.controlHTML(193)}</div><div class="smem">${scells}</div></div>`;
         const s2Page = `<section class="card s2-osc"><h2>Sampler 2 Oscillator</h2>${s2Strip}<div class="cgrid">${S2_IDS.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
         const wtPages = WT_ENG.map((cfg, e) => `<div class="page p-${cfg.page}">${this.wtPageHTML(e)}</div>`).join("\n    ");
         const mixPage = `<section class="card m-mix"><h2>Mixer / SSL 4000 EQ</h2><div class="chs">${MIX_CH.map(c => this.channelHTML(c)).join("")}</div></section>`;
@@ -2408,6 +2408,8 @@ class EisenpulsPatchView extends HTMLElement {
   .mgr-io[hidden] { display: none; }
   .mgr-io { display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
 
+  .fs-folder .only-browser, .fs-browser .only-folder { display: none !important; }
+  .mgr-path { flex: 0 0 auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--u) * 7.5); letter-spacing: 0.04em; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: text; -webkit-user-select: text; }
   /* one memory slot per sampler / wavetable: no slot selectors or slot buttons */
   .n154, .n193, .n210, .n224, .n236, .memgrid, .smem, .wmem { display: none !important; }
 </style>
@@ -2438,10 +2440,18 @@ class EisenpulsPatchView extends HTMLElement {
 }
 
 // ======================================================================
-// Preset manager + sample / wavetable library
-// Storage: IndexedDB ("eisenpuls-lib"); falls back to memory if unavailable.
+// PRESET BANK + SOUND VAULT
+// Folder mode (inside the plugin): files live in <Documents>/Njohrr/{Presets,Samples,Wavetables}
+// Browser mode (no native bridge): the same data is kept in IndexedDB.
 // ======================================================================
+const NAME_BANK = "PRESET BANK";
+const NAME_VAULT = "SOUND VAULT";
+const BANK_BTN = "BANK";
+const VAULT_BTN = "VAULT";
+
 const LIB_DB = "eisenpuls-lib";
+const PRESET_EXT = ".njopreset";
+const AUDIO_EXT = /\.(wav|wave|aif|aiff|mp3|ogg|flac|m4a)$/i;
 const PRESET_SKIP = new Set(["param146", "param147", "param154", "param193"].concat(WT_ENG.map(c => "param" + c.mem)));
 const SLOT_DEFS = [
     { key: "smp", label: "SAMPLER 1",  kind: "sample" },
@@ -2450,12 +2460,122 @@ const SLOT_DEFS = [
     { key: "wt1", label: "WAVETABLE 2", kind: "wavetable" },
     { key: "wt2", label: "WAVETABLE 3", kind: "wavetable" }
 ];
+const KIND_FOLDER = { sample: "samples", wavetable: "wavetables" };
 
-class EisStore {
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmtBytes = n => n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : n <= 0 ? "0 KB" : Math.max(1, Math.round(n / 1024)) + " KB";
+const splitExt = f => { const m = /^(.*?)(\.[^.]*)?$/.exec(String(f)); return [m[1], m[2] || ""]; };
+// a name that is safe as a file name on Windows, macOS and Linux
+const safeFile = (name, max) => {
+    let n = String(name || "").replace(/[\\/:*?"<>|\u0000-\u001f]/g, "_").replace(/^[.\s]+/, "").replace(/[.\s]+$/, "").slice(0, max || 100);
+    if (/^(con|prn|aux|nul|com\d|lpt\d)$/i.test(n)) n = "_" + n;
+    return n;
+};
+const bytesToB64 = bytes => {
+    let s = "";
+    for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(s);
+};
+const b64ToBuf = b64 => {
+    const s = atob(b64), out = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
+    return out.buffer;
+};
+
+// ---------------- backend 1: real folders through the plugin ----------------
+class FolderBackend {
     constructor () {
+        this.mode = "folder";
+        this.root = "";
+        this.persistent = true;
+        this.ready = this.call("info").then(r => { this.root = r.root || ""; return !!r.ok; }).catch(() => false);
+    }
+    async call (op, kind, name, arg) {
+        const raw = await window.njo(op, kind || "", name || "", arg || "");
+        return JSON.parse(raw);
+    }
+    async list (kind) { const r = await this.call("list", kind); return Array.isArray(r) ? r : []; }
+
+    async presetsList () {
+        const files = (await this.list("presets")).filter(f => f.name.toLowerCase().endsWith(PRESET_EXT));
+        const rows = await Promise.all(files.map(async f => {
+            try {
+                const r = await this.call("read", "presets", f.name);
+                if (!r.ok) return null;
+                const o = JSON.parse(new TextDecoder().decode(new Uint8Array(b64ToBuf(r.data))));
+                if (!o || typeof o.params !== "object") return null;
+                return { id: f.name, name: String(o.name || splitExt(f.name)[0]), saved: o.saved || f.mtime * 1000, params: o.params, refs: o.refs && typeof o.refs === "object" ? o.refs : {} };
+            } catch (_) { return null; }
+        }));
+        return rows.filter(Boolean);
+    }
+    async presetSave (rec, prevId) {
+        const fname = safeFile(rec.name) + PRESET_EXT;
+        const json = JSON.stringify({ format: "njohrr-preset", version: 1, name: rec.name, saved: rec.saved, params: rec.params, refs: rec.refs });
+        const r = await this.call("write", "presets", fname, bytesToB64(new TextEncoder().encode(json)));
+        if (!r.ok) return null;
+        if (prevId && prevId !== fname) await this.call("delete", "presets", prevId);
+        return fname;
+    }
+    async presetDelete (id) { return !!(await this.call("delete", "presets", id)).ok; }
+
+    async libList (durCache) {
+        const out = [];
+        for (const kind of ["sample", "wavetable"]) {
+            const folder = KIND_FOLDER[kind];
+            (await this.list(folder)).forEach(f => {
+                if (!AUDIO_EXT.test(f.name)) return;
+                const id = folder + "/" + f.name;
+                out.push({ id, kind, fname: f.name, label: splitExt(f.name)[0], size: f.size, added: f.mtime * 1000, dur: durCache.get(id) || 0 });
+            });
+        }
+        return out;
+    }
+    parse (id) { const i = id.indexOf("/"); return [id.slice(0, i), id.slice(i + 1)]; }
+    async libRead (id) { const [k, n] = this.parse(id); const r = await this.call("read", k, n); return r.ok ? b64ToBuf(r.data) : null; }
+    async libWrite (kind, fname, buf) {
+        const folder = KIND_FOLDER[kind];
+        const r = await this.call("write", folder, fname, bytesToB64(new Uint8Array(buf)));
+        return r.ok ? folder + "/" + fname : null;
+    }
+    async libDelete (id) { const [k, n] = this.parse(id); return !!(await this.call("delete", k, n)).ok; }
+    async libMoveTo (id, kind, fname) {
+        const [k, n] = this.parse(id);
+        const folder = KIND_FOLDER[kind];
+        const r = await this.call("move", k, n, folder + "/" + fname);
+        return r.ok ? folder + "/" + fname : null;
+    }
+    async libRename (id, label) {
+        const [k, n] = this.parse(id);
+        const fname = safeFile(label, 120) + splitExt(n)[1];
+        if (!safeFile(label)) return null;
+        if (fname === n) return id;
+        const r = await this.call("move", k, n, k + "/" + fname);
+        return r.ok ? k + "/" + fname : null;
+    }
+    async libMoveKind (id, kind) {
+        const [, n] = this.parse(id);
+        return this.libMoveTo(id, kind, n);
+    }
+    async metaGet () {
+        try {
+            const r = await this.call("read", "root", "state.json");
+            return r.ok ? JSON.parse(new TextDecoder().decode(new Uint8Array(b64ToBuf(r.data)))) : null;
+        } catch (_) { return null; }
+    }
+    async metaPut (obj) { await this.call("write", "root", "state.json", bytesToB64(new TextEncoder().encode(JSON.stringify(obj)))); }
+    reveal (what) { return this.call("reveal", what); }
+    where (what) { return this.root ? this.root + (what === "root" ? "" : "/" + ({ presets: "Presets", samples: "Samples", wavetables: "Wavetables" })[what]) : ""; }
+}
+
+// ---------------- backend 2: IndexedDB (used outside the plugin, e.g. in a browser) ----------------
+class BrowserBackend {
+    constructor () {
+        this.mode = "browser";
         this.db = null;
-        this.mem = { presets: new Map(), files: new Map(), meta: new Map() };
         this.persistent = false;
+        this.mem = { presets: new Map(), files: new Map(), meta: new Map() };
         this.ready = new Promise(res => {
             try {
                 const r = window.indexedDB.open(LIB_DB, 1);
@@ -2471,33 +2591,24 @@ class EisStore {
     }
     tx (store, mode, fn) {
         return new Promise(res => {
-            if (!this.db) { res(fn(null, true)); return; }
             try {
                 const t = this.db.transaction(store, mode);
                 const st = t.objectStore(store);
                 let out;
                 t.oncomplete = () => res(out);
                 t.onerror = t.onabort = () => res(undefined);
-                out = fn(st, false);
-                if (out && typeof out.onsuccess !== "undefined") { const rq = out; out = undefined; rq.onsuccess = () => { out = rq.result; }; }
+                const rq = fn(st);
+                if (rq && typeof rq.onsuccess !== "undefined") rq.onsuccess = () => { out = rq.result; };
+                else out = rq;
             } catch (_) { res(undefined); }
         });
     }
-    async all (store) {
-        await this.ready;
-        if (!this.db) return Array.from(this.mem[store].values());
-        return (await this.tx(store, "readonly", st => st.getAll())) || [];
-    }
-    async get (store, id) {
-        await this.ready;
-        if (!this.db) return this.mem[store].get(id);
-        return await this.tx(store, "readonly", st => st.get(id));
-    }
+    async all (store) { await this.ready; return this.db ? ((await this.tx(store, "readonly", st => st.getAll())) || []) : Array.from(this.mem[store].values()); }
+    async get (store, id) { await this.ready; return this.db ? await this.tx(store, "readonly", st => st.get(id)) : this.mem[store].get(id); }
     async put (store, rec) {
         await this.ready;
         if (!this.db) { this.mem[store].set(rec.id, rec); return true; }
-        const ok = await this.tx(store, "readwrite", st => { st.put(rec); return true; });
-        return ok === true;
+        return (await this.tx(store, "readwrite", st => { st.put(rec); return true; })) === true;
     }
     async del (store, id) {
         await this.ready;
@@ -2505,30 +2616,55 @@ class EisStore {
         await this.tx(store, "readwrite", st => { st.delete(id); return true; });
         return true;
     }
-}
 
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fmtBytes = n => n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
-const baseName = f => String(f || "").replace(/\.[^.]+$/, "");
+    async presetsList () { return await this.all("presets"); }
+    async presetSave (rec, prevId) { const id = prevId || uid(); return (await this.put("presets", Object.assign({}, rec, { id }))) ? id : null; }
+    async presetDelete (id) { return await this.del("presets", id); }
+
+    async libList (durCache) {
+        return (await this.all("files")).map(r => ({ id: r.id, kind: r.kind, fname: r.fname, label: r.label, size: r.size, added: r.added, dur: r.dur || durCache.get(r.id) || 0 }));
+    }
+    async libRead (id) { const r = await this.get("files", id); return r ? r.buf : null; }
+    async libWrite (kind, fname, buf) {
+        const rec = { id: uid(), kind, fname, label: splitExt(fname)[0].slice(0, 40), size: buf.byteLength, added: Date.now(), dur: 0, buf };
+        return (await this.put("files", rec)) ? rec.id : null;
+    }
+    async libDelete (id) { return await this.del("files", id); }
+    async libRename (id, label) {
+        const r = await this.get("files", id);
+        if (!r || !label.trim()) return null;
+        r.label = label.trim().slice(0, 40);
+        return (await this.put("files", r)) ? id : null;
+    }
+    async libMoveKind (id, kind) {
+        const r = await this.get("files", id);
+        if (!r) return null;
+        r.kind = kind;
+        return (await this.put("files", r)) ? id : null;
+    }
+    async metaGet () { const r = await this.get("meta", "slots"); return r ? { slots: r.slots } : null; }
+    async metaPut (obj) { await this.put("meta", { id: "slots", slots: obj.slots }); }
+    reveal () { return Promise.resolve({ ok: false }); }
+    where () { return ""; }
+}
 
 const MGR_HTML = `
 <div class="bar">
   <span class="bar-l">PRESET</span>
   <button type="button" class="pb pb-prev" title="Previous preset">&#9664;</button>
-  <button type="button" class="pb-name" title="Open preset manager">Init</button>
+  <button type="button" class="pb-name" title="Open the ${NAME_BANK.toLowerCase()}">Init</button>
   <button type="button" class="pb pb-next" title="Next preset">&#9654;</button>
   <button type="button" class="pb pb-save" title="Save the current sound">SAVE</button>
-  <button type="button" class="pb pb-pm" title="Rename, delete, import and export presets">PRESETS</button>
+  <button type="button" class="pb pb-pm" title="${NAME_BANK}: save, rename, delete and organise presets">${BANK_BTN}</button>
   <span class="bar-sp"></span>
   <span class="bar-info"></span>
-  <button type="button" class="pb pb-lib" title="Samples and wavetables">LIBRARY</button>
+  <button type="button" class="pb pb-lib" title="${NAME_VAULT}: your samples and wavetables">${VAULT_BTN}</button>
 </div>`;
 
 const MGR_OVERLAY_HTML = `
 <div class="mgr-ov" data-ov="presets">
   <div class="mgr-box">
-    <div class="mgr-h"><span class="mgr-t">PRESETS</span><button type="button" class="pb mgr-x" data-act="close">&times;</button></div>
+    <div class="mgr-h"><span class="mgr-t">${NAME_BANK}</span><button type="button" class="pb mgr-x" data-act="close">&times;</button></div>
     <div class="mgr-row">
       <input type="text" class="mgr-in pm-name" maxlength="40" placeholder="Preset name" spellcheck="false">
       <button type="button" class="pb" data-act="pm-new">SAVE AS NEW</button>
@@ -2541,8 +2677,10 @@ const MGR_OVERLAY_HTML = `
       <button type="button" class="pb" data-act="pm-load">LOAD</button>
       <button type="button" class="pb" data-act="pm-init">INIT SOUND</button>
       <span class="bar-sp"></span>
-      <button type="button" class="pb" data-act="pm-export">EXPORT</button>
-      <button type="button" class="pb" data-act="pm-import">IMPORT</button>
+      <button type="button" class="pb only-folder" data-act="open-folder" data-what="presets">OPEN FOLDER</button>
+      <button type="button" class="pb only-folder" data-act="pm-rescan">RESCAN</button>
+      <button type="button" class="pb only-browser" data-act="pm-export">EXPORT</button>
+      <button type="button" class="pb only-browser" data-act="pm-import">IMPORT</button>
     </div>
     <div class="mgr-io" hidden>
       <textarea class="mgr-ta" spellcheck="false" placeholder="Paste exported presets here"></textarea>
@@ -2554,29 +2692,35 @@ const MGR_OVERLAY_HTML = `
         <button type="button" class="pb" data-act="io-close">HIDE</button>
       </div>
     </div>
+    <div class="mgr-path pm-path"></div>
     <div class="mgr-st pm-st"></div>
   </div>
 </div>
 <div class="mgr-ov" data-ov="library">
   <div class="mgr-box">
-    <div class="mgr-h"><span class="mgr-t">LIBRARY</span><button type="button" class="pb mgr-x" data-act="close">&times;</button></div>
+    <div class="mgr-h"><span class="mgr-t">${NAME_VAULT}</span><button type="button" class="pb mgr-x" data-act="close">&times;</button></div>
     <div class="mgr-row">
       <button type="button" class="pb lb-tab on" data-act="lb-tab" data-kind="sample">SAMPLES</button>
       <button type="button" class="pb lb-tab" data-act="lb-tab" data-kind="wavetable">WAVETABLES</button>
       <input type="text" class="mgr-in lb-search" placeholder="Search" spellcheck="false">
-      <button type="button" class="pb" data-act="lb-import">IMPORT FILES</button>
+      <button type="button" class="pb" data-act="lb-import">ADD FILES</button>
+      <button type="button" class="pb only-folder" data-act="open-folder" data-what="lib">OPEN FOLDER</button>
+      <button type="button" class="pb only-folder" data-act="lb-rescan">RESCAN</button>
     </div>
     <div class="lb-target"></div>
     <div class="mgr-list lb-list"></div>
+    <div class="mgr-path lb-path"></div>
     <div class="mgr-st lb-st"></div>
   </div>
 </div>`;
 
 const mgrMethods = {
     buildManager () {
-        this._db = new EisStore();
+        this._be = (typeof window.njo === "function") ? new FolderBackend() : new BrowserBackend();
+        this.classList.add(this._be.mode === "folder" ? "fs-folder" : "fs-browser");
         this._presets = [];
         this._lib = [];
+        this._dur = new Map();
         this._slotLib = { smp: null, s2: null, wt0: null, wt1: null, wt2: null };
         this._preset = { id: null, name: "Init", dirty: false };
         this._applying = false;
@@ -2619,7 +2763,8 @@ const mgrMethods = {
             });
         });
         q(".lb-search").addEventListener("input", () => this.renderLib());
-        q(".pm-name").addEventListener("keydown", ev => { if (ev.key === "Enter") this.mgrAct("pm-new"); });
+        q(".pm-name").addEventListener("keydown", ev => { ev.stopPropagation(); if (ev.key === "Enter") this.mgrAct("pm-new"); else if (ev.key === "Escape") this.closeMgr(); });
+        q(".lb-search").addEventListener("keydown", ev => { ev.stopPropagation(); if (ev.key === "Escape") this.closeMgr(); });
         this.querySelectorAll(".dz-lib").forEach(b => b.addEventListener("click", ev => {
             ev.stopPropagation();
             this._libTarget = b.dataset.slot;
@@ -2628,13 +2773,20 @@ const mgrMethods = {
             this.openMgr("library");
         }));
 
-        this._db.ready.then(async () => {
+        this._be.ready.then(async ok => {
+            if (this._be.mode === "folder" && !ok) {
+                // folder access failed: fall back so the manager still works
+                this._be = new BrowserBackend();
+                this.classList.remove("fs-folder"); this.classList.add("fs-browser");
+                await this._be.ready;
+                this.barInfo("FOLDERS UNAVAILABLE - USING TEMPORARY STORAGE");
+            }
             await this.presetsRefresh();
             await this.libRefresh();
-            const m = await this._db.get("meta", "slots");
+            const m = await this._be.metaGet();
             if (m && m.slots) Object.keys(this._slotLib).forEach(k => { if (m.slots[k] && this._lib.some(r => r.id === m.slots[k])) this._slotLib[k] = m.slots[k]; });
             this.updateBar();
-            if (!this._db.persistent) this.barInfo("LIBRARY STORAGE UNAVAILABLE - TEMPORARY");
+            if (this._be.mode === "browser" && !this._be.persistent) this.barInfo("STORAGE UNAVAILABLE - TEMPORARY");
         });
         this.updateBar();
     },
@@ -2645,6 +2797,7 @@ const mgrMethods = {
         this.removeEventListener("keydown", this._onKey);
         (this._mgrTimers || []).forEach(t => clearTimeout(t));
         this._mgrTimers = [];
+        if (this._infoTimer) clearTimeout(this._infoTimer);
     },
 
     barInfo (t) {
@@ -2668,8 +2821,9 @@ const mgrMethods = {
 
     // ---------------- presets ----------------
     async presetsRefresh () {
-        const all = await this._db.all("presets");
+        const all = await this._be.presetsList();
         this._presets = all.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0);
+        if (this._preset.id && !this._presets.some(p => p.id === this._preset.id)) this._preset.id = null;
         this.renderPresets();
     },
 
@@ -2691,22 +2845,27 @@ const mgrMethods = {
         return r;
     },
 
+    nameTaken (name, exceptId) {
+        const k = safeFile(name).toLowerCase();
+        return this._presets.some(p => p.id !== exceptId && (p.name.toLowerCase() === name.toLowerCase() || safeFile(p.name).toLowerCase() === k));
+    },
+
     async presetSaveAs (name, id) {
         name = String(name || "").trim().slice(0, 40);
         if (!name) { this.pmStatus("TYPE A NAME FIRST"); return null; }
+        if (!safeFile(name)) { this.pmStatus("THAT NAME HAS NO USABLE CHARACTERS"); return null; }
         if (name.toLowerCase() === "init") { this.pmStatus("'INIT' IS RESERVED"); return null; }
-        const clash = this._presets.find(p => p.name.toLowerCase() === name.toLowerCase() && p.id !== id);
-        if (clash) { this.pmStatus("NAME ALREADY USED"); return null; }
-        const rec = { id: id || uid(), name, saved: Date.now(), params: this.collectParams(), refs: this.collectRefs() };
-        const ok = await this._db.put("presets", rec);
-        if (!ok) { this.pmStatus("SAVE FAILED"); return null; }
-        this._preset = { id: rec.id, name: rec.name, dirty: false };
-        this._sel = rec.id;
+        if (this.nameTaken(name, id)) { this.pmStatus("NAME ALREADY USED"); return null; }
+        const rec = { name, saved: Date.now(), params: this.collectParams(), refs: this.collectRefs() };
+        const newId = await this._be.presetSave(rec, id);
+        if (!newId) { this.pmStatus("SAVE FAILED"); return null; }
+        this._preset = { id: newId, name, dirty: false };
+        this._sel = newId;
         await this.presetsRefresh();
         this.updateBar();
-        this.pmStatus("SAVED '" + rec.name + "'");
-        this.barInfo("SAVED " + rec.name);
-        return rec;
+        this.pmStatus("SAVED '" + name + "'");
+        this.barInfo("SAVED " + name);
+        return newId;
     },
 
     async presetQuickSave () {
@@ -2730,7 +2889,7 @@ const mgrMethods = {
         } finally { this._applying = false; }
         this._preset = { id: rec.id || null, name: label || rec.name, dirty: false };
         this.updateBar();
-        // reload referenced samples / wavetables from the library
+        // reload referenced samples / wavetables from the vault
         const refs = rec.refs || {};
         let missing = 0;
         for (const s of SLOT_DEFS) {
@@ -2740,7 +2899,7 @@ const mgrMethods = {
             if (item) { if (this._slotLib[s.key] !== item.id) await this.libLoad(item.id, s.key); }
             else missing++;
         }
-        this.barInfo((label || rec.name) + (missing ? " (" + missing + " FILE(S) NOT IN LIBRARY)" : " LOADED"));
+        this.barInfo((label || rec.name) + (missing ? " (" + missing + " FILE(S) NOT IN " + NAME_VAULT + ")" : " LOADED"));
         this.renderPresets();
     },
 
@@ -2773,38 +2932,47 @@ const mgrMethods = {
         el.innerHTML = items.map(p => '<div class="mgr-item' + (p.id === this._sel ? " sel" : "") + (p.id === this._preset.id || (p.builtin && !this._preset.id && this._preset.name === "Init") ? " cur" : "") + '" data-id="' + esc(p.id) + '">'
             + '<span class="mi-dot"></span><span class="mi-name">' + esc(p.name) + '</span>'
             + '<span class="mi-sub">' + (p.builtin ? "factory" : new Date(p.saved || 0).toLocaleDateString()) + '</span></div>').join("");
+        const pe = this.querySelector(".pm-path");
+        if (pe) pe.textContent = this._be.mode === "folder" ? "FOLDER  " + this._be.where("presets") : "";
     },
 
-    // ---------------- library ----------------
+    // ---------------- vault (samples + wavetables) ----------------
     async libRefresh () {
-        const all = await this._db.all("files");
-        this._lib = all.map(r => { const { buf, ...rest } = r; return rest; });
+        this._lib = await this._be.libList(this._dur);
         this.renderLib();
+    },
+
+    uniqueFname (kind, fname) {
+        const [stem, ext] = splitExt(fname);
+        let n = 2, out = fname;
+        const taken = f => this._lib.some(r => r.kind === kind && r.fname.toLowerCase() === f.toLowerCase());
+        while (taken(out)) out = stem + " (" + (n++) + ")" + ext;
+        return out;
     },
 
     async libAdd (file, kind, dur) {
-        const size = file.size;
-        const fname = file.name || "FILE";
-        const dup = this._lib.find(r => r.fname === fname && r.size === size);
+        let fname = safeFile(file.name || "file", 120) || "file";
+        if (!AUDIO_EXT.test(fname)) fname += ".wav";
+        const dup = this._lib.find(r => r.kind === kind && r.size === file.size && (r.fname === fname || r.fname === (file.name || "")));
         if (dup) return dup.id;
         let buf;
         try { buf = await file.arrayBuffer(); } catch (_) { return null; }
-        const rec = { id: uid(), kind, fname, label: baseName(fname).slice(0, 40), size, type: file.type || "", dur: dur || 0, added: Date.now(), buf };
-        const ok = await this._db.put("files", rec);
-        if (!ok) { this.libStatus("STORAGE FULL OR UNAVAILABLE"); return null; }
-        const { buf: _b, ...meta } = rec;
-        this._lib.push(meta);
+        const name = this.uniqueFname(kind, fname);
+        const id = await this._be.libWrite(kind, name, buf);
+        if (!id) { this.libStatus("COULD NOT SAVE THE FILE (DISK FULL OR FOLDER NOT WRITABLE)"); return null; }
+        if (dur) this._dur.set(id, dur);
+        this._lib.push({ id, kind, fname: name, label: splitExt(name)[0], size: buf.byteLength, added: Date.now(), dur: dur || 0 });
         this.renderLib();
-        return rec.id;
+        return id;
     },
 
     // called by the oscillator loaders once a file decoded successfully
     libTrack (slot, file, libId, dec) {
         this._slotLib[slot] = libId || null;
+        if (libId && dec && dec.dur) { this._dur.set(libId, dec.dur); const r = this._lib.find(x => x.id === libId); if (r) r.dur = dec.dur; }
         this.saveSlots();
         if (!libId) {
             const def = SLOT_DEFS.find(s => s.key === slot);
-            const marker = file;
             this.libAdd(file, def ? def.kind : "sample", dec ? dec.dur : 0).then(id => {
                 if (id && this._slotLib[slot] === null) { this._slotLib[slot] = id; this.saveSlots(); this.renderLib(); }
             });
@@ -2818,12 +2986,13 @@ const mgrMethods = {
         this.renderLib();
     },
 
-    saveSlots () { this._db.put("meta", { id: "slots", slots: Object.assign({}, this._slotLib) }); },
+    saveSlots () { this._be.metaPut({ slots: Object.assign({}, this._slotLib) }); },
 
     async libLoad (id, slot) {
-        const rec = await this._db.get("files", id);
-        if (!rec || !rec.buf) { this.libStatus("FILE MISSING"); return; }
-        const file = new File([rec.buf], rec.fname, { type: rec.type || "" });
+        const rec = this._lib.find(r => r.id === id);
+        const buf = rec ? await this._be.libRead(id) : null;
+        if (!rec || !buf) { this.libStatus("FILE MISSING - PRESS RESCAN"); return; }
+        const file = new File([buf], rec.fname, { type: "" });
         if (slot === "smp") await this.loadSynthSample(file, id);
         else if (slot === "s2") await this.loadSampler2(file, id);
         else if (slot.indexOf("wt") === 0) await this.loadWavetable(parseInt(slot.slice(2), 10), file, id);
@@ -2845,18 +3014,11 @@ const mgrMethods = {
 
     libStatus (t) { const el = this.querySelector(".lb-st"); if (el) { el.dataset.msg = t || ""; this.renderLibStatus(); } },
 
-    async renderLibStatus () {
+    renderLibStatus () {
         const el = this.querySelector(".lb-st");
         if (!el) return;
-        let use = "";
-        try {
-            if (navigator.storage && navigator.storage.estimate) {
-                const e = await navigator.storage.estimate();
-                if (e && e.usage != null) use = "  |  STORAGE " + fmtBytes(e.usage);
-            }
-        } catch (_) {}
         const total = this._lib.reduce((a, r) => a + (r.size || 0), 0);
-        el.textContent = (el.dataset.msg ? el.dataset.msg + "  |  " : "") + this._lib.length + " FILES, " + fmtBytes(total) + use;
+        el.textContent = (el.dataset.msg ? el.dataset.msg + "  |  " : "") + this._lib.length + " FILES, " + fmtBytes(total);
     },
 
     renderLib () {
@@ -2868,6 +3030,8 @@ const mgrMethods = {
         const tgt = this._libTarget ? SLOT_DEFS.find(s => s.key === this._libTarget) : null;
         const tEl = this.querySelector(".lb-target");
         if (tEl) tEl.textContent = tgt ? "LOADING INTO: " + tgt.label : "CHOOSE A TARGET BUTTON ON EACH ROW";
+        const pe = this.querySelector(".lb-path");
+        if (pe) pe.textContent = this._be.mode === "folder" ? "FOLDER  " + this._be.where(KIND_FOLDER[kind]) : "";
         const slots = tgt ? [tgt] : SLOT_DEFS.filter(s => s.kind === kind);
         const rows = this._lib.filter(r => r.kind === kind && (!term || r.label.toLowerCase().indexOf(term) >= 0 || r.fname.toLowerCase().indexOf(term) >= 0))
             .sort((a, b) => a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1);
@@ -2876,13 +3040,13 @@ const mgrMethods = {
             const btns = slots.map(s => '<button type="button" class="pb" data-act="lb-load" data-slot="' + s.key + '">' + (tgt ? "LOAD" : s.label.replace("SAMPLER ", "SMP ").replace("WAVETABLE ", "WT ")) + '</button>').join("");
             return '<div class="mgr-item" data-id="' + esc(r.id) + '">'
                 + '<span class="mi-dot' + (inUse ? " on" : "") + '" title="' + (inUse ? "loaded in " + inUse : "") + '"></span>'
-                + '<span class="mi-name">' + (this._renaming === r.id ? '<input type="text" class="mgr-in mi-edit" maxlength="40" value="' + esc(r.label) + '" spellcheck="false">' : esc(r.label)) + '</span>'
+                + '<span class="mi-name" title="' + esc(r.fname) + '">' + (this._renaming === r.id ? '<input type="text" class="mgr-in mi-edit" maxlength="60" value="' + esc(r.label) + '" spellcheck="false">' : esc(r.label)) + '</span>'
                 + '<span class="mi-sub">' + (inUse ? inUse + "  " : "") + (r.dur ? r.dur.toFixed(2) + " s  " : "") + fmtBytes(r.size) + '</span>'
                 + '<span class="mi-btns">' + btns
                 + '<button type="button" class="pb" data-act="lb-ren" title="Rename">REN</button>'
-                + '<button type="button" class="pb" data-act="lb-kind" title="Move to the ' + (kind === "sample" ? "wavetables" : "samples") + ' list">' + (kind === "sample" ? "&rarr; WT" : "&rarr; SMP") + '</button>'
-                + '<button type="button" class="pb' + (this._armed === "lb:" + r.id ? " arm" : "") + '" data-act="lb-del" title="Delete from library">' + (this._armed === "lb:" + r.id ? "SURE?" : "DEL") + '</button></span></div>';
-        }).join("") : '<div class="mgr-empty">' + (this._lib.length ? "NOTHING MATCHES" : "EMPTY - IMPORT FILES OR LOAD ONE INTO AN OSCILLATOR AND IT APPEARS HERE") + '</div>';
+                + '<button type="button" class="pb" data-act="lb-kind" title="Move to the ' + (kind === "sample" ? "wavetables" : "samples") + ' folder">' + (kind === "sample" ? "&rarr; WT" : "&rarr; SMP") + '</button>'
+                + '<button type="button" class="pb' + (this._armed === "lb:" + r.id ? " arm" : "") + '" data-act="lb-del" title="Delete the file">' + (this._armed === "lb:" + r.id ? "SURE?" : "DEL") + '</button></span></div>';
+        }).join("") : '<div class="mgr-empty">' + (this._lib.length ? "NOTHING MATCHES" : "EMPTY - ADD FILES, DROP THEM HERE, OR LOAD ONE INTO AN OSCILLATOR AND IT APPEARS HERE") + '</div>';
         const ed = el.querySelector(".mi-edit");
         if (ed) {
             const done = ok => this.libRenameDone(ed.closest(".mgr-item").dataset.id, ok ? ed.value : null);
@@ -2893,14 +3057,24 @@ const mgrMethods = {
         this.renderLibStatus();
     },
 
+    swapId (oldId, newId) {
+        Object.keys(this._slotLib).forEach(k => { if (this._slotLib[k] === oldId) this._slotLib[k] = newId; });
+        if (this._dur.has(oldId)) { this._dur.set(newId, this._dur.get(oldId)); this._dur.delete(oldId); }
+        this.saveSlots();
+    },
+
     async libRenameDone (id, val) {
         if (this._renaming !== id) return;
         this._renaming = null;
         const r = this._lib.find(x => x.id === id);
-        if (r && val != null && val.trim()) {
-            r.label = val.trim().slice(0, 40);
-            const full = await this._db.get("files", id);
-            if (full) { full.label = r.label; await this._db.put("files", full); }
+        if (r && val != null && val.trim() && val.trim() !== r.label) {
+            const clash = this._lib.some(x => x.id !== id && x.kind === r.kind && safeFile(x.label).toLowerCase() === safeFile(val).toLowerCase());
+            if (clash) this.libStatus("NAME ALREADY USED");
+            else {
+                const nid = await this._be.libRename(id, val.trim());
+                if (nid) { if (nid !== id) this.swapId(id, nid); await this.libRefresh(); this.libStatus("RENAMED"); }
+                else this.libStatus("RENAME FAILED");
+            }
         }
         this.renderLib();
     },
@@ -2915,19 +3089,22 @@ const mgrMethods = {
         if (b) { b.textContent = this._armed === "pm" ? "SURE?" : "DELETE"; b.classList.toggle("arm", this._armed === "pm"); }
     },
 
-    // ---------------- shared modal plumbing ----------------
-    openMgr (which) {
+    // ---------------- shared window plumbing ----------------
+    async openMgr (which) {
         this.querySelectorAll(".mgr-ov").forEach(ov => ov.classList.toggle("on", ov.dataset.ov === which));
         if (which === "presets") {
             this._sel = this._preset.id || "__init";
             this.renderPresets();
             const n = this.querySelector(".pm-name");
             if (n) n.value = this._preset.id ? this._preset.name : "";
+            this.pmStatus("");
+            await this.presetsRefresh();
             this.pmStatus(this._presets.length + " SAVED PRESET(S)");
         } else {
             this.querySelector(".lb-search").value = "";
             this.renderLib();
             this.libStatus("");
+            await this.libRefresh();
         }
     },
 
@@ -2948,10 +3125,19 @@ const mgrMethods = {
 
     selPreset () { return this._presets.find(p => p.id === this._sel) || null; },
 
-    async mgrAct (act, btn, ev) {
+    async mgrAct (act, btn) {
         const name = () => this.querySelector(".pm-name").value;
         switch (act) {
             case "close": this.closeMgr(); break;
+            case "open-folder": {
+                const what = btn.dataset.what === "lib" ? KIND_FOLDER[this._libKind] : btn.dataset.what;
+                const r = await this._be.reveal(what);
+                const msg = r && r.ok ? "OPENED " + this._be.where(what) : "COULD NOT OPEN THE FOLDER: " + this._be.where(what);
+                if (btn.dataset.what === "lib") this.libStatus(msg); else this.pmStatus(msg);
+                break;
+            }
+            case "pm-rescan": await this.presetsRefresh(); this.pmStatus(this._presets.length + " SAVED PRESET(S)"); break;
+            case "lb-rescan": await this.libRefresh(); this.libStatus("RESCANNED"); break;
             case "pm-new": await this.presetSaveAs(name(), null); break;
             case "pm-over": {
                 const p = this.selPreset();
@@ -2962,12 +3148,13 @@ const mgrMethods = {
             case "pm-ren": {
                 const p = this.selPreset();
                 if (!p) { this.pmStatus("SELECT A SAVED PRESET FIRST"); break; }
-                const nn = name().trim();
-                if (!nn) { this.pmStatus("TYPE THE NEW NAME FIRST"); break; }
-                if (nn.toLowerCase() === "init" || this._presets.some(x => x.id !== p.id && x.name.toLowerCase() === nn.toLowerCase())) { this.pmStatus("NAME ALREADY USED"); break; }
-                p.name = nn.slice(0, 40);
-                await this._db.put("presets", p);
-                if (this._preset.id === p.id) this._preset.name = p.name;
+                const nn = name().trim().slice(0, 40);
+                if (!nn || !safeFile(nn)) { this.pmStatus("TYPE THE NEW NAME FIRST"); break; }
+                if (nn.toLowerCase() === "init" || this.nameTaken(nn, p.id)) { this.pmStatus("NAME ALREADY USED"); break; }
+                const nid = await this._be.presetSave({ name: nn, saved: p.saved, params: p.params, refs: p.refs }, p.id);
+                if (!nid) { this.pmStatus("RENAME FAILED"); break; }
+                if (this._preset.id === p.id) this._preset = { id: nid, name: nn, dirty: this._preset.dirty };
+                this._sel = nid;
                 await this.presetsRefresh(); this.updateBar();
                 this.pmStatus("RENAMED");
                 break;
@@ -2977,7 +3164,7 @@ const mgrMethods = {
                 if (!p) { this.pmStatus("SELECT A SAVED PRESET FIRST"); break; }
                 if (this._armed !== "pm") { this._armed = "pm"; this.renderPmArm(); this.arm("pm"); break; }
                 this._armed = null;
-                await this._db.del("presets", p.id);
+                await this._be.presetDelete(p.id);
                 if (this._preset.id === p.id) this._preset.id = null;
                 this._sel = null;
                 await this.presetsRefresh(); this.updateBar(); this.renderPmArm();
@@ -3022,7 +3209,7 @@ const mgrMethods = {
                 try {
                     const blob = new Blob([this.querySelector(".mgr-ta").value], { type: "application/json" });
                     const a = document.createElement("a");
-                    a.href = URL.createObjectURL(blob); a.download = "eisenpuls-presets.json";
+                    a.href = URL.createObjectURL(blob); a.download = "njohrr-presets.json";
                     document.body.appendChild(a); a.click(); a.remove();
                     this.pmStatus("DOWNLOAD STARTED - IF NOTHING HAPPENS, USE COPY");
                 } catch (_) { this.pmStatus("DOWNLOAD NOT AVAILABLE HERE - USE COPY"); }
@@ -3041,19 +3228,19 @@ const mgrMethods = {
             case "io-apply": {
                 let obj;
                 try { obj = JSON.parse(this.querySelector(".mgr-ta").value); } catch (_) { this.pmStatus("THAT TEXT IS NOT VALID PRESET DATA"); break; }
-                const list = obj && obj.format === "eisenpuls-presets" && Array.isArray(obj.presets) ? obj.presets : null;
+                const list = obj && (obj.format === "eisenpuls-presets" || obj.format === "njohrr-presets") && Array.isArray(obj.presets) ? obj.presets : null;
                 if (!list) { this.pmStatus("THAT TEXT IS NOT VALID PRESET DATA"); break; }
                 let n = 0;
                 for (const x of list) {
                     if (!x || typeof x.name !== "string" || !x.params || typeof x.params !== "object") continue;
                     let nm = x.name.trim().slice(0, 40) || "Imported";
                     if (nm.toLowerCase() === "init") nm = "Init 2";
-                    let base = nm, k = 2;
-                    const taken = () => this._presets.some(p => p.name.toLowerCase() === nm.toLowerCase());
-                    while (taken()) nm = base.slice(0, 36) + " " + k++;
+                    const base = nm;
+                    let k = 2;
+                    while (this.nameTaken(nm, null)) nm = base.slice(0, 36) + " " + k++;
                     const params = {};
                     Object.keys(x.params).forEach(key => { const v = Number(x.params[key]); if (/^\d+$/.test(key) && Number.isFinite(v)) params[key] = v; });
-                    await this._db.put("presets", { id: uid(), name: nm, saved: Date.now(), params, refs: x.refs && typeof x.refs === "object" ? x.refs : {} });
+                    await this._be.presetSave({ name: nm, saved: Date.now(), params, refs: x.refs && typeof x.refs === "object" ? x.refs : {} }, null);
                     await this.presetsRefresh();
                     n++;
                 }
@@ -3077,27 +3264,31 @@ const mgrMethods = {
             case "lb-kind": {
                 const id = btn.closest(".mgr-item").dataset.id;
                 const r = this._lib.find(x => x.id === id);
-                const full = await this._db.get("files", id);
-                if (r && full) { r.kind = full.kind = r.kind === "sample" ? "wavetable" : "sample"; await this._db.put("files", full); }
-                this.renderLib();
+                if (!r) break;
+                const to = r.kind === "sample" ? "wavetable" : "sample";
+                if (this._lib.some(x => x.kind === to && x.fname.toLowerCase() === r.fname.toLowerCase())) { this.libStatus("A FILE WITH THAT NAME IS ALREADY IN THE OTHER FOLDER"); break; }
+                const nid = await this._be.libMoveKind(id, to);
+                if (nid) { if (nid !== id) this.swapId(id, nid); await this.libRefresh(); this.libStatus("MOVED TO " + (to === "sample" ? "SAMPLES" : "WAVETABLES")); }
+                else this.libStatus("MOVE FAILED");
                 break;
             }
             case "lb-del": {
                 const id = btn.closest(".mgr-item").dataset.id;
                 if (this._armed !== "lb:" + id) { this.arm("lb:" + id); this.renderLib(); break; }
                 this._armed = null;
-                await this._db.del("files", id);
+                const ok = await this._be.libDelete(id);
                 this._lib = this._lib.filter(x => x.id !== id);
                 Object.keys(this._slotLib).forEach(k => { if (this._slotLib[k] === id) this._slotLib[k] = null; });
                 this.saveSlots();
                 this.renderLib();
-                this.libStatus("DELETED FROM LIBRARY (THE LOADED SOUND, IF ANY, STAYS IN THE OSCILLATOR)");
+                this.libStatus(ok ? "DELETED (A SOUND ALREADY LOADED IN AN OSCILLATOR STAYS THERE)" : "DELETE FAILED");
                 break;
             }
         }
     }
 };
 Object.assign(EisenpulsPatchView.prototype, mgrMethods);
+
 
 export default function createPatchView (patchConnection) {
     const name = "eisenpuls-view";

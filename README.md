@@ -17,10 +17,26 @@ Push this folder to a GitHub repository and run the "Build VST3" workflow (Actio
 It builds Windows, macOS and Linux and attaches each as a downloadable artifact.
 
 ## Changing the sound or UI
-Edit patch/Eisenpuls_Synth.cmajor or patch/index.js, then regenerate with the Cmajor tools:
+Edit patch/Eisenpuls_Synth.cmajor or patch/index.js, then generate into a separate temp folder (see "Important when rebuilding"):
     cmaj generate --target=juce --output=<folder> --cmajorIncludePath=<cmajor>/include patch/Eisenpuls_Synth.cmajorpatch
 
-## Presets and library (inside the plugin window)
-- PRESET bar under the title: previous / next, SAVE, PRESETS (save as new, overwrite, rename, delete, export, import).
-- LIBRARY: samples and wavetables you load into any oscillator are added automatically; import more files, rename, delete, and load them into Sampler 1/2 or Wavetable 1-3. A preset remembers which library file each oscillator used.
-- Everything is stored in the plugin's built-in browser storage on this computer (per DAW program). Use PRESETS > EXPORT / IMPORT to move presets between programs or computers.
+## Preset Bank and Sound Vault (inside the plugin window)
+- PRESET bar under the title: previous / next, SAVE, BANK (the Preset Bank: save as new, overwrite, rename, delete).
+- VAULT (the Sound Vault): samples and wavetables you load into any oscillator are added automatically; add more files, rename, delete, and load them into Sampler 1/2 or Wavetable 1-3. A preset remembers which vault file each oscillator used.
+
+## Folders (Preset Bank and Sound Vault)
+Inside the plugin the managers work on real folders in your Documents folder:
+
+    Documents/Njohrr/Presets      *.njopreset   (plain text, easy to copy/share)
+    Documents/Njohrr/Samples      audio files used by the samplers
+    Documents/Njohrr/Wavetables   audio files used by the wavetable oscillators
+
+- Every manager window has OPEN FOLDER and RESCAN. Drop files in with your file manager, press RESCAN, they show up.
+- Anything you load into an oscillator is copied into the matching folder automatically.
+- macOS may ask once whether the DAW may access your Documents folder - allow it.
+- Outside the plugin (e.g. in a browser) the same managers fall back to temporary browser storage.
+
+## Important when rebuilding
+`include/cmajor/helpers/cmaj_NjohrrFiles.h` and the small `njo` binding in `include/cmajor/helpers/cmaj_PatchWebView.h` are Njohrr additions.
+Do NOT re-run `cmaj generate` over this folder (it would overwrite them). To change the UI: edit patch/index.js, generate into a separate
+temporary folder, and copy only the new `cmajor_plugin.cpp` back here.

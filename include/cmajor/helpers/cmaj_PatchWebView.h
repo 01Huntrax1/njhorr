@@ -20,6 +20,7 @@
 
 #include <memory>
 #include "cmaj_Patch.h"
+#include "cmaj_NjohrrFiles.h"
 #include "../../choc/choc/gui/choc_WebView.h"
 #include "../../choc/choc/network/choc_MIMETypes.h"
 
@@ -117,6 +118,20 @@ inline PatchWebView::PatchWebView (Patch& p, const PatchManifest::View& view)
 
         (void) boundOK;
         CMAJ_ASSERT (boundOK);
+
+        // Njohrr: preset / sample / wavetable folder access (Documents/Njohrr)
+        w.bind ("njo", [] (const choc::value::ValueView& args) -> choc::value::Value
+        {
+            auto str = [&] (uint32_t i) -> std::string
+            {
+                if (args.isArray() && i < args.size() && args[i].isString())
+                    return std::string (args[i].getString());
+
+                return {};
+            };
+
+            return choc::value::createString (njohrr::handle (str (0), str (1), str (2), str (3)));
+        });
     };
 
     webview = std::make_unique<choc::ui::WebView> (options);
