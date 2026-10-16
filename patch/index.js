@@ -645,11 +645,11 @@ const SMP_IDS = [155, 156, 157, 158, 159, 160, 161, 162];
 const S2_IDS = [194, 195, 196, 197, 198, 199, 200, 201];
 // Wavetable engines (three dedicated wavetable oscillators, each with its own memory bank)
 const WT_ENG = [
-    { name: "WT", chan: "WT 1", page: "wt1", prefix: "emx2.wavetable.",  ep: "wavetableIn",  mem: 210, lvl: 209, pos: 211, size: 212, root: 219, solo: 218,
+    { name: "WT", chan: "WT 1", page: "wt1", prefix: "emx2.wavetable.v2.",  ep: "wavetableBankV2Load",  mem: 210, lvl: 209, pos: 211, size: 212, root: 219, solo: 218,
       ids: [211, 220, 212, 213, 214, 215, 219, 216, 217, 445, 446], uni: [436, 437, 447, 448, 449, 438], warp: [450, 451, 452, 453] },
-    { name: "W2", chan: "WT 2", page: "wt2", prefix: "emx2.wavetable2.", ep: "wavetable2In", mem: 224, lvl: 223, pos: 225, size: 226, root: 233, solo: 232,
+    { name: "W2", chan: "WT 2", page: "wt2", prefix: "emx2.wavetable2.v2.", ep: "wavetableBank2V2Load", mem: 224, lvl: 223, pos: 225, size: 226, root: 233, solo: 232,
       ids: [225, 234, 226, 227, 228, 229, 233, 230, 231, 454, 455], uni: [439, 440, 456, 457, 458, 441], warp: [459, 460, 461, 462] },
-    { name: "W3", chan: "WT 3", page: "wt3", prefix: "emx2.wavetable3.", ep: "wavetable3In", mem: 236, lvl: 235, pos: 237, size: 238, root: 245, solo: 244,
+    { name: "W3", chan: "WT 3", page: "wt3", prefix: "emx2.wavetable3.v2.", ep: "wavetableBank3V2Load", mem: 236, lvl: 235, pos: 237, size: 238, root: 245, solo: 244,
       ids: [237, 246, 238, 239, 240, 241, 245, 242, 243, 463, 464], uni: [442, 443, 465, 466, 467, 444], warp: [468, 469, 470, 471] }
 ];
 // Mixer page: every volume/level fader lives here. p = fader param, s = solo param, eq = EQ channel index
@@ -706,8 +706,8 @@ function storageNamespaceFor (patchConnection) {
     return namespace;
 }
 
-const STORE_PREFIX = "emx2.sample.";
-const S2_PREFIX = "emx2.sampler2.";
+const STORE_PREFIX = "emx2.sample.v2.";
+const S2_PREFIX = "emx2.sampler2.v2.";
 const WT_MEM_NAMES = { 210: "WT", 224: "W2", 236: "W3" };
 const WT_UNI_VOICES = [436, 439, 442];
 const WT_UNI_DETUNE = [437, 440, 443];
@@ -831,7 +831,7 @@ class EisenpulsPatchView extends HTMLElement {
 
         // sample manager: DSP -> UI autosave stream
         this._saveHandler = c => this.onSampleOut(c);
-        try { this.pc.addEndpointListener("sampleOut", this._saveHandler); } catch (_) {}
+        try { this.pc.addEndpointListener("sampleBankV2Save", this._saveHandler); } catch (_) {}
 
         window.__amorphProcessMidi = (messages) => {
             messages.forEach(m => {
@@ -860,7 +860,7 @@ class EisenpulsPatchView extends HTMLElement {
     disconnectedCallback () {
         if (this.teardownManager) this.teardownManager();
         if (this._paramListener) this.pc.removeAllParameterListener(this._paramListener);
-        if (this._saveHandler) { try { this.pc.removeEndpointListener("sampleOut", this._saveHandler); } catch (_) {} }
+        if (this._saveHandler) { try { this.pc.removeEndpointListener("sampleBankV2Save", this._saveHandler); } catch (_) {} }
         if (this._animFrame) cancelAnimationFrame(this._animFrame);
         if (this._resizeObs) this._resizeObs.disconnect();
         if (this._restoreTimer) clearInterval(this._restoreTimer);
@@ -1006,7 +1006,7 @@ class EisenpulsPatchView extends HTMLElement {
                 const count = Math.min(CHUNK, cur.s.total - off);
                 const data = new Array(CHUNK).fill(0);
                 for (let i = 0; i < count; i++) data[i] = cur.s.data[off + i];
-                this.pc.sendEventOrValue("sampleRestore", {
+                this.pc.sendEventOrValue("sampleBankV2Restore", {
                     part: Math.floor(cur.idx / 4), slot: cur.idx % 4,
                     offset: off, count, total: cur.s.total, data
                 });
@@ -1072,7 +1072,7 @@ class EisenpulsPatchView extends HTMLElement {
         return { mono, len, rate: buf.sampleRate || 44100, sr, dur: buf.duration || (buf.length / (buf.sampleRate || 44100)) };
     }
 
-    // ---------- dedicated sample osc loader (synthSampleIn) ----------
+    // ---------- dedicated sample osc loader (sampleBankV2Load) ----------
     buildSmpLoader () {
         const dz = this.querySelector(".dz-smp");
         if (!dz) return;
@@ -1109,7 +1109,7 @@ class EisenpulsPatchView extends HTMLElement {
     clearSynthSample () {
         this.cancelSmpLoad();
         const idx = this.curMem();
-        this.pc.sendEventOrValue("synthSampleIn", { offset: 0, count: 0, total: 0, data: new Array(CHUNK).fill(0) });
+        this.pc.sendEventOrValue("sampleBankV2Load", { offset: 0, count: 0, total: 0, data: new Array(CHUNK).fill(0) });
         this.libUntrack("smp");
         this._smpState[idx] = null;
         this._store.delete(idx);
@@ -1135,7 +1135,7 @@ class EisenpulsPatchView extends HTMLElement {
                     const count = Math.min(CHUNK, total - offset);
                     const data = new Array(CHUNK).fill(0);
                     for (let i = 0; i < count; i++) data[i] = mono[offset + i];
-                    this.pc.sendEventOrValue("synthSampleIn", { offset, count, total, data });
+                    this.pc.sendEventOrValue("sampleBankV2Load", { offset, count, total, data });
                     offset += count;
                 }
                 if (offset >= total) {
@@ -1253,7 +1253,7 @@ class EisenpulsPatchView extends HTMLElement {
     clearSampler2 () {
         this.cancelS2Load();
         const idx = this.curS2();
-        this.pc.sendEventOrValue("synthSample2In", { offset: 0, count: 0, total: 0, data: new Array(CHUNK).fill(0) });
+        this.pc.sendEventOrValue("sampleBank2V2Load", { offset: 0, count: 0, total: 0, data: new Array(CHUNK).fill(0) });
         this.libUntrack("s2");
         this._s2State[idx] = null;
         this._s2Store.delete(idx);
@@ -1279,7 +1279,7 @@ class EisenpulsPatchView extends HTMLElement {
                     const count = Math.min(CHUNK, total - offset);
                     const data = new Array(CHUNK).fill(0);
                     for (let i = 0; i < count; i++) data[i] = mono[offset + i];
-                    this.pc.sendEventOrValue("synthSample2In", { offset, count, total, data });
+                    this.pc.sendEventOrValue("sampleBank2V2Load", { offset, count, total, data });
                     offset += count;
                 }
                 if (offset >= total) {
@@ -1334,7 +1334,7 @@ class EisenpulsPatchView extends HTMLElement {
                 const count = Math.min(CHUNK, cur.s.total - off);
                 const data = new Array(CHUNK).fill(0);
                 for (let i = 0; i < count; i++) data[i] = cur.s.data[off + i];
-                this.pc.sendEventOrValue("synthSample2In", { offset: off, count, total: cur.s.total, data });
+                this.pc.sendEventOrValue("sampleBank2V2Load", { offset: off, count, total: cur.s.total, data });
                 off += count;
             }
             if (cur && off >= cur.s.total) cur = null;
