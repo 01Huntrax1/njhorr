@@ -7,23 +7,23 @@ processor Eisenpuls_Synth
     input event std::timeline::Tempo tempoIn;
 
     // Dedicated loader for the synth sample oscillator (loads into the selected Synth Sample Memory)
-    input event SynthSampleChunk synthSampleIn;
+    input event SynthSampleChunk sampleBankV2Load;
 
     // Dedicated loader for Sampler 2 (loads into the selected Sample 2 Memory, its own bank)
-    input event SynthSampleChunk synthSample2In;
+    input event SynthSampleChunk sampleBank2V2Load;
 
     // Dedicated loader for the standalone Wavetable oscillator (loads into the selected Wavetable Memory)
-    input event SynthSampleChunk wavetableIn;
+    input event SynthSampleChunk wavetableBankV2Load;
 
     // Dedicated loader for Wavetable 2 (own memory bank)
-    input event SynthSampleChunk wavetable2In;
+    input event SynthSampleChunk wavetableBank2V2Load;
 
     // Dedicated loader for Wavetable 3 (own memory bank)
-    input event SynthSampleChunk wavetable3In;
+    input event SynthSampleChunk wavetableBank3V2Load;
 
     // ---------------- SAMPLE MEMORY (AUTOSAVE) ENDPOINTS ----------------
-    output event SampleSave sampleOut;
-    input  event SampleSave sampleRestore;
+    output event SampleSave sampleBankV2Save;
+    input  event SampleSave sampleBankV2Restore;
 
     // ---------------- VOICE ----------------
     input event float param2  [[ name: "Voice Mode (0 Poly / 1 Mono)", min: 0.0,   max: 1.0,    init: 0.0,   step: 1.0 ]];
@@ -726,35 +726,35 @@ processor Eisenpuls_Synth
     float[7] ssGR;
 
     // Sample memory bank (1 memory x 96000 samples) -- Sampler 1
-    bool[1]   smpHas;
-    int[1]    smpLen;
-    float[96000] smpBuf;
+    bool[1]   sampleBankV2Has;
+    int[1]    sampleBankV2Length;
+    float[96000] sampleBankV2Buffer;
 
     // Sampler 2 memory bank (1 memory x 96000 samples)
-    bool[1]   s2Has;
-    int[1]    s2Len;
-    float[96000] s2Buf;
+    bool[1]   sampleBank2V2Has;
+    int[1]    sampleBank2V2Length;
+    float[96000] sampleBank2V2Buffer;
 
     // Wavetable memory bank (1 memory x 96000 samples)
-    bool[1]   wtHas;
-    int[1]    wtLen;
-    float[96000] wtBuf;
-    float[1920]   wtMean;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
-    float[1]      wtMeanAll;   // whole-memory DC (fallback)
+    bool[1]   wavetableBankV2Has;
+    int[1]    wavetableBankV2Length;
+    float[96000] wavetableBankV2Buffer;
+    float[1920]   wavetableBankV2Means;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
+    float[1]      wavetableBankV2MeanAll;   // whole-memory DC (fallback)
 
     // Wavetable 2 memory bank (1 memory x 96000 samples)
-    bool[1]   wt2Has;
-    int[1]    wt2Len;
-    float[96000] wt2Buf;
-    float[1920]   wt2Mean;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
-    float[1]      wt2MeanAll;   // whole-memory DC (fallback)
+    bool[1]   wavetableBank2V2Has;
+    int[1]    wavetableBank2V2Length;
+    float[96000] wavetableBank2V2Buffer;
+    float[1920]   wavetableBank2V2Means;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
+    float[1]      wavetableBank2V2MeanAll;   // whole-memory DC (fallback)
 
     // Wavetable 3 memory bank (1 memory x 96000 samples)
-    bool[1]   wt3Has;
-    int[1]    wt3Len;
-    float[96000] wt3Buf;
-    float[1920]   wt3Mean;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
-    float[1]      wt3MeanAll;   // whole-memory DC (fallback)
+    bool[1]   wavetableBank3V2Has;
+    int[1]    wavetableBank3V2Length;
+    float[96000] wavetableBank3V2Buffer;
+    float[1920]   wavetableBank3V2Means;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
+    float[1]      wavetableBank3V2MeanAll;   // whole-memory DC (fallback)
 
     // Sample memory manager (autosave) state
     float     autosaveOn  = 1.0f;
@@ -1000,7 +1000,7 @@ processor Eisenpuls_Synth
         if (v > 0.5f)
         {
             for (int q = 0; q < 1; ++q)
-                if (smpHas.at (q))
+                if (sampleBankV2Has.at (q))
                     saveQueued.at (q) = true;
         }
     }
@@ -1732,11 +1732,11 @@ processor Eisenpuls_Synth
     }
 
     // Empties a sampler 1 memory (stops playback of it, forgets its length)
-    void clearMem (int idx)
+    void clearSampleBankV2 (int idx)
     {
         int mi = clamp (idx, 0, 0);
-        smpHas.at (mi) = false;
-        smpLen.at (mi) = 0;
+        sampleBankV2Has.at (mi) = false;
+        sampleBankV2Length.at (mi) = 0;
 
         for (int k = 0; k < 8; ++k)
         {
@@ -1746,13 +1746,13 @@ processor Eisenpuls_Synth
     }
 
     // Marks a memory as being (re)written: invalid until the last chunk arrives
-    void beginMem (int idx)
+    void beginSampleBankV2 (int idx)
     {
-        smpHas.at (clamp (idx, 0, 0)) = false;
+        sampleBankV2Has.at (clamp (idx, 0, 0)) = false;
     }
 
     // Writes one chunk into a memory; returns true when the memory is complete
-    bool storeChunk (int idx, int offset, int count, int total, float[256] data)
+    bool writeSampleBankV2Chunk (int idx, int offset, int count, int total, float[256] data)
     {
         int mi    = clamp (idx, 0, 0);
         int cnt   = clamp (count, 0, 256);
@@ -1762,13 +1762,13 @@ processor Eisenpuls_Synth
         {
             int pos = offset + i;
             if (pos >= 0 && pos < 96000)
-                smpBuf.at (mbase + pos) = data.at (i);
+                sampleBankV2Buffer.at (mbase + pos) = data.at (i);
         }
 
         if (offset + cnt >= total)
         {
-            smpLen.at (mi) = clamp (total, 1, 96000);
-            smpHas.at (mi) = true;
+            sampleBankV2Length.at (mi) = clamp (total, 1, 96000);
+            sampleBankV2Has.at (mi) = true;
             return true;
         }
 
@@ -1778,11 +1778,11 @@ processor Eisenpuls_Synth
     // ---------------- SAMPLER 2 MEMORY HELPERS (processor scope) ----------------
 
     // Empties a sampler 2 memory
-    void clearS2Mem (int idx)
+    void clearSampleBank2V2 (int idx)
     {
         int si = clamp (idx, 0, 0);
-        s2Has.at (si) = false;
-        s2Len.at (si) = 0;
+        sampleBank2V2Has.at (si) = false;
+        sampleBank2V2Length.at (si) = 0;
 
         for (int k = 0; k < 8; ++k)
         {
@@ -1792,13 +1792,13 @@ processor Eisenpuls_Synth
     }
 
     // Marks a sampler 2 memory as being (re)written
-    void beginS2Mem (int idx)
+    void beginSampleBank2V2 (int idx)
     {
-        s2Has.at (clamp (idx, 0, 0)) = false;
+        sampleBank2V2Has.at (clamp (idx, 0, 0)) = false;
     }
 
     // Writes one chunk into a sampler 2 memory; returns true when the memory is complete
-    bool storeS2Chunk (int idx, int offset, int count, int total, float[256] data)
+    bool writeSampleBank2V2Chunk (int idx, int offset, int count, int total, float[256] data)
     {
         int si    = clamp (idx, 0, 0);
         int cnt   = clamp (count, 0, 256);
@@ -1808,13 +1808,13 @@ processor Eisenpuls_Synth
         {
             int pos = offset + i;
             if (pos >= 0 && pos < 96000)
-                s2Buf.at (sbase + pos) = data.at (i);
+                sampleBank2V2Buffer.at (sbase + pos) = data.at (i);
         }
 
         if (offset + cnt >= total)
         {
-            s2Len.at (si) = clamp (total, 1, 96000);
-            s2Has.at (si) = true;
+            sampleBank2V2Length.at (si) = clamp (total, 1, 96000);
+            sampleBank2V2Has.at (si) = true;
             return true;
         }
 
@@ -1824,27 +1824,27 @@ processor Eisenpuls_Synth
     // ---------------- WAVETABLE MEMORY HELPERS (processor scope) ----------------
 
     // Empties a wavetable memory
-    void clearWtMem (int idx)
+    void clearWavetableBankV2 (int idx)
     {
         int wi = clamp (idx, 0, 0);
-        wtHas.at (wi) = false;
-        wtLen.at (wi) = 0;
+        wavetableBankV2Has.at (wi) = false;
+        wavetableBankV2Length.at (wi) = 0;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 0);
     }
 
     // DC of every frame, for every selectable frame size, so the oscillator can remove it exactly
-    void calcWtMeans (int wi)
+    void calculateWavetableBankV2Means (int wi)
     {
-        int len  = clamp (wtLen.at (wi), 1, 96000);
+        int len  = clamp (wavetableBankV2Length.at (wi), 1, 96000);
         int base = wi * 96000;
         float tot = 0.0f;
 
         for (int i = 0; i < len; ++i)
-            tot += wtBuf.at (base + i);
+            tot += wavetableBankV2Buffer.at (base + i);
 
-        wtMeanAll.at (wi) = tot / float (len);
+        wavetableBankV2MeanAll.at (wi) = tot / float (len);
 
         int fl = 256;
         for (int k = 0; k < 5; ++k)
@@ -1857,8 +1857,8 @@ processor Eisenpuls_Synth
                     float s = 0.0f;
                     int   o = base + f * fl;
                     for (int i = 0; i < fl; ++i)
-                        s += wtBuf.at (o + i);
-                    wtMean.at ((wi * 5 + k) * 384 + f) = s / float (fl);
+                        s += wavetableBankV2Buffer.at (o + i);
+                    wavetableBankV2Means.at ((wi * 5 + k) * 384 + f) = s / float (fl);
                 }
             }
             fl = fl * 2;
@@ -1874,20 +1874,20 @@ processor Eisenpuls_Synth
         else if (fl == 2048) k = 3;
         else if (fl == 4096) k = 4;
 
-        if (k < 0 || fl > wtLen.at (idx))
-            return wtMeanAll.at (idx);
+        if (k < 0 || fl > wavetableBankV2Length.at (idx))
+            return wavetableBankV2MeanAll.at (idx);
 
-        return wtMean.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
+        return wavetableBankV2Means.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
     }
 
     // Marks a wavetable memory as being (re)written
-    void beginWtMem (int idx)
+    void beginWavetableBankV2 (int idx)
     {
-        wtHas.at (clamp (idx, 0, 0)) = false;
+        wavetableBankV2Has.at (clamp (idx, 0, 0)) = false;
     }
 
     // Writes one chunk into a wavetable memory; returns true when the memory is complete
-    bool storeWtChunk (int idx, int offset, int count, int total, float[256] data)
+    bool writeWavetableBankV2Chunk (int idx, int offset, int count, int total, float[256] data)
     {
         int wi    = clamp (idx, 0, 0);
         int cnt   = clamp (count, 0, 256);
@@ -1897,14 +1897,14 @@ processor Eisenpuls_Synth
         {
             int pos = offset + i;
             if (pos >= 0 && pos < 96000)
-                wtBuf.at (wbase + pos) = data.at (i);
+                wavetableBankV2Buffer.at (wbase + pos) = data.at (i);
         }
 
         if (offset + cnt >= total)
         {
-            wtLen.at (wi) = clamp (total, 1, 96000);
-            calcWtMeans (wi);
-            wtHas.at (wi) = true;
+            wavetableBankV2Length.at (wi) = clamp (total, 1, 96000);
+            calculateWavetableBankV2Means (wi);
+            wavetableBankV2Has.at (wi) = true;
             return true;
         }
 
@@ -1914,27 +1914,27 @@ processor Eisenpuls_Synth
     // ---------------- WAVETABLE 2 MEMORY HELPERS (processor scope) ----------------
 
     // Empties a wavetable 2 memory
-    void clearWt2Mem (int idx)
+    void clearWavetableBank2V2 (int idx)
     {
         int wi = clamp (idx, 0, 0);
-        wt2Has.at (wi) = false;
-        wt2Len.at (wi) = 0;
+        wavetableBank2V2Has.at (wi) = false;
+        wavetableBank2V2Length.at (wi) = 0;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 1);
     }
 
     // DC of every frame, for every selectable frame size, so the oscillator can remove it exactly
-    void calcWt2Means (int wi)
+    void calculateWavetableBank2V2Means (int wi)
     {
-        int len  = clamp (wt2Len.at (wi), 1, 96000);
+        int len  = clamp (wavetableBank2V2Length.at (wi), 1, 96000);
         int base = wi * 96000;
         float tot = 0.0f;
 
         for (int i = 0; i < len; ++i)
-            tot += wt2Buf.at (base + i);
+            tot += wavetableBank2V2Buffer.at (base + i);
 
-        wt2MeanAll.at (wi) = tot / float (len);
+        wavetableBank2V2MeanAll.at (wi) = tot / float (len);
 
         int fl = 256;
         for (int k = 0; k < 5; ++k)
@@ -1947,8 +1947,8 @@ processor Eisenpuls_Synth
                     float s = 0.0f;
                     int   o = base + f * fl;
                     for (int i = 0; i < fl; ++i)
-                        s += wt2Buf.at (o + i);
-                    wt2Mean.at ((wi * 5 + k) * 384 + f) = s / float (fl);
+                        s += wavetableBank2V2Buffer.at (o + i);
+                    wavetableBank2V2Means.at ((wi * 5 + k) * 384 + f) = s / float (fl);
                 }
             }
             fl = fl * 2;
@@ -1964,20 +1964,20 @@ processor Eisenpuls_Synth
         else if (fl == 2048) k = 3;
         else if (fl == 4096) k = 4;
 
-        if (k < 0 || fl > wt2Len.at (idx))
-            return wt2MeanAll.at (idx);
+        if (k < 0 || fl > wavetableBank2V2Length.at (idx))
+            return wavetableBank2V2MeanAll.at (idx);
 
-        return wt2Mean.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
+        return wavetableBank2V2Means.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
     }
 
     // Marks a wavetable 2 memory as being (re)written
-    void beginWt2Mem (int idx)
+    void beginWavetableBank2V2 (int idx)
     {
-        wt2Has.at (clamp (idx, 0, 0)) = false;
+        wavetableBank2V2Has.at (clamp (idx, 0, 0)) = false;
     }
 
     // Writes one chunk into a wavetable 2 memory; returns true when the memory is complete
-    bool storeWt2Chunk (int idx, int offset, int count, int total, float[256] data)
+    bool writeWavetableBank2V2Chunk (int idx, int offset, int count, int total, float[256] data)
     {
         int wi    = clamp (idx, 0, 0);
         int cnt   = clamp (count, 0, 256);
@@ -1987,14 +1987,14 @@ processor Eisenpuls_Synth
         {
             int pos = offset + i;
             if (pos >= 0 && pos < 96000)
-                wt2Buf.at (wbase + pos) = data.at (i);
+                wavetableBank2V2Buffer.at (wbase + pos) = data.at (i);
         }
 
         if (offset + cnt >= total)
         {
-            wt2Len.at (wi) = clamp (total, 1, 96000);
-            calcWt2Means (wi);
-            wt2Has.at (wi) = true;
+            wavetableBank2V2Length.at (wi) = clamp (total, 1, 96000);
+            calculateWavetableBank2V2Means (wi);
+            wavetableBank2V2Has.at (wi) = true;
             return true;
         }
 
@@ -2004,27 +2004,27 @@ processor Eisenpuls_Synth
     // ---------------- WAVETABLE 3 MEMORY HELPERS (processor scope) ----------------
 
     // Empties a wavetable 3 memory
-    void clearWt3Mem (int idx)
+    void clearWavetableBank3V2 (int idx)
     {
         int wi = clamp (idx, 0, 0);
-        wt3Has.at (wi) = false;
-        wt3Len.at (wi) = 0;
+        wavetableBank3V2Has.at (wi) = false;
+        wavetableBank3V2Length.at (wi) = 0;
 
         for (int k = 0; k < 8; ++k)
             resetWtUni (k, 2);
     }
 
     // DC of every frame, for every selectable frame size, so the oscillator can remove it exactly
-    void calcWt3Means (int wi)
+    void calculateWavetableBank3V2Means (int wi)
     {
-        int len  = clamp (wt3Len.at (wi), 1, 96000);
+        int len  = clamp (wavetableBank3V2Length.at (wi), 1, 96000);
         int base = wi * 96000;
         float tot = 0.0f;
 
         for (int i = 0; i < len; ++i)
-            tot += wt3Buf.at (base + i);
+            tot += wavetableBank3V2Buffer.at (base + i);
 
-        wt3MeanAll.at (wi) = tot / float (len);
+        wavetableBank3V2MeanAll.at (wi) = tot / float (len);
 
         int fl = 256;
         for (int k = 0; k < 5; ++k)
@@ -2037,8 +2037,8 @@ processor Eisenpuls_Synth
                     float s = 0.0f;
                     int   o = base + f * fl;
                     for (int i = 0; i < fl; ++i)
-                        s += wt3Buf.at (o + i);
-                    wt3Mean.at ((wi * 5 + k) * 384 + f) = s / float (fl);
+                        s += wavetableBank3V2Buffer.at (o + i);
+                    wavetableBank3V2Means.at ((wi * 5 + k) * 384 + f) = s / float (fl);
                 }
             }
             fl = fl * 2;
@@ -2054,20 +2054,20 @@ processor Eisenpuls_Synth
         else if (fl == 2048) k = 3;
         else if (fl == 4096) k = 4;
 
-        if (k < 0 || fl > wt3Len.at (idx))
-            return wt3MeanAll.at (idx);
+        if (k < 0 || fl > wavetableBank3V2Length.at (idx))
+            return wavetableBank3V2MeanAll.at (idx);
 
-        return wt3Mean.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
+        return wavetableBank3V2Means.at ((idx * 5 + k) * 384 + clamp (f, 0, 383));
     }
 
     // Marks a wavetable 3 memory as being (re)written
-    void beginWt3Mem (int idx)
+    void beginWavetableBank3V2 (int idx)
     {
-        wt3Has.at (clamp (idx, 0, 0)) = false;
+        wavetableBank3V2Has.at (clamp (idx, 0, 0)) = false;
     }
 
     // Writes one chunk into a wavetable 3 memory; returns true when the memory is complete
-    bool storeWt3Chunk (int idx, int offset, int count, int total, float[256] data)
+    bool writeWavetableBank3V2Chunk (int idx, int offset, int count, int total, float[256] data)
     {
         int wi    = clamp (idx, 0, 0);
         int cnt   = clamp (count, 0, 256);
@@ -2077,14 +2077,14 @@ processor Eisenpuls_Synth
         {
             int pos = offset + i;
             if (pos >= 0 && pos < 96000)
-                wt3Buf.at (wbase + pos) = data.at (i);
+                wavetableBank3V2Buffer.at (wbase + pos) = data.at (i);
         }
 
         if (offset + cnt >= total)
         {
-            wt3Len.at (wi) = clamp (total, 1, 96000);
-            calcWt3Means (wi);
-            wt3Has.at (wi) = true;
+            wavetableBank3V2Length.at (wi) = clamp (total, 1, 96000);
+            calculateWavetableBank3V2Means (wi);
+            wavetableBank3V2Has.at (wi) = true;
             return true;
         }
 
@@ -2869,11 +2869,11 @@ processor Eisenpuls_Synth
         int i0   = int (pos);
         float fr = float (pos - float64 (i0));
         int i1   = i0 + 1;
-        int len  = smpLen.at (idx);
+        int len  = sampleBankV2Length.at (idx);
         if (i1 >= len) i1 = i0;
         i0 = clamp (i0, 0, 95999);
         i1 = clamp (i1, 0, 95999);
-        return smpBuf.at (base + i0) * (1.0f - fr) + smpBuf.at (base + i1) * fr;
+        return sampleBankV2Buffer.at (base + i0) * (1.0f - fr) + sampleBankV2Buffer.at (base + i1) * fr;
     }
 
     // Linear-interpolated read from a sampler 2 memory (96000 samples per memory)
@@ -2883,11 +2883,11 @@ processor Eisenpuls_Synth
         int i0   = int (pos);
         float fr = float (pos - float64 (i0));
         int i1   = i0 + 1;
-        int len  = s2Len.at (idx);
+        int len  = sampleBank2V2Length.at (idx);
         if (i1 >= len) i1 = i0;
         i0 = clamp (i0, 0, 95999);
         i1 = clamp (i1, 0, 95999);
-        return s2Buf.at (base + i0) * (1.0f - fr) + s2Buf.at (base + i1) * fr;
+        return sampleBank2V2Buffer.at (base + i0) * (1.0f - fr) + sampleBank2V2Buffer.at (base + i1) * fr;
     }
 
     // Wavetable frame size from the 0..4 selector (256 / 512 / 1024 / 2048 / 4096)
@@ -2906,7 +2906,7 @@ processor Eisenpuls_Synth
     // phase (0..1) scans one cycle inside the frame (both interpolated linearly)
     float wtBankRead (int idx, float64 phase, float wtPos, int frameLen)
     {
-        int   len  = wtLen.at (idx);
+        int   len  = wavetableBankV2Length.at (idx);
         int   fl   = clamp (frameLen, 2, max (len, 2));
         int   nF   = max (len / fl, 1);
         float p    = clamp (wtPos, 0.0f, 1.0f) * float (nF - 1);
@@ -2921,10 +2921,10 @@ processor Eisenpuls_Synth
         int   base = idx * 96000;
         int   top  = base + 95999;
 
-        float a0 = wtBuf.at (clamp (base + fa * fl + i0, base, top));
-        float a1 = wtBuf.at (clamp (base + fa * fl + i1, base, top));
-        float b0 = wtBuf.at (clamp (base + fb * fl + i0, base, top));
-        float b1 = wtBuf.at (clamp (base + fb * fl + i1, base, top));
+        float a0 = wavetableBankV2Buffer.at (clamp (base + fa * fl + i0, base, top));
+        float a1 = wavetableBankV2Buffer.at (clamp (base + fa * fl + i1, base, top));
+        float b0 = wavetableBankV2Buffer.at (clamp (base + fb * fl + i0, base, top));
+        float b1 = wavetableBankV2Buffer.at (clamp (base + fb * fl + i1, base, top));
 
         float va = a0 * (1.0f - fr) + a1 * fr;
         float vb = b0 * (1.0f - fr) + b1 * fr;
@@ -2935,7 +2935,7 @@ processor Eisenpuls_Synth
     // Wavetable 2 read (own memory bank)
     float wt2BankRead (int idx, float64 phase, float wtPos, int frameLen)
     {
-        int   len  = wt2Len.at (idx);
+        int   len  = wavetableBank2V2Length.at (idx);
         int   fl   = clamp (frameLen, 2, max (len, 2));
         int   nF   = max (len / fl, 1);
         float p    = clamp (wtPos, 0.0f, 1.0f) * float (nF - 1);
@@ -2950,10 +2950,10 @@ processor Eisenpuls_Synth
         int   base = idx * 96000;
         int   top  = base + 95999;
 
-        float a0 = wt2Buf.at (clamp (base + fa * fl + i0, base, top));
-        float a1 = wt2Buf.at (clamp (base + fa * fl + i1, base, top));
-        float b0 = wt2Buf.at (clamp (base + fb * fl + i0, base, top));
-        float b1 = wt2Buf.at (clamp (base + fb * fl + i1, base, top));
+        float a0 = wavetableBank2V2Buffer.at (clamp (base + fa * fl + i0, base, top));
+        float a1 = wavetableBank2V2Buffer.at (clamp (base + fa * fl + i1, base, top));
+        float b0 = wavetableBank2V2Buffer.at (clamp (base + fb * fl + i0, base, top));
+        float b1 = wavetableBank2V2Buffer.at (clamp (base + fb * fl + i1, base, top));
 
         float va = a0 * (1.0f - fr) + a1 * fr;
         float vb = b0 * (1.0f - fr) + b1 * fr;
@@ -2964,7 +2964,7 @@ processor Eisenpuls_Synth
     // Wavetable 3 read (own memory bank)
     float wt3BankRead (int idx, float64 phase, float wtPos, int frameLen)
     {
-        int   len  = wt3Len.at (idx);
+        int   len  = wavetableBank3V2Length.at (idx);
         int   fl   = clamp (frameLen, 2, max (len, 2));
         int   nF   = max (len / fl, 1);
         float p    = clamp (wtPos, 0.0f, 1.0f) * float (nF - 1);
@@ -2979,10 +2979,10 @@ processor Eisenpuls_Synth
         int   base = idx * 96000;
         int   top  = base + 95999;
 
-        float a0 = wt3Buf.at (clamp (base + fa * fl + i0, base, top));
-        float a1 = wt3Buf.at (clamp (base + fa * fl + i1, base, top));
-        float b0 = wt3Buf.at (clamp (base + fb * fl + i0, base, top));
-        float b1 = wt3Buf.at (clamp (base + fb * fl + i1, base, top));
+        float a0 = wavetableBank3V2Buffer.at (clamp (base + fa * fl + i0, base, top));
+        float a1 = wavetableBank3V2Buffer.at (clamp (base + fa * fl + i1, base, top));
+        float b0 = wavetableBank3V2Buffer.at (clamp (base + fb * fl + i0, base, top));
+        float b1 = wavetableBank3V2Buffer.at (clamp (base + fb * fl + i1, base, top));
 
         float va = a0 * (1.0f - fr) + a1 * fr;
         float vb = b0 * (1.0f - fr) + b1 * fr;
@@ -2992,11 +2992,11 @@ processor Eisenpuls_Synth
 
     // ---------------- SYNTH SAMPLE OSC LOADER ----------------
     // Loads into the memory selected by "Synth Sample Memory" (param154) at the moment the load starts.
-    event synthSampleIn (SynthSampleChunk c)
+    event sampleBankV2Load (SynthSampleChunk c)
     {
         if (c.total <= 0)
         {
-            clearMem (synthSmpIdx);
+            clearSampleBankV2 (synthSmpIdx);
             queueSave (synthSmpIdx);
             return;
         }
@@ -3004,91 +3004,91 @@ processor Eisenpuls_Synth
         if (c.offset == 0)
         {
             synthLoadIdx = synthSmpIdx;
-            beginMem (synthLoadIdx);
+            beginSampleBankV2 (synthLoadIdx);
         }
 
-        if (storeChunk (synthLoadIdx, c.offset, c.count, c.total, c.data))
+        if (writeSampleBankV2Chunk (synthLoadIdx, c.offset, c.count, c.total, c.data))
             queueSave (synthLoadIdx);
     }
 
     // ---------------- SAMPLER 2 LOADER ----------------
     // Loads into the sampler 2 bank memory selected by "Sample 2 Memory" (param193) at the moment the load starts.
-    event synthSample2In (SynthSampleChunk c)
+    event sampleBank2V2Load (SynthSampleChunk c)
     {
         if (c.total <= 0)
         {
-            clearS2Mem (synthSmp2Idx);
+            clearSampleBank2V2 (synthSmp2Idx);
             return;
         }
 
         if (c.offset == 0)
         {
             synthLoad2Idx = synthSmp2Idx;
-            beginS2Mem (synthLoad2Idx);
+            beginSampleBank2V2 (synthLoad2Idx);
         }
 
-        storeS2Chunk (synthLoad2Idx, c.offset, c.count, c.total, c.data);
+        writeSampleBank2V2Chunk (synthLoad2Idx, c.offset, c.count, c.total, c.data);
     }
 
     // ---------------- DEDICATED WAVETABLE LOADER ----------------
     // Loads into the memory selected by "Wavetable Memory" (param210) at the moment the load starts.
-    event wavetableIn (SynthSampleChunk c)
+    event wavetableBankV2Load (SynthSampleChunk c)
     {
         if (c.total <= 0)
         {
-            clearWtMem (wtIdx);
+            clearWavetableBankV2 (wtIdx);
             return;
         }
 
         if (c.offset == 0)
         {
             wtLoadIdx = wtIdx;
-            beginWtMem (wtLoadIdx);
+            beginWavetableBankV2 (wtLoadIdx);
         }
 
-        storeWtChunk (wtLoadIdx, c.offset, c.count, c.total, c.data);
+        writeWavetableBankV2Chunk (wtLoadIdx, c.offset, c.count, c.total, c.data);
     }
 
     // ---------------- WAVETABLE 2 LOADER ----------------
     // Loads into the memory selected by "Wavetable 2 Memory" (param224) at the moment the load starts.
-    event wavetable2In (SynthSampleChunk c)
+    event wavetableBank2V2Load (SynthSampleChunk c)
     {
         if (c.total <= 0)
         {
-            clearWt2Mem (wt2Idx);
+            clearWavetableBank2V2 (wt2Idx);
             return;
         }
 
         if (c.offset == 0)
         {
             wt2LoadIdx = wt2Idx;
-            beginWt2Mem (wt2LoadIdx);
+            beginWavetableBank2V2 (wt2LoadIdx);
         }
 
-        storeWt2Chunk (wt2LoadIdx, c.offset, c.count, c.total, c.data);
+        writeWavetableBank2V2Chunk (wt2LoadIdx, c.offset, c.count, c.total, c.data);
     }
 
     // ---------------- WAVETABLE 3 LOADER ----------------
     // Loads into the memory selected by "Wavetable 3 Memory" (param236) at the moment the load starts.
-    event wavetable3In (SynthSampleChunk c)
+    event wavetableBank3V2Load (SynthSampleChunk c)
     {
         if (c.total <= 0)
         {
-            clearWt3Mem (wt3Idx);
+            clearWavetableBank3V2 (wt3Idx);
             return;
         }
 
         if (c.offset == 0)
         {
             wt3LoadIdx = wt3Idx;
-            beginWt3Mem (wt3LoadIdx);
+            beginWavetableBank3V2 (wt3LoadIdx);
         }
 
-        storeWt3Chunk (wt3LoadIdx, c.offset, c.count, c.total, c.data);
+        writeWavetableBank3V2Chunk (wt3LoadIdx, c.offset, c.count, c.total, c.data);
     }
 
     // ---------------- SAMPLE RESTORE HANDLER (from UI persisted state) ----------------
-    event sampleRestore (SampleSave c)
+    event sampleBankV2Restore (SampleSave c)
     {
         int ridx = clamp (c.part, 0, 5) * 4 + clamp (c.slot, 0, 3);
 
@@ -3098,17 +3098,17 @@ processor Eisenpuls_Synth
 
         if (c.total <= 0)
         {
-            clearMem (ridx);
+            clearSampleBankV2 (ridx);
             return;
         }
 
         if (c.offset == 0)
         {
-            beginMem (ridx);
+            beginSampleBankV2 (ridx);
             saveQueued.at (ridx) = false;
         }
 
-        storeChunk (ridx, c.offset, c.count, c.total, c.data);
+        writeSampleBankV2Chunk (ridx, c.offset, c.count, c.total, c.data);
     }
 
     // ---------------- MIDI ----------------
@@ -3136,11 +3136,11 @@ processor Eisenpuls_Synth
             // restart all sample / wavetable engines on every non-legato note
             if (! (monoMode && wasActive))
             {
-                int   nsLen   = smpLen.at (synthSmpIdx);
+                int   nsLen   = sampleBankV2Length.at (synthSmpIdx);
                 int   nsStart = clamp (int (synthSmpStart * float (nsLen)), 0, max (nsLen - 1, 0));
                 voices.at (v).synPos = float64 (nsStart);
 
-                int   ns2Len   = s2Len.at (synthSmp2Idx);
+                int   ns2Len   = sampleBank2V2Length.at (synthSmp2Idx);
                 int   ns2Start = clamp (int (synthSmp2Start * float (ns2Len)), 0, max (ns2Len - 1, 0));
                 voices.at (v).synPos2 = float64 (ns2Start);
 
@@ -3362,15 +3362,15 @@ processor Eisenpuls_Synth
                 float subOsc = float (sin (float (twoPi) * float (voices.at (i).phaseSub)));
 
                 // sample engine availability (sampler 1, sampler 2 and the three dedicated wavetables)
-                bool smpActive  = (smpLvl > 0.0005f) && smpHas.at (synthSmpIdx) && (smpLen.at (synthSmpIdx) > 1);
+                bool smpActive  = (smpLvl > 0.0005f) && sampleBankV2Has.at (synthSmpIdx) && (sampleBankV2Length.at (synthSmpIdx) > 1);
                 bool soloS      = smpActive && (synthSmpSolo > 0.5f);
-                bool smp2Active = (smp2Lvl > 0.0005f) && s2Has.at (synthSmp2Idx) && (s2Len.at (synthSmp2Idx) > 1);
+                bool smp2Active = (smp2Lvl > 0.0005f) && sampleBank2V2Has.at (synthSmp2Idx) && (sampleBank2V2Length.at (synthSmp2Idx) > 1);
                 bool soloS2     = smp2Active && (synthSmp2Solo > 0.5f);
-                bool wtActive   = (wtLvl > 0.0005f) && wtHas.at (wtIdx) && (wtLen.at (wtIdx) > 1);
+                bool wtActive   = (wtLvl > 0.0005f) && wavetableBankV2Has.at (wtIdx) && (wavetableBankV2Length.at (wtIdx) > 1);
                 bool soloW      = wtActive && (wtSolo > 0.5f);
-                bool wt2Active  = (wt2Lvl > 0.0005f) && wt2Has.at (wt2Idx) && (wt2Len.at (wt2Idx) > 1);
+                bool wt2Active  = (wt2Lvl > 0.0005f) && wavetableBank2V2Has.at (wt2Idx) && (wavetableBank2V2Length.at (wt2Idx) > 1);
                 bool soloW2     = wt2Active && (wt2Solo > 0.5f);
-                bool wt3Active  = (wt3Lvl > 0.0005f) && wt3Has.at (wt3Idx) && (wt3Len.at (wt3Idx) > 1);
+                bool wt3Active  = (wt3Lvl > 0.0005f) && wavetableBank3V2Has.at (wt3Idx) && (wavetableBank3V2Length.at (wt3Idx) > 1);
                 bool soloW3     = wt3Active && (wt3Solo > 0.5f);
                 bool anySolo    = soloS || soloS2 || soloW || soloW2 || soloW3;
 
@@ -3412,7 +3412,7 @@ processor Eisenpuls_Synth
                 float smpDry = 0.0f;
                 if (smpActive)
                 {
-                    int     sLen   = smpLen.at (synthSmpIdx);
+                    int     sLen   = sampleBankV2Length.at (synthSmpIdx);
                     int     sStart = clamp (int (synthSmpStart * float (sLen)), 0, max (sLen - 1, 0));
                     float   smpSigS = 0.0f;
                     float   sSt = (synthSmpOct * 12.0f + synthSmpSemi + synthSmpFine * 0.01f + pe + tuneSt + vmod.at (17) * 12.0f) / 12.0f + lfo * lfoPitch;
@@ -3455,7 +3455,7 @@ processor Eisenpuls_Synth
                 float smpDry2 = 0.0f;
                 if (smp2Active)
                 {
-                    int     s2LenV   = s2Len.at (synthSmp2Idx);
+                    int     s2LenV   = sampleBank2V2Length.at (synthSmp2Idx);
                     int     s2Start  = clamp (int (synthSmp2Start * float (s2LenV)), 0, max (s2LenV - 1, 0));
                     float   smpSig2  = 0.0f;
                     float   s2St = (synthSmp2Oct * 12.0f + synthSmp2Semi + synthSmp2Fine * 0.01f + pe + tuneSt + vmod.at (19) * 12.0f) / 12.0f + lfo * lfoPitch;
@@ -3759,16 +3759,16 @@ processor Eisenpuls_Synth
                 if (dumpIdx >= 0)
                 {
                     SampleSave dch;
-                    int dlen = smpLen.at (dumpIdx);
+                    int dlen = sampleBankV2Length.at (dumpIdx);
                     dch.part = dumpIdx / 4;
                     dch.slot = dumpIdx - (dumpIdx / 4) * 4;
 
-                    if ((! smpHas.at (dumpIdx)) || dlen <= 0)
+                    if ((! sampleBankV2Has.at (dumpIdx)) || dlen <= 0)
                     {
                         dch.offset = 0;
                         dch.count  = 0;
                         dch.total  = 0;
-                        sampleOut <- dch;
+                        sampleBankV2Save <- dch;
                         dumpIdx = -1;
                     }
                     else
@@ -3781,9 +3781,9 @@ processor Eisenpuls_Synth
                         dch.total  = dlen;
 
                         for (int dm = 0; dm < dcnt; ++dm)
-                            dch.data.at (dm) = smpBuf.at (dbase + dm);
+                            dch.data.at (dm) = sampleBankV2Buffer.at (dbase + dm);
 
-                        sampleOut <- dch;
+                        sampleBankV2Save <- dch;
 
                         dumpOff += dcnt;
                         if (dumpOff >= dlen || dcnt <= 0)
