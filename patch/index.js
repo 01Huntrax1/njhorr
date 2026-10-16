@@ -690,6 +690,22 @@ const FRAME_SIZES = [256, 512, 1024, 2048, 4096];
 const SMP_DZ_EMPTY = "DROP AUDIO / CLICK TO LOAD";
 const S2_DZ_EMPTY = "DROP AUDIO / CLICK TO LOAD";
 const WT_DZ_EMPTY = "DROP WAVETABLE / CLICK TO LOAD";
+// Keep browser-storage keys tied to the host's patch-connection object, not to a UI mount.
+// A WeakMap gives distinct instances distinct keys while allowing a reopened view that
+// reuses its connection object to restore that instance's own samples.
+const STORAGE_NAMESPACES = new WeakMap();
+let nextStorageNamespace = 1;
+function storageNamespaceFor (patchConnection) {
+    if (!patchConnection || (typeof patchConnection !== "object" && typeof patchConnection !== "function"))
+        return "emx2.instance.ephemeral." + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + ".";
+    let namespace = STORAGE_NAMESPACES.get(patchConnection);
+    if (!namespace) {
+        namespace = "emx2.instance." + (nextStorageNamespace++) + ".";
+        STORAGE_NAMESPACES.set(patchConnection, namespace);
+    }
+    return namespace;
+}
+
 const STORE_PREFIX = "emx2.sample.";
 const S2_PREFIX = "emx2.sampler2.";
 const WT_MEM_NAMES = { 210: "WT", 224: "W2", 236: "W3" };
@@ -741,9 +757,9 @@ class EisenpulsPatchView extends HTMLElement {
     constructor (patchConnection) {
         super();
         this.pc = patchConnection;
-        // Each plugin instance gets its own browser-storage namespace. WebViews can
-        // share localStorage, so fixed keys made one instance overwrite another.
-        this._storageNamespace = "emx2.instance." + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + ".";
+        // The factory replaces this temporary namespace with one keyed to this instance's
+        // patch connection before connectedCallback can run.
+        this._storageNamespace = storageNamespaceFor(null);
         this._controls = new Map();
         this._animFrame = null;
         this._paramListener = null;
@@ -3305,5 +3321,6 @@ export default function createPatchView (patchConnection) {
     // own connection on the element returned by this factory.
     const view = new (window.customElements.get(name))();
     view.pc = patchConnection;
+    view._storageNamespace = storageNamespaceFor(patchConnection);
     return view;
 }
