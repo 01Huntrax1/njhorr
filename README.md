@@ -40,3 +40,15 @@ Inside the plugin the managers work on real folders in your Documents folder:
 `include/cmajor/helpers/cmaj_NjohrrFiles.h` and the small `njo` binding in `include/cmajor/helpers/cmaj_PatchWebView.h` are Njohrr additions.
 Do NOT re-run `cmaj generate` over this folder (it would overwrite them). To change the UI: edit patch/index.js, generate into a separate
 temporary folder, and copy only the new `cmajor_plugin.cpp` back here.
+
+## Where samples and wavetables are saved
+Each plugin instance keeps its own samples and wavetables in the plugin's stored state, so they are saved with the DAW project and
+are never shared between instances (loading a kick into Sampler 1 in one instance does not touch another instance).
+They are stored as 16-bit audio, roughly 260 KB of project data per loaded sampler or wavetable memory.
+The Sound Vault folders (Documents/Njohrr/...) are a shared library of files; which vault file an oscillator uses is also per instance.
+Regression test: `cd tests && npm install && npm test`.
+
+## UI embedded in cmajor_plugin.cpp
+`cmajor_plugin.cpp` contains a copy of the UI (the `index_js` byte array). It currently uses the older endpoint names
+(`synthSampleIn`, `wavetableIn`, ...) that match the DSP generated into the same file, while `patch/index.js` uses the newer V2 names.
+Both carry the per-instance storage fix. Running `cmaj generate` on `patch/` regenerates the DSP and the UI together.
