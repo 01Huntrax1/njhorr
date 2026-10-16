@@ -645,11 +645,11 @@ const SMP_IDS = [155, 156, 157, 158, 159, 160, 161, 162];
 const S2_IDS = [194, 195, 196, 197, 198, 199, 200, 201];
 // Wavetable engines (three dedicated wavetable oscillators, each with its own memory bank)
 const WT_ENG = [
-    { name: "WT", chan: "WT 1", page: "wt1", prefix: "emx2.wavetable.v2.",  ep: "wavetableBankV2Load",  mem: 210, lvl: 209, pos: 211, size: 212, root: 219, solo: 218,
+    { name: "WT", chan: "WT 1", page: "wt1", prefix: "njo.mem.wt1.",  ep: "wavetableBankV2Load",  mem: 210, lvl: 209, pos: 211, size: 212, root: 219, solo: 218,
       ids: [211, 220, 212, 213, 214, 215, 219, 216, 217, 445, 446], uni: [436, 437, 447, 448, 449, 438], warp: [450, 451, 452, 453] },
-    { name: "W2", chan: "WT 2", page: "wt2", prefix: "emx2.wavetable2.v2.", ep: "wavetableBank2V2Load", mem: 224, lvl: 223, pos: 225, size: 226, root: 233, solo: 232,
+    { name: "W2", chan: "WT 2", page: "wt2", prefix: "njo.mem.wt2.", ep: "wavetableBank2V2Load", mem: 224, lvl: 223, pos: 225, size: 226, root: 233, solo: 232,
       ids: [225, 234, 226, 227, 228, 229, 233, 230, 231, 454, 455], uni: [439, 440, 456, 457, 458, 441], warp: [459, 460, 461, 462] },
-    { name: "W3", chan: "WT 3", page: "wt3", prefix: "emx2.wavetable3.v2.", ep: "wavetableBank3V2Load", mem: 236, lvl: 235, pos: 237, size: 238, root: 245, solo: 244,
+    { name: "W3", chan: "WT 3", page: "wt3", prefix: "njo.mem.wt3.", ep: "wavetableBank3V2Load", mem: 236, lvl: 235, pos: 237, size: 238, root: 245, solo: 244,
       ids: [237, 246, 238, 239, 240, 241, 245, 242, 243, 463, 464], uni: [442, 443, 465, 466, 467, 444], warp: [468, 469, 470, 471] }
 ];
 // Mixer page: every volume/level fader lives here. p = fader param, s = solo param, eq = EQ channel index
@@ -690,24 +690,45 @@ const FRAME_SIZES = [256, 512, 1024, 2048, 4096];
 const SMP_DZ_EMPTY = "DROP AUDIO / CLICK TO LOAD";
 const S2_DZ_EMPTY = "DROP AUDIO / CLICK TO LOAD";
 const WT_DZ_EMPTY = "DROP WAVETABLE / CLICK TO LOAD";
-// Keep browser-storage keys tied to the host's patch-connection object, not to a UI mount.
-// A WeakMap gives distinct instances distinct keys while allowing a reopened view that
-// reuses its connection object to restore that instance's own samples.
-const STORAGE_NAMESPACES = new WeakMap();
-let nextStorageNamespace = 1;
-function storageNamespaceFor (patchConnection) {
-    if (!patchConnection || (typeof patchConnection !== "object" && typeof patchConnection !== "function"))
-        return "emx2.instance.ephemeral." + Date.now().toString(36) + Math.random().toString(36).slice(2, 10) + ".";
-    let namespace = STORAGE_NAMESPACES.get(patchConnection);
-    if (!namespace) {
-        namespace = "emx2.instance." + (nextStorageNamespace++) + ".";
-        STORAGE_NAMESPACES.set(patchConnection, namespace);
+// ---------- per-instance sample / wavetable persistence ----------
+// Samples and wavetables are kept in the patch's own stored state (patchConnection.sendStoredStateValue),
+// which the host saves with THIS plugin instance (inside the DAW project). They must never be kept in
+// window.localStorage: the web views of all plugin instances share one localStorage, so a sample loaded in
+// one instance would be restored into (and overwritten by) every other instance.
+// Each memory is stored as { name, total, pcm16 } where pcm16 is base64 of little-endian signed 16-bit samples.
+const SLOTS_STATE_KEY = "njo.slots";
+
+function encodeMem (s) {
+    const n = s.total | 0;
+    const bytes = new Uint8Array(n * 2);
+    for (let i = 0; i < n; i++) {
+        const v = Math.round(Math.max(-1, Math.min(1, s.data[i] || 0)) * 32767);
+        bytes[i * 2] = v & 255;
+        bytes[i * 2 + 1] = (v >> 8) & 255;
     }
-    return namespace;
+    let bin = "";
+    for (let i = 0; i < bytes.length; i += 8192)
+        bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+    return { name: s.name, total: n, pcm16: btoa(bin) };
 }
 
-const STORE_PREFIX = "emx2.sample.v2.";
-const S2_PREFIX = "emx2.sampler2.v2.";
+function decodeMem (o, fallbackName) {
+    if (!o || typeof o !== "object" || typeof o.pcm16 !== "string" || !(o.total > 0)) return null;
+    let bin;
+    try { bin = atob(o.pcm16); } catch (_) { return null; }
+    const n = Math.min(o.total | 0, bin.length >> 1);
+    if (n <= 0) return null;
+    const data = new Float32Array(n);
+    for (let i = 0; i < n; i++) {
+        let v = bin.charCodeAt(i * 2) | (bin.charCodeAt(i * 2 + 1) << 8);
+        if (v & 0x8000) v -= 0x10000;
+        data[i] = v / 32767;
+    }
+    return { name: o.name || fallbackName, total: n, data };
+}
+
+const STORE_PREFIX = "njo.mem.sampler1.";
+const S2_PREFIX = "njo.mem.sampler2.";
 const WT_MEM_NAMES = { 210: "WT", 224: "W2", 236: "W3" };
 const WT_UNI_VOICES = [436, 439, 442];
 const WT_UNI_DETUNE = [437, 440, 443];
@@ -757,9 +778,10 @@ class EisenpulsPatchView extends HTMLElement {
     constructor (patchConnection) {
         super();
         this.pc = patchConnection;
-        // The factory replaces this temporary namespace with one keyed to this instance's
-        // patch connection before connectedCallback can run.
-        this._storageNamespace = storageNamespaceFor(null);
+        // This instance's saved memories (key -> value), mirrored from the patch's stored state.
+        this._kv = new Map();
+        this._hydrateTimer = null;
+        this._ready = new Promise(resolve => { this._readyResolve = resolve; });
         this._controls = new Map();
         this._animFrame = null;
         this._paramListener = null;
@@ -789,6 +811,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     connectedCallback () {
+        this._disconnected = false;
         this.querySelectorAll(".control").forEach(node => {
             const spec = SPECS.find(s => s.id === node.dataset.param);
             if (!spec) return;
@@ -807,12 +830,7 @@ class EisenpulsPatchView extends HTMLElement {
         this.buildSmpLoader();
         this.buildS2Page();
         this.buildMemGrid();
-        this.loadStore();
-        this.loadS2Store();
-        for (let e = 0; e < WT_ENG.length; e++) {
-            this.buildWtPage(e);
-            this.loadWtStore(e);
-        }
+        for (let e = 0; e < WT_ENG.length; e++) this.buildWtPage(e);
         this.updateSmpName();
         this.updateS2Ui();
         for (let e = 0; e < WT_ENG.length; e++) this.updateWtUi(e);
@@ -850,14 +868,63 @@ class EisenpulsPatchView extends HTMLElement {
 
         this._controls.forEach((_, id) => this.pc.requestParameterValue(id));
         this.startAnimationLoop();
-        this.startRestore();
-        this._s2RestoreStart = setTimeout(() => { this._s2RestoreStart = null; this.startS2Restore(); }, 400);
-        for (let e = 0; e < WT_ENG.length; e++) {
-            this._wt[e].restoreStart = setTimeout(() => { this._wt[e].restoreStart = null; this.startWtRestore(e); }, 800 + e * 400);
-        }
+
+        // Fetch THIS instance's saved samples / wavetables from the patch's stored state, then load them
+        // into the UI and stream them back into the DSP (staggered, as before).
+        this.hydrateInstanceState();
+        this._ready.then(() => {
+            if (this._disconnected) return;
+            this.loadStore();
+            this.loadS2Store();
+            for (let e = 0; e < WT_ENG.length; e++) this.loadWtStore(e);
+            this.updateSmpName();
+            this.updateS2Ui();
+            for (let e = 0; e < WT_ENG.length; e++) this.updateWtUi(e);
+            this.startRestore();
+            this._s2RestoreStart = setTimeout(() => { this._s2RestoreStart = null; this.startS2Restore(); }, 400);
+            for (let e = 0; e < WT_ENG.length; e++) {
+                this._wt[e].restoreStart = setTimeout(() => { this._wt[e].restoreStart = null; this.startWtRestore(e); }, 800 + e * 400);
+            }
+        });
+    }
+
+    // Reads the instance's stored state once. Resolves this._ready (also when the host cannot supply any state,
+    // so a plain browser or an older host still works with empty memories).
+    hydrateInstanceState () {
+        let finished = false;
+        const finish = values => {
+            if (finished) return;
+            finished = true;
+            if (this._hydrateTimer) { clearTimeout(this._hydrateTimer); this._hydrateTimer = null; }
+            if (values && typeof values === "object") {
+                Object.keys(values).forEach(k => {
+                    // never let old saved data replace something the user has already loaded since startup
+                    if (!this._kv.has(k) && values[k] !== null && values[k] !== undefined) this._kv.set(k, values[k]);
+                });
+            }
+            this._readyResolve();
+        };
+        if (!this.pc || typeof this.pc.requestFullStoredState !== "function") { finish(null); return; }
+        this._hydrateTimer = setTimeout(() => finish(null), 3000);
+        try { this.pc.requestFullStoredState(msg => finish(msg && msg.values)); } catch (_) { finish(null); }
+    }
+
+    kvGet (key) { return this._kv.has(key) ? this._kv.get(key) : null; }
+
+    // Saves a value in this instance's stored state (the host keeps it with the project)
+    kvSet (key, value) {
+        this._kv.set(key, value);
+        if (this.pc && typeof this.pc.sendStoredStateValue === "function") this.pc.sendStoredStateValue(key, value);
+    }
+
+    kvRemove (key) {
+        this._kv.delete(key);
+        if (this.pc && typeof this.pc.sendStoredStateValue === "function") this.pc.sendStoredStateValue(key, null);
     }
 
     disconnectedCallback () {
+        this._disconnected = true;
+        if (this._hydrateTimer) { clearTimeout(this._hydrateTimer); this._hydrateTimer = null; }
         if (this.teardownManager) this.teardownManager();
         if (this._paramListener) this.pc.removeAllParameterListener(this._paramListener);
         if (this._saveHandler) { try { this.pc.removeEndpointListener("sampleBankV2Save", this._saveHandler); } catch (_) {} }
@@ -886,17 +953,16 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- sample memory (autosave to browser storage) ----------
-    key (idx) { return this._storageNamespace + STORE_PREFIX + idx; }
+    key (idx) { return STORE_PREFIX + idx; }
 
     loadStore () {
         for (let i = 0; i < MEM_COUNT; i++) {
             try {
-                const raw = window.localStorage.getItem(this.key(i));
-                if (!raw) continue;
-                const o = JSON.parse(raw);
-                if (!o || !Array.isArray(o.data) || !o.data.length) continue;
-                this._store.set(i, { name: o.name || "SAMPLE", total: o.data.length, data: Float32Array.from(o.data) });
-                this._smpState[i] = o.name || "SAMPLE";
+                if (this._store.has(i)) continue;   // loaded by the user since startup: newer than the saved copy
+                const m = decodeMem(this.kvGet(this.key(i)), "SAMPLE");
+                if (!m) continue;
+                this._store.set(i, m);
+                this._smpState[i] = m.name;
             } catch (_) {}
         }
     }
@@ -904,10 +970,8 @@ class EisenpulsPatchView extends HTMLElement {
     persist (idx) {
         const s = this._store.get(idx);
         try {
-            if (!s) { window.localStorage.removeItem(this.key(idx)); return; }
-            const arr = new Array(s.total);
-            for (let i = 0; i < s.total; i++) arr[i] = Math.round(s.data[i] * 32767) / 32767;
-            window.localStorage.setItem(this.key(idx), JSON.stringify({ name: s.name, data: arr }));
+            if (!s) { this.kvRemove(this.key(idx)); return; }
+            this.kvSet(this.key(idx), encodeMem(s));
         } catch (_) {
             this.setMgr("STORAGE FULL");
         }
@@ -1158,7 +1222,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- sampler 2 (own page, level and memory bank) ----------
-    s2Key (idx) { return this._storageNamespace + S2_PREFIX + idx; }
+    s2Key (idx) { return S2_PREFIX + idx; }
 
     curS2 () {
         const c = this._controls.get("param193");
@@ -1182,12 +1246,11 @@ class EisenpulsPatchView extends HTMLElement {
     loadS2Store () {
         for (let i = 0; i < S2_COUNT; i++) {
             try {
-                const raw = window.localStorage.getItem(this.s2Key(i));
-                if (!raw) continue;
-                const o = JSON.parse(raw);
-                if (!o || !Array.isArray(o.data) || !o.data.length) continue;
-                this._s2Store.set(i, { name: o.name || "SAMPLE", total: o.data.length, data: Float32Array.from(o.data) });
-                this._s2State[i] = o.name || "SAMPLE";
+                if (this._s2Store.has(i)) continue;
+                const m = decodeMem(this.kvGet(this.s2Key(i)), "SAMPLE");
+                if (!m) continue;
+                this._s2Store.set(i, m);
+                this._s2State[i] = m.name;
             } catch (_) {}
         }
     }
@@ -1195,10 +1258,8 @@ class EisenpulsPatchView extends HTMLElement {
     persistS2 (idx) {
         const s = this._s2Store.get(idx);
         try {
-            if (!s) { window.localStorage.removeItem(this.s2Key(idx)); return; }
-            const arr = new Array(s.total);
-            for (let i = 0; i < s.total; i++) arr[i] = Math.round(s.data[i] * 32767) / 32767;
-            window.localStorage.setItem(this.s2Key(idx), JSON.stringify({ name: s.name, data: arr }));
+            if (!s) { this.kvRemove(this.s2Key(idx)); return; }
+            this.kvSet(this.s2Key(idx), encodeMem(s));
         } catch (_) {
             this.setS2Status("STORAGE FULL");
         }
@@ -1342,7 +1403,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- dedicated wavetable oscillators (3 engines: own page, level and memory bank each) ----------
-    wtKey (e, idx) { return this._storageNamespace + WT_ENG[e].prefix + idx; }
+    wtKey (e, idx) { return WT_ENG[e].prefix + idx; }
 
     curWt (e) {
         const c = this._controls.get("param" + WT_ENG[e].mem);
@@ -1373,12 +1434,11 @@ class EisenpulsPatchView extends HTMLElement {
         const w = this._wt[e];
         for (let i = 0; i < WT_COUNT; i++) {
             try {
-                const raw = window.localStorage.getItem(this.wtKey(e, i));
-                if (!raw) continue;
-                const o = JSON.parse(raw);
-                if (!o || !Array.isArray(o.data) || !o.data.length) continue;
-                w.store.set(i, { name: o.name || "TABLE", total: o.data.length, data: Float32Array.from(o.data) });
-                w.state[i] = o.name || "TABLE";
+                if (w.store.has(i)) continue;
+                const m = decodeMem(this.kvGet(this.wtKey(e, i)), "TABLE");
+                if (!m) continue;
+                w.store.set(i, m);
+                w.state[i] = m.name;
             } catch (_) {}
         }
     }
@@ -1386,10 +1446,8 @@ class EisenpulsPatchView extends HTMLElement {
     persistWt (e, idx) {
         const s = this._wt[e].store.get(idx);
         try {
-            if (!s) { window.localStorage.removeItem(this.wtKey(e, idx)); return; }
-            const arr = new Array(s.total);
-            for (let i = 0; i < s.total; i++) arr[i] = Math.round(s.data[i] * 10000) / 10000;
-            window.localStorage.setItem(this.wtKey(e, idx), JSON.stringify({ name: s.name, data: arr }));
+            if (!s) { this.kvRemove(this.wtKey(e, idx)); return; }
+            this.kvSet(this.wtKey(e, idx), encodeMem(s));
         } catch (_) {
             this.setWtStatus(e, "STORAGE FULL");
         }
@@ -2803,8 +2861,10 @@ const mgrMethods = {
             }
             await this.presetsRefresh();
             await this.libRefresh();
-            const m = await this._be.metaGet();
-            if (m && m.slots) Object.keys(this._slotLib).forEach(k => { if (m.slots[k] && this._lib.some(r => r.id === m.slots[k])) this._slotLib[k] = m.slots[k]; });
+            // which vault file each oscillator uses is per plugin instance (never the shared vault meta file)
+            await this._ready;
+            const m = { slots: this.kvGet(SLOTS_STATE_KEY) };
+            if (m.slots && typeof m.slots === "object") Object.keys(this._slotLib).forEach(k => { if (m.slots[k] && this._lib.some(r => r.id === m.slots[k])) this._slotLib[k] = m.slots[k]; });
             this.updateBar();
             if (this._be.mode === "browser" && !this._be.persistent) this.barInfo("STORAGE UNAVAILABLE - TEMPORARY");
         });
@@ -3006,7 +3066,7 @@ const mgrMethods = {
         this.renderLib();
     },
 
-    saveSlots () { this._be.metaPut({ slots: Object.assign({}, this._slotLib) }); },
+    saveSlots () { try { this.kvSet(SLOTS_STATE_KEY, Object.assign({}, this._slotLib)); } catch (_) {} },
 
     async libLoad (id, slot) {
         const rec = this._lib.find(r => r.id === id);
@@ -3319,9 +3379,9 @@ export default function createPatchView (patchConnection) {
 
     // The custom-element class is registered only once per WebView. Do not close
     // over the first patchConnection here: every plugin instance must receive its
-    // own connection on the element returned by this factory.
+    // own connection on the element returned by this factory. All of an instance's saved
+    // samples live in that connection's stored state, so nothing is shared between instances.
     const view = new (window.customElements.get(name))();
     view.pc = patchConnection;
-    view._storageNamespace = storageNamespaceFor(patchConnection);
     return view;
 }
