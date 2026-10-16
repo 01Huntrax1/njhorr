@@ -3297,7 +3297,13 @@ export default function createPatchView (patchConnection) {
     const name = "eisenpuls-view";
     if (!window.customElements.get(name))
         window.customElements.define(name, class extends EisenpulsPatchView {
-            constructor () { super(patchConnection); }
+            constructor () { super(null); }
         });
-    return new (window.customElements.get(name))();
+
+    // The custom-element class is registered only once per WebView. Do not close
+    // over the first patchConnection here: every plugin instance must receive its
+    // own connection on the element returned by this factory.
+    const view = new (window.customElements.get(name))();
+    view.pc = patchConnection;
+    return view;
 }
