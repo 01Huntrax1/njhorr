@@ -3545,9 +3545,9 @@ processor Eisenpuls_Synth
 
     float<2> processFXSlot (int slot, float<2> signalIn, float dt, float sr)
     {
-        if (fxSlotEnabled.at (slot) < 0.5f) return input;
+        if (fxSlotEnabled.at (slot) < 0.5f) return signalIn;
         int kind = int (fxSlotType.at (slot) + 0.5f);
-        if (kind <= 0 || kind > 8) return input;
+        if (kind <= 0 || kind > 8) return signalIn;
 
         float inL = signalIn[0];
         float inR = signalIn[1];
