@@ -463,6 +463,25 @@ processor Eisenpuls_Synth
     input event float param669 [[ name: "FX Slot 8 D", min: 0.0, max: 1.0, init: 0.0000 ]];
     input event float param670 [[ name: "FX Slot 8 E", min: 0.0, max: 1.0, init: 0.0000 ]];
     input event float param671 [[ name: "FX Slot 8 F", min: 0.0, max: 1.0, init: 1.0000 ]];
+    input event float param672 [[ name: "FX Slot 9 Type", min: 0.0, max: 8.0, init: 0.0000, step: 1.0 ]];
+    input event float param673 [[ name: "FX Slot 9 Power", min: 0.0, max: 1.0, init: 0.0000, step: 1.0 ]];
+    input event float param674 [[ name: "FX Slot 9 Order", min: 0.0, max: 9.0, init: 8.0000, step: 1.0 ]];
+    input event float param675 [[ name: "FX Slot 9 A", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param676 [[ name: "FX Slot 9 B", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param677 [[ name: "FX Slot 9 C", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param678 [[ name: "FX Slot 9 D", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param679 [[ name: "FX Slot 9 E", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param680 [[ name: "FX Slot 9 F", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param681 [[ name: "FX Slot 10 Type", min: 0.0, max: 8.0, init: 0.0000, step: 1.0 ]];
+    input event float param682 [[ name: "FX Slot 10 Power", min: 0.0, max: 1.0, init: 0.0000, step: 1.0 ]];
+    input event float param683 [[ name: "FX Slot 10 Order", min: 0.0, max: 9.0, init: 9.0000, step: 1.0 ]];
+    input event float param684 [[ name: "FX Slot 10 A", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param685 [[ name: "FX Slot 10 B", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param686 [[ name: "FX Slot 10 C", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param687 [[ name: "FX Slot 10 D", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param688 [[ name: "FX Slot 10 E", min: 0.0, max: 1.0, init: 0.0000 ]];
+    input event float param689 [[ name: "FX Slot 10 F", min: 0.0, max: 1.0, init: 0.0000 ]];
+
 
 
     // ---------------- MIXER CHANNEL EQS (SSL 4000 style: LF shelf, LMF bell, HMF bell, HF shelf) ----------------
@@ -683,58 +702,58 @@ processor Eisenpuls_Synth
     float fxReverbOn   = 1.0f;
     float fxTremoloOn  = 1.0f;
     // Reorderable rack state. Slot identity owns its parameters and history; order changes only the route.
-    float[8] fxSlotType;
-    float[8] fxSlotEnabled;
-    float[8] fxSlotOrder;
-    float[8] fxSlotA;
-    float[8] fxSlotB;
-    float[8] fxSlotC;
-    float[8] fxSlotD;
-    float[8] fxSlotE;
-    float[8] fxSlotF;
+    float[10] fxSlotType;
+    float[10] fxSlotEnabled;
+    float[10] fxSlotOrder;
+    float[10] fxSlotA;
+    float[10] fxSlotB;
+    float[10] fxSlotC;
+    float[10] fxSlotD;
+    float[10] fxSlotE;
+    float[10] fxSlotF;
 
     // Per-slot stereo delay (up to 192000 samples per channel / slot).
-    float[1536000] fxDelayBufL;
-    float[1536000] fxDelayBufR;
-    int[8] fxDelayPos;
-    float[8] fxDelayDampL;
-    float[8] fxDelayDampR;
+    float[1920000] fxDelayBufL;
+    float[1920000] fxDelayBufR;
+    int[10] fxDelayPos;
+    float[10] fxDelayDampL;
+    float[10] fxDelayDampR;
 
     // Per-slot chorus and flanger delay lines.
-    float[65536] fxChorusBufL;
-    float[65536] fxChorusBufR;
-    int[8] fxChorusPos;
-    float64[8] fxChorusPhase;
-    float[8] fxChorusFbL;
-    float[8] fxChorusFbR;
-    float[32768] fxFlangerBufL;
-    float[32768] fxFlangerBufR;
-    int[8] fxFlangerPos;
-    float64[8] fxFlangerPhase;
-    float[8] fxFlangerFbL;
-    float[8] fxFlangerFbR;
+    float[81920] fxChorusBufL;
+    float[81920] fxChorusBufR;
+    int[10] fxChorusPos;
+    float64[10] fxChorusPhase;
+    float[10] fxChorusFbL;
+    float[10] fxChorusFbR;
+    float[40960] fxFlangerBufL;
+    float[40960] fxFlangerBufR;
+    int[10] fxFlangerPos;
+    float64[10] fxFlangerPhase;
+    float[10] fxFlangerFbL;
+    float[10] fxFlangerFbR;
 
     // Per-slot phaser allpass states.
-    float[64] fxPhaserZL;
-    float[64] fxPhaserZR;
-    float64[8] fxPhaserPhase;
-    float[8] fxPhaserFbL;
-    float[8] fxPhaserFbR;
+    float[80] fxPhaserZL;
+    float[80] fxPhaserZR;
+    float64[10] fxPhaserPhase;
+    float[10] fxPhaserFbL;
+    float[10] fxPhaserFbR;
 
     // Four independent combs plus pre-delay per reverb slot.
-    float[262144] fxReverbCombL;
-    float[262144] fxReverbCombR;
-    int[32] fxReverbCombPos;
-    float[32] fxReverbStoreL;
-    float[32] fxReverbStoreR;
-    float[65536] fxReverbPreL;
-    float[65536] fxReverbPreR;
-    int[8] fxReverbPrePos;
+    float[327680] fxReverbCombL;
+    float[327680] fxReverbCombR;
+    int[40] fxReverbCombPos;
+    float[40] fxReverbStoreL;
+    float[40] fxReverbStoreR;
+    float[81920] fxReverbPreL;
+    float[81920] fxReverbPreR;
+    int[10] fxReverbPrePos;
 
-    float64[8] fxTremoloPhase;
-    int[8] fxCrushCounter;
-    float[8] fxCrushHeldL;
-    float[8] fxCrushHeldR;
+    float64[10] fxTremoloPhase;
+    int[10] fxCrushCounter;
+    float[10] fxCrushHeldL;
+    float[10] fxCrushHeldR;
 
     float panParam     = 0.0f;
     float panL         = 1.0f;
@@ -1177,6 +1196,25 @@ processor Eisenpuls_Synth
     event param669 (float v) { fxSlotD.at (7) = v; }
     event param670 (float v) { fxSlotE.at (7) = v; }
     event param671 (float v) { fxSlotF.at (7) = v; }
+    event param672 (float v) { fxSlotType.at (8) = v; }
+    event param673 (float v) { fxSlotEnabled.at (8) = v; }
+    event param674 (float v) { fxSlotOrder.at (8) = v; }
+    event param675 (float v) { fxSlotA.at (8) = v; }
+    event param676 (float v) { fxSlotB.at (8) = v; }
+    event param677 (float v) { fxSlotC.at (8) = v; }
+    event param678 (float v) { fxSlotD.at (8) = v; }
+    event param679 (float v) { fxSlotE.at (8) = v; }
+    event param680 (float v) { fxSlotF.at (8) = v; }
+    event param681 (float v) { fxSlotType.at (9) = v; }
+    event param682 (float v) { fxSlotEnabled.at (9) = v; }
+    event param683 (float v) { fxSlotOrder.at (9) = v; }
+    event param684 (float v) { fxSlotA.at (9) = v; }
+    event param685 (float v) { fxSlotB.at (9) = v; }
+    event param686 (float v) { fxSlotC.at (9) = v; }
+    event param687 (float v) { fxSlotD.at (9) = v; }
+    event param688 (float v) { fxSlotE.at (9) = v; }
+    event param689 (float v) { fxSlotF.at (9) = v; }
+
 
 
     event param30 (float v) { delayMs     = v; }
@@ -1725,6 +1763,29 @@ processor Eisenpuls_Synth
     // ---------------- INIT ----------------
     void init()
     {
+
+        // Modular FX rack defaults: eight familiar modules plus two empty slots for duplicates.
+        let fxTypeDefaults = int[10] (2, 1, 3, 4, 5, 6, 7, 8, 0, 0);
+        let fxEnableDefaults = int[10] (1, 1, 1, 1, 1, 1, 1, 1, 0, 0);
+        let fxADefaults = float[10] (0.3687f, 0.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
+        let fxBDefaults = float[10] (0.3684f, 1.0f, 0.1515f, 0.0505f, 0.044f, 0.5f, 0.246f, 0.0f, 0.0f, 0.0f);
+        let fxCDefaults = float[10] (1.0f, 0.0f, 0.5f, 0.6f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
+        let fxDDefaults = float[10] (0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        let fxEDefaults = float[10] (1.0f, 0.0f, 0.0f, 0.0f, 0.3333f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        let fxFDefaults = float[10] (1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        for (int fx = 0; fx < 10; ++fx)
+        {
+            fxSlotType.at (fx) = float (fxTypeDefaults.at (fx));
+            fxSlotEnabled.at (fx) = float (fxEnableDefaults.at (fx));
+            fxSlotOrder.at (fx) = float (fx);
+            fxSlotA.at (fx) = fxADefaults.at (fx);
+            fxSlotB.at (fx) = fxBDefaults.at (fx);
+            fxSlotC.at (fx) = fxCDefaults.at (fx);
+            fxSlotD.at (fx) = fxDDefaults.at (fx);
+            fxSlotE.at (fx) = fxEDefaults.at (fx);
+            fxSlotF.at (fx) = fxFDefaults.at (fx);
+        }
+
         // supersaw detune offsets (JP-8000 style) and stereo positions, centre first then inner to outer pairs
         ssOff.at (0) = 0.0f;
         ssOff.at (1) = -0.0195f;
@@ -3676,10 +3737,10 @@ processor Eisenpuls_Synth
     float<2> processFXRack (float<2> input, float dt, float sr)
     {
         float<2> signal = input;
-        for (int position = 0; position < 8; ++position)
+        for (int position = 0; position < 10; ++position)
         {
             int selected = -1;
-            for (int slot = 0; slot < 8; ++slot)
+            for (int slot = 0; slot < 10; ++slot)
                 if (int (fxSlotOrder.at (slot) + 0.5f) == position) selected = slot;
             if (selected >= 0)
                 signal = processFXSlot (selected, signal, dt, sr);
@@ -4271,9 +4332,9 @@ processor Eisenpuls_Synth
 
             float outGainMod = clamp (1.0f + gmod.at (10), 0.0f, 2.0f);
 
-            // ----- synth drive / soft clip -----
-            float synthShapedL = shapeSig (mixSynthL * 0.35f, driveEff);
-            float synthShapedR = shapeSig (mixSynthR * 0.35f, driveEff);
+            // Gain staging only before the FX rack; all drive modules are now processed in rack order.
+            float synthShapedL = mixSynthL * 0.35f;
+            float synthShapedR = mixSynthR * 0.35f;
 
             float synRawL = synthShapedL * gPanL;
             float synRawR = synthShapedR * gPanR;
