@@ -407,7 +407,7 @@ processor Eisenpuls_Synth
     input event float param613 [[ name: "FX Slot 2 B", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param614 [[ name: "FX Slot 2 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param615 [[ name: "FX Slot 2 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param616 [[ name: "FX Slot 2 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param616 [[ name: "FX Slot 2 E", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param617 [[ name: "FX Slot 2 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param618 [[ name: "FX Slot 3 Type", min: 0.0000, max: 8.0000, init: 3.0000, step: 1.0 ]];
     input event float param619 [[ name: "FX Slot 3 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
@@ -1779,7 +1779,7 @@ processor Eisenpuls_Synth
         let fxBDefaults = float[10] (0.3684f, 1.0f, 0.1515f, 0.0505f, 0.044f, 0.5f, 0.246f, 0.0f, 0.0f, 0.0f);
         let fxCDefaults = float[10] (1.0f, 0.0f, 0.5f, 0.6f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
         let fxDDefaults = float[10] (0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        let fxEDefaults = float[10] (1.0f, 0.0f, 0.0f, 0.0f, 0.3333f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        let fxEDefaults = float[10] (1.0f, 0.5f, 0.0f, 0.0f, 0.3333f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         let fxFDefaults = float[10] (1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
         for (int fx = 0; fx < 10; ++fx)
         {
