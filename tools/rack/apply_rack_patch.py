@@ -63,13 +63,13 @@ for s in range(10):
     pd.append(f'    input event float param{b}     [[ name: "FX {n} Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];')
     pd.append(f'    input event float param{b + 1}     [[ name: "FX {n} On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];')
     pd.append(f'    input event float param{b + 2}     [[ name: "FX {n} Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];')
-    pd.append(f'    input event float param{b + 3}     [[ name: "FX {n} Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];')
+    pd.append(f'    input event float param{b + 3}     [[ name: "FX {n} Mode",  min: 0.0, max: 29.0,  init: 0.0, step: 1.0 ]];')
     for k in range(6):
         pd.append(f'    input event float param{b + 4 + k}     [[ name: "FX {n} P{k + 1}",    min: 0.0, max: 1.0,  init: 0.5 ]];')
     ph.append(f"    event param{b}     (float v) {{ fxSetType ({s}, int (v + 0.5f)); }}")
     ph.append(f"    event param{b + 1}     (float v) {{ fxOn.at ({s}) = v; }}")
     ph.append(f"    event param{b + 2}     (float v) {{ fxMix.at ({s}) = v; }}")
-    ph.append(f"    event param{b + 3}     (float v) {{ fxMode.at ({s}) = clamp (int (v + 0.5f), 0, 5); fxDirty.at ({s}) = true; }}")
+    ph.append(f"    event param{b + 3}     (float v) {{ fxMode.at ({s}) = clamp (int (v + 0.5f), 0, 29); fxDirty.at ({s}) = true; }}")
     for k in range(6):
         ph.append(f"    event param{b + 4 + k}     (float v) {{ fxP.at ({s * 6 + k}) = v; fxDirty.at ({s}) = true; }}")
 for k in range(10):

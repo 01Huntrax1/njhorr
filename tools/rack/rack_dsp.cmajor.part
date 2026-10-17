@@ -12,7 +12,7 @@
     //   6 Phaser      mode: 2 4 6 8 stages                    P1 Rate     P2 Depth      P3 Feedback
     //   7 Tremolo     mode: Sin Tri Sqr SawDn SawUp           P1 Rate     P2 Depth      P3 Stereo
     //   8 Reverb      mode: Hall Room Plate Cathedral         P1 Size     P2 Damp       P3 Pre-Delay  P4 Width
-    //   9 Filter      mode: LP HP BP Notch                    P1 Cutoff   P2 Reso       P3 Drive
+    //   9 Filter      mode: the 30 types of the Filter page   P1 Cutoff   P2 Reso       P3 Drive
     //  10 EQ                                                  P1 Low      P2 Mid        P3 Mid Freq   P4 High   P5 Mid Q
     //  11 Compressor  mode: Peak RMS                          P1 Thresh   P2 Ratio      P3 Attack     P4 Release  P5 Makeup
     //
@@ -216,15 +216,12 @@
         }
         else if (ty == 9)
         {
-            // filter: state-variable filter coefficients, input drive
+            // filter: coefficients shared by all 30 types, input drive
             float fc = clamp (fxExpMap (p1, 20.0f, 20000.0f), 20.0f, sr * 0.45f);
-            float g  = float (tan (float64 (fc) * pi * processor.period));
-            float k  = 1.0f / (0.5f + 11.5f * p2 * p2);
-            float a1 = 1.0f / (1.0f + g * (g + k));
-            fxD.at (db)     = a1;
-            fxD.at (db + 1) = g * a1;
-            fxD.at (db + 2) = g * g * a1;
-            fxD.at (db + 3) = k;
+            fxD.at (db)     = float (tan (float64 (fc) * pi * processor.period));
+            fxD.at (db + 1) = 2.0f - 1.96f * p2;
+            fxD.at (db + 2) = p2;
+            fxD.at (db + 3) = fc;
             fxD.at (db + 4) = 1.0f + 8.0f * p3;
         }
         else if (ty == 10)
@@ -672,33 +669,197 @@
     }
 
     // one channel of a state-variable filter (Cytomic TPT form); fb is the slot's float state base
-    float fxSvf (int fb, int c, float v0, float a1, float a2, float a3, float k, int mode)
+    // one-pole TPT low-pass stage (state at fxF[idx])
+    float fxOnePole (int idx, float x, float g)
     {
-        float ic1 = fxF.at (fb + c * 2);
-        float ic2 = fxF.at (fb + c * 2 + 1);
-        float v3  = v0 - ic2;
-        float v1  = a1 * ic1 + a2 * v3;
-        float v2  = ic2 + a2 * ic1 + a3 * v3;
+        float gg = g / (1.0f + g);
+        float st = fxF.at (idx);
+        float v  = (x - st) * gg;
+        float lp = v + st;
+        fxF.at (idx) = lp + v;
+        return lp;
+    }
 
-        fxF.at (fb + c * 2)     = 2.0f * v1 - ic1;
-        fxF.at (fb + c * 2 + 1) = 2.0f * v2 - ic2;
+    // one TPT state-variable stage (states at fxF[idx], fxF[idx+1]); mode 0 LP, 1 BP, 2 HP, 3 notch, 4 allpass
+    float fxSvfStage (int idx, float x, float g, float k, int mode)
+    {
+        float a1 = 1.0f / (1.0f + g * (g + k));
+        float a2 = g * a1;
+        float a3 = g * a2;
+        float s1 = fxF.at (idx);
+        float s2 = fxF.at (idx + 1);
+        float v3 = x - s2;
+        float v1 = a1 * s1 + a2 * v3;
+        float v2 = s2 + a2 * s1 + a3 * v3;
 
-        float hi = v0 - k * v1 - v2;
+        fxF.at (idx)     = 2.0f * v1 - s1;
+        fxF.at (idx + 1) = 2.0f * v2 - s2;
 
-        if (mode == 0) return v2;
-        if (mode == 1) return hi;
-        if (mode == 2) return v1 * k;
-        return v2 + hi;
+        if (mode == 1) return v1 * k;
+        if (mode == 2) return x - k * v1 - v2;
+        if (mode == 3) return x - k * v1;
+        if (mode == 4) return x - 2.0f * k * v1;
+        return v2;
+    }
+
+    // the 30 filter types of the Filter page (same maths as the voice filter), on one channel of rack slot s
+    float fxFilterX (int s, int ch, float x, float g, float k, float res, float fc, int ft)
+    {
+        int   b  = s * 40 + ch * 16;
+        int   pb = s * 4;
+        int   ib = s * 24;
+        float sr = float (processor.frequency);
+
+        if (ft == 0)  return fxSvfStage (b + 2, fxSvfStage (b, x, g, k, 0), g, 1.2f, 0);
+        if (ft == 1)  return fxSvfStage (b, x, g, k, 0);
+        if (ft == 2)  return fxSvfStage (b, x, g, k, 2);
+        if (ft == 3)  return fxSvfStage (b, x, g, k, 1);
+        if (ft == 4)  return fxOnePole (b, x, g);
+        if (ft == 5)  return fxSvfStage (b + 2, fxOnePole (b, x, g), g, k, 0);
+        if (ft == 6)  return x - fxOnePole (b, x, g);
+        if (ft == 7)  return fxSvfStage (b + 2, x - fxOnePole (b, x, g), g, k, 2);
+        if (ft == 8)  return fxSvfStage (b + 2, fxSvfStage (b, x, g, k, 2), g, 1.2f, 2);
+        if (ft == 9)  return fxSvfStage (b + 2, fxSvfStage (b, x, g, k, 1), g, k, 1);
+        if (ft == 10) return fxSvfStage (b, x, g, k, 3);
+        if (ft == 11) return fxSvfStage (b + 2, fxSvfStage (b, x, g, k, 3), g, k, 3);
+        if (ft == 12) return x + res * 4.0f * fxSvfStage (b, x, g, 0.6f, 1);
+        if (ft == 13) return x + res * 3.0f * fxSvfStage (b, x, g, 1.4f, 0);
+        if (ft == 14) return x + res * 3.0f * fxSvfStage (b, x, g, 1.4f, 2);
+        if (ft == 15) return fxSvfStage (b, x, g, k, 4);
+
+        if (ft >= 16 && ft <= 18)
+        {
+            // ladder family: four (three for Acid) one-pole stages with resonance feedback
+            float kr = res * 3.9f;
+            if (ft == 17) kr = res * 3.2f;
+            if (ft == 18) kr = res * 3.6f;
+
+            float y4p = fxF.at (b + 4);
+            float u   = softClip (x - kr * y4p);
+            float y1  = fxOnePole (b, u, g);
+            float y2  = fxOnePole (b + 1, y1, g);
+            float y3  = fxOnePole (b + 2, y2, g);
+
+            if (ft == 18)
+            {
+                fxF.at (b + 4) = y3;
+                return y3 * (1.0f + res);
+            }
+
+            float y4 = fxOnePole (b + 3, y3, g);
+            fxF.at (b + 4) = y4;
+
+            if (ft == 17) return (y3 + y4) * 0.5f;
+            return y4 * (1.0f + 0.4f * kr);   // bass makeup for the resonance feedback
+        }
+
+        if (ft == 19)
+        {
+            // dirty low-pass: two saturated 12 dB stages
+            float t = fxSvfStage (b, softClip (x * 2.0f), g, k, 0);
+            return fxSvfStage (b + 2, softClip (t * 1.5f), g, 1.2f, 0) * 1.3f;
+        }
+
+        if (ft == 20 || ft == 21)
+        {
+            // comb filter (positive / negative feedback), delay = one cycle of the cutoff
+            float dly = clamp (sr / max (fc, 20.0f), 2.0f, 2040.0f);
+            int   di  = int (dly);
+            float fr  = dly - float (di);
+            int   w   = fxI.at (ib);
+            int   cb  = s * 196608 + ch * 2048;
+            int   r0  = (w - di) & 2047;
+            int   r1  = (w - di - 1) & 2047;
+            float d   = fxArena.at (cb + r0) * (1.0f - fr) + fxArena.at (cb + r1) * fr;
+            float fb  = res * 0.97f;
+            if (ft == 21) fb = -fb;
+
+            float yc = x + fb * d;
+            fxArena.at (cb + w) = yc;
+            return yc * 0.7f;
+        }
+
+        if (ft >= 24 && ft <= 27)
+        {
+            // MG Low 6/12/18/24: Moog-style ladder with the output tapped after stage 1/2/3/4
+            float kr  = res * 3.9f;
+            float y4p = fxF.at (b + 4);
+            float u   = softClip (x * 1.2f - kr * y4p);
+            float y1  = fxOnePole (b, u, g);
+            float y2  = fxOnePole (b + 1, y1, g);
+            float y3  = fxOnePole (b + 2, y2, g);
+            float y4  = fxOnePole (b + 3, y3, g);
+            fxF.at (b + 4) = y4;
+
+            float mk = 1.1f * (1.0f + 0.4f * kr);
+            if (ft == 24) return y1 * mk;
+            if (ft == 25) return y2 * mk;
+            if (ft == 26) return y3 * mk;
+            return y4 * mk;
+        }
+
+        if (ft == 28 || ft == 29)
+        {
+            // Flange+ / Flange-: comb filter whose delay is swept by a slow internal LFO
+            float sweep = 1.0f + 0.5f * float (sin (fxPh.at (pb) * 2.0 * pi));
+            float dly   = clamp (sr / max (fc, 20.0f) * sweep, 2.0f, 2040.0f);
+            int   di    = int (dly);
+            float fr    = dly - float (di);
+            int   w     = fxI.at (ib);
+            int   cb    = s * 196608 + ch * 2048;
+            int   r0    = (w - di) & 2047;
+            int   r1    = (w - di - 1) & 2047;
+            float d     = fxArena.at (cb + r0) * (1.0f - fr) + fxArena.at (cb + r1) * fr;
+            float fb    = res * 0.95f;
+            if (ft == 29) fb = -fb;
+
+            float yc = x + fb * d;
+            fxArena.at (cb + w) = yc;
+            return yc * 0.7f;
+        }
+
+        if (ft == 22)
+        {
+            // phaser: four all-pass stages with feedback
+            float fbk = res * 0.85f;
+            float a   = x + fbk * fxF.at (b + 8);
+
+            a = 2.0f * fxOnePole (b,     a, g) - a;
+            a = 2.0f * fxOnePole (b + 1, a, g) - a;
+            a = 2.0f * fxOnePole (b + 2, a, g) - a;
+            a = 2.0f * fxOnePole (b + 3, a, g) - a;
+
+            fxF.at (b + 8) = a;
+            return 0.5f * (x + a);
+        }
+
+        // 23: vowel / formant filter, cutoff sweeps A-E-I-O-U
+        float p  = clamp (float (log (max (fc, 100.0f) / 100.0f)) / float (log (30.0f)), 0.0f, 1.0f) * 4.0f;
+        int   v0 = clamp (int (p), 0, 3);
+        float vf = p - float (v0);
+        float kq = 2.0f - 1.96f * clamp (0.5f + res * 0.45f, 0.0f, 0.98f);
+        float acc = 0.0f;
+
+        float f0 = vowelFreq (v0, 0) * (1.0f - vf) + vowelFreq (v0 + 1, 0) * vf;
+        float f1 = vowelFreq (v0, 1) * (1.0f - vf) + vowelFreq (v0 + 1, 1) * vf;
+        float f2 = vowelFreq (v0, 2) * (1.0f - vf) + vowelFreq (v0 + 1, 2) * vf;
+
+        acc += fxSvfStage (b,     x, float (tan (float64 (f0) * pi / float64 (sr))), kq, 1);
+        acc += fxSvfStage (b + 2, x, float (tan (float64 (f1) * pi / float64 (sr))), kq, 1) * 0.7f;
+        acc += fxSvfStage (b + 4, x, float (tan (float64 (f2) * pi / float64 (sr))), kq, 1) * 0.5f;
+
+        return acc * 1.4f;
     }
 
     float<2> fxFilter (int s, float<2> x)
     {
-        int   fb   = s * 40;
-        int   db   = s * 16;
-        int   mode = fxMode.at (s);
-        float gd   = fxD.at (db + 4);
-        float inL  = x[0];
-        float inR  = x[1];
+        int   db  = s * 16;
+        int   pb  = s * 4;
+        int   ib  = s * 24;
+        int   ft  = fxMode.at (s);
+        float gd  = fxD.at (db + 4);
+        float inL = x[0];
+        float inR = x[1];
 
         if (gd > 1.01f)
         {
@@ -706,8 +867,19 @@
             inR = softClip (inR * gd);
         }
 
-        float yl = fxSvf (fb, 0, inL, fxD.at (db), fxD.at (db + 1), fxD.at (db + 2), fxD.at (db + 3), mode);
-        float yr = fxSvf (fb, 1, inR, fxD.at (db), fxD.at (db + 1), fxD.at (db + 2), fxD.at (db + 3), mode);
+        float g   = fxD.at (db);
+        float k   = fxD.at (db + 1);
+        float res = fxD.at (db + 2);
+        float fc  = fxD.at (db + 3);
+
+        float yl = fxFilterX (s, 0, inL, g, k, res, fc, ft);
+        float yr = fxFilterX (s, 1, inR, g, k, res, fc, ft);
+
+        // comb / flange write position and the flange sweep advance once per sample
+        fxI.at (ib) = (fxI.at (ib) + 1) & 2047;
+        float64 ph = fxPh.at (pb) + 0.3 * processor.period;
+        if (ph >= 1.0) ph -= 1.0;
+        fxPh.at (pb) = ph;
 
         return float<2> (yl, yr);
     }

@@ -413,7 +413,7 @@ const FX_TYPES = [
       p: [["Rate", fxHz(0.1, 20), fxExpN(5, 0.1, 20)], ["Depth", fxPct, 0.7], ["Stereo", fxPct, 0]] },
     { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral"],
       p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1]] },
-    { n: "Filter", mix: 1, modes: ["Low Pass", "High Pass", "Band Pass", "Notch"],
+    { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
       p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0]] },
     { n: "EQ", mix: 1, modes: [],
       p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5]] },
@@ -660,7 +660,7 @@ const SPECS = (() => {
         L.push([b,     "FX " + n + " Type", 0, 11, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
         L.push([b + 1, "FX " + n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
         L.push([b + 2, "FX " + n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-        L.push([b + 3, "FX " + n + " Mode", 0, 5, 0, "", "sel", ["1", "2", "3", "4", "5", "6"], 1, "Mode"]);
+        L.push([b + 3, "FX " + n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);
         for (let k = 0; k < 6; k++) L.push([b + 4 + k, "FX " + n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
     }
     for (let k = 0; k < 10; k++) L.push([641 + k, "FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);
@@ -1957,7 +1957,7 @@ class EisenpulsPatchView extends HTMLElement {
         const mc = this.fxCtl(b + 3);
         if (mc && mc.sel) {
             const cur = mc.value;
-            mc.sel.innerHTML = t.modes.map(m => "<option>" + m + "</option>").join("");
+            mc.sel.innerHTML = this.optionsHTML({ labels: t.modes, groups: t.groups || null });
             mc.sel.selectedIndex = Math.min(cur, Math.max(0, t.modes.length - 1));
             mc.setValue(cur, false);
         }

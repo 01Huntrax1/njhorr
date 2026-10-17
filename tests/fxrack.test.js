@@ -68,6 +68,13 @@ const ctl = (v, n) => v._controls.get("param" + n);
     check("tremolo mix default 1", Math.abs(ctl(A, 563).value - 1) < 1e-6);
     check("bit-crush has two knobs", (ctl(A, 561).setValue(2, true), A.querySelectorAll('.fxrow[data-slot="2"] .fxps .nop').length === 4));
 
+    // ---- the Filter effect offers all 30 filter types of the Filter page
+    ctl(A, 561).setValue(9, true);
+    check("filter effect lists all 30 filter types", A.querySelector('.fxrow[data-slot="2"] .fxmd select').options.length === 30);
+    ctl(A, 564).setValue(23, true);
+    check("filter type 23 (Vowel) selectable and sent", last(pcA, "param564") === 23 && A.querySelector('.fxrow[data-slot="2"] .fxmd select').selectedIndex === 23);
+    ctl(A, 561).setValue(2, true);
+
     // ---- reordering: slot 3 up to the top
     pcA.sent.length = 0;
     A.fxMove(2, 0);

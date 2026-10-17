@@ -135,13 +135,42 @@ check("EQ high shelf -12 dB cuts the high band", -14 < g < -4, f"{g:.1f} dB")
 hi_note = 84
 ref = render(args.new, [], note=hi_note, tag="f0")
 lp = render(args.new, slot(0, 9, 0, 1.0, [lognorm(300, 20, 20000), 0.2, 0.0]), note=hi_note, tag="f1")
-hp = render(args.new, slot(0, 9, 1, 1.0, [lognorm(300, 20, 20000), 0.2, 0.0]), note=36, tag="f2")
+hp = render(args.new, slot(0, 9, 2, 1.0, [lognorm(300, 20, 20000), 0.2, 0.0]), note=36, tag="f2")
 ref_lo = render(args.new, [], note=36, tag="f3")
 check("filter low-pass at 300 Hz darkens a high note", rms(lp) < 0.35 * rms(ref), f"{rms(lp) / rms(ref):.2f}x")
 check("filter high-pass at 300 Hz thins a low note", rms(hp) < 0.5 * rms(ref_lo), f"{rms(hp) / rms(ref_lo):.2f}x")
-bp = render(args.new, slot(0, 9, 2, 1.0, [lognorm(1000, 20, 20000), 0.5, 0.0]), tag="f4")
-nt = render(args.new, slot(0, 9, 3, 1.0, [lognorm(1000, 20, 20000), 0.5, 0.0]), tag="f5")
+bp = render(args.new, slot(0, 9, 3, 1.0, [lognorm(1000, 20, 20000), 0.5, 0.0]), tag="f4")
+nt = render(args.new, slot(0, 9, 10, 1.0, [lognorm(1000, 20, 20000), 0.5, 0.0]), tag="f5")
 check("filter band-pass and notch produce different signals", rel_err(bp, nt) > 0.2)
+
+# every one of the 30 filter types of the Filter page: the rack filter must sound like the voice filter
+FT = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "HP24", "BP24", "Notch12", "Notch24", "Peak", "LowShelf", "HighShelf",
+      "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel", "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24",
+      "Flange+", "Flange-"]
+NOISE = [(4, 4), (37, 0), (38, 0)]
+OPEN = [(12, 1), (13, 18000), (14, 0), (15, 0), (17, 0), (43, 0), (44, 0)]          # voice filter: LP12 wide open, no modulation
+
+
+def third_octave(a):
+    x = a[int(0.3 * RATE):int(1.1 * RATE), 0].astype(np.float64)
+    spec = np.abs(np.fft.rfft(x * np.hanning(len(x)))) ** 2
+    f = np.fft.rfftfreq(len(x), 1.0 / RATE)
+    cs = [100 * 2 ** (i / 3) for i in range(18)]                                 # 100 Hz .. ~5 kHz
+    return np.array([10 * math.log10(spec[(f >= c) & (f < c * 2 ** (1 / 3))].sum() + 1e-12) for c in cs])
+
+
+for t, name in enumerate(FT):
+    voice = render(args.new, NOISE + [(12, t), (13, 1000), (14, 0.5), (15, 0), (17, 0), (43, 0), (44, 0)], tag="v")
+    rackf = render(args.new, NOISE + OPEN + slot(0, 9, t, 1.0, [lognorm(1000, 20, 20000), 0.5, 0.0]), tag="r")
+    finite = np.isfinite(rackf).all() and np.abs(rackf).max() <= 1.0
+    # Compare the spectral shape. The voice filter sits in front of the amp envelope and the rack behind it, so the deep stopband (the
+    # envelope leaks into it) and the overall level of the saturating types differ by design: ignore bands more than 35 dB below
+    # the loudest one and any constant level offset.
+    tv, tr = third_octave(voice), third_octave(rackf)
+    keep = tv > tv.max() - 35
+    diff = (tv - tr)[keep]
+    dev = float(np.abs(diff - np.median(diff)).mean()) if rms(voice) > 1e-4 else 99.0
+    check(f"rack filter type {t} {name} sounds like the voice filter", finite and rms(rackf) > 1e-4 and dev < 2.5, f"mean band deviation {dev:.2f} dB")
 
 comp_off = render(args.new, slot(0, 11, 0, 1.0, [1.0, 0.0, 0.2, 0.5, 0.0]), tag="c0")        # threshold 0 dB: no gain reduction
 comp_on = render(args.new, slot(0, 11, 0, 1.0, [0.3, 1.0, 0.1, 0.5, 0.0]), tag="c1")          # -42 dB, 20:1

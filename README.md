@@ -50,7 +50,7 @@ Regression test: `cd tests && npm install && npm test`.
 
 ## FX rack
 The FX page is a modular rack: 10 slots, each holds any effect (Distortion, Bit Crush, Delay, Chorus, Flanger, Phaser, Tremolo,
-Reverb, Filter, EQ, Compressor), with on/off, mix, a mode selector and up to six knobs. Drag the grip (or use the arrows) to change
+Reverb, Filter (all 30 filter types of the Filter page), EQ, Compressor), with on/off, mix, a mode selector and up to six knobs. Drag the grip (or use the arrows) to change
 the processing order; the signal runs top to bottom. Slot parameters are `param541`-`param640`, the order is `param641`-`param650`.
 The old fixed-chain parameters were removed; presets saved before the rack are converted to rack slots when loaded.
 Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.py` / `apply_rack_ui.py` (the one-shot migrations that were
