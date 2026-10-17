@@ -3521,14 +3521,14 @@ processor Eisenpuls_Synth
     }
 
 
-    float fxRackDriveShape (float x, float drive, int algorithm)
+    float fxRackDriveShape (float x, float drive, int algorithm, float biasControl)
     {
         float xx = x * (1.0f + drive * 8.0f);
         float y = xx / (1.0f + abs (xx));
         if (algorithm == 1)
         {
             // Match the previous single-drive shaper for backward-compatible default tone.
-            float bias = 0.3f * drive;
+            float bias = drive * (0.3f + (biasControl - 0.5f) * 0.6f);
             float xb = xx + bias;
             y = xb / (1.0f + abs (xb)) - bias / (1.0f + abs (bias));
         }
@@ -3564,11 +3564,11 @@ processor Eisenpuls_Synth
         if (kind == 1)
         {
             int alg = int (c * 5.0f + 0.5f);
-            float driveAmount = clamp (a + gmod.at (8) * 0.5f, 0.0f, 1.0f);
-            float wetL = fxRackDriveShape (inL, driveAmount, alg);
-            float wetR = fxRackDriveShape (inR, driveAmount, alg);
-            outL = inL * (1.0f - b) + wetL * b;
-            outR = inR * (1.0f - b) + wetR * b;
+            float driveAmount = clamp (a * (1.0f + d) + gmod.at (8) * 0.5f, 0.0f, 1.0f);
+            float wetL = fxRackDriveShape (inL, driveAmount, alg, e);
+            float wetR = fxRackDriveShape (inR, driveAmount, alg, e);
+            outL = (inL * (1.0f - b) + wetL * b) * (1.0f + f);
+            outR = (inR * (1.0f - b) + wetR * b) * (1.0f + f);
         }
         // 2 — stereo delay. A=time, B=feedback, C=wet, D=input send, E=ping-pong, F=damping.
         else if (kind == 2)
