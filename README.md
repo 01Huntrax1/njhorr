@@ -48,13 +48,21 @@ They are stored as 16-bit audio, roughly 260 KB of project data per loaded sampl
 The Sound Vault folders (Documents/Njohrr/...) are a shared library of files; which vault file an oscillator uses is also per instance.
 Regression test: `cd tests && npm install && npm test`.
 
-## FX rack
-The FX page is a modular rack: 10 slots, each holds any effect (Distortion, Bit Crush, Delay, Chorus, Flanger, Phaser, Tremolo,
-Reverb, Filter (all 30 filter types of the Filter page), EQ, Compressor), with on/off, mix, a mode selector and up to six knobs. Drag the grip (or use the arrows) to change
-the processing order; the signal runs top to bottom. Slot parameters are `param541`-`param640`, the order is `param641`-`param650`.
-The old fixed-chain parameters were removed; presets saved before the rack are converted to rack slots when loaded.
-Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.py` / `apply_rack_ui.py` (the one-shot migrations that were
-applied to `patch/`), tests: `tools/rack/test_rack.py` (audio, needs a build of `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
+## FX racks and buses (Serum 2 style)
+There are three FX racks of 10 slots each: **Bus 1**, **Bus 2** and **Main** (tabs on the FX page). Any effect (Distortion, Bit Crush, Delay,
+Chorus, Flanger, Phaser, Tremolo, Reverb, Filter with all 30 filter types of the Filter page, EQ, Compressor) fits in any slot, with on/off, mix,
+a mode selector and up to six knobs. Drag the grip (or use the arrows) to change the order within a rack; the signal runs top to bottom.
+
+Routing: every mixer channel (Osc, Sub, Noise, Supersaw, Sampler 1/2, WT 1-3) has an **Output** selector (Main / Bus 1 / Bus 2) on the Mixer page.
+Sources on Bus 1 / Bus 2 are filtered by their own copy of the voice filter, pass through the synth Drive, then the bus rack and the **Bus 1 / Bus 2**
+level faders; both buses then feed the Main rack, which feeds Width / Tone / Output. With every source on Main (the default) the sound is the same as
+without buses.
+
+Parameters: Main slots `param541`-`640` (order `641`-`650`), Bus 1 `651`-`750` (order `751`-`760`), Bus 2 `761`-`860` (order `861`-`870`), channel outputs
+`871`-`879`, bus levels `880`/`881`. The old fixed-chain parameters were removed; presets saved before the racks are converted when loaded.
+Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.py` (rebuilds `patch/Eisenpuls_Synth.cmajor` from the pre-rack source
+`542767d`), `tools/rack/apply_rack_ui.py` (first UI step, since extended by hand). Tests: `tools/rack/test_rack.py` (audio, needs a build of
+`tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
 
 ## UI embedded in cmajor_plugin.cpp
 `cmajor_plugin.cpp` is generated from `patch/` (DSP and UI together). After changing `patch/`, regenerate it as described above.

@@ -62,9 +62,12 @@ def lognorm(v, lo, hi):
     return math.log(v / lo) / math.log(hi / lo)
 
 
-def slot(s, ty, mode=0, mix=1.0, p=(), on=1):
-    """parameter list for rack slot s (0-9)"""
-    b = 541 + s * 10
+RACK_BASE = {"main": 541, "bus1": 651, "bus2": 761}
+
+
+def slot(s, ty, mode=0, mix=1.0, p=(), on=1, rack="main"):
+    """parameter list for slot s (0-9) of a rack"""
+    b = RACK_BASE[rack] + s * 10
     ps = list(p) + [0.5] * (6 - len(p))
     out = [(b, ty), (b + 1, on), (b + 2, mix), (b + 3, mode)]
     out += [(b + 4 + k, ps[k]) for k in range(6)]
@@ -207,6 +210,41 @@ for s, ty in enumerate([1, 9, 10, 11, 4, 5, 6, 7, 3, 8]):
     chain += slot(s, ty, 0, 0.5, [0.5, 0.5, 0.5, 0.5, 0.5])
 full = render(args.new, chain, tag="full")
 check("all 10 slots in use at once renders cleanly", np.isfinite(full).all() and 0 < abs(full).max() < 4, f"peak {abs(full).max():.2f}")
+
+# ------------------------------------------------------------------------------------------------ 4. buses
+print("== buses")
+LP200 = lambda rack: slot(0, 9, 1, 1.0, [lognorm(200, 20, 20000), 0.2, 0.0], rack=rack)       # LP12 at 200 Hz
+dry_hi = render(args.new, [], note=84, tag="b0")
+b_empty = render(args.new, [(871, 1)], note=84, tag="b1")
+check("osc on Bus 1 through an empty rack equals Main", rel_err(dry_hi, b_empty) < 1e-4, f"{rel_err(dry_hi, b_empty):.1e}")
+b2_empty = render(args.new, [(871, 2)], note=84, tag="b2")
+check("osc on Bus 2 through an empty rack equals Main", rel_err(dry_hi, b2_empty) < 1e-4, f"{rel_err(dry_hi, b2_empty):.1e}")
+b_fx = render(args.new, [(871, 1)] + LP200("bus1"), note=84, tag="b3")
+check("a Bus 1 effect changes a source routed to Bus 1", rms(b_fx) < 0.3 * rms(dry_hi), f"{rms(b_fx) / rms(dry_hi):.2f}x")
+b_fx_main = render(args.new, LP200("bus1"), note=84, tag="b4")
+check("a Bus 1 effect leaves sources on Main alone", rel_err(dry_hi, b_fx_main) < 1e-4)
+b_fx_other = render(args.new, [(871, 1)] + LP200("bus2"), note=84, tag="b5")
+check("a Bus 2 effect leaves sources on Bus 1 alone", rel_err(dry_hi, b_fx_other) < 1e-4)
+b_main_fx = render(args.new, [(871, 1)] + LP200("main"), note=84, tag="b6")
+check("the Main rack also processes the buses", rms(b_main_fx) < 0.3 * rms(dry_hi), f"{rms(b_main_fx) / rms(dry_hi):.2f}x")
+lvl0 = render(args.new, [(871, 1), (880, 0.0)], note=84, tag="b7")
+check("Bus 1 level 0 silences Bus 1", rms(lvl0) < 1e-4)
+lvl_half = render(args.new, [(871, 1), (880, 0.5)], note=84, tag="b8")
+check("Bus 1 level scales the bus", abs(rms(lvl_half) / rms(dry_hi) - 0.5) < 0.02, f"{rms(lvl_half) / rms(dry_hi):.2f}x")
+lvl_other = render(args.new, [(871, 1), (881, 0.0)], note=84, tag="b9")
+check("Bus 2 level does not touch Bus 1", rel_err(dry_hi, lvl_other) < 1e-4)
+split = render(args.new, [(871, 1), (872, 2), (872 - 872 + 874, 0)], note=60, tag="ba")      # osc -> Bus 1, sub -> Bus 2 (sub level 0 here)
+check("routing several sources at once is finite", np.isfinite(split).all())
+# a rack effect with memory (delay) on a bus keeps its tail after the note
+dl = render(args.new, [(871, 1)] + slot(0, 3, 0, 0.8, [0.6, 0.6, 0.8, 0.5], rack="bus1"), note=60, hold=0.2, tail=1.5, tag="bb")
+check("Bus 1 delay produces a tail", rms(dl[int(1.0 * RATE):]) > 1e-3)
+# all three racks full of effects at extreme settings stay finite
+rough = []
+for rk in ("main", "bus1", "bus2"):
+    for sl_i, ty in enumerate(range(1, 11)):
+        rough += slot(sl_i, ty, 0, 0.7, [0.9, 0.9, 0.9, 0.9, 0.9, 0.9], rack=rk)
+big = render(args.new, rough + [(871, 1), (872, 2), (37, 0.5), (38, 0.3)], tag="bc")
+check("30 effects on 3 racks stay finite and bounded", np.isfinite(big).all() and np.abs(big).max() <= 1.0 + 1e-6, f"peak {np.abs(big).max():.2f}")
 
 print("== extreme settings (stability)")
 for ty in range(1, 12):

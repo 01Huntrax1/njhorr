@@ -420,9 +420,20 @@ const FX_TYPES = [
     { n: "Compressor", mix: 1, modes: ["Peak", "RMS"],
       p: [["Thresh", fxLin(-60, 0, 1, "dB"), 0.6], ["Ratio", n => (1 + 19 * n * n).toFixed(1) + ":1", 0.3], ["Attack", fxMs(0.1, 100), 0.4], ["Release", fxMs(10, 1000), 0.4], ["Makeup", fxLin(0, 24, 1, "dB"), 0.2]] }
 ];
-function fxSlotOf (num) { return num >= 541 && num <= 640 ? Math.floor((num - 541) / 10) : -1; }
+// the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
+var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
+var MIX_ROUTE_NAMES = ["Osc", "Sub", "Noise", "Supersaw", "Sampler 1", "Sampler 2", "WT 1", "WT 2", "WT 3"];
+// where a parameter number sits in the racks: { rk, sl, off } for a slot parameter (global slot rk * 10 + sl), { rk, ord } for an order parameter
+function fxLocate (num) {
+    for (let rk = 0; rk < FX_RACKS.length; rk++) {
+        const R = FX_RACKS[rk];
+        if (num >= R.id && num < R.id + 100) return { rk, sl: Math.floor((num - R.id) / 10), off: (num - R.id) % 10, g: rk * 10 + Math.floor((num - R.id) / 10) };
+        if (num >= R.ord && num < R.ord + 10) return { rk, ord: num - R.ord };
+    }
+    return null;
+}
 function fxFmt (s, v) {
-    const slot = fxSlotOf(s.num), off = (s.num - 541) % 10, t = FX_TYPES[(s.fxTypes || [])[slot] || 0] || FX_TYPES[0];
+    const loc = fxLocate(s.num), slot = loc.g, off = loc.off, t = FX_TYPES[(s.fxTypes || [])[slot] || 0] || FX_TYPES[0];
     if (off === 0) return FX_TYPES[Math.max(0, Math.min(FX_TYPES.length - 1, Math.round(v)))].n;
     if (off === 1) return v > 0.5 ? "On" : "Off";
     if (off === 2) return fxPct(v);
@@ -434,7 +445,7 @@ function fxFmt (s, v) {
 // Presets saved before the rack existed carry the old fixed-chain parameters; turn them into rack slots
 function fxMigrateLegacy (params) {
     const has = k => Object.prototype.hasOwnProperty.call(params, k);
-    for (let k = 541; k <= 650; k++) if (has(String(k))) return params;
+    for (let k = 541; k <= 881; k++) if (has(String(k))) return params;
     const g = (k, d) => (has(String(k)) && Number.isFinite(Number(params[k])) ? Number(params[k]) : d);
     const out = Object.assign({}, params);
     ["30", "31", "32", "60", "61", "62", "164", "165", "166", "167", "168", "169", "170", "171", "172", "173", "174", "177", "178", "179", "180", "181",
@@ -655,15 +666,21 @@ const SPECS = (() => {
         L.push([b + 8, n + " Warp 2 Amount",    0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt"]);
     });
     // FX rack: 10 slots x (type, on, mix, mode, P1..P6) at 541..640, processing order at 641..650
-    for (let sl = 0; sl < 10; sl++) {
-        const b = 541 + sl * 10, n = sl + 1;
-        L.push([b,     "FX " + n + " Type", 0, 11, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
-        L.push([b + 1, "FX " + n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
-        L.push([b + 2, "FX " + n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-        L.push([b + 3, "FX " + n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);
-        for (let k = 0; k < 6; k++) L.push([b + 4 + k, "FX " + n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
-    }
-    for (let k = 0; k < 10; k++) L.push([641 + k, "FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);
+    FX_RACKS.forEach(rack => {
+        for (let sl = 0; sl < 10; sl++) {
+            const b = rack.id + sl * 10, n = rack.name + " FX " + (sl + 1);
+            L.push([b,     n + " Type", 0, 11, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
+            L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
+            L.push([b + 3, n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);
+            for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
+        }
+        for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);
+    });
+    // which rack each mixer channel feeds, and the two bus levels
+    MIX_ROUTE_NAMES.forEach((nm, i) => L.push([871 + i, nm + " Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output"]));
+    L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
+    L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);
     // short control names for the output card
     const FX_SHORT = { 175: "Width", 189: "Tone", 28: "Drive" };
     L.forEach(a => { if (FX_SHORT[a[0]] && !a[9]) { a[8] = a[8] || 1; a[9] = FX_SHORT[a[0]]; } });
@@ -703,17 +720,19 @@ const WT_ENG = [
 ];
 // Mixer page: every volume/level fader lives here. p = fader param, s = solo param, eq = EQ channel index
 const MIX_CH = [
-    { p: 176, n: "Osc",       s: 0,   eq: 0 },
-    { p: 37,  n: "Sub",       s: 0,   eq: 1 },
-    { p: 38,  n: "Noise",     s: 0,   eq: 2 },
-    { p: 138, n: "Supersaw",  s: 145, eq: 3 },
-    { p: 153, n: "Sampler 1", s: 163, eq: 4 },
-    { p: 192, n: "Sampler 2", s: 202, eq: 5 },
-    { p: 209, n: "WT 1",      s: 218, eq: 6 },
-    { p: 223, n: "WT 2",      s: 232, eq: 7 },
-    { p: 235, n: "WT 3",      s: 244, eq: 8 },
+    { p: 176, n: "Osc",       s: 0,   eq: 0, r: 871 },
+    { p: 37,  n: "Sub",       s: 0,   eq: 1, r: 872 },
+    { p: 38,  n: "Noise",     s: 0,   eq: 2, r: 873 },
+    { p: 138, n: "Supersaw",  s: 145, eq: 3, r: 874 },
+    { p: 153, n: "Sampler 1", s: 163, eq: 4, r: 875 },
+    { p: 192, n: "Sampler 2", s: 202, eq: 5, r: 876 },
+    { p: 209, n: "WT 1",      s: 218, eq: 6, r: 877 },
+    { p: 223, n: "WT 2",      s: 232, eq: 7, r: 878 },
+    { p: 235, n: "WT 3",      s: 244, eq: 8, r: 879 },
     { p: 9,   n: "Osc 1/2",   s: 0,   cls: "pl gap" },
     { p: 11,  n: "Ring",      s: 0,   cls: "pl" },
+    { p: 880, n: "Bus 1",     s: 0,   cls: "out gap" },
+    { p: 881, n: "Bus 2",     s: 0,   cls: "out" },
     { p: 29,  n: "Pan",       s: 0,   cls: "out gap" },
     { p: 190, n: "Out Gain",  s: 0,   cls: "out" },
     { p: 36,  n: "Master",    s: 0,   cls: "out" }
@@ -776,8 +795,9 @@ const WT_UNI_DETUNE = [437, 440, 443];
 const WT_ROOT_IDS = ["param155", "param194", "param219", "param233", "param245"];
 
 function fmt (s, v) {
-    if (s.num >= 541 && s.num <= 640) return fxFmt(s, v);
-    if (s.num >= 641 && s.num <= 650) return String(Math.round(v) + 1);
+    if (fxLocate(s.num)) return fxLocate(s.num).ord !== undefined ? String(Math.round(v) + 1) : fxFmt(s, v);
+    if (s.num >= 871 && s.num <= 879) return ["Main", "Bus 1", "Bus 2"][Math.max(0, Math.min(2, Math.round(v)))];
+    if (s.num === 880 || s.num === 881) return Math.round(v * 100) + "%";
     if (s.id === "param154") { const m = Math.max(0, Math.min(MEM_COUNT - 1, Math.round(v))); return "MEM " + String(m + 1).padStart(2, "0"); }
     if (s.id === "param193") { const m = Math.max(0, Math.min(S2_COUNT - 1, Math.round(v))); return "S2 " + String(m + 1).padStart(2, "0"); }
     if (WT_MEM_NAMES[s.num]) { const m = Math.max(0, Math.min(WT_COUNT - 1, Math.round(v))); return WT_MEM_NAMES[s.num] + " " + String(m + 1).padStart(2, "0"); }
@@ -831,7 +851,7 @@ class EisenpulsPatchView extends HTMLElement {
         this._resizeObs = null;
         this._active = new Map();
         this._smpTimer = null;
-        this._fxTypes = new Array(10).fill(0);   // effect type held by each rack slot
+        this._fxTypes = new Array(30).fill(0);   // effect type held by each rack slot
         this._smpState = new Array(MEM_COUNT).fill(null);
         this._page = "sound";
         this._store = new Map();
@@ -859,7 +879,7 @@ class EisenpulsPatchView extends HTMLElement {
         this.querySelectorAll(".control").forEach(node => {
             let spec = SPECS.find(s => s.id === node.dataset.param);
             if (!spec) return;
-            if (spec.num >= 541 && spec.num <= 640) spec = Object.assign({}, spec, { fxTypes: this._fxTypes });   // per-instance formatting context
+            { const lc = fxLocate(spec.num); if (lc && lc.ord === undefined) spec = Object.assign({}, spec, { fxTypes: this._fxTypes }); }   // per-instance formatting context
             const opts = { pc: this.pc, spec, node, onChange: (v, user) => this.onValue(spec, v, user) };
             const kind = node.dataset.widget || node.dataset.control;
             const ctrl = kind === "buttons" ? new ButtonGroupControl(opts)
@@ -1916,7 +1936,7 @@ class EisenpulsPatchView extends HTMLElement {
     // ---------- parameter hooks ----------
     onValue (spec, v, user) {
         const n = spec.num;
-        if (n >= 541 && n <= 650) this.onFxValue(spec, v, user);
+        if (fxLocate(n)) this.onFxValue(spec, v, user);
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
         if (n === 193) this.updateS2Ui();
@@ -1941,16 +1961,18 @@ class EisenpulsPatchView extends HTMLElement {
         }
     }
 
-    // ---------- FX rack ----------
+    // ---------- FX racks (Main, Bus 1, Bus 2) ----------
     fxCtl (num) { return this._controls.get("param" + num); }
+    fxRow (g) { return this.querySelector('.fxrow[data-g="' + g + '"]'); }
 
-    // refresh labels / visibility / dimming of one slot after its type or on/off changed
-    updateFxRow (sl) {
-        const row = this.querySelector('.fxrow[data-slot="' + sl + '"]');
+    // refresh labels / visibility / dimming of one slot (global index g) after its type or on/off changed
+    updateFxRow (g) {
+        const row = this.fxRow(g);
         if (!row) return;
-        const t = FX_TYPES[this._fxTypes[sl]] || FX_TYPES[0];
-        const b = 541 + sl * 10;
-        row.classList.toggle("empty", this._fxTypes[sl] === 0);
+        const rk = Math.floor(g / 10), sl = g % 10;
+        const t = FX_TYPES[this._fxTypes[g]] || FX_TYPES[0];
+        const b = FX_RACKS[rk].id + sl * 10;
+        row.classList.toggle("empty", this._fxTypes[g] === 0);
         row.classList.toggle("nomode", t.modes.length === 0);
         const on = this.fxCtl(b + 1);
         row.classList.toggle("off", !!on && on.value < 0.5);
@@ -1972,90 +1994,108 @@ class EisenpulsPatchView extends HTMLElement {
         }
         const mx = this.fxCtl(b + 2);
         if (mx) mx.setValue(mx.value, false);
+        this.updateFxTabs();
+    }
+
+    // tab buttons: a dot marks racks that hold at least one effect
+    updateFxTabs () {
+        FX_RACKS.forEach((R, rk) => {
+            const t = this.querySelector('.fxtab[data-rack="' + rk + '"]');
+            if (t) t.classList.toggle("used", this._fxTypes.slice(rk * 10, rk * 10 + 10).some(x => x > 0));
+        });
+    }
+
+    showFxRack (rk) {
+        this._fxRack = rk;
+        this.querySelectorAll(".f-rack").forEach(sec => sec.classList.toggle("on", Number(sec.dataset.rack) === rk));
+        this.querySelectorAll(".fxtab").forEach(t => t.classList.toggle("on", Number(t.dataset.rack) === rk));
     }
 
     onFxValue (spec, v, user) {
-        const n = spec.num;
-        if (n >= 641) { this.fxApplyOrder(); return; }
-        const sl = fxSlotOf(n), off = (n - 541) % 10;
+        const loc = fxLocate(spec.num);
+        if (loc.ord !== undefined) { this.fxApplyOrder(loc.rk); return; }
+        const g = loc.g, off = loc.off;
         if (off === 0) {
-            this._fxTypes[sl] = Math.max(0, Math.min(FX_TYPES.length - 1, Math.round(v)));
-            this.updateFxRow(sl);
+            this._fxTypes[g] = Math.max(0, Math.min(FX_TYPES.length - 1, Math.round(v)));
+            this.updateFxRow(g);
             if (user && !this._applying) {            // a new effect starts from its own sensible settings
-                const t = FX_TYPES[this._fxTypes[sl]], b = 541 + sl * 10;
+                const t = FX_TYPES[this._fxTypes[g]], b = FX_RACKS[loc.rk].id + loc.sl * 10;
                 const set = (num, val) => { const c = this.fxCtl(num); if (c) c.setValue(val, true); };
                 set(b + 1, 1); set(b + 2, t.mix); set(b + 3, 0);
                 t.p.forEach((p, k) => set(b + 4 + k, p[2]));
-                this.updateFxRow(sl);
+                this.updateFxRow(g);
             }
-        } else if (off === 1) this.updateFxRow(sl);
+        } else if (off === 1) this.updateFxRow(g);
     }
 
-    // processing order: positions -> slots, taken from the 10 hidden order parameters
-    fxOrderNow () {
+    // processing order of one rack: positions -> local slots, taken from its 10 hidden order parameters
+    fxOrderNow (rk) {
         const o = [];
-        for (let k = 0; k < 10; k++) { const c = this.fxCtl(641 + k); o.push(c ? Math.round(c.value) : k); }
+        for (let k = 0; k < 10; k++) { const c = this.fxCtl(FX_RACKS[rk].ord + k); o.push(c ? Math.round(c.value) : k); }
         return o;
     }
 
-    fxApplyOrder (preview) {
-        const order = preview || this.fxOrderNow();
+    fxApplyOrder (rk, preview) {
+        if (rk === undefined) { for (let r = 0; r < FX_RACKS.length; r++) this.fxApplyOrder(r); return; }
+        const order = preview || this.fxOrderNow(rk);
         const pos = new Array(10).fill(-1);
         order.forEach((sl, k) => { if (sl >= 0 && sl < 10 && pos[sl] < 0) pos[sl] = k; });
         let spare = order.length;
         for (let sl = 0; sl < 10; sl++) if (pos[sl] < 0) pos[sl] = spare++;     // transient, while a preset is being applied
-        this.querySelectorAll(".fxrow").forEach(row => {
-            const sl = Number(row.dataset.slot);
+        for (let sl = 0; sl < 10; sl++) {
+            const row = this.fxRow(rk * 10 + sl);
+            if (!row) continue;
             row.style.order = String(pos[sl]);
             const pe = row.querySelector(".fxpos");
             if (pe) pe.textContent = String(pos[sl] + 1);
-        });
+        }
     }
 
-    fxCommit (order) {
-        const cur = this.fxOrderNow();
-        for (let k = 0; k < 10; k++) if (order[k] !== cur[k]) { const c = this.fxCtl(641 + k); if (c) c.setValue(order[k], true); }
-        this.fxApplyOrder();
+    fxCommit (rk, order) {
+        const cur = this.fxOrderNow(rk);
+        for (let k = 0; k < 10; k++) if (order[k] !== cur[k]) { const c = this.fxCtl(FX_RACKS[rk].ord + k); if (c) c.setValue(order[k], true); }
+        this.fxApplyOrder(rk);
     }
 
-    fxMove (sl, to) {
-        const order = this.fxOrderNow();
+    fxMove (rk, sl, to) {
+        const order = this.fxOrderNow(rk);
         const from = order.indexOf(sl);
         if (from < 0) return;
         to = Math.max(0, Math.min(9, to));
         if (to === from) return;
         order.splice(from, 1);
         order.splice(to, 0, sl);
-        this.fxCommit(order);
+        this.fxCommit(rk, order);
     }
 
     buildFxRack () {
+        this.querySelectorAll(".fxtab").forEach(t => t.addEventListener("click", () => this.showFxRack(Number(t.dataset.rack))));
         this.querySelectorAll(".fxrow").forEach(row => {
-            const sl = Number(row.dataset.slot);
-            row.querySelector(".fxup").addEventListener("click", () => this.fxMove(sl, this.fxOrderNow().indexOf(sl) - 1));
-            row.querySelector(".fxdn").addEventListener("click", () => this.fxMove(sl, this.fxOrderNow().indexOf(sl) + 1));
+            const rk = Number(row.dataset.rack), sl = Number(row.dataset.slot);
+            row.querySelector(".fxup").addEventListener("click", () => this.fxMove(rk, sl, this.fxOrderNow(rk).indexOf(sl) - 1));
+            row.querySelector(".fxdn").addEventListener("click", () => this.fxMove(rk, sl, this.fxOrderNow(rk).indexOf(sl) + 1));
             const grip = row.querySelector(".fxgrip");
             let drag = null;
             grip.addEventListener("pointerdown", e => {
-                drag = { pid: e.pointerId, order: this.fxOrderNow() };
+                drag = { pid: e.pointerId };
                 row.classList.add("dragging");
                 try { grip.setPointerCapture(e.pointerId); } catch (_) {}
                 e.preventDefault();
             });
             grip.addEventListener("pointermove", e => {
                 if (!drag || e.pointerId !== drag.pid) return;
-                // target position = number of other rows whose centre is above the pointer
+                // target position = number of other rows of this rack whose centre is above the pointer
                 let to = 0;
-                this.querySelectorAll(".fxrow").forEach(r => {
+                this.querySelectorAll('.fxrow[data-rack="' + rk + '"]').forEach(r => {
                     if (r === row) return;
                     const bb = r.getBoundingClientRect();
                     if (bb.top + bb.height / 2 < e.clientY) to++;
                 });
-                const order = this.fxOrderNow();
+                const order = this.fxOrderNow(rk);
                 order.splice(order.indexOf(sl), 1);
                 order.splice(to, 0, sl);
                 drag.next = order;
-                this.fxApplyOrder(order);
+                this.fxApplyOrder(rk, order);
             });
             const end = e => {
                 if (!drag || e.pointerId !== drag.pid) return;
@@ -2063,13 +2103,14 @@ class EisenpulsPatchView extends HTMLElement {
                 try { grip.releasePointerCapture(e.pointerId); } catch (_) {}
                 const next = drag.next;
                 drag = null;
-                if (next) this.fxCommit(next); else this.fxApplyOrder();
+                if (next) this.fxCommit(rk, next); else this.fxApplyOrder(rk);
             };
             grip.addEventListener("pointerup", end);
             grip.addEventListener("pointercancel", end);
         });
-        for (let sl = 0; sl < 10; sl++) this.updateFxRow(sl);
+        for (let g = 0; g < 30; g++) this.updateFxRow(g);
         this.fxApplyOrder();
+        this.showFxRack(this._fxRack || 0);
     }
 
     startAnimationLoop () {
@@ -2140,29 +2181,36 @@ class EisenpulsPatchView extends HTMLElement {
     channelHTML (c) {
         const solo = c.s ? this.controlHTML(c.s) : `<div class="solo-sp"></div>`;
         const eq = c.eq !== undefined ? this.eqHTML(c.eq) : "";
-        return `<div class="ch ${c.cls || ""}"><div class="chname">${c.n}</div>${eq}${this.faderHTML(c.p)}${solo}</div>`;
+        const route = c.r ? `<div class="chrt">${this.controlHTML(c.r)}</div>` : "";
+        return `<div class="ch ${c.cls || ""}"><div class="chname">${c.n}</div>${eq}${route}${this.faderHTML(c.p)}${solo}</div>`;
     }
 
     // FX rack page: 10 slots (any effect in any slot, drag the grip or use the arrows to change the order) + output strip
     fxPageHTML () {
-        let rows = "";
-        for (let sl = 0; sl < 10; sl++) {
-            const b = 541 + sl * 10;
-            let ks = "";
-            for (let k = 0; k < 6; k++) ks += this.controlHTML(b + 4 + k, true);
-            rows += `<div class="fxrow empty" data-slot="${sl}">`
-                + `<div class="fxord"><button type="button" class="fxup" title="Move up">&#9650;</button><span class="fxpos">${sl + 1}</span><button type="button" class="fxdn" title="Move down">&#9660;</button></div>`
-                + `<div class="fxgrip" title="Drag to change the processing order">&#10303;</div>`
-                + `<div class="fxon">${this.controlHTML(b + 1)}</div>`
-                + `<div class="fxty">${this.controlHTML(b)}</div>`
-                + `<div class="fxmd">${this.controlHTML(b + 3)}</div>`
-                + `<div class="fxmx">${this.controlHTML(b + 2, true)}</div>`
-                + `<div class="fxps">${ks}</div></div>`;
-        }
-        let hid = "";
-        for (let k = 0; k < 10; k++) hid += this.controlHTML(641 + k);
+        let racks = "";
+        FX_RACKS.forEach((R, rk) => {
+            let rows = "";
+            for (let sl = 0; sl < 10; sl++) {
+                const b = R.id + sl * 10;
+                let ks = "";
+                for (let k = 0; k < 6; k++) ks += this.controlHTML(b + 4 + k, true);
+                rows += `<div class="fxrow empty" data-rack="${rk}" data-slot="${sl}" data-g="${rk * 10 + sl}">`
+                    + `<div class="fxord"><button type="button" class="fxup" title="Move up">&#9650;</button><span class="fxpos">${sl + 1}</span><button type="button" class="fxdn" title="Move down">&#9660;</button></div>`
+                    + `<div class="fxgrip" title="Drag to change the processing order">&#10303;</div>`
+                    + `<div class="fxon">${this.controlHTML(b + 1)}</div>`
+                    + `<div class="fxty">${this.controlHTML(b)}</div>`
+                    + `<div class="fxmd">${this.controlHTML(b + 3)}</div>`
+                    + `<div class="fxmx">${this.controlHTML(b + 2, true)}</div>`
+                    + `<div class="fxps">${ks}</div></div>`;
+            }
+            let hid = "";
+            for (let k = 0; k < 10; k++) hid += this.controlHTML(R.ord + k);
+            racks += `<div class="fxlist f-rack" data-rack="${rk}">${rows}<div class="fx-hid">${hid}</div></div>`;
+        });
+        // tab order follows the signal: the buses feed Main
+        const tabs = [1, 2, 0].map(rk => `<button type="button" class="fxtab" data-rack="${rk}">${FX_RACKS[rk].name}<i class="fxdot"></i></button>`).join("");
         const out = FX_OUT.map(i => `<div class="fxo">${this.controlHTML(i, true)}</div>`).join("");
-        return `<section class="card f-rack"><h2>FX Rack <span class="fxhint">signal runs top to bottom</span></h2><div class="fxlist">${rows}</div><div class="fx-hid">${hid}</div></section>`
+        return `<section class="card f-main"><h2>FX <span class="fxtabs">${tabs}</span><span class="fxhint">Bus 1 + Bus 2 feed Main &middot; signal runs top to bottom</span></h2>${racks}</section>`
             + `<section class="card f-out"><h2>Output</h2><div class="fxoutrow">${out}</div></section>`;
     }
 
@@ -2430,6 +2478,10 @@ class EisenpulsPatchView extends HTMLElement {
   .ch.gap { margin-left: calc(var(--u) * 8); }
   .chname { flex: 0 0 auto; text-align: center; font-family: Impact, "Arial Black", "Bahnschrift", sans-serif; font-size: calc(var(--u) * 9.5); letter-spacing: 0.1em; text-transform: uppercase; color: var(--yel); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .solo-sp { flex: 0 0 auto; height: calc(var(--u) * 38); }
+  .chrt { flex: 0 0 auto; }
+  .chrt .control.btns .row { display: none; }
+  .chrt .control.btns .grp { display: flex; }
+  .chrt .control.btns .grp button { padding: calc(var(--u) * 4) 0; font-size: calc(var(--u) * 7.5); letter-spacing: 0; min-width: 0; }
   .ch .control.btns { flex: 0 0 auto; }
   .ch .control.btns .row { justify-content: center; }
   .ch .control.btns .val { display: none; }
@@ -2473,10 +2525,18 @@ class EisenpulsPatchView extends HTMLElement {
 
   /* fx page: the rack */
   .p-fx { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
-  .f-rack { grid-column: 1; grid-row: 1; min-height: 0; }
+  .f-main { grid-column: 1; grid-row: 1; min-height: 0; }
+  .f-rack { display: none; }
+  .f-rack.on { display: flex; }
+  .fxtabs { display: inline-flex; gap: calc(var(--u) * 4); margin-left: calc(var(--u) * 4); font-family: "Bahnschrift", "Arial Narrow", sans-serif; }
+  .fxtab { font-family: inherit; font-size: calc(var(--u) * 9.5); font-weight: 800; letter-spacing: 0.08em; padding: calc(var(--u) * 3) calc(var(--u) * 10); border: 1px solid var(--line); border-radius: 1px; background: var(--panel2); color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: calc(var(--u) * 5); text-transform: uppercase; }
+  .fxtab.on { background: var(--yel); color: #111; border-color: var(--yel); }
+  .fxdot { width: calc(var(--u) * 6); height: calc(var(--u) * 6); border-radius: 50%; background: transparent; }
+  .fxtab.used .fxdot { background: var(--org); box-shadow: 0 0 5px var(--org); }
+  .fxtab.on.used .fxdot { background: #111; box-shadow: none; }
   .f-out { grid-column: 1; grid-row: 2; }
   .fxhint { font-size: calc(var(--u) * 8); letter-spacing: 0.12em; color: var(--dim); font-weight: 700; font-family: "Bahnschrift", "Arial Narrow", sans-serif; }
-  .fxlist { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: calc(var(--u) * 2); }
+  .fxlist { flex: 1; min-height: 0; flex-direction: column; gap: calc(var(--u) * 2); }
   .fxrow { flex: 1 1 0; min-height: 0; display: grid; align-items: center; column-gap: calc(var(--u) * 8); padding: 0 calc(var(--u) * 6);
            grid-template-columns: calc(var(--u) * 34) calc(var(--u) * 18) calc(var(--u) * 34) calc(var(--u) * 112) calc(var(--u) * 92) calc(var(--u) * 74) minmax(0, 1fr);
            background: rgba(0,0,0,0.34); border: 1px solid transparent; border-radius: calc(var(--u) * 4) 1px calc(var(--u) * 4) 1px; position: relative; }
@@ -3185,7 +3245,7 @@ const mgrMethods = {
             });
             this.updateSlots();
             this.drawFlt();
-            for (let sl = 0; sl < 10; sl++) this.updateFxRow(sl);
+            for (let g = 0; g < 30; g++) this.updateFxRow(g);
             this.fxApplyOrder();
             for (let e = 0; e < WT_ENG.length; e++) this.drawWt(e);
         } finally { this._applying = false; }

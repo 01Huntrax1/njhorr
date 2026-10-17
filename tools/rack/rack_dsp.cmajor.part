@@ -1,5 +1,6 @@
     // ================================================================================================================
-    // FX RACK: 10 slots, every slot holds any effect, slots are processed in the order set by "FX Order 1-10".
+    // FX RACKS: three racks (Main, Bus 1, Bus 2) of 10 slots; every slot holds any effect and the slots of a rack are
+    // processed in the order set by its "FX Order 1-10". Slot s of rack rk is the global slot rk * 10 + s.
     //
     // The slot parameters P1-P6 are normalised 0..1; what they mean depends on the effect type (the UI shows the
     // real names and units). The same table lives in patch/index.js (FX_TYPES), keep both in step:
@@ -60,14 +61,15 @@
 
     // Rebuilds the processing order from the 10 "FX Order" values; an order that is not a permutation of the
     // 10 slots (for example while the UI is still sending the values one by one) is ignored
-    void fxRebuildSeq()
+    void fxRebuildSeq (int rk)
     {
         int[10] used;
         bool    valid = true;
+        int     ob    = rk * 10;
 
         for (int k = 0; k < 10; ++k)
         {
-            int s = clamp (fxOrder.at (k), 0, 9);
+            int s = clamp (fxOrder.at (ob + k), 0, 9);
 
             if (used.at (s) != 0)
                 valid = false;
@@ -78,7 +80,7 @@
         if (valid)
         {
             for (int k = 0; k < 10; ++k)
-                fxSeq.at (k) = clamp (fxOrder.at (k), 0, 9);
+                fxSeq.at (ob + k) = clamp (fxOrder.at (ob + k), 0, 9);
         }
     }
 
@@ -974,12 +976,12 @@
     }
 
     // The whole rack, in the user's order
-    float<2> fxRunRack (float<2> x)
+    float<2> fxRunRack (int rk, float<2> x)
     {
         float<2> v = x;
 
         for (int k = 0; k < 10; ++k)
-            v = fxRunSlot (fxSeq.at (k), v);
+            v = fxRunSlot (rk * 10 + fxSeq.at (rk * 10 + k), v);
 
         return v;
     }
@@ -987,15 +989,15 @@
     // Start-up values of the rack (every slot empty, on, 100 % mix, identity order)
     void fxInit()
     {
-        for (int s = 0; s < 10; ++s)
+        for (int s = 0; s < 30; ++s)
         {
             fxType.at (s)  = 0;
             fxOn.at (s)    = 1.0f;
             fxMix.at (s)   = 1.0f;
             fxMode.at (s)  = 0;
             fxDirty.at (s) = true;
-            fxOrder.at (s) = s;
-            fxSeq.at (s)   = s;
+            fxOrder.at (s) = s - (s / 10) * 10;
+            fxSeq.at (s)   = s - (s / 10) * 10;
 
             for (int k = 0; k < 6; ++k)
                 fxP.at (s * 6 + k) = 0.5f;
