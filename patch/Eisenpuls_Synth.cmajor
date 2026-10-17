@@ -3505,11 +3505,12 @@ processor Eisenpuls_Synth
 
     float fxRackDriveShape (float x, float drive, int algorithm)
     {
-        float xx = x * (1.0f + drive * 12.0f);
+        float xx = x * (1.0f + drive * 8.0f);
         float y = xx / (1.0f + abs (xx));
         if (algorithm == 1)
         {
-            float bias = 0.25f * drive;
+            // Match the previous single-drive shaper for backward-compatible default tone.
+            float bias = 0.3f * drive;
             float xb = xx + bias;
             y = xb / (1.0f + abs (xb)) - bias / (1.0f + abs (bias));
         }
@@ -3521,7 +3522,7 @@ processor Eisenpuls_Synth
             float levels = 6.0f + (1.0f - drive) * 26.0f;
             y = rint (y * levels) / levels;
         }
-        return y * (1.0f + drive * 0.35f);
+        return y * (1.0f + drive * 0.5f);
     }
 
     float<2> processFXSlot (int slot, float<2> input, float dt, float sr)
