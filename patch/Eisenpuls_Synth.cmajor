@@ -592,6 +592,27 @@ processor Eisenpuls_Synth
     input event float param817 [[ name: "FX Slot 18 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
     input event float param818 [[ name: "FX Slot 19 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
     input event float param819 [[ name: "FX Slot 20 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param820 [[ name: "FX Slot 1 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param821 [[ name: "FX Slot 2 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param822 [[ name: "FX Slot 3 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param823 [[ name: "FX Slot 4 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param824 [[ name: "FX Slot 5 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param825 [[ name: "FX Slot 6 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param826 [[ name: "FX Slot 7 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param827 [[ name: "FX Slot 8 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param828 [[ name: "FX Slot 9 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param829 [[ name: "FX Slot 10 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param830 [[ name: "FX Slot 11 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param831 [[ name: "FX Slot 12 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param832 [[ name: "FX Slot 13 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param833 [[ name: "FX Slot 14 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param834 [[ name: "FX Slot 15 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param835 [[ name: "FX Slot 16 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param836 [[ name: "FX Slot 17 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param837 [[ name: "FX Slot 18 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param838 [[ name: "FX Slot 19 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+    input event float param839 [[ name: "FX Slot 20 Filter Mode", min: 0.0000, max: 29.0000, init: 0.0000, step: 1.0 ]];
+
 
 
 
@@ -825,10 +846,15 @@ processor Eisenpuls_Synth
     float[20] fxSlotF;
     float[20] fxSlotVariation;
     float64[20] fxDelayTapePhase;
-    float[20] fxFilterIC1L;
-    float[20] fxFilterIC2L;
-    float[20] fxFilterIC1R;
-    float[20] fxFilterIC2R;
+    float[100] fxFilterIC1L;
+    float[100] fxFilterIC2L;
+    float[100] fxFilterIC1R;
+    float[100] fxFilterIC2R;
+    float[100] fxFilterPoleL;
+    float[100] fxFilterPoleR;
+    float[20] fxFilterFeedbackL;
+    float[20] fxFilterFeedbackR;
+    float[20] fxSlotFilterMode;
 
     // Per-slot stereo delay (up to 192000 samples per channel / slot).
     float[3840000] fxDelayBufL;
@@ -1450,6 +1476,27 @@ processor Eisenpuls_Synth
     event param817 (float v) { fxSlotVariation.at (17) = v; }
     event param818 (float v) { fxSlotVariation.at (18) = v; }
     event param819 (float v) { fxSlotVariation.at (19) = v; }
+    event param820 (float v) { fxSlotFilterMode.at (0) = v; }
+    event param821 (float v) { fxSlotFilterMode.at (1) = v; }
+    event param822 (float v) { fxSlotFilterMode.at (2) = v; }
+    event param823 (float v) { fxSlotFilterMode.at (3) = v; }
+    event param824 (float v) { fxSlotFilterMode.at (4) = v; }
+    event param825 (float v) { fxSlotFilterMode.at (5) = v; }
+    event param826 (float v) { fxSlotFilterMode.at (6) = v; }
+    event param827 (float v) { fxSlotFilterMode.at (7) = v; }
+    event param828 (float v) { fxSlotFilterMode.at (8) = v; }
+    event param829 (float v) { fxSlotFilterMode.at (9) = v; }
+    event param830 (float v) { fxSlotFilterMode.at (10) = v; }
+    event param831 (float v) { fxSlotFilterMode.at (11) = v; }
+    event param832 (float v) { fxSlotFilterMode.at (12) = v; }
+    event param833 (float v) { fxSlotFilterMode.at (13) = v; }
+    event param834 (float v) { fxSlotFilterMode.at (14) = v; }
+    event param835 (float v) { fxSlotFilterMode.at (15) = v; }
+    event param836 (float v) { fxSlotFilterMode.at (16) = v; }
+    event param837 (float v) { fxSlotFilterMode.at (17) = v; }
+    event param838 (float v) { fxSlotFilterMode.at (18) = v; }
+    event param839 (float v) { fxSlotFilterMode.at (19) = v; }
+
 
 
 
