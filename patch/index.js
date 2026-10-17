@@ -593,6 +593,14 @@ const SPECS = (() => {
     L.push([533, "Filter 2 EG Int", -1, 1, 0, "", "sld", null, 1, "EG Int"]);
     L.push([534, "Filter Routing", 0, 1, 0, "", "btn", ["Serial", "Parallel"], 1, "Routing"]);
     L.push([535, "Parallel Blend", 0, 1, 0.5, "", "sld", null, 1, "F1 / F2 Blend"]);
+    // FX module power switches; default On preserves the current sound.
+    L.push([541, "Delay Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([542, "Drive / Crush Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([543, "Chorus Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([544, "Flanger Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([545, "Phaser Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([546, "Reverb Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
+    L.push([547, "Tremolo Module", 0, 1, 1, "", "btn", ["Bypass", "On"], 1, "Power"]);
     // fx algorithms
     L.push([536, "Drive Algorithm", 0, 5, 0, "", "sel", ["Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Algorithm"]);
     L.push([537, "Delay Type",      0, 2, 0, "", "sel", ["Digital", "Tape", "Dual"], 1, "Type"]);
@@ -671,13 +679,13 @@ const MIX_CH = [
     { p: 36,  n: "Master",    s: 0,   cls: "out" }
 ];
 // FX page
-const FX_DELAY = [537, 30, 31, 60, 183, 184];
-const FX_CRUSH = [536, 28, 61, 62, 191];
-const FX_CHORUS = [538, 164, 165, 166, 177];
-const FX_FLANGER = [185, 186, 187, 188];
-const FX_PHASER = [539, 167, 168, 169, 178];
-const FX_REVERB = [540, 170, 171, 172, 179, 180];
-const FX_TREM = [173, 174, 181, 182];
+const FX_DELAY = [541, 537, 30, 31, 60, 183, 184];
+const FX_CRUSH = [542, 536, 28, 61, 62, 191];
+const FX_CHORUS = [543, 538, 164, 165, 166, 177];
+const FX_FLANGER = [544, 185, 186, 187, 188];
+const FX_PHASER = [545, 539, 167, 168, 169, 178];
+const FX_REVERB = [546, 540, 170, 171, 172, 179, 180];
+const FX_TREM = [547, 173, 174, 181, 182];
 const FX_OUT = [175, 189, 221, 222];
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
