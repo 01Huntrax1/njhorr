@@ -928,7 +928,7 @@ const FX_SLOT_MACROS = {
     6: ["Mix", "Size", "Damping", "Pre-Delay", "Width", "Type"],
     7: ["Depth", "Rate", "Wave", "Stereo", "Shape", "Output"],
     8: ["Mix", "SR Reduce", "Bits", "Rate", "Character", "Output"],
-    9: ["Cutoff", "Resonance", "Mix", "Drive", "Slope", "Output"]
+    9: ["Cutoff", "Resonance", "Mix", "Drive", "Contour", "Output"]
 };
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
@@ -2702,7 +2702,7 @@ class EisenpulsPatchView extends HTMLElement {
   .fx-chain-node b { color: #ff7669; font-family: ui-monospace, monospace; font-size: calc(var(--u) * 7); }
   .fx-chain-node i { position: absolute; right: calc(var(--u) * -5); top: 50%; transform: translate(50%,-50%); z-index: 2; color: #ff6d5e; font-size: calc(var(--u) * 14); font-style: normal; }
   .fx-slot-grid { grid-column: 1 / -1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: calc(var(--u) * 7); }
-  .fxslot-variation { margin-top: calc(var(--u) * 7); }
+  .fxslot-variation { margin-top: calc(var(--u) * 7); display: block; }
   .fxslot-variation .control { min-width: 0; }
   .fx-slot { min-width: 0; transition: border-color .12s, opacity .12s, transform .12s; }
   .fxslot-head { display: flex; align-items: center; gap: calc(var(--u) * 7); margin-bottom: calc(var(--u) * 8); cursor: grab; user-select: none; border-bottom: 1px solid #45494f; padding-bottom: calc(var(--u) * 5); }
