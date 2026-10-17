@@ -610,7 +610,7 @@ const SPECS = (() => {
     // Independent controls for ten reorderable FX slots. Slot order is hidden but stored as a normal parameter.
     L.push([600, "FX 1 Type", 0, 8, 2, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
     L.push([601, "FX 1 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
-    L.push([602, "FX 1 Order", 0, 9, 0, "", "sld", null, 1, "Order"]);
+    L.push([602, "FX 1 Order", 0, 9, 1, "", "sld", null, 1, "Order"]);
     L.push([603, "FX 1 Macro A", 0, 1, 0.3687, "", "sld", null, 1, "Macro A"]);
     L.push([604, "FX 1 Macro B", 0, 1, 0.3684, "", "sld", null, 1, "Macro B"]);
     L.push([605, "FX 1 Macro C", 0, 1, 1, "", "sld", null, 1, "Macro C"]);
@@ -619,7 +619,7 @@ const SPECS = (() => {
     L.push([608, "FX 1 Macro F", 0, 1, 1, "", "sld", null, 1, "Macro F"]);
     L.push([609, "FX 2 Type", 0, 8, 1, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
     L.push([610, "FX 2 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
-    L.push([611, "FX 2 Order", 0, 9, 1, "", "sld", null, 1, "Order"]);
+    L.push([611, "FX 2 Order", 0, 9, 0, "", "sld", null, 1, "Order"]);
     L.push([612, "FX 2 Macro A", 0, 1, 0.1, "", "sld", null, 1, "Macro A"]);
     L.push([613, "FX 2 Macro B", 0, 1, 1, "", "sld", null, 1, "Macro B"]);
     L.push([614, "FX 2 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
@@ -655,7 +655,7 @@ const SPECS = (() => {
     L.push([644, "FX 5 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([645, "FX 6 Type", 0, 8, 6, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
     L.push([646, "FX 6 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
-    L.push([647, "FX 6 Order", 0, 9, 5, "", "sld", null, 1, "Order"]);
+    L.push([647, "FX 6 Order", 0, 9, 6, "", "sld", null, 1, "Order"]);
     L.push([648, "FX 6 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
     L.push([649, "FX 6 Macro B", 0, 1, 0.5, "", "sld", null, 1, "Macro B"]);
     L.push([650, "FX 6 Macro C", 0, 1, 0.5, "", "sld", null, 1, "Macro C"]);
@@ -664,7 +664,7 @@ const SPECS = (() => {
     L.push([653, "FX 6 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([654, "FX 7 Type", 0, 8, 7, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
     L.push([655, "FX 7 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
-    L.push([656, "FX 7 Order", 0, 9, 6, "", "sld", null, 1, "Order"]);
+    L.push([656, "FX 7 Order", 0, 9, 5, "", "sld", null, 1, "Order"]);
     L.push([657, "FX 7 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
     L.push([658, "FX 7 Macro B", 0, 1, 0.246, "", "sld", null, 1, "Macro B"]);
     L.push([659, "FX 7 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
@@ -3250,7 +3250,7 @@ const mgrMethods = {
                     norm(get(179, 0), 0, 100), get(180, 1), norm(get(540, 0), 0, 3)]);
                 setSlot(6, 7, get(547, 1), [get(173, 0), norm(get(174, 5), 0.1, 20),
                     norm(get(181, 0), 0, 4), get(182, 0), 0, 1]);
-                setSlot(7, 8, 1, [get(191, 1), norm(get(62, 1), 1, 32), norm(get(61, 16), 4, 16), 0, 0, 0]);
+                setSlot(7, 8, get(542, 1), [get(191, 1), norm(get(62, 1), 1, 32), norm(get(61, 16), 4, 16), 0, 0, 0]);
                 setSlot(8, 0, 0, [0, 0, 0, 0, 0, 0]);
                 setSlot(9, 0, 0, [0, 0, 0, 0, 0, 0]);
             }
