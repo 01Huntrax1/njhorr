@@ -740,15 +740,22 @@ processor Eisenpuls_Synth
     float[10] fxPhaserFbL;
     float[10] fxPhaserFbR;
 
-    // Four independent combs plus pre-delay per reverb slot.
-    float[327680] fxReverbCombL;
-    float[327680] fxReverbCombR;
-    int[40] fxReverbCombPos;
-    float[40] fxReverbStoreL;
-    float[40] fxReverbStoreR;
-    float[81920] fxReverbPreL;
-    float[81920] fxReverbPreR;
+    // Freeverb-style state per slot: 8 mono combs, 4 allpasses, predelay and DC blockers.
+    float[655360] fxReverbCombBuf;
+    int[80] fxReverbCombPos;
+    int[80] fxReverbCombLen;
+    float[80] fxReverbCombStore;
+    float[163840] fxReverbApBuf;
+    int[40] fxReverbApPos;
+    int[40] fxReverbApLen;
+    float[81920] fxReverbPreBuf;
     int[10] fxReverbPrePos;
+    float[10] fxReverbInX;
+    float[10] fxReverbInY;
+    float[10] fxReverbOutXL;
+    float[10] fxReverbOutYL;
+    float[10] fxReverbOutXR;
+    float[10] fxReverbOutYR;
 
     float64[10] fxTremoloPhase;
     int[10] fxCrushCounter;
@@ -1895,6 +1902,16 @@ processor Eisenpuls_Synth
         apLen.at (1) = clamp (int (441.0f * rs), 16, 4095);
         apLen.at (2) = clamp (int (579.0f * rs), 16, 4095);
         apLen.at (3) = clamp (int (464.0f * rs), 16, 4095);
+        let fxCombBaseLengths = int[8] (1116, 1188, 1277, 1356, 1139, 1211, 1300, 1379);
+        let fxApBaseLengths = int[4] (556, 441, 579, 464);
+        for (int fs = 0; fs < 10; ++fs)
+        {
+            for (int fc = 0; fc < 8; ++fc)
+                fxReverbCombLen.at (fs * 8 + fc) = clamp (int (float (fxCombBaseLengths.at (fc)) * rs), 16, 8191);
+            for (int fa = 0; fa < 4; ++fa)
+                fxReverbApLen.at (fs * 4 + fa) = clamp (int (float (fxApBaseLengths.at (fa)) * rs), 16, 4095);
+        }
+
     }
 
     // ---------------- MIXER EQ HELPERS (processor scope) ----------------
@@ -3526,14 +3543,14 @@ processor Eisenpuls_Synth
         return y * (1.0f + drive * 0.5f);
     }
 
-    float<2> processFXSlot (int slot, float<2> input, float dt, float sr)
+    float<2> processFXSlot (int slot, float<2> signalIn, float dt, float sr)
     {
         if (fxSlotEnabled.at (slot) < 0.5f) return input;
         int kind = int (fxSlotType.at (slot) + 0.5f);
         if (kind <= 0 || kind > 8) return input;
 
-        float inL = input[0];
-        float inR = input[1];
+        float inL = signalIn[0];
+        float inR = signalIn[1];
         float outL = inL;
         float outR = inR;
         float a = clamp (fxSlotA.at (slot), 0.0f, 1.0f);
@@ -3547,8 +3564,9 @@ processor Eisenpuls_Synth
         if (kind == 1)
         {
             int alg = int (c * 5.0f + 0.5f);
-            float wetL = fxRackDriveShape (inL, a, alg);
-            float wetR = fxRackDriveShape (inR, a, alg);
+            float driveAmount = clamp (a + gmod.at (8) * 0.5f, 0.0f, 1.0f);
+            float wetL = fxRackDriveShape (inL, driveAmount, alg);
+            float wetR = fxRackDriveShape (inR, driveAmount, alg);
             outL = inL * (1.0f - b) + wetL * b;
             outR = inR * (1.0f - b) + wetR * b;
         }
@@ -3651,45 +3669,80 @@ processor Eisenpuls_Synth
             outL = inL * (1.0f - a * 0.5f) + xL * (a * 0.5f);
             outR = inR * (1.0f - a * 0.5f) + xR * (a * 0.5f);
         }
-        // 6 — four-comb reverb with independent predelay, damping, room size and width.
+        // 6 — 8-comb / 4-allpass reverb, fully isolated per rack slot.
         else if (kind == 6)
         {
+            float rvMonoRaw = (inL + inR) * 0.5f * 0.03f;
+            float rvHpA = 1.0f - clamp (float (twoPi) * 60.0f * dt, 0.0001f, 0.5f);
+            float rvMono = rvMonoRaw - fxReverbInX.at (slot) + rvHpA * fxReverbInY.at (slot);
+            fxReverbInX.at (slot) = rvMonoRaw;
+            fxReverbInY.at (slot) = rvMono;
+
             int preBase = slot * 8192;
             int prePos = fxReverbPrePos.at (slot);
-            fxReverbPreL.at (preBase + prePos) = inL;
-            fxReverbPreR.at (preBase + prePos) = inR;
-            int preDelay = clamp (int (d * 0.100f * sr), 0, 8191);
-            int preRead = prePos - preDelay; if (preRead < 0) preRead += 8192;
-            float rvInL = fxReverbPreL.at (preBase + preRead);
-            float rvInR = fxReverbPreR.at (preBase + preRead);
-            prePos += 1; if (prePos >= 8192) prePos = 0; fxReverbPrePos.at (slot) = prePos;
+            fxReverbPreBuf.at (preBase + prePos) = rvMono;
+            float pdSamp = clamp (d * 0.100f * sr, 0.0f, 8000.0f);
+            float pdRd = float (prePos) - pdSamp;
+            if (pdRd < 0.0f) pdRd += 8192.0f;
+            int pd0 = clamp (int (pdRd), 0, 8191);
+            float rvIn = fxReverbPreBuf.at (preBase + pd0);
+            prePos += 1;
+            if (prePos >= 8192) prePos = 0;
+            fxReverbPrePos.at (slot) = prePos;
 
-            float sumL = 0.0f, sumR = 0.0f;
-            float damp = 0.15f + 0.80f * c;
-            float feedback = 0.35f + 0.58f * b;
-            for (int tap = 0; tap < 4; ++tap)
+            float rvScale = 1.0f;
+            float rvFeedback = 0.35f + b * 0.58f;
+            float rvDamp = c;
+            int rvType = int (f * 3.0f + 0.5f);
+            if (rvType == 1) { rvScale = 0.35f; rvFeedback *= 0.88f; }
+            if (rvType == 2) { rvScale = 0.6f; rvDamp *= 0.45f; }
+            if (rvType == 3) { rvScale = 2.2f; rvFeedback = min (rvFeedback + 0.01f, 0.985f); }
+
+            float rvL = 0.0f;
+            float rvR = 0.0f;
+            for (int rc = 0; rc < 8; ++rc)
             {
-                int state = slot * 4 + tap;
+                int state = slot * 8 + rc;
                 int base = state * 8192;
-                int p = fxReverbCombPos.at (state);
-                float oldL = fxReverbCombL.at (base + p);
-                float oldR = fxReverbCombR.at (base + p);
-                fxReverbStoreL.at (state) += (1.0f - damp) * (oldL - fxReverbStoreL.at (state));
-                fxReverbStoreR.at (state) += (1.0f - damp) * (oldR - fxReverbStoreR.at (state));
-                fxReverbCombL.at (base + p) = rvInL * 0.35f + fxReverbStoreL.at (state) * feedback;
-                fxReverbCombR.at (base + p) = rvInR * 0.35f + fxReverbStoreR.at (state) * feedback;
-                float baseSeconds = 0.021f + float (tap) * 0.0057f;
-                int len = clamp (int (baseSeconds * sr * (0.7f + b * 0.8f)), 32, 8191);
-                p += 1; if (p >= len) p = 0; fxReverbCombPos.at (state) = p;
-                sumL += oldL; sumR += oldR;
+                int rp = fxReverbCombPos.at (state);
+                float rd = fxReverbCombBuf.at (base + rp);
+                fxReverbCombStore.at (state) = rd * (1.0f - rvDamp) + fxReverbCombStore.at (state) * rvDamp;
+                fxReverbCombBuf.at (base + rp) = rvIn + fxReverbCombStore.at (state) * rvFeedback;
+                rp += 1;
+                int rvLen = clamp (int (float (fxReverbCombLen.at (state)) * rvScale), 16, 8191);
+                if (rp >= rvLen) rp = 0;
+                fxReverbCombPos.at (state) = rp;
+                if (rc < 4) rvL += rd; else rvR += rd;
             }
-            float wetL = sumL * 0.25f;
-            float wetR = sumR * 0.25f;
-            float mid = (wetL + wetR) * 0.5f;
-            float side = (wetL - wetR) * 0.5f * e;
-            wetL = mid + side; wetR = mid - side;
-            outL = inL * (1.0f - a) + wetL * a * (1.0f + b * 0.5f);
-            outR = inR * (1.0f - a) + wetR * a * (1.0f + b * 0.5f);
+
+            for (int ra = 0; ra < 4; ++ra)
+            {
+                int state = slot * 4 + ra;
+                int base = state * 4096;
+                int ap = fxReverbApPos.at (state);
+                float abuf = fxReverbApBuf.at (base + ap);
+                float ax = ra >= 2 ? rvR : rvL;
+                float ay = abuf - ax;
+                fxReverbApBuf.at (base + ap) = ax + abuf * 0.5f;
+                ap += 1;
+                if (ap >= fxReverbApLen.at (state)) ap = 0;
+                fxReverbApPos.at (state) = ap;
+                if (ra < 2) rvL = ay; else rvR = ay;
+            }
+
+            float rvMid = (rvL + rvR) * 0.5f;
+            float rvSide = (rvL - rvR) * 0.5f * e;
+            float rvOutLRaw = rvMid + rvSide;
+            float rvOutRRaw = rvMid - rvSide;
+            float rvOutA = 1.0f - clamp (float (twoPi) * 8.0f * dt, 0.0001f, 0.5f);
+            float rvOutL = rvOutLRaw - fxReverbOutXL.at (slot) + rvOutA * fxReverbOutYL.at (slot);
+            float rvOutR = rvOutRRaw - fxReverbOutXR.at (slot) + rvOutA * fxReverbOutYR.at (slot);
+            fxReverbOutXL.at (slot) = rvOutLRaw;
+            fxReverbOutYL.at (slot) = rvOutL;
+            fxReverbOutXR.at (slot) = rvOutRRaw;
+            fxReverbOutYR.at (slot) = rvOutR;
+            outL += rvOutL * a * 3.0f;
+            outR += rvOutR * a * 3.0f;
         }
         // 7 — tremolo.
         else if (kind == 7)
@@ -3736,9 +3789,9 @@ processor Eisenpuls_Synth
         return float<2> (outL, outR);
     }
 
-    float<2> processFXRack (float<2> input, float dt, float sr)
+    float<2> processFXRack (float<2> signalIn, float dt, float sr)
     {
-        float<2> signal = input;
+        float<2> signal = signalIn;
         for (int position = 0; position < 10; ++position)
         {
             int selected = -1;
