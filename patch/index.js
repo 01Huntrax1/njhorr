@@ -2124,6 +2124,7 @@ class EisenpulsPatchView extends HTMLElement {
     onValue (spec, v, user) {
         const n = spec.num;
         if (n >= 600 && n < 780 && (n - 600) % 9 === 0) this.updateFxRack();
+        if (n >= FX_SLOT_VARIATION_BASE && n < FX_SLOT_VARIATION_BASE + FX_SLOT_COUNT) this.updateFxRack();
         if (n >= 600 && n < 780 && (n - 600) % 9 === 0 && user && !this._applying) this.activateFxSlot((n - 600) / 9, v);
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
