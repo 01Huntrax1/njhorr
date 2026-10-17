@@ -607,6 +607,98 @@ const SPECS = (() => {
     L.push([538, "Chorus Mode",     0, 2, 0, "", "sel", ["Classic", "Dimension", "Vibrato"], 1, "Mode"]);
     L.push([539, "Phaser Stages",   0, 3, 1, "", "sel", ["2 Stages", "4 Stages", "6 Stages", "8 Stages"], 1, "Stages"]);
     L.push([540, "Reverb Type",     0, 3, 0, "", "sel", ["Hall", "Room", "Plate", "Cathedral"], 1, "Type"]);
+    // Independent controls for ten reorderable FX slots. Slot order is hidden but stored as a normal parameter.
+    L.push([600, "FX 1 Type", 0, 8, 2, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([601, "FX 1 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([602, "FX 1 Order", 0, 9, 1, "", "sld", null, 1, "Order"]);
+    L.push([603, "FX 1 Macro A", 0, 1, 0.3687, "", "sld", null, 1, "Macro A"]);
+    L.push([604, "FX 1 Macro B", 0, 1, 0.3684, "", "sld", null, 1, "Macro B"]);
+    L.push([605, "FX 1 Macro C", 0, 1, 1, "", "sld", null, 1, "Macro C"]);
+    L.push([606, "FX 1 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([607, "FX 1 Macro E", 0, 1, 1, "", "sld", null, 1, "Macro E"]);
+    L.push([608, "FX 1 Macro F", 0, 1, 1, "", "sld", null, 1, "Macro F"]);
+    L.push([609, "FX 2 Type", 0, 8, 1, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([610, "FX 2 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([611, "FX 2 Order", 0, 9, 0, "", "sld", null, 1, "Order"]);
+    L.push([612, "FX 2 Macro A", 0, 1, 0.1, "", "sld", null, 1, "Macro A"]);
+    L.push([613, "FX 2 Macro B", 0, 1, 1, "", "sld", null, 1, "Macro B"]);
+    L.push([614, "FX 2 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
+    L.push([615, "FX 2 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([616, "FX 2 Macro E", 0, 1, 0.5, "", "sld", null, 1, "Macro E"]);
+    L.push([617, "FX 2 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([618, "FX 3 Type", 0, 8, 3, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([619, "FX 3 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([620, "FX 3 Order", 0, 9, 2, "", "sld", null, 1, "Order"]);
+    L.push([621, "FX 3 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([622, "FX 3 Macro B", 0, 1, 0.1515, "", "sld", null, 1, "Macro B"]);
+    L.push([623, "FX 3 Macro C", 0, 1, 0.5, "", "sld", null, 1, "Macro C"]);
+    L.push([624, "FX 3 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([625, "FX 3 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([626, "FX 3 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([627, "FX 4 Type", 0, 8, 4, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([628, "FX 4 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([629, "FX 4 Order", 0, 9, 3, "", "sld", null, 1, "Order"]);
+    L.push([630, "FX 4 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([631, "FX 4 Macro B", 0, 1, 0.0505, "", "sld", null, 1, "Macro B"]);
+    L.push([632, "FX 4 Macro C", 0, 1, 0.6, "", "sld", null, 1, "Macro C"]);
+    L.push([633, "FX 4 Macro D", 0, 1, 0.5, "", "sld", null, 1, "Macro D"]);
+    L.push([634, "FX 4 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([635, "FX 4 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([636, "FX 5 Type", 0, 8, 5, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([637, "FX 5 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([638, "FX 5 Order", 0, 9, 4, "", "sld", null, 1, "Order"]);
+    L.push([639, "FX 5 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([640, "FX 5 Macro B", 0, 1, 0.044, "", "sld", null, 1, "Macro B"]);
+    L.push([641, "FX 5 Macro C", 0, 1, 0.5, "", "sld", null, 1, "Macro C"]);
+    L.push([642, "FX 5 Macro D", 0, 1, 0.5, "", "sld", null, 1, "Macro D"]);
+    L.push([643, "FX 5 Macro E", 0, 1, 0.3333, "", "sld", null, 1, "Macro E"]);
+    L.push([644, "FX 5 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([645, "FX 6 Type", 0, 8, 6, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([646, "FX 6 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([647, "FX 6 Order", 0, 9, 6, "", "sld", null, 1, "Order"]);
+    L.push([648, "FX 6 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([649, "FX 6 Macro B", 0, 1, 0.5, "", "sld", null, 1, "Macro B"]);
+    L.push([650, "FX 6 Macro C", 0, 1, 0.5, "", "sld", null, 1, "Macro C"]);
+    L.push([651, "FX 6 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([652, "FX 6 Macro E", 0, 1, 1, "", "sld", null, 1, "Macro E"]);
+    L.push([653, "FX 6 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([654, "FX 7 Type", 0, 8, 7, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([655, "FX 7 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([656, "FX 7 Order", 0, 9, 5, "", "sld", null, 1, "Order"]);
+    L.push([657, "FX 7 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([658, "FX 7 Macro B", 0, 1, 0.246, "", "sld", null, 1, "Macro B"]);
+    L.push([659, "FX 7 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
+    L.push([660, "FX 7 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([661, "FX 7 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([662, "FX 7 Macro F", 0, 1, 1, "", "sld", null, 1, "Macro F"]);
+    L.push([663, "FX 8 Type", 0, 8, 8, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([664, "FX 8 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([665, "FX 8 Order", 0, 9, 7, "", "sld", null, 1, "Order"]);
+    L.push([666, "FX 8 Macro A", 0, 1, 1, "", "sld", null, 1, "Macro A"]);
+    L.push([667, "FX 8 Macro B", 0, 1, 0, "", "sld", null, 1, "Macro B"]);
+    L.push([668, "FX 8 Macro C", 0, 1, 1, "", "sld", null, 1, "Macro C"]);
+    L.push([669, "FX 8 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([670, "FX 8 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([671, "FX 8 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([672, "FX 9 Type", 0, 8, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([673, "FX 9 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([674, "FX 9 Order", 0, 9, 8, "", "sld", null, 1, "Order"]);
+    L.push([675, "FX 9 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([676, "FX 9 Macro B", 0, 1, 0, "", "sld", null, 1, "Macro B"]);
+    L.push([677, "FX 9 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
+    L.push([678, "FX 9 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([679, "FX 9 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([680, "FX 9 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+    L.push([681, "FX 10 Type", 0, 8, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
+    L.push([682, "FX 10 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
+    L.push([683, "FX 10 Order", 0, 9, 9, "", "sld", null, 1, "Order"]);
+    L.push([684, "FX 10 Macro A", 0, 1, 0, "", "sld", null, 1, "Macro A"]);
+    L.push([685, "FX 10 Macro B", 0, 1, 0, "", "sld", null, 1, "Macro B"]);
+    L.push([686, "FX 10 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
+    L.push([687, "FX 10 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
+    L.push([688, "FX 10 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([689, "FX 10 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
+
     // Serum style wavetable controls per engine: pan, phase, unison blend / width / style, two warp slots
     [[445, "WT"], [454, "W2"], [463, "W3"]].forEach(u => {
         const b = u[0], n = u[1];
@@ -687,6 +779,34 @@ const FX_PHASER = [545, 539, 167, 168, 169, 178];
 const FX_REVERB = [546, 540, 170, 171, 172, 179, 180];
 const FX_TREM = [547, 173, 174, 181, 182];
 const FX_OUT = [175, 189, 221, 222];
+const FX_SLOT_COUNT = 10;
+const FX_SLOT_BASE = slot => 600 + slot * 9;
+const FX_SLOT_TYPES = ["Off", "Drive", "Delay", "Chorus", "Flanger", "Phaser", "Reverb", "Tremolo", "Bitcrush"];
+const FX_SLOT_DEFAULT_ORDER = [1, 0, 2, 3, 4, 6, 5, 7, 8, 9];
+const FX_SLOT_INIT = [
+    { type: 2, enabled: 1, order: 1, macros: [0.3687, 0.3684, 1, 0, 1, 1] },
+    { type: 1, enabled: 1, order: 0, macros: [0.1, 1, 0, 0, 0.5, 0] },
+    { type: 3, enabled: 1, order: 2, macros: [0, 0.1515, 0.5, 0, 0, 0] },
+    { type: 4, enabled: 1, order: 3, macros: [0, 0.0505, 0.6, 0.5, 0, 0] },
+    { type: 5, enabled: 1, order: 4, macros: [0, 0.044, 0.5, 0.5, 0.3333, 0] },
+    { type: 6, enabled: 1, order: 6, macros: [0, 0.5, 0.5, 0, 1, 0] },
+    { type: 7, enabled: 1, order: 5, macros: [0, 0.246, 0, 0, 0, 1] },
+    { type: 8, enabled: 1, order: 7, macros: [1, 0, 1, 0, 0, 0] },
+    { type: 0, enabled: 0, order: 8, macros: [0, 0, 0, 0, 0, 0] },
+    { type: 0, enabled: 0, order: 9, macros: [0, 0, 0, 0, 0, 0] }
+];
+const FX_SLOT_MACROS = {
+    0: ["—", "—", "—", "—", "—", "—"],
+    1: ["Amount", "Mix", "Algorithm", "Saturation", "Bias", "Output"],
+    2: ["Time", "Feedback", "Mix", "Send", "Ping-Pong", "Damping"],
+    3: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
+    4: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
+    5: ["Mix", "Rate", "Depth", "Feedback", "Stages", "Width"],
+    6: ["Mix", "Size", "Damping", "Pre-Delay", "Width", "Type"],
+    7: ["Depth", "Rate", "Wave", "Stereo", "Shape", "Output"],
+    8: ["Mix", "SR Reduce", "Bits", "Rate", "Character", "Output"]
+};
+
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const MAX_SMP = 96000;
@@ -835,6 +955,8 @@ class EisenpulsPatchView extends HTMLElement {
             ctrl.setValue(spec.init, false);
         });
         this.buildTabs();
+        this.bindFxRackDnD();
+        this.updateFxRack();
         this.buildSmpLoader();
         this.buildS2Page();
         this.buildMemGrid();
@@ -1878,6 +2000,7 @@ class EisenpulsPatchView extends HTMLElement {
     // ---------- parameter hooks ----------
     onValue (spec, v, user) {
         const n = spec.num;
+        if (n >= 600 && n < 690 && (n - 600) % 9 === 0) this.updateFxRack();
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
         if (n === 193) this.updateS2Ui();
@@ -1977,6 +2100,131 @@ class EisenpulsPatchView extends HTMLElement {
         return `<section class="card ${cls || ""}"><h2>${title}</h2>${pre || ""}<div class="cgrid">${ids.map(i => this.controlHTML(i, true)).join("")}</div>${extra || ""}</section>`;
     }
 
+    fxSlotHTML (slot) {
+        const base = FX_SLOT_BASE(slot);
+        const cfg = FX_SLOT_INIT[slot];
+        const macros = Array.from({ length: 6 }, (_, i) => this.controlHTML(base + 3 + i, true)).join("");
+        return `<section class="card fx-slot" data-fx-slot="${slot}">
+            <header class="fxslot-head" draggable="true" data-fx-handle="${slot}">
+                <span class="fxslot-number">${String(slot + 1).padStart(2, "0")}</span>
+                <b class="fxslot-title" data-fx-title="${slot}">${FX_SLOT_TYPES[cfg.type]}</b>
+                <span class="fxslot-grip" title="Drag to reorder">⠿</span>
+            </header>
+            <div class="fxslot-config cgrid">${this.controlHTML(base, true)}${this.controlHTML(base + 1, true)}</div>
+            <div class="fxslot-macros cgrid">${macros}</div>
+            <div class="fx-order-hidden">${this.controlHTML(base + 2)}</div>
+        </section>`;
+    }
+
+    fxOrder (slot) {
+        const c = this._controls.get("param" + (FX_SLOT_BASE(slot) + 2));
+        return c ? c.value : slot;
+    }
+
+    updateFxRack () {
+        const grid = this.querySelector(".fx-slot-grid");
+        if (!grid) return;
+        const cards = Array.from(grid.querySelectorAll(".fx-slot"));
+        cards.forEach(card => {
+            const slot = Number(card.dataset.fxSlot);
+            const base = FX_SLOT_BASE(slot);
+            const ctrl = this._controls.get("param" + base);
+            const type = Math.max(0, Math.min(8, Math.round(ctrl ? ctrl.value : FX_SLOT_INIT[slot].type)));
+            const title = card.querySelector("[data-fx-title]");
+            if (title) title.textContent = type === 0 ? "EMPTY SLOT" : FX_SLOT_TYPES[type].toUpperCase();
+            const labels = FX_SLOT_MACROS[type] || FX_SLOT_MACROS[0];
+            for (let m = 0; m < 6; m++) {
+                const label = card.querySelector('[data-param="param' + (base + 3 + m) + '"] .lbl');
+                if (label) label.textContent = labels[m] || ("Macro " + String.fromCharCode(65 + m));
+            }
+            const power = this._controls.get("param" + (base + 1));
+            card.classList.toggle("fx-slot-off", type === 0 || (power ? power.value : FX_SLOT_INIT[slot].enabled) < 0.5);
+        });
+        const sorted = cards.slice().sort((a, b) =>
+            this.fxOrder(Number(a.dataset.fxSlot)) - this.fxOrder(Number(b.dataset.fxSlot)) ||
+            Number(a.dataset.fxSlot) - Number(b.dataset.fxSlot));
+        sorted.forEach((card, index) => {
+            grid.appendChild(card);
+            const ordinal = card.querySelector(".fxslot-number");
+            if (ordinal) ordinal.textContent = String(index + 1).padStart(2, "0");
+        });
+        const chain = this.querySelector(".fx-chain");
+        if (chain) chain.innerHTML = sorted.map((card, i) => {
+            const slot = Number(card.dataset.fxSlot);
+            const base = FX_SLOT_BASE(slot);
+            const c = this._controls.get("param" + base);
+            const power = this._controls.get("param" + (base + 1));
+            const type = Math.round(c ? c.value : FX_SLOT_INIT[slot].type);
+            const title = type === 0 ? "EMPTY" : FX_SLOT_TYPES[type].toUpperCase();
+            const enabled = type !== 0 && (power ? power.value : FX_SLOT_INIT[slot].enabled) >= 0.5;
+            return '<span class="fx-chain-node' + (!enabled ? ' disabled' : '') + '"><b>' +
+                String(i + 1).padStart(2, "0") + '</b>' + title + '</span>';
+        }).join("");
+    }
+
+    bindFxRackDnD () {
+        const grid = this.querySelector(".fx-slot-grid");
+        if (!grid || grid.dataset.dndBound) return;
+        grid.dataset.dndBound = "1";
+        grid.addEventListener("dragstart", ev => {
+            const handle = ev.target.closest("[data-fx-handle]");
+            if (!handle) { ev.preventDefault(); return; }
+            this._fxDragSlot = Number(handle.dataset.fxHandle);
+            if (ev.dataTransfer) {
+                ev.dataTransfer.effectAllowed = "move";
+                ev.dataTransfer.setData("text/plain", String(this._fxDragSlot));
+            }
+            const card = handle.closest(".fx-slot");
+            if (card) card.classList.add("fx-dragging");
+        });
+        grid.addEventListener("dragover", ev => {
+            const card = ev.target.closest(".fx-slot");
+            if (this._fxDragSlot === undefined || !card) return;
+            ev.preventDefault();
+            if (ev.dataTransfer) ev.dataTransfer.dropEffect = "move";
+            grid.querySelectorAll(".fx-drop-target").forEach(n => n.classList.remove("fx-drop-target"));
+            card.classList.add("fx-drop-target");
+        });
+        grid.addEventListener("dragleave", ev => {
+            const card = ev.target.closest(".fx-slot");
+            if (card && !card.contains(ev.relatedTarget)) card.classList.remove("fx-drop-target");
+        });
+        grid.addEventListener("drop", ev => {
+            const card = ev.target.closest(".fx-slot");
+            if (this._fxDragSlot === undefined || !card) return;
+            ev.preventDefault();
+            const from = this._fxDragSlot;
+            const to = Number(card.dataset.fxSlot);
+            this._fxDragSlot = undefined;
+            grid.querySelectorAll(".fx-dragging,.fx-drop-target").forEach(n =>
+                n.classList.remove("fx-dragging", "fx-drop-target"));
+            if (from !== to) this.reorderFxSlots(from, to);
+        });
+        grid.addEventListener("dragend", () => {
+            this._fxDragSlot = undefined;
+            grid.querySelectorAll(".fx-dragging,.fx-drop-target").forEach(n =>
+                n.classList.remove("fx-dragging", "fx-drop-target"));
+        });
+    }
+
+    reorderFxSlots (fromSlot, toSlot) {
+        const grid = this.querySelector(".fx-slot-grid");
+        if (!grid) return;
+        const ordered = Array.from(grid.querySelectorAll(".fx-slot"))
+            .sort((a, b) => this.fxOrder(Number(a.dataset.fxSlot)) - this.fxOrder(Number(b.dataset.fxSlot)) ||
+                Number(a.dataset.fxSlot) - Number(b.dataset.fxSlot))
+            .map(card => Number(card.dataset.fxSlot));
+        const from = ordered.indexOf(fromSlot), to = ordered.indexOf(toSlot);
+        if (from < 0 || to < 0 || from === to) return;
+        ordered.splice(to, 0, ordered.splice(from, 1)[0]);
+        ordered.forEach((slot, position) => {
+            const c = this._controls.get("param" + (FX_SLOT_BASE(slot) + 2));
+            if (c) c.setValue(position, true);
+        });
+        this.updateFxRack();
+        this.presetDirty();
+    }
+
     wtPageHTML (e) {
         const cfg = WT_ENG[e];
         const wcells = Array.from({ length: WT_COUNT }, (_, i) => `<button type="button" class="wc" data-e="${e}" data-i="${i}">${i + 1}</button>`).join("");
@@ -2036,19 +2284,9 @@ class EisenpulsPatchView extends HTMLElement {
         const s2Page = `<section class="card s2-osc"><h2>Sampler 2 Oscillator</h2>${s2Strip}<div class="cgrid">${S2_IDS.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
         const wtPages = WT_ENG.map((cfg, e) => `<div class="page p-${cfg.page}">${this.wtPageHTML(e)}</div>`).join("\n    ");
         const mixPage = `<section class="card m-mix"><h2>Mixer / SSL 4000 EQ</h2><div class="chs">${MIX_CH.map(c => this.channelHTML(c)).join("")}</div></section>`;
-        const fxModules = [
-            ["DELAY", "01"], ["DRIVE / CRUSH", "02"], ["CHORUS", "03"], ["FLANGER", "04"],
-            ["PHASER", "05"], ["REVERB", "06"], ["TREMOLO", "07"], ["OUTPUT", "08"]
-        ];
-        const fxRackBar = `<div class="fx-rackbar"><div class="fx-rack-title"><span class="fx-rack-led"></span><span>FX RACK</span><small>MODULAR PROCESSING</small></div><div class="fx-chain">${fxModules.map((m, i) => `<span class="fx-chain-node"><b>${m[1]}</b>${m[0]}${i < fxModules.length - 1 ? '<i>›</i>' : ''}</span>`).join("")}</div></div>`;
+        const fxRackBar = `<div class="fx-rackbar"><div class="fx-rack-title"><span class="fx-rack-led"></span><span>FX RACK</span><small>DRAG MODULES TO REORDER · SELECT TYPE TO DUPLICATE</small></div><div class="fx-chain"></div></div>`;
         const fxPage = fxRackBar
-                     + this.card("Delay", FX_DELAY, "f-dly")
-                     + this.card("Drive / Crush", FX_CRUSH, "f-crush")
-                     + this.card("Chorus", FX_CHORUS, "f-cho")
-                     + this.card("Flanger", FX_FLANGER, "f-fla")
-                     + this.card("Phaser", FX_PHASER, "f-pha")
-                     + this.card("Reverb", FX_REVERB, "f-rev")
-                     + this.card("Tremolo", FX_TREM, "f-trm")
+                     + `<div class="fx-slot-grid">${Array.from({ length: FX_SLOT_COUNT }, (_, i) => this.fxSlotHTML(i)).join("")}</div>`
                      + this.card("Output", FX_OUT, "f-out");
         const lfoPage = this.lfoPageHTML();
         const envPage = this.envPageHTML();
@@ -2292,7 +2530,7 @@ class EisenpulsPatchView extends HTMLElement {
   .control.knb.drag .val { display: block; }
 
   /* Serum-inspired modular FX rack */
-  .p-fx { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto repeat(2, minmax(0, 1fr)); gap: calc(var(--u) * 7); overflow-y: auto; align-content: start; }
+  .p-fx { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto minmax(0, 1fr) auto; gap: calc(var(--u) * 7); overflow-y: auto; align-content: start; }
   .fx-rackbar { grid-column: 1 / -1; display: flex; flex-direction: column; gap: calc(var(--u) * 6); padding: calc(var(--u) * 8) calc(var(--u) * 12); min-width: 0; border: 1px solid #4b4e53; border-radius: calc(var(--u) * 5); background: linear-gradient(180deg, #24272b, #111315); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 3px 10px rgba(0,0,0,.25); }
   .fx-rack-title { display: flex; align-items: center; gap: calc(var(--u) * 7); color: #f0e9e6; font-size: calc(var(--u) * 10); font-weight: 900; letter-spacing: .22em; }
   .fx-rack-title small { margin-left: auto; color: #858b91; font-size: calc(var(--u) * 7); font-weight: 700; letter-spacing: .12em; }
@@ -2301,8 +2539,22 @@ class EisenpulsPatchView extends HTMLElement {
   .fx-chain-node { position: relative; flex: 1 0 auto; display: flex; align-items: center; gap: calc(var(--u) * 5); padding: calc(var(--u) * 5) calc(var(--u) * 8); color: #b9bdc2; background: #17191c; border: 1px solid #34383d; border-radius: calc(var(--u) * 3); font-size: calc(var(--u) * 7); font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
   .fx-chain-node b { color: #ff7669; font-family: ui-monospace, monospace; font-size: calc(var(--u) * 7); }
   .fx-chain-node i { position: absolute; right: calc(var(--u) * -5); top: 50%; transform: translate(50%,-50%); z-index: 2; color: #ff6d5e; font-size: calc(var(--u) * 14); font-style: normal; }
-  .f-dly { grid-column: 1; grid-row: 2; } .f-crush { grid-column: 2; grid-row: 2; } .f-cho { grid-column: 3; grid-row: 2; } .f-fla { grid-column: 4; grid-row: 2; }
-  .f-pha { grid-column: 1; grid-row: 3; } .f-rev { grid-column: 2; grid-row: 3; } .f-trm { grid-column: 3; grid-row: 3; } .f-out { grid-column: 4; grid-row: 3; }
+  .fx-slot-grid { grid-column: 1 / -1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: calc(var(--u) * 7); }
+  .fx-slot { min-width: 0; transition: border-color .12s, opacity .12s, transform .12s; }
+  .fxslot-head { display: flex; align-items: center; gap: calc(var(--u) * 7); margin-bottom: calc(var(--u) * 8); cursor: grab; user-select: none; border-bottom: 1px solid #45494f; padding-bottom: calc(var(--u) * 5); }
+  .fxslot-head:active { cursor: grabbing; }
+  .fxslot-number { color: #ff7b6f; font: 800 calc(var(--u) * 9)/1 ui-monospace, monospace; }
+  .fxslot-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #f3eae5; font-size: calc(var(--u) * 9); letter-spacing: .14em; }
+  .fxslot-grip { margin-left: auto; color: #92999f; font-size: calc(var(--u) * 14); }
+  .fxslot-config { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: calc(var(--u) * 7); }
+  .fxslot-config .control, .fxslot-macros .control { min-width: 0; }
+  .fxslot-macros { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: calc(var(--u) * 7) calc(var(--u) * 6); margin-top: calc(var(--u) * 8); }
+  .fx-order-hidden { display: none !important; }
+  .fx-slot-off { border-color: #34383c; opacity: .72; }
+  .fx-slot.fx-dragging { opacity: .48; transform: scale(.985); }
+  .fx-slot.fx-drop-target { border-color: #ff6d5e; box-shadow: 0 0 0 1px rgba(255,109,94,.22), 0 0 15px rgba(255,65,48,.12); }
+  .fx-chain-node.disabled { opacity: .4; }
+  .f-out { grid-column: 1 / -1; }
   .p-fx .card { padding: calc(var(--u) * 8) calc(var(--u) * 9); border-radius: calc(var(--u) * 5); }
   .p-fx .card h2 { font-size: calc(var(--u) * 9); letter-spacing: .16em; margin-bottom: calc(var(--u) * 6); }
   .p-fx .cgrid { align-content: start; align-items: center; gap: calc(var(--u) * 6) calc(var(--u) * 8); }
@@ -2974,7 +3226,34 @@ const mgrMethods = {
     async presetApply (rec, label) {
         this._applying = true;
         try {
-            const params = rec.params || {};
+            const params = Object.assign({}, rec.params || {});
+            const hasRackParams = Array.from({ length: FX_SLOT_COUNT * 9 }, (_, i) =>
+                Object.prototype.hasOwnProperty.call(params, String(600 + i))).some(Boolean);
+            if (!hasRackParams) {
+                const get = (id, fallback) => params[String(id)] !== undefined && Number.isFinite(Number(params[String(id)]))
+                    ? Number(params[String(id)]) : fallback;
+                const norm = (v, min, max) => Math.max(0, Math.min(1, (v - min) / (max - min)));
+                const setSlot = (slot, type, enabled, macros) => {
+                    const b = FX_SLOT_BASE(slot);
+                    [type, enabled, FX_SLOT_DEFAULT_ORDER[slot], ...macros].forEach((v, i) => { params[String(b + i)] = v; });
+                };
+                setSlot(0, 2, get(541, 1), [norm(get(30, 375), 10, 1000), norm(get(31, 0.35), 0, 0.95),
+                    get(183, 1), get(32, 0), get(184, 1), norm(get(60, 18000), 500, 18000)]);
+                setSlot(1, 1, get(542, 1), [get(28, 0.1), 1, norm(get(536, 0), 0, 5), 0, 0.5, 0]);
+                setSlot(2, 3, get(543, 1), [get(164, 0), norm(get(165, 0.8), 0.05, 5), get(166, 0.5),
+                    norm(get(177, 0), 0, 0.9), norm(get(538, 0), 0, 2), 0]);
+                setSlot(3, 4, get(544, 1), [get(185, 0), norm(get(186, 0.3), 0.05, 5), get(187, 0.6),
+                    norm(get(188, 0.5), 0, 0.95), 0, 0]);
+                setSlot(4, 5, get(545, 1), [get(167, 0), norm(get(168, 0.4), 0.05, 8), get(169, 0.5),
+                    norm(get(178, 0.5), 0, 0.9), norm(get(539, 1), 0, 3), 0]);
+                setSlot(5, 6, get(546, 1), [get(170, 0), get(171, 0.5), get(172, 0.5),
+                    norm(get(179, 0), 0, 100), get(180, 1), norm(get(540, 0), 0, 3)]);
+                setSlot(6, 7, get(547, 1), [get(173, 0), norm(get(174, 5), 0.1, 20),
+                    norm(get(181, 0), 0, 4), get(182, 0), 0, 1]);
+                setSlot(7, 8, get(542, 1), [get(191, 1), norm(get(62, 1), 1, 32), norm(get(61, 16), 4, 16), 0, 0, 0]);
+                setSlot(8, 0, 0, [0, 0, 0, 0, 0, 0]);
+                setSlot(9, 0, 0, [0, 0, 0, 0, 0, 0]);
+            }
             this._controls.forEach((c, id) => {
                 if (PRESET_SKIP.has(id)) return;
                 const k = id.replace("param", "");
@@ -2982,6 +3261,7 @@ const mgrMethods = {
                 c.setValue(Number.isFinite(v) ? v : c.def, true);
             });
             this.updateSlots();
+            this.updateFxRack();
             this.drawFlt();
             for (let e = 0; e < WT_ENG.length; e++) this.drawWt(e);
         } finally { this._applying = false; }
