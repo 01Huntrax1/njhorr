@@ -2701,7 +2701,7 @@ class EisenpulsPatchView extends HTMLElement {
   .fx-chain-node { position: relative; flex: 1 0 auto; display: flex; align-items: center; gap: calc(var(--u) * 5); padding: calc(var(--u) * 5) calc(var(--u) * 8); color: #b9bdc2; background: #17191c; border: 1px solid #34383d; border-radius: calc(var(--u) * 3); font-size: calc(var(--u) * 7); font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
   .fx-chain-node b { color: #ff7669; font-family: ui-monospace, monospace; font-size: calc(var(--u) * 7); }
   .fx-chain-node i { position: absolute; right: calc(var(--u) * -5); top: 50%; transform: translate(50%,-50%); z-index: 2; color: #ff6d5e; font-size: calc(var(--u) * 14); font-style: normal; }
-  .fx-slot-grid { grid-column: 1 / -1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: calc(var(--u) * 7); }
+  .fx-slot-grid { grid-column: 1 / -1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(200px, auto); align-content: start; gap: calc(var(--u) * 7); }
   .fxslot-variation { margin-top: calc(var(--u) * 7); display: block; }
   .fxslot-variation .control { min-width: 0; }
   .fx-slot { min-width: 0; transition: border-color .12s, opacity .12s, transform .12s; }
