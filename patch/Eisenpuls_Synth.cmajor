@@ -4061,6 +4061,50 @@ processor Eisenpuls_Synth
             outR = (inR * (1.0f - a) + crushedR * a) * (1.0f + f);
         }
 
+        // 9 — independent insert filter. Variation selects six filter characters.
+        else if (kind == 9)
+        {
+            float cutoff = clamp (20.0f * float (pow (900.0f, a)), 20.0f, sr * 0.45f);
+            if (variation == 1) cutoff = min (cutoff * 1.5f, sr * 0.45f);
+            else if (variation == 2) cutoff = max (cutoff * 0.65f, 20.0f);
+            float g = float (tan (float64 (pi) * float64 (cutoff) * float64 (dt)));
+            float k = clamp (2.0f - 1.95f * b - 0.25f * e, 0.05f, 2.0f);
+            float driveGain = 1.0f + d * (variation == 5 ? 12.0f : 5.0f);
+            float xL = inL * driveGain;
+            float xR = inR * driveGain;
+            if (variation == 5)
+            {
+                xL = xL / (1.0f + abs (xL));
+                xR = xR / (1.0f + abs (xR));
+            }
+            float denom = 1.0f + g * (g + k);
+            float v1L = (g * (xL - fxFilterIC2L.at (slot)) + fxFilterIC1L.at (slot)) / denom;
+            float v2L = fxFilterIC2L.at (slot) + g * v1L;
+            fxFilterIC1L.at (slot) = 2.0f * v1L - fxFilterIC1L.at (slot);
+            fxFilterIC2L.at (slot) = 2.0f * v2L - fxFilterIC2L.at (slot);
+            float v1R = (g * (xR - fxFilterIC2R.at (slot)) + fxFilterIC1R.at (slot)) / denom;
+            float v2R = fxFilterIC2R.at (slot) + g * v1R;
+            fxFilterIC1R.at (slot) = 2.0f * v1R - fxFilterIC1R.at (slot);
+            fxFilterIC2R.at (slot) = 2.0f * v2R - fxFilterIC2R.at (slot);
+
+            float lowL = v2L;
+            float lowR = v2R;
+            float bandL = v1L;
+            float bandR = v1R;
+            float highL = xL - k * v1L - v2L;
+            float highR = xR - k * v1R - v2R;
+            float wetL = lowL;
+            float wetR = lowR;
+            if (variation == 1) { wetL = highL; wetR = highR; }
+            else if (variation == 2) { wetL = bandL * (1.0f + b); wetR = bandR * (1.0f + b); }
+            else if (variation == 3) { wetL = lowL + highL; wetR = lowR + highR; }
+            else if (variation == 4) { wetL = xL + bandL * b * 4.0f; wetR = xR + bandR * b * 4.0f; }
+            else if (variation == 5) { wetL = lowL; wetR = lowR; }
+
+            outL = (inL * (1.0f - c) + wetL * c) * (1.0f + f);
+            outR = (inR * (1.0f - c) + wetR * c) * (1.0f + f);
+        }
+
         return float<2> (outL, outR);
     }
 
