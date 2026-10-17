@@ -2070,6 +2070,7 @@ processor Eisenpuls_Synth
             fxSlotE.at (fx) = fxEDefaults.at (fx);
             fxSlotF.at (fx) = fxFDefaults.at (fx);
             fxSlotVariation.at (fx) = 0.0f;
+            fxSlotFilterMode.at (fx) = 0.0f;
         }
 
         // supersaw detune offsets (JP-8000 style) and stereo positions, centre first then inner to outer pairs
@@ -3799,6 +3800,162 @@ processor Eisenpuls_Synth
     }
 
 
+    // Per-slot filter building blocks. Each slot gets five independent stage memories.
+    float fxRackFilterSVF (int slot, int channel, int stage, float x, float g, float k, int mode)
+    {
+        int ix = slot * 5 + stage;
+        float s1 = channel == 0 ? fxFilterIC1L.at (ix) : fxFilterIC1R.at (ix);
+        float s2 = channel == 0 ? fxFilterIC2L.at (ix) : fxFilterIC2R.at (ix);
+        float a1 = 1.0f / (1.0f + g * (g + k));
+        float a2 = g * a1;
+        float a3 = g * a2;
+        float v3 = x - s2;
+        float v1 = a1 * s1 + a2 * v3;
+        float v2 = s2 + a2 * s1 + a3 * v3;
+        if (channel == 0)
+        {
+            fxFilterIC1L.at (ix) = 2.0f * v1 - s1;
+            fxFilterIC2L.at (ix) = 2.0f * v2 - s2;
+        }
+        else
+        {
+            fxFilterIC1R.at (ix) = 2.0f * v1 - s1;
+            fxFilterIC2R.at (ix) = 2.0f * v2 - s2;
+        }
+        if (mode == 1) return v1 * k;              // band-pass
+        if (mode == 2) return x - k * v1 - v2;    // high-pass
+        if (mode == 3) return x - k * v1;         // notch
+        if (mode == 4) return x - 2.0f * k * v1;  // all-pass
+        return v2;                                // low-pass
+    }
+
+    float fxRackFilterOnePole (int slot, int channel, int stage, float x, float g)
+    {
+        int ix = slot * 5 + stage;
+        float oldState = channel == 0 ? fxFilterPoleL.at (ix) : fxFilterPoleR.at (ix);
+        float gg = g / (1.0f + g);
+        float v = (x - oldState) * gg;
+        float y = oldState + v;
+        float nextState = y + v;
+        if (channel == 0) fxFilterPoleL.at (ix) = nextState;
+        else fxFilterPoleR.at (ix) = nextState;
+        return y;
+    }
+
+    float fxRackFilterMono (int slot, int channel, float x, float g, float k, float res, float fc, float dt, float sr, int ft)
+    {
+        if (ft == 0)
+        {
+            float y = fxRackFilterSVF (slot, channel, 0, x, g, k, 0);
+            return fxRackFilterSVF (slot, channel, 1, y, g, 1.2f, 0);
+        }
+        if (ft == 1) return fxRackFilterSVF (slot, channel, 0, x, g, k, 0);
+        if (ft == 2) return fxRackFilterSVF (slot, channel, 0, x, g, k, 2);
+        if (ft == 3) return fxRackFilterSVF (slot, channel, 0, x, g, k, 1);
+        if (ft == 4) return fxRackFilterOnePole (slot, channel, 0, x, g);
+        if (ft == 5)
+        {
+            float y = fxRackFilterOnePole (slot, channel, 0, x, g);
+            return fxRackFilterSVF (slot, channel, 1, y, g, k, 0);
+        }
+        if (ft == 6) return x - fxRackFilterOnePole (slot, channel, 0, x, g);
+        if (ft == 7)
+        {
+            float y = x - fxRackFilterOnePole (slot, channel, 0, x, g);
+            return fxRackFilterSVF (slot, channel, 1, y, g, k, 2);
+        }
+        if (ft == 8)
+        {
+            float y = fxRackFilterSVF (slot, channel, 0, x, g, k, 2);
+            return fxRackFilterSVF (slot, channel, 1, y, g, 1.2f, 2);
+        }
+        if (ft == 9)
+        {
+            float y = fxRackFilterSVF (slot, channel, 0, x, g, k, 1);
+            return fxRackFilterSVF (slot, channel, 1, y, g, k, 1);
+        }
+        if (ft == 10) return fxRackFilterSVF (slot, channel, 0, x, g, k, 3);
+        if (ft == 11)
+        {
+            float y = fxRackFilterSVF (slot, channel, 0, x, g, k, 3);
+            return fxRackFilterSVF (slot, channel, 1, y, g, k, 3);
+        }
+        if (ft == 12) return x + res * 4.0f * fxRackFilterSVF (slot, channel, 0, x, g, 0.6f, 1);
+        if (ft == 13) return x + res * 3.0f * fxRackFilterSVF (slot, channel, 0, x, g, 1.4f, 0);
+        if (ft == 14) return x + res * 3.0f * fxRackFilterSVF (slot, channel, 0, x, g, 1.4f, 2);
+        if (ft == 15) return fxRackFilterSVF (slot, channel, 0, x, g, k, 4);
+
+        if (ft >= 16 && ft <= 18)
+        {
+            float feedback = channel == 0 ? fxFilterFeedbackL.at (slot) : fxFilterFeedbackR.at (slot);
+            float kr = res * 3.9f;
+            if (ft == 17) kr = res * 3.2f;
+            if (ft == 18) kr = res * 3.6f;
+            float u = softClip (x - kr * feedback);
+            float y1 = fxRackFilterOnePole (slot, channel, 0, u, g);
+            float y2 = fxRackFilterOnePole (slot, channel, 1, y1, g);
+            float y3 = fxRackFilterOnePole (slot, channel, 2, y2, g);
+            if (ft == 18)
+            {
+                if (channel == 0) fxFilterFeedbackL.at (slot) = y3;
+                else fxFilterFeedbackR.at (slot) = y3;
+                return y3 * (1.0f + res);
+            }
+            float y4 = fxRackFilterOnePole (slot, channel, 3, y3, g);
+            if (channel == 0) fxFilterFeedbackL.at (slot) = y4;
+            else fxFilterFeedbackR.at (slot) = y4;
+            if (ft == 17) return (y3 + y4) * 0.5f;
+            return y4 * (1.0f + 0.4f * kr);
+        }
+        if (ft == 19)
+        {
+            float t = fxRackFilterSVF (slot, channel, 0, softClip (x * 2.0f), g, k, 0);
+            return fxRackFilterSVF (slot, channel, 1, softClip (t * 1.5f), g, 1.2f, 0) * 1.3f;
+        }
+        if (ft == 22)
+        {
+            float feedback = channel == 0 ? fxFilterFeedbackL.at (slot) : fxFilterFeedbackR.at (slot);
+            float y = x + res * 0.85f * feedback;
+            for (int stage = 0; stage < 4; ++stage)
+                y = 2.0f * fxRackFilterOnePole (slot, channel, stage, y, g) - y;
+            if (channel == 0) fxFilterFeedbackL.at (slot) = y;
+            else fxFilterFeedbackR.at (slot) = y;
+            return 0.5f * (x + y);
+        }
+        if (ft == 23)
+        {
+            float p = clamp (float (log (max (fc, 100.0f) / 100.0f)) / float (log (30.0f)), 0.0f, 1.0f) * 4.0f;
+            int v0 = clamp (int (p), 0, 3);
+            float vf = p - float (v0);
+            float kq = 2.0f - 1.96f * clamp (0.5f + res * 0.45f, 0.0f, 0.98f);
+            float f0 = vowelFreq (v0, 0) * (1.0f - vf) + vowelFreq (v0 + 1, 0) * vf;
+            float f1 = vowelFreq (v0, 1) * (1.0f - vf) + vowelFreq (v0 + 1, 1) * vf;
+            float f2 = vowelFreq (v0, 2) * (1.0f - vf) + vowelFreq (v0 + 1, 2) * vf;
+            float y0 = fxRackFilterSVF (slot, channel, 0, x, float (tan (float64 (f0) * pi * float64 (dt))), kq, 1);
+            float y1 = fxRackFilterSVF (slot, channel, 1, x, float (tan (float64 (f1) * pi * float64 (dt))), kq, 1);
+            float y2 = fxRackFilterSVF (slot, channel, 2, x, float (tan (float64 (f2) * pi * float64 (dt))), kq, 1);
+            return (y0 + y1 * 0.7f + y2 * 0.5f) * 1.4f;
+        }
+        if (ft >= 24 && ft <= 27)
+        {
+            float feedback = channel == 0 ? fxFilterFeedbackL.at (slot) : fxFilterFeedbackR.at (slot);
+            float kr = res * 3.9f;
+            float u = softClip (x * 1.2f - kr * feedback);
+            float y1 = fxRackFilterOnePole (slot, channel, 0, u, g);
+            float y2 = fxRackFilterOnePole (slot, channel, 1, y1, g);
+            float y3 = fxRackFilterOnePole (slot, channel, 2, y2, g);
+            float y4 = fxRackFilterOnePole (slot, channel, 3, y3, g);
+            if (channel == 0) fxFilterFeedbackL.at (slot) = y4;
+            else fxFilterFeedbackR.at (slot) = y4;
+            float makeup = 1.1f * (1.0f + 0.4f * kr);
+            if (ft == 24) return y1 * makeup;
+            if (ft == 25) return y2 * makeup;
+            if (ft == 26) return y3 * makeup;
+            return y4 * makeup;
+        }
+        return x;
+    }
+
     float fxRackDriveShape (float x, float drive, int algorithm, float biasControl)
     {
         float xx = x * (1.0f + drive * 8.0f);
@@ -4110,46 +4267,82 @@ processor Eisenpuls_Synth
             outR = (inR * (1.0f - a) + crushedR * a) * (1.0f + f);
         }
 
-        // 9 — independent insert filter. Variation selects six filter characters.
+        // 9 — independent insert filter with all 30 modes from the synth's main filter section.
         else if (kind == 9)
         {
+            int ft = clamp (int (fxSlotFilterMode.at (slot) + 0.5f), 0, 29);
             float cutoff = clamp (20.0f * float (pow (900.0f, a)), 20.0f, sr * 0.45f);
-            if (variation == 1) cutoff = min (cutoff * 1.5f, sr * 0.45f);
-            else if (variation == 2) cutoff = max (cutoff * 0.65f, 20.0f);
-            float g = float (tan (float64 (pi) * float64 (cutoff) * float64 (dt)));
-            float k = clamp (2.0f - 1.95f * b - 0.25f * e, 0.05f, 2.0f);
+            if (variation == 1) cutoff *= 0.75f;
+            else if (variation == 2) cutoff = min (cutoff * 1.25f, sr * 0.45f);
+            else if (variation == 4) cutoff *= 0.60f;
+            cutoff = clamp (cutoff, 20.0f, sr * 0.45f);
+
+            float resEff = clamp (b + (variation == 5 ? 0.20f : 0.0f), 0.0f, 1.0f);
+            float k = clamp (2.0f - 1.96f * resEff - 0.25f * e, 0.05f, 2.0f);
             float driveGain = 1.0f + d * (variation == 5 ? 12.0f : 5.0f);
             float xL = inL * driveGain;
             float xR = inR * driveGain;
             if (variation == 5)
             {
-                xL = xL / (1.0f + abs (xL));
-                xR = xR / (1.0f + abs (xR));
+                xL = softClip (xL);
+                xR = softClip (xR);
             }
-            float denom = 1.0f + g * (g + k);
-            float v1L = (g * (xL - fxFilterIC2L.at (slot)) + fxFilterIC1L.at (slot)) / denom;
-            float v2L = fxFilterIC2L.at (slot) + g * v1L;
-            fxFilterIC1L.at (slot) = 2.0f * v1L - fxFilterIC1L.at (slot);
-            fxFilterIC2L.at (slot) = 2.0f * v2L - fxFilterIC2L.at (slot);
-            float v1R = (g * (xR - fxFilterIC2R.at (slot)) + fxFilterIC1R.at (slot)) / denom;
-            float v2R = fxFilterIC2R.at (slot) + g * v1R;
-            fxFilterIC1R.at (slot) = 2.0f * v1R - fxFilterIC1R.at (slot);
-            fxFilterIC2R.at (slot) = 2.0f * v2R - fxFilterIC2R.at (slot);
 
-            float lowL = v2L;
-            float lowR = v2R;
-            float bandL = v1L;
-            float bandR = v1R;
-            float highL = xL - k * v1L - v2L;
-            float highR = xR - k * v1R - v2R;
-            float wetL = lowL;
-            float wetR = lowR;
-            if (variation == 1) { wetL = highL; wetR = highR; }
-            else if (variation == 2) { wetL = bandL * (1.0f + b); wetR = bandR * (1.0f + b); }
-            else if (variation == 3) { wetL = lowL + highL; wetR = lowR + highR; }
-            else if (variation == 4) { wetL = xL + bandL * b * 4.0f; wetR = xR + bandR * b * 4.0f; }
-            else if (variation == 5) { wetL = lowL; wetR = lowR; }
+            // Filter mode 20/21 = Comb +/- and 28/29 = swept Flange +/-.
+            float wetL = 0.0f;
+            float wetR = 0.0f;
+            if (ft == 20 || ft == 21 || ft == 28 || ft == 29)
+            {
+                int pos = fxFlangerPos.at (slot);
+                float sweep = 1.0f;
+                if (ft == 28 || ft == 29)
+                {
+                    fxFlangerPhase.at (slot) += float64 (0.08f + e * 1.5f) * float64 (dt) * float64 (variation == 3 ? 1.8f : 1.0f);
+                    if (fxFlangerPhase.at (slot) >= 1.0) fxFlangerPhase.at (slot) -= 1.0;
+                    sweep = 1.0f + 0.5f * float (sin (float (twoPi) * float (fxFlangerPhase.at (slot))));
+                }
+                float delaySamples = clamp ((sr / max (cutoff, 20.0f)) * sweep, 2.0f, 2040.0f);
+                float readPos = float (pos) - delaySamples;
+                if (readPos < 0.0f) readPos += 4096.0f;
+                int r0 = clamp (int (readPos), 0, 4095);
+                int r1 = r0 + 1;
+                if (r1 >= 4096) r1 = 0;
+                float frac = readPos - float (r0);
+                float dlyL = fxFlangerBufL.at (slot * 4096 + r0) * (1.0f - frac) + fxFlangerBufL.at (slot * 4096 + r1) * frac;
+                float dlyR = fxFlangerBufR.at (slot * 4096 + r0) * (1.0f - frac) + fxFlangerBufR.at (slot * 4096 + r1) * frac;
+                float fb = resEff * ((ft == 20 || ft == 28) ? 0.97f : -0.97f);
+                if (ft == 28 || ft == 29) fb *= 0.98f;
+                float ycL = xL + fb * dlyL;
+                float ycR = xR + fb * dlyR;
+                fxFlangerBufL.at (slot * 4096 + pos) = ycL;
+                fxFlangerBufR.at (slot * 4096 + pos) = ycR;
+                pos += 1;
+                if (pos >= 4096) pos = 0;
+                fxFlangerPos.at (slot) = pos;
+                wetL = ycL * 0.7f;
+                wetR = ycR * 0.7f;
+            }
+            else
+            {
+                float cutoffL = variation == 3 ? cutoff * 0.85f : cutoff;
+                float cutoffR = variation == 3 ? min (cutoff * 1.15f, sr * 0.45f) : cutoff;
+                float gL = float (tan (float64 (cutoffL) * pi * float64 (dt)));
+                float gR = float (tan (float64 (cutoffR) * pi * float64 (dt)));
+                wetL = fxRackFilterMono (slot, 0, xL, gL, k, resEff, cutoffL, dt, sr, ft);
+                wetR = fxRackFilterMono (slot, 1, xR, gR, k, resEff, cutoffR, dt, sr, ft);
+            }
 
+            if (variation == 4)
+            {
+                float levels = 12.0f + 36.0f * (1.0f - e);
+                wetL = rint (wetL * levels) / levels;
+                wetR = rint (wetR * levels) / levels;
+            }
+            else if (variation == 5)
+            {
+                wetL = softClip (wetL * (1.0f + d * 3.0f));
+                wetR = softClip (wetR * (1.0f + d * 3.0f));
+            }
             outL = (inL * (1.0f - c) + wetL * c) * (1.0f + f);
             outR = (inR * (1.0f - c) + wetR * c) * (1.0f + f);
         }
