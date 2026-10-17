@@ -64,9 +64,6 @@ processor Eisenpuls_Synth
     // ---------------- OUTPUT / FX ----------------
     input event float param28 [[ name: "Drive",                        min: 0.0,   max: 1.0,    init: 0.1   ]];
     input event float param29 [[ name: "Pan",                          min: -1.0,  max: 1.0,    init: 0.0   ]];
-    input event float param30 [[ name: "Delay Time",                   min: 10.0,  max: 1000.0, init: 375.0, unit: "ms" ]];
-    input event float param31 [[ name: "Delay Feedback",               min: 0.0,   max: 0.95,   init: 0.35  ]];
-    input event float param32 [[ name: "Delay Depth",                  min: 0.0,   max: 1.0,    init: 0.0   ]];
 
     input event float param36 [[ name: "Master Level",                 min: 0.0,   max: 1.0,    init: 0.8   ]];
 
@@ -85,9 +82,6 @@ processor Eisenpuls_Synth
     input event float param48 [[ name: "LFO to Pulse Width",           min: 0.0,   max: 1.0,    init: 0.0   ]];
 
     // ---------------- FX / MASTER PARAMETERS ----------------
-    input event float param60 [[ name: "Delay Damp",                   min: 500.0, max: 18000.0, init: 18000.0, unit: "Hz" ]];
-    input event float param61 [[ name: "Bit Crush Bits",               min: 4.0,   max: 16.0,   init: 16.0  ]];
-    input event float param62 [[ name: "Sample Rate Reduce",           min: 1.0,   max: 32.0,   init: 1.0   ]];
     input event float param63 [[ name: "Master Tune",                  min: -100.0, max: 100.0, init: 0.0,   unit: "ct" ]];
 
     // ---------------- SUPERSAW OSCILLATOR ----------------
@@ -126,36 +120,12 @@ processor Eisenpuls_Synth
     input event float param163 [[ name: "Synth Sample Solo",           min: 0.0,   max: 1.0,    init: 0.0,   step: 1.0 ]];
 
     // ---------------- EXTRA EFFECTS ----------------
-    input event float param164 [[ name: "Chorus Mix",                  min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param165 [[ name: "Chorus Rate",                 min: 0.05,  max: 5.0,    init: 0.8,   unit: "Hz" ]];
-    input event float param166 [[ name: "Chorus Depth",                min: 0.0,   max: 1.0,    init: 0.5   ]];
-    input event float param167 [[ name: "Phaser Mix",                  min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param168 [[ name: "Phaser Rate",                 min: 0.05,  max: 8.0,    init: 0.4,   unit: "Hz" ]];
-    input event float param169 [[ name: "Phaser Depth",                min: 0.0,   max: 1.0,    init: 0.5   ]];
-    input event float param170 [[ name: "Reverb Mix",                  min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param171 [[ name: "Reverb Size",                 min: 0.0,   max: 1.0,    init: 0.5   ]];
-    input event float param172 [[ name: "Reverb Damp",                 min: 0.0,   max: 1.0,    init: 0.5   ]];
-    input event float param173 [[ name: "Tremolo Depth",               min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param174 [[ name: "Tremolo Rate",                min: 0.1,   max: 20.0,   init: 5.0,   unit: "Hz" ]];
     input event float param175 [[ name: "Stereo Width",                min: 0.0,   max: 2.0,    init: 1.0   ]];
 
     // ---------------- MORE EFFECTS + OSCILLATOR VOLUME ----------------
     input event float param176 [[ name: "Osc Volume",                  min: 0.0,   max: 1.0,    init: 1.0   ]];
-    input event float param177 [[ name: "Chorus Feedback",             min: 0.0,   max: 0.9,    init: 0.0   ]];
-    input event float param178 [[ name: "Phaser Feedback",             min: 0.0,   max: 0.9,    init: 0.5   ]];
-    input event float param179 [[ name: "Reverb Pre-Delay",            min: 0.0,   max: 100.0,  init: 0.0,   unit: "ms" ]];
-    input event float param180 [[ name: "Reverb Width",                min: 0.0,   max: 1.0,    init: 1.0   ]];
-    input event float param181 [[ name: "Tremolo Wave (Sin/Tri/Sq/Saw Down/Saw Up)",  min: 0.0,   max: 4.0,    init: 0.0,   step: 1.0 ]];
-    input event float param182 [[ name: "Tremolo Stereo Offset",      min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param183 [[ name: "Delay Mix",                   min: 0.0,   max: 1.0,    init: 1.0   ]];
-    input event float param184 [[ name: "Delay Ping-Pong",             min: 0.0,   max: 1.0,    init: 1.0   ]];
-    input event float param185 [[ name: "Flanger Mix",                 min: 0.0,   max: 1.0,    init: 0.0   ]];
-    input event float param186 [[ name: "Flanger Rate",                min: 0.05,  max: 5.0,    init: 0.3,   unit: "Hz" ]];
-    input event float param187 [[ name: "Flanger Depth",               min: 0.0,   max: 1.0,    init: 0.6   ]];
-    input event float param188 [[ name: "Flanger Feedback",            min: 0.0,   max: 0.95,   init: 0.5   ]];
     input event float param189 [[ name: "Output Tone (Dark/Bright)",   min: -1.0,  max: 1.0,    init: 0.0   ]];
     input event float param190 [[ name: "Output Gain",                 min: 0.0,   max: 2.0,    init: 1.0   ]];
-    input event float param191 [[ name: "Bit Crush Mix",               min: 0.0,   max: 1.0,    init: 1.0   ]];
 
     // ---------------- SAMPLER 2 (OWN PAGE, OWN MEMORY BANK OF 8) ----------------
     input event float param192 [[ name: "Sample 2 Level",              min: 0.0,   max: 1.0,    init: 0.0   ]];
@@ -386,10 +356,117 @@ processor Eisenpuls_Synth
 
     // ---------------- FX ALGORITHMS ----------------
     input event float param536 [[ name: "Drive Algorithm (0 Soft, 1 Tube, 2 Hard, 3 Fold, 4 Sine, 5 Crunch)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param537 [[ name: "Delay Type (0 Digital, 1 Tape, 2 Dual)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
-    input event float param538 [[ name: "Chorus Mode (0 Classic, 1 Dimension, 2 Vibrato)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
-    input event float param539 [[ name: "Phaser Stages (0 2-stage, 1 4-stage, 2 6-stage, 3 8-stage)", min: 0.0, max: 3.0, init: 1.0, step: 1.0 ]];
-    input event float param540 [[ name: "Reverb Type (0 Hall, 1 Room, 2 Plate, 3 Cathedral)", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    // ---------------- FX RACK (10 slots, see the rack section below for the meaning of P1-P6) ----------------
+    input event float param541     [[ name: "FX 1 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param542     [[ name: "FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param543     [[ name: "FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param544     [[ name: "FX 1 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param545     [[ name: "FX 1 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param546     [[ name: "FX 1 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param547     [[ name: "FX 1 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param548     [[ name: "FX 1 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param549     [[ name: "FX 1 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param550     [[ name: "FX 1 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param551     [[ name: "FX 2 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param552     [[ name: "FX 2 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param553     [[ name: "FX 2 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param554     [[ name: "FX 2 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param555     [[ name: "FX 2 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param556     [[ name: "FX 2 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param557     [[ name: "FX 2 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param558     [[ name: "FX 2 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param559     [[ name: "FX 2 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param560     [[ name: "FX 2 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param561     [[ name: "FX 3 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param562     [[ name: "FX 3 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param563     [[ name: "FX 3 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param564     [[ name: "FX 3 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param565     [[ name: "FX 3 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param566     [[ name: "FX 3 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param567     [[ name: "FX 3 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param568     [[ name: "FX 3 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param569     [[ name: "FX 3 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param570     [[ name: "FX 3 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param571     [[ name: "FX 4 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param572     [[ name: "FX 4 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param573     [[ name: "FX 4 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param574     [[ name: "FX 4 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param575     [[ name: "FX 4 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param576     [[ name: "FX 4 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param577     [[ name: "FX 4 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param578     [[ name: "FX 4 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param579     [[ name: "FX 4 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param580     [[ name: "FX 4 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param581     [[ name: "FX 5 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param582     [[ name: "FX 5 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param583     [[ name: "FX 5 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param584     [[ name: "FX 5 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param585     [[ name: "FX 5 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param586     [[ name: "FX 5 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param587     [[ name: "FX 5 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param588     [[ name: "FX 5 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param589     [[ name: "FX 5 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param590     [[ name: "FX 5 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param591     [[ name: "FX 6 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param592     [[ name: "FX 6 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param593     [[ name: "FX 6 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param594     [[ name: "FX 6 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param595     [[ name: "FX 6 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param596     [[ name: "FX 6 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param597     [[ name: "FX 6 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param598     [[ name: "FX 6 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param599     [[ name: "FX 6 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param600     [[ name: "FX 6 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param601     [[ name: "FX 7 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param602     [[ name: "FX 7 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param603     [[ name: "FX 7 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param604     [[ name: "FX 7 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param605     [[ name: "FX 7 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param606     [[ name: "FX 7 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param607     [[ name: "FX 7 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param608     [[ name: "FX 7 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param609     [[ name: "FX 7 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param610     [[ name: "FX 7 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param611     [[ name: "FX 8 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param612     [[ name: "FX 8 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param613     [[ name: "FX 8 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param614     [[ name: "FX 8 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param615     [[ name: "FX 8 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param616     [[ name: "FX 8 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param617     [[ name: "FX 8 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param618     [[ name: "FX 8 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param619     [[ name: "FX 8 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param620     [[ name: "FX 8 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param621     [[ name: "FX 9 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param622     [[ name: "FX 9 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param623     [[ name: "FX 9 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param624     [[ name: "FX 9 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param625     [[ name: "FX 9 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param626     [[ name: "FX 9 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param627     [[ name: "FX 9 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param628     [[ name: "FX 9 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param629     [[ name: "FX 9 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param630     [[ name: "FX 9 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param631     [[ name: "FX 10 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param632     [[ name: "FX 10 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
+    input event float param633     [[ name: "FX 10 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
+    input event float param634     [[ name: "FX 10 Mode",  min: 0.0, max: 5.0,  init: 0.0, step: 1.0 ]];
+    input event float param635     [[ name: "FX 10 P1",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param636     [[ name: "FX 10 P2",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param637     [[ name: "FX 10 P3",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param638     [[ name: "FX 10 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param639     [[ name: "FX 10 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param640     [[ name: "FX 10 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
+    input event float param641    [[ name: "FX Order 1", min: 0.0, max: 9.0, init: 0.0, step: 1.0 ]];
+    input event float param642    [[ name: "FX Order 2", min: 0.0, max: 9.0, init: 1.0, step: 1.0 ]];
+    input event float param643    [[ name: "FX Order 3", min: 0.0, max: 9.0, init: 2.0, step: 1.0 ]];
+    input event float param644    [[ name: "FX Order 4", min: 0.0, max: 9.0, init: 3.0, step: 1.0 ]];
+    input event float param645    [[ name: "FX Order 5", min: 0.0, max: 9.0, init: 4.0, step: 1.0 ]];
+    input event float param646    [[ name: "FX Order 6", min: 0.0, max: 9.0, init: 5.0, step: 1.0 ]];
+    input event float param647    [[ name: "FX Order 7", min: 0.0, max: 9.0, init: 6.0, step: 1.0 ]];
+    input event float param648    [[ name: "FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
+    input event float param649    [[ name: "FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
+    input event float param650    [[ name: "FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
 
     // ---------------- MIXER CHANNEL EQS (SSL 4000 style: LF shelf, LMF bell, HMF bell, HF shelf) ----------------
     // Channel order: 0 Osc, 1 Sub, 2 Noise, 3 Supersaw, 4 Sampler 1, 5 Sampler 2, 6 Wavetable 1, 7 Wavetable 2, 8 Wavetable 3
@@ -603,9 +680,6 @@ processor Eisenpuls_Synth
     float panParam     = 0.0f;
     float panL         = 1.0f;
     float panR         = 1.0f;
-    float delayMs      = 375.0f;
-    float delayFb      = 0.35f;
-    float delayDepth   = 0.0f;
     float masterLevel  = 0.8f;
 
     float subLevel     = 0.0f;
@@ -621,9 +695,6 @@ processor Eisenpuls_Synth
     float lfoKeySync   = 0.0f;
     float lfoPw        = 0.0f;
 
-    float delayDamp    = 18000.0f;
-    float crushBits    = 16.0f;
-    float srrAmt       = 1.0f;
     float masterTune   = 0.0f;
 
     // Pitch split state
@@ -755,6 +826,21 @@ processor Eisenpuls_Synth
     float[96000] wavetableBank3V2Buffer;
     float[1920]   wavetableBank3V2Means;      // per-frame DC (1 memory x 5 frame sizes x 384 frames)
     float[1]      wavetableBank3V2MeanAll;   // whole-memory DC (fallback)
+    // ---------------- FX RACK STATE ----------------
+    int[10]       fxType;
+    float[10]     fxOn;
+    float[10]     fxMix;
+    int[10]       fxMode;
+    float[60]     fxP;
+    bool[10]      fxDirty;
+    int[10]       fxOrder;
+    int[10]       fxSeq;
+    float[160]    fxD;
+    float[400]    fxF;
+    int[240]      fxI;
+    float64[40]   fxPh;
+    float[1966080] fxArena;   // 10 slots x 196608 floats
+
 
     // Sample memory manager (autosave) state
     float     autosaveOn  = 1.0f;
@@ -764,41 +850,13 @@ processor Eisenpuls_Synth
     int       dumpTimer   = 0;
 
     // Extra effects state
-    float chorusMix    = 0.0f;
-    float chorusRate   = 0.8f;
-    float chorusDepth  = 0.5f;
-    float phaserMix    = 0.0f;
-    float phaserRate   = 0.4f;
-    float phaserDepth  = 0.5f;
-    float reverbMix    = 0.0f;
-    float reverbFb     = 0.84f;
-    float reverbDamp   = 0.55f;
-    float tremDepth    = 0.0f;
-    float tremRate     = 5.0f;
     float stereoWidth  = 1.0f;
 
     // New state
     float oscVolume    = 1.0f;
-    float chorusFb     = 0.0f;
-    float phaserFb     = 0.5f;
-    float reverbPreMs  = 0.0f;
-    float reverbWidth  = 1.0f;
-    float tremWave     = 0.0f;
     float driveAlg     = 0.0f;
-    float delayType    = 0.0f;
-    float chorusMode   = 0.0f;
-    float phaserStg    = 1.0f;
-    float reverbType   = 0.0f;
-    float tremStereo   = 0.0f;
-    float delayMixAmt  = 1.0f;
-    float delayPing    = 1.0f;
-    float flangMix     = 0.0f;
-    float flangRate    = 0.3f;
-    float flangDepth   = 0.6f;
-    float flangFb      = 0.5f;
     float toneAmt      = 0.0f;
     float outGain      = 1.0f;
-    float crushMix     = 1.0f;
 
     // DC blocker state (one-pole high-pass on the final output)
     float dcOn     = 0.0f;
@@ -809,59 +867,26 @@ processor Eisenpuls_Synth
     float dcYR     = 0.0f;
 
     // Chorus buffers
-    float[8192] chBufL;
-    float[8192] chBufR;
-    int     chPos      = 0;
-    float64 chPhase    = 0.0;
-    float   chFbL      = 0.0f;
-    float   chFbR      = 0.0f;
 
     // Flanger buffers
-    float[4096] flBufL;
-    float[4096] flBufR;
-    int     flPos      = 0;
-    float64 flPhase    = 0.0;
-    float   flFbL      = 0.0f;
-    float   flFbR      = 0.0f;
 
     // Phaser state (4 allpass stages per channel)
-    float[8] phZL;
-    float[8] phZR;
-    float   phFbL      = 0.0f;
-    float   phFbR      = 0.0f;
-    float64 phPhase    = 0.0;
 
     // Tremolo state
-    float64 trPhase    = 0.0;
-    float64 tpPhase    = 0.0;   // tape delay wow phase
-    float64 tpPhase2   = 0.0;   // tape delay flutter phase
 
     // Reverb pre-delay
-    float[8192] pdBuf;
-    int     pdPos      = 0;
     float   synDcXL    = 0.0f;   // synth-bus DC blocker (always on, before the FX)
     float   synDcYL    = 0.0f;
     float   synDcXR    = 0.0f;
     float   synDcYR    = 0.0f;
-    float   rvInX      = 0.0f;   // reverb input DC blocker
-    float   rvInY      = 0.0f;
-    float   rvOxL      = 0.0f;   // reverb output DC blockers
-    float   rvOyL      = 0.0f;
-    float   rvOxR      = 0.0f;
-    float   rvOyR      = 0.0f;
 
     // Output tone state
     float   toneStL    = 0.0f;
     float   toneStR    = 0.0f;
 
     // Reverb state: 8 comb filters (4 left, 4 right) and 4 allpass filters
-    float[65536] combBuf;
     int[8]       combLen;
-    int[8]       combPos;
-    float[8]     combStore;
-    float[16384] apBuf;
     int[4]       apLen;
-    int[4]       apPos;
 
     // ---------------- MOD PAGE STATE ----------------
     float[10]   mLfoWave;
@@ -961,9 +986,6 @@ processor Eisenpuls_Synth
         panL = float (cos (ang)) * 1.4142f;
         panR = float (sin (ang)) * 1.4142f;
     }
-    event param30 (float v) { delayMs     = v; }
-    event param31 (float v) { delayFb     = v; }
-    event param32 (float v) { delayDepth  = v; }
     event param36 (float v) { masterLevel = v; }
 
     event param37 (float v) { subLevel    = v; }
@@ -979,9 +1001,6 @@ processor Eisenpuls_Synth
     event param47 (float v) { lfoKeySync  = v; }
     event param48 (float v) { lfoPw       = v; }
 
-    event param60 (float v) { delayDamp   = v; }
-    event param61 (float v) { crushBits   = v; }
-    event param62 (float v) { srrAmt      = v; }
     event param63 (float v) { masterTune  = v; }
 
     event param138 (float v) { ssLevel     = v; }
@@ -1027,35 +1046,11 @@ processor Eisenpuls_Synth
     event param162 (float v) { synthSmpFilter = v; }
     event param163 (float v) { synthSmpSolo   = v; }
 
-    event param164 (float v) { chorusMix   = v; }
-    event param165 (float v) { chorusRate  = v; }
-    event param166 (float v) { chorusDepth = v; }
-    event param167 (float v) { phaserMix   = v; }
-    event param168 (float v) { phaserRate  = v; }
-    event param169 (float v) { phaserDepth = v; }
-    event param170 (float v) { reverbMix   = v; }
-    event param171 (float v) { reverbFb    = 0.7f + 0.28f * clamp (v, 0.0f, 1.0f); }
-    event param172 (float v) { reverbDamp  = 0.2f + 0.7f * clamp (v, 0.0f, 1.0f); }
-    event param173 (float v) { tremDepth   = v; }
-    event param174 (float v) { tremRate    = v; }
     event param175 (float v) { stereoWidth = v; }
 
     event param176 (float v) { oscVolume   = v; }
-    event param177 (float v) { chorusFb    = v; }
-    event param178 (float v) { phaserFb    = v; }
-    event param179 (float v) { reverbPreMs = v; }
-    event param180 (float v) { reverbWidth = v; }
-    event param181 (float v) { tremWave    = float (rint (v)); }
-    event param182 (float v) { tremStereo  = v; }
-    event param183 (float v) { delayMixAmt = v; }
-    event param184 (float v) { delayPing   = v; }
-    event param185 (float v) { flangMix    = v; }
-    event param186 (float v) { flangRate   = v; }
-    event param187 (float v) { flangDepth  = v; }
-    event param188 (float v) { flangFb     = v; }
     event param189 (float v) { toneAmt     = v; }
     event param190 (float v) { outGain     = v; }
-    event param191 (float v) { crushMix    = v; }
 
     event param192 (float v) { synthSmp2Level = v; }
     event param193 (float v) { synthSmp2Idx   = clamp (int (v + 0.5f), 0, 0); }
@@ -1288,10 +1283,118 @@ processor Eisenpuls_Synth
     event param534 (float v) { f2Route     = v; }
     event param535 (float v) { f2Blend     = v; }
     event param536 (float v) { driveAlg    = float (rint (v)); }
-    event param537 (float v) { delayType   = float (rint (v)); }
-    event param538 (float v) { chorusMode  = float (rint (v)); }
-    event param539 (float v) { phaserStg   = float (rint (v)); }
-    event param540 (float v) { reverbType  = float (rint (v)); }
+
+    // FX rack handlers
+    event param541     (float v) { fxSetType (0, int (v + 0.5f)); }
+    event param542     (float v) { fxOn.at (0) = v; }
+    event param543     (float v) { fxMix.at (0) = v; }
+    event param544     (float v) { fxMode.at (0) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (0) = true; }
+    event param545     (float v) { fxP.at (0) = v; fxDirty.at (0) = true; }
+    event param546     (float v) { fxP.at (1) = v; fxDirty.at (0) = true; }
+    event param547     (float v) { fxP.at (2) = v; fxDirty.at (0) = true; }
+    event param548     (float v) { fxP.at (3) = v; fxDirty.at (0) = true; }
+    event param549     (float v) { fxP.at (4) = v; fxDirty.at (0) = true; }
+    event param550     (float v) { fxP.at (5) = v; fxDirty.at (0) = true; }
+    event param551     (float v) { fxSetType (1, int (v + 0.5f)); }
+    event param552     (float v) { fxOn.at (1) = v; }
+    event param553     (float v) { fxMix.at (1) = v; }
+    event param554     (float v) { fxMode.at (1) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (1) = true; }
+    event param555     (float v) { fxP.at (6) = v; fxDirty.at (1) = true; }
+    event param556     (float v) { fxP.at (7) = v; fxDirty.at (1) = true; }
+    event param557     (float v) { fxP.at (8) = v; fxDirty.at (1) = true; }
+    event param558     (float v) { fxP.at (9) = v; fxDirty.at (1) = true; }
+    event param559     (float v) { fxP.at (10) = v; fxDirty.at (1) = true; }
+    event param560     (float v) { fxP.at (11) = v; fxDirty.at (1) = true; }
+    event param561     (float v) { fxSetType (2, int (v + 0.5f)); }
+    event param562     (float v) { fxOn.at (2) = v; }
+    event param563     (float v) { fxMix.at (2) = v; }
+    event param564     (float v) { fxMode.at (2) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (2) = true; }
+    event param565     (float v) { fxP.at (12) = v; fxDirty.at (2) = true; }
+    event param566     (float v) { fxP.at (13) = v; fxDirty.at (2) = true; }
+    event param567     (float v) { fxP.at (14) = v; fxDirty.at (2) = true; }
+    event param568     (float v) { fxP.at (15) = v; fxDirty.at (2) = true; }
+    event param569     (float v) { fxP.at (16) = v; fxDirty.at (2) = true; }
+    event param570     (float v) { fxP.at (17) = v; fxDirty.at (2) = true; }
+    event param571     (float v) { fxSetType (3, int (v + 0.5f)); }
+    event param572     (float v) { fxOn.at (3) = v; }
+    event param573     (float v) { fxMix.at (3) = v; }
+    event param574     (float v) { fxMode.at (3) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (3) = true; }
+    event param575     (float v) { fxP.at (18) = v; fxDirty.at (3) = true; }
+    event param576     (float v) { fxP.at (19) = v; fxDirty.at (3) = true; }
+    event param577     (float v) { fxP.at (20) = v; fxDirty.at (3) = true; }
+    event param578     (float v) { fxP.at (21) = v; fxDirty.at (3) = true; }
+    event param579     (float v) { fxP.at (22) = v; fxDirty.at (3) = true; }
+    event param580     (float v) { fxP.at (23) = v; fxDirty.at (3) = true; }
+    event param581     (float v) { fxSetType (4, int (v + 0.5f)); }
+    event param582     (float v) { fxOn.at (4) = v; }
+    event param583     (float v) { fxMix.at (4) = v; }
+    event param584     (float v) { fxMode.at (4) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (4) = true; }
+    event param585     (float v) { fxP.at (24) = v; fxDirty.at (4) = true; }
+    event param586     (float v) { fxP.at (25) = v; fxDirty.at (4) = true; }
+    event param587     (float v) { fxP.at (26) = v; fxDirty.at (4) = true; }
+    event param588     (float v) { fxP.at (27) = v; fxDirty.at (4) = true; }
+    event param589     (float v) { fxP.at (28) = v; fxDirty.at (4) = true; }
+    event param590     (float v) { fxP.at (29) = v; fxDirty.at (4) = true; }
+    event param591     (float v) { fxSetType (5, int (v + 0.5f)); }
+    event param592     (float v) { fxOn.at (5) = v; }
+    event param593     (float v) { fxMix.at (5) = v; }
+    event param594     (float v) { fxMode.at (5) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (5) = true; }
+    event param595     (float v) { fxP.at (30) = v; fxDirty.at (5) = true; }
+    event param596     (float v) { fxP.at (31) = v; fxDirty.at (5) = true; }
+    event param597     (float v) { fxP.at (32) = v; fxDirty.at (5) = true; }
+    event param598     (float v) { fxP.at (33) = v; fxDirty.at (5) = true; }
+    event param599     (float v) { fxP.at (34) = v; fxDirty.at (5) = true; }
+    event param600     (float v) { fxP.at (35) = v; fxDirty.at (5) = true; }
+    event param601     (float v) { fxSetType (6, int (v + 0.5f)); }
+    event param602     (float v) { fxOn.at (6) = v; }
+    event param603     (float v) { fxMix.at (6) = v; }
+    event param604     (float v) { fxMode.at (6) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (6) = true; }
+    event param605     (float v) { fxP.at (36) = v; fxDirty.at (6) = true; }
+    event param606     (float v) { fxP.at (37) = v; fxDirty.at (6) = true; }
+    event param607     (float v) { fxP.at (38) = v; fxDirty.at (6) = true; }
+    event param608     (float v) { fxP.at (39) = v; fxDirty.at (6) = true; }
+    event param609     (float v) { fxP.at (40) = v; fxDirty.at (6) = true; }
+    event param610     (float v) { fxP.at (41) = v; fxDirty.at (6) = true; }
+    event param611     (float v) { fxSetType (7, int (v + 0.5f)); }
+    event param612     (float v) { fxOn.at (7) = v; }
+    event param613     (float v) { fxMix.at (7) = v; }
+    event param614     (float v) { fxMode.at (7) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (7) = true; }
+    event param615     (float v) { fxP.at (42) = v; fxDirty.at (7) = true; }
+    event param616     (float v) { fxP.at (43) = v; fxDirty.at (7) = true; }
+    event param617     (float v) { fxP.at (44) = v; fxDirty.at (7) = true; }
+    event param618     (float v) { fxP.at (45) = v; fxDirty.at (7) = true; }
+    event param619     (float v) { fxP.at (46) = v; fxDirty.at (7) = true; }
+    event param620     (float v) { fxP.at (47) = v; fxDirty.at (7) = true; }
+    event param621     (float v) { fxSetType (8, int (v + 0.5f)); }
+    event param622     (float v) { fxOn.at (8) = v; }
+    event param623     (float v) { fxMix.at (8) = v; }
+    event param624     (float v) { fxMode.at (8) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (8) = true; }
+    event param625     (float v) { fxP.at (48) = v; fxDirty.at (8) = true; }
+    event param626     (float v) { fxP.at (49) = v; fxDirty.at (8) = true; }
+    event param627     (float v) { fxP.at (50) = v; fxDirty.at (8) = true; }
+    event param628     (float v) { fxP.at (51) = v; fxDirty.at (8) = true; }
+    event param629     (float v) { fxP.at (52) = v; fxDirty.at (8) = true; }
+    event param630     (float v) { fxP.at (53) = v; fxDirty.at (8) = true; }
+    event param631     (float v) { fxSetType (9, int (v + 0.5f)); }
+    event param632     (float v) { fxOn.at (9) = v; }
+    event param633     (float v) { fxMix.at (9) = v; }
+    event param634     (float v) { fxMode.at (9) = clamp (int (v + 0.5f), 0, 5); fxDirty.at (9) = true; }
+    event param635     (float v) { fxP.at (54) = v; fxDirty.at (9) = true; }
+    event param636     (float v) { fxP.at (55) = v; fxDirty.at (9) = true; }
+    event param637     (float v) { fxP.at (56) = v; fxDirty.at (9) = true; }
+    event param638     (float v) { fxP.at (57) = v; fxDirty.at (9) = true; }
+    event param639     (float v) { fxP.at (58) = v; fxDirty.at (9) = true; }
+    event param640     (float v) { fxP.at (59) = v; fxDirty.at (9) = true; }
+    event param641    (float v) { fxOrder.at (0) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param642    (float v) { fxOrder.at (1) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param643    (float v) { fxOrder.at (2) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param644    (float v) { fxOrder.at (3) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param645    (float v) { fxOrder.at (4) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param646    (float v) { fxOrder.at (5) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param647    (float v) { fxOrder.at (6) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param648    (float v) { fxOrder.at (7) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param649    (float v) { fxOrder.at (8) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
+    event param650    (float v) { fxOrder.at (9) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq(); }
     event tempoIn (std::timeline::Tempo t) { if (t.bpm > 1.0f) hostBpm = t.bpm; }
 
     // Mixer EQ handlers: channel 0 (Osc)
@@ -1492,17 +1595,8 @@ processor Eisenpuls_Synth
     int noiseState = 12345;
 
     // Delay
-    float[192000] bufL;
-    float[192000] bufR;
-    int   writePos  = 0;
-    float delayCur  = 18000.0f;
-    float dampStL   = 0.0f;
-    float dampStR   = 0.0f;
 
     // Sample-rate reducer
-    int   srrCount  = 0;
-    float heldL     = 0.0f;
-    float heldR     = 0.0f;
 
     // ---------------- INIT ----------------
     void init()
@@ -1615,6 +1709,840 @@ processor Eisenpuls_Synth
         apLen.at (1) = clamp (int (441.0f * rs), 16, 4095);
         apLen.at (2) = clamp (int (579.0f * rs), 16, 4095);
         apLen.at (3) = clamp (int (464.0f * rs), 16, 4095);
+
+        fxInit();
+    }
+
+    // ================================================================================================================
+    // FX RACK: 10 slots, every slot holds any effect, slots are processed in the order set by "FX Order 1-10".
+    //
+    // The slot parameters P1-P6 are normalised 0..1; what they mean depends on the effect type (the UI shows the
+    // real names and units). The same table lives in patch/index.js (FX_TYPES), keep both in step:
+    //
+    //   1 Distortion  mode: Soft Tube Hard Fold Sine Crunch   P1 Drive    P2 Tone       P3 Output
+    //   2 Bit Crush                                           P1 Bits     P2 Rate
+    //   3 Delay       mode: Digital Tape Dual                 P1 Time     P2 Feedback   P3 Damp       P4 Ping-Pong
+    //   4 Chorus      mode: Classic Dimension Vibrato         P1 Rate     P2 Depth      P3 Feedback
+    //   5 Flanger                                             P1 Rate     P2 Depth      P3 Feedback
+    //   6 Phaser      mode: 2 4 6 8 stages                    P1 Rate     P2 Depth      P3 Feedback
+    //   7 Tremolo     mode: Sin Tri Sqr SawDn SawUp           P1 Rate     P2 Depth      P3 Stereo
+    //   8 Reverb      mode: Hall Room Plate Cathedral         P1 Size     P2 Damp       P3 Pre-Delay  P4 Width
+    //   9 Filter      mode: LP HP BP Notch                    P1 Cutoff   P2 Reso       P3 Drive
+    //  10 EQ                                                  P1 Low      P2 Mid        P3 Mid Freq   P4 High   P5 Mid Q
+    //  11 Compressor  mode: Peak RMS                          P1 Thresh   P2 Ratio      P3 Attack     P4 Release  P5 Makeup
+    //
+    // Every slot has a private 196608-float arena (delay lines etc.), 40 float / 24 int / 4 phase state slots and
+    // 16 derived values (fxD, recomputed lazily when a parameter changed).
+    // ================================================================================================================
+
+    // log-style mapping of a 0..1 value onto lo..hi
+    float fxExpMap (float n, float lo, float hi)
+    {
+        return lo * float (pow (hi / lo, clamp (n, 0.0f, 1.0f)));
+    }
+
+    // Clears the delay lines and filter memories of one slot
+    void fxResetSlot (int s)
+    {
+        int ab = s * 196608;
+
+        for (int i = 0; i < 196608; ++i)
+            fxArena.at (ab + i) = 0.0f;
+
+        for (int i = 0; i < 40; ++i)
+            fxF.at (s * 40 + i) = 0.0f;
+
+        for (int i = 0; i < 24; ++i)
+            fxI.at (s * 24 + i) = 0;
+
+        for (int i = 0; i < 4; ++i)
+            fxPh.at (s * 4 + i) = 0.0;
+    }
+
+    // Selects the effect of a slot (its memory is cleared only when the type really changes)
+    void fxSetType (int s, int t)
+    {
+        int nt = clamp (t, 0, 11);
+
+        if (nt != fxType.at (s))
+        {
+            fxType.at (s) = nt;
+            fxResetSlot (s);
+        }
+
+        fxDirty.at (s) = true;
+    }
+
+    // Rebuilds the processing order from the 10 "FX Order" values; an order that is not a permutation of the
+    // 10 slots (for example while the UI is still sending the values one by one) is ignored
+    void fxRebuildSeq()
+    {
+        int[10] used;
+        bool    valid = true;
+
+        for (int k = 0; k < 10; ++k)
+        {
+            int s = clamp (fxOrder.at (k), 0, 9);
+
+            if (used.at (s) != 0)
+                valid = false;
+
+            used.at (s) = 1;
+        }
+
+        if (valid)
+        {
+            for (int k = 0; k < 10; ++k)
+                fxSeq.at (k) = clamp (fxOrder.at (k), 0, 9);
+        }
+    }
+
+    // RBJ biquad of one EQ band (kind 0 low shelf, 1 peaking bell, 2 high shelf), written to fxD[o .. o+4]
+    void fxBiquad (int o, int kind, float gDb, float f, float q)
+    {
+        float cb0 = 1.0f;
+        float cb1 = 0.0f;
+        float cb2 = 0.0f;
+        float ca1 = 0.0f;
+        float ca2 = 0.0f;
+
+        if (abs (gDb) > 0.01f)
+        {
+            float sr  = float (processor.frequency);
+            float ff  = clamp (f, 20.0f, sr * 0.45f);
+            float w0  = float (twoPi) * ff / sr;
+            float cw  = float (cos (w0));
+            float sw  = float (sin (w0));
+            float aa  = float (pow (10.0f, gDb / 40.0f));
+            float sqA = float (sqrt (aa));
+
+            if (kind == 0)
+            {
+                float al = sw * 0.5f * 1.4142f;
+                float a0 = (aa + 1.0f) + (aa - 1.0f) * cw + 2.0f * sqA * al;
+                cb0 = (aa * ((aa + 1.0f) - (aa - 1.0f) * cw + 2.0f * sqA * al)) / a0;
+                cb1 = (2.0f * aa * ((aa - 1.0f) - (aa + 1.0f) * cw)) / a0;
+                cb2 = (aa * ((aa + 1.0f) - (aa - 1.0f) * cw - 2.0f * sqA * al)) / a0;
+                ca1 = (-2.0f * ((aa - 1.0f) + (aa + 1.0f) * cw)) / a0;
+                ca2 = ((aa + 1.0f) + (aa - 1.0f) * cw - 2.0f * sqA * al) / a0;
+            }
+            else if (kind == 2)
+            {
+                float al = sw * 0.5f * 1.4142f;
+                float a0 = (aa + 1.0f) - (aa - 1.0f) * cw + 2.0f * sqA * al;
+                cb0 = (aa * ((aa + 1.0f) + (aa - 1.0f) * cw + 2.0f * sqA * al)) / a0;
+                cb1 = (-2.0f * aa * ((aa - 1.0f) + (aa + 1.0f) * cw)) / a0;
+                cb2 = (aa * ((aa + 1.0f) + (aa - 1.0f) * cw - 2.0f * sqA * al)) / a0;
+                ca1 = (2.0f * ((aa - 1.0f) - (aa + 1.0f) * cw)) / a0;
+                ca2 = ((aa + 1.0f) - (aa - 1.0f) * cw - 2.0f * sqA * al) / a0;
+            }
+            else
+            {
+                float qq = max (q, 0.1f);
+                float al = sw / (2.0f * qq);
+                float a0 = 1.0f + al / aa;
+                cb0 = (1.0f + al * aa) / a0;
+                cb1 = (-2.0f * cw) / a0;
+                cb2 = (1.0f - al * aa) / a0;
+                ca1 = (-2.0f * cw) / a0;
+                ca2 = (1.0f - al / aa) / a0;
+            }
+        }
+
+        fxD.at (o)     = cb0;
+        fxD.at (o + 1) = cb1;
+        fxD.at (o + 2) = cb2;
+        fxD.at (o + 3) = ca1;
+        fxD.at (o + 4) = ca2;
+    }
+
+    // Turns the normalised slot parameters into the values the effect code needs (runs when a parameter changed)
+    void fxDerive (int s)
+    {
+        int   ty = fxType.at (s);
+        int   db = s * 16;
+        int   pb = s * 6;
+        float sr = float (processor.frequency);
+        float dt = float (processor.period);
+        float p1 = clamp (fxP.at (pb),     0.0f, 1.0f);
+        float p2 = clamp (fxP.at (pb + 1), 0.0f, 1.0f);
+        float p3 = clamp (fxP.at (pb + 2), 0.0f, 1.0f);
+        float p4 = clamp (fxP.at (pb + 3), 0.0f, 1.0f);
+        float p5 = clamp (fxP.at (pb + 4), 0.0f, 1.0f);
+
+        if (ty == 1)
+        {
+            // distortion: drive, tone low-pass coefficient, output gain
+            fxD.at (db)     = p1;
+            fxD.at (db + 1) = clamp (float (twoPi) * fxExpMap (p2, 500.0f, 20000.0f) * dt, 0.0f, 1.0f);
+            fxD.at (db + 2) = p3 * 2.0f;
+        }
+        else if (ty == 2)
+        {
+            // bit crush: bits, hold length, quantiser steps
+            fxD.at (db)     = 16.0f - 12.0f * p1;
+            fxD.at (db + 1) = 1.0f + rint (p2 * 31.0f);
+            fxD.at (db + 2) = float (pow (2.0f, fxD.at (db) - 1.0f));
+        }
+        else if (ty == 3)
+        {
+            // delay: time (samples), feedback, damping coefficient, ping-pong
+            fxD.at (db)     = clamp (fxExpMap (p1, 10.0f, 1000.0f) * 0.001f * sr, 2.0f, 98000.0f);
+            fxD.at (db + 1) = 0.95f * p2;
+
+            float dh = fxExpMap (p3, 500.0f, 18000.0f);
+            if (fxMode.at (s) == 1)
+                dh = min (dh, 6500.0f);
+
+            fxD.at (db + 2) = clamp (float (twoPi) * dh * dt, 0.0f, 1.0f);
+            fxD.at (db + 3) = p4;
+        }
+        else if (ty == 4)
+        {
+            fxD.at (db)     = fxExpMap (p1, 0.05f, 5.0f);
+            fxD.at (db + 1) = p2;
+            fxD.at (db + 2) = 0.9f * p3;
+        }
+        else if (ty == 5)
+        {
+            fxD.at (db)     = fxExpMap (p1, 0.05f, 5.0f);
+            fxD.at (db + 1) = p2;
+            fxD.at (db + 2) = 0.95f * p3;
+        }
+        else if (ty == 6)
+        {
+            fxD.at (db)     = fxExpMap (p1, 0.05f, 8.0f);
+            fxD.at (db + 1) = p2;
+            fxD.at (db + 2) = 0.9f * p3;
+        }
+        else if (ty == 7)
+        {
+            fxD.at (db)     = fxExpMap (p1, 0.1f, 20.0f);
+            fxD.at (db + 1) = p2;
+            fxD.at (db + 2) = p3;
+        }
+        else if (ty == 8)
+        {
+            // reverb: feedback, damping, pre-delay (samples), width
+            fxD.at (db)     = 0.7f + 0.28f * p1;
+            fxD.at (db + 1) = 0.2f + 0.7f * p2;
+            fxD.at (db + 2) = clamp (p3 * 0.1f * sr, 0.0f, 8000.0f);
+            fxD.at (db + 3) = p4;
+        }
+        else if (ty == 9)
+        {
+            // filter: state-variable filter coefficients, input drive
+            float fc = clamp (fxExpMap (p1, 20.0f, 20000.0f), 20.0f, sr * 0.45f);
+            float g  = float (tan (float64 (fc) * pi * processor.period));
+            float k  = 1.0f / (0.5f + 11.5f * p2 * p2);
+            float a1 = 1.0f / (1.0f + g * (g + k));
+            fxD.at (db)     = a1;
+            fxD.at (db + 1) = g * a1;
+            fxD.at (db + 2) = g * g * a1;
+            fxD.at (db + 3) = k;
+            fxD.at (db + 4) = 1.0f + 8.0f * p3;
+        }
+        else if (ty == 10)
+        {
+            // EQ: low shelf 100 Hz, mid bell, high shelf 8 kHz
+            fxBiquad (db,      0, (p1 - 0.5f) * 24.0f, 100.0f, 0.7f);
+            fxBiquad (db + 5,  1, (p2 - 0.5f) * 24.0f, fxExpMap (p3, 200.0f, 5000.0f), fxExpMap (p5, 0.3f, 4.0f));
+            fxBiquad (db + 10, 2, (p4 - 0.5f) * 24.0f, 8000.0f, 0.7f);
+        }
+        else if (ty == 11)
+        {
+            // compressor: threshold (linear), gain-curve exponent, attack / release coefficients, make-up gain
+            float ratio = 1.0f + 19.0f * p2 * p2;
+            fxD.at (db)     = float (pow (10.0f, (-60.0f + 60.0f * p1) / 20.0f));
+            fxD.at (db + 1) = 1.0f / ratio - 1.0f;
+            fxD.at (db + 2) = float (exp (-1.0f / (sr * 0.001f * fxExpMap (p3, 0.1f, 100.0f))));
+            fxD.at (db + 3) = float (exp (-1.0f / (sr * 0.001f * fxExpMap (p4, 10.0f, 1000.0f))));
+            fxD.at (db + 4) = float (pow (10.0f, 24.0f * p5 / 20.0f));
+        }
+    }
+
+    // ---------------- one function per effect: returns the processed ("wet") signal ----------------
+
+    float<2> fxDist (int s, float<2> x)
+    {
+        int   fb = s * 40;
+        int   db = s * 16;
+        int   al = fxMode.at (s);
+        float d  = fxD.at (db);
+        float a  = fxD.at (db + 1);
+        float g  = fxD.at (db + 2);
+
+        float yl = shapeSigAlg (x[0] * 0.5f, d, al) * 2.0f;
+        float yr = shapeSigAlg (x[1] * 0.5f, d, al) * 2.0f;
+
+        float tl = fxF.at (fb)     + a * (yl - fxF.at (fb));
+        float tr = fxF.at (fb + 1) + a * (yr - fxF.at (fb + 1));
+        fxF.at (fb)     = tl;
+        fxF.at (fb + 1) = tr;
+
+        return float<2> (tl * g, tr * g);
+    }
+
+    float<2> fxCrush (int s, float<2> x)
+    {
+        int fb  = s * 40;
+        int ib  = s * 24;
+        int db  = s * 16;
+        int cnt = fxI.at (ib) + 1;
+
+        if (cnt >= int (fxD.at (db + 1)))
+        {
+            cnt = 0;
+            fxF.at (fb)     = x[0];
+            fxF.at (fb + 1) = x[1];
+        }
+
+        fxI.at (ib) = cnt;
+
+        float yl = fxF.at (fb);
+        float yr = fxF.at (fb + 1);
+
+        if (fxD.at (db) < 15.5f)
+        {
+            float lv = fxD.at (db + 2);
+            yl = rint (yl * lv) / lv;
+            yr = rint (yr * lv) / lv;
+        }
+
+        return float<2> (yl, yr);
+    }
+
+    float<2> fxDelay (int s, float<2> x)
+    {
+        int   fb  = s * 40;
+        int   ib  = s * 24;
+        int   pb  = s * 4;
+        int   db  = s * 16;
+        int   ab  = s * 196608;
+        float sr  = float (processor.frequency);
+        int   dty = fxMode.at (s);
+
+        float target = fxD.at (db);
+        float cur    = fxF.at (fb + 2);
+
+        if (fxI.at (ib + 1) == 0)
+        {
+            cur = target;
+            fxI.at (ib + 1) = 1;
+        }
+
+        cur += (target - cur) * 0.0005f;
+        fxF.at (fb + 2) = cur;
+
+        float tapeMod = 0.0f;
+        if (dty == 1)
+        {
+            float64 t1 = fxPh.at (pb)     + 0.55 * processor.period;
+            float64 t2 = fxPh.at (pb + 1) + 6.3  * processor.period;
+            if (t1 >= 1.0) t1 -= 1.0;
+            if (t2 >= 1.0) t2 -= 1.0;
+            fxPh.at (pb)     = t1;
+            fxPh.at (pb + 1) = t2;
+            tapeMod = (0.0004f * float (sin (float (twoPi) * float (t1))) + 0.00008f * float (sin (float (twoPi) * float (t2)))) * sr;
+        }
+
+        int   wp   = fxI.at (ib);
+        float rpos = float (wp) - cur - tapeMod;
+        if (rpos < 0.0f) rpos += 98304.0f;
+
+        int i0 = clamp (int (rpos), 0, 98303);
+        int i1 = i0 + 1;
+        if (i1 >= 98304) i1 = 0;
+        float fr = rpos - float (i0);
+
+        float dl = fxArena.at (ab + i0)         * (1.0f - fr) + fxArena.at (ab + i1)         * fr;
+        float dr = fxArena.at (ab + 98304 + i0) * (1.0f - fr) + fxArena.at (ab + 98304 + i1) * fr;
+
+        float dampA = fxD.at (db + 2);
+        float sL = fxF.at (fb)     + dampA * (dl - fxF.at (fb));
+        float sR = fxF.at (fb + 1) + dampA * (dr - fxF.at (fb + 1));
+        fxF.at (fb)     = sL;
+        fxF.at (fb + 1) = sR;
+
+        float ping    = fxD.at (db + 3);
+        float fbSameL = sL * (1.0f - ping) + sR * ping;
+        float fbSameR = sR * (1.0f - ping) + sL * ping;
+        float fbSendL = fbSameL;
+        float fbSendR = fbSameR;
+
+        if (dty == 1)
+        {
+            // tape: saturating feedback path
+            fbSendL = softClip (fbSameL * 1.6f) * 0.625f;
+            fbSendR = softClip (fbSameR * 1.6f) * 0.625f;
+        }
+
+        float fbk = fxD.at (db + 1);
+        fxArena.at (ab + wp)         = x[0] + fbSendL * fbk;
+        fxArena.at (ab + 98304 + wp) = x[1] + fbSendR * fbk;
+
+        float dl2 = 0.0f;
+        float dr2 = 0.0f;
+        if (dty == 2)
+        {
+            // dual: extra tap at half the delay time
+            float rpos2 = float (wp) - cur * 0.5f;
+            if (rpos2 < 0.0f) rpos2 += 98304.0f;
+            int j0 = clamp (int (rpos2), 0, 98303);
+            int j1 = j0 + 1;
+            if (j1 >= 98304) j1 = 0;
+            float jf = rpos2 - float (j0);
+            dl2 = (fxArena.at (ab + j0)         * (1.0f - jf) + fxArena.at (ab + j1)         * jf) * 0.6f;
+            dr2 = (fxArena.at (ab + 98304 + j0) * (1.0f - jf) + fxArena.at (ab + 98304 + j1) * jf) * 0.6f;
+        }
+
+        wp += 1;
+        if (wp >= 98304) wp = 0;
+        fxI.at (ib) = wp;
+
+        return float<2> (x[0] + dl + dl2, x[1] + dr + dr2);
+    }
+
+    float<2> fxChorus (int s, float<2> x)
+    {
+        int   fb   = s * 40;
+        int   ib   = s * 24;
+        int   pb   = s * 4;
+        int   db   = s * 16;
+        int   ab   = s * 196608;
+        float sr   = float (processor.frequency);
+        int   mode = fxMode.at (s);
+
+        float64 ph = fxPh.at (pb) + float64 (fxD.at (db)) * processor.period;
+        if (ph >= 1.0) ph -= 1.0;
+        fxPh.at (pb) = ph;
+
+        float chPhL = float (ph);
+        float chPhR = chPhL + 0.25f;
+        if (chPhR >= 1.0f) chPhR -= 1.0f;
+
+        float chModL = float (sin (float (twoPi) * chPhL));
+        float chModR = float (sin (float (twoPi) * chPhR));
+        float chBase = 0.011f;
+        float chDep  = 0.006f;
+        if (mode == 1) { chBase = 0.0065f; chDep = 0.0016f; }
+        if (mode == 2) { chBase = 0.007f;  chDep = 0.0045f; }
+
+        float depth = fxD.at (db + 1);
+        float chDlyL = (chBase + chDep * depth * chModL) * sr;
+        float chDlyR = (chBase + chDep * depth * chModR) * sr;
+
+        int pos = fxI.at (ib);
+        fxArena.at (ab + pos)        = x[0] + fxF.at (fb)     * fxD.at (db + 2);
+        fxArena.at (ab + 8192 + pos) = x[1] + fxF.at (fb + 1) * fxD.at (db + 2);
+
+        float rdL = float (pos) - chDlyL;
+        if (rdL < 0.0f) rdL += 8192.0f;
+        float rdR = float (pos) - chDlyR;
+        if (rdR < 0.0f) rdR += 8192.0f;
+
+        int l0 = clamp (int (rdL), 0, 8191);
+        int l1 = l0 + 1;
+        if (l1 >= 8192) l1 = 0;
+        int r0 = clamp (int (rdR), 0, 8191);
+        int r1 = r0 + 1;
+        if (r1 >= 8192) r1 = 0;
+        float frL = rdL - float (l0);
+        float frR = rdR - float (r0);
+
+        float wetL = fxArena.at (ab + l0)        * (1.0f - frL) + fxArena.at (ab + l1)        * frL;
+        float wetR = fxArena.at (ab + 8192 + r0) * (1.0f - frR) + fxArena.at (ab + 8192 + r1) * frR;
+
+        fxF.at (fb)     = wetL;
+        fxF.at (fb + 1) = wetR;
+
+        pos += 1;
+        if (pos >= 8192) pos = 0;
+        fxI.at (ib) = pos;
+
+        // vibrato: pitch modulation only, the wet signal replaces the dry one
+        if (mode == 2)
+            return float<2> (wetL, wetR);
+
+        return float<2> (x[0] * 0.6f + wetL * 0.7f, x[1] * 0.6f + wetR * 0.7f);
+    }
+
+    float<2> fxFlanger (int s, float<2> x)
+    {
+        int   fb = s * 40;
+        int   ib = s * 24;
+        int   pb = s * 4;
+        int   db = s * 16;
+        int   ab = s * 196608;
+        float sr = float (processor.frequency);
+
+        float64 ph = fxPh.at (pb) + float64 (fxD.at (db)) * processor.period;
+        if (ph >= 1.0) ph -= 1.0;
+        fxPh.at (pb) = ph;
+
+        float flMod = 0.5f + 0.5f * float (sin (float (twoPi) * float (ph)));
+        float flDly = clamp ((0.0008f + 0.0042f * fxD.at (db + 1) * flMod) * sr, 2.0f, 4000.0f);
+
+        int pos = fxI.at (ib);
+        fxArena.at (ab + pos)        = x[0] + fxF.at (fb)     * fxD.at (db + 2);
+        fxArena.at (ab + 4096 + pos) = x[1] + fxF.at (fb + 1) * fxD.at (db + 2);
+
+        float rd = float (pos) - flDly;
+        if (rd < 0.0f) rd += 4096.0f;
+        int f0 = clamp (int (rd), 0, 4095);
+        int f1 = f0 + 1;
+        if (f1 >= 4096) f1 = 0;
+        float fr = rd - float (f0);
+
+        float wetL = fxArena.at (ab + f0)        * (1.0f - fr) + fxArena.at (ab + f1)        * fr;
+        float wetR = fxArena.at (ab + 4096 + f0) * (1.0f - fr) + fxArena.at (ab + 4096 + f1) * fr;
+
+        fxF.at (fb)     = wetL;
+        fxF.at (fb + 1) = wetR;
+
+        pos += 1;
+        if (pos >= 4096) pos = 0;
+        fxI.at (ib) = pos;
+
+        return float<2> (x[0] * 0.5f + wetL * 0.6f, x[1] * 0.5f + wetR * 0.6f);
+    }
+
+    float<2> fxPhaser (int s, float<2> x)
+    {
+        int   fb = s * 40;
+        int   pb = s * 4;
+        int   db = s * 16;
+        float sr = float (processor.frequency);
+
+        float64 ph = fxPh.at (pb) + float64 (fxD.at (db)) * processor.period;
+        if (ph >= 1.0) ph -= 1.0;
+        fxPh.at (pb) = ph;
+
+        float phMod  = 0.5f + 0.5f * float (sin (float (twoPi) * float (ph)));
+        float phFreq = clamp (200.0f * float (pow (2.0f, phMod * 4.0f * (0.3f + 0.7f * fxD.at (db + 1)))), 20.0f, sr * 0.45f);
+        float phTan  = float (tan (float64 (phFreq) * pi * processor.period));
+        float phCoef = (1.0f - phTan) / (1.0f + phTan);
+
+        float xL = x[0] + fxF.at (fb)     * fxD.at (db + 2);
+        float xR = x[1] + fxF.at (fb + 1) * fxD.at (db + 2);
+
+        int stages = 2 * (fxMode.at (s) + 1);
+        for (int ps = 0; ps < stages; ++ps)
+        {
+            float yL = phCoef * xL + fxF.at (fb + 2 + ps);
+            fxF.at (fb + 2 + ps) = xL - phCoef * yL;
+            xL = yL;
+
+            float yR = phCoef * xR + fxF.at (fb + 10 + ps);
+            fxF.at (fb + 10 + ps) = xR - phCoef * yR;
+            xR = yR;
+        }
+
+        fxF.at (fb)     = clamp (xL, -4.0f, 4.0f);
+        fxF.at (fb + 1) = clamp (xR, -4.0f, 4.0f);
+
+        return float<2> (x[0] * 0.5f + xL * 0.5f, x[1] * 0.5f + xR * 0.5f);
+    }
+
+    float<2> fxTrem (int s, float<2> x)
+    {
+        int pb = s * 4;
+        int db = s * 16;
+
+        float64 ph = fxPh.at (pb) + float64 (fxD.at (db)) * processor.period;
+        if (ph >= 1.0) ph -= 1.0;
+        fxPh.at (pb) = ph;
+
+        float pL = float (ph);
+        float pR = pL + 0.5f * fxD.at (db + 2);
+        if (pR >= 1.0f) pR -= 1.0f;
+
+        int   wv = fxMode.at (s);
+        float lL = 0.0f;
+        float lR = 0.0f;
+
+        if (wv == 0)
+        {
+            lL = 0.5f - 0.5f * float (sin (float (twoPi) * pL));
+            lR = 0.5f - 0.5f * float (sin (float (twoPi) * pR));
+        }
+        else if (wv == 1)
+        {
+            lL = abs (2.0f * pL - 1.0f);
+            lR = abs (2.0f * pR - 1.0f);
+        }
+        else if (wv == 2)
+        {
+            if (pL < 0.5f) lL = 0.0f; else lL = 1.0f;
+            if (pR < 0.5f) lR = 0.0f; else lR = 1.0f;
+        }
+        else if (wv == 3)
+        {
+            lL = 1.0f - pL;
+            lR = 1.0f - pR;
+        }
+        else
+        {
+            lL = pL;
+            lR = pR;
+        }
+
+        float depth = fxD.at (db + 1);
+        return float<2> (x[0] * (1.0f - depth * lL), x[1] * (1.0f - depth * lR));
+    }
+
+    float<2> fxReverb (int s, float<2> x)
+    {
+        int   fb = s * 40;
+        int   ib = s * 24;
+        int   db = s * 16;
+        int   ab = s * 196608;
+        float dt = float (processor.period);
+
+        float rvFb   = fxD.at (db);
+        float rvDamp = fxD.at (db + 1);
+        float preS   = fxD.at (db + 2);
+        float rvW    = fxD.at (db + 3);
+
+        // DC blocker on the input: a DC offset would be amplified by the comb feedback
+        float monoRaw = (x[0] + x[1]) * 0.5f * 0.03f;
+        float hpA     = 1.0f - clamp (float (twoPi) * 60.0f * dt, 0.0001f, 0.5f);
+        float rvMono  = monoRaw - fxF.at (fb) + hpA * fxF.at (fb + 1);
+        fxF.at (fb)     = monoRaw;
+        fxF.at (fb + 1) = rvMono;
+
+        int pdPos = fxI.at (ib);
+        fxArena.at (ab + 81920 + pdPos) = rvMono;
+        float pdRd = float (pdPos) - preS;
+        if (pdRd < 0.0f) pdRd += 8192.0f;
+        float rvIn = fxArena.at (ab + 81920 + clamp (int (pdRd), 0, 8191));
+        pdPos += 1;
+        if (pdPos >= 8192) pdPos = 0;
+        fxI.at (ib) = pdPos;
+
+        float rvScale = 1.0f;
+        float rvFbE   = rvFb;
+        float rvDmpE  = rvDamp;
+        int   rvTy    = fxMode.at (s);
+        if (rvTy == 1) { rvScale = 0.35f; rvFbE = rvFb * 0.88f; }
+        if (rvTy == 2) { rvScale = 0.6f;  rvDmpE = rvDamp * 0.45f; }
+        if (rvTy == 3) { rvScale = 2.2f;  rvFbE = min (rvFb + 0.01f, 0.985f); }
+
+        float rvL = 0.0f;
+        float rvR = 0.0f;
+
+        for (int rc = 0; rc < 8; ++rc)
+        {
+            int   rp = fxI.at (ib + 1 + rc);
+            int   ci = ab + rc * 8192 + rp;
+            float rd = fxArena.at (ci);
+            float st = rd * (1.0f - rvDmpE) + fxF.at (fb + 6 + rc) * rvDmpE;
+
+            fxF.at (fb + 6 + rc) = st;
+            fxArena.at (ci)      = rvIn + st * rvFbE;
+
+            rp += 1;
+            int rvCl = clamp (int (float (combLen.at (rc)) * rvScale), 16, 8191);
+            if (rp >= rvCl) rp = 0;
+            fxI.at (ib + 1 + rc) = rp;
+
+            if (rc < 4) rvL += rd;
+            else        rvR += rd;
+        }
+
+        for (int ra = 0; ra < 4; ++ra)
+        {
+            int   ap   = fxI.at (ib + 9 + ra);
+            int   ai   = ab + 65536 + ra * 4096 + ap;
+            float abuf = fxArena.at (ai);
+            float ax   = rvL;
+            if (ra >= 2) ax = rvR;
+
+            float ay = abuf - ax;
+            fxArena.at (ai) = ax + abuf * 0.5f;
+
+            ap += 1;
+            if (ap >= apLen.at (ra)) ap = 0;
+            fxI.at (ib + 9 + ra) = ap;
+
+            if (ra < 2) rvL = ay;
+            else        rvR = ay;
+        }
+
+        float rvMid  = (rvL + rvR) * 0.5f;
+        float rvSide = (rvL - rvR) * 0.5f * rvW;
+        float rawL   = rvMid + rvSide;
+        float rawR   = rvMid - rvSide;
+
+        // DC blocker on the output (removes any offset left in the tail)
+        float outA = 1.0f - clamp (float (twoPi) * 8.0f * dt, 0.0001f, 0.5f);
+        float oL   = rawL - fxF.at (fb + 2) + outA * fxF.at (fb + 3);
+        float oR   = rawR - fxF.at (fb + 4) + outA * fxF.at (fb + 5);
+        fxF.at (fb + 2) = rawL;
+        fxF.at (fb + 3) = oL;
+        fxF.at (fb + 4) = rawR;
+        fxF.at (fb + 5) = oR;
+
+        return float<2> (x[0] + oL * 3.0f, x[1] + oR * 3.0f);
+    }
+
+    // one channel of a state-variable filter (Cytomic TPT form); fb is the slot's float state base
+    float fxSvf (int fb, int c, float v0, float a1, float a2, float a3, float k, int mode)
+    {
+        float ic1 = fxF.at (fb + c * 2);
+        float ic2 = fxF.at (fb + c * 2 + 1);
+        float v3  = v0 - ic2;
+        float v1  = a1 * ic1 + a2 * v3;
+        float v2  = ic2 + a2 * ic1 + a3 * v3;
+
+        fxF.at (fb + c * 2)     = 2.0f * v1 - ic1;
+        fxF.at (fb + c * 2 + 1) = 2.0f * v2 - ic2;
+
+        float hi = v0 - k * v1 - v2;
+
+        if (mode == 0) return v2;
+        if (mode == 1) return hi;
+        if (mode == 2) return v1 * k;
+        return v2 + hi;
+    }
+
+    float<2> fxFilter (int s, float<2> x)
+    {
+        int   fb   = s * 40;
+        int   db   = s * 16;
+        int   mode = fxMode.at (s);
+        float gd   = fxD.at (db + 4);
+        float inL  = x[0];
+        float inR  = x[1];
+
+        if (gd > 1.01f)
+        {
+            inL = softClip (inL * gd);
+            inR = softClip (inR * gd);
+        }
+
+        float yl = fxSvf (fb, 0, inL, fxD.at (db), fxD.at (db + 1), fxD.at (db + 2), fxD.at (db + 3), mode);
+        float yr = fxSvf (fb, 1, inR, fxD.at (db), fxD.at (db + 1), fxD.at (db + 2), fxD.at (db + 3), mode);
+
+        return float<2> (yl, yr);
+    }
+
+    float<2> fxEq (int s, float<2> x)
+    {
+        int   fb = s * 40;
+        int   db = s * 16;
+        float yl = x[0];
+        float yr = x[1];
+
+        for (int b = 0; b < 3; ++b)
+        {
+            int   ci = db + b * 5;
+            int   zi = fb + b * 4;
+            float c0 = fxD.at (ci);
+            float c1 = fxD.at (ci + 1);
+            float c2 = fxD.at (ci + 2);
+            float c3 = fxD.at (ci + 3);
+            float c4 = fxD.at (ci + 4);
+
+            float xin = yl;
+            float yo  = c0 * xin + fxF.at (zi);
+            fxF.at (zi)     = c1 * xin - c3 * yo + fxF.at (zi + 1);
+            fxF.at (zi + 1) = c2 * xin - c4 * yo;
+            yl = yo;
+
+            xin = yr;
+            yo  = c0 * xin + fxF.at (zi + 2);
+            fxF.at (zi + 2) = c1 * xin - c3 * yo + fxF.at (zi + 3);
+            fxF.at (zi + 3) = c2 * xin - c4 * yo;
+            yr = yo;
+        }
+
+        return float<2> (yl, yr);
+    }
+
+    float<2> fxComp (int s, float<2> x)
+    {
+        int   fb    = s * 40;
+        int   db    = s * 16;
+        bool  rms   = fxMode.at (s) == 1;
+        float th    = max (fxD.at (db), 0.00001f);
+        float det   = max (abs (x[0]), abs (x[1]));
+        if (rms) det = det * det;
+
+        float env = fxF.at (fb);
+        if (det > env) env = fxD.at (db + 2) * env + (1.0f - fxD.at (db + 2)) * det;
+        else           env = fxD.at (db + 3) * env + (1.0f - fxD.at (db + 3)) * det;
+        fxF.at (fb) = env;
+
+        float lvl = env;
+        if (rms) lvl = float (sqrt (env));
+
+        float gain = 1.0f;
+        if (lvl > th)
+            gain = float (pow (lvl / th, fxD.at (db + 1)));
+
+        return x * (gain * fxD.at (db + 4));
+    }
+
+    // One slot: dry/wet mix of the selected effect; empty and bypassed slots pass the signal through untouched
+    float<2> fxRunSlot (int s, float<2> x)
+    {
+        int ty = fxType.at (s);
+
+        if (ty == 0 || fxOn.at (s) < 0.5f)
+            return x;
+
+        if (fxDirty.at (s))
+        {
+            fxDerive (s);
+            fxDirty.at (s) = false;
+        }
+
+        float<2> y = x;
+
+        if (ty == 1)       y = fxDist   (s, x);
+        else if (ty == 2)  y = fxCrush  (s, x);
+        else if (ty == 3)  y = fxDelay  (s, x);
+        else if (ty == 4)  y = fxChorus (s, x);
+        else if (ty == 5)  y = fxFlanger (s, x);
+        else if (ty == 6)  y = fxPhaser (s, x);
+        else if (ty == 7)  y = fxTrem   (s, x);
+        else if (ty == 8)  y = fxReverb (s, x);
+        else if (ty == 9)  y = fxFilter (s, x);
+        else if (ty == 10) y = fxEq     (s, x);
+        else if (ty == 11) y = fxComp   (s, x);
+
+        float mix = clamp (fxMix.at (s), 0.0f, 1.0f);
+        return x + (y - x) * mix;
+    }
+
+    // The whole rack, in the user's order
+    float<2> fxRunRack (float<2> x)
+    {
+        float<2> v = x;
+
+        for (int k = 0; k < 10; ++k)
+            v = fxRunSlot (fxSeq.at (k), v);
+
+        return v;
+    }
+
+    // Start-up values of the rack (every slot empty, on, 100 % mix, identity order)
+    void fxInit()
+    {
+        for (int s = 0; s < 10; ++s)
+        {
+            fxType.at (s)  = 0;
+            fxOn.at (s)    = 1.0f;
+            fxMix.at (s)   = 1.0f;
+            fxMode.at (s)  = 0;
+            fxDirty.at (s) = true;
+            fxOrder.at (s) = s;
+            fxSeq.at (s)   = s;
+
+            for (int k = 0; k < 6; ++k)
+                fxP.at (s * 6 + k) = 0.5f;
+        }
     }
 
     // ---------------- MIXER EQ HELPERS (processor scope) ----------------
@@ -2810,9 +3738,14 @@ processor Eisenpuls_Synth
 
     float shapeSig (float x, float d)
     {
+        return shapeSigAlg (x, d, int (driveAlg + 0.5f));
+    }
+
+    // drive shaper with an explicit algorithm (0 Soft, 1 Tube, 2 Hard, 3 Fold, 4 Sine, 5 Crunch)
+    float shapeSigAlg (float x, float d, int al)
+    {
         float gd = 1.0f + d * 8.0f;
         float xx = x * gd;
-        int   al = int (driveAlg + 0.5f);
         float y  = xx / (1.0f + abs (xx));
 
         if (al == 1)
@@ -3824,309 +4757,10 @@ processor Eisenpuls_Synth
             synDcXR = synRawR;
             synDcYR = synR;
 
-            float dryL = synL;
-            float dryR = synR;
-
-            // ----- stereo delay (ping-pong blend) with damping -----
-            float targetSamp = clamp (delayMs * 0.001f * sr, 2.0f, 191000.0f);
-            delayCur += (targetSamp - delayCur) * 0.0005f;
-
-            float tapeMod = 0.0f;
-            if (delayType > 0.5f && delayType < 1.5f)
-            {
-                tpPhase  += 0.55 * processor.period;
-                tpPhase2 += 6.3 * processor.period;
-                if (tpPhase  >= 1.0) tpPhase  -= 1.0;
-                if (tpPhase2 >= 1.0) tpPhase2 -= 1.0;
-                tapeMod = (0.0004f * float (sin (float (twoPi) * float (tpPhase))) + 0.00008f * float (sin (float (twoPi) * float (tpPhase2)))) * sr;
-            }
-
-            float rpos = float (writePos) - delayCur - tapeMod;
-            if (rpos < 0.0f) rpos += 192000.0f;
-            int i0 = clamp (int (rpos), 0, 191999);
-            int i1 = i0 + 1;
-            if (i1 >= 192000) i1 = 0;
-            float fr = rpos - float (i0);
-
-            float dl = bufL.at (i0) * (1.0f - fr) + bufL.at (i1) * fr;
-            float dr = bufR.at (i0) * (1.0f - fr) + bufR.at (i1) * fr;
-
-            float dampHz = delayDamp;
-            if (delayType > 0.5f && delayType < 1.5f) dampHz = min (delayDamp, 6500.0f);
-            float dampA = clamp (float (twoPi) * dampHz * dt, 0.0f, 1.0f);
-            dampStL += dampA * (dl - dampStL);
-            dampStR += dampA * (dr - dampStR);
-
-            float fbSameL  = dampStL * (1.0f - delayPing) + dampStR * delayPing;
-            float fbSameR  = dampStR * (1.0f - delayPing) + dampStL * delayPing;
-
-            float fbSendL = fbSameL;
-            float fbSendR = fbSameR;
-            if (delayType > 0.5f && delayType < 1.5f)
-            {
-                // tape: saturating feedback path
-                fbSendL = softClip (fbSameL * 1.6f) * 0.625f;
-                fbSendR = softClip (fbSameR * 1.6f) * 0.625f;
-            }
-
-            bufL.at (writePos) = synL * delayDepth + fbSendL * delayFb;
-            bufR.at (writePos) = synR * delayDepth + fbSendR * delayFb;
-
-            float dl2 = 0.0f;
-            float dr2 = 0.0f;
-            if (delayType > 1.5f)
-            {
-                // dual: extra tap at half the delay time
-                float rpos2 = float (writePos) - delayCur * 0.5f;
-                if (rpos2 < 0.0f) rpos2 += 192000.0f;
-                int   j0 = clamp (int (rpos2), 0, 191999);
-                int   j1 = j0 + 1;
-                if (j1 >= 192000) j1 = 0;
-                float jf = rpos2 - float (j0);
-                dl2 = (bufL.at (j0) * (1.0f - jf) + bufL.at (j1) * jf) * 0.6f;
-                dr2 = (bufR.at (j0) * (1.0f - jf) + bufR.at (j1) * jf) * 0.6f;
-            }
-
-            writePos += 1;
-            if (writePos >= 192000) writePos = 0;
-
-            float outL = (dryL + (dl + dl2) * delayMixAmt) * masterLevel;
-            float outR = (dryR + (dr + dr2) * delayMixAmt) * masterLevel;
-
-            // ----- chorus (stereo, quadrature LFOs, feedback) -----
-            chPhase += float64 (chorusRate) * processor.period;
-            if (chPhase >= 1.0) chPhase -= 1.0;
-            float chPhL = float (chPhase);
-            float chPhR = chPhL + 0.25f;
-            if (chPhR >= 1.0f) chPhR -= 1.0f;
-            float chModL = float (sin (float (twoPi) * chPhL));
-            float chModR = float (sin (float (twoPi) * chPhR));
-            float chBase = 0.011f;
-            float chDep  = 0.006f;
-            if (chorusMode > 0.5f && chorusMode < 1.5f) { chBase = 0.0065f; chDep = 0.0016f; }
-            if (chorusMode > 1.5f)                      { chBase = 0.007f;  chDep = 0.0045f; }
-            float chDlyL = (chBase + chDep * chorusDepth * chModL) * sr;
-            float chDlyR = (chBase + chDep * chorusDepth * chModR) * sr;
-
-            chBufL.at (chPos) = outL + chFbL * chorusFb;
-            chBufR.at (chPos) = outR + chFbR * chorusFb;
-
-            float chRdL = float (chPos) - chDlyL;
-            if (chRdL < 0.0f) chRdL += 8192.0f;
-            float chRdR = float (chPos) - chDlyR;
-            if (chRdR < 0.0f) chRdR += 8192.0f;
-
-            int chL0 = clamp (int (chRdL), 0, 8191);
-            int chL1 = chL0 + 1;
-            if (chL1 >= 8192) chL1 = 0;
-            int chR0 = clamp (int (chRdR), 0, 8191);
-            int chR1 = chR0 + 1;
-            if (chR1 >= 8192) chR1 = 0;
-            float chFrL = chRdL - float (chL0);
-            float chFrR = chRdR - float (chR0);
-
-            float chWetL = chBufL.at (chL0) * (1.0f - chFrL) + chBufL.at (chL1) * chFrL;
-            float chWetR = chBufR.at (chR0) * (1.0f - chFrR) + chBufR.at (chR1) * chFrR;
-
-            chFbL = chWetL;
-            chFbR = chWetR;
-
-            chPos += 1;
-            if (chPos >= 8192) chPos = 0;
-
-            if (chorusMode > 1.5f)
-            {
-                // vibrato: pitch modulation only, the mix replaces the dry signal
-                outL = outL * (1.0f - chorusMix) + chWetL * chorusMix;
-                outR = outR * (1.0f - chorusMix) + chWetR * chorusMix;
-            }
-            else
-            {
-                outL = outL * (1.0f - 0.4f * chorusMix) + chWetL * chorusMix * 0.7f;
-                outR = outR * (1.0f - 0.4f * chorusMix) + chWetR * chorusMix * 0.7f;
-            }
-
-            // ----- flanger (short modulated delay with feedback) -----
-            flPhase += float64 (flangRate) * processor.period;
-            if (flPhase >= 1.0) flPhase -= 1.0;
-            float flMod  = 0.5f + 0.5f * float (sin (float (twoPi) * float (flPhase)));
-            float flDly  = (0.0008f + 0.0042f * flangDepth * flMod) * sr;
-            flDly = clamp (flDly, 2.0f, 4000.0f);
-
-            flBufL.at (flPos) = outL + flFbL * flangFb;
-            flBufR.at (flPos) = outR + flFbR * flangFb;
-
-            float flRd = float (flPos) - flDly;
-            if (flRd < 0.0f) flRd += 4096.0f;
-            int fl0 = clamp (int (flRd), 0, 4095);
-            int fl1 = fl0 + 1;
-            if (fl1 >= 4096) fl1 = 0;
-            float flFr = flRd - float (fl0);
-
-            float flWetL = flBufL.at (fl0) * (1.0f - flFr) + flBufL.at (fl1) * flFr;
-            float flWetR = flBufR.at (fl0) * (1.0f - flFr) + flBufR.at (fl1) * flFr;
-
-            flFbL = flWetL;
-            flFbR = flWetR;
-
-            flPos += 1;
-            if (flPos >= 4096) flPos = 0;
-
-            outL = outL * (1.0f - 0.5f * flangMix) + flWetL * 0.6f * flangMix;
-            outR = outR * (1.0f - 0.5f * flangMix) + flWetR * 0.6f * flangMix;
-
-            // ----- phaser (4-stage allpass with feedback) -----
-            phPhase += float64 (phaserRate) * processor.period;
-            if (phPhase >= 1.0) phPhase -= 1.0;
-            float phMod  = 0.5f + 0.5f * float (sin (float (twoPi) * float (phPhase)));
-            float phFreq = 200.0f * float (pow (2.0f, phMod * 4.0f * (0.3f + 0.7f * phaserDepth)));
-            phFreq = clamp (phFreq, 20.0f, sr * 0.45f);
-            float phTan  = float (tan (float64 (phFreq) * pi * processor.period));
-            float phCoef = (1.0f - phTan) / (1.0f + phTan);
-
-            float phXL = outL + phFbL * phaserFb;
-            float phXR = outR + phFbR * phaserFb;
-
-            int phN = 2 * (int (phaserStg + 0.5f) + 1);
-            for (int ps = 0; ps < phN; ++ps)
-            {
-                float phYL = phCoef * phXL + phZL.at (ps);
-                phZL.at (ps) = phXL - phCoef * phYL;
-                phXL = phYL;
-
-                float phYR = phCoef * phXR + phZR.at (ps);
-                phZR.at (ps) = phXR - phCoef * phYR;
-                phXR = phYR;
-            }
-
-            phFbL = clamp (phXL, -4.0f, 4.0f);
-            phFbR = clamp (phXR, -4.0f, 4.0f);
-
-            outL = outL * (1.0f - 0.5f * phaserMix) + phXL * 0.5f * phaserMix;
-            outR = outR * (1.0f - 0.5f * phaserMix) + phXR * 0.5f * phaserMix;
-
-            // ----- tremolo (selectable wave, stereo offset) -----
-            trPhase += float64 (tremRate) * processor.period;
-            if (trPhase >= 1.0) trPhase -= 1.0;
-
-            float trPL = float (trPhase);
-            float trPR = trPL + 0.5f * tremStereo;
-            if (trPR >= 1.0f) trPR -= 1.0f;
-
-            int   twv  = int (tremWave + 0.5f);
-            float trLfoL = 0.0f;
-            float trLfoR = 0.0f;
-
-            if (twv == 0)
-            {
-                trLfoL = 0.5f - 0.5f * float (sin (float (twoPi) * trPL));
-                trLfoR = 0.5f - 0.5f * float (sin (float (twoPi) * trPR));
-            }
-            else if (twv == 1)
-            {
-                trLfoL = abs (2.0f * trPL - 1.0f);
-                trLfoR = abs (2.0f * trPR - 1.0f);
-            }
-            else if (twv == 2)
-            {
-                if (trPL < 0.5f) trLfoL = 0.0f; else trLfoL = 1.0f;
-                if (trPR < 0.5f) trLfoR = 0.0f; else trLfoR = 1.0f;
-            }
-            else if (twv == 3)
-            {
-                trLfoL = 1.0f - trPL;
-                trLfoR = 1.0f - trPR;
-            }
-            else
-            {
-                trLfoL = trPL;
-                trLfoR = trPR;
-            }
-
-            outL = outL * (1.0f - tremDepth * trLfoL);
-            outR = outR * (1.0f - tremDepth * trLfoR);
-
-            // ----- reverb (Freeverb style: 8 combs + 4 allpasses, pre-delay, width) -----
-            // DC blocker on the reverb input: a DC offset would be amplified by the comb feedback (gain 1 / (1 - feedback))
-            float rvMonoRaw = (outL + outR) * 0.5f * 0.03f;
-            float rvHpA     = 1.0f - clamp (float (twoPi) * 60.0f * dt, 0.0001f, 0.5f);
-            float rvMono    = rvMonoRaw - rvInX + rvHpA * rvInY;
-            rvInX = rvMonoRaw;
-            rvInY = rvMono;
-
-            pdBuf.at (pdPos) = rvMono;
-            float pdSamp = clamp (reverbPreMs * 0.001f * sr, 0.0f, 8000.0f);
-            float pdRd   = float (pdPos) - pdSamp;
-            if (pdRd < 0.0f) pdRd += 8192.0f;
-            int   pd0    = clamp (int (pdRd), 0, 8191);
-            float rvIn   = pdBuf.at (pd0);
-            pdPos += 1;
-            if (pdPos >= 8192) pdPos = 0;
-
-            float rvScale = 1.0f;
-            float rvFbE   = reverbFb;
-            float rvDmpE  = reverbDamp;
-            int   rvTy    = int (reverbType + 0.5f);
-            if (rvTy == 1) { rvScale = 0.35f; rvFbE = reverbFb * 0.88f; }
-            if (rvTy == 2) { rvScale = 0.6f;  rvDmpE = reverbDamp * 0.45f; }
-            if (rvTy == 3) { rvScale = 2.2f;  rvFbE = min (reverbFb + 0.01f, 0.985f); }
-
-            float rvL  = 0.0f;
-            float rvR  = 0.0f;
-
-            for (int rc = 0; rc < 8; ++rc)
-            {
-                int   rbase = rc * 8192;
-                int   rp    = combPos.at (rc);
-                float rd    = combBuf.at (rbase + rp);
-
-                combStore.at (rc) = rd * (1.0f - rvDmpE) + combStore.at (rc) * rvDmpE;
-                combBuf.at (rbase + rp) = rvIn + combStore.at (rc) * rvFbE;
-
-                rp += 1;
-                int rvCl = clamp (int (float (combLen.at (rc)) * rvScale), 16, 8191);
-                if (rp >= rvCl) rp = 0;
-                combPos.at (rc) = rp;
-
-                if (rc < 4) rvL += rd;
-                else        rvR += rd;
-            }
-
-            for (int ra = 0; ra < 4; ++ra)
-            {
-                int   abase = ra * 4096;
-                int   ap    = apPos.at (ra);
-                float abuf  = apBuf.at (abase + ap);
-                float ax    = rvL;
-                if (ra >= 2) ax = rvR;
-
-                float ay = abuf - ax;
-                apBuf.at (abase + ap) = ax + abuf * 0.5f;
-
-                ap += 1;
-                if (ap >= apLen.at (ra)) ap = 0;
-                apPos.at (ra) = ap;
-
-                if (ra < 2) rvL = ay;
-                else        rvR = ay;
-            }
-
-            float rvMid  = (rvL + rvR) * 0.5f;
-            float rvSide = (rvL - rvR) * 0.5f * reverbWidth;
-            float rvOutLRaw = rvMid + rvSide;
-            float rvOutRRaw = rvMid - rvSide;
-
-            // DC blocker on the reverb output (removes any offset left in the tail)
-            float rvOutA = 1.0f - clamp (float (twoPi) * 8.0f * dt, 0.0001f, 0.5f);
-            float rvOutL = rvOutLRaw - rvOxL + rvOutA * rvOyL;
-            float rvOutR = rvOutRRaw - rvOxR + rvOutA * rvOyR;
-            rvOxL = rvOutLRaw;
-            rvOyL = rvOutL;
-            rvOxR = rvOutRRaw;
-            rvOyR = rvOutR;
-
-            outL += rvOutL * reverbMix * 3.0f;
-            outR += rvOutR * reverbMix * 3.0f;
+            // ----- FX rack (10 slots, user order); the master level sits in front of it -----
+            float<2> rack = fxRunRack (float<2> (synL * masterLevel, synR * masterLevel));
+            float outL = rack[0];
+            float outR = rack[1];
 
             // ----- stereo width (mid/side) -----
             float wdMid  = (outL + outR) * 0.5f;
@@ -4157,32 +4791,6 @@ processor Eisenpuls_Synth
             dcXR = dcInR;
             outL = dcYL;
             outR = dcYR;
-
-            // ----- sample rate reduction -----
-            float preCrushL = outL;
-            float preCrushR = outR;
-
-            int srrN = int (srrAmt + 0.5f);
-            srrCount += 1;
-            if (srrCount >= srrN)
-            {
-                srrCount = 0;
-                heldL = outL;
-                heldR = outR;
-            }
-            outL = heldL;
-            outR = heldR;
-
-            // ----- bit crush -----
-            if (crushBits < 15.5f)
-            {
-                float lv = float (pow (2.0f, crushBits - 1.0f));
-                outL = rint (outL * lv) / lv;
-                outR = rint (outR * lv) / lv;
-            }
-
-            outL = preCrushL * (1.0f - crushMix) + outL * crushMix;
-            outR = preCrushR * (1.0f - crushMix) + outR * crushMix;
 
             outL = clamp (outL, -1.0f, 1.0f);
             outR = clamp (outR, -1.0f, 1.0f);

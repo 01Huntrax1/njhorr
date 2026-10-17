@@ -48,7 +48,13 @@ They are stored as 16-bit audio, roughly 260 KB of project data per loaded sampl
 The Sound Vault folders (Documents/Njohrr/...) are a shared library of files; which vault file an oscillator uses is also per instance.
 Regression test: `cd tests && npm install && npm test`.
 
+## FX rack
+The FX page is a modular rack: 10 slots, each holds any effect (Distortion, Bit Crush, Delay, Chorus, Flanger, Phaser, Tremolo,
+Reverb, Filter, EQ, Compressor), with on/off, mix, a mode selector and up to six knobs. Drag the grip (or use the arrows) to change
+the processing order; the signal runs top to bottom. Slot parameters are `param541`-`param640`, the order is `param641`-`param650`.
+The old fixed-chain parameters were removed; presets saved before the rack are converted to rack slots when loaded.
+Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.py` / `apply_rack_ui.py` (the one-shot migrations that were
+applied to `patch/`), tests: `tools/rack/test_rack.py` (audio, needs a build of `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
+
 ## UI embedded in cmajor_plugin.cpp
-`cmajor_plugin.cpp` contains a copy of the UI (the `index_js` byte array). It currently uses the older endpoint names
-(`synthSampleIn`, `wavetableIn`, ...) that match the DSP generated into the same file, while `patch/index.js` uses the newer V2 names.
-Both carry the per-instance storage fix. Running `cmaj generate` on `patch/` regenerates the DSP and the UI together.
+`cmajor_plugin.cpp` is generated from `patch/` (DSP and UI together). After changing `patch/`, regenerate it as described above.
