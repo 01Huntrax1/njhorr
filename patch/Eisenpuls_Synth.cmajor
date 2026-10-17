@@ -393,7 +393,7 @@ processor Eisenpuls_Synth
     // ---------------- MODULAR FX RACK (8 independent module slots) ----------------
     input event float param600 [[ name: "FX Slot 1 Type", min: 0.0000, max: 8.0000, init: 2.0000, step: 1.0 ]];
     input event float param601 [[ name: "FX Slot 1 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param602 [[ name: "FX Slot 1 Order", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param602 [[ name: "FX Slot 1 Order", min: 0.0000, max: 9.0000, init: 1.0000, step: 1.0 ]];
     input event float param603 [[ name: "FX Slot 1 A", min: 0.0000, max: 1.0000, init: 0.3687 ]];
     input event float param604 [[ name: "FX Slot 1 B", min: 0.0000, max: 1.0000, init: 0.3684 ]];
     input event float param605 [[ name: "FX Slot 1 C", min: 0.0000, max: 1.0000, init: 1.0000 ]];
@@ -402,7 +402,7 @@ processor Eisenpuls_Synth
     input event float param608 [[ name: "FX Slot 1 F", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param609 [[ name: "FX Slot 2 Type", min: 0.0000, max: 8.0000, init: 1.0000, step: 1.0 ]];
     input event float param610 [[ name: "FX Slot 2 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param611 [[ name: "FX Slot 2 Order", min: 0.0000, max: 9.0000, init: 1.0000, step: 1.0 ]];
+    input event float param611 [[ name: "FX Slot 2 Order", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
     input event float param612 [[ name: "FX Slot 2 A", min: 0.0000, max: 1.0000, init: 0.1000 ]];
     input event float param613 [[ name: "FX Slot 2 B", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param614 [[ name: "FX Slot 2 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
@@ -438,7 +438,7 @@ processor Eisenpuls_Synth
     input event float param644 [[ name: "FX Slot 5 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param645 [[ name: "FX Slot 6 Type", min: 0.0000, max: 8.0000, init: 6.0000, step: 1.0 ]];
     input event float param646 [[ name: "FX Slot 6 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param647 [[ name: "FX Slot 6 Order", min: 0.0000, max: 9.0000, init: 5.0000, step: 1.0 ]];
+    input event float param647 [[ name: "FX Slot 6 Order", min: 0.0000, max: 9.0000, init: 6.0000, step: 1.0 ]];
     input event float param648 [[ name: "FX Slot 6 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param649 [[ name: "FX Slot 6 B", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param650 [[ name: "FX Slot 6 C", min: 0.0000, max: 1.0000, init: 0.5000 ]];
@@ -447,7 +447,7 @@ processor Eisenpuls_Synth
     input event float param653 [[ name: "FX Slot 6 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param654 [[ name: "FX Slot 7 Type", min: 0.0000, max: 8.0000, init: 7.0000, step: 1.0 ]];
     input event float param655 [[ name: "FX Slot 7 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param656 [[ name: "FX Slot 7 Order", min: 0.0000, max: 9.0000, init: 6.0000, step: 1.0 ]];
+    input event float param656 [[ name: "FX Slot 7 Order", min: 0.0000, max: 9.0000, init: 5.0000, step: 1.0 ]];
     input event float param657 [[ name: "FX Slot 7 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param658 [[ name: "FX Slot 7 B", min: 0.0000, max: 1.0000, init: 0.2460 ]];
     input event float param659 [[ name: "FX Slot 7 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
@@ -1767,6 +1767,7 @@ processor Eisenpuls_Synth
         // Modular FX rack defaults: eight familiar modules plus two empty slots for duplicates.
         let fxTypeDefaults = int[10] (2, 1, 3, 4, 5, 6, 7, 8, 0, 0);
         let fxEnableDefaults = int[10] (1, 1, 1, 1, 1, 1, 1, 1, 0, 0);
+        let fxOrderDefaults = int[10] (1, 0, 2, 3, 4, 6, 5, 7, 8, 9);
         let fxADefaults = float[10] (0.3687f, 0.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
         let fxBDefaults = float[10] (0.3684f, 1.0f, 0.1515f, 0.0505f, 0.044f, 0.5f, 0.246f, 0.0f, 0.0f, 0.0f);
         let fxCDefaults = float[10] (1.0f, 0.0f, 0.5f, 0.6f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
@@ -1777,7 +1778,7 @@ processor Eisenpuls_Synth
         {
             fxSlotType.at (fx) = float (fxTypeDefaults.at (fx));
             fxSlotEnabled.at (fx) = float (fxEnableDefaults.at (fx));
-            fxSlotOrder.at (fx) = float (fx);
+            fxSlotOrder.at (fx) = float (fxOrderDefaults.at (fx));
             fxSlotA.at (fx) = fxADefaults.at (fx);
             fxSlotB.at (fx) = fxBDefaults.at (fx);
             fxSlotC.at (fx) = fxCDefaults.at (fx);
@@ -3584,7 +3585,7 @@ processor Eisenpuls_Synth
         {
             int base = slot * 8192;
             int pos = fxChorusPos.at (slot);
-            fxChorusPhase.at (slot) += float64 (0.05f + b * 4.95f) * processor.period;
+            fxChorusPhase.at (slot) += float64 (0.05f + b * 4.95f) * float64 (dt);
             if (fxChorusPhase.at (slot) >= 1.0) fxChorusPhase.at (slot) -= 1.0;
             float ph = float (fxChorusPhase.at (slot));
             float modL = float (sin (float (twoPi) * ph));
@@ -3609,7 +3610,7 @@ processor Eisenpuls_Synth
         {
             int base = slot * 4096;
             int pos = fxFlangerPos.at (slot);
-            fxFlangerPhase.at (slot) += float64 (0.05f + b * 4.95f) * processor.period;
+            fxFlangerPhase.at (slot) += float64 (0.05f + b * 4.95f) * float64 (dt);
             if (fxFlangerPhase.at (slot) >= 1.0) fxFlangerPhase.at (slot) -= 1.0;
             float mod = 0.5f + 0.5f * float (sin (float (twoPi) * float (fxFlangerPhase.at (slot))));
             float delaySamples = clamp ((2.0f + 0.004f * c * mod * sr), 2.0f, 4000.0f);
@@ -3628,11 +3629,11 @@ processor Eisenpuls_Synth
         // 5 — phaser.
         else if (kind == 5)
         {
-            fxPhaserPhase.at (slot) += float64 (0.05f + b * 7.95f) * processor.period;
+            fxPhaserPhase.at (slot) += float64 (0.05f + b * 7.95f) * float64 (dt);
             if (fxPhaserPhase.at (slot) >= 1.0) fxPhaserPhase.at (slot) -= 1.0;
             float mod = 0.5f + 0.5f * float (sin (float (twoPi) * float (fxPhaserPhase.at (slot))));
             float hz = clamp (120.0f * float (pow (2.0f, mod * (1.0f + c * 4.0f))), 20.0f, sr * 0.45f);
-            float tanV = float (tan (float64 (hz) * pi * processor.period));
+            float tanV = float (tan (float64 (hz) * pi * float64 (dt)));
             float coef = (1.0f - tanV) / (1.0f + tanV);
             float xL = inL + fxPhaserFbL.at (slot) * (d * 0.9f);
             float xR = inR + fxPhaserFbR.at (slot) * (d * 0.9f);
@@ -3693,7 +3694,7 @@ processor Eisenpuls_Synth
         // 7 — tremolo.
         else if (kind == 7)
         {
-            fxTremoloPhase.at (slot) += float64 (0.1f + b * 19.9f) * processor.period;
+            fxTremoloPhase.at (slot) += float64 (0.1f + b * 19.9f) * float64 (dt);
             if (fxTremoloPhase.at (slot) >= 1.0) fxTremoloPhase.at (slot) -= 1.0;
             float pl = float (fxTremoloPhase.at (slot));
             float pr = pl + 0.5f * d;
