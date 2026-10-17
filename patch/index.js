@@ -802,7 +802,7 @@ const FX_SLOT_MACROS = {
     3: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
     4: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
     5: ["Mix", "Rate", "Depth", "Feedback", "Stages", "Width"],
-    6: ["Mix", "Size", "Damping", "Pre-Delay", "Width", "Tone"],
+    6: ["Mix", "Size", "Damping", "Pre-Delay", "Width", "Type"],
     7: ["Depth", "Rate", "Wave", "Stereo", "Shape", "Output"],
     8: ["Mix", "SR Reduce", "Bits", "Rate", "Character", "Output"]
 };
