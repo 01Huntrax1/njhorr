@@ -618,6 +618,7 @@ const SPECS = (() => {
     L.push([607, "FX 1 Macro E", 0, 1, 1, "", "sld", null, 1, "Macro E"]);
     L.push([608, "FX 1 Macro F", 0, 1, 1, "", "sld", null, 1, "Macro F"]);
     L.push([800, "FX 1 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([820, "FX 1 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([609, "FX 2 Type", 0, 9, 1, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([610, "FX 2 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([611, "FX 2 Order", 0, 19, 0, "", "sld", null, 1, "Order"]);
@@ -628,6 +629,7 @@ const SPECS = (() => {
     L.push([616, "FX 2 Macro E", 0, 1, 0.5, "", "sld", null, 1, "Macro E"]);
     L.push([617, "FX 2 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([801, "FX 2 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([821, "FX 2 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([618, "FX 3 Type", 0, 9, 3, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([619, "FX 3 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([620, "FX 3 Order", 0, 19, 2, "", "sld", null, 1, "Order"]);
@@ -638,6 +640,7 @@ const SPECS = (() => {
     L.push([625, "FX 3 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([626, "FX 3 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([802, "FX 3 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([822, "FX 3 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([627, "FX 4 Type", 0, 9, 4, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([628, "FX 4 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([629, "FX 4 Order", 0, 19, 3, "", "sld", null, 1, "Order"]);
@@ -648,6 +651,7 @@ const SPECS = (() => {
     L.push([634, "FX 4 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([635, "FX 4 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([803, "FX 4 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([823, "FX 4 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([636, "FX 5 Type", 0, 9, 5, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([637, "FX 5 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([638, "FX 5 Order", 0, 19, 4, "", "sld", null, 1, "Order"]);
@@ -658,6 +662,7 @@ const SPECS = (() => {
     L.push([643, "FX 5 Macro E", 0, 1, 0.3333, "", "sld", null, 1, "Macro E"]);
     L.push([644, "FX 5 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([804, "FX 5 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([824, "FX 5 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([645, "FX 6 Type", 0, 9, 6, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([646, "FX 6 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([647, "FX 6 Order", 0, 19, 6, "", "sld", null, 1, "Order"]);
@@ -668,6 +673,7 @@ const SPECS = (() => {
     L.push([652, "FX 6 Macro E", 0, 1, 1, "", "sld", null, 1, "Macro E"]);
     L.push([653, "FX 6 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([805, "FX 6 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([825, "FX 6 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([654, "FX 7 Type", 0, 9, 7, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([655, "FX 7 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([656, "FX 7 Order", 0, 19, 5, "", "sld", null, 1, "Order"]);
@@ -678,6 +684,7 @@ const SPECS = (() => {
     L.push([661, "FX 7 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([662, "FX 7 Macro F", 0, 1, 1, "", "sld", null, 1, "Macro F"]);
     L.push([806, "FX 7 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([826, "FX 7 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([663, "FX 8 Type", 0, 9, 8, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([664, "FX 8 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([665, "FX 8 Order", 0, 19, 7, "", "sld", null, 1, "Order"]);
@@ -688,6 +695,7 @@ const SPECS = (() => {
     L.push([670, "FX 8 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([671, "FX 8 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([807, "FX 8 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([827, "FX 8 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([672, "FX 9 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([673, "FX 9 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([674, "FX 9 Order", 0, 19, 8, "", "sld", null, 1, "Order"]);
@@ -698,6 +706,7 @@ const SPECS = (() => {
     L.push([679, "FX 9 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([680, "FX 9 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([808, "FX 9 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([828, "FX 9 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([681, "FX 10 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([682, "FX 10 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([683, "FX 10 Order", 0, 19, 9, "", "sld", null, 1, "Order"]);
@@ -708,6 +717,7 @@ const SPECS = (() => {
     L.push([688, "FX 10 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([689, "FX 10 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([809, "FX 10 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([829, "FX 10 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([690, "FX 11 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([691, "FX 11 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([692, "FX 11 Order", 0, 19, 10, "", "sld", null, 1, "Order"]);
@@ -718,6 +728,7 @@ const SPECS = (() => {
     L.push([697, "FX 11 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([698, "FX 11 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([810, "FX 11 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([830, "FX 11 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([699, "FX 12 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([700, "FX 12 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([701, "FX 12 Order", 0, 19, 11, "", "sld", null, 1, "Order"]);
@@ -728,6 +739,7 @@ const SPECS = (() => {
     L.push([706, "FX 12 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([707, "FX 12 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([811, "FX 12 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([831, "FX 12 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([708, "FX 13 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([709, "FX 13 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([710, "FX 13 Order", 0, 19, 12, "", "sld", null, 1, "Order"]);
@@ -738,6 +750,7 @@ const SPECS = (() => {
     L.push([715, "FX 13 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([716, "FX 13 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([812, "FX 13 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([832, "FX 13 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([717, "FX 14 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([718, "FX 14 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([719, "FX 14 Order", 0, 19, 13, "", "sld", null, 1, "Order"]);
@@ -748,6 +761,7 @@ const SPECS = (() => {
     L.push([724, "FX 14 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([725, "FX 14 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([813, "FX 14 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([833, "FX 14 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([726, "FX 15 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([727, "FX 15 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([728, "FX 15 Order", 0, 19, 14, "", "sld", null, 1, "Order"]);
@@ -758,6 +772,7 @@ const SPECS = (() => {
     L.push([733, "FX 15 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([734, "FX 15 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([814, "FX 15 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([834, "FX 15 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([735, "FX 16 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([736, "FX 16 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([737, "FX 16 Order", 0, 19, 15, "", "sld", null, 1, "Order"]);
@@ -768,6 +783,7 @@ const SPECS = (() => {
     L.push([742, "FX 16 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([743, "FX 16 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([815, "FX 16 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([835, "FX 16 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([744, "FX 17 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([745, "FX 17 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([746, "FX 17 Order", 0, 19, 16, "", "sld", null, 1, "Order"]);
@@ -778,6 +794,7 @@ const SPECS = (() => {
     L.push([751, "FX 17 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([752, "FX 17 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([816, "FX 17 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([836, "FX 17 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([753, "FX 18 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([754, "FX 18 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([755, "FX 18 Order", 0, 19, 17, "", "sld", null, 1, "Order"]);
@@ -788,6 +805,7 @@ const SPECS = (() => {
     L.push([760, "FX 18 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([761, "FX 18 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([817, "FX 18 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([837, "FX 18 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([762, "FX 19 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([763, "FX 19 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([764, "FX 19 Order", 0, 19, 18, "", "sld", null, 1, "Order"]);
@@ -798,6 +816,7 @@ const SPECS = (() => {
     L.push([769, "FX 19 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([770, "FX 19 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([818, "FX 19 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([838, "FX 19 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     L.push([771, "FX 20 Type", 0, 9, 0, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush","Filter"], 1, "Type"]);
     L.push([772, "FX 20 Power", 0, 1, 0, "", "btn", ["Bypass","On"], 1, "Power"]);
     L.push([773, "FX 20 Order", 0, 19, 19, "", "sld", null, 1, "Order"]);
@@ -808,6 +827,7 @@ const SPECS = (() => {
     L.push([778, "FX 20 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
     L.push([779, "FX 20 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([819, "FX 20 Variation", 0, 5, 0, "", "sel", ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"], 1, "Variation"]);
+    L.push([839, "FX 20 Filter Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Filter Mode"]);
     // Serum style wavetable controls per engine: pan, phase, unison blend / width / style, two warp slots
     [[445, "WT"], [454, "W2"], [463, "W3"]].forEach(u => {
         const b = u[0], n = u[1];
@@ -891,6 +911,7 @@ const FX_OUT = [175, 189, 221, 222];
 const FX_SLOT_COUNT = 20;
 const FX_SLOT_BASE = slot => 600 + slot * 9;
 const FX_SLOT_VARIATION_BASE = 800;
+const FX_SLOT_FILTER_MODE_BASE = 820;
 const FX_SLOT_TYPES = ["Off", "Drive", "Delay", "Chorus", "Flanger", "Phaser", "Reverb", "Tremolo", "Bitcrush", "Filter"];
 const FX_SLOT_VARIATIONS_BY_TYPE = {
     0: ["None", "None", "None", "None", "None", "None"],
@@ -2125,6 +2146,7 @@ class EisenpulsPatchView extends HTMLElement {
         const n = spec.num;
         if (n >= 600 && n < 780 && (n - 600) % 9 === 0) this.updateFxRack();
         if (n >= FX_SLOT_VARIATION_BASE && n < FX_SLOT_VARIATION_BASE + FX_SLOT_COUNT) this.updateFxRack();
+        if (n >= FX_SLOT_FILTER_MODE_BASE && n < FX_SLOT_FILTER_MODE_BASE + FX_SLOT_COUNT) this.updateFxRack();
         if (n >= 600 && n < 780 && (n - 600) % 9 === 0 && user && !this._applying) this.activateFxSlot((n - 600) / 9, v);
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
@@ -2237,6 +2259,7 @@ class EisenpulsPatchView extends HTMLElement {
             </header>
             <div class="fxslot-config cgrid">${this.controlHTML(base, true)}${this.controlHTML(base + 1, true)}</div>
             <div class="fxslot-variation cgrid">${this.controlHTML(FX_SLOT_VARIATION_BASE + slot, true)}</div>
+            <div class="fxslot-filter-mode cgrid">${this.controlHTML(FX_SLOT_FILTER_MODE_BASE + slot, true)}</div>
             <div class="fxslot-macros cgrid">${macros}</div>
             <div class="fx-order-hidden">${this.controlHTML(base + 2)}</div>
         </section>`;
@@ -2296,6 +2319,8 @@ class EisenpulsPatchView extends HTMLElement {
                 variation.sel.selectedIndex = Math.max(0, Math.min(5, Math.round(variation.value)));
                 if (variation.valEl) variation.valEl.textContent = fmt(variation.spec, variation.value);
             }
+            const filterModeWrap = card.querySelector(".fxslot-filter-mode");
+            if (filterModeWrap) filterModeWrap.style.display = type === 9 ? "" : "none";
             const power = this._controls.get("param" + (base + 1));
             card.classList.toggle("fx-slot-off", type === 0 || (power ? power.value : FX_SLOT_INIT[slot].enabled) < 0.5);
         });
@@ -2318,7 +2343,9 @@ class EisenpulsPatchView extends HTMLElement {
             const enabled = type !== 0 && (power ? power.value : FX_SLOT_INIT[slot].enabled) >= 0.5;
             const variation = this._controls.get("param" + (FX_SLOT_VARIATION_BASE + slot));
             const variantLabels = FX_SLOT_VARIATIONS_BY_TYPE[type] || FX_SLOT_VARIATIONS_BY_TYPE[0];
-            const variantName = variation ? variantLabels[Math.max(0, Math.min(5, Math.round(variation.value)))] : variantLabels[0];
+            const variantName = type === 9
+                ? FILTER_TYPES[Math.max(0, Math.min(29, Math.round((this._controls.get("param" + (FX_SLOT_FILTER_MODE_BASE + slot)) || { value: 0 }).value)))]
+                : (variation ? variantLabels[Math.max(0, Math.min(5, Math.round(variation.value)))] : variantLabels[0]);
             return '<span class="fx-chain-node' + (!enabled ? ' disabled' : '') + '"><b>' +
                 String(i + 1).padStart(2, "0") + '</b>' + title + '<small>' + variantName + '</small></span>';
         }).join("");
@@ -2703,7 +2730,8 @@ class EisenpulsPatchView extends HTMLElement {
   .fx-chain-node i { position: absolute; right: calc(var(--u) * -5); top: 50%; transform: translate(50%,-50%); z-index: 2; color: #ff6d5e; font-size: calc(var(--u) * 14); font-style: normal; }
   .fx-slot-grid { grid-column: 1 / -1; min-width: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(200px, auto); align-content: start; gap: calc(var(--u) * 7); }
   .fxslot-variation { margin-top: calc(var(--u) * 7); display: block; }
-  .fxslot-variation .control { min-width: 0; }
+  .fxslot-variation .control, .fxslot-filter-mode .control { min-width: 0; }
+  .fxslot-filter-mode { margin-top: calc(var(--u) * 7); }
   .fx-slot { min-width: 0; transition: border-color .12s, opacity .12s, transform .12s; }
   .fxslot-head { display: flex; align-items: center; gap: calc(var(--u) * 7); margin-bottom: calc(var(--u) * 8); cursor: grab; user-select: none; border-bottom: 1px solid #45494f; padding-bottom: calc(var(--u) * 5); }
   .fxslot-head:active { cursor: grabbing; }
