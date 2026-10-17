@@ -600,6 +600,14 @@ processor Eisenpuls_Synth
     float lfoCutoff    = 0.0f;
     float lfoAmp       = 0.0f;
     float driveAmt     = 0.1f;
+    // Per-module bypass state (1 = enabled), independent of saved effect parameters.
+    float fxDelayOn    = 1.0f;
+    float fxDriveOn    = 1.0f;
+    float fxChorusOn   = 1.0f;
+    float fxFlangerOn  = 1.0f;
+    float fxPhaserOn   = 1.0f;
+    float fxReverbOn   = 1.0f;
+    float fxTremoloOn  = 1.0f;
     float panParam     = 0.0f;
     float panL         = 1.0f;
     float panR         = 1.0f;
@@ -961,6 +969,14 @@ processor Eisenpuls_Synth
         panL = float (cos (ang)) * 1.4142f;
         panR = float (sin (ang)) * 1.4142f;
     }
+    event param541 (float v) { fxDelayOn   = v > 0.5f ? 1.0f : 0.0f; }
+    event param542 (float v) { fxDriveOn   = v > 0.5f ? 1.0f : 0.0f; }
+    event param543 (float v) { fxChorusOn  = v > 0.5f ? 1.0f : 0.0f; }
+    event param544 (float v) { fxFlangerOn = v > 0.5f ? 1.0f : 0.0f; }
+    event param545 (float v) { fxPhaserOn  = v > 0.5f ? 1.0f : 0.0f; }
+    event param546 (float v) { fxReverbOn  = v > 0.5f ? 1.0f : 0.0f; }
+    event param547 (float v) { fxTremoloOn = v > 0.5f ? 1.0f : 0.0f; }
+
     event param30 (float v) { delayMs     = v; }
     event param31 (float v) { delayFb     = v; }
     event param32 (float v) { delayDepth  = v; }
@@ -3793,7 +3809,7 @@ processor Eisenpuls_Synth
             }
 
             // ----- global mod destinations: drive, pan, output gain -----
-            float driveEff = clamp (driveAmt + gmod.at (8) * 0.5f, 0.0f, 1.0f);
+            float driveEff = fxDriveOn > 0.5f ? clamp (driveAmt + gmod.at (8) * 0.5f, 0.0f, 1.0f) : 0.0f;
 
             float gPanL = panL;
             float gPanR = panR;
@@ -3890,8 +3906,9 @@ processor Eisenpuls_Synth
             writePos += 1;
             if (writePos >= 192000) writePos = 0;
 
-            float outL = (dryL + (dl + dl2) * delayMixAmt) * masterLevel;
-            float outR = (dryR + (dr + dr2) * delayMixAmt) * masterLevel;
+            float delayWet = delayMixAmt * fxDelayOn;
+            float outL = (dryL + (dl + dl2) * delayWet) * masterLevel;
+            float outR = (dryR + (dr + dr2) * delayWet) * masterLevel;
 
             // ----- chorus (stereo, quadrature LFOs, feedback) -----
             chPhase += float64 (chorusRate) * processor.period;
@@ -3934,16 +3951,17 @@ processor Eisenpuls_Synth
             chPos += 1;
             if (chPos >= 8192) chPos = 0;
 
+            float chorusWet = chorusMix * fxChorusOn;
             if (chorusMode > 1.5f)
             {
                 // vibrato: pitch modulation only, the mix replaces the dry signal
-                outL = outL * (1.0f - chorusMix) + chWetL * chorusMix;
-                outR = outR * (1.0f - chorusMix) + chWetR * chorusMix;
+                outL = outL * (1.0f - chorusWet) + chWetL * chorusWet;
+                outR = outR * (1.0f - chorusWet) + chWetR * chorusWet;
             }
             else
             {
-                outL = outL * (1.0f - 0.4f * chorusMix) + chWetL * chorusMix * 0.7f;
-                outR = outR * (1.0f - 0.4f * chorusMix) + chWetR * chorusMix * 0.7f;
+                outL = outL * (1.0f - 0.4f * chorusWet) + chWetL * chorusWet * 0.7f;
+                outR = outR * (1.0f - 0.4f * chorusWet) + chWetR * chorusWet * 0.7f;
             }
 
             // ----- flanger (short modulated delay with feedback) -----
@@ -3972,8 +3990,9 @@ processor Eisenpuls_Synth
             flPos += 1;
             if (flPos >= 4096) flPos = 0;
 
-            outL = outL * (1.0f - 0.5f * flangMix) + flWetL * 0.6f * flangMix;
-            outR = outR * (1.0f - 0.5f * flangMix) + flWetR * 0.6f * flangMix;
+            float flangerWet = flangMix * fxFlangerOn;
+            outL = outL * (1.0f - 0.5f * flangerWet) + flWetL * 0.6f * flangerWet;
+            outR = outR * (1.0f - 0.5f * flangerWet) + flWetR * 0.6f * flangerWet;
 
             // ----- phaser (4-stage allpass with feedback) -----
             phPhase += float64 (phaserRate) * processor.period;
@@ -4002,8 +4021,9 @@ processor Eisenpuls_Synth
             phFbL = clamp (phXL, -4.0f, 4.0f);
             phFbR = clamp (phXR, -4.0f, 4.0f);
 
-            outL = outL * (1.0f - 0.5f * phaserMix) + phXL * 0.5f * phaserMix;
-            outR = outR * (1.0f - 0.5f * phaserMix) + phXR * 0.5f * phaserMix;
+            float phaserWet = phaserMix * fxPhaserOn;
+            outL = outL * (1.0f - 0.5f * phaserWet) + phXL * 0.5f * phaserWet;
+            outR = outR * (1.0f - 0.5f * phaserWet) + phXR * 0.5f * phaserWet;
 
             // ----- tremolo (selectable wave, stereo offset) -----
             trPhase += float64 (tremRate) * processor.period;
@@ -4043,8 +4063,9 @@ processor Eisenpuls_Synth
                 trLfoR = trPR;
             }
 
-            outL = outL * (1.0f - tremDepth * trLfoL);
-            outR = outR * (1.0f - tremDepth * trLfoR);
+            float tremWet = tremDepth * fxTremoloOn;
+            outL = outL * (1.0f - tremWet * trLfoL);
+            outR = outR * (1.0f - tremWet * trLfoR);
 
             // ----- reverb (Freeverb style: 8 combs + 4 allpasses, pre-delay, width) -----
             // DC blocker on the reverb input: a DC offset would be amplified by the comb feedback (gain 1 / (1 - feedback))
@@ -4125,8 +4146,8 @@ processor Eisenpuls_Synth
             rvOxR = rvOutRRaw;
             rvOyR = rvOutR;
 
-            outL += rvOutL * reverbMix * 3.0f;
-            outR += rvOutR * reverbMix * 3.0f;
+            outL += rvOutL * reverbMix * fxReverbOn * 3.0f;
+            outR += rvOutR * reverbMix * fxReverbOn * 3.0f;
 
             // ----- stereo width (mid/side) -----
             float wdMid  = (outL + outR) * 0.5f;
@@ -4181,8 +4202,9 @@ processor Eisenpuls_Synth
                 outR = rint (outR * lv) / lv;
             }
 
-            outL = preCrushL * (1.0f - crushMix) + outL * crushMix;
-            outR = preCrushR * (1.0f - crushMix) + outR * crushMix;
+            float crushWet = crushMix * fxDriveOn;
+            outL = preCrushL * (1.0f - crushWet) + outL * crushWet;
+            outR = preCrushR * (1.0f - crushWet) + outR * crushWet;
 
             outL = clamp (outL, -1.0f, 1.0f);
             outR = clamp (outR, -1.0f, 1.0f);
