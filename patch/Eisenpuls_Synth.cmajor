@@ -3795,7 +3795,7 @@ processor Eisenpuls_Synth
         // 1 — independent drive. A=amount, B=wet mix, C=algorithm.
         if (kind == 1)
         {
-            int alg = (int (c * 5.0f + 0.5f) + variation) % 6;
+            int alg = variation == 0 ? int (c * 5.0f + 0.5f) : variation - 1;
             float driveAmount = clamp (a * (1.0f + d) + gmod.at (8) * 0.5f, 0.0f, 1.0f);
             float wetL = fxRackDriveShape (inL, driveAmount, alg, e);
             float wetR = fxRackDriveShape (inR, driveAmount, alg, e);
@@ -3907,12 +3907,13 @@ processor Eisenpuls_Synth
         {
             fxPhaserPhase.at (slot) += float64 (0.05f + b * 7.95f) * float64 (dt);
             if (fxPhaserPhase.at (slot) >= 1.0) fxPhaserPhase.at (slot) -= 1.0;
-            float mod = 0.5f + 0.5f * float (sin (float (twoPi) * float (fxPhaserPhase.at (slot))));
+            float mod = 0.5f + 0.5f * float (sin (float (twoPi) * float (fxPhaserPhase.at (slot)) * (variation == 5 ? 1.5f : 1.0f)));
             float hz = clamp (120.0f * float (pow (2.0f, mod * (1.0f + c * 4.0f))), 20.0f, sr * 0.45f);
             float tanV = float (tan (float64 (hz) * pi * float64 (dt)));
             float coef = (1.0f - tanV) / (1.0f + tanV);
-            float xL = inL + fxPhaserFbL.at (slot) * (d * 0.9f);
-            float xR = inR + fxPhaserFbR.at (slot) * (d * 0.9f);
+            float phaserFeedback = clamp (d + (variation == 4 ? 0.25f : 0.0f), 0.0f, 1.0f) * 0.9f;
+            float xL = inL + fxPhaserFbL.at (slot) * phaserFeedback;
+            float xR = inR + fxPhaserFbR.at (slot) * phaserFeedback;
             int stages = 2 * (int (e * 3.0f + 0.5f) + 1);
             if (variation == 1) stages = 4;
             else if (variation == 2) stages = 6;
@@ -3957,8 +3958,8 @@ processor Eisenpuls_Synth
 
             float rvScale = 1.0f;
             float rvFeedback = 0.35f + b * 0.58f;
-            float rvDamp = clamp (c + (variation == 1 ? 0.25f : variation == 2 ? -0.2f : 0.0f), 0.0f, 1.0f);
-            int rvType = (int (f * 3.0f + 0.5f) + variation) % 4;
+            float rvDamp = clamp (c + (variation == 4 ? 0.35f : variation == 5 ? -0.25f : 0.0f), 0.0f, 1.0f);
+            int rvType = variation == 0 ? int (f * 3.0f + 0.5f) : (variation <= 3 ? variation : int (f * 3.0f + 0.5f));
             if (rvType == 1) { rvScale = 0.35f; rvFeedback *= 0.88f; }
             if (rvType == 2) { rvScale = 0.6f; rvDamp *= 0.45f; }
             if (rvType == 3) { rvScale = 2.2f; rvFeedback = min (rvFeedback + 0.01f, 0.985f); }
@@ -4017,7 +4018,7 @@ processor Eisenpuls_Synth
             float pl = float (fxTremoloPhase.at (slot));
             float pr = pl + 0.5f * d;
             if (pr >= 1.0f) pr -= 1.0f;
-            int wave = (int (c * 4.0f + 0.5f) + variation) % 5;
+            int wave = variation == 0 ? int (c * 4.0f + 0.5f) : variation - 1;
             float lfoL = 0.5f - 0.5f * float (sin (float (twoPi) * pl));
             float lfoR = 0.5f - 0.5f * float (sin (float (twoPi) * pr));
             if (wave == 1) { lfoL = abs (2.0f * pl - 1.0f); lfoR = abs (2.0f * pr - 1.0f); }
