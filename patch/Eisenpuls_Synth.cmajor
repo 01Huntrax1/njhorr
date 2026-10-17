@@ -391,96 +391,208 @@ processor Eisenpuls_Synth
     input event float param539 [[ name: "Phaser Stages (0 2-stage, 1 4-stage, 2 6-stage, 3 8-stage)", min: 0.0, max: 3.0, init: 1.0, step: 1.0 ]];
     input event float param540 [[ name: "Reverb Type (0 Hall, 1 Room, 2 Plate, 3 Cathedral)", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
     // ---------------- MODULAR FX RACK (8 independent module slots) ----------------
-    input event float param600 [[ name: "FX Slot 1 Type", min: 0.0000, max: 8.0000, init: 2.0000, step: 1.0 ]];
+    input event float param600 [[ name: "FX Slot 1 Type", min: 0.0000, max: 9.0000, init: 2.0000, step: 1.0 ]];
     input event float param601 [[ name: "FX Slot 1 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param602 [[ name: "FX Slot 1 Order", min: 0.0000, max: 9.0000, init: 1.0000, step: 1.0 ]];
+    input event float param602 [[ name: "FX Slot 1 Order", min: 0.0000, max: 19.0000, init: 1.0000, step: 1.0 ]];
     input event float param603 [[ name: "FX Slot 1 A", min: 0.0000, max: 1.0000, init: 0.3687 ]];
     input event float param604 [[ name: "FX Slot 1 B", min: 0.0000, max: 1.0000, init: 0.3684 ]];
     input event float param605 [[ name: "FX Slot 1 C", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param606 [[ name: "FX Slot 1 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param607 [[ name: "FX Slot 1 E", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param608 [[ name: "FX Slot 1 F", min: 0.0000, max: 1.0000, init: 1.0000 ]];
-    input event float param609 [[ name: "FX Slot 2 Type", min: 0.0000, max: 8.0000, init: 1.0000, step: 1.0 ]];
+    input event float param609 [[ name: "FX Slot 2 Type", min: 0.0000, max: 9.0000, init: 1.0000, step: 1.0 ]];
     input event float param610 [[ name: "FX Slot 2 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param611 [[ name: "FX Slot 2 Order", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param611 [[ name: "FX Slot 2 Order", min: 0.0000, max: 19.0000, init: 0.0000, step: 1.0 ]];
     input event float param612 [[ name: "FX Slot 2 A", min: 0.0000, max: 1.0000, init: 0.1000 ]];
     input event float param613 [[ name: "FX Slot 2 B", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param614 [[ name: "FX Slot 2 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param615 [[ name: "FX Slot 2 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param616 [[ name: "FX Slot 2 E", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param617 [[ name: "FX Slot 2 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param618 [[ name: "FX Slot 3 Type", min: 0.0000, max: 8.0000, init: 3.0000, step: 1.0 ]];
+    input event float param618 [[ name: "FX Slot 3 Type", min: 0.0000, max: 9.0000, init: 3.0000, step: 1.0 ]];
     input event float param619 [[ name: "FX Slot 3 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param620 [[ name: "FX Slot 3 Order", min: 0.0000, max: 9.0000, init: 2.0000, step: 1.0 ]];
+    input event float param620 [[ name: "FX Slot 3 Order", min: 0.0000, max: 19.0000, init: 2.0000, step: 1.0 ]];
     input event float param621 [[ name: "FX Slot 3 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param622 [[ name: "FX Slot 3 B", min: 0.0000, max: 1.0000, init: 0.1515 ]];
     input event float param623 [[ name: "FX Slot 3 C", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param624 [[ name: "FX Slot 3 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param625 [[ name: "FX Slot 3 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param626 [[ name: "FX Slot 3 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param627 [[ name: "FX Slot 4 Type", min: 0.0000, max: 8.0000, init: 4.0000, step: 1.0 ]];
+    input event float param627 [[ name: "FX Slot 4 Type", min: 0.0000, max: 9.0000, init: 4.0000, step: 1.0 ]];
     input event float param628 [[ name: "FX Slot 4 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param629 [[ name: "FX Slot 4 Order", min: 0.0000, max: 9.0000, init: 3.0000, step: 1.0 ]];
+    input event float param629 [[ name: "FX Slot 4 Order", min: 0.0000, max: 19.0000, init: 3.0000, step: 1.0 ]];
     input event float param630 [[ name: "FX Slot 4 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param631 [[ name: "FX Slot 4 B", min: 0.0000, max: 1.0000, init: 0.0505 ]];
     input event float param632 [[ name: "FX Slot 4 C", min: 0.0000, max: 1.0000, init: 0.6000 ]];
     input event float param633 [[ name: "FX Slot 4 D", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param634 [[ name: "FX Slot 4 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param635 [[ name: "FX Slot 4 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param636 [[ name: "FX Slot 5 Type", min: 0.0000, max: 8.0000, init: 5.0000, step: 1.0 ]];
+    input event float param636 [[ name: "FX Slot 5 Type", min: 0.0000, max: 9.0000, init: 5.0000, step: 1.0 ]];
     input event float param637 [[ name: "FX Slot 5 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param638 [[ name: "FX Slot 5 Order", min: 0.0000, max: 9.0000, init: 4.0000, step: 1.0 ]];
+    input event float param638 [[ name: "FX Slot 5 Order", min: 0.0000, max: 19.0000, init: 4.0000, step: 1.0 ]];
     input event float param639 [[ name: "FX Slot 5 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param640 [[ name: "FX Slot 5 B", min: 0.0000, max: 1.0000, init: 0.0440 ]];
     input event float param641 [[ name: "FX Slot 5 C", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param642 [[ name: "FX Slot 5 D", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param643 [[ name: "FX Slot 5 E", min: 0.0000, max: 1.0000, init: 0.3333 ]];
     input event float param644 [[ name: "FX Slot 5 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param645 [[ name: "FX Slot 6 Type", min: 0.0000, max: 8.0000, init: 6.0000, step: 1.0 ]];
+    input event float param645 [[ name: "FX Slot 6 Type", min: 0.0000, max: 9.0000, init: 6.0000, step: 1.0 ]];
     input event float param646 [[ name: "FX Slot 6 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param647 [[ name: "FX Slot 6 Order", min: 0.0000, max: 9.0000, init: 6.0000, step: 1.0 ]];
+    input event float param647 [[ name: "FX Slot 6 Order", min: 0.0000, max: 19.0000, init: 6.0000, step: 1.0 ]];
     input event float param648 [[ name: "FX Slot 6 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param649 [[ name: "FX Slot 6 B", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param650 [[ name: "FX Slot 6 C", min: 0.0000, max: 1.0000, init: 0.5000 ]];
     input event float param651 [[ name: "FX Slot 6 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param652 [[ name: "FX Slot 6 E", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param653 [[ name: "FX Slot 6 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param654 [[ name: "FX Slot 7 Type", min: 0.0000, max: 8.0000, init: 7.0000, step: 1.0 ]];
+    input event float param654 [[ name: "FX Slot 7 Type", min: 0.0000, max: 9.0000, init: 7.0000, step: 1.0 ]];
     input event float param655 [[ name: "FX Slot 7 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param656 [[ name: "FX Slot 7 Order", min: 0.0000, max: 9.0000, init: 5.0000, step: 1.0 ]];
+    input event float param656 [[ name: "FX Slot 7 Order", min: 0.0000, max: 19.0000, init: 5.0000, step: 1.0 ]];
     input event float param657 [[ name: "FX Slot 7 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param658 [[ name: "FX Slot 7 B", min: 0.0000, max: 1.0000, init: 0.2460 ]];
     input event float param659 [[ name: "FX Slot 7 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param660 [[ name: "FX Slot 7 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param661 [[ name: "FX Slot 7 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param662 [[ name: "FX Slot 7 F", min: 0.0000, max: 1.0000, init: 1.0000 ]];
-    input event float param663 [[ name: "FX Slot 8 Type", min: 0.0000, max: 8.0000, init: 8.0000, step: 1.0 ]];
+    input event float param663 [[ name: "FX Slot 8 Type", min: 0.0000, max: 9.0000, init: 8.0000, step: 1.0 ]];
     input event float param664 [[ name: "FX Slot 8 Power", min: 0.0000, max: 1.0000, init: 1.0000, step: 1.0 ]];
-    input event float param665 [[ name: "FX Slot 8 Order", min: 0.0000, max: 9.0000, init: 7.0000, step: 1.0 ]];
+    input event float param665 [[ name: "FX Slot 8 Order", min: 0.0000, max: 19.0000, init: 7.0000, step: 1.0 ]];
     input event float param666 [[ name: "FX Slot 8 A", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param667 [[ name: "FX Slot 8 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param668 [[ name: "FX Slot 8 C", min: 0.0000, max: 1.0000, init: 1.0000 ]];
     input event float param669 [[ name: "FX Slot 8 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param670 [[ name: "FX Slot 8 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param671 [[ name: "FX Slot 8 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param672 [[ name: "FX Slot 9 Type", min: 0.0000, max: 8.0000, init: 0.0000, step: 1.0 ]];
+    input event float param672 [[ name: "FX Slot 9 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
     input event float param673 [[ name: "FX Slot 9 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
-    input event float param674 [[ name: "FX Slot 9 Order", min: 0.0000, max: 9.0000, init: 8.0000, step: 1.0 ]];
+    input event float param674 [[ name: "FX Slot 9 Order", min: 0.0000, max: 19.0000, init: 8.0000, step: 1.0 ]];
     input event float param675 [[ name: "FX Slot 9 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param676 [[ name: "FX Slot 9 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param677 [[ name: "FX Slot 9 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param678 [[ name: "FX Slot 9 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param679 [[ name: "FX Slot 9 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param680 [[ name: "FX Slot 9 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
-    input event float param681 [[ name: "FX Slot 10 Type", min: 0.0000, max: 8.0000, init: 0.0000, step: 1.0 ]];
+    input event float param681 [[ name: "FX Slot 10 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
     input event float param682 [[ name: "FX Slot 10 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
-    input event float param683 [[ name: "FX Slot 10 Order", min: 0.0000, max: 9.0000, init: 9.0000, step: 1.0 ]];
+    input event float param683 [[ name: "FX Slot 10 Order", min: 0.0000, max: 19.0000, init: 9.0000, step: 1.0 ]];
     input event float param684 [[ name: "FX Slot 10 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param685 [[ name: "FX Slot 10 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param686 [[ name: "FX Slot 10 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param687 [[ name: "FX Slot 10 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param688 [[ name: "FX Slot 10 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
     input event float param689 [[ name: "FX Slot 10 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param690 [[ name: "FX Slot 11 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param691 [[ name: "FX Slot 11 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param692 [[ name: "FX Slot 11 Order", min: 0.0000, max: 19.0000, init: 10.0000, step: 1.0 ]];
+    input event float param693 [[ name: "FX Slot 11 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param694 [[ name: "FX Slot 11 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param695 [[ name: "FX Slot 11 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param696 [[ name: "FX Slot 11 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param697 [[ name: "FX Slot 11 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param698 [[ name: "FX Slot 11 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param699 [[ name: "FX Slot 12 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param700 [[ name: "FX Slot 12 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param701 [[ name: "FX Slot 12 Order", min: 0.0000, max: 19.0000, init: 11.0000, step: 1.0 ]];
+    input event float param702 [[ name: "FX Slot 12 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param703 [[ name: "FX Slot 12 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param704 [[ name: "FX Slot 12 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param705 [[ name: "FX Slot 12 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param706 [[ name: "FX Slot 12 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param707 [[ name: "FX Slot 12 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param708 [[ name: "FX Slot 13 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param709 [[ name: "FX Slot 13 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param710 [[ name: "FX Slot 13 Order", min: 0.0000, max: 19.0000, init: 12.0000, step: 1.0 ]];
+    input event float param711 [[ name: "FX Slot 13 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param712 [[ name: "FX Slot 13 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param713 [[ name: "FX Slot 13 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param714 [[ name: "FX Slot 13 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param715 [[ name: "FX Slot 13 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param716 [[ name: "FX Slot 13 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param717 [[ name: "FX Slot 14 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param718 [[ name: "FX Slot 14 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param719 [[ name: "FX Slot 14 Order", min: 0.0000, max: 19.0000, init: 13.0000, step: 1.0 ]];
+    input event float param720 [[ name: "FX Slot 14 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param721 [[ name: "FX Slot 14 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param722 [[ name: "FX Slot 14 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param723 [[ name: "FX Slot 14 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param724 [[ name: "FX Slot 14 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param725 [[ name: "FX Slot 14 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param726 [[ name: "FX Slot 15 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param727 [[ name: "FX Slot 15 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param728 [[ name: "FX Slot 15 Order", min: 0.0000, max: 19.0000, init: 14.0000, step: 1.0 ]];
+    input event float param729 [[ name: "FX Slot 15 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param730 [[ name: "FX Slot 15 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param731 [[ name: "FX Slot 15 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param732 [[ name: "FX Slot 15 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param733 [[ name: "FX Slot 15 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param734 [[ name: "FX Slot 15 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param735 [[ name: "FX Slot 16 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param736 [[ name: "FX Slot 16 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param737 [[ name: "FX Slot 16 Order", min: 0.0000, max: 19.0000, init: 15.0000, step: 1.0 ]];
+    input event float param738 [[ name: "FX Slot 16 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param739 [[ name: "FX Slot 16 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param740 [[ name: "FX Slot 16 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param741 [[ name: "FX Slot 16 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param742 [[ name: "FX Slot 16 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param743 [[ name: "FX Slot 16 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param744 [[ name: "FX Slot 17 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param745 [[ name: "FX Slot 17 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param746 [[ name: "FX Slot 17 Order", min: 0.0000, max: 19.0000, init: 16.0000, step: 1.0 ]];
+    input event float param747 [[ name: "FX Slot 17 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param748 [[ name: "FX Slot 17 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param749 [[ name: "FX Slot 17 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param750 [[ name: "FX Slot 17 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param751 [[ name: "FX Slot 17 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param752 [[ name: "FX Slot 17 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param753 [[ name: "FX Slot 18 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param754 [[ name: "FX Slot 18 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param755 [[ name: "FX Slot 18 Order", min: 0.0000, max: 19.0000, init: 17.0000, step: 1.0 ]];
+    input event float param756 [[ name: "FX Slot 18 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param757 [[ name: "FX Slot 18 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param758 [[ name: "FX Slot 18 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param759 [[ name: "FX Slot 18 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param760 [[ name: "FX Slot 18 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param761 [[ name: "FX Slot 18 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param762 [[ name: "FX Slot 19 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param763 [[ name: "FX Slot 19 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param764 [[ name: "FX Slot 19 Order", min: 0.0000, max: 19.0000, init: 18.0000, step: 1.0 ]];
+    input event float param765 [[ name: "FX Slot 19 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param766 [[ name: "FX Slot 19 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param767 [[ name: "FX Slot 19 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param768 [[ name: "FX Slot 19 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param769 [[ name: "FX Slot 19 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param770 [[ name: "FX Slot 19 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param771 [[ name: "FX Slot 20 Type", min: 0.0000, max: 9.0000, init: 0.0000, step: 1.0 ]];
+    input event float param772 [[ name: "FX Slot 20 Power", min: 0.0000, max: 1.0000, init: 0.0000, step: 1.0 ]];
+    input event float param773 [[ name: "FX Slot 20 Order", min: 0.0000, max: 19.0000, init: 19.0000, step: 1.0 ]];
+    input event float param774 [[ name: "FX Slot 20 A", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param775 [[ name: "FX Slot 20 B", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param776 [[ name: "FX Slot 20 C", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param777 [[ name: "FX Slot 20 D", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param778 [[ name: "FX Slot 20 E", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+    input event float param779 [[ name: "FX Slot 20 F", min: 0.0000, max: 1.0000, init: 0.0000 ]];
+
+    input event float param800 [[ name: "FX Slot 1 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param801 [[ name: "FX Slot 2 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param802 [[ name: "FX Slot 3 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param803 [[ name: "FX Slot 4 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param804 [[ name: "FX Slot 5 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param805 [[ name: "FX Slot 6 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param806 [[ name: "FX Slot 7 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param807 [[ name: "FX Slot 8 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param808 [[ name: "FX Slot 9 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param809 [[ name: "FX Slot 10 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param810 [[ name: "FX Slot 11 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param811 [[ name: "FX Slot 12 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param812 [[ name: "FX Slot 13 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param813 [[ name: "FX Slot 14 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param814 [[ name: "FX Slot 15 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param815 [[ name: "FX Slot 16 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param816 [[ name: "FX Slot 17 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param817 [[ name: "FX Slot 18 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param818 [[ name: "FX Slot 19 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+    input event float param819 [[ name: "FX Slot 20 Variation", min: 0.0000, max: 5.0000, init: 0.0000, step: 1.0 ]];
+
 
 
 
@@ -702,65 +814,71 @@ processor Eisenpuls_Synth
     float fxReverbOn   = 1.0f;
     float fxTremoloOn  = 1.0f;
     // Reorderable rack state. Slot identity owns its parameters and history; order changes only the route.
-    float[10] fxSlotType;
-    float[10] fxSlotEnabled;
-    float[10] fxSlotOrder;
-    float[10] fxSlotA;
-    float[10] fxSlotB;
-    float[10] fxSlotC;
-    float[10] fxSlotD;
-    float[10] fxSlotE;
-    float[10] fxSlotF;
+    float[20] fxSlotType;
+    float[20] fxSlotEnabled;
+    float[20] fxSlotOrder;
+    float[20] fxSlotA;
+    float[20] fxSlotB;
+    float[20] fxSlotC;
+    float[20] fxSlotD;
+    float[20] fxSlotE;
+    float[20] fxSlotF;
+    float[20] fxSlotVariation;
+    float64[20] fxDelayTapePhase;
+    float[20] fxFilterIC1L;
+    float[20] fxFilterIC2L;
+    float[20] fxFilterIC1R;
+    float[20] fxFilterIC2R;
 
     // Per-slot stereo delay (up to 192000 samples per channel / slot).
-    float[1920000] fxDelayBufL;
-    float[1920000] fxDelayBufR;
-    int[10] fxDelayPos;
-    float[10] fxDelayDampL;
-    float[10] fxDelayDampR;
+    float[3840000] fxDelayBufL;
+    float[3840000] fxDelayBufR;
+    int[20] fxDelayPos;
+    float[20] fxDelayDampL;
+    float[20] fxDelayDampR;
 
     // Per-slot chorus and flanger delay lines.
-    float[81920] fxChorusBufL;
-    float[81920] fxChorusBufR;
-    int[10] fxChorusPos;
-    float64[10] fxChorusPhase;
-    float[10] fxChorusFbL;
-    float[10] fxChorusFbR;
-    float[40960] fxFlangerBufL;
-    float[40960] fxFlangerBufR;
-    int[10] fxFlangerPos;
-    float64[10] fxFlangerPhase;
-    float[10] fxFlangerFbL;
-    float[10] fxFlangerFbR;
+    float[163840] fxChorusBufL;
+    float[163840] fxChorusBufR;
+    int[20] fxChorusPos;
+    float64[20] fxChorusPhase;
+    float[20] fxChorusFbL;
+    float[20] fxChorusFbR;
+    float[81920] fxFlangerBufL;
+    float[81920] fxFlangerBufR;
+    int[20] fxFlangerPos;
+    float64[20] fxFlangerPhase;
+    float[20] fxFlangerFbL;
+    float[20] fxFlangerFbR;
 
     // Per-slot phaser allpass states.
-    float[80] fxPhaserZL;
-    float[80] fxPhaserZR;
-    float64[10] fxPhaserPhase;
-    float[10] fxPhaserFbL;
-    float[10] fxPhaserFbR;
+    float[160] fxPhaserZL;
+    float[160] fxPhaserZR;
+    float64[20] fxPhaserPhase;
+    float[20] fxPhaserFbL;
+    float[20] fxPhaserFbR;
 
     // Freeverb-style state per slot: 8 mono combs, 4 allpasses, predelay and DC blockers.
-    float[655360] fxReverbCombBuf;
-    int[80] fxReverbCombPos;
-    int[80] fxReverbCombLen;
-    float[80] fxReverbCombStore;
-    float[163840] fxReverbApBuf;
-    int[40] fxReverbApPos;
-    int[40] fxReverbApLen;
-    float[81920] fxReverbPreBuf;
-    int[10] fxReverbPrePos;
-    float[10] fxReverbInX;
-    float[10] fxReverbInY;
-    float[10] fxReverbOutXL;
-    float[10] fxReverbOutYL;
-    float[10] fxReverbOutXR;
-    float[10] fxReverbOutYR;
+    float[1310720] fxReverbCombBuf;
+    int[160] fxReverbCombPos;
+    int[160] fxReverbCombLen;
+    float[160] fxReverbCombStore;
+    float[327680] fxReverbApBuf;
+    int[80] fxReverbApPos;
+    int[80] fxReverbApLen;
+    float[163840] fxReverbPreBuf;
+    int[20] fxReverbPrePos;
+    float[20] fxReverbInX;
+    float[20] fxReverbInY;
+    float[20] fxReverbOutXL;
+    float[20] fxReverbOutYL;
+    float[20] fxReverbOutXR;
+    float[20] fxReverbOutYR;
 
-    float64[10] fxTremoloPhase;
-    int[10] fxCrushCounter;
-    float[10] fxCrushHeldL;
-    float[10] fxCrushHeldR;
+    float64[20] fxTremoloPhase;
+    int[20] fxCrushCounter;
+    float[20] fxCrushHeldL;
+    float[20] fxCrushHeldR;
 
     float panParam     = 0.0f;
     float panL         = 1.0f;
@@ -1221,6 +1339,118 @@ processor Eisenpuls_Synth
     event param687 (float v) { fxSlotD.at (9) = v; }
     event param688 (float v) { fxSlotE.at (9) = v; }
     event param689 (float v) { fxSlotF.at (9) = v; }
+    event param690 (float v) { fxSlotType.at (10) = v; }
+    event param691 (float v) { fxSlotEnabled.at (10) = v; }
+    event param692 (float v) { fxSlotOrder.at (10) = v; }
+    event param693 (float v) { fxSlotA.at (10) = v; }
+    event param694 (float v) { fxSlotB.at (10) = v; }
+    event param695 (float v) { fxSlotC.at (10) = v; }
+    event param696 (float v) { fxSlotD.at (10) = v; }
+    event param697 (float v) { fxSlotE.at (10) = v; }
+    event param698 (float v) { fxSlotF.at (10) = v; }
+    event param699 (float v) { fxSlotType.at (11) = v; }
+    event param700 (float v) { fxSlotEnabled.at (11) = v; }
+    event param701 (float v) { fxSlotOrder.at (11) = v; }
+    event param702 (float v) { fxSlotA.at (11) = v; }
+    event param703 (float v) { fxSlotB.at (11) = v; }
+    event param704 (float v) { fxSlotC.at (11) = v; }
+    event param705 (float v) { fxSlotD.at (11) = v; }
+    event param706 (float v) { fxSlotE.at (11) = v; }
+    event param707 (float v) { fxSlotF.at (11) = v; }
+    event param708 (float v) { fxSlotType.at (12) = v; }
+    event param709 (float v) { fxSlotEnabled.at (12) = v; }
+    event param710 (float v) { fxSlotOrder.at (12) = v; }
+    event param711 (float v) { fxSlotA.at (12) = v; }
+    event param712 (float v) { fxSlotB.at (12) = v; }
+    event param713 (float v) { fxSlotC.at (12) = v; }
+    event param714 (float v) { fxSlotD.at (12) = v; }
+    event param715 (float v) { fxSlotE.at (12) = v; }
+    event param716 (float v) { fxSlotF.at (12) = v; }
+    event param717 (float v) { fxSlotType.at (13) = v; }
+    event param718 (float v) { fxSlotEnabled.at (13) = v; }
+    event param719 (float v) { fxSlotOrder.at (13) = v; }
+    event param720 (float v) { fxSlotA.at (13) = v; }
+    event param721 (float v) { fxSlotB.at (13) = v; }
+    event param722 (float v) { fxSlotC.at (13) = v; }
+    event param723 (float v) { fxSlotD.at (13) = v; }
+    event param724 (float v) { fxSlotE.at (13) = v; }
+    event param725 (float v) { fxSlotF.at (13) = v; }
+    event param726 (float v) { fxSlotType.at (14) = v; }
+    event param727 (float v) { fxSlotEnabled.at (14) = v; }
+    event param728 (float v) { fxSlotOrder.at (14) = v; }
+    event param729 (float v) { fxSlotA.at (14) = v; }
+    event param730 (float v) { fxSlotB.at (14) = v; }
+    event param731 (float v) { fxSlotC.at (14) = v; }
+    event param732 (float v) { fxSlotD.at (14) = v; }
+    event param733 (float v) { fxSlotE.at (14) = v; }
+    event param734 (float v) { fxSlotF.at (14) = v; }
+    event param735 (float v) { fxSlotType.at (15) = v; }
+    event param736 (float v) { fxSlotEnabled.at (15) = v; }
+    event param737 (float v) { fxSlotOrder.at (15) = v; }
+    event param738 (float v) { fxSlotA.at (15) = v; }
+    event param739 (float v) { fxSlotB.at (15) = v; }
+    event param740 (float v) { fxSlotC.at (15) = v; }
+    event param741 (float v) { fxSlotD.at (15) = v; }
+    event param742 (float v) { fxSlotE.at (15) = v; }
+    event param743 (float v) { fxSlotF.at (15) = v; }
+    event param744 (float v) { fxSlotType.at (16) = v; }
+    event param745 (float v) { fxSlotEnabled.at (16) = v; }
+    event param746 (float v) { fxSlotOrder.at (16) = v; }
+    event param747 (float v) { fxSlotA.at (16) = v; }
+    event param748 (float v) { fxSlotB.at (16) = v; }
+    event param749 (float v) { fxSlotC.at (16) = v; }
+    event param750 (float v) { fxSlotD.at (16) = v; }
+    event param751 (float v) { fxSlotE.at (16) = v; }
+    event param752 (float v) { fxSlotF.at (16) = v; }
+    event param753 (float v) { fxSlotType.at (17) = v; }
+    event param754 (float v) { fxSlotEnabled.at (17) = v; }
+    event param755 (float v) { fxSlotOrder.at (17) = v; }
+    event param756 (float v) { fxSlotA.at (17) = v; }
+    event param757 (float v) { fxSlotB.at (17) = v; }
+    event param758 (float v) { fxSlotC.at (17) = v; }
+    event param759 (float v) { fxSlotD.at (17) = v; }
+    event param760 (float v) { fxSlotE.at (17) = v; }
+    event param761 (float v) { fxSlotF.at (17) = v; }
+    event param762 (float v) { fxSlotType.at (18) = v; }
+    event param763 (float v) { fxSlotEnabled.at (18) = v; }
+    event param764 (float v) { fxSlotOrder.at (18) = v; }
+    event param765 (float v) { fxSlotA.at (18) = v; }
+    event param766 (float v) { fxSlotB.at (18) = v; }
+    event param767 (float v) { fxSlotC.at (18) = v; }
+    event param768 (float v) { fxSlotD.at (18) = v; }
+    event param769 (float v) { fxSlotE.at (18) = v; }
+    event param770 (float v) { fxSlotF.at (18) = v; }
+    event param771 (float v) { fxSlotType.at (19) = v; }
+    event param772 (float v) { fxSlotEnabled.at (19) = v; }
+    event param773 (float v) { fxSlotOrder.at (19) = v; }
+    event param774 (float v) { fxSlotA.at (19) = v; }
+    event param775 (float v) { fxSlotB.at (19) = v; }
+    event param776 (float v) { fxSlotC.at (19) = v; }
+    event param777 (float v) { fxSlotD.at (19) = v; }
+    event param778 (float v) { fxSlotE.at (19) = v; }
+    event param779 (float v) { fxSlotF.at (19) = v; }
+
+    event param800 (float v) { fxSlotVariation.at (0) = v; }
+    event param801 (float v) { fxSlotVariation.at (1) = v; }
+    event param802 (float v) { fxSlotVariation.at (2) = v; }
+    event param803 (float v) { fxSlotVariation.at (3) = v; }
+    event param804 (float v) { fxSlotVariation.at (4) = v; }
+    event param805 (float v) { fxSlotVariation.at (5) = v; }
+    event param806 (float v) { fxSlotVariation.at (6) = v; }
+    event param807 (float v) { fxSlotVariation.at (7) = v; }
+    event param808 (float v) { fxSlotVariation.at (8) = v; }
+    event param809 (float v) { fxSlotVariation.at (9) = v; }
+    event param810 (float v) { fxSlotVariation.at (10) = v; }
+    event param811 (float v) { fxSlotVariation.at (11) = v; }
+    event param812 (float v) { fxSlotVariation.at (12) = v; }
+    event param813 (float v) { fxSlotVariation.at (13) = v; }
+    event param814 (float v) { fxSlotVariation.at (14) = v; }
+    event param815 (float v) { fxSlotVariation.at (15) = v; }
+    event param816 (float v) { fxSlotVariation.at (16) = v; }
+    event param817 (float v) { fxSlotVariation.at (17) = v; }
+    event param818 (float v) { fxSlotVariation.at (18) = v; }
+    event param819 (float v) { fxSlotVariation.at (19) = v; }
+
 
 
 
@@ -1772,16 +2002,16 @@ processor Eisenpuls_Synth
     {
 
         // Modular FX rack defaults: eight familiar modules plus two empty slots for duplicates.
-        let fxTypeDefaults = int[10] (2, 1, 3, 4, 5, 6, 7, 8, 0, 0);
-        let fxEnableDefaults = int[10] (1, 1, 1, 1, 1, 1, 1, 1, 0, 0);
-        let fxOrderDefaults = int[10] (1, 0, 2, 3, 4, 6, 5, 7, 8, 9);
-        let fxADefaults = float[10] (0.3687f, 0.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f);
-        let fxBDefaults = float[10] (0.3684f, 1.0f, 0.1515f, 0.0505f, 0.044f, 0.5f, 0.246f, 0.0f, 0.0f, 0.0f);
-        let fxCDefaults = float[10] (1.0f, 0.0f, 0.5f, 0.6f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f);
-        let fxDDefaults = float[10] (0.0f, 0.0f, 0.0f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        let fxEDefaults = float[10] (1.0f, 0.5f, 0.0f, 0.0f, 0.3333f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        let fxFDefaults = float[10] (1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
-        for (int fx = 0; fx < 10; ++fx)
+        let fxTypeDefaults = int[20] (2, 1, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let fxEnableDefaults = int[20] (1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        let fxOrderDefaults = int[20] (1, 0, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+        let fxADefaults = float[20] (0.3687f, 0.1000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 1.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        let fxBDefaults = float[20] (0.3684f, 1.0000f, 0.1515f, 0.0505f, 0.0440f, 0.5000f, 0.2460f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        let fxCDefaults = float[20] (1.0000f, 0.0000f, 0.5000f, 0.6000f, 0.5000f, 0.5000f, 0.0000f, 1.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        let fxDDefaults = float[20] (0.0000f, 0.0000f, 0.0000f, 0.5000f, 0.5000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        let fxEDefaults = float[20] (1.0000f, 0.5000f, 0.0000f, 0.0000f, 0.3333f, 1.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        let fxFDefaults = float[20] (1.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 1.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f, 0.0000f);
+        for (int fx = 0; fx < 20; ++fx)
         {
             fxSlotType.at (fx) = float (fxTypeDefaults.at (fx));
             fxSlotEnabled.at (fx) = float (fxEnableDefaults.at (fx));
@@ -1792,6 +2022,7 @@ processor Eisenpuls_Synth
             fxSlotD.at (fx) = fxDDefaults.at (fx);
             fxSlotE.at (fx) = fxEDefaults.at (fx);
             fxSlotF.at (fx) = fxFDefaults.at (fx);
+            fxSlotVariation.at (fx) = 0.0f;
         }
 
         // supersaw detune offsets (JP-8000 style) and stereo positions, centre first then inner to outer pairs
@@ -1904,7 +2135,7 @@ processor Eisenpuls_Synth
         apLen.at (3) = clamp (int (464.0f * rs), 16, 4095);
         let fxCombBaseLengths = int[8] (1116, 1188, 1277, 1356, 1139, 1211, 1300, 1379);
         let fxApBaseLengths = int[4] (556, 441, 579, 464);
-        for (int fs = 0; fs < 10; ++fs)
+        for (int fs = 0; fs < 20; ++fs)
         {
             for (int fc = 0; fc < 8; ++fc)
                 fxReverbCombLen.at (fs * 8 + fc) = clamp (int (float (fxCombBaseLengths.at (fc)) * rs), 16, 8191);
@@ -3547,7 +3778,7 @@ processor Eisenpuls_Synth
     {
         if (fxSlotEnabled.at (slot) < 0.5f) return signalIn;
         int kind = int (fxSlotType.at (slot) + 0.5f);
-        if (kind <= 0 || kind > 8) return signalIn;
+        if (kind <= 0 || kind > 9) return signalIn;
 
         float inL = signalIn[0];
         float inR = signalIn[1];
@@ -3809,10 +4040,10 @@ processor Eisenpuls_Synth
     float<2> processFXRack (float<2> signalIn, float dt, float sr)
     {
         float<2> signal = signalIn;
-        for (int position = 0; position < 10; ++position)
+        for (int position = 0; position < 20; ++position)
         {
             int selected = -1;
-            for (int slot = 0; slot < 10; ++slot)
+            for (int slot = 0; slot < 20; ++slot)
                 if (int (fxSlotOrder.at (slot) + 0.5f) == position) selected = slot;
             if (selected >= 0)
                 signal = processFXSlot (selected, signal, dt, sr);
