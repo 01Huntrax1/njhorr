@@ -892,7 +892,18 @@ const FX_SLOT_COUNT = 20;
 const FX_SLOT_BASE = slot => 600 + slot * 9;
 const FX_SLOT_VARIATION_BASE = 800;
 const FX_SLOT_TYPES = ["Off", "Drive", "Delay", "Chorus", "Flanger", "Phaser", "Reverb", "Tremolo", "Bitcrush", "Filter"];
-const FX_SLOT_VARIATIONS = ["Classic", "Warm", "Bright", "Wide", "Lo-Fi", "Wild"];
+const FX_SLOT_VARIATIONS_BY_TYPE = {
+    0: ["None", "None", "None", "None", "None", "None"],
+    1: ["Use Algorithm", "Tube", "Hard", "Fold", "Sine", "Crunch"],
+    2: ["Classic", "Half Time", "Dotted", "Triplet", "Tape Wow", "Ping-Pong"],
+    3: ["Classic", "Wide", "Triangle", "Ensemble", "Feedback", "Vibrato"],
+    4: ["Classic", "Fast Sweep", "Slow Sweep", "Feedback", "Negative FB", "Stereo"],
+    5: ["Use Macros", "4 Stage", "6 Stage", "8 Stage", "Feedback", "Fast Sweep"],
+    6: ["Use Type", "Room", "Plate", "Cathedral", "Dark", "Bright"],
+    7: ["Use Wave", "Sine", "Triangle", "Square", "Ramp Down", "Ramp Up"],
+    8: ["Classic", "Downsample", "Saturate", "Rectify", "Invert", "Wavefold"],
+    9: ["Low-pass", "High-pass", "Band-pass", "Notch", "Peak", "Dirty LP"]
+};
 const FX_SLOT_DEFAULT_ORDER = [1, 0, 2, 3, 4, 6, 5, 7, 8, 9, ...Array.from({ length: 10 }, (_, i) => i + 10)];
 const FX_SLOT_INIT = [
     { type: 2, enabled: 1, order: 1, macros: [0.3687, 0.3684, 1, 0, 1, 1] },
@@ -2113,6 +2124,7 @@ class EisenpulsPatchView extends HTMLElement {
     onValue (spec, v, user) {
         const n = spec.num;
         if (n >= 600 && n < 780 && (n - 600) % 9 === 0) this.updateFxRack();
+        if (n >= 600 && n < 780 && (n - 600) % 9 === 0 && user) this.activateFxSlot((n - 600) / 9, v);
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
         if (n === 193) this.updateS2Ui();
@@ -2234,6 +2246,31 @@ class EisenpulsPatchView extends HTMLElement {
         return c ? c.value : slot;
     }
 
+    activateFxSlot (slot, type) {
+        if (type <= 0 || type > 9 || slot < 0 || slot >= FX_SLOT_COUNT) return;
+        const base = FX_SLOT_BASE(slot);
+        const power = this._controls.get("param" + (base + 1));
+        if (power && power.value < 0.5) power.setValue(1, true);
+        const macros = Array.from({ length: 6 }, (_, i) => this._controls.get("param" + (base + 3 + i)));
+        if (macros.some(c => !c)) return;
+        // A freshly activated empty slot receives useful defaults. Existing configured modules keep their settings.
+        if (macros.every(c => Math.abs(c.value) < 0.000001)) {
+            const defaults = {
+                1: [0.25, 1, 0, 0, 0.5, 0],
+                2: [0.35, 0.25, 0.5, 0.5, 0.5, 0.8],
+                3: [0.35, 0.2, 0.5, 0.1, 0, 0],
+                4: [0.25, 0.15, 0.6, 0.4, 0, 0.5],
+                5: [0.3, 0.1, 0.5, 0.25, 0.3333, 0.5],
+                6: [0.25, 0.5, 0.5, 0.1, 1, 0],
+                7: [0.35, 0.25, 0, 0, 0.5, 1],
+                8: [0.6, 0.1, 0.8, 0, 0, 0],
+                9: [0.5, 0.2, 1, 0, 0.33, 0]
+            }[Math.round(type)];
+            if (defaults) defaults.forEach((v, i) => macros[i].setValue(v, true));
+        }
+        this.updateFxRack();
+    }
+
     updateFxRack () {
         const grid = this.querySelector(".fx-slot-grid");
         if (!grid) return;
@@ -2249,6 +2286,14 @@ class EisenpulsPatchView extends HTMLElement {
             for (let m = 0; m < 6; m++) {
                 const label = card.querySelector('[data-param="param' + (base + 3 + m) + '"] .lbl');
                 if (label) label.textContent = labels[m] || ("Macro " + String.fromCharCode(65 + m));
+            }
+            const variation = this._controls.get("param" + (FX_SLOT_VARIATION_BASE + slot));
+            const variantLabels = FX_SLOT_VARIATIONS_BY_TYPE[type] || FX_SLOT_VARIATIONS_BY_TYPE[0];
+            if (variation && variation.sel) {
+                variation.spec.labels = variantLabels;
+                variation.sel.innerHTML = variantLabels.map(label => '<option>' + label + '</option>').join("");
+                variation.sel.selectedIndex = Math.max(0, Math.min(5, Math.round(variation.value)));
+                if (variation.valEl) variation.valEl.textContent = fmt(variation.spec, variation.value);
             }
             const power = this._controls.get("param" + (base + 1));
             card.classList.toggle("fx-slot-off", type === 0 || (power ? power.value : FX_SLOT_INIT[slot].enabled) < 0.5);
@@ -2271,7 +2316,8 @@ class EisenpulsPatchView extends HTMLElement {
             const title = type === 0 ? "EMPTY" : FX_SLOT_TYPES[type].toUpperCase();
             const enabled = type !== 0 && (power ? power.value : FX_SLOT_INIT[slot].enabled) >= 0.5;
             const variation = this._controls.get("param" + (FX_SLOT_VARIATION_BASE + slot));
-            const variantName = variation ? FX_SLOT_VARIATIONS[Math.max(0, Math.min(5, Math.round(variation.value)))] : "Classic";
+            const variantLabels = FX_SLOT_VARIATIONS_BY_TYPE[type] || FX_SLOT_VARIATIONS_BY_TYPE[0];
+            const variantName = variation ? variantLabels[Math.max(0, Math.min(5, Math.round(variation.value)))] : variantLabels[0];
             return '<span class="fx-chain-node' + (!enabled ? ' disabled' : '') + '"><b>' +
                 String(i + 1).padStart(2, "0") + '</b>' + title + '<small>' + variantName + '</small></span>';
         }).join("");
@@ -2399,7 +2445,7 @@ class EisenpulsPatchView extends HTMLElement {
         const s2Page = `<section class="card s2-osc"><h2>Sampler 2 Oscillator</h2>${s2Strip}<div class="cgrid">${S2_IDS.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
         const wtPages = WT_ENG.map((cfg, e) => `<div class="page p-${cfg.page}">${this.wtPageHTML(e)}</div>`).join("\n    ");
         const mixPage = `<section class="card m-mix"><h2>Mixer / SSL 4000 EQ</h2><div class="chs">${MIX_CH.map(c => this.channelHTML(c)).join("")}</div></section>`;
-        const fxRackBar = `<div class="fx-rackbar"><div class="fx-rack-title"><span class="fx-rack-led"></span><span>FX RACK</span><small>20 SLOTS · DRAG TO REORDER · SELECT TYPE TO ADD / DUPLICATE</small></div><div class="fx-chain"></div></div>`;
+        const fxRackBar = `<div class="fx-rackbar"><div class="fx-rack-title"><span class="fx-rack-led"></span><span>FX RACK</span><small>20 SLOTS · DRAG TO REORDER · TYPE ADDS MODULE · VARIATION CHANGES CHARACTER</small></div><div class="fx-chain"></div></div>`;
         const fxPage = fxRackBar
                      + `<div class="fx-slot-grid">${Array.from({ length: FX_SLOT_COUNT }, (_, i) => this.fxSlotHTML(i)).join("")}</div>`
                      + this.card("Output", FX_OUT, "f-out");
