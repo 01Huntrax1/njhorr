@@ -48,7 +48,7 @@ They are stored as 16-bit audio, roughly 260 KB of project data per loaded sampl
 The Sound Vault folders (Documents/Njohrr/...) are a shared library of files; which vault file an oscillator uses is also per instance.
 Regression test: `cd tests && npm install && npm test`.
 
-## FX racks and buses (Serum 2 style)
+## FX racks and buses 
 There are three FX racks of 10 slots each: **Bus 1**, **Bus 2** and **Main** (tabs on the FX page). Any effect (Distortion, Bit Crush, Delay,
 Chorus, Flanger, Phaser, Tremolo, Reverb, Filter with all 30 filter types of the Filter page, EQ, Compressor) fits in any slot, with on/off, mix,
 a mode selector and up to six knobs. Drag the grip (or use the arrows) to change the order within a rack; the signal runs top to bottom.
