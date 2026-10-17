@@ -624,7 +624,7 @@ const SPECS = (() => {
     L.push([613, "FX 2 Macro B", 0, 1, 1, "", "sld", null, 1, "Macro B"]);
     L.push([614, "FX 2 Macro C", 0, 1, 0, "", "sld", null, 1, "Macro C"]);
     L.push([615, "FX 2 Macro D", 0, 1, 0, "", "sld", null, 1, "Macro D"]);
-    L.push([616, "FX 2 Macro E", 0, 1, 0, "", "sld", null, 1, "Macro E"]);
+    L.push([616, "FX 2 Macro E", 0, 1, 0.5, "", "sld", null, 1, "Macro E"]);
     L.push([617, "FX 2 Macro F", 0, 1, 0, "", "sld", null, 1, "Macro F"]);
     L.push([618, "FX 3 Type", 0, 8, 3, "", "sel", ["Off","Drive","Delay","Chorus","Flanger","Phaser","Reverb","Tremolo","Bitcrush"], 1, "Type"]);
     L.push([619, "FX 3 Power", 0, 1, 1, "", "btn", ["Bypass","On"], 1, "Power"]);
@@ -785,7 +785,7 @@ const FX_SLOT_TYPES = ["Off", "Drive", "Delay", "Chorus", "Flanger", "Phaser", "
 const FX_SLOT_DEFAULT_ORDER = [1, 0, 2, 3, 4, 6, 5, 7, 8, 9];
 const FX_SLOT_INIT = [
     { type: 2, enabled: 1, order: 1, macros: [0.3687, 0.3684, 1, 0, 1, 1] },
-    { type: 1, enabled: 1, order: 0, macros: [0.1, 1, 0, 0, 0, 0] },
+    { type: 1, enabled: 1, order: 0, macros: [0.1, 1, 0, 0, 0.5, 0] },
     { type: 3, enabled: 1, order: 2, macros: [0, 0.1515, 0.5, 0, 0, 0] },
     { type: 4, enabled: 1, order: 3, macros: [0, 0.0505, 0.6, 0.5, 0, 0] },
     { type: 5, enabled: 1, order: 4, macros: [0, 0.044, 0.5, 0.5, 0.3333, 0] },
@@ -797,7 +797,7 @@ const FX_SLOT_INIT = [
 ];
 const FX_SLOT_MACROS = {
     0: ["—", "—", "—", "—", "—", "—"],
-    1: ["Amount", "Mix", "Algorithm", "Tone", "Bias", "Output"],
+    1: ["Amount", "Mix", "Algorithm", "Saturation", "Bias", "Output"],
     2: ["Time", "Feedback", "Mix", "Send", "Ping-Pong", "Damping"],
     3: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
     4: ["Mix", "Rate", "Depth", "Feedback", "Character", "Width"],
@@ -3239,7 +3239,7 @@ const mgrMethods = {
                 };
                 setSlot(0, 2, get(541, 1), [norm(get(30, 375), 10, 1000), norm(get(31, 0.35), 0, 0.95),
                     get(183, 1), get(32, 0), get(184, 1), norm(get(60, 18000), 500, 18000)]);
-                setSlot(1, 1, get(542, 1), [get(28, 0.1), 1, norm(get(536, 0), 0, 5), 0, 0, 0]);
+                setSlot(1, 1, get(542, 1), [get(28, 0.1), 1, norm(get(536, 0), 0, 5), 0, 0.5, 0]);
                 setSlot(2, 3, get(543, 1), [get(164, 0), norm(get(165, 0.8), 0.05, 5), get(166, 0.5),
                     norm(get(177, 0), 0, 0.9), norm(get(538, 0), 0, 2), 0]);
                 setSlot(3, 4, get(544, 1), [get(185, 0), norm(get(186, 0.3), 0.05, 5), get(187, 0.6),
