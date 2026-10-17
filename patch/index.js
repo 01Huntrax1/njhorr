@@ -782,17 +782,18 @@ const FX_OUT = [175, 189, 221, 222];
 const FX_SLOT_COUNT = 10;
 const FX_SLOT_BASE = slot => 600 + slot * 9;
 const FX_SLOT_TYPES = ["Off", "Drive", "Delay", "Chorus", "Flanger", "Phaser", "Reverb", "Tremolo", "Bitcrush"];
+const FX_SLOT_DEFAULT_ORDER = [1, 0, 2, 3, 4, 6, 5, 7, 8, 9];
 const FX_SLOT_INIT = [
-    { type: 2, enabled: 1, macros: [0.3687, 0.3684, 1, 0, 1, 1] },
-    { type: 1, enabled: 1, macros: [0.1, 1, 0, 0, 0, 0] },
-    { type: 3, enabled: 1, macros: [0, 0.1515, 0.5, 0, 0, 0] },
-    { type: 4, enabled: 1, macros: [0, 0.0505, 0.6, 0.5, 0, 0] },
-    { type: 5, enabled: 1, macros: [0, 0.044, 0.5, 0.5, 0.3333, 0] },
-    { type: 6, enabled: 1, macros: [0, 0.5, 0.5, 0, 1, 0] },
-    { type: 7, enabled: 1, macros: [0, 0.246, 0, 0, 0, 1] },
-    { type: 8, enabled: 1, macros: [1, 0, 1, 0, 0, 0] },
-    { type: 0, enabled: 0, macros: [0, 0, 0, 0, 0, 0] },
-    { type: 0, enabled: 0, macros: [0, 0, 0, 0, 0, 0] }
+    { type: 2, enabled: 1, order: 1, macros: [0.3687, 0.3684, 1, 0, 1, 1] },
+    { type: 1, enabled: 1, order: 0, macros: [0.1, 1, 0, 0, 0, 0] },
+    { type: 3, enabled: 1, order: 2, macros: [0, 0.1515, 0.5, 0, 0, 0] },
+    { type: 4, enabled: 1, order: 3, macros: [0, 0.0505, 0.6, 0.5, 0, 0] },
+    { type: 5, enabled: 1, order: 4, macros: [0, 0.044, 0.5, 0.5, 0.3333, 0] },
+    { type: 6, enabled: 1, order: 6, macros: [0, 0.5, 0.5, 0, 1, 0] },
+    { type: 7, enabled: 1, order: 5, macros: [0, 0.246, 0, 0, 0, 1] },
+    { type: 8, enabled: 1, order: 7, macros: [1, 0, 1, 0, 0, 0] },
+    { type: 0, enabled: 0, order: 8, macros: [0, 0, 0, 0, 0, 0] },
+    { type: 0, enabled: 0, order: 9, macros: [0, 0, 0, 0, 0, 0] }
 ];
 const FX_SLOT_MACROS = {
     0: ["—", "—", "—", "—", "—", "—"],
@@ -2142,7 +2143,11 @@ class EisenpulsPatchView extends HTMLElement {
         const sorted = cards.slice().sort((a, b) =>
             this.fxOrder(Number(a.dataset.fxSlot)) - this.fxOrder(Number(b.dataset.fxSlot)) ||
             Number(a.dataset.fxSlot) - Number(b.dataset.fxSlot));
-        sorted.forEach(card => grid.appendChild(card));
+        sorted.forEach((card, index) => {
+            grid.appendChild(card);
+            const ordinal = card.querySelector(".fxslot-number");
+            if (ordinal) ordinal.textContent = String(index + 1).padStart(2, "0");
+        });
         const chain = this.querySelector(".fx-chain");
         if (chain) chain.innerHTML = sorted.map((card, i) => {
             const slot = Number(card.dataset.fxSlot);
@@ -3230,7 +3235,7 @@ const mgrMethods = {
                 const norm = (v, min, max) => Math.max(0, Math.min(1, (v - min) / (max - min)));
                 const setSlot = (slot, type, enabled, macros) => {
                     const b = FX_SLOT_BASE(slot);
-                    [type, enabled, slot, ...macros].forEach((v, i) => { params[String(b + i)] = v; });
+                    [type, enabled, FX_SLOT_DEFAULT_ORDER[slot], ...macros].forEach((v, i) => { params[String(b + i)] = v; });
                 };
                 setSlot(0, 2, get(541, 1), [norm(get(30, 375), 10, 1000), norm(get(31, 0.35), 0, 0.95),
                     get(183, 1), get(32, 0), get(184, 1), norm(get(60, 18000), 500, 18000)]);
