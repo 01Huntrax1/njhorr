@@ -3795,7 +3795,7 @@ processor Eisenpuls_Synth
         // 1 — independent drive. A=amount, B=wet mix, C=algorithm.
         if (kind == 1)
         {
-            int alg = int (c * 5.0f + 0.5f);
+            int alg = (int (c * 5.0f + 0.5f) + variation) % 6;
             float driveAmount = clamp (a * (1.0f + d) + gmod.at (8) * 0.5f, 0.0f, 1.0f);
             float wetL = fxRackDriveShape (inL, driveAmount, alg, e);
             float wetR = fxRackDriveShape (inR, driveAmount, alg, e);
@@ -3808,6 +3808,16 @@ processor Eisenpuls_Synth
             int base = slot * 192000;
             int pos = fxDelayPos.at (slot);
             float delaySamples = clamp ((0.010f + a * 0.990f) * sr, 2.0f, 191999.0f);
+            if (variation == 1) delaySamples *= 0.5f;
+            else if (variation == 2) delaySamples *= 1.5f;
+            else if (variation == 3) delaySamples *= 0.6667f;
+            else if (variation == 4)
+            {
+                fxDelayTapePhase.at (slot) += float64 (0.35f) * float64 (dt);
+                if (fxDelayTapePhase.at (slot) >= 1.0) fxDelayTapePhase.at (slot) -= 1.0;
+                delaySamples += float (sin (float (twoPi) * float (fxDelayTapePhase.at (slot)))) * 0.003f * sr;
+            }
+            delaySamples = clamp (delaySamples, 2.0f, 191999.0f);
             float readPos = float (pos) - delaySamples;
             if (readPos < 0.0f) readPos += 192000.0f;
             int r0 = clamp (int (readPos), 0, 191999);
@@ -3821,7 +3831,7 @@ processor Eisenpuls_Synth
             fxDelayDampR.at (slot) += dampCoef * (dr - fxDelayDampR.at (slot));
             float fbL = fxDelayDampL.at (slot);
             float fbR = fxDelayDampR.at (slot);
-            if (e > 0.5f) { float swap = fbL; fbL = fbR; fbR = swap; }
+            if (e > 0.5f || variation == 5) { float swap = fbL; fbL = fbR; fbR = swap; }
             fxDelayBufL.at (base + pos) = inL * d + fbL * (b * 0.95f);
             fxDelayBufR.at (base + pos) = inR * d + fbR * (b * 0.95f);
             pos += 1;
@@ -3835,14 +3845,19 @@ processor Eisenpuls_Synth
         {
             int base = slot * 8192;
             int pos = fxChorusPos.at (slot);
-            fxChorusPhase.at (slot) += float64 (0.05f + b * 4.95f) * float64 (dt);
+            fxChorusPhase.at (slot) += float64 (0.05f + b * 4.95f) * float64 (dt) * float64 (variation == 3 ? 1.7f : 1.0f);
             if (fxChorusPhase.at (slot) >= 1.0) fxChorusPhase.at (slot) -= 1.0;
             float ph = float (fxChorusPhase.at (slot));
             float modL = float (sin (float (twoPi) * ph));
-            float modR = float (sin (float (twoPi) * (ph + 0.25f + 0.25f * f)));
+            float modR = float (sin (float (twoPi) * (ph + (variation == 1 ? 0.5f : 0.25f + 0.25f * f))));
+            if (variation == 2)
+            {
+                modL = 2.0f * abs (2.0f * ph - 1.0f) - 1.0f;
+                modR = 2.0f * abs (2.0f * (ph + 0.25f) - 1.0f) - 1.0f;
+            }
             float dl = clamp ((0.007f + 0.004f * c * modL) * sr, 2.0f, 4094.0f);
             float dr = clamp ((0.007f + 0.004f * c * modR) * sr, 2.0f, 4094.0f);
-            float chorusFeedback = clamp (d * (1.0f + e) * 0.7f, 0.0f, 0.95f);
+            float chorusFeedback = clamp (d * (1.0f + e + (variation == 4 ? 0.8f : 0.0f)) * 0.7f, 0.0f, 0.95f);
             fxChorusBufL.at (base + pos) = inL + fxChorusFbL.at (slot) * chorusFeedback;
             fxChorusBufR.at (base + pos) = inR + fxChorusFbR.at (slot) * chorusFeedback;
             float rl = float (pos) - dl; if (rl < 0.0f) rl += 8192.0f;
@@ -3853,8 +3868,8 @@ processor Eisenpuls_Synth
             float wetR = fxChorusBufR.at (base + r0) * (1.0f - (rr - float (r0))) + fxChorusBufR.at (base + r1) * (rr - float (r0));
             fxChorusFbL.at (slot) = wetL; fxChorusFbR.at (slot) = wetR;
             pos += 1; if (pos >= 8192) pos = 0; fxChorusPos.at (slot) = pos;
-            outL = inL * (1.0f - a) + wetL * a;
-            outR = inR * (1.0f - a) + wetR * a;
+            if (variation == 5) { outL = wetL; outR = wetR; }
+            else { outL = inL * (1.0f - a) + wetL * a; outR = inR * (1.0f - a) + wetR * a; }
         }
         // 4 — flanger.
         else if (kind == 4)
@@ -3864,11 +3879,14 @@ processor Eisenpuls_Synth
             fxFlangerPhase.at (slot) += float64 (0.05f + b * 4.95f) * float64 (dt);
             if (fxFlangerPhase.at (slot) >= 1.0) fxFlangerPhase.at (slot) -= 1.0;
             float phase = float (fxFlangerPhase.at (slot));
+            if (variation == 1) phase = float (fxFlangerPhase.at (slot)) * 2.0f;
+            else if (variation == 2) phase = float (fxFlangerPhase.at (slot)) * 0.5f;
             float modL = 0.5f + 0.5f * float (sin (float (twoPi) * phase));
             float modR = 0.5f + 0.5f * float (sin (float (twoPi) * (phase + 0.5f * f)));
             float delayL = clamp ((2.0f + 0.004f * c * modL * sr), 2.0f, 4000.0f);
             float delayR = clamp ((2.0f + 0.004f * c * modR * sr), 2.0f, 4000.0f);
-            float flangerFeedback = clamp (d * (1.0f + e) * 0.95f, 0.0f, 0.95f);
+            float flangerFeedback = clamp (d * (1.0f + e + (variation == 3 ? 0.7f : 0.0f)) * 0.95f, 0.0f, 0.95f);
+            if (variation == 4) flangerFeedback = -flangerFeedback;
             fxFlangerBufL.at (base + pos) = inL + fxFlangerFbL.at (slot) * flangerFeedback;
             fxFlangerBufR.at (base + pos) = inR + fxFlangerFbR.at (slot) * flangerFeedback;
             float rpL = float (pos) - delayL; if (rpL < 0.0f) rpL += 4096.0f;
@@ -3896,6 +3914,9 @@ processor Eisenpuls_Synth
             float xL = inL + fxPhaserFbL.at (slot) * (d * 0.9f);
             float xR = inR + fxPhaserFbR.at (slot) * (d * 0.9f);
             int stages = 2 * (int (e * 3.0f + 0.5f) + 1);
+            if (variation == 1) stages = 4;
+            else if (variation == 2) stages = 6;
+            else if (variation == 3) stages = 8;
             for (int ps = 0; ps < stages; ++ps)
             {
                 int zi = slot * 8 + ps;
@@ -3936,8 +3957,8 @@ processor Eisenpuls_Synth
 
             float rvScale = 1.0f;
             float rvFeedback = 0.35f + b * 0.58f;
-            float rvDamp = c;
-            int rvType = int (f * 3.0f + 0.5f);
+            float rvDamp = clamp (c + (variation == 1 ? 0.25f : variation == 2 ? -0.2f : 0.0f), 0.0f, 1.0f);
+            int rvType = (int (f * 3.0f + 0.5f) + variation) % 4;
             if (rvType == 1) { rvScale = 0.35f; rvFeedback *= 0.88f; }
             if (rvType == 2) { rvScale = 0.6f; rvDamp *= 0.45f; }
             if (rvType == 3) { rvScale = 2.2f; rvFeedback = min (rvFeedback + 0.01f, 0.985f); }
@@ -3996,7 +4017,7 @@ processor Eisenpuls_Synth
             float pl = float (fxTremoloPhase.at (slot));
             float pr = pl + 0.5f * d;
             if (pr >= 1.0f) pr -= 1.0f;
-            int wave = int (c * 4.0f + 0.5f);
+            int wave = (int (c * 4.0f + 0.5f) + variation) % 5;
             float lfoL = 0.5f - 0.5f * float (sin (float (twoPi) * pl));
             float lfoR = 0.5f - 0.5f * float (sin (float (twoPi) * pr));
             if (wave == 1) { lfoL = abs (2.0f * pl - 1.0f); lfoR = abs (2.0f * pr - 1.0f); }
@@ -4025,6 +4046,11 @@ processor Eisenpuls_Synth
             float crushedR = fxCrushHeldR.at (slot);
             crushedL = crushedL / (1.0f + e * abs (crushedL) * 8.0f);
             crushedR = crushedR / (1.0f + e * abs (crushedR) * 8.0f);
+            if (variation == 1) { crushedL = floor (crushedL * 64.0f) / 64.0f; crushedR = floor (crushedR * 64.0f) / 64.0f; }
+            else if (variation == 2) { crushedL = clamp (crushedL * 1.8f, -1.0f, 1.0f); crushedR = clamp (crushedR * 1.8f, -1.0f, 1.0f); }
+            else if (variation == 3) { crushedL = abs (crushedL); crushedR = abs (crushedR); }
+            else if (variation == 4) { crushedL = -crushedL; crushedR = -crushedR; }
+            else if (variation == 5) { crushedL = float (sin (crushedL * 3.14159f)); crushedR = float (sin (crushedR * 3.14159f)); }
             if (bits < 15.5f)
             {
                 float levels = float (pow (2.0f, bits - 1.0f));
