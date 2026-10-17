@@ -3790,6 +3790,7 @@ processor Eisenpuls_Synth
         float d = clamp (fxSlotD.at (slot), 0.0f, 1.0f);
         float e = clamp (fxSlotE.at (slot), 0.0f, 1.0f);
         float f = clamp (fxSlotF.at (slot), 0.0f, 1.0f);
+        int variation = int (fxSlotVariation.at (slot) + 0.5f);
 
         // 1 — independent drive. A=amount, B=wet mix, C=algorithm.
         if (kind == 1)
