@@ -2036,7 +2036,13 @@ class EisenpulsPatchView extends HTMLElement {
         const s2Page = `<section class="card s2-osc"><h2>Sampler 2 Oscillator</h2>${s2Strip}<div class="cgrid">${S2_IDS.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
         const wtPages = WT_ENG.map((cfg, e) => `<div class="page p-${cfg.page}">${this.wtPageHTML(e)}</div>`).join("\n    ");
         const mixPage = `<section class="card m-mix"><h2>Mixer / SSL 4000 EQ</h2><div class="chs">${MIX_CH.map(c => this.channelHTML(c)).join("")}</div></section>`;
-        const fxPage = this.card("Delay", FX_DELAY, "f-dly")
+        const fxModules = [
+            ["DELAY", "01"], ["DRIVE / CRUSH", "02"], ["CHORUS", "03"], ["FLANGER", "04"],
+            ["PHASER", "05"], ["REVERB", "06"], ["TREMOLO", "07"], ["OUTPUT", "08"]
+        ];
+        const fxRackBar = `<div class="fx-rackbar"><div class="fx-rack-title"><span class="fx-rack-led"></span><span>FX RACK</span><small>MODULAR PROCESSING</small></div><div class="fx-chain">${fxModules.map((m, i) => `<span class="fx-chain-node"><b>${m[1]}</b>${m[0]}${i < fxModules.length - 1 ? '<i>›</i>' : ''}</span>`).join("")}</div></div>`;
+        const fxPage = fxRackBar
+                     + this.card("Delay", FX_DELAY, "f-dly")
                      + this.card("Drive / Crush", FX_CRUSH, "f-crush")
                      + this.card("Chorus", FX_CHORUS, "f-cho")
                      + this.card("Flanger", FX_FLANGER, "f-fla")
@@ -2285,17 +2291,21 @@ class EisenpulsPatchView extends HTMLElement {
   .control.knb.drag .lbl { display: none; }
   .control.knb.drag .val { display: block; }
 
-  /* fx page */
-  .p-fx { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
-  .f-dly   { grid-column: 1; grid-row: 1; }
-  .f-crush { grid-column: 2; grid-row: 1; }
-  .f-cho   { grid-column: 3; grid-row: 1; }
-  .f-fla   { grid-column: 4; grid-row: 1; }
-  .f-pha   { grid-column: 1; grid-row: 2; }
-  .f-rev   { grid-column: 2; grid-row: 2; }
-  .f-trm   { grid-column: 3; grid-row: 2; }
-  .f-out   { grid-column: 4; grid-row: 2; }
-  .p-fx .cgrid { align-content: space-evenly; }
+  /* Serum-inspired modular FX rack */
+  .p-fx { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: auto repeat(2, minmax(0, 1fr)); gap: calc(var(--u) * 7); overflow-y: auto; align-content: start; }
+  .fx-rackbar { grid-column: 1 / -1; display: flex; flex-direction: column; gap: calc(var(--u) * 6); padding: calc(var(--u) * 8) calc(var(--u) * 12); min-width: 0; border: 1px solid #4b4e53; border-radius: calc(var(--u) * 5); background: linear-gradient(180deg, #24272b, #111315); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 3px 10px rgba(0,0,0,.25); }
+  .fx-rack-title { display: flex; align-items: center; gap: calc(var(--u) * 7); color: #f0e9e6; font-size: calc(var(--u) * 10); font-weight: 900; letter-spacing: .22em; }
+  .fx-rack-title small { margin-left: auto; color: #858b91; font-size: calc(var(--u) * 7); font-weight: 700; letter-spacing: .12em; }
+  .fx-rack-led { width: calc(var(--u) * 6); height: calc(var(--u) * 6); border-radius: 50%; background: #ff5145; box-shadow: 0 0 8px rgba(255,70,55,.75); }
+  .fx-chain { display: flex; align-items: center; gap: calc(var(--u) * 4); overflow-x: auto; padding-bottom: calc(var(--u) * 2); }
+  .fx-chain-node { position: relative; flex: 1 0 auto; display: flex; align-items: center; gap: calc(var(--u) * 5); padding: calc(var(--u) * 5) calc(var(--u) * 8); color: #b9bdc2; background: #17191c; border: 1px solid #34383d; border-radius: calc(var(--u) * 3); font-size: calc(var(--u) * 7); font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+  .fx-chain-node b { color: #ff7669; font-family: ui-monospace, monospace; font-size: calc(var(--u) * 7); }
+  .fx-chain-node i { position: absolute; right: calc(var(--u) * -5); top: 50%; transform: translate(50%,-50%); z-index: 2; color: #ff6d5e; font-size: calc(var(--u) * 14); font-style: normal; }
+  .f-dly { grid-column: 1; grid-row: 2; } .f-crush { grid-column: 2; grid-row: 2; } .f-cho { grid-column: 3; grid-row: 2; } .f-fla { grid-column: 4; grid-row: 2; }
+  .f-pha { grid-column: 1; grid-row: 3; } .f-rev { grid-column: 2; grid-row: 3; } .f-trm { grid-column: 3; grid-row: 3; } .f-out { grid-column: 4; grid-row: 3; }
+  .p-fx .card { padding: calc(var(--u) * 8) calc(var(--u) * 9); border-radius: calc(var(--u) * 5); }
+  .p-fx .card h2 { font-size: calc(var(--u) * 9); letter-spacing: .16em; margin-bottom: calc(var(--u) * 6); }
+  .p-fx .cgrid { align-content: start; align-items: center; gap: calc(var(--u) * 6) calc(var(--u) * 8); }
 
   .control { min-width: 0; }
   .row { display: flex; justify-content: space-between; align-items: baseline; gap: calc(var(--u) * 4); }
