@@ -5,6 +5,7 @@
 //   ./dsp_host script.txt out.f32
 //
 // script lines:   p <paramNumber> <value>   set parameter N (event)
+//                 shape <lfo 0-9> const <v> | shape <lfo> ramp   load a 256-point LFO shape
 //                 on <note> <velocity 0-127>
 //                 off <note>
 //                 run <seconds>             render, appending interleaved stereo float32 to the output file
@@ -57,6 +58,18 @@ struct Host
         flushIfNeeded();
     }
 
+    // loads a 256-point LFO shape: "const v" (every point v) or "ramp" (-1 .. 1)
+    void lfoShape (int lfo, const std::string& kind, float v)
+    {
+        Eisenpuls_Synth::_Eisenpuls_Synth_LfoShapeChunk c {};
+        c.lfo = lfo;
+        for (int i = 0; i < 256; ++i)
+            c.data[i] = kind == "ramp" ? -1.0f + 2.0f * (float) i / 255.0f : v;
+        dsp.addEvent_lfoShapeLoad (c);
+        ++queued;
+        flushIfNeeded();
+    }
+
     void midi (int b0, int b1, int b2)
     {
         Eisenpuls_Synth::std_midi_Message m;
@@ -84,6 +97,7 @@ int main (int argc, char** argv)
         if (! (ls >> cmd) || cmd[0] == '#') continue;
 
         if (cmd == "p")        { int n; float v; ls >> n >> v; h.setParam (n, v); }
+        else if (cmd == "shape") { int n; std::string k; float v = 0; ls >> n >> k >> v; h.lfoShape (n, k, v); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }
         else if (cmd == "run") { double s; ls >> s; h.render ((int) (s * kRate)); h.queued = 0; }

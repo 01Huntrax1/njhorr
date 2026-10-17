@@ -6,6 +6,9 @@ processor Eisenpuls_Synth
     input event std::midi::Message midiIn;
     input event std::timeline::Tempo tempoIn;
 
+    // Drawn LFO shapes: one 256-point table per LFO (-1..1)
+    input event LfoShapeChunk lfoShapeLoad;
+
     // Dedicated loader for the synth sample oscillator (loads into the selected Synth Sample Memory)
     input event SynthSampleChunk sampleBankV2Load;
 
@@ -187,25 +190,25 @@ processor Eisenpuls_Synth
     input event float param246 [[ name: "Wavetable 3 LFO to Position", min: 0.0,   max: 1.0,    init: 0.0   ]];
 
     // ---------------- MOD PAGE: 10 LFOs (Wave 0 Sin / 1 Tri / 2 Sq / 3 S&H / 4 Saw Up / 5 Saw Down) ----------------
-    input event float param247 [[ name: "Mod LFO 1 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param247 [[ name: "Mod LFO 1 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param248 [[ name: "Mod LFO 1 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param249 [[ name: "Mod LFO 2 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param249 [[ name: "Mod LFO 2 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param250 [[ name: "Mod LFO 2 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param251 [[ name: "Mod LFO 3 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param251 [[ name: "Mod LFO 3 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param252 [[ name: "Mod LFO 3 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param253 [[ name: "Mod LFO 4 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param253 [[ name: "Mod LFO 4 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param254 [[ name: "Mod LFO 4 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param255 [[ name: "Mod LFO 5 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param255 [[ name: "Mod LFO 5 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param256 [[ name: "Mod LFO 5 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param257 [[ name: "Mod LFO 6 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param257 [[ name: "Mod LFO 6 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param258 [[ name: "Mod LFO 6 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param259 [[ name: "Mod LFO 7 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param259 [[ name: "Mod LFO 7 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param260 [[ name: "Mod LFO 7 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param261 [[ name: "Mod LFO 8 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param261 [[ name: "Mod LFO 8 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param262 [[ name: "Mod LFO 8 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param263 [[ name: "Mod LFO 9 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)",  min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param263 [[ name: "Mod LFO 9 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)",  min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param264 [[ name: "Mod LFO 9 Rate",   min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
-    input event float param265 [[ name: "Mod LFO 10 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param265 [[ name: "Mod LFO 10 Wave (Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param266 [[ name: "Mod LFO 10 Rate",  min: 0.01, max: 50.0, init: 1.0, unit: "Hz" ]];
 
     // ---------------- MOD PAGE: 10 ENVELOPES (per voice, ADSR) ----------------
@@ -698,6 +701,56 @@ processor Eisenpuls_Synth
     input event float param879    [[ name: "WT 3 Output", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param880    [[ name: "Bus 1 Level", min: 0.0, max: 1.5, init: 1.0 ]];
     input event float param881    [[ name: "Bus 2 Level", min: 0.0, max: 1.5, init: 1.0 ]];
+    input event float param882    [[ name: "LFO 1 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param883    [[ name: "LFO 1 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param884    [[ name: "LFO 1 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param885    [[ name: "LFO 1 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param886    [[ name: "LFO 1 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param887    [[ name: "LFO 2 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param888    [[ name: "LFO 2 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param889    [[ name: "LFO 2 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param890    [[ name: "LFO 2 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param891    [[ name: "LFO 2 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param892    [[ name: "LFO 3 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param893    [[ name: "LFO 3 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param894    [[ name: "LFO 3 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param895    [[ name: "LFO 3 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param896    [[ name: "LFO 3 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param897    [[ name: "LFO 4 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param898    [[ name: "LFO 4 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param899    [[ name: "LFO 4 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param900    [[ name: "LFO 4 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param901    [[ name: "LFO 4 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param902    [[ name: "LFO 5 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param903    [[ name: "LFO 5 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param904    [[ name: "LFO 5 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param905    [[ name: "LFO 5 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param906    [[ name: "LFO 5 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param907    [[ name: "LFO 6 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param908    [[ name: "LFO 6 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param909    [[ name: "LFO 6 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param910    [[ name: "LFO 6 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param911    [[ name: "LFO 6 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param912    [[ name: "LFO 7 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param913    [[ name: "LFO 7 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param914    [[ name: "LFO 7 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param915    [[ name: "LFO 7 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param916    [[ name: "LFO 7 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param917    [[ name: "LFO 8 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param918    [[ name: "LFO 8 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param919    [[ name: "LFO 8 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param920    [[ name: "LFO 8 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param921    [[ name: "LFO 8 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param922    [[ name: "LFO 9 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param923    [[ name: "LFO 9 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param924    [[ name: "LFO 9 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param925    [[ name: "LFO 9 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param926    [[ name: "LFO 9 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param927    [[ name: "LFO 10 Mode (Free/Trig/Env)", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param928    [[ name: "LFO 10 Delay", min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param929    [[ name: "LFO 10 Rise",  min: 0.0, max: 5000.0, init: 0.0, unit: "ms" ]];
+    input event float param930    [[ name: "LFO 10 Smooth", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param931    [[ name: "LFO 10 Phase", min: 0.0, max: 1.0, init: 0.0 ]];
 
     // ---------------- MIXER CHANNEL EQS (SSL 4000 style: LF shelf, LMF bell, HMF bell, HF shelf) ----------------
     // Channel order: 0 Osc, 1 Sub, 2 Noise, 3 Supersaw, 4 Sampler 1, 5 Sampler 2, 6 Wavetable 1, 7 Wavetable 2, 8 Wavetable 3
@@ -849,6 +902,12 @@ processor Eisenpuls_Synth
     input event float param471   [[ name: "Wavetable 3 Warp 2 Amount",      min: 0.0, max: 1.0, init: 0.5 ]];
 
     // ---------------- SYNTH SAMPLE LOADER TYPE ----------------
+    struct LfoShapeChunk
+    {
+        int        lfo;
+        float[256] data;
+    }
+
     struct SynthSampleChunk
     {
         int        offset;
@@ -1137,6 +1196,14 @@ processor Eisenpuls_Synth
     float64[10] mLfoPhase;
     float[10]   mLfoSh;
     float[10]   mLfoV;
+    float[10]   mLfoMode;     // 0 free (global), 1 trig (per voice, restarts on note-on), 2 env (per voice, one shot)
+    float[10]   mLfoDelay;
+    float[10]   mLfoRise;
+    float[10]   mLfoSmooth;
+    float[10]   mLfoStart;
+    float[10]   mLfoSm;       // smoothing state of the free-running (global) LFOs
+    float[2560] lfoTab;       // drawn shapes, 256 points per LFO
+    int         lastVoice = 0;
 
     float[10]   mEnvA;
     float[10]   mEnvD;
@@ -1862,6 +1929,67 @@ processor Eisenpuls_Synth
     event param879    (float v) { srcRoute.at (8) = clamp (int (v + 0.5f), 0, 2); }
     event param880    (float v) { busLevel1 = v; }
     event param881    (float v) { busLevel2 = v; }
+
+    // LFO rework handlers
+    event param882    (float v) { mLfoMode.at (0) = v; }
+    event param883    (float v) { mLfoDelay.at (0) = v; }
+    event param884    (float v) { mLfoRise.at (0) = v; }
+    event param885    (float v) { mLfoSmooth.at (0) = v; }
+    event param886    (float v) { mLfoStart.at (0) = v; }
+    event param887    (float v) { mLfoMode.at (1) = v; }
+    event param888    (float v) { mLfoDelay.at (1) = v; }
+    event param889    (float v) { mLfoRise.at (1) = v; }
+    event param890    (float v) { mLfoSmooth.at (1) = v; }
+    event param891    (float v) { mLfoStart.at (1) = v; }
+    event param892    (float v) { mLfoMode.at (2) = v; }
+    event param893    (float v) { mLfoDelay.at (2) = v; }
+    event param894    (float v) { mLfoRise.at (2) = v; }
+    event param895    (float v) { mLfoSmooth.at (2) = v; }
+    event param896    (float v) { mLfoStart.at (2) = v; }
+    event param897    (float v) { mLfoMode.at (3) = v; }
+    event param898    (float v) { mLfoDelay.at (3) = v; }
+    event param899    (float v) { mLfoRise.at (3) = v; }
+    event param900    (float v) { mLfoSmooth.at (3) = v; }
+    event param901    (float v) { mLfoStart.at (3) = v; }
+    event param902    (float v) { mLfoMode.at (4) = v; }
+    event param903    (float v) { mLfoDelay.at (4) = v; }
+    event param904    (float v) { mLfoRise.at (4) = v; }
+    event param905    (float v) { mLfoSmooth.at (4) = v; }
+    event param906    (float v) { mLfoStart.at (4) = v; }
+    event param907    (float v) { mLfoMode.at (5) = v; }
+    event param908    (float v) { mLfoDelay.at (5) = v; }
+    event param909    (float v) { mLfoRise.at (5) = v; }
+    event param910    (float v) { mLfoSmooth.at (5) = v; }
+    event param911    (float v) { mLfoStart.at (5) = v; }
+    event param912    (float v) { mLfoMode.at (6) = v; }
+    event param913    (float v) { mLfoDelay.at (6) = v; }
+    event param914    (float v) { mLfoRise.at (6) = v; }
+    event param915    (float v) { mLfoSmooth.at (6) = v; }
+    event param916    (float v) { mLfoStart.at (6) = v; }
+    event param917    (float v) { mLfoMode.at (7) = v; }
+    event param918    (float v) { mLfoDelay.at (7) = v; }
+    event param919    (float v) { mLfoRise.at (7) = v; }
+    event param920    (float v) { mLfoSmooth.at (7) = v; }
+    event param921    (float v) { mLfoStart.at (7) = v; }
+    event param922    (float v) { mLfoMode.at (8) = v; }
+    event param923    (float v) { mLfoDelay.at (8) = v; }
+    event param924    (float v) { mLfoRise.at (8) = v; }
+    event param925    (float v) { mLfoSmooth.at (8) = v; }
+    event param926    (float v) { mLfoStart.at (8) = v; }
+    event param927    (float v) { mLfoMode.at (9) = v; }
+    event param928    (float v) { mLfoDelay.at (9) = v; }
+    event param929    (float v) { mLfoRise.at (9) = v; }
+    event param930    (float v) { mLfoSmooth.at (9) = v; }
+    event param931    (float v) { mLfoStart.at (9) = v; }
+
+    event lfoShapeLoad (LfoShapeChunk c)
+    {
+        int m = clamp (c.lfo, 0, 9);
+
+        for (int i = 0; i < 256; ++i)
+            lfoTab.at (m * 256 + i) = clamp (c.data.at (i), -1.0f, 1.0f);
+    }
+
     event tempoIn (std::timeline::Tempo t) { if (t.bpm > 1.0f) hostBpm = t.bpm; }
 
     // Mixer EQ handlers: channel 0 (Osc)
@@ -2029,6 +2157,11 @@ processor Eisenpuls_Synth
         float[12]   wtDcS;    // wavetable warp DC blocker: (engine * 2 + side) * 2 + {x1, y1}
         float64[7] ssPhase;   // supersaw oscillator phases
         float[10] menv;       // mod envelope levels
+        float64[10] lfoPh;    // per-voice LFO phases (modes Trig / Env)
+        float[10] lfoV;       // per-voice LFO outputs
+        float[10] lfoAge;     // seconds since note-on, -1 before the first update
+        float[10] lfoSh;      // per-voice sample & hold values
+        float[10] lfoSm;      // per-voice smoothing state
         int[10]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
         float[144] eqZ;       // channel EQ biquad states: ((channel*4+band)*2+side)*2+stage
         float   env;
@@ -2178,6 +2311,10 @@ processor Eisenpuls_Synth
         apLen.at (3) = clamp (int (464.0f * rs), 16, 4095);
 
         fxInit();
+
+        for (int lm = 0; lm < 10; ++lm)
+            for (int li = 0; li < 256; ++li)
+                lfoTab.at (lm * 256 + li) = float (sin (float (twoPi) * float (li) / 256.0f));
     }
 
     // ================================================================================================================
@@ -3898,15 +4035,76 @@ processor Eisenpuls_Synth
         return (bpm / 60.0f) / divBeats.at (clamp (int (divIdx + 0.5f), 0, 17));
     }
 
+    // Reads the drawn shape of LFO m at phase p (0..1); looping shapes interpolate from the last point back to the first
+    float lfoTabRead (int m, float p, bool wrapEnd)
+    {
+        float pos = clamp (p, 0.0f, 1.0f) * 256.0f;
+        int   i0  = int (pos);
+        float fr  = pos - float (i0);
+        int   i1  = i0 + 1;
+
+        if (i0 > 255)
+        {
+            i0 = 255;
+            fr = 0.0f;
+        }
+
+        if (i1 > 255)
+        {
+            if (wrapEnd) i1 = 0;
+            else      i1 = 255;
+        }
+
+        return lfoTab.at (m * 256 + i0) * (1.0f - fr) + lfoTab.at (m * 256 + i1) * fr;
+    }
+
+    // Output of LFO m at phase p: waves 0-5 are the built-in shapes, 6 is the drawn table
+    float lfoWaveVal (int m, float p, float sh, bool wrapEnd)
+    {
+        int w = int (mLfoWave.at (m) + 0.5f);
+
+        if (w == 0)
+            return float (sin (float (twoPi) * p));
+        if (w == 1)
+            return 4.0f * abs (p - 0.5f) - 1.0f;
+        if (w == 2)
+        {
+            if (p < 0.5f) return 1.0f;
+            return -1.0f;
+        }
+        if (w == 3)
+            return sh;
+        if (w == 4)
+            return 2.0f * p - 1.0f;
+        if (w == 5)
+            return 1.0f - 2.0f * p;
+
+        return lfoTabRead (m, p, wrapEnd);
+    }
+
+    // one-pole lag of the Smooth control (0 = off, 1 = about 250 ms)
+    float lfoLag (float state, float x, float smooth, float dtv)
+    {
+        if (smooth <= 0.001f)
+            return x;
+
+        return state + (x - state) * (1.0f - float (exp (-dtv / (0.0002f + smooth * 0.25f))));
+    }
+
+    float lfoRateHz (int m)
+    {
+        if (mLfoSync.at (m) > 0.5f)
+            return syncHz (mLfoDiv.at (m));
+
+        return mLfoRate.at (m);
+    }
+
+    // Free-running (global) LFOs: advances all 10 by one sample
     void updateModLfos (float dtv)
     {
         for (int m = 0; m < 10; ++m)
         {
-            float mRate = mLfoRate.at (m);
-            if (mLfoSync.at (m) > 0.5f)
-                mRate = syncHz (mLfoDiv.at (m));
-
-            float64 np = mLfoPhase.at (m) + float64 (mRate) * processor.period;
+            float64 np = mLfoPhase.at (m) + float64 (lfoRateHz (m)) * processor.period;
             if (np >= 1.0)
             {
                 np -= 1.0;
@@ -3914,27 +4112,77 @@ processor Eisenpuls_Synth
             }
             mLfoPhase.at (m) = np;
 
-            float p   = float (np);
-            int   w   = int (mLfoWave.at (m) + 0.5f);
-            float val = 0.0f;
+            float p = float (np) + mLfoStart.at (m);
+            if (p >= 1.0f) p -= 1.0f;
 
-            if (w == 0)
-                val = float (sin (float (twoPi) * p));
-            else if (w == 1)
-                val = 4.0f * abs (p - 0.5f) - 1.0f;
-            else if (w == 2)
-            {
-                if (p < 0.5f) val = 1.0f;
-                else          val = -1.0f;
-            }
-            else if (w == 3)
-                val = mLfoSh.at (m);
-            else if (w == 4)
-                val = 2.0f * p - 1.0f;
+            float val = lfoWaveVal (m, p, mLfoSh.at (m), true);
+            mLfoSm.at (m) = lfoLag (mLfoSm.at (m), val, mLfoSmooth.at (m), dtv);
+            mLfoV.at (m)  = mLfoSm.at (m);
+        }
+    }
+
+    // Per-voice LFOs (modes Trig and Env): phase restarts on note-on, Delay / Rise fade the output in, Env stops at the end of the shape
+    void updateVoiceLfos (int vi, float dtv)
+    {
+        for (int m = 0; m < 10; ++m)
+        {
+            float mode = mLfoMode.at (m);
+            if (mode < 0.5f)
+                continue;
+
+            bool    oneShot = mode > 1.5f;
+            float   age     = voices.at (vi).lfoAge.at (m);
+            bool    first   = age < 0.0f;
+            float64 np      = voices.at (vi).lfoPh.at (m);
+
+            if (first)
+                age = 0.0f;
             else
-                val = 1.0f - 2.0f * p;
+            {
+                age += dtv;
+                np  += float64 (lfoRateHz (m)) * processor.period;
 
-            mLfoV.at (m) = val;
+                if (np >= 1.0)
+                {
+                    if (oneShot)
+                        np = 1.0;
+                    else
+                    {
+                        np -= 1.0;
+                        voices.at (vi).lfoSh.at (m) = nextNoise();
+                    }
+                }
+            }
+
+            voices.at (vi).lfoPh.at (m)  = np;
+            voices.at (vi).lfoAge.at (m) = age;
+
+            float p = float (np);
+            if (! oneShot)
+            {
+                p += mLfoStart.at (m);
+                if (p >= 1.0f) p -= 1.0f;
+            }
+
+            float val  = lfoWaveVal (m, p, voices.at (vi).lfoSh.at (m), ! oneShot);
+            float fade = 1.0f;
+            float dl   = mLfoDelay.at (m) * 0.001f;
+            float rs   = mLfoRise.at (m) * 0.001f;
+
+            if (age < dl)
+                fade = 0.0f;
+            else if (rs > 0.0001f)
+                fade = clamp ((age - dl) / rs, 0.0f, 1.0f);
+
+            val *= fade;
+
+            float st = voices.at (vi).lfoSm.at (m);
+            if (first)
+                st = val;
+
+            st = lfoLag (st, val, mLfoSmooth.at (m), dtv);
+            voices.at (vi).lfoSm.at (m) = st;
+            voices.at (vi).lfoV.at (m)  = st;
         }
     }
 
@@ -3986,7 +4234,11 @@ processor Eisenpuls_Synth
     float srcValueVoice (int src, int vi)
     {
         if (src >= 1 && src <= 10)
+        {
+            if (mLfoMode.at (src - 1) > 0.5f)
+                return voices.at (vi).lfoV.at (src - 1);
             return mLfoV.at (src - 1);
+        }
         if (src >= 11 && src <= 20)
             return voices.at (vi).menv.at (src - 11);
         if (src == 21)
@@ -4002,7 +4254,11 @@ processor Eisenpuls_Synth
     float srcValueGlobal (int src)
     {
         if (src >= 1 && src <= 10)
+        {
+            if (mLfoMode.at (src - 1) > 0.5f)
+                return voices.at (lastVoice).lfoV.at (src - 1);
             return mLfoV.at (src - 1);
+        }
         if (src >= 11 && src <= 20)
             return envMax.at (src - 11);
         if (src == 21)
@@ -4771,6 +5027,16 @@ processor Eisenpuls_Synth
             voices.at (v).velGain = velGainV;
             voices.at (v).velRaw  = vel;
             voices.at (v).modRand = nextNoise();
+            lastVoice = v;
+
+            for (int lm = 0; lm < 10; ++lm)
+            {
+                voices.at (v).lfoPh.at (lm)  = 0.0;
+                voices.at (v).lfoAge.at (lm) = -1.0f;
+                voices.at (v).lfoSh.at (lm)  = nextNoise();
+                voices.at (v).lfoV.at (lm)   = 0.0f;
+            }
+
             lastVelV  = vel;
             lastKeyV  = clamp ((float (nn) - 60.0f) / 48.0f, -1.0f, 1.0f);
             lastRandV = voices.at (v).modRand;
@@ -4891,6 +5157,7 @@ processor Eisenpuls_Synth
 
                 // mod envelopes + per-voice mod matrix sums
                 updateModEnvs (i, dt);
+                updateVoiceLfos (i, dt);
                 computeVoiceMod (i);
 
                 // per-oscillator level modulation (additive, so a silent oscillator can be faded in by the matrix)

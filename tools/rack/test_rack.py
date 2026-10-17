@@ -41,8 +41,11 @@ def render(host, params, note=60, hold=0.8, tail=0.8, tag="x"):
     script = os.path.join(TMP, tag + ".txt")
     out = os.path.join(TMP, tag + ".f32")
     with open(script, "w") as f:
-        for n, v in params:
-            f.write(f"p {n} {v}\n")
+        for item in params:
+            if item[0] == "shape":
+                f.write(f"shape {item[1]} {item[2]} {item[3] if len(item) > 3 else 0}\n")
+            else:
+                f.write(f"p {item[0]} {item[1]}\n")
         f.write("run 0.05\n")                      # let every parameter event land before the note
         f.write(f"on {note} 100\nrun {hold}\noff {note}\nrun {tail}\n")
     subprocess.run([host, script, out], check=True)
@@ -245,6 +248,92 @@ for rk in ("main", "bus1", "bus2"):
         rough += slot(sl_i, ty, 0, 0.7, [0.9, 0.9, 0.9, 0.9, 0.9, 0.9], rack=rk)
 big = render(args.new, rough + [(871, 1), (872, 2), (37, 0.5), (38, 0.3)], tag="bc")
 check("30 effects on 3 racks stay finite and bounded", np.isfinite(big).all() and np.abs(big).max() <= 1.0 + 1e-6, f"peak {np.abs(big).max():.2f}")
+
+# ------------------------------------------------------------------------------------------------ 5. LFOs
+print("== LFOs")
+LFO_ROUTE = lambda dst, amt: [(307, 1), (308, dst), (309, amt)]                  # matrix slot 1: LFO 1 -> destination 2 cutoff / 4 amp / 10 out gain
+
+
+def lfo(wave=0, rate=2.0, mode=0, delay=0, rise=0, smooth=0, phase=0):
+    return [(247, wave), (248, rate), (882, mode), (883, delay), (884, rise), (885, smooth), (886, phase)]
+
+
+def win_rms(a, t0, t1):
+    return rms(a[int(t0 * RATE):int(t1 * RATE), 0])
+
+
+plain = render(args.new, [], hold=1.2, tail=0.2, tag="l0")
+
+
+def ratio(params, t0, t1, shapes=()):
+    r = render(args.new, list(shapes) + params, hold=1.2, tail=0.2, tag="l1")
+    t0, t1 = t0 + 0.05, t1 + 0.05                      # render() plays the note 0.05 s after the start
+    return win_rms(r, t0, t1) / max(win_rms(plain, t0, t1), 1e-9)
+
+
+# unchanged behaviour: a free-running sine LFO on the cutoff matches the old engine
+old_l = render(args.old, [(307, 1), (308, 2), (309, 0.8), (247, 0), (248, 3)], tag="lo")
+new_l = render(args.new, [(307, 1), (308, 2), (309, 0.8)] + lfo(0, 3), tag="ln")
+check("free-running LFO on the cutoff matches the old engine", rel_err(old_l, new_l) < 2e-3, f"{rel_err(old_l, new_l):.1e}")
+
+
+def two_notes(params, shapes=()):
+    """note A at 0 s, note B at 1.3 s; returns the amplitude envelopes (10 ms windows) of the first 0.3 s of each"""
+    script = os.path.join(TMP, "tn.txt")
+    out = os.path.join(TMP, "tn.f32")
+    with open(script, "w") as f:
+        for sh in shapes:
+            f.write(f"shape {sh[1]} {sh[2]} {sh[3] if len(sh) > 3 else 0}\n")
+        for n, v in params:
+            f.write(f"p {n} {v}\n")
+        f.write("run 0.05\non 60 100\nrun 0.5\noff 60\nrun 0.75\non 60 100\nrun 0.5\noff 60\nrun 0.3\n")
+    subprocess.run([args.new, script, out], check=True)
+    a = np.fromfile(out, dtype=np.float32).reshape(-1, 2)[:, 0]
+    e = lambda t0: np.array([rms(a[int((t0 + k * 0.01) * RATE):int((t0 + (k + 1) * 0.01) * RATE)]) for k in range(30)])
+    return e(0.05), e(1.30)
+
+
+amp_lfo = LFO_ROUTE(4, -0.5)
+a1, a2 = two_notes(amp_lfo + lfo(1, 2.0, mode=1))
+check("Trig mode restarts the LFO with every note", np.abs(a1 - a2).max() / a1.max() < 0.03, f"{np.abs(a1 - a2).max() / a1.max():.3f}")
+f1, f2 = two_notes(amp_lfo + lfo(1, 2.0, mode=0))
+check("Free mode keeps running between notes", np.abs(f1 - f2).max() / f1.max() > 0.08, f"{np.abs(f1 - f2).max() / f1.max():.3f}")
+
+up_env = ratio(LFO_ROUTE(4, 0.5) + lfo(4, 4.0, mode=2), 0.02, 0.06)
+up_end1 = ratio(LFO_ROUTE(4, 0.5) + lfo(4, 4.0, mode=2), 0.40, 0.45)
+up_end2 = ratio(LFO_ROUTE(4, 0.5) + lfo(4, 4.0, mode=2), 0.90, 0.95)
+check("Env mode plays the shape once", up_env < 0.75 and up_end1 > 1.3, f"start {up_env:.2f}, end {up_end1:.2f}")
+check("Env mode holds the last value", abs(up_end1 - up_end2) < 0.1, f"{up_end1:.2f} vs {up_end2:.2f}")
+
+dl_before = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 0.5, mode=1, delay=300), 0.10, 0.25)
+dl_after = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 0.5, mode=1, delay=300), 0.40, 0.55)
+check("LFO Delay holds the LFO back", dl_before > 0.93 and dl_after < 0.6, f"before {dl_before:.2f}, after {dl_after:.2f}")
+rs_early = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 0.5, mode=1, rise=400), 0.05, 0.10)
+rs_late = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 0.5, mode=1, rise=400), 0.55, 0.65)
+check("LFO Rise fades the LFO in", rs_early > 0.8 and rs_late < 0.6, f"early {rs_early:.2f}, late {rs_late:.2f}")
+
+sharp = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 2.0, mode=1), 0.255, 0.262)
+soft = ratio(LFO_ROUTE(4, -0.5) + lfo(2, 2.0, mode=1, smooth=0.6), 0.255, 0.262)
+check("Smooth rounds off the edges of the LFO", sharp > 1.3 and 0.6 < soft < 1.25, f"sharp {sharp:.2f}, smooth {soft:.2f}")
+
+drawn_const = ratio(LFO_ROUTE(4, 0.6) + lfo(6, 1.0), 0.1, 0.5, shapes=[("shape", 0, "const", 0.5)])
+check("a drawn shape is played back (constant 0.5 x 0.6 -> x1.3)", abs(drawn_const - 1.3) < 0.1, f"{drawn_const:.2f}")
+ramp_start = ratio(LFO_ROUTE(4, 0.5) + lfo(6, 2.0, mode=2), 0.02, 0.06, shapes=[("shape", 0, "ramp")])
+ramp_end = ratio(LFO_ROUTE(4, 0.5) + lfo(6, 2.0, mode=2), 0.60, 0.70, shapes=[("shape", 0, "ramp")])
+check("a drawn ramp in Env mode runs from -1 to +1", ramp_start < 0.75 and ramp_end > 1.3, f"{ramp_start:.2f} -> {ramp_end:.2f}")
+
+phase_a = ratio(LFO_ROUTE(4, 0.5) + lfo(4, 0.25, mode=1, phase=0.0), 0.05, 0.15)
+phase_b = ratio(LFO_ROUTE(4, 0.5) + lfo(4, 0.25, mode=1, phase=0.75), 0.05, 0.15)
+check("start Phase offsets a Trig LFO", phase_b > phase_a + 0.3, f"{phase_a:.2f} vs {phase_b:.2f}")
+
+glob = render(args.new, LFO_ROUTE(10, 0.5) + lfo(0, 3.0, mode=1), tag="lg")
+check("a Trig LFO on a global destination (output gain) is finite", np.isfinite(glob).all() and rms(glob) > 1e-3)
+wild = []
+for i in range(10):
+    wild += [(247 + 2 * i, 6), (248 + 2 * i, 50), (882 + 5 * i, 1 + i % 2), (883 + 5 * i, 5), (884 + 5 * i, 5000), (885 + 5 * i, 1.0), (886 + 5 * i, 0.9)]
+    wild += [(307 + 3 * min(i, 9), 1 + i), (308 + 3 * min(i, 9), 2 + i), (309 + 3 * min(i, 9), 1.0)]
+wild_r = render(args.new, wild + [("shape", 3, "ramp")], tag="lw")
+check("all LFOs on extreme settings stay finite", np.isfinite(wild_r).all() and np.abs(wild_r).max() <= 1.0 + 1e-6)
 
 print("== extreme settings (stability)")
 for ty in range(1, 12):
