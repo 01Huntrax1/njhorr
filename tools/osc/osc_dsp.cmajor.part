@@ -1,0 +1,409 @@
+    // ================================================================================================================
+    // OSCILLATOR SLOTS: six identical slots. Every slot is a Wavetable, a Sampler or a Plaits engine, followed by its
+    // own filter (30 types, own envelope), a distortion, pan / level and an output route (Main / Bus 1 / Bus 2).
+    // Any slot can frequency-modulate any other slot (and itself) through the 6x6 FM matrix.
+    //
+    // Per-slot parameters live in op[]: op[slot * 64 + k]. The k numbers (and the parameter ids 1000 + 64 * slot + k)
+    // are defined in tools/osc/layout.py; patch/index.js carries the same table.
+    //
+    // Mod destinations: 1 Pitch (all) 2 Amp 3 Pan 4 Drive 5 Out Gain, then per slot 6 + 9 * slot + j with
+    // j = 0 Pitch 1 Level 2 Pan 3 Position / Harmonics 4 Warp 1 / Timbre 5 Warp 2 / Morph 6 Cutoff 7 Reso 8 Dist Drive
+    // ================================================================================================================
+
+    struct BankChunk
+    {
+        int        bank;
+        int        offset;
+        int        count;
+        int        total;
+        float[256] data;
+    }
+
+    float[384]    op;
+    float[36]     fmAmt;
+    bool[6]       fmUsed;
+
+    // wavetable memories (one per slot): 96000 samples cut into equal frames
+    bool[6]       wtHas;
+    int[6]        wtLen;
+    float[576000] wtBuf;
+    float[11520]  wtMeans;      // per-frame DC: (slot * 5 + frame size) * 384 + frame
+    float[6]      wtMeanAll;
+
+    // sample memories (one per slot)
+    bool[6]       smpHas;
+    int[6]        smpLen;
+    float[576000] smpBuf;
+
+    // wavetable unison (per slot, up to 7 voices)
+    int[6]        uniCnt;
+    float[42]     uniRatio;
+    float[42]     uniCents;
+    float[42]     uniGL;
+    float[42]     uniGR;
+
+    float opv (int o, int k)
+    {
+        return op.at (o * 64 + k);
+    }
+
+    void opSet (int o, int k, float v)
+    {
+        op.at (o * 64 + k) = v;
+
+        if (k >= 13 && k <= 17)
+            updateWtUni (o);
+    }
+
+    void fmSet (int s, int d, float v)
+    {
+        fmAmt.at (s * 6 + d) = v;
+
+        for (int q = 0; q < 6; ++q)
+        {
+            bool u = false;
+            for (int r = 0; r < 6; ++r)
+                if (fmAmt.at (q * 6 + r) != 0.0f) u = true;
+            fmUsed.at (q) = u;
+        }
+    }
+
+    // ---------------- memories ----------------
+    void clearWtBank (int o)
+    {
+        wtHas.at (o) = false;
+        wtLen.at (o) = 0;
+    }
+
+    void calcWtMeans (int o)
+    {
+        int   len  = clamp (wtLen.at (o), 1, 96000);
+        int   base = o * 96000;
+        float tot  = 0.0f;
+
+        for (int i = 0; i < len; ++i)
+            tot += wtBuf.at (base + i);
+
+        wtMeanAll.at (o) = tot / float (len);
+
+        int fl = 256;
+        for (int k = 0; k < 5; ++k)
+        {
+            if (fl <= len)
+            {
+                int nF = min (len / fl, 384);
+                for (int f = 0; f < nF; ++f)
+                {
+                    float s  = 0.0f;
+                    int   fo = base + f * fl;
+                    for (int i = 0; i < fl; ++i)
+                        s += wtBuf.at (fo + i);
+                    wtMeans.at ((o * 5 + k) * 384 + f) = s / float (fl);
+                }
+            }
+            fl = fl * 2;
+        }
+    }
+
+    float wtMeanOf (int o, int fl, int f)
+    {
+        int k = -1;
+        if (fl == 256)       k = 0;
+        else if (fl == 512)  k = 1;
+        else if (fl == 1024) k = 2;
+        else if (fl == 2048) k = 3;
+        else if (fl == 4096) k = 4;
+
+        if (k < 0 || fl > wtLen.at (o))
+            return wtMeanAll.at (o);
+
+        return wtMeans.at ((o * 5 + k) * 384 + clamp (f, 0, 383));
+    }
+
+    event wtBankLoad (BankChunk c)
+    {
+        int o = clamp (c.bank, 0, 5);
+
+        if (c.total <= 0)
+        {
+            clearWtBank (o);
+            for (int k = 0; k < 8; ++k)
+                resetWtUni (k, o);
+            return;
+        }
+
+        if (c.offset == 0)
+            wtHas.at (o) = false;
+
+        int cnt  = clamp (c.count, 0, 256);
+        int base = o * 96000;
+
+        for (int i = 0; i < cnt; ++i)
+        {
+            int pos = c.offset + i;
+            if (pos >= 0 && pos < 96000)
+                wtBuf.at (base + pos) = c.data.at (i);
+        }
+
+        if (c.offset + cnt >= c.total)
+        {
+            wtLen.at (o) = clamp (c.total, 1, 96000);
+            calcWtMeans (o);
+            wtHas.at (o) = true;
+        }
+    }
+
+    event smpBankLoad (BankChunk c)
+    {
+        int o = clamp (c.bank, 0, 5);
+
+        if (c.total <= 0)
+        {
+            smpHas.at (o) = false;
+            smpLen.at (o) = 0;
+            return;
+        }
+
+        if (c.offset == 0)
+            smpHas.at (o) = false;
+
+        int cnt  = clamp (c.count, 0, 256);
+        int base = o * 96000;
+
+        for (int i = 0; i < cnt; ++i)
+        {
+            int pos = c.offset + i;
+            if (pos >= 0 && pos < 96000)
+                smpBuf.at (base + pos) = c.data.at (i);
+        }
+
+        if (c.offset + cnt >= c.total)
+        {
+            smpLen.at (o) = clamp (c.total, 1, 96000);
+            smpHas.at (o) = true;
+        }
+    }
+
+    // ---------------- wavetable unison ----------------
+    void updateWtUni (int o)
+    {
+        int   n     = clamp (int (opv (o, 13) + 0.5f), 1, 7);
+        float det   = clamp (opv (o, 14), 0.0f, 1.0f);
+        float blend = clamp (opv (o, 15), 0.0f, 1.0f);
+        float width = clamp (opv (o, 16), 0.0f, 1.0f);
+        int   style = clamp (int (opv (o, 17) + 0.5f), 0, 3);
+
+        uniCnt.at (o) = n;
+
+        float powSum = 0.0f;
+
+        for (int j = 0; j < 7; ++j)
+        {
+            float pos = 0.0f;
+            if (n > 1)
+                pos = 2.0f * float (j) / float (n - 1) - 1.0f;
+
+            float dpos = pos;
+            if (style == 1)      dpos = pos * abs (pos);
+            else if (style == 2) dpos = (pos < 0.0f ? -1.0f : 1.0f) * float (sqrt (abs (pos)));
+            else if (style == 3 && n > 1) dpos = uniRandPos (o, j);
+
+            float cents = dpos * det * 50.0f;
+            uniRatio.at (o * 7 + j) = float (pow (2.0f, cents / 1200.0f));
+            uniCents.at (o * 7 + j) = dpos * 50.0f;
+
+            float w = blend + (1.0f - blend) * (1.0f - abs (pos));
+            if (j >= n) w = 0.0f;
+            powSum += w * w;
+
+            float pp  = pos * width;
+            float ang = (pp + 1.0f) * 0.25f * float (pi);
+            uniGL.at (o * 7 + j) = w * float (cos (ang)) * 1.4142f;
+            uniGR.at (o * 7 + j) = w * float (sin (ang)) * 1.4142f;
+        }
+
+        float norm = 1.0f / float (sqrt (max (powSum, 0.01f)));
+
+        for (int j = 0; j < 7; ++j)
+        {
+            uniGL.at (o * 7 + j) = uniGL.at (o * 7 + j) * norm;
+            uniGR.at (o * 7 + j) = uniGR.at (o * 7 + j) * norm;
+        }
+    }
+
+    void resetWtUni (int vi, int o)
+    {
+        for (int j = 0; j < 7; ++j)
+        {
+            float64 rp = float64 (clamp (opv (o, 8), 0.0f, 1.0f));
+            if (opv (o, 9) > 0.5f)
+                rp = float64 (nextNoise() * 0.5f + 0.5f);
+
+            voices.at (vi).wtUPh.at (o * 7 + j) = rp;
+        }
+    }
+
+    // wavetable read: frames morph with pos (0..1), phase (0..1) scans one cycle, both linearly interpolated
+    float wtRead (int o, float64 phase, float wtPos, int frameLen)
+    {
+        int   len  = wtLen.at (o);
+        int   fl   = clamp (frameLen, 2, max (len, 2));
+        int   nF   = max (len / fl, 1);
+        float p    = clamp (wtPos, 0.0f, 1.0f) * float (nF - 1);
+        int   fa   = clamp (int (p), 0, nF - 1);
+        int   fb   = min (fa + 1, nF - 1);
+        float ff   = p - float (fa);
+        float x    = float (phase) * float (fl);
+        int   i0   = clamp (int (x), 0, fl - 1);
+        int   i1   = i0 + 1;
+        if (i1 >= fl) i1 = 0;
+        float fr   = x - float (i0);
+        int   base = o * 96000;
+        int   top  = base + 95999;
+
+        float a0 = wtBuf.at (clamp (base + fa * fl + i0, base, top));
+        float a1 = wtBuf.at (clamp (base + fa * fl + i1, base, top));
+        float b0 = wtBuf.at (clamp (base + fb * fl + i0, base, top));
+        float b1 = wtBuf.at (clamp (base + fb * fl + i1, base, top));
+
+        float va = a0 * (1.0f - fr) + a1 * fr;
+        float vb = b0 * (1.0f - fr) + b1 * fr;
+        float dc = wtMeanOf (o, fl, fa) * (1.0f - ff) + wtMeanOf (o, fl, fb) * ff;
+        return va * (1.0f - ff) + vb * ff - dc;
+    }
+
+    // one step of the wavetable slot o on voice vi; pm = phase modulation in cycles (FM matrix); returns the stereo sum
+    float<2> wtStep (int o, int vi, float freq, float pos, int fl, float pm, float a1m, float a2m)
+    {
+        float sr  = float (processor.frequency);
+        int   n   = uniCnt.at (o);
+        int   m1  = clamp (int (opv (o, 18) + 0.5f), 0, 8);
+        int   m2  = clamp (int (opv (o, 20) + 0.5f), 0, 8);
+        float a1  = clamp (opv (o, 19) + a1m * 0.5f, 0.0f, 1.0f);
+        float a2  = clamp (opv (o, 21) + a2m * 0.5f, 0.0f, 1.0f);
+        float sL  = 0.0f;
+        float sR  = 0.0f;
+
+        for (int j = 0; j < n; ++j)
+        {
+            int     si = o * 7 + j;
+            float64 ph = voices.at (vi).wtUPh.at (si);
+            float   f  = clamp (freq * uniRatio.at (si), 1.0f, sr * 0.45f);
+
+            float rp = float (ph);
+            if (pm != 0.0f)
+            {
+                rp = rp + pm;
+                rp = rp - float (floor (rp));
+            }
+            if (m1 >= 1 && m1 <= 6) rp = wtWarpPhase (m1, a1, rp);
+            if (m2 >= 1 && m2 <= 6) rp = wtWarpPhase (m2, a2, rp);
+            float64 rph = float64 (clamp (rp, 0.0f, 0.99999f));
+
+            float y = wtRead (o, rph, pos, fl);
+
+            if (m1 >= 7) y = wtWarpAmp (m1, a1, y);
+            if (m2 >= 7) y = wtWarpAmp (m2, a2, y);
+
+            sL += y * uniGL.at (si);
+            sR += y * uniGR.at (si);
+
+            ph += float64 (f) * processor.period;
+            if (ph >= 1.0) ph -= 1.0;
+            voices.at (vi).wtUPh.at (si) = ph;
+        }
+
+        // warping changes the average level of the cycle: remove the DC it creates (bypassed without warp)
+        int zi = o * 4;
+
+        if (m1 != 0 || m2 != 0)
+        {
+            float yl = sL - voices.at (vi).wtDcS.at (zi)     + 0.9995f * voices.at (vi).wtDcS.at (zi + 1);
+            float yr = sR - voices.at (vi).wtDcS.at (zi + 2) + 0.9995f * voices.at (vi).wtDcS.at (zi + 3);
+            voices.at (vi).wtDcS.at (zi)     = sL;
+            voices.at (vi).wtDcS.at (zi + 1) = yl;
+            voices.at (vi).wtDcS.at (zi + 2) = sR;
+            voices.at (vi).wtDcS.at (zi + 3) = yr;
+            sL = yl;
+            sR = yr;
+        }
+        else
+        {
+            voices.at (vi).wtDcS.at (zi)     = 0.0f;
+            voices.at (vi).wtDcS.at (zi + 1) = 0.0f;
+            voices.at (vi).wtDcS.at (zi + 2) = 0.0f;
+            voices.at (vi).wtDcS.at (zi + 3) = 0.0f;
+        }
+
+        return float<2> (sL, sR);
+    }
+
+    // linear-interpolated sample read
+    float smpRead (int o, float64 pos)
+    {
+        int base = o * 96000;
+        int i0   = int (pos);
+        float fr = float (pos - float64 (i0));
+        int i1   = i0 + 1;
+        int len  = smpLen.at (o);
+        if (i1 >= len) i1 = i0;
+        i0 = clamp (i0, 0, 95999);
+        i1 = clamp (i1, 0, 95999);
+        return smpBuf.at (base + i0) * (1.0f - fr) + smpBuf.at (base + i1) * fr;
+    }
+
+    // one step of the sampler slot o; returns the sample at the current read position and advances it
+    float smpStep (int o, int vi, float freq, float curFreq, float pm, float st)
+    {
+        float sr   = float (processor.frequency);
+        int   len  = smpLen.at (o);
+        int   sSt  = clamp (int (opv (o, 22) * float (len)), 0, max (len - 1, 0));
+        float64 sp = voices.at (vi).synPos.at (o);
+        float out  = 0.0f;
+
+        float rate = 1.0f;
+        if (opv (o, 7) > 0.5f)
+            rate = curFreq / max (float (std::notes::noteToFrequency (int (opv (o, 12) + 0.5f))), 1.0f);
+        rate = clamp (rate * float (pow (2.0f, st)), 0.0f, 16.0f);
+
+        float64 rp = sp;
+        if (pm != 0.0f)
+        {
+            rp = sp + float64 (pm * rate * sr / max (freq, 20.0f));
+            float64 fl = float64 (len);
+            if (rp < 0.0) rp = 0.0;
+            if (rp >= fl) rp = fl - 1.0;
+        }
+
+        if (int (rp) < len)
+            out = smpRead (o, rp);
+
+        sp += float64 (rate);
+        if (sp >= float64 (len))
+        {
+            if (opv (o, 23) > 0.5f)
+            {
+                sp -= float64 (max (len - sSt, 1));
+                if (sp >= float64 (len) || sp < 0.0)
+                    sp = float64 (sSt);
+            }
+        }
+        voices.at (vi).synPos.at (o) = sp;
+        return out;
+    }
+
+    // per-slot distortion (type 1..6 = Soft Tube Hard Fold Sine Crunch)
+    float oscDist (float x, int ty, float d, float mix)
+    {
+        if (ty <= 0 || mix <= 0.0005f)
+            return x;
+
+        float y = shapeSigAlg (x, d, ty - 1);
+        return x * (1.0f - mix) + y * mix;
+    }
+
+    // Plaits slot: filled in by the engine ports (see tools/plaits); silent until an engine is selected
+    float plaitsStep (int vi, int o, float freq, float pm)
+    {
+        return 0.0f;
+    }

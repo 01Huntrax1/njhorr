@@ -1,0 +1,207 @@
+            float[3] mixSynthL;
+            float[3] mixSynthR;
+
+            for (int i = 0; i < 8; ++i)
+            {
+                if (! voices.at (i).active) continue;
+
+                voices.at (i).age += 1;
+
+                // glide
+                float gc = 1.0f;
+                if (glideMs > 0.5f)
+                    gc = clamp (dt * 5.0f / (glideMs * 0.001f), 0.0f, 1.0f);
+                voices.at (i).curFreq += (voices.at (i).targetFreq - voices.at (i).curFreq) * gc;
+
+                // amp envelope
+                int   st = voices.at (i).stage;
+                float e  = voices.at (i).env;
+
+                if (st == 1)
+                {
+                    e += dt / max (ampAttack * 0.001f, 0.0005f);
+                    if (e >= 1.0f) { e = 1.0f; st = 2; }
+                }
+                else if (st == 2)
+                {
+                    e += (ampSustain - e) * clamp (dt * 5.0f / (max (ampDecay, 1.0f) * 0.001f), 0.0f, 0.99f);
+                }
+                else
+                {
+                    e -= e * clamp (dt * 5.0f / (max (ampRelease, 1.0f) * 0.001f), 0.0f, 0.99f);
+                    if (e < 0.0003f)
+                    {
+                        e = 0.0f;
+                        voices.at (i).active = false;
+                    }
+                }
+                voices.at (i).env   = e;
+                voices.at (i).stage = st;
+
+                // mod envelopes, per-voice LFOs and the matrix sums
+                updateModEnvs (i, dt);
+                updateVoiceLfos (i, dt);
+                computeVoiceMod (i);
+
+                // pitch envelope (+ matrix pitch, +/-12 semitones at full amount)
+                voices.at (i).penv -= voices.at (i).penv * clamp (dt * 5.0f / (max (pitchEgDec, 1.0f) * 0.001f), 0.0f, 0.99f);
+                float pe     = voices.at (i).penv * pitchEgInt + vmod.at (1) * 12.0f;
+                float tuneSt = masterTune * 0.01f;
+                float cf     = voices.at (i).curFreq;
+                int   nnote  = voices.at (i).noteNumber;
+
+                // FM: every slot is modulated by the previous sample of the slots that feed it
+                float[6] fmIn;
+                for (int fd = 0; fd < 6; ++fd)
+                {
+                    float acc = 0.0f;
+                    for (int fs = 0; fs < 6; ++fs)
+                    {
+                        float am = fmAmt.at (fs * 6 + fd);
+                        if (am != 0.0f)
+                            acc += am * voices.at (i).fmPrev.at (fs);
+                    }
+                    fmIn.at (fd) = acc;
+                }
+
+                float[3] bInL;
+                float[3] bInR;
+
+                for (int o = 0; o < 6; ++o)
+                {
+                    int   ob  = o * 64;
+                    int   ty  = int (op.at (ob) + 0.5f);
+                    int   dB  = 6 + 9 * o;
+                    float lvl = clamp (op.at (ob + 1) + vmod.at (dB + 1), 0.0f, 1.0f);
+
+                    if (lvl <= 0.0005f && ! fmUsed.at (o))
+                    {
+                        voices.at (i).fmPrev.at (o) = 0.0f;
+                        continue;
+                    }
+
+                    // ----- source -----
+                    float sSemi = op.at (ob + 4) * 12.0f + op.at (ob + 5) + op.at (ob + 6) * 0.01f;
+                    float sExp  = (sSemi + pe + tuneSt) / 12.0f + vmod.at (dB);
+                    float base  = cf;
+                    if (op.at (ob + 7) <= 0.5f)
+                        base = float (std::notes::noteToFrequency (int (op.at (ob + 12) + 0.5f)));
+                    float freq  = clamp (base * float (pow (2.0f, sExp)), 1.0f, sr * 0.45f);
+                    float pm    = fmIn.at (o);
+
+                    float sL = 0.0f;
+                    float sR = 0.0f;
+                    bool  stereo = false;
+
+                    if (ty == 0)
+                    {
+                        if (wtHas.at (o) && wtLen.at (o) > 1)
+                        {
+                            float pos = clamp (op.at (ob + 10) + vmod.at (dB + 3) * 0.5f, 0.0f, 1.0f);
+                            float<2> w = wtStep (o, i, freq, pos, wtFrameLen (op.at (ob + 11)), pm, vmod.at (dB + 4), vmod.at (dB + 5));
+                            sL = w[0];
+                            sR = w[1];
+                            stereo = true;
+                        }
+                    }
+                    else if (ty == 1)
+                    {
+                        if (smpHas.at (o) && smpLen.at (o) > 1)
+                        {
+                            sL = smpStep (o, i, freq, cf, pm, sExp);
+                            sR = sL;
+                        }
+                    }
+                    else
+                    {
+                        sL = plaitsStep (i, o, freq, pm);
+                        sR = sL;
+                    }
+
+                    voices.at (i).fmPrev.at (o) = stereo ? (sL + sR) * 0.5f : sL;
+
+                    // ----- filter envelope of the slot -----
+                    int   fst = voices.at (i).fstage.at (o);
+                    float fe  = voices.at (i).fenv.at (o);
+                    if (fst == 1)
+                    {
+                        fe += dt / max (op.at (ob + 38) * 0.001f, 0.0005f);
+                        if (fe >= 1.0f) { fe = 1.0f; fst = 2; }
+                    }
+                    else if (fst == 2)
+                    {
+                        fe += (op.at (ob + 40) - fe) * clamp (dt * 5.0f / (max (op.at (ob + 39), 1.0f) * 0.001f), 0.0f, 0.99f);
+                    }
+                    else
+                    {
+                        fe -= fe * clamp (dt * 5.0f / (max (op.at (ob + 41), 1.0f) * 0.001f), 0.0f, 0.99f);
+                    }
+                    voices.at (i).fenv.at (o)   = fe;
+                    voices.at (i).fstage.at (o) = fst;
+
+                    if (lvl <= 0.0005f)
+                        continue;
+
+                    // ----- filter -----
+                    if (op.at (ob + 30) > 0.5f)
+                    {
+                        float fdrv = clamp (op.at (ob + 34), 0.0f, 1.0f);
+                        if (fdrv > 0.001f)
+                        {
+                            float dg = 1.0f + fdrv * 6.0f;
+                            float dm = 1.0f + fdrv * 0.8f;
+                            float sdL = sL * dg;
+                            float sdR = sR * dg;
+                            sL = (sdL / (1.0f + abs (sdL))) * dm;
+                            sR = (sdR / (1.0f + abs (sdR))) * dm;
+                        }
+
+                        float modExp = op.at (ob + 36) * fe * 4.0f
+                                     + op.at (ob + 35) * float (nnote - 60) / 12.0f
+                                     + op.at (ob + 37) * (voices.at (i).velRaw - 0.5f) * 4.0f
+                                     + vmod.at (dB + 6) * 4.0f;
+                        float fc    = clamp (op.at (ob + 32) * float (pow (2.0f, modExp)), 20.0f, sr * 0.45f);
+                        float g     = float (tan (float64 (fc) * pi * processor.period));
+                        float resE  = clamp (op.at (ob + 33) + vmod.at (dB + 7) * 0.5f, 0.0f, 1.0f);
+                        float k     = 2.0f - 1.96f * resE;
+                        int   ft    = clamp (int (op.at (ob + 31) + 0.5f), 0, 29);
+
+                        float yL = filterStepX (i, 0, o, sL, g, k, resE, fc, ft);
+                        float yR = yL;
+                        if (stereo)
+                            yR = filterStepX (i, 1, o, sR, g, k, resE, fc, ft);
+                        sL = yL;
+                        sR = yR;
+                    }
+
+                    // ----- distortion -----
+                    int dty = int (op.at (ob + 42) + 0.5f);
+                    if (dty > 0)
+                    {
+                        float dd = clamp (op.at (ob + 43) + vmod.at (dB + 8) * 0.5f, 0.0f, 1.0f);
+                        float dx = op.at (ob + 44);
+                        sL = oscDist (sL, dty, dd, dx);
+                        sR = stereo ? oscDist (sR, dty, dd, dx) : sL;
+                    }
+
+                    // ----- level, pan, output route -----
+                    float pn  = clamp (op.at (ob + 2) + vmod.at (dB + 2), -1.0f, 1.0f);
+                    float pa  = (pn + 1.0f) * 0.25f * float (pi);
+                    float gL  = float (cos (pa)) * 1.4142f * lvl;
+                    float gR  = float (sin (pa)) * 1.4142f * lvl;
+                    int   rt  = clamp (int (op.at (ob + 3) + 0.5f), 0, 2);
+                    bInL.at (rt) += sL * gL;
+                    bInR.at (rt) += sR * gR;
+                }
+
+                float a = e * voices.at (i).velGain * clamp (1.0f + vmod.at (2), 0.0f, 2.0f);
+
+                voices.at (i).fdlW = (voices.at (i).fdlW + 1) & 2047;
+
+                for (int mg = 0; mg < 3; ++mg)
+                {
+                    mixSynthL.at (mg) += bInL.at (mg) * a;
+                    mixSynthR.at (mg) += bInR.at (mg) * a;
+                }
+            }
+
