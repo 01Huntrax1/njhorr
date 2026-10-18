@@ -66,3 +66,12 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 
 ## UI embedded in cmajor_plugin.cpp
 `cmajor_plugin.cpp` is generated from `patch/` (DSP and UI together). After changing `patch/`, regenerate it as described above.
+
+## Serum 2 style layout, LFOs and drag-and-drop modulation
+
+* Top tabs **OSC / FILTER / FX / MIXER**; OSC has a sub tab row (Synth, Sampler 1, Sampler 2, WT 1-3).
+* A collapsible strip at the bottom holds **MOD** (10 envelopes with an ADSR display, 10 LFOs with a shape editor) and **MATRIX** (the 20-slot matrix).
+* **Drag an LFO / ENV / VEL / KEY / RND handle onto a knob** to create a modulation slot (first free matrix slot). The knob shows a coloured ring, and a dot with the number of sources; click the dot to change the amount or remove it. Targets are listed in `MOD_TARGET` in `patch/index.js`.
+* **LFO shape editor**: click to add a point, drag to move, double-click a point to delete it, drag the diamond on a segment to bend it, optional grid snap. The shape menu holds the 6 built-in waves plus drawn presets. Drawn shapes are sent to the DSP as a 256-point table (`lfoShapeLoad`), and saved per plugin instance and in presets.
+* Per LFO: **Mode** Free / Trig (restart per note) / Env (one-shot), **Rate** in Hz or tempo sync with a division, **Delay**, **Rise** (fade-in), **Smooth**, **Phase**.
+* Tests: `cd tests && npm test` (also `modui.test.js`).

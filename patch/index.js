@@ -261,7 +261,7 @@ const FILTER_GROUPS = [[0, "Basic"], [4, "6 / 18 dB"], [8, "24 dB / Notch"], [12
 // LFO sync divisions, in the order of the DSP table
 const SYNC_DIVS = ["8/1", "4/1", "2/1", "1/1", "1/2.", "1/2", "1/2T", "1/4.", "1/4", "1/4T", "1/8.", "1/8", "1/8T", "1/16.", "1/16", "1/16T", "1/32", "1/32T"];
 
-const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn"];
+const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn", "Drawn"];
 const MOD_SRC = ["Off"].concat(
     Array.from({ length: 10 }, (_, i) => "LFO " + (i + 1)),
     Array.from({ length: 10 }, (_, i) => "Env " + (i + 1)),
@@ -472,6 +472,89 @@ function fxMigrateLegacy (params) {
 // filter page parameters read by the visualizers
 const FLT_VIS_IDS = [12, 13, 14, 525, 526, 527, 528, 529, 531, 534, 535];
 
+const LFO_STATE_KEY = "njo.lfo";
+const LFO_MODES = ["Free", "Trig", "Env"];
+// ---------------------------------------------------------------------------------------------------------------
+// LFO shapes: a shape is a list of points {x 0..1, y -1..1, c curve -1..1 of the segment that follows}; the DSP reads a 256 value table
+// ---------------------------------------------------------------------------------------------------------------
+const LFO_DRAWN = 6;                 // wave value of "Drawn" (0-5 are the built-in shapes Sin Tri Sqr S&H Up Dn)
+const LFO_GRIDS = [0, 4, 8, 16, 32];
+function lfoCurve (y0, y1, c, t) {
+    if (c > 0.001) t = Math.pow(t, 1 + 4 * c);
+    else if (c < -0.001) t = 1 - Math.pow(1 - t, 1 - 4 * c);
+    return y0 + (y1 - y0) * t;
+}
+function lfoSampleAt (pts, p) {
+    p = Math.max(0, Math.min(1, p));
+    for (let i = 0; i + 1 < pts.length; i++) {
+        const a = pts[i], b = pts[i + 1];
+        if (p <= b.x || i + 2 === pts.length) {
+            const span = b.x - a.x;
+            const t = span > 1e-9 ? (p - a.x) / span : 1;
+            return lfoCurve(a.y, b.y, a.c || 0, Math.max(0, Math.min(1, t)));
+        }
+    }
+    return pts.length ? pts[0].y : 0;
+}
+function lfoTableFromPts (pts) {
+    const t = new Array(256);
+    for (let i = 0; i < 256; i++) t[i] = Math.round(lfoSampleAt(pts, i / 256) * 1e5) / 1e5;
+    return t;
+}
+// built-in shapes as point lists (what "edit" starts from) and as plain functions (what the canvas shows)
+function lfoBuiltinPts (w) {
+    if (w === 0) { const p = []; for (let i = 0; i <= 32; i++) p.push({ x: i / 32, y: Math.sin(2 * Math.PI * i / 32), c: 0 }); return p; }
+    if (w === 1) return [{ x: 0, y: 1, c: 0 }, { x: 0.5, y: -1, c: 0 }, { x: 1, y: 1, c: 0 }];
+    if (w === 2) return [{ x: 0, y: 1, c: 0 }, { x: 0.4985, y: 1, c: 0 }, { x: 0.5, y: -1, c: 0 }, { x: 1, y: -1, c: 0 }];
+    if (w === 3) {
+        const v = [0.55, -0.4, 0.8, -0.75, 0.1, 0.9, -0.2, -0.9], p = [];
+        v.forEach((y, i) => { p.push({ x: i / 8, y, c: 0 }); p.push({ x: (i + 1) / 8 - 0.0025, y, c: 0 }); });
+        p[p.length - 1].x = 1;
+        return p;
+    }
+    if (w === 4) return [{ x: 0, y: -1, c: 0 }, { x: 1, y: 1, c: 0 }];
+    return [{ x: 0, y: 1, c: 0 }, { x: 1, y: -1, c: 0 }];
+}
+function lfoBuiltinAt (w, p) {
+    if (w === 0) return Math.sin(2 * Math.PI * p);
+    if (w === 1) return 4 * Math.abs(p - 0.5) - 1;
+    if (w === 2) return p < 0.5 ? 1 : -1;
+    if (w === 4) return 2 * p - 1;
+    if (w === 5) return 1 - 2 * p;
+    return lfoSampleAt(lfoBuiltinPts(3), p);
+}
+// the Shape menu: built-in waves first (w), then drawn presets (pts)
+const LFO_PRESETS = [
+    { n: "Sine", w: 0 }, { n: "Triangle", w: 1 }, { n: "Square", w: 2 }, { n: "S&H", w: 3 }, { n: "Saw Up", w: 4 }, { n: "Saw Down", w: 5 },
+    { n: "Pulse 25%", pts: [{ x: 0, y: 1, c: 0 }, { x: 0.2485, y: 1, c: 0 }, { x: 0.25, y: -1, c: 0 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Half Sine", pts: (() => { const p = []; for (let i = 0; i <= 16; i++) p.push({ x: i / 32, y: Math.sin(Math.PI * i / 16), c: 0 }); p.push({ x: 0.5015, y: -1, c: 0 }); p.push({ x: 1, y: -1, c: 0 }); return p; })() },
+    { n: "Exp Decay", pts: [{ x: 0, y: 1, c: 0.8 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Ramp + Hold", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.5, y: 1, c: 0 }, { x: 1, y: 1, c: 0 }] },
+    { n: "Bounce", pts: [{ x: 0, y: -1, c: -0.8 }, { x: 0.25, y: 1, c: 0.8 }, { x: 0.5, y: -1, c: -0.8 }, { x: 0.75, y: 0.4, c: 0.8 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Steps 4", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.2485, y: -1, c: 0 }, { x: 0.25, y: -0.33, c: 0 }, { x: 0.4985, y: -0.33, c: 0 }, { x: 0.5, y: 0.33, c: 0 }, { x: 0.7485, y: 0.33, c: 0 }, { x: 0.75, y: 1, c: 0 }, { x: 1, y: 1, c: 0 }] },
+    { n: "Double Hump", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.25, y: 1, c: 0 }, { x: 0.5, y: -0.2, c: 0 }, { x: 0.75, y: 0.7, c: 0 }, { x: 1, y: -1, c: 0 }] }
+];
+
+// ---------------------------------------------------------------------------------------------------------------
+// Modulation targets: parameter number -> [destination index of the mod matrix, knob travel per 1.0 of amount]
+// (destination indices follow MOD_DST; the travel is only used to draw the modulation ring)
+// ---------------------------------------------------------------------------------------------------------------
+const MOD_TARGET = (() => {
+    const T = { 13: [2, 0.41], 14: [3, 0.5], 28: [8, 0.5], 29: [5, 0.5], 9: [6, 0.5], 39: [7, 0.45], 190: [10, 0.5],
+        6: [11, 0.25], 7: [12, 0.25], 37: [13, 1], 38: [14, 1], 143: [15, 0.25], 138: [16, 1], 157: [17, 0.5], 153: [18, 1],
+        196: [19, 0.5], 192: [20, 1],
+        211: [21, 0.5], 214: [22, 0.5], 209: [23, 1], 445: [24, 0.5],
+        225: [25, 0.5], 228: [26, 0.5], 223: [27, 1], 454: [28, 0.5],
+        237: [29, 0.5], 240: [30, 0.5], 235: [31, 1], 463: [32, 0.5],
+        451: [33, 1], 453: [34, 1], 460: [35, 1], 462: [36, 1], 469: [37, 1], 471: [38, 1],
+        437: [39, 1], 440: [40, 1], 443: [41, 1],
+        528: [42, 0.41], 529: [43, 0.5], 530: [44, 0.5], 531: [45, 0.5] };
+    return T;
+})();
+const MOD_SRC_SHORT = n => n >= 1 && n <= 10 ? "LFO " + n : n >= 11 && n <= 20 ? "ENV " + (n - 10) : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "VEL", "KEY", "RND"][n] || "";
+const MOD_SRC_COLOR = n => n >= 1 && n <= 10 ? "#ff6a4d" : n >= 11 && n <= 20 ? "#4db8ff" : "#c9c24a";
+
+
 const SPECS = (() => {
     const L = [
         [2,  "Voice",        0, 1, 0, "", "btn", ["Poly", "Mono"]],
@@ -598,7 +681,13 @@ const SPECS = (() => {
     ];
     // mod page: 10 LFOs (wave stepper + rate), 10 ADSR envelopes, 10 matrix slots
     for (let i = 0; i < 10; i++) {
-        L.push([247 + 2 * i, "LFO " + (i + 1) + " Wave", 0, 5, 0, "", "btn", MOD_WAVES]);
+        L.push([247 + 2 * i, "LFO " + (i + 1) + " Wave", 0, 6, 0, "", "btn", MOD_WAVES]);
+        const lb = 882 + 5 * i, ln = "LFO " + (i + 1);
+        L.push([lb,     ln + " Mode",   0, 2, 0, "", "btn", LFO_MODES, 1, "Mode"]);
+        L.push([lb + 1, ln + " Delay",  0, 5000, 0, "ms", "sld", null, 1, "Delay"]);
+        L.push([lb + 2, ln + " Rise",   0, 5000, 0, "ms", "sld", null, 1, "Rise"]);
+        L.push([lb + 3, ln + " Smooth", 0, 1, 0, "", "sld", null, 1, "Smooth"]);
+        L.push([lb + 4, ln + " Phase",  0, 1, 0, "", "sld", null, 1, "Phase"]);
         L.push([248 + 2 * i, "LFO " + (i + 1) + " Rate", 0.01, 50, 1, "Hz", "sld"]);
     }
     for (let i = 0; i < 10; i++) {
@@ -854,6 +943,9 @@ class EisenpulsPatchView extends HTMLElement {
         this._fxTypes = new Array(30).fill(0);   // effect type held by each rack slot
         this._smpState = new Array(MEM_COUNT).fill(null);
         this._page = "sound";
+        this._lfoPts = new Array(10).fill(null);
+        this._lfoGrid = 0;
+        this._modReady = false;
         this._store = new Map();
         this._incoming = new Map();
         this._saveHandler = null;
@@ -901,6 +993,8 @@ class EisenpulsPatchView extends HTMLElement {
         this.updateS2Ui();
         for (let e = 0; e < WT_ENG.length; e++) this.updateWtUi(e);
         this.updateSlots();
+        this.buildModStrip();
+        this._modReady = true;
         this.buildManager();
 
         this._paramListener = ({ endpointID: id, value: v }) => {
@@ -940,6 +1034,7 @@ class EisenpulsPatchView extends HTMLElement {
         this.hydrateInstanceState();
         this._ready.then(() => {
             if (this._disconnected) return;
+            this.restoreLfo();
             this.loadStore();
             this.loadS2Store();
             for (let e = 0; e < WT_ENG.length; e++) this.loadWtStore(e);
@@ -1151,17 +1246,29 @@ class EisenpulsPatchView extends HTMLElement {
 
     // ---------- tabs ----------
     buildTabs () {
+        this._oscPage = "sound";
         this.querySelectorAll(".tab").forEach(t => {
             t.setAttribute("tabindex", "-1");
-            t.addEventListener("click", () => { this.setPage(t.dataset.page); t.blur(); });
+            t.addEventListener("click", () => { this.setGroup(t.dataset.group); t.blur(); });
         });
-        this.setPage("sound");
+        this.querySelectorAll(".stab").forEach(t => {
+            t.setAttribute("tabindex", "-1");
+            t.addEventListener("click", () => { this._oscPage = t.dataset.page; this.setGroup("osc"); t.blur(); });
+        });
+        this.setGroup("osc");
+    }
+
+    setGroup (g) {
+        this._group = g;
+        this.setAttribute("data-group", g);
+        this.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.group === g));
+        this.setPage(g === "osc" ? this._oscPage : g);
     }
 
     setPage (p) {
         this._page = p;
         this.setAttribute("data-page", p);
-        this.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.page === p));
+        this.querySelectorAll(".stab").forEach(t => t.classList.toggle("on", t.dataset.page === p));
         for (let e = 0; e < WT_ENG.length; e++) if (p === WT_ENG[e].page) this.drawWt(e);
         if (p === "flt") this.drawFlt();
     }
@@ -1940,7 +2047,13 @@ class EisenpulsPatchView extends HTMLElement {
         if (FLT_VIS_IDS.indexOf(n) >= 0) this.drawFlt();
         if (n === 154) this.updateSmpName();
         if (n === 193) this.updateS2Ui();
-        if ((n >= 307 && n <= 336) || (n >= 472 && n <= 501)) this.updateSlots();
+        if ((n >= 307 && n <= 336) || (n >= 472 && n <= 501)) { this.updateSlots(); if (this._modReady) this.updateModRings(); }
+        if (this._modReady) {
+            if (MOD_TARGET[n]) this.updateModRings(n);
+            if (n >= 247 && n <= 266) { const li = Math.floor((n - 247) / 2); if (n % 2 === 1) this.refreshLfoUi(li); if (li === this._lfoSel) this.drawLfo(); }
+            if (n >= 502 && n <= 521) this.refreshLfoUi(Math.floor((n - 502) / 2));
+            if (n >= 267 && n <= 306 && Math.floor((n - 267) / 4) === this._envSel) this.drawEnv();
+        }
         for (let e = 0; e < WT_ENG.length; e++) {
             const cfg = WT_ENG[e];
             if (n === cfg.mem) this.updateWtUi(e);
@@ -2228,26 +2341,481 @@ class EisenpulsPatchView extends HTMLElement {
             + `<section class="card w-warp"><h2>${label} Warp</h2><div class="cgrid">${cfg.warp.map(i => this.controlHTML(i, true)).join("")}</div></section>`;
     }
 
-    // LFO page: 10 LFOs (wave selector + rate)
-    lfoPageHTML () {
-        let lfo = `<div class="mhead lfo-c"><span></span><span>Wave</span><span>Rate</span><span>Sync</span><span>Division</span></div>`;
-        for (let i = 0; i < 10; i++)
-            lfo += `<div class="mrow lfo-c"><span class="mn">L${i + 1}</span>${this.controlHTML(247 + 2 * i)}${this.controlHTML(248 + 2 * i)}${this.controlHTML(502 + 2 * i)}${this.controlHTML(503 + 2 * i)}</div>`;
-        return `<section class="card m-lfo"><h2>LFOs</h2><div class="mgrid">${lfo}</div><div class="lfoft">${this.controlHTML(522)}</div></section>`;
-    }
-
-    // envelope page: 10 ADSR envelopes
-    envPageHTML () {
-        let env = `<div class="mhead env-c"><span></span><span>Attack</span><span>Decay</span><span>Sustain</span><span>Release</span></div>`;
+    // ---------- modulation strip: envelopes, LFO shape editor, drag and drop modulation ----------
+    envPanelHTML () {
+        const chips = Array.from({ length: 10 }, (_, i) => `<button type="button" class="msrc" data-src="${11 + i}" title="Drag onto a knob to modulate it">ENV ${i + 1}</button>`).join("");
+        const others = [21, 22, 23].map(n => `<button type="button" class="msrc misc" data-src="${n}" title="Drag onto a knob to modulate it">${MOD_SRC_SHORT(n)}</button>`).join("");
+        let sets = "";
         for (let i = 0; i < 10; i++) {
             const b = 267 + 4 * i;
-            env += `<div class="mrow env-c"><span class="mn">E${i + 1}</span>${this.controlHTML(b)}${this.controlHTML(b + 1)}${this.controlHTML(b + 2)}${this.controlHTML(b + 3)}</div>`;
+            sets += `<div class="env-set" data-env="${i}">${[0, 1, 2, 3].map(k => this.controlHTML(b + k, true)).join("")}</div>`;
         }
-        return `<section class="card m-env"><h2>Envelopes</h2><div class="mgrid">${env}</div></section>`;
+        return `<section class="bs-env"><div class="bs-chips">${chips}<span class="bs-gap"></span>${others}</div>`
+            + `<div class="bs-envbody"><canvas class="env-canvas" width="360" height="130"></canvas><div class="env-knobs">${sets}</div></div></section>`;
+    }
+
+    lfoPanelHTML () {
+        const chips = Array.from({ length: 10 }, (_, i) => `<button type="button" class="msrc" data-src="${1 + i}" title="Drag onto a knob to modulate it">LFO ${i + 1}</button>`).join("");
+        const opts = LFO_PRESETS.map((p, i) => `<option value="${i}">${p.n}</option>`).join("") + `<option value="-1">Drawn</option>`;
+        let sets = "";
+        for (let i = 0; i < 10; i++) {
+            sets += `<div class="lfo-set" data-lfo="${i}">`
+                + `<div class="ls-top"><div class="ls-shape"><span class="lbl">Shape</span><select class="dd lfo-preset">${opts}</select></div>`
+                + `<div class="ls-mode">${this.controlHTML(882 + 5 * i)}</div><div class="ls-sync">${this.controlHTML(502 + 2 * i)}</div><div class="ls-div">${this.controlHTML(503 + 2 * i)}</div></div>`
+                + `<div class="ls-knobs">${[248 + 2 * i, 883 + 5 * i, 884 + 5 * i, 885 + 5 * i, 886 + 5 * i].map(id => this.controlHTML(id, true)).join("")}</div>`
+                + `<div class="ls-hid">${this.controlHTML(247 + 2 * i)}</div></div>`;
+        }
+        return `<section class="bs-lfo"><div class="bs-chips">${chips}<span class="bs-gap"></span><button type="button" class="bs-btn lfo-grid" title="Grid snap">GRID OFF</button></div>`
+            + `<div class="bs-lfobody"><div class="lfo-cv"><canvas class="lfo-canvas" width="640" height="150"></canvas><div class="lfo-help">click: add point &middot; drag: move &middot; dbl-click point: delete &middot; drag the diamond: curve</div></div>`
+            + `<div class="lfo-sets">${sets}</div></div></section>`;
+    }
+
+    modStripHTML () {
+        return `<div class="bstrip"><div class="bs-tabs"><button type="button" class="bst on" data-bs="mod">MOD</button><button type="button" class="bst" data-bs="mtx">MATRIX</button>`
+            + `<span class="bs-hint">drag an LFO / ENV handle onto a knob &middot; click a knob's dot to set the amount</span><button type="button" class="bs-toggle" title="Show / hide the strip">&#9662;</button></div>`
+            + `<div class="bs-body"><div class="bs-pane bs-mod on">${this.envPanelHTML()}${this.lfoPanelHTML()}</div><div class="bs-pane bs-mtx">${this.matrixHTML()}</div></div></div>`;
+    }
+
+    // ---- selection ----
+    selectLfo (i) {
+        this._lfoSel = i;
+        this.querySelectorAll(".bs-lfo .msrc").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 1));
+        this.querySelectorAll(".lfo-set").forEach(s => s.classList.toggle("on", Number(s.dataset.lfo) === i));
+        this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+    selectEnv (i) {
+        this._envSel = i;
+        this.querySelectorAll(".bs-env .msrc:not(.misc)").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 11));
+        this.querySelectorAll(".env-set").forEach(s => s.classList.toggle("on", Number(s.dataset.env) === i));
+        this.drawEnv();
+    }
+    showStrip (which) {
+        this._bs = which;
+        this.querySelectorAll(".bst").forEach(b => b.classList.toggle("on", b.dataset.bs === which));
+        this.querySelectorAll(".bs-pane").forEach(p => p.classList.toggle("on", p.classList.contains("bs-" + which)));
+    }
+    setStripOpen (open) {
+        this._stripOpen = open;
+        this.classList.toggle("strip-closed", !open);
+        const t = this.querySelector(".bs-toggle");
+        if (t) t.innerHTML = open ? "&#9662;" : "&#9652;";
+        if (this._modReady) { try { this.kvSet("njo.ui.strip", open ? 1 : 0); } catch (_) {} }
+        if (open) { this.drawLfo(); this.drawEnv(); }
+    }
+
+    // ---- LFO model ----
+    lfoWave (i) { const c = this.fxCtl(247 + 2 * i); return c ? Math.round(c.value) : 0; }
+
+    // the shape of LFO i as points (a built-in shape is converted the first time it is edited)
+    lfoEnsurePts (i) {
+        if (!this._lfoPts[i]) {
+            const w = this.lfoWave(i);
+            this._lfoPts[i] = lfoBuiltinPts(w >= LFO_DRAWN ? 0 : w).map(p => Object.assign({}, p));
+        }
+        return this._lfoPts[i];
+    }
+
+    lfoSend (i) {
+        const pts = this._lfoPts[i];
+        if (!pts) return;
+        try { this.pc.sendEventOrValue("lfoShapeLoad", { lfo: i, data: lfoTableFromPts(pts) }); } catch (_) {}
+    }
+
+    // called after every edit of a drawn shape: table to the DSP, wave = Drawn, saved with the instance
+    lfoCommit (i, final) {
+        const w = this.fxCtl(247 + 2 * i);
+        if (w && Math.round(w.value) !== LFO_DRAWN) w.setValue(LFO_DRAWN, true);
+        if (final) {
+            this.lfoSend(i);
+            this.lfoPersist();
+            if (this.presetDirty) this.presetDirty();
+        } else if (!this._lfoSendTimer) {
+            this._lfoSendTimer = setTimeout(() => { this._lfoSendTimer = null; this.lfoSend(i); }, 60);
+        }
+        this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+
+    lfoPersist () {
+        try {
+            const out = this._lfoPts.map(p => p ? p.map(q => ({ x: Math.round(q.x * 1e4) / 1e4, y: Math.round(q.y * 1e4) / 1e4, c: Math.round((q.c || 0) * 1e3) / 1e3 })) : null);
+            this.kvSet(LFO_STATE_KEY, out);
+        } catch (_) {}
+    }
+
+    // shapes in presets / stored state
+    collectLfo () {
+        return this._lfoPts.map(p => p ? p.map(q => ({ x: Math.round(q.x * 1e4) / 1e4, y: Math.round(q.y * 1e4) / 1e4, c: Math.round((q.c || 0) * 1e3) / 1e3 })) : null);
+    }
+    applyLfo (list) {
+        const ok = p => Array.isArray(p) && p.length >= 2 && p.every(q => q && Number.isFinite(q.x) && Number.isFinite(q.y));
+        for (let i = 0; i < 10; i++) {
+            const p = list && ok(list[i]) ? list[i].map(q => ({ x: Math.max(0, Math.min(1, q.x)), y: Math.max(-1, Math.min(1, q.y)), c: Math.max(-1, Math.min(1, Number(q.c) || 0)) })) : null;
+            this._lfoPts[i] = p;
+            if (p) this.lfoSend(i);
+        }
+        this.lfoPersist();
+        for (let i = 0; i < 10; i++) this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+    restoreLfo () {
+        const v = this.kvGet(LFO_STATE_KEY);
+        if (Array.isArray(v)) this.applyLfo(v);
+    }
+
+    // preset menu text, rate / division dimming
+    refreshLfoUi (i) {
+        const set = this.querySelector('.lfo-set[data-lfo="' + i + '"]');
+        if (!set) return;
+        const w = this.lfoWave(i);
+        const sel = set.querySelector(".lfo-preset");
+        if (sel) sel.value = w >= LFO_DRAWN || this._lfoPts[i] ? "-1" : String(w);
+        const sync = this.fxCtl(502 + 2 * i);
+        set.classList.toggle("synced", !!sync && sync.value > 0.5);
+    }
+
+    setLfoPreset (i, idx) {
+        const w = this.fxCtl(247 + 2 * i);
+        if (idx < 0) { this.lfoEnsurePts(i); this.lfoCommit(i, true); return; }
+        const p = LFO_PRESETS[idx];
+        if (p.w !== undefined) {
+            this._lfoPts[i] = null;
+            if (w) w.setValue(p.w, true);
+            this.lfoPersist();
+            if (this.presetDirty) this.presetDirty();
+            this.refreshLfoUi(i); this.drawLfo();
+        } else {
+            this._lfoPts[i] = p.pts.map(q => Object.assign({}, q));
+            this.lfoCommit(i, true);
+        }
+    }
+
+    // ---- LFO canvas ----
+    lfoGeom (cv) {
+        const W = cv.width, H = cv.height, pad = 10;
+        return { W, H, pad, px: x => pad + x * (W - 2 * pad), py: y => H / 2 - y * (H / 2 - pad), ix: X => (X - pad) / (W - 2 * pad), iy: Y => (H / 2 - Y) / (H / 2 - pad) };
+    }
+
+    drawLfo () {
+        const cv = this.querySelector(".lfo-canvas");
+        if (!cv || !this._stripOpen) return;
+        const ctx = cv.getContext("2d");
+        const g = this.lfoGeom(cv), i = this._lfoSel, w = this.lfoWave(i), pts = this._lfoPts[i];
+        const drawn = !!pts || w >= LFO_DRAWN;
+        const P = drawn ? this.lfoEnsurePts(i) : null;
+        ctx.clearRect(0, 0, g.W, g.H);
+        ctx.fillStyle = "#0b0405"; ctx.fillRect(0, 0, g.W, g.H);
+        const grid = LFO_GRIDS[this._lfoGrid || 0], xs = grid || 8, ys = grid ? Math.max(2, grid / 2) : 4;
+        ctx.lineWidth = 1;
+        for (let k = 0; k <= xs; k++) { ctx.strokeStyle = k % (grid ? Math.max(1, xs / 4) : 2) === 0 ? "rgba(255,255,255,0.13)" : "rgba(255,255,255,0.05)"; const x = Math.round(g.px(k / xs)) + 0.5; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, g.H); ctx.stroke(); }
+        for (let k = -ys; k <= ys; k++) { ctx.strokeStyle = k === 0 ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.05)"; const y = Math.round(g.py(k / ys)) + 0.5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(g.W, y); ctx.stroke(); }
+        // curve
+        const fn = drawn ? (p => lfoSampleAt(P, p)) : (p => lfoBuiltinAt(w, p));
+        ctx.beginPath();
+        for (let k = 0; k <= 400; k++) { const p = k / 400, X = g.px(p), Y = g.py(fn(p)); if (k === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+        ctx.lineTo(g.px(1), g.py(0)); ctx.lineTo(g.px(0), g.py(0)); ctx.closePath();
+        ctx.fillStyle = drawn ? "rgba(255,90,60,0.16)" : "rgba(160,160,170,0.10)"; ctx.fill();
+        ctx.beginPath();
+        for (let k = 0; k <= 400; k++) { const p = k / 400, X = g.px(p), Y = g.py(fn(p)); if (k === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+        ctx.strokeStyle = drawn ? "#ff6a4d" : "#9a9aa2"; ctx.lineWidth = 2; ctx.stroke();
+        if (drawn) {
+            for (let k = 0; k + 1 < P.length; k++) {      // curve handles at the middle of every segment
+                const a = P[k], b = P[k + 1];
+                if (b.x - a.x < 0.02) continue;
+                const mx = (a.x + b.x) / 2, my = lfoCurve(a.y, b.y, a.c || 0, 0.5);
+                ctx.save(); ctx.translate(g.px(mx), g.py(my)); ctx.rotate(Math.PI / 4);
+                ctx.fillStyle = "#2a1210"; ctx.strokeStyle = "#ffb09e"; ctx.lineWidth = 1.5; ctx.fillRect(-4, -4, 8, 8); ctx.strokeRect(-4, -4, 8, 8); ctx.restore();
+            }
+            P.forEach(q => { ctx.beginPath(); ctx.arc(g.px(q.x), g.py(q.y), 5.5, 0, 7); ctx.fillStyle = "#ffd9cf"; ctx.fill(); ctx.strokeStyle = "#ff3b30"; ctx.lineWidth = 2; ctx.stroke(); });
+        } else {
+            ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.font = "11px sans-serif"; ctx.fillText("built-in shape - click to draw your own", 14, g.H - 10);
+        }
+    }
+
+    buildLfoCanvas () {
+        const cv = this.querySelector(".lfo-canvas");
+        if (!cv) return;
+        let drag = null;
+        const pos = e => { const r = cv.getBoundingClientRect(); return { X: (e.clientX - r.left) * cv.width / r.width, Y: (e.clientY - r.top) * cv.height / r.height }; };
+        const snapX = x => { const gr = LFO_GRIDS[this._lfoGrid || 0]; return gr ? Math.round(x * gr) / gr : x; };
+        const snapY = y => { const gr = LFO_GRIDS[this._lfoGrid || 0]; if (!gr) return y; const s = Math.max(2, gr / 2); return Math.round(y * s) / s; };
+        const hit = (P, g, X, Y) => {
+            for (let k = 0; k < P.length; k++) if (Math.hypot(g.px(P[k].x) - X, g.py(P[k].y) - Y) < 11) return { kind: "pt", k };
+            for (let k = 0; k + 1 < P.length; k++) {
+                const a = P[k], b = P[k + 1];
+                if (b.x - a.x < 0.02) continue;
+                if (Math.hypot(g.px((a.x + b.x) / 2) - X, g.py(lfoCurve(a.y, b.y, a.c || 0, 0.5)) - Y) < 10) return { kind: "cv", k };
+            }
+            return null;
+        };
+        cv.addEventListener("pointerdown", e => {
+            const i = this._lfoSel, g = this.lfoGeom(cv), { X, Y } = pos(e);
+            const P = this.lfoEnsurePts(i);
+            let h = hit(P, g, X, Y);
+            if (!h) {                                      // empty spot: new point
+                const x = Math.max(0.004, Math.min(0.996, snapX(g.ix(X)))), y = Math.max(-1, Math.min(1, snapY(g.iy(Y))));
+                let k = 0;
+                while (k < P.length && P[k].x < x) k++;
+                if (k === 0 || k >= P.length) return;
+                const a = P[k - 1], b = P[k];
+                P.splice(k, 0, { x, y, c: 0 });
+                h = { kind: "pt", k };
+                this.lfoCommit(i, false);
+            }
+            drag = { pid: e.pointerId, h, y0: Y, c0: h.kind === "cv" ? (P[h.k].c || 0) : 0 };
+            try { cv.setPointerCapture(e.pointerId); } catch (_) {}
+            e.preventDefault();
+        });
+        cv.addEventListener("pointermove", e => {
+            if (!drag || e.pointerId !== drag.pid) return;
+            const i = this._lfoSel, g = this.lfoGeom(cv), P = this.lfoEnsurePts(i), { X, Y } = pos(e), h = drag.h;
+            if (h.kind === "pt") {
+                const q = P[h.k];
+                q.y = Math.max(-1, Math.min(1, snapY(g.iy(Y))));
+                if (h.k > 0 && h.k < P.length - 1) q.x = Math.max(P[h.k - 1].x + 0.002, Math.min(P[h.k + 1].x - 0.002, snapX(g.ix(X))));
+            } else {
+                const a = P[h.k], b = P[h.k + 1], dir = Math.sign(b.y - a.y) || 1;
+                a.c = Math.max(-1, Math.min(1, drag.c0 + (Y - drag.y0) / 70 * dir));
+            }
+            this.lfoCommit(i, false);
+        });
+        const end = e => {
+            if (!drag || e.pointerId !== drag.pid) return;
+            drag = null;
+            try { cv.releasePointerCapture(e.pointerId); } catch (_) {}
+            if (this._lfoSendTimer) { clearTimeout(this._lfoSendTimer); this._lfoSendTimer = null; }
+            this.lfoCommit(this._lfoSel, true);
+        };
+        cv.addEventListener("pointerup", end);
+        cv.addEventListener("pointercancel", end);
+        cv.addEventListener("dblclick", e => {
+            const i = this._lfoSel, g = this.lfoGeom(cv), P = this.lfoEnsurePts(i), { X, Y } = pos(e), h = hit(P, g, X, Y);
+            if (!h) return;
+            if (h.kind === "pt" && h.k > 0 && h.k < P.length - 1) P.splice(h.k, 1);
+            else if (h.kind === "cv") P[h.k].c = 0;
+            else return;
+            this.lfoCommit(i, true);
+        });
+        const grid = this.querySelector(".lfo-grid");
+        if (grid) grid.addEventListener("click", () => {
+            this._lfoGrid = ((this._lfoGrid || 0) + 1) % LFO_GRIDS.length;
+            grid.textContent = LFO_GRIDS[this._lfoGrid] ? "GRID 1/" + LFO_GRIDS[this._lfoGrid] : "GRID OFF";
+            this.drawLfo();
+        });
+        this.querySelectorAll(".lfo-preset").forEach(sel => sel.addEventListener("change", () => {
+            const set = sel.closest(".lfo-set");
+            this.setLfoPreset(Number(set.dataset.lfo), Number(sel.value));
+        }));
+    }
+
+    // ---- envelope canvas ----
+    drawEnv () {
+        const cv = this.querySelector(".env-canvas");
+        if (!cv || !this._stripOpen) return;
+        const ctx = cv.getContext("2d"), W = cv.width, H = cv.height, pad = 10, b = 267 + 4 * this._envSel;
+        const v = k => { const c = this.fxCtl(b + k); return c ? c.value : 0; };
+        const A = v(0), D = v(1), S = v(2), R = v(3);
+        const t = ms => Math.sqrt(Math.max(ms, 0) / 5000);               // compressed time axis
+        const seg = [Math.max(t(A), 0.03), Math.max(t(D), 0.05), 0.18, Math.max(t(R), 0.05)];
+        const tot = seg[0] + seg[1] + seg[2] + seg[3];
+        const X = f => pad + f / tot * (W - 2 * pad), Y = a => H - pad - a * (H - 2 * pad);
+        ctx.fillStyle = "#0b0405"; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(255,255,255,0.06)"; ctx.lineWidth = 1;
+        for (let k = 1; k < 4; k++) { ctx.beginPath(); ctx.moveTo(pad, Y(k / 4)); ctx.lineTo(W - pad, Y(k / 4)); ctx.stroke(); }
+        const x1 = seg[0], x2 = x1 + seg[1], x3 = x2 + seg[2], x4 = x3 + seg[3];
+        ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(x1), Y(1));
+        for (let k = 1; k <= 20; k++) { const f = k / 20; ctx.lineTo(X(x1 + seg[1] * f), Y(S + (1 - S) * Math.exp(-4 * f))); }
+        ctx.lineTo(X(x3), Y(S));
+        for (let k = 1; k <= 20; k++) { const f = k / 20; ctx.lineTo(X(x3 + seg[3] * f), Y(S * Math.exp(-4 * f))); }
+        ctx.lineTo(X(x4), Y(0));
+        const grad = ctx.createLinearGradient(0, 0, 0, H); grad.addColorStop(0, "rgba(77,184,255,0.30)"); grad.addColorStop(1, "rgba(77,184,255,0.03)");
+        ctx.fillStyle = grad; ctx.fill();
+        ctx.strokeStyle = "#4db8ff"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,0.4)"; ctx.font = "11px sans-serif";
+        ["A", "D", "S", "R"].forEach((l, k) => ctx.fillText(l, X([0, x1, x2, x3][k]) + 4, H - 14));
+    }
+
+    // ---- drag and drop modulation ----
+    modTargetOf (node) {
+        const c = node && node.closest ? node.closest(".control[data-param]") : null;
+        if (!c) return null;
+        const num = Number(String(c.dataset.param).replace("param", ""));
+        const t = MOD_TARGET[num];
+        return t ? { node: c, num, dst: t[0], scale: t[1] } : null;
+    }
+
+    modSlots () {
+        const out = [];
+        for (let s = 0; s < MOD_SLOTS; s++) {
+            const a = this.fxCtl(slotBase(s)), b = this.fxCtl(slotBase(s) + 1), m = this.fxCtl(slotBase(s) + 2);
+            out.push({ s, src: a ? Math.round(a.value) : 0, dst: b ? Math.round(b.value) : 0, amt: m ? m.value : 0 });
+        }
+        return out;
+    }
+
+    // creates or updates the matrix slot for (src, dst); returns the slot index or -1 when the matrix is full
+    modAssign (src, dst, amt) {
+        const slots = this.modSlots();
+        let hit = slots.find(x => x.src === src && x.dst === dst);
+        if (!hit) hit = slots.find(x => x.src === 0 || x.dst === 0);
+        if (!hit) return -1;
+        const set = (off, v) => { const c = this.fxCtl(slotBase(hit.s) + off); if (c) c.setValue(v, true); };
+        if (hit.src !== src || hit.dst !== dst) { set(0, src); set(1, dst); set(2, amt); }
+        else if (amt !== undefined && amt !== null) set(2, amt);
+        return hit.s;
+    }
+
+    modClear (s) {
+        const set = (off, v) => { const c = this.fxCtl(slotBase(s) + off); if (c) c.setValue(v, true); };
+        set(2, 0); set(0, 0); set(1, 0);
+    }
+
+    modsFor (dst) { return this.modSlots().filter(x => x.src > 0 && x.dst === dst); }
+
+    // modulation rings on the knobs / bars on the sliders that are mod targets
+    updateModRings (onlyNum) {
+        const nums = onlyNum ? [onlyNum] : Object.keys(MOD_TARGET).map(Number);
+        nums.forEach(num => {
+            const t = MOD_TARGET[num];
+            if (!t) return;
+            const ctl = this.fxCtl(num);
+            if (!ctl || !ctl.node) return;
+            const node = ctl.node, mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
+            node.classList.toggle("modded", mods.length > 0);
+            let ring = node.querySelector(".mring");
+            let dot = node.querySelector(".mdot");
+            if (!mods.length) { if (ring) ring.remove(); if (dot) dot.remove(); return; }
+            const norm = ctl.toNorm ? ctl.toNorm(ctl.value) : (ctl.value - ctl.min) / ((ctl.max - ctl.min) || 1);
+            const isKnob = !!node.querySelector(".knob");
+            if (isKnob) {
+                const host = node.querySelector(".knob");
+                if (!ring) { ring = document.createElementNS("http://www.w3.org/2000/svg", "svg"); ring.setAttribute("class", "mring"); ring.setAttribute("viewBox", "-50 -50 100 100"); host.appendChild(ring); }
+                const ang = n => (-135 + n * 270 - 90) * Math.PI / 180;
+                const arc = (n0, n1, r, col) => {
+                    const a0 = ang(n0), a1 = ang(n1), large = Math.abs(n1 - n0) * 270 > 180 ? 1 : 0, sweep = n1 >= n0 ? 1 : 0;
+                    return `<path d="M ${r * Math.cos(a0)} ${r * Math.sin(a0)} A ${r} ${r} 0 ${large} ${sweep} ${r * Math.cos(a1)} ${r * Math.sin(a1)}" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.95"/>`;
+                };
+                ring.innerHTML = mods.slice(0, 3).map((m, k) => arc(norm, Math.max(0, Math.min(1, norm + m.amt * t[1])), 54 + k * 0, MOD_SRC_COLOR(m.src))).join("");
+            } else {
+                const track = node.querySelector(".track");
+                if (track) {
+                    if (!ring) { ring = document.createElement("div"); ring.className = "mring mbar"; track.appendChild(ring); }
+                    const m = mods[0], a = Math.max(0, Math.min(1, norm)), b = Math.max(0, Math.min(1, norm + m.amt * t[1]));
+                    ring.style.left = (Math.min(a, b) * 100) + "%"; ring.style.width = (Math.abs(b - a) * 100) + "%"; ring.style.background = MOD_SRC_COLOR(m.src);
+                }
+            }
+            if (!dot) { dot = document.createElement("button"); dot.type = "button"; dot.className = "mdot"; dot.title = "Modulation amount"; node.appendChild(dot); dot.addEventListener("pointerdown", e => e.stopPropagation()); dot.addEventListener("click", e => { e.stopPropagation(); this.showModPop(node, num); }); }
+            dot.style.background = MOD_SRC_COLOR(mods[0].src);
+            dot.textContent = mods.length > 1 ? String(mods.length) : "";
+        });
+    }
+
+    closeModPop () { if (this._modPop) { this._modPop.remove(); this._modPop = null; } }
+
+    showModPop (node, num) {
+        this.closeModPop();
+        const t = MOD_TARGET[num];
+        if (!t) return;
+        const mods = this.modsFor(t[0]).filter(m => m.src > 0);
+        if (!mods.length) return;
+        const pop = document.createElement("div");
+        pop.className = "modpop";
+        const label = (SPEC_BY_NUM.get(num) || {}).short || (SPEC_BY_NUM.get(num) || {}).label || "";
+        pop.innerHTML = `<div class="mp-title">${label} modulation</div>` + mods.map(m => `<div class="mp-row" data-s="${m.s}"><span class="mp-src" style="background:${MOD_SRC_COLOR(m.src)}">${MOD_SRC_SHORT(m.src)}</span>`
+            + `<input type="range" min="-100" max="100" step="1" value="${Math.round(m.amt * 100)}"><span class="mp-val">${Math.round(m.amt * 100)}%</span><button type="button" class="mp-x" title="Remove">&times;</button></div>`).join("");
+        this.appendChild(pop);
+        const hb = this.getBoundingClientRect(), nb = node.getBoundingClientRect();
+        const left = Math.max(4, Math.min(hb.width - pop.offsetWidth - 4, nb.left - hb.left + nb.width / 2 - pop.offsetWidth / 2));
+        const top = nb.top - hb.top + nb.height + 6;
+        pop.style.left = left + "px";
+        pop.style.top = Math.min(hb.height - pop.offsetHeight - 4, top) + "px";
+        pop.addEventListener("pointerdown", e => e.stopPropagation());
+        pop.querySelectorAll(".mp-row").forEach(row => {
+            const s = Number(row.dataset.s), rng = row.querySelector("input"), val = row.querySelector(".mp-val");
+            rng.addEventListener("input", () => { const a = Number(rng.value) / 100; val.textContent = Math.round(a * 100) + "%"; const c = this.fxCtl(slotBase(s) + 2); if (c) c.setValue(a, true); });
+            row.querySelector(".mp-x").addEventListener("click", () => { this.modClear(s); this.closeModPop(); });
+        });
+        this._modPop = pop;
+        this._modPopClose = e => { if (!pop.contains(e.target)) { this.closeModPop(); this.removeEventListener("pointerdown", this._modPopClose, true); } };
+        setTimeout(() => this.addEventListener("pointerdown", this._modPopClose, true), 0);
+    }
+
+    buildModDrag () {
+        this.querySelectorAll(".msrc").forEach(chip => {
+            let st = null;
+            chip.addEventListener("pointerdown", e => {
+                st = { pid: e.pointerId, x: e.clientX, y: e.clientY, drag: false, ghost: null, target: null };
+                try { chip.setPointerCapture(e.pointerId); } catch (_) {}
+            });
+            chip.addEventListener("pointermove", e => {
+                if (!st || e.pointerId !== st.pid) return;
+                const src = Number(chip.dataset.src);
+                if (!st.drag && Math.hypot(e.clientX - st.x, e.clientY - st.y) > 5) {
+                    st.drag = true;
+                    st.ghost = document.createElement("div");
+                    st.ghost.className = "mod-ghost";
+                    st.ghost.textContent = MOD_SRC_SHORT(src);
+                    st.ghost.style.background = MOD_SRC_COLOR(src);
+                    this.appendChild(st.ghost);
+                    this.classList.add("modding");
+                    this.closeModPop();
+                }
+                if (!st.drag) return;
+                const hb = this.getBoundingClientRect();
+                st.ghost.style.left = (e.clientX - hb.left + 10) + "px";
+                st.ghost.style.top = (e.clientY - hb.top + 10) + "px";
+                st.ghost.style.pointerEvents = "none";
+                const el = this.ownerDocument.elementFromPoint(e.clientX, e.clientY);
+                const tg = this.modTargetOf(el);
+                if (st.target && (!tg || tg.node !== st.target.node)) st.target.node.classList.remove("modhover");
+                if (tg) tg.node.classList.add("modhover");
+                st.target = tg;
+            });
+            const end = e => {
+                if (!st || e.pointerId !== st.pid) return;
+                const s = st; st = null;
+                try { chip.releasePointerCapture(e.pointerId); } catch (_) {}
+                const src = Number(chip.dataset.src);
+                if (s.ghost) s.ghost.remove();
+                this.classList.remove("modding");
+                if (s.target) s.target.node.classList.remove("modhover");
+                if (s.drag) {
+                    if (s.target) {
+                        const slot = this.modAssign(src, s.target.dst, 0.5);
+                        if (slot < 0) this.barInfo && this.barInfo("MOD MATRIX FULL (20 SLOTS)");
+                        else { this.updateModRings(); this.showModPop(s.target.node, s.target.num); }
+                    }
+                } else if (src >= 1 && src <= 10) { this.selectLfo(src - 1); }
+                else if (src >= 11 && src <= 20) { this.selectEnv(src - 11); }
+            };
+            chip.addEventListener("pointerup", end);
+            chip.addEventListener("pointercancel", end);
+        });
+    }
+
+    buildModStrip () {
+        this._lfoSel = 0; this._envSel = 0;
+        this.querySelectorAll(".bst").forEach(b => b.addEventListener("click", () => {
+            if (this._stripOpen && this._bs === b.dataset.bs && false) return;
+            this.showStrip(b.dataset.bs);
+            if (!this._stripOpen) this.setStripOpen(true);
+        }));
+        const tg = this.querySelector(".bs-toggle");
+        if (tg) tg.addEventListener("click", () => this.setStripOpen(!this._stripOpen));
+        let open = true;
+        this.buildLfoCanvas();
+        this.buildModDrag();
+        this.showStrip("mod");
+        this.setStripOpen(open);
+        this.selectLfo(0);
+        this.selectEnv(0);
+        for (let i = 0; i < 10; i++) this.refreshLfoUi(i);
+        this.updateModRings();
     }
 
     // mod page: the 20-slot modulation matrix, two columns of 10 slots
-    modPageHTML () {
+    matrixHTML () {
         const head = `<div class="mhead mtx-c"><span></span><span>Source</span><span>Destination</span><span>Amount</span></div>`;
         const cols = [0, 1].map(c => {
             let mtx = head;
@@ -2258,7 +2826,7 @@ class EisenpulsPatchView extends HTMLElement {
             }
             return `<div class="mgrid">${mtx}</div>`;
         }).join("");
-        return `<section class="card m-mtx"><h2>Mod Matrix</h2><div class="mtx2">${cols}</div></section>`;
+        return `<div class="mtx2">${cols}</div>`;
     }
 
     getHTML () {
@@ -2278,9 +2846,7 @@ class EisenpulsPatchView extends HTMLElement {
         const wtPages = WT_ENG.map((cfg, e) => `<div class="page p-${cfg.page}">${this.wtPageHTML(e)}</div>`).join("\n    ");
         const mixPage = `<section class="card m-mix"><h2>Mixer / SSL 4000 EQ</h2><div class="chs">${MIX_CH.map(c => this.channelHTML(c)).join("")}</div></section>`;
         const fxPage = this.fxPageHTML();
-        const lfoPage = this.lfoPageHTML();
-        const envPage = this.envPageHTML();
-        const modPage = this.modPageHTML();
+        const strip = this.modStripHTML();
         return `
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; } body, html { overflow: hidden; margin: 0; height: 100%; }
@@ -2324,9 +2890,6 @@ class EisenpulsPatchView extends HTMLElement {
   eisenpuls-view[data-page="wt1"] .p-wt1 { display: grid; }
   eisenpuls-view[data-page="wt2"] .p-wt2 { display: grid; }
   eisenpuls-view[data-page="wt3"] .p-wt3 { display: grid; }
-  eisenpuls-view[data-page="lfo"] .p-lfo { display: grid; }
-  eisenpuls-view[data-page="env"] .p-env { display: grid; }
-  eisenpuls-view[data-page="mod"] .p-mod { display: grid; }
   eisenpuls-view[data-page="mix"] .p-mix { display: grid; }
   eisenpuls-view[data-page="fx"] .p-fx { display: grid; }
 
@@ -2770,15 +3333,77 @@ class EisenpulsPatchView extends HTMLElement {
   .mgr-path { flex: 0 0 auto; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--u) * 7.5); letter-spacing: 0.04em; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; user-select: text; -webkit-user-select: text; }
   /* one memory slot per sampler / wavetable: no slot selectors or slot buttons */
   .n154, .n193, .n210, .n224, .n236, .memgrid, .smem, .wmem { display: none !important; }
+
+  /* serum style layout: top groups, oscillator sub tabs, bottom modulation strip */
+  .subtabs { display: none; flex: 0 0 auto; gap: calc(var(--u) * 3); }
+  eisenpuls-view[data-group="osc"] .subtabs { display: flex; }
+  .stab { font-family: inherit; font-size: calc(var(--u) * 9); font-weight: 800; letter-spacing: 0.06em; padding: calc(var(--u) * 4) calc(var(--u) * 10); border: 1px solid var(--line); border-radius: 1px; background: var(--panel); color: var(--dim); cursor: pointer; }
+  .stab.on { background: var(--panel2); color: var(--yel); border-color: var(--yel); }
+  .bstrip { flex: 0 0 auto; height: calc(var(--u) * 190); display: flex; flex-direction: column; background: linear-gradient(#25282c, #1a1c1f); border: 1px solid var(--line); border-radius: calc(var(--u) * 2); min-height: 0; }
+  eisenpuls-view.strip-closed .bstrip { height: calc(var(--u) * 26); }
+  eisenpuls-view.strip-closed .bs-body { display: none; }
+  .bs-tabs { flex: 0 0 auto; display: flex; align-items: center; gap: calc(var(--u) * 4); padding: calc(var(--u) * 3) calc(var(--u) * 8); }
+  .bst, .bs-btn, .bs-toggle { font-family: inherit; font-size: calc(var(--u) * 9); font-weight: 800; letter-spacing: 0.08em; padding: calc(var(--u) * 3) calc(var(--u) * 9); border: 1px solid var(--line); border-radius: 1px; background: var(--panel2); color: var(--ink); cursor: pointer; }
+  .bst.on { background: var(--yel); color: #111; border-color: var(--yel); }
+  .bs-hint { flex: 1; text-align: right; font-size: calc(var(--u) * 8); color: var(--dim); letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bs-body { flex: 1 1 0; min-height: 0; position: relative; }
+  .bs-pane { position: absolute; inset: 0; display: none; padding: 0 calc(var(--u) * 8) calc(var(--u) * 6); min-height: 0; }
+  .bs-pane.on { display: flex; gap: calc(var(--u) * 8); }
+  .bs-mtx.on { display: block; overflow: hidden; }
+  .bs-mtx .mtx2 { height: 100%; }
+  .bs-env { flex: 0 0 36%; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .bs-lfo { flex: 1 1 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .bs-chips { flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: calc(var(--u) * 3); align-items: center; margin-bottom: calc(var(--u) * 4); }
+  .bs-gap { flex: 1; }
+  .msrc { font-family: inherit; font-size: calc(var(--u) * 8); font-weight: 800; letter-spacing: 0.05em; padding: calc(var(--u) * 3) calc(var(--u) * 5); border: 1px solid var(--line); border-radius: calc(var(--u) * 8); background: #14161a; color: var(--ink); cursor: grab; touch-action: none; }
+  .bs-lfo .msrc { border-color: #7a2d20; } .bs-env .msrc { border-color: #1f5d85; } .msrc.misc { border-color: #6b6828; }
+  .bs-lfo .msrc.on { background: #ff6a4d; color: #111; } .bs-env .msrc.on { background: #4db8ff; color: #111; }
+  .bs-envbody, .bs-lfobody { flex: 1 1 0; min-height: 0; display: flex; gap: calc(var(--u) * 8); }
+  .bs-envbody { flex-direction: column; }
+  .env-canvas, .lfo-canvas { width: 100%; flex: 1 1 0; min-height: 0; display: block; background: #0b0405; border: 1px solid var(--line); border-radius: 2px; touch-action: none; }
+  .lfo-cv { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+  .lfo-help { flex: 0 0 auto; font-size: calc(var(--u) * 7); color: var(--dim); margin-top: calc(var(--u) * 2); }
+  .lfo-sets { flex: 0 0 38%; min-width: 0; position: relative; }
+  .lfo-set, .env-set { display: none; }
+  .lfo-set.on { display: grid; grid-template-rows: auto 1fr; gap: calc(var(--u) * 4); height: 100%; }
+  .env-set.on { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(var(--u) * 6); }
+  .ls-top { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 4) calc(var(--u) * 8); }
+  .ls-shape { grid-column: 1 / -1; display: flex; flex-direction: column; }
+  .ls-knobs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: calc(var(--u) * 4); align-items: center; }
+  .ls-hid { display: none; }
+  .lfo-set.synced .n248 { opacity: 0.35; } .lfo-set:not(.synced) .ls-div { opacity: 0.35; }
+  .lfo-set .btns .row, .lfo-set .sel .row { display: none; }
+  .lfo-set .control .lbl { font-size: calc(var(--u) * 7.5); }
+  .bs-env .knb .knob, .bs-lfo .knb .knob { width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
+  /* modulation rings, handles, popover */
+  .knb .knob { position: relative; }
+  .mring { position: absolute; inset: -4px; width: calc(100% + 8px); height: calc(100% + 8px); pointer-events: none; overflow: visible; }
+  .mbar { position: absolute; top: 0; height: 100%; opacity: 0.55; pointer-events: none; border-radius: 2px; }
+  .control { position: relative; }
+  .mdot { position: absolute; top: 0; right: 0; width: calc(var(--u) * 10); height: calc(var(--u) * 10); padding: 0; border: 1px solid #000; border-radius: 50%; font-size: calc(var(--u) * 7); font-weight: 800; color: #111; cursor: pointer; line-height: 1; }
+  .modding .control[data-param] { cursor: copy; }
+  .modhover { outline: 2px solid var(--yel); outline-offset: 1px; border-radius: 3px; }
+  .mod-ghost { position: absolute; z-index: 50; padding: calc(var(--u) * 3) calc(var(--u) * 7); border-radius: calc(var(--u) * 8); color: #111; font-size: calc(var(--u) * 9); font-weight: 800; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.6); }
+  .modpop { position: absolute; z-index: 60; min-width: calc(var(--u) * 190); padding: calc(var(--u) * 6); background: #17191c; border: 1px solid var(--yel); border-radius: 3px; box-shadow: 0 4px 14px rgba(0,0,0,0.7); }
+  .mp-title { font-size: calc(var(--u) * 8); letter-spacing: 0.1em; color: var(--dim); text-transform: uppercase; margin-bottom: calc(var(--u) * 4); }
+  .mp-row { display: flex; align-items: center; gap: calc(var(--u) * 5); margin-top: calc(var(--u) * 3); }
+  .mp-src { font-size: calc(var(--u) * 8); font-weight: 800; color: #111; padding: calc(var(--u) * 2) calc(var(--u) * 5); border-radius: calc(var(--u) * 6); }
+  .mp-row input { flex: 1; min-width: 0; } .mp-val { width: calc(var(--u) * 32); font-size: calc(var(--u) * 8.5); text-align: right; font-family: ui-monospace, Menlo, monospace; }
+  .mp-x { background: none; border: 1px solid var(--line); color: var(--ink); cursor: pointer; border-radius: 2px; }
+  .lfo-set .dd { width: 100%; }
+  .x-f1 .flt-canvas, .x-f2 .flt-canvas { height: calc(var(--u) * 120); }
+  .x-rt .flt-canvas { height: calc(var(--u) * 70); }
+  .bs-env .knb .knob, .bs-lfo .knb .knob { width: calc(var(--u) * 26); height: calc(var(--u) * 26); }
 </style>
 <div class="shell">
   <div class="top">
     <span class="logo">NJOHRR</span><span class="model">SYNTH</span><span class="version">V1.0.0</span>
-    <div class="tabs"><button type="button" class="tab on" data-page="sound">SOUND</button><button type="button" class="tab" data-page="flt">FILTER</button><button type="button" class="tab" data-page="smp">SAMPLER</button><button type="button" class="tab" data-page="s2">SAMPLER 2</button><button type="button" class="tab" data-page="wt1">WT 1</button><button type="button" class="tab" data-page="wt2">WT 2</button><button type="button" class="tab" data-page="wt3">WT 3</button><button type="button" class="tab" data-page="lfo">LFO</button><button type="button" class="tab" data-page="env">ENV</button><button type="button" class="tab" data-page="mod">MOD</button><button type="button" class="tab" data-page="mix">MIXER</button><button type="button" class="tab" data-page="fx">FX</button></div>
+    <div class="tabs"><button type="button" class="tab on" data-group="osc">OSC</button><button type="button" class="tab" data-group="flt">FILTER</button><button type="button" class="tab" data-group="fx">FX</button><button type="button" class="tab" data-group="mix">MIXER</button></div>
     <div class="vu"><div class="vu-fill"></div></div>
     <div class="lcd"><span class="lcd-mode">SYNTH</span><span class="lcd-name">--</span><span class="lcd-val">--</span></div><span class="led"></span>
   </div>
   <div class="hz"></div>
+  <div class="subtabs"><button type="button" class="stab on" data-page="sound">SYNTH</button><button type="button" class="stab" data-page="smp">SAMPLER 1</button><button type="button" class="stab" data-page="s2">SAMPLER 2</button><button type="button" class="stab" data-page="wt1">WT 1</button><button type="button" class="stab" data-page="wt2">WT 2</button><button type="button" class="stab" data-page="wt3">WT 3</button></div>
   ${MGR_HTML}
   <div class="stage">
     <div class="page p-synth">${synth}</div>
@@ -2786,12 +3411,10 @@ class EisenpulsPatchView extends HTMLElement {
     <div class="page p-smp">${smpPage}</div>
     <div class="page p-s2">${s2Page}</div>
     ${wtPages}
-    <div class="page p-lfo">${lfoPage}</div>
-    <div class="page p-env">${envPage}</div>
-    <div class="page p-mod">${modPage}</div>
     <div class="page p-mix">${mixPage}</div>
     <div class="page p-fx">${fxPage}</div>
   </div>
+  ${strip}
   ${MGR_OVERLAY_HTML}
 </div>`;
     }
@@ -3216,7 +3839,7 @@ const mgrMethods = {
         if (!safeFile(name)) { this.pmStatus("THAT NAME HAS NO USABLE CHARACTERS"); return null; }
         if (name.toLowerCase() === "init") { this.pmStatus("'INIT' IS RESERVED"); return null; }
         if (this.nameTaken(name, id)) { this.pmStatus("NAME ALREADY USED"); return null; }
-        const rec = { name, saved: Date.now(), params: this.collectParams(), refs: this.collectRefs() };
+        const rec = { name, saved: Date.now(), params: this.collectParams(), refs: this.collectRefs(), lfo: this.collectLfo() };
         const newId = await this._be.presetSave(rec, id);
         if (!newId) { this.pmStatus("SAVE FAILED"); return null; }
         this._preset = { id: newId, name, dirty: false };
@@ -3243,7 +3866,9 @@ const mgrMethods = {
                 const v = Object.prototype.hasOwnProperty.call(params, k) ? Number(params[k]) : c.def;
                 c.setValue(Number.isFinite(v) ? v : c.def, true);
             });
+            this.applyLfo(rec.lfo);
             this.updateSlots();
+            this.updateModRings();
             this.drawFlt();
             for (let g = 0; g < 30; g++) this.updateFxRow(g);
             this.fxApplyOrder();

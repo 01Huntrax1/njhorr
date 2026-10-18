@@ -1,0 +1,474 @@
+    // ---------- modulation strip: envelopes, LFO shape editor, drag and drop modulation ----------
+    envPanelHTML () {
+        const chips = Array.from({ length: 10 }, (_, i) => `<button type="button" class="msrc" data-src="${11 + i}" title="Drag onto a knob to modulate it">ENV ${i + 1}</button>`).join("");
+        const others = [21, 22, 23].map(n => `<button type="button" class="msrc misc" data-src="${n}" title="Drag onto a knob to modulate it">${MOD_SRC_SHORT(n)}</button>`).join("");
+        let sets = "";
+        for (let i = 0; i < 10; i++) {
+            const b = 267 + 4 * i;
+            sets += `<div class="env-set" data-env="${i}">${[0, 1, 2, 3].map(k => this.controlHTML(b + k, true)).join("")}</div>`;
+        }
+        return `<section class="bs-env"><div class="bs-chips">${chips}<span class="bs-gap"></span>${others}</div>`
+            + `<div class="bs-envbody"><canvas class="env-canvas" width="360" height="130"></canvas><div class="env-knobs">${sets}</div></div></section>`;
+    }
+
+    lfoPanelHTML () {
+        const chips = Array.from({ length: 10 }, (_, i) => `<button type="button" class="msrc" data-src="${1 + i}" title="Drag onto a knob to modulate it">LFO ${i + 1}</button>`).join("");
+        const opts = LFO_PRESETS.map((p, i) => `<option value="${i}">${p.n}</option>`).join("") + `<option value="-1">Drawn</option>`;
+        let sets = "";
+        for (let i = 0; i < 10; i++) {
+            sets += `<div class="lfo-set" data-lfo="${i}">`
+                + `<div class="ls-top"><div class="ls-shape"><span class="lbl">Shape</span><select class="dd lfo-preset">${opts}</select></div>`
+                + `<div class="ls-mode">${this.controlHTML(882 + 5 * i)}</div><div class="ls-sync">${this.controlHTML(502 + 2 * i)}</div><div class="ls-div">${this.controlHTML(503 + 2 * i)}</div></div>`
+                + `<div class="ls-knobs">${[248 + 2 * i, 883 + 5 * i, 884 + 5 * i, 885 + 5 * i, 886 + 5 * i].map(id => this.controlHTML(id, true)).join("")}</div>`
+                + `<div class="ls-hid">${this.controlHTML(247 + 2 * i)}</div></div>`;
+        }
+        return `<section class="bs-lfo"><div class="bs-chips">${chips}<span class="bs-gap"></span><button type="button" class="bs-btn lfo-grid" title="Grid snap">GRID OFF</button></div>`
+            + `<div class="bs-lfobody"><div class="lfo-cv"><canvas class="lfo-canvas" width="640" height="150"></canvas><div class="lfo-help">click: add point &middot; drag: move &middot; dbl-click point: delete &middot; drag the diamond: curve</div></div>`
+            + `<div class="lfo-sets">${sets}</div></div></section>`;
+    }
+
+    modStripHTML () {
+        return `<div class="bstrip"><div class="bs-tabs"><button type="button" class="bst on" data-bs="mod">MOD</button><button type="button" class="bst" data-bs="mtx">MATRIX</button>`
+            + `<span class="bs-hint">drag an LFO / ENV handle onto a knob &middot; click a knob's dot to set the amount</span><button type="button" class="bs-toggle" title="Show / hide the strip">&#9662;</button></div>`
+            + `<div class="bs-body"><div class="bs-pane bs-mod on">${this.envPanelHTML()}${this.lfoPanelHTML()}</div><div class="bs-pane bs-mtx">${this.matrixHTML()}</div></div></div>`;
+    }
+
+    // ---- selection ----
+    selectLfo (i) {
+        this._lfoSel = i;
+        this.querySelectorAll(".bs-lfo .msrc").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 1));
+        this.querySelectorAll(".lfo-set").forEach(s => s.classList.toggle("on", Number(s.dataset.lfo) === i));
+        this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+    selectEnv (i) {
+        this._envSel = i;
+        this.querySelectorAll(".bs-env .msrc:not(.misc)").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 11));
+        this.querySelectorAll(".env-set").forEach(s => s.classList.toggle("on", Number(s.dataset.env) === i));
+        this.drawEnv();
+    }
+    showStrip (which) {
+        this._bs = which;
+        this.querySelectorAll(".bst").forEach(b => b.classList.toggle("on", b.dataset.bs === which));
+        this.querySelectorAll(".bs-pane").forEach(p => p.classList.toggle("on", p.classList.contains("bs-" + which)));
+    }
+    setStripOpen (open) {
+        this._stripOpen = open;
+        this.classList.toggle("strip-closed", !open);
+        const t = this.querySelector(".bs-toggle");
+        if (t) t.innerHTML = open ? "&#9662;" : "&#9652;";
+        try { window.localStorage.setItem("njo.ui.strip", open ? "1" : "0"); } catch (_) {}
+        if (open) { this.drawLfo(); this.drawEnv(); }
+    }
+
+    // ---- LFO model ----
+    lfoWave (i) { const c = this.fxCtl(247 + 2 * i); return c ? Math.round(c.value) : 0; }
+
+    // the shape of LFO i as points (a built-in shape is converted the first time it is edited)
+    lfoEnsurePts (i) {
+        if (!this._lfoPts[i]) {
+            const w = this.lfoWave(i);
+            this._lfoPts[i] = lfoBuiltinPts(w >= LFO_DRAWN ? 0 : w).map(p => Object.assign({}, p));
+        }
+        return this._lfoPts[i];
+    }
+
+    lfoSend (i) {
+        const pts = this._lfoPts[i];
+        if (!pts) return;
+        try { this.pc.sendEventOrValue("lfoShapeLoad", { lfo: i, data: lfoTableFromPts(pts) }); } catch (_) {}
+    }
+
+    // called after every edit of a drawn shape: table to the DSP, wave = Drawn, saved with the instance
+    lfoCommit (i, final) {
+        const w = this.fxCtl(247 + 2 * i);
+        if (w && Math.round(w.value) !== LFO_DRAWN) w.setValue(LFO_DRAWN, true);
+        if (final) {
+            this.lfoSend(i);
+            this.lfoPersist();
+            if (this.presetDirty) this.presetDirty();
+        } else if (!this._lfoSendTimer) {
+            this._lfoSendTimer = setTimeout(() => { this._lfoSendTimer = null; this.lfoSend(i); }, 60);
+        }
+        this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+
+    lfoPersist () {
+        try {
+            const out = this._lfoPts.map(p => p ? p.map(q => ({ x: Math.round(q.x * 1e4) / 1e4, y: Math.round(q.y * 1e4) / 1e4, c: Math.round((q.c || 0) * 1e3) / 1e3 })) : null);
+            this.kvSet(LFO_STATE_KEY, out);
+        } catch (_) {}
+    }
+
+    // shapes in presets / stored state
+    collectLfo () {
+        return this._lfoPts.map(p => p ? p.map(q => ({ x: Math.round(q.x * 1e4) / 1e4, y: Math.round(q.y * 1e4) / 1e4, c: Math.round((q.c || 0) * 1e3) / 1e3 })) : null);
+    }
+    applyLfo (list) {
+        const ok = p => Array.isArray(p) && p.length >= 2 && p.every(q => q && Number.isFinite(q.x) && Number.isFinite(q.y));
+        for (let i = 0; i < 10; i++) {
+            const p = list && ok(list[i]) ? list[i].map(q => ({ x: Math.max(0, Math.min(1, q.x)), y: Math.max(-1, Math.min(1, q.y)), c: Math.max(-1, Math.min(1, Number(q.c) || 0)) })) : null;
+            this._lfoPts[i] = p;
+            if (p) this.lfoSend(i);
+        }
+        this.lfoPersist();
+        for (let i = 0; i < 10; i++) this.refreshLfoUi(i);
+        this.drawLfo();
+    }
+    restoreLfo () {
+        const v = this.kvGet(LFO_STATE_KEY);
+        if (Array.isArray(v)) this.applyLfo(v);
+    }
+
+    // preset menu text, rate / division dimming
+    refreshLfoUi (i) {
+        const set = this.querySelector('.lfo-set[data-lfo="' + i + '"]');
+        if (!set) return;
+        const w = this.lfoWave(i);
+        const sel = set.querySelector(".lfo-preset");
+        if (sel) sel.value = w >= LFO_DRAWN || this._lfoPts[i] ? "-1" : String(w);
+        const sync = this.fxCtl(502 + 2 * i);
+        set.classList.toggle("synced", !!sync && sync.value > 0.5);
+    }
+
+    setLfoPreset (i, idx) {
+        const w = this.fxCtl(247 + 2 * i);
+        if (idx < 0) { this.lfoEnsurePts(i); this.lfoCommit(i, true); return; }
+        const p = LFO_PRESETS[idx];
+        if (p.w !== undefined) {
+            this._lfoPts[i] = null;
+            if (w) w.setValue(p.w, true);
+            this.lfoPersist();
+            if (this.presetDirty) this.presetDirty();
+            this.refreshLfoUi(i); this.drawLfo();
+        } else {
+            this._lfoPts[i] = p.pts.map(q => Object.assign({}, q));
+            this.lfoCommit(i, true);
+        }
+    }
+
+    // ---- LFO canvas ----
+    lfoGeom (cv) {
+        const W = cv.width, H = cv.height, pad = 10;
+        return { W, H, pad, px: x => pad + x * (W - 2 * pad), py: y => H / 2 - y * (H / 2 - pad), ix: X => (X - pad) / (W - 2 * pad), iy: Y => (H / 2 - Y) / (H / 2 - pad) };
+    }
+
+    drawLfo () {
+        const cv = this.querySelector(".lfo-canvas");
+        if (!cv || !this._stripOpen) return;
+        const ctx = cv.getContext("2d");
+        const g = this.lfoGeom(cv), i = this._lfoSel, w = this.lfoWave(i), pts = this._lfoPts[i];
+        const drawn = !!pts || w >= LFO_DRAWN;
+        const P = drawn ? this.lfoEnsurePts(i) : null;
+        ctx.clearRect(0, 0, g.W, g.H);
+        ctx.fillStyle = "#0b0405"; ctx.fillRect(0, 0, g.W, g.H);
+        const grid = LFO_GRIDS[this._lfoGrid || 0], xs = grid || 8, ys = grid ? Math.max(2, grid / 2) : 4;
+        ctx.lineWidth = 1;
+        for (let k = 0; k <= xs; k++) { ctx.strokeStyle = k % (grid ? Math.max(1, xs / 4) : 2) === 0 ? "rgba(255,255,255,0.13)" : "rgba(255,255,255,0.05)"; const x = Math.round(g.px(k / xs)) + 0.5; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, g.H); ctx.stroke(); }
+        for (let k = -ys; k <= ys; k++) { ctx.strokeStyle = k === 0 ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.05)"; const y = Math.round(g.py(k / ys)) + 0.5; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(g.W, y); ctx.stroke(); }
+        // curve
+        const fn = drawn ? (p => lfoSampleAt(P, p)) : (p => lfoBuiltinAt(w, p));
+        ctx.beginPath();
+        for (let k = 0; k <= 400; k++) { const p = k / 400, X = g.px(p), Y = g.py(fn(p)); if (k === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+        ctx.lineTo(g.px(1), g.py(0)); ctx.lineTo(g.px(0), g.py(0)); ctx.closePath();
+        ctx.fillStyle = drawn ? "rgba(255,90,60,0.16)" : "rgba(160,160,170,0.10)"; ctx.fill();
+        ctx.beginPath();
+        for (let k = 0; k <= 400; k++) { const p = k / 400, X = g.px(p), Y = g.py(fn(p)); if (k === 0) ctx.moveTo(X, Y); else ctx.lineTo(X, Y); }
+        ctx.strokeStyle = drawn ? "#ff6a4d" : "#9a9aa2"; ctx.lineWidth = 2; ctx.stroke();
+        if (drawn) {
+            for (let k = 0; k + 1 < P.length; k++) {      // curve handles at the middle of every segment
+                const a = P[k], b = P[k + 1];
+                if (b.x - a.x < 0.02) continue;
+                const mx = (a.x + b.x) / 2, my = lfoCurve(a.y, b.y, a.c || 0, 0.5);
+                ctx.save(); ctx.translate(g.px(mx), g.py(my)); ctx.rotate(Math.PI / 4);
+                ctx.fillStyle = "#2a1210"; ctx.strokeStyle = "#ffb09e"; ctx.lineWidth = 1.5; ctx.fillRect(-4, -4, 8, 8); ctx.strokeRect(-4, -4, 8, 8); ctx.restore();
+            }
+            P.forEach(q => { ctx.beginPath(); ctx.arc(g.px(q.x), g.py(q.y), 5.5, 0, 7); ctx.fillStyle = "#ffd9cf"; ctx.fill(); ctx.strokeStyle = "#ff3b30"; ctx.lineWidth = 2; ctx.stroke(); });
+        } else {
+            ctx.fillStyle = "rgba(255,255,255,0.35)"; ctx.font = "11px sans-serif"; ctx.fillText("built-in shape - click to draw your own", 14, g.H - 10);
+        }
+    }
+
+    buildLfoCanvas () {
+        const cv = this.querySelector(".lfo-canvas");
+        if (!cv) return;
+        let drag = null;
+        const pos = e => { const r = cv.getBoundingClientRect(); return { X: (e.clientX - r.left) * cv.width / r.width, Y: (e.clientY - r.top) * cv.height / r.height }; };
+        const snapX = x => { const gr = LFO_GRIDS[this._lfoGrid || 0]; return gr ? Math.round(x * gr) / gr : x; };
+        const snapY = y => { const gr = LFO_GRIDS[this._lfoGrid || 0]; if (!gr) return y; const s = Math.max(2, gr / 2); return Math.round(y * s) / s; };
+        const hit = (P, g, X, Y) => {
+            for (let k = 0; k < P.length; k++) if (Math.hypot(g.px(P[k].x) - X, g.py(P[k].y) - Y) < 11) return { kind: "pt", k };
+            for (let k = 0; k + 1 < P.length; k++) {
+                const a = P[k], b = P[k + 1];
+                if (b.x - a.x < 0.02) continue;
+                if (Math.hypot(g.px((a.x + b.x) / 2) - X, g.py(lfoCurve(a.y, b.y, a.c || 0, 0.5)) - Y) < 10) return { kind: "cv", k };
+            }
+            return null;
+        };
+        cv.addEventListener("pointerdown", e => {
+            const i = this._lfoSel, g = this.lfoGeom(cv), { X, Y } = pos(e);
+            const P = this.lfoEnsurePts(i);
+            let h = hit(P, g, X, Y);
+            if (!h) {                                      // empty spot: new point
+                const x = Math.max(0.004, Math.min(0.996, snapX(g.ix(X)))), y = Math.max(-1, Math.min(1, snapY(g.iy(Y))));
+                let k = 0;
+                while (k < P.length && P[k].x < x) k++;
+                if (k === 0 || k >= P.length) return;
+                const a = P[k - 1], b = P[k];
+                P.splice(k, 0, { x, y, c: 0 });
+                h = { kind: "pt", k };
+                this.lfoCommit(i, false);
+            }
+            drag = { pid: e.pointerId, h, y0: Y, c0: h.kind === "cv" ? (P[h.k].c || 0) : 0 };
+            try { cv.setPointerCapture(e.pointerId); } catch (_) {}
+            e.preventDefault();
+        });
+        cv.addEventListener("pointermove", e => {
+            if (!drag || e.pointerId !== drag.pid) return;
+            const i = this._lfoSel, g = this.lfoGeom(cv), P = this.lfoEnsurePts(i), { X, Y } = pos(e), h = drag.h;
+            if (h.kind === "pt") {
+                const q = P[h.k];
+                q.y = Math.max(-1, Math.min(1, snapY(g.iy(Y))));
+                if (h.k > 0 && h.k < P.length - 1) q.x = Math.max(P[h.k - 1].x + 0.002, Math.min(P[h.k + 1].x - 0.002, snapX(g.ix(X))));
+            } else {
+                const a = P[h.k], b = P[h.k + 1], dir = Math.sign(b.y - a.y) || 1;
+                a.c = Math.max(-1, Math.min(1, drag.c0 + (Y - drag.y0) / 70 * dir));
+            }
+            this.lfoCommit(i, false);
+        });
+        const end = e => {
+            if (!drag || e.pointerId !== drag.pid) return;
+            drag = null;
+            try { cv.releasePointerCapture(e.pointerId); } catch (_) {}
+            if (this._lfoSendTimer) { clearTimeout(this._lfoSendTimer); this._lfoSendTimer = null; }
+            this.lfoCommit(this._lfoSel, true);
+        };
+        cv.addEventListener("pointerup", end);
+        cv.addEventListener("pointercancel", end);
+        cv.addEventListener("dblclick", e => {
+            const i = this._lfoSel, g = this.lfoGeom(cv), P = this.lfoEnsurePts(i), { X, Y } = pos(e), h = hit(P, g, X, Y);
+            if (!h) return;
+            if (h.kind === "pt" && h.k > 0 && h.k < P.length - 1) P.splice(h.k, 1);
+            else if (h.kind === "cv") P[h.k].c = 0;
+            else return;
+            this.lfoCommit(i, true);
+        });
+        const grid = this.querySelector(".lfo-grid");
+        if (grid) grid.addEventListener("click", () => {
+            this._lfoGrid = ((this._lfoGrid || 0) + 1) % LFO_GRIDS.length;
+            grid.textContent = LFO_GRIDS[this._lfoGrid] ? "GRID 1/" + LFO_GRIDS[this._lfoGrid] : "GRID OFF";
+            this.drawLfo();
+        });
+        this.querySelectorAll(".lfo-preset").forEach(sel => sel.addEventListener("change", () => {
+            const set = sel.closest(".lfo-set");
+            this.setLfoPreset(Number(set.dataset.lfo), Number(sel.value));
+        }));
+    }
+
+    // ---- envelope canvas ----
+    drawEnv () {
+        const cv = this.querySelector(".env-canvas");
+        if (!cv || !this._stripOpen) return;
+        const ctx = cv.getContext("2d"), W = cv.width, H = cv.height, pad = 10, b = 267 + 4 * this._envSel;
+        const v = k => { const c = this.fxCtl(b + k); return c ? c.value : 0; };
+        const A = v(0), D = v(1), S = v(2), R = v(3);
+        const t = ms => Math.sqrt(Math.max(ms, 0) / 5000);               // compressed time axis
+        const seg = [Math.max(t(A), 0.03), Math.max(t(D), 0.05), 0.18, Math.max(t(R), 0.05)];
+        const tot = seg[0] + seg[1] + seg[2] + seg[3];
+        const X = f => pad + f / tot * (W - 2 * pad), Y = a => H - pad - a * (H - 2 * pad);
+        ctx.fillStyle = "#0b0405"; ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = "rgba(255,255,255,0.06)"; ctx.lineWidth = 1;
+        for (let k = 1; k < 4; k++) { ctx.beginPath(); ctx.moveTo(pad, Y(k / 4)); ctx.lineTo(W - pad, Y(k / 4)); ctx.stroke(); }
+        const x1 = seg[0], x2 = x1 + seg[1], x3 = x2 + seg[2], x4 = x3 + seg[3];
+        ctx.beginPath(); ctx.moveTo(X(0), Y(0)); ctx.lineTo(X(x1), Y(1));
+        for (let k = 1; k <= 20; k++) { const f = k / 20; ctx.lineTo(X(x1 + seg[1] * f), Y(S + (1 - S) * Math.exp(-4 * f))); }
+        ctx.lineTo(X(x3), Y(S));
+        for (let k = 1; k <= 20; k++) { const f = k / 20; ctx.lineTo(X(x3 + seg[3] * f), Y(S * Math.exp(-4 * f))); }
+        ctx.lineTo(X(x4), Y(0));
+        const grad = ctx.createLinearGradient(0, 0, 0, H); grad.addColorStop(0, "rgba(77,184,255,0.30)"); grad.addColorStop(1, "rgba(77,184,255,0.03)");
+        ctx.fillStyle = grad; ctx.fill();
+        ctx.strokeStyle = "#4db8ff"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,0.4)"; ctx.font = "11px sans-serif";
+        ["A", "D", "S", "R"].forEach((l, k) => ctx.fillText(l, X([0, x1, x2, x3][k]) + 4, H - 14));
+    }
+
+    // ---- drag and drop modulation ----
+    modTargetOf (node) {
+        const c = node && node.closest ? node.closest(".control[data-param]") : null;
+        if (!c) return null;
+        const num = Number(String(c.dataset.param).replace("param", ""));
+        const t = MOD_TARGET[num];
+        return t ? { node: c, num, dst: t[0], scale: t[1] } : null;
+    }
+
+    modSlots () {
+        const out = [];
+        for (let s = 0; s < MOD_SLOTS; s++) {
+            const a = this.fxCtl(slotBase(s)), b = this.fxCtl(slotBase(s) + 1), m = this.fxCtl(slotBase(s) + 2);
+            out.push({ s, src: a ? Math.round(a.value) : 0, dst: b ? Math.round(b.value) : 0, amt: m ? m.value : 0 });
+        }
+        return out;
+    }
+
+    // creates or updates the matrix slot for (src, dst); returns the slot index or -1 when the matrix is full
+    modAssign (src, dst, amt) {
+        const slots = this.modSlots();
+        let hit = slots.find(x => x.src === src && x.dst === dst);
+        if (!hit) hit = slots.find(x => x.src === 0 || x.dst === 0);
+        if (!hit) return -1;
+        const set = (off, v) => { const c = this.fxCtl(slotBase(hit.s) + off); if (c) c.setValue(v, true); };
+        if (hit.src !== src || hit.dst !== dst) { set(0, src); set(1, dst); set(2, amt); }
+        else if (amt !== undefined && amt !== null) set(2, amt);
+        return hit.s;
+    }
+
+    modClear (s) {
+        const set = (off, v) => { const c = this.fxCtl(slotBase(s) + off); if (c) c.setValue(v, true); };
+        set(2, 0); set(0, 0); set(1, 0);
+    }
+
+    modsFor (dst) { return this.modSlots().filter(x => x.src > 0 && x.dst === dst); }
+
+    // modulation rings on the knobs / bars on the sliders that are mod targets
+    updateModRings (onlyNum) {
+        const nums = onlyNum ? [onlyNum] : Object.keys(MOD_TARGET).map(Number);
+        nums.forEach(num => {
+            const t = MOD_TARGET[num];
+            if (!t) return;
+            const ctl = this.fxCtl(num);
+            if (!ctl || !ctl.node) return;
+            const node = ctl.node, mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
+            node.classList.toggle("modded", mods.length > 0);
+            let ring = node.querySelector(".mring");
+            let dot = node.querySelector(".mdot");
+            if (!mods.length) { if (ring) ring.remove(); if (dot) dot.remove(); return; }
+            const norm = ctl.toNorm ? ctl.toNorm(ctl.value) : (ctl.value - ctl.min) / ((ctl.max - ctl.min) || 1);
+            const isKnob = !!node.querySelector(".knob");
+            if (isKnob) {
+                const host = node.querySelector(".knob");
+                if (!ring) { ring = document.createElementNS("http://www.w3.org/2000/svg", "svg"); ring.setAttribute("class", "mring"); ring.setAttribute("viewBox", "-50 -50 100 100"); host.appendChild(ring); }
+                const ang = n => (-135 + n * 270 - 90) * Math.PI / 180;
+                const arc = (n0, n1, r, col) => {
+                    const a0 = ang(n0), a1 = ang(n1), large = Math.abs(n1 - n0) * 270 > 180 ? 1 : 0, sweep = n1 >= n0 ? 1 : 0;
+                    return `<path d="M ${r * Math.cos(a0)} ${r * Math.sin(a0)} A ${r} ${r} 0 ${large} ${sweep} ${r * Math.cos(a1)} ${r * Math.sin(a1)}" stroke="${col}" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.95"/>`;
+                };
+                ring.innerHTML = mods.slice(0, 3).map((m, k) => arc(norm, Math.max(0, Math.min(1, norm + m.amt * t[1])), 54 + k * 0, MOD_SRC_COLOR(m.src))).join("");
+            } else {
+                const track = node.querySelector(".track");
+                if (track) {
+                    if (!ring) { ring = document.createElement("div"); ring.className = "mring mbar"; track.appendChild(ring); }
+                    const m = mods[0], a = Math.max(0, Math.min(1, norm)), b = Math.max(0, Math.min(1, norm + m.amt * t[1]));
+                    ring.style.left = (Math.min(a, b) * 100) + "%"; ring.style.width = (Math.abs(b - a) * 100) + "%"; ring.style.background = MOD_SRC_COLOR(m.src);
+                }
+            }
+            if (!dot) { dot = document.createElement("button"); dot.type = "button"; dot.className = "mdot"; dot.title = "Modulation amount"; node.appendChild(dot); dot.addEventListener("pointerdown", e => e.stopPropagation()); dot.addEventListener("click", e => { e.stopPropagation(); this.showModPop(node, num); }); }
+            dot.style.background = MOD_SRC_COLOR(mods[0].src);
+            dot.textContent = mods.length > 1 ? String(mods.length) : "";
+        });
+    }
+
+    closeModPop () { if (this._modPop) { this._modPop.remove(); this._modPop = null; } }
+
+    showModPop (node, num) {
+        this.closeModPop();
+        const t = MOD_TARGET[num];
+        if (!t) return;
+        const mods = this.modsFor(t[0]).filter(m => m.src > 0);
+        if (!mods.length) return;
+        const pop = document.createElement("div");
+        pop.className = "modpop";
+        const label = (SPEC_BY_NUM.get(num) || {}).short || (SPEC_BY_NUM.get(num) || {}).label || "";
+        pop.innerHTML = `<div class="mp-title">${label} modulation</div>` + mods.map(m => `<div class="mp-row" data-s="${m.s}"><span class="mp-src" style="background:${MOD_SRC_COLOR(m.src)}">${MOD_SRC_SHORT(m.src)}</span>`
+            + `<input type="range" min="-100" max="100" step="1" value="${Math.round(m.amt * 100)}"><span class="mp-val">${Math.round(m.amt * 100)}%</span><button type="button" class="mp-x" title="Remove">&times;</button></div>`).join("");
+        this.appendChild(pop);
+        const hb = this.getBoundingClientRect(), nb = node.getBoundingClientRect();
+        const left = Math.max(4, Math.min(hb.width - pop.offsetWidth - 4, nb.left - hb.left + nb.width / 2 - pop.offsetWidth / 2));
+        const top = nb.top - hb.top + nb.height + 6;
+        pop.style.left = left + "px";
+        pop.style.top = Math.min(hb.height - pop.offsetHeight - 4, top) + "px";
+        pop.addEventListener("pointerdown", e => e.stopPropagation());
+        pop.querySelectorAll(".mp-row").forEach(row => {
+            const s = Number(row.dataset.s), rng = row.querySelector("input"), val = row.querySelector(".mp-val");
+            rng.addEventListener("input", () => { const a = Number(rng.value) / 100; val.textContent = Math.round(a * 100) + "%"; const c = this.fxCtl(slotBase(s) + 2); if (c) c.setValue(a, true); });
+            row.querySelector(".mp-x").addEventListener("click", () => { this.modClear(s); this.closeModPop(); });
+        });
+        this._modPop = pop;
+        this._modPopClose = e => { if (!pop.contains(e.target)) { this.closeModPop(); this.removeEventListener("pointerdown", this._modPopClose, true); } };
+        setTimeout(() => this.addEventListener("pointerdown", this._modPopClose, true), 0);
+    }
+
+    buildModDrag () {
+        this.querySelectorAll(".msrc").forEach(chip => {
+            let st = null;
+            chip.addEventListener("pointerdown", e => {
+                st = { pid: e.pointerId, x: e.clientX, y: e.clientY, drag: false, ghost: null, target: null };
+                try { chip.setPointerCapture(e.pointerId); } catch (_) {}
+            });
+            chip.addEventListener("pointermove", e => {
+                if (!st || e.pointerId !== st.pid) return;
+                const src = Number(chip.dataset.src);
+                if (!st.drag && Math.hypot(e.clientX - st.x, e.clientY - st.y) > 5) {
+                    st.drag = true;
+                    st.ghost = document.createElement("div");
+                    st.ghost.className = "mod-ghost";
+                    st.ghost.textContent = MOD_SRC_SHORT(src);
+                    st.ghost.style.background = MOD_SRC_COLOR(src);
+                    this.appendChild(st.ghost);
+                    this.classList.add("modding");
+                    this.closeModPop();
+                }
+                if (!st.drag) return;
+                const hb = this.getBoundingClientRect();
+                st.ghost.style.left = (e.clientX - hb.left + 10) + "px";
+                st.ghost.style.top = (e.clientY - hb.top + 10) + "px";
+                st.ghost.style.pointerEvents = "none";
+                const el = this.ownerDocument.elementFromPoint(e.clientX, e.clientY);
+                const tg = this.modTargetOf(el);
+                if (st.target && (!tg || tg.node !== st.target.node)) st.target.node.classList.remove("modhover");
+                if (tg) tg.node.classList.add("modhover");
+                st.target = tg;
+            });
+            const end = e => {
+                if (!st || e.pointerId !== st.pid) return;
+                const s = st; st = null;
+                try { chip.releasePointerCapture(e.pointerId); } catch (_) {}
+                const src = Number(chip.dataset.src);
+                if (s.ghost) s.ghost.remove();
+                this.classList.remove("modding");
+                if (s.target) s.target.node.classList.remove("modhover");
+                if (s.drag) {
+                    if (s.target) {
+                        const slot = this.modAssign(src, s.target.dst, 0.5);
+                        if (slot < 0) this.barInfo && this.barInfo("MOD MATRIX FULL (20 SLOTS)");
+                        else { this.updateModRings(); this.showModPop(s.target.node, s.target.num); }
+                    }
+                } else if (src >= 1 && src <= 10) { this.selectLfo(src - 1); }
+                else if (src >= 11 && src <= 20) { this.selectEnv(src - 11); }
+            };
+            chip.addEventListener("pointerup", end);
+            chip.addEventListener("pointercancel", end);
+        });
+    }
+
+    buildModStrip () {
+        this._lfoSel = 0; this._envSel = 0;
+        this.querySelectorAll(".bst").forEach(b => b.addEventListener("click", () => {
+            if (this._stripOpen && this._bs === b.dataset.bs && false) return;
+            this.showStrip(b.dataset.bs);
+            if (!this._stripOpen) this.setStripOpen(true);
+        }));
+        const tg = this.querySelector(".bs-toggle");
+        if (tg) tg.addEventListener("click", () => this.setStripOpen(!this._stripOpen));
+        let open = true;
+        try { open = window.localStorage.getItem("njo.ui.strip") !== "0"; } catch (_) {}
+        this.buildLfoCanvas();
+        this.buildModDrag();
+        this.showStrip("mod");
+        this.setStripOpen(open);
+        this.selectLfo(0);
+        this.selectEnv(0);
+        for (let i = 0; i < 10; i++) this.refreshLfoUi(i);
+        this.updateModRings();
+    }
+

@@ -1,0 +1,80 @@
+// ---------------------------------------------------------------------------------------------------------------
+// LFO shapes: a shape is a list of points {x 0..1, y -1..1, c curve -1..1 of the segment that follows}; the DSP reads a 256 value table
+// ---------------------------------------------------------------------------------------------------------------
+const LFO_DRAWN = 6;                 // wave value of "Drawn" (0-5 are the built-in shapes Sin Tri Sqr S&H Up Dn)
+const LFO_GRIDS = [0, 4, 8, 16, 32];
+function lfoCurve (y0, y1, c, t) {
+    if (c > 0.001) t = Math.pow(t, 1 + 4 * c);
+    else if (c < -0.001) t = 1 - Math.pow(1 - t, 1 - 4 * c);
+    return y0 + (y1 - y0) * t;
+}
+function lfoSampleAt (pts, p) {
+    p = Math.max(0, Math.min(1, p));
+    for (let i = 0; i + 1 < pts.length; i++) {
+        const a = pts[i], b = pts[i + 1];
+        if (p <= b.x || i + 2 === pts.length) {
+            const span = b.x - a.x;
+            const t = span > 1e-9 ? (p - a.x) / span : 1;
+            return lfoCurve(a.y, b.y, a.c || 0, Math.max(0, Math.min(1, t)));
+        }
+    }
+    return pts.length ? pts[0].y : 0;
+}
+function lfoTableFromPts (pts) {
+    const t = new Array(256);
+    for (let i = 0; i < 256; i++) t[i] = Math.round(lfoSampleAt(pts, i / 256) * 1e5) / 1e5;
+    return t;
+}
+// built-in shapes as point lists (what "edit" starts from) and as plain functions (what the canvas shows)
+function lfoBuiltinPts (w) {
+    if (w === 0) { const p = []; for (let i = 0; i <= 32; i++) p.push({ x: i / 32, y: Math.sin(2 * Math.PI * i / 32), c: 0 }); return p; }
+    if (w === 1) return [{ x: 0, y: 1, c: 0 }, { x: 0.5, y: -1, c: 0 }, { x: 1, y: 1, c: 0 }];
+    if (w === 2) return [{ x: 0, y: 1, c: 0 }, { x: 0.4985, y: 1, c: 0 }, { x: 0.5, y: -1, c: 0 }, { x: 1, y: -1, c: 0 }];
+    if (w === 3) {
+        const v = [0.55, -0.4, 0.8, -0.75, 0.1, 0.9, -0.2, -0.9], p = [];
+        v.forEach((y, i) => { p.push({ x: i / 8, y, c: 0 }); p.push({ x: (i + 1) / 8 - 0.0025, y, c: 0 }); });
+        p[p.length - 1].x = 1;
+        return p;
+    }
+    if (w === 4) return [{ x: 0, y: -1, c: 0 }, { x: 1, y: 1, c: 0 }];
+    return [{ x: 0, y: 1, c: 0 }, { x: 1, y: -1, c: 0 }];
+}
+function lfoBuiltinAt (w, p) {
+    if (w === 0) return Math.sin(2 * Math.PI * p);
+    if (w === 1) return 4 * Math.abs(p - 0.5) - 1;
+    if (w === 2) return p < 0.5 ? 1 : -1;
+    if (w === 4) return 2 * p - 1;
+    if (w === 5) return 1 - 2 * p;
+    return lfoSampleAt(lfoBuiltinPts(3), p);
+}
+// the Shape menu: built-in waves first (w), then drawn presets (pts)
+const LFO_PRESETS = [
+    { n: "Sine", w: 0 }, { n: "Triangle", w: 1 }, { n: "Square", w: 2 }, { n: "S&H", w: 3 }, { n: "Saw Up", w: 4 }, { n: "Saw Down", w: 5 },
+    { n: "Pulse 25%", pts: [{ x: 0, y: 1, c: 0 }, { x: 0.2485, y: 1, c: 0 }, { x: 0.25, y: -1, c: 0 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Half Sine", pts: (() => { const p = []; for (let i = 0; i <= 16; i++) p.push({ x: i / 32, y: Math.sin(Math.PI * i / 16), c: 0 }); p.push({ x: 0.5015, y: -1, c: 0 }); p.push({ x: 1, y: -1, c: 0 }); return p; })() },
+    { n: "Exp Decay", pts: [{ x: 0, y: 1, c: 0.8 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Ramp + Hold", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.5, y: 1, c: 0 }, { x: 1, y: 1, c: 0 }] },
+    { n: "Bounce", pts: [{ x: 0, y: -1, c: -0.8 }, { x: 0.25, y: 1, c: 0.8 }, { x: 0.5, y: -1, c: -0.8 }, { x: 0.75, y: 0.4, c: 0.8 }, { x: 1, y: -1, c: 0 }] },
+    { n: "Steps 4", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.2485, y: -1, c: 0 }, { x: 0.25, y: -0.33, c: 0 }, { x: 0.4985, y: -0.33, c: 0 }, { x: 0.5, y: 0.33, c: 0 }, { x: 0.7485, y: 0.33, c: 0 }, { x: 0.75, y: 1, c: 0 }, { x: 1, y: 1, c: 0 }] },
+    { n: "Double Hump", pts: [{ x: 0, y: -1, c: 0 }, { x: 0.25, y: 1, c: 0 }, { x: 0.5, y: -0.2, c: 0 }, { x: 0.75, y: 0.7, c: 0 }, { x: 1, y: -1, c: 0 }] }
+];
+
+// ---------------------------------------------------------------------------------------------------------------
+// Modulation targets: parameter number -> [destination index of the mod matrix, knob travel per 1.0 of amount]
+// (destination indices follow MOD_DST; the travel is only used to draw the modulation ring)
+// ---------------------------------------------------------------------------------------------------------------
+const MOD_TARGET = (() => {
+    const T = { 13: [2, 0.41], 14: [3, 0.5], 28: [8, 0.5], 29: [5, 0.5], 9: [6, 0.5], 39: [7, 0.45], 190: [10, 0.5],
+        6: [11, 0.25], 7: [12, 0.25], 37: [13, 1], 38: [14, 1], 143: [15, 0.25], 138: [16, 1], 157: [17, 0.5], 153: [18, 1],
+        196: [19, 0.5], 192: [20, 1],
+        211: [21, 0.5], 214: [22, 0.5], 209: [23, 1], 445: [24, 0.5],
+        225: [25, 0.5], 228: [26, 0.5], 223: [27, 1], 454: [28, 0.5],
+        237: [29, 0.5], 240: [30, 0.5], 235: [31, 1], 463: [32, 0.5],
+        451: [33, 1], 453: [34, 1], 460: [35, 1], 462: [36, 1], 469: [37, 1], 471: [38, 1],
+        437: [39, 1], 440: [40, 1], 443: [41, 1],
+        528: [42, 0.41], 529: [43, 0.5], 530: [44, 0.5], 531: [45, 0.5] };
+    return T;
+})();
+const MOD_SRC_SHORT = n => n >= 1 && n <= 10 ? "LFO " + n : n >= 11 && n <= 20 ? "ENV " + (n - 10) : ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "VEL", "KEY", "RND"][n] || "";
+const MOD_SRC_COLOR = n => n >= 1 && n <= 10 ? "#ff6a4d" : n >= 11 && n <= 20 ? "#4db8ff" : "#c9c24a";
+
