@@ -35741,7 +35741,7 @@ struct Eisenpuls_Synth
         "    \"src\": \"index.js\",\n"
         "    \"width\": 1180,\n"
         "    \"height\": 760,\n"
-        "    \"resizable\": false\n"
+        "    \"resizable\": true\n"
         "  },\n"
         "  \"plugin\": {\n"
         "    \"pluginCode\": \"Njsy\",\n"
@@ -43023,7 +43023,7 @@ struct Eisenpuls_Synth
     static constexpr std::array files =
     {
         File { "cmaj_api/cmaj-audio-worklet-helper.js", std::string_view (cmaj_api_cmajaudioworklethelper_js, 31838) },
-        File { "Eisenpuls_Synth.cmajorpatch", std::string_view (Eisenpuls_Synth_cmajorpatch, 421) },
+        File { "Eisenpuls_Synth.cmajorpatch", std::string_view (Eisenpuls_Synth_cmajorpatch, 420) },
         File { "index.js", std::string_view (index_js, 253513) },
         File { "cmaj_api/assets/cmajor-logo.svg", std::string_view (cmaj_api_assets_cmajorlogo_svg, 2913) },
         File { "cmaj_api/cmaj-event-listener-list.js", std::string_view (cmaj_api_cmajeventlistenerlist_js, 3983) },
