@@ -918,6 +918,16 @@ protected:
 
             setResizeLimits (250, 160, 32768, 32768);
 
+            // Njohrr: size buttons of the view resize the editor window
+            patchWebView->onResizeRequest = [safe = juce::Component::SafePointer<Editor> (this)] (int w, int h)
+            {
+                juce::MessageManager::callAsync ([safe, w, h]
+                {
+                    if (safe != nullptr)
+                        safe->setSize (w, h + DerivedType::extraCompHeight);
+                });
+            };
+
             lookAndFeel.setColour (juce::TextEditor::outlineColourId, juce::Colours::transparentBlack);
             lookAndFeel.setColour (juce::TextEditor::backgroundColourId, juce::Colours::transparentBlack);
 

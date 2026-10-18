@@ -472,6 +472,7 @@ function fxMigrateLegacy (params) {
 // filter page parameters read by the visualizers
 const FLT_VIS_IDS = [12, 13, 14, 525, 526, 527, 528, 529, 531, 534, 535];
 
+const BASE_W = 1180, BASE_H = 760;
 const LFO_STATE_KEY = "njo.lfo";
 const LFO_MODES = ["Free", "Trig", "Env"];
 // ---------------------------------------------------------------------------------------------------------------
@@ -994,6 +995,7 @@ class EisenpulsPatchView extends HTMLElement {
         for (let e = 0; e < WT_ENG.length; e++) this.updateWtUi(e);
         this.updateSlots();
         this.buildModStrip();
+        this.buildSizeSelect();
         this._modReady = true;
         this.buildManager();
 
@@ -1106,11 +1108,38 @@ class EisenpulsPatchView extends HTMLElement {
         delete window.__amorphProcessMidi;
     }
 
+    // window size presets: the host window is resized through the native njoResize hook (not available in a plain browser)
+    buildSizeSelect () {
+        const sel = this.querySelector(".sizesel");
+        if (!sel) return;
+        if (typeof window.njoResize === "function") sel.style.display = "";
+        sel.addEventListener("change", () => {
+            const f = Number(sel.value);
+            if (!(f > 0)) return;
+            try { window.njoResize(Math.round(BASE_W * f), Math.round(BASE_H * f)); } catch (_) {}
+        });
+        sel.addEventListener("keydown", e => e.stopPropagation());
+        this.syncSizeSelect();
+    }
+
+    syncSizeSelect () {
+        const sel = this.querySelector(".sizesel");
+        if (!sel) return;
+        const w = this.offsetWidth || 0, h = this.offsetHeight || 0;
+        let pick = "custom";
+        for (const o of sel.options) {
+            const f = Number(o.value);
+            if (f > 0 && Math.abs(w - BASE_W * f) <= 3 && Math.abs(h - BASE_H * f) <= 3) pick = o.value;
+        }
+        sel.value = pick;
+    }
+
     fit () {
         const w = this.offsetWidth || window.innerWidth || 1180;
         const h = this.offsetHeight || window.innerHeight || 760;
         const u = Math.max(0.5, Math.min(w / 1180, h / 760));
         this.style.setProperty("--u", u.toFixed(4) + "px");
+        this.syncSizeSelect();
     }
 
     // ---------- sample memory (autosave to browser storage) ----------
@@ -3391,6 +3420,7 @@ class EisenpulsPatchView extends HTMLElement {
   .mp-row input { flex: 1; min-width: 0; } .mp-val { width: calc(var(--u) * 32); font-size: calc(var(--u) * 8.5); text-align: right; font-family: ui-monospace, Menlo, monospace; }
   .mp-x { background: none; border: 1px solid var(--line); color: var(--ink); cursor: pointer; border-radius: 2px; }
   .lfo-set .dd { width: 100%; }
+  .top .sizesel { flex: 0 0 auto; width: calc(var(--u) * 74); padding: calc(var(--u) * 3) calc(var(--u) * 6); font-size: calc(var(--u) * 9); }
   .x-f1 .flt-canvas, .x-f2 .flt-canvas { height: calc(var(--u) * 120); }
   .x-rt .flt-canvas { height: calc(var(--u) * 70); }
   .bs-env .knb .knob, .bs-lfo .knb .knob { width: calc(var(--u) * 26); height: calc(var(--u) * 26); }
@@ -3400,6 +3430,7 @@ class EisenpulsPatchView extends HTMLElement {
     <span class="logo">NJOHRR</span><span class="model">SYNTH</span><span class="version">V1.0.0</span>
     <div class="tabs"><button type="button" class="tab on" data-group="osc">OSC</button><button type="button" class="tab" data-group="flt">FILTER</button><button type="button" class="tab" data-group="fx">FX</button><button type="button" class="tab" data-group="mix">MIXER</button></div>
     <div class="vu"><div class="vu-fill"></div></div>
+    <select class="dd sizesel" title="Window size" style="display:none"><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="1.75">175%</option><option value="2">200%</option><option value="custom" hidden>Custom</option></select>
     <div class="lcd"><span class="lcd-mode">SYNTH</span><span class="lcd-name">--</span><span class="lcd-val">--</span></div><span class="led"></span>
   </div>
   <div class="hz"></div>

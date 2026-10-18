@@ -19,6 +19,7 @@
 #pragma once
 
 #include <memory>
+#include <functional>
 #include "cmaj_Patch.h"
 #include "cmaj_NjohrrFiles.h"
 #include "../../choc/choc/gui/choc_WebView.h"
@@ -40,6 +41,9 @@ struct PatchWebView  : public PatchView
     choc::ui::WebView& getWebView();
 
     void setStatusMessage (const std::string& newMessage);
+
+    /// Njohrr: called when the view asks for a different window size (view size in pixels)
+    std::function<void (int width, int height)> onResizeRequest;
 
     /// Provides a chunk of javascript that goes in a function which is run before the
     /// view element is added to its parent element.
@@ -118,6 +122,21 @@ inline PatchWebView::PatchWebView (Patch& p, const PatchManifest::View& view)
 
         (void) boundOK;
         CMAJ_ASSERT (boundOK);
+
+        // Njohrr: the view asks the host window to change its size (size buttons in the top bar)
+        w.bind ("njoResize", [this] (const choc::value::ValueView& args) -> choc::value::Value
+        {
+            if (args.isArray() && args.size() >= 2 && onResizeRequest)
+            {
+                auto width  = args[0].getWithDefault<int> (0);
+                auto height = args[1].getWithDefault<int> (0);
+
+                if (width >= 300 && width <= 8000 && height >= 200 && height <= 8000)
+                    onResizeRequest (width, height);
+            }
+
+            return {};
+        });
 
         // Njohrr: preset / sample / wavetable folder access (Documents/Njohrr)
         w.bind ("njo", [] (const choc::value::ValueView& args) -> choc::value::Value

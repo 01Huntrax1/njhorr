@@ -75,3 +75,4 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 * **LFO shape editor**: click to add a point, drag to move, double-click a point to delete it, drag the diamond on a segment to bend it, optional grid snap. The shape menu holds the 6 built-in waves plus drawn presets. Drawn shapes are sent to the DSP as a 256-point table (`lfoShapeLoad`), and saved per plugin instance and in presets.
 * Per LFO: **Mode** Free / Trig (restart per note) / Env (one-shot), **Rate** in Hz or tempo sync with a division, **Delay**, **Rise** (fade-in), **Smooth**, **Phase**.
 * Tests: `cd tests && npm test` (also `modui.test.js`).
+* **Window size**: the dropdown in the top bar (75% - 200% of 1180x760) resizes the plugin window through a native `njoResize` hook (`cmaj_PatchWebView.h` / `cmaj_JUCEPlugin.h`). It only shows up inside the plugin; dragging the window edge also works and the UI scales to fit. The size is stored with the plugin state.
