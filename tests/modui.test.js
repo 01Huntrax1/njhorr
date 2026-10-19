@@ -1,7 +1,7 @@
 // Serum-style layout, LFO shape editor and drag-and-drop modulation (jsdom)
 const fs = require("fs"), path = require("path");
 const { JSDOM } = require("jsdom");
-const code = fs.readFileSync(process.argv[2] || path.join(__dirname, "..", "patch", "index.js"), "utf8").replace("export default function createPatchView", "function createPatchView");
+const code = fs.readFileSync(process.argv[2] || path.join(__dirname, "..", "patch", "index.js"), "utf8").replace("export default function createPatchView", "function createPatchView").replace(/<style>[\s\S]*?<\/style>/, "");   // jsdom is far faster without the big stylesheet
 let failures = 0;
 const check = (n, c, x) => { console.log((c ? "PASS " : "FAIL ") + n + (x ? "  (" + x + ")" : "")); if (!c) failures++; };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -28,14 +28,14 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     const w = makeWebView(), pc = makePC();
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(150);
 
-    check("top tabs are OSC / FILTER / FX / MIXER", [...V.querySelectorAll(".tab")].map(t => t.textContent).join() === "OSC,FILTER,FX,MIXER");
-    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "SYNTH,SAMPLER 1,SAMPLER 2,WT 1,WT 2,WT 3");
-    V.querySelector('.stab[data-page="wt2"]').click();
-    check("sub tab opens WT 2", V.getAttribute("data-page") === "wt2" && V.getAttribute("data-group") === "osc");
+    check("top tabs are OSC / FM / FX / GLOBAL", [...V.querySelectorAll(".tab")].map(t => t.textContent).join() === "OSC,FM,FX,GLOBAL");
+    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6");
+    V.querySelector('.stab[data-page="o1"]').click();
+    check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "osc");
     V.querySelector('.tab[data-group="fx"]').click();
     check("FX group", V.getAttribute("data-page") === "fx");
     V.querySelector('.tab[data-group="osc"]').click();
-    check("OSC group remembers the sub tab", V.getAttribute("data-page") === "wt2");
+    check("OSC group remembers the sub tab", V.getAttribute("data-page") === "o1");
     check("old LFO/ENV/MOD pages are gone", !V.querySelector(".p-lfo, .p-env, .p-mod"));
     check("10 LFO + 10 ENV chips", V.querySelectorAll(".bs-lfo .msrc").length === 10 && V.querySelectorAll(".bs-env .msrc:not(.misc)").length === 10);
 
@@ -64,12 +64,12 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
 
     // drag and drop
     V.selectLfo(0);
-    const knob = V.querySelector('.control[data-param="param13"]');
-    check("cutoff is a mod target", !!V.modTargetOf(knob.querySelector(".knob")) && V.modTargetOf(knob).dst === 2);
-    const slot = V.modAssign(1, 2, 0.5);
-    check("assign uses the first free slot", slot === 0 && Math.round(ctl(V, 307).value) === 1 && Math.round(ctl(V, 308).value) === 2 && Math.abs(ctl(V, 309).value - 0.5) < 1e-6);
-    check("same pair updates, not duplicates", V.modAssign(1, 2, -0.3) === 0 && Math.abs(ctl(V, 309).value + 0.3) < 1e-6);
-    check("second source takes next slot", V.modAssign(11, 2, 0.4) === 1);
+    const knob = V.querySelector('.control[data-param="param1032"]');
+    check("OSC 1 cutoff is a mod target", !!V.modTargetOf(knob.querySelector(".knob")) && V.modTargetOf(knob).dst === 12);
+    const slot = V.modAssign(1, 12, 0.5);
+    check("assign uses the first free slot", slot === 0 && Math.round(ctl(V, 307).value) === 1 && Math.round(ctl(V, 308).value) === 12 && Math.abs(ctl(V, 309).value - 0.5) < 1e-6);
+    check("same pair updates, not duplicates", V.modAssign(1, 12, -0.3) === 0 && Math.abs(ctl(V, 309).value + 0.3) < 1e-6);
+    check("second source takes next slot", V.modAssign(11, 12, 0.4) === 1);
     V.updateModRings();
     check("ring + dot on the modulated knob", knob.classList.contains("modded") && !!knob.querySelector(".mdot"));
     check("dot shows count of 2", knob.querySelector(".mdot").textContent === "2");

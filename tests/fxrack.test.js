@@ -5,7 +5,7 @@ const path = require("path");
 const { JSDOM } = require("jsdom");
 
 const indexPath = process.argv[2] || path.join(__dirname, "..", "patch", "index.js");
-const code = fs.readFileSync(indexPath, "utf8").replace("export default function createPatchView", "function createPatchView");
+const code = fs.readFileSync(indexPath, "utf8").replace("export default function createPatchView", "function createPatchView").replace(/<style>[\s\S]*?<\/style>/, "");   // jsdom is far faster without the big stylesheet
 let failures = 0;
 const check = (name, cond, extra) => { console.log((cond ? "PASS " : "FAIL ") + name + (extra ? "  (" + extra + ")" : "")); if (!cond) failures++; };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -101,17 +101,17 @@ const ctl = (v, n) => v._controls.get("param" + n);
     A.querySelector('.fxtab[data-rack="1"]').click();
     check("tab switches the visible rack", A.querySelector('.f-rack[data-rack="1"]').classList.contains("on") && !A.querySelector('.f-rack[data-rack="0"]').classList.contains("on"));
     check("tab marks racks in use", A.querySelector('.fxtab[data-rack="1"]').classList.contains("used") && A.querySelector('.fxtab[data-rack="2"]').classList.contains("used"));
-    ctl(A, 874).setValue(2, true);
-    check("source output route is sent", last(pcA, "param874") === 2 && A.querySelectorAll(".chrt").length === 9);
+    ctl(A, 1003).setValue(2, true);
+    check("source output route is sent", last(pcA, "param1003") === 2);
     ctl(A, 880).setValue(0.5, true);
     check("bus level is sent", last(pcA, "param880") === 0.5);
     const sv = A.collectParams();
-    check("preset stores routes, bus levels and bus racks", sv["874"] === 2 && sv["880"] === 0.5 && sv["661"] === 10 && sv["761"] === 8 && sv["751"] === 1);
+    check("preset stores routes, bus levels and bus racks", sv["1003"] === 2 && sv["880"] === 0.5 && sv["661"] === 10 && sv["761"] === 8 && sv["751"] === 1);
     const E = mount(makeWebView(), makePC());
     await sleep(100);
     await E.presetApply({ name: "bus", params: sv, refs: {} });
-    check("preset restores bus state", E._fxTypes[11] === 10 && E._fxTypes[20] === 8 && JSON.stringify(E.fxOrderNow(1)) === JSON.stringify(A.fxOrderNow(1)) && ctl(E, 874).value === 2 && ctl(E, 880).value === 0.5);
-    ctl(A, 874).setValue(0, true); ctl(A, 880).setValue(1, true); ctl(A, 661).setValue(0, true); ctl(A, 761).setValue(0, true);
+    check("preset restores bus state", E._fxTypes[11] === 10 && E._fxTypes[20] === 8 && JSON.stringify(E.fxOrderNow(1)) === JSON.stringify(A.fxOrderNow(1)) && ctl(E, 1003).value === 2 && ctl(E, 880).value === 0.5);
+    ctl(A, 1003).setValue(0, true); ctl(A, 880).setValue(1, true); ctl(A, 661).setValue(0, true); ctl(A, 761).setValue(0, true);
 
     // ---- preset round trip
     ctl(A, 541).setValue(4, true); ctl(A, 546).setValue(0.9, true);     // chorus in slot 1, P3? (param546 = P3 of slot 1)

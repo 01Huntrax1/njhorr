@@ -1,0 +1,37 @@
+
+  /* oscillator slot pages */
+  .page[data-src] { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
+  .o-src { grid-column: 1 / span 4; } .o-tune { grid-column: 5 / span 2; } .o-flt { grid-column: 7 / span 4; } .o-out { grid-column: 11 / span 2; }
+  .o-g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .o-g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .o-g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .card .cgrid { flex: 1 1 auto; align-content: space-evenly; align-items: center; row-gap: calc(var(--u) * 3); }
+  .o-src .cgrid, .o-flt .cgrid, .o-tune .cgrid { margin-top: calc(var(--u) * 4); }
+  .o-type { flex: 0 0 auto; } .o-type .control .row { display: none; }
+  .osc-canvas, .flt-canvas { display: block; flex: 0 0 auto; width: 100%; height: calc(var(--u) * 96); margin-top: calc(var(--u) * 5); background: #0d0404; border: 1px solid #7a1d18; border-radius: calc(var(--u) * 4); box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 0 14px rgba(255,59,48,0.25); }
+  .osc-info { flex: 0 0 auto; margin-top: calc(var(--u) * 3); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--u) * 7.5); letter-spacing: 0.06em; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .o-mem { flex: 0 0 auto; display: flex; gap: calc(var(--u) * 6); align-items: stretch; margin-top: calc(var(--u) * 4); }
+  .o-mem .dz { flex: 1 1 auto; margin: 0; height: calc(var(--u) * 26); font-size: calc(var(--u) * 9); }
+  .o-sub, .o-uni { display: contents; }
+  .o-uni { display: grid; margin-top: calc(var(--u) * 2); }
+  .o-uh { grid-column: 1 / -1; font-size: calc(var(--u) * 8); font-weight: 800; letter-spacing: 0.16em; color: var(--org); text-transform: uppercase; }
+  .o-h2 { margin-top: calc(var(--u) * 8); }
+  .o-flt .cgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .page[data-src] .cgrid > .control.w2, .page[data-src] .cgrid > .control.wide { grid-column: auto; }
+  .page[data-src] .o-flt .cgrid > .control.sel, .page[data-src] .o-flt .cgrid > .control.btns { grid-column: span 2; }
+  .page[data-src] .o-out .cgrid > .control.sel, .page[data-src] .o-out .cgrid > .control.btns, .page[data-src] .o-pl > .control.sel,
+  .page[data-src] .o-tune .cgrid > .control.btns.wide, .page[data-src] .o-g3 > .control.btns { grid-column: 1 / -1; }
+  .page[data-src] .knb .knob { width: calc(var(--u) * 32); height: calc(var(--u) * 32); }
+  .osc-canvas, .flt-canvas { height: calc(var(--u) * 72); }
+  /* FM matrix */
+  .p-fm { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .fm-grid { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: calc(var(--u) * 76) repeat(6, minmax(0, 1fr)); grid-template-rows: auto repeat(6, minmax(0, 1fr)); gap: calc(var(--u) * 3); margin-top: calc(var(--u) * 4); }
+  .fm-corner { font-size: calc(var(--u) * 7); letter-spacing: 0.08em; color: var(--dim); align-self: end; }
+  .fm-h { font-family: Impact, "Arial Black", "Bahnschrift", sans-serif; font-size: calc(var(--u) * 10); letter-spacing: 0.1em; color: var(--yel); text-align: center; align-self: center; }
+  .fm-r { text-align: left; }
+  .fm-c { display: flex; align-items: center; justify-content: center; min-height: 0; background: rgba(0,0,0,0.25); border: 1px solid transparent; border-radius: 2px; }
+  .fm-c.fb { border-color: #6a2a22; background: rgba(255,59,48,0.07); }
+  .fm-c .control { width: 100%; }
+  .fm-note { flex: 0 0 auto; margin-top: calc(var(--u) * 5); font-size: calc(var(--u) * 8); color: var(--dim); letter-spacing: 0.04em; }
+  /* global page */
+  .p-glob { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
+  .g-voice { grid-column: 1 / span 2; } .g-amp { grid-column: 3 / span 3; } .g-peg { grid-column: 6 / span 2; } .g-out { grid-column: 8 / span 5; }
+  .g-voice .cgrid, .g-peg .cgrid { grid-template-columns: minmax(0, 1fr); } .g-amp .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g-out .cgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

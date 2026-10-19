@@ -1,6 +1,6 @@
 {
   "name": "njohrr-ui-tests",
   "private": true,
-  "scripts": { "test": "node persistence.test.js && node fxrack.test.js && node modui.test.js" },
+  "scripts": { "test": "node persistence.test.js && node fxrack.test.js && node modui.test.js && node osc.test.js" },
   "devDependencies": { "jsdom": "^24.1.3" }
 }
