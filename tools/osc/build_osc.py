@@ -358,16 +358,11 @@ src = src[:a] + midi + src[b:]
 
 # ---------- new oscillator code ----------
 dsp = open(os.path.join(HERE, "osc_dsp.cmajor.part")).read()
-pl = os.path.join(HERE, "plaits_dsp.cmajor.part")
-plaits = open(pl).read() if os.path.exists(pl) else """    float plaitsStep (int vi, int o, float freq, float pm)
-    {
-        return 0.0f;
-    }
-
-    void plaitsNoteOn (int vi, int o)
-    {
-    }
-"""
+import subprocess, tempfile
+_t = tempfile.NamedTemporaryFile(suffix=".part", delete=False); _t.close()
+subprocess.check_call([sys.executable, os.path.join(HERE, "..", "plaits", "build.py"), "part", _t.name])
+plaits = open(_t.name).read()
+os.unlink(_t.name)
 dsp = re.sub(r'    // Plaits slot: filled in.*?\n    \}\n', '', dsp, flags=re.S)
 anchor = "    // ---------------- MIDI ----------------"
 src = src.replace(anchor, dsp + "\n" + plaits + "\n" + anchor, 1)

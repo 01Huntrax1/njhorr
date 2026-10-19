@@ -114,7 +114,11 @@
                     }
                     else
                     {
-                        sL = plaitsStep (i, o, freq, pm);
+                        sL = plaitsStep (i, o, int (op.at (ob + 24) + 0.5f), freq / sr, pm,
+                                         clamp (op.at (ob + 25) + vmod.at (dB + 3) * 0.5f, 0.0f, 1.0f),
+                                         clamp (op.at (ob + 26) + vmod.at (dB + 4) * 0.5f, 0.0f, 1.0f),
+                                         clamp (op.at (ob + 27) + vmod.at (dB + 5) * 0.5f, 0.0f, 1.0f),
+                                         voices.at (i).stage <= 2);
                         sR = sL;
                     }
 

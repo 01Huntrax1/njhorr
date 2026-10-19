@@ -1,0 +1,45 @@
+// Renders one Plaits engine port (raw engine output, no post processing) for comparison with the original C++.
+processor PlaitsTest
+{
+    input event float evEngine, evNote, evHarm, evTimb, evMorph, evTrigBlocks, evInstance;
+    output stream float out;
+    output stream float aux;
+
+    float engine, note, harm = 0.5f, timb = 0.5f, morph = 0.5f;
+    int   inst, trigBlocks = 1000000;
+    int   blockIndex = 0;
+
+    event evEngine (float v)      { engine = v; plEngine.at (inst) = 0; blockIndex = 0; }
+    event evNote (float v)        { note = v; }
+    event evHarm (float v)        { harm = v; }
+    event evTimb (float v)        { timb = v; }
+    event evMorph (float v)       { morph = v; }
+    event evTrigBlocks (float v)  { trigBlocks = int (v); }
+    event evInstance (float v)    { inst = int (v); plEngine.at (inst) = 0; }
+
+//@PLAITS@
+
+    void main()
+    {
+        loop
+        {
+            if (plEngine.at (inst) != int (engine) + 1)
+            {
+                plEngine.at (inst) = int (engine) + 1;
+                plInitEngine (inst, int (engine));
+                blockIndex = 0;
+            }
+
+            int trig = (blockIndex == 0 ? 1 : 0) | (blockIndex < trigBlocks ? 4 : 0);
+            plRenderEngine (inst, int (engine), trig, note, harm, timb, morph, 0.8f);
+            ++blockIndex;
+
+            for (int i = 0; i < 12; ++i)
+            {
+                out <- plOut.at (inst * 12 + i);
+                aux <- plAux.at (inst * 12 + i);
+                advance();
+            }
+        }
+    }
+}

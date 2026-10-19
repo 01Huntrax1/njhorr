@@ -1,0 +1,84 @@
+    // ---------------- engine 8: Virtual analog (plaits/dsp/engine/virtual_analog_engine.cc, VA_VARIANT 2) ----------------
+    struct PlVa { PlVso primary; PlVso auxiliary; PlVso sync; PlVsaw saw; float auxAmount; float xmodAmount; }
+
+    PlVa[48] plVa;
+
+    void plInit_8 (int inst)
+    {
+        plVsoInit (plVa.at (inst).primary);
+        plVsoInit (plVa.at (inst).auxiliary);
+        plVa.at (inst).auxiliary.masterPhase = 0.25f;
+        plVsoInit (plVa.at (inst).sync);
+        plVsawInit (plVa.at (inst).saw);
+        plVa.at (inst).auxAmount = 0.0f;
+        plVa.at (inst).xmodAmount = 0.0f;
+    }
+
+    float plVaSquash (float x)  { return x * x * (3.0f - 2.0f * x); }
+
+    float plVaDetuning (float detune)
+    {
+        detune = clamp (2.05f * detune - 1.025f, -1.0f, 1.0f);
+        float sign = detune < 0.0f ? -1.0f : 1.0f;
+        detune = detune * sign * 3.9999f;
+        int   di = int (detune);
+        float df = detune - float (di);
+        float a = di == 0 ? 0.0f : (di == 1 ? 7.01f : (di == 2 ? 12.01f : 19.01f));
+        float b = di == 0 ? 7.01f : (di == 1 ? 12.01f : (di == 2 ? 19.01f : 24.01f));
+        return (a + (b - a) * plVaSquash (plVaSquash (df))) * sign;
+    }
+
+    void plRender_8 (int inst, int trig, float note, float harmonics, float timbre, float morph, float accent)
+    {
+        float syncAmount  = timbre * timbre;
+        float auxDetune   = plVaDetuning (harmonics);
+        float primaryF    = plNoteToFrequency (note);
+        float auxF        = plNoteToFrequency (note + auxDetune);
+        float primarySyncF = plNoteToFrequency (note + syncAmount * 48.0f);
+        float auxSyncF    = plNoteToFrequency (note + auxDetune + syncAmount * 48.0f);
+
+        float shape = clamp (morph * 1.5f, 0.0f, 1.0f);
+        float pw    = clamp (0.5f + (morph - 0.66f) * 1.46f, 0.5f, 0.995f);
+
+        float[12] out;
+        float[12] aux;
+        float[12] temp;
+
+        plVsoRender (plVa.at (inst).primary, true, false, primaryF, primarySyncF, pw, shape, 0.0f, out);
+        plVsoRender (plVa.at (inst).auxiliary, true, false, auxF, auxSyncF, pw, shape, 0.0f, aux);
+
+        for (int i = 0; i < 12; ++i)
+            aux.at (i) = (aux.at (i) - out.at (i)) * 0.5f;
+
+        float squarePw = clamp (1.3f * timbre - 0.15f, 0.005f, 0.5f);
+        float squareSyncRatio = timbre < 0.5f ? 0.0f : (timbre - 0.5f) * (timbre - 0.5f) * 4.0f * 48.0f;
+        float squareGain = min (timbre * 8.0f, 1.0f);
+
+        float sawPw = morph < 0.5f ? morph + 0.5f : 1.0f - (morph - 0.5f) * 2.0f;
+        sawPw = clamp (sawPw * 1.1f, 0.005f, 1.0f);
+        float sawShape = clamp (10.0f - 21.0f * morph, 0.0f, 1.0f);
+        float sawGain  = clamp (8.0f * (1.0f - morph), 0.02f, 1.0f);
+
+        float squareSyncF = plNoteToFrequency (note + squareSyncRatio);
+
+        plVsoRender (plVa.at (inst).sync, true, false, primaryF, squareSyncF, squarePw, 1.0f, 0.0f, temp);
+        plVsawRender (plVa.at (inst).saw, auxF, sawPw, sawShape, out);
+
+        float norm = 1.0f / max (squareGain, sawGain);
+        float sqTarget = squareGain * 0.3f * norm;
+        float swTarget = sawGain * 0.5f * norm;
+        float sqInc = (sqTarget - plVa.at (inst).auxAmount) / 12.0f;   float sqV = plVa.at (inst).auxAmount;
+        float swInc = (swTarget - plVa.at (inst).xmodAmount) / 12.0f;  float swV = plVa.at (inst).xmodAmount;
+
+        for (int i = 0; i < 12; ++i)
+        {
+            sqV += sqInc;
+            swV += swInc;
+            out.at (i) = out.at (i) * swV + sqV * temp.at (i);
+            plOut.at (inst * 12 + i) = out.at (i);
+            plAux.at (inst * 12 + i) = aux.at (i);
+        }
+
+        plVa.at (inst).auxAmount = sqV;
+        plVa.at (inst).xmodAmount = swV;
+    }
