@@ -205,5 +205,13 @@ for t in range(3):
                 P(0, "fres", 1), P(1, "fres", 1), P(0, "ftype", 8 * t), P(1, "ftype", 20 + t), P(0, "ddrv", 1), P(0, "dtype", 5)], hold=0.3, tail=0.05, tag="ext%d" % t)
     if not np.isfinite(a).all(): ok = False
 check("extreme settings stay finite", ok)
+
+# ---------------------------------------------------------------- Plaits slot
+for eng in range(24):
+    a = render([P(0, "type", 2), P(0, "pleng", eng), P(0, "level", 0.8), FOFF(0)], note=57, hold=0.6, tail=0.2, tag="pl%d" % eng)
+    good = np.isfinite(a).all() and rms(a[int(0.05 * RATE):int(0.6 * RATE)]) > 1e-3 and np.abs(a).max() < 4
+    check("Plaits engine %d sounds and stays finite" % eng, good, "rms %.3f peak %.2f" % (rms(a), np.abs(a).max()))
+a = render([P(0, "type", 2), P(0, "pleng", 10), P(0, "pharm", 0), P(0, "ptimb", 0), P(0, "pmorph", 0), P(0, "level", 0.8), FOFF(0)], note=69, tag="plpitch")
+check("Plaits slot follows the keyboard pitch (A4)", abs(peak_freq(seg(a)[:, 0]) - 440) < 3, "%.1f" % peak_freq(seg(a)[:, 0]))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

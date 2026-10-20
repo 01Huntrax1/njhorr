@@ -64,6 +64,21 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 `542767d`), `tools/rack/apply_rack_ui.py` (first UI step, since extended by hand). Tests: `tools/rack/test_rack.py` (audio, needs a build of
 `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
 
+## Oscillator slots, per-slot filter/distortion and the FM matrix
+The oscillator section is six identical slots (OSC 1-6). Each slot's **Source** is one of:
+* **Wavetable** - position, unison (voices/detune/blend), two warp stages.
+* **Sampler** - root key, start/end, loop, key tracking.
+* **Plaits** - all 24 engines of Mutable Instruments Plaits, ported to Cmajor (`tools/plaits/`) and checked sample by sample against the original C++ (`python3 tools/plaits/compare.py <engine>`; see `tools/plaits/PORTING.md`). The knobs are the engine's Harmonics / Timbre / Morph and follow the engine's own meaning.
+
+Every slot has its own 30-type filter (with its own envelope), a distortion (Off + 6 types), level, pan and output (Main / Bus 1 / Bus 2). The old mixer is replaced by the **FM page**: a 6x6 FM matrix (row = modulator, column = carrier, including self feedback). The old filter section, Synth osc 1/2, Supersaw, EQ and mixer no longer exist. **Presets from earlier versions do not load** (new layout and parameter ids).
+
+Notes and limits:
+* Plaits runs in 12-sample blocks like the original, with Plaits' reference constants at the host sample rate. FM into a Plaits slot is therefore block-rate pitch modulation (cleaner for slow modulation than for audio-rate FM).
+* Plaits' "unpatched trigger" sustain modes of the percussive/string/six-op engines are omitted (the synth always supplies a trigger). Wave terrain has the 8 built-in terrains.
+* Plaits state is allocated per voice and slot (48 instances); the String engine is the heaviest (about 190k floats in total).
+* Sample and wavetable memory is stored per plugin instance (see below); the DSP is regenerated with `tools/osc/build_osc.py`, audio tests: `tools/osc/test_osc.py --host <dsp_host>`.
+* The window resize hook has not been tested in a real plugin host.
+
 ## UI embedded in cmajor_plugin.cpp
 `cmajor_plugin.cpp` is generated from `patch/` (DSP and UI together). After changing `patch/`, regenerate it as described above.
 
