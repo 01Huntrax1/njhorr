@@ -28,14 +28,16 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     const w = makeWebView(), pc = makePC();
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(150);
 
-    check("top tabs are OSC / FM / FX / GLOBAL", [...V.querySelectorAll(".tab")].map(t => t.textContent).join() === "OSC,FM,FX,GLOBAL");
-    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6");
+    check("rail pages are synth, effects, modulation", [...V.querySelectorAll(".rb")].map(t => t.textContent.replace(/^\d/, "")).join() === "SYNTH,EFFECTS,MODULATION");
+    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM MATRIX,GLOBAL");
     V.querySelector('.stab[data-page="o1"]').click();
-    check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "osc");
-    V.querySelector('.tab[data-group="fx"]').click();
+    check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "synth");
+    V.querySelector('.rb[data-group="fx"]').click();
     check("FX group", V.getAttribute("data-page") === "fx");
-    V.querySelector('.tab[data-group="osc"]').click();
-    check("OSC group remembers the sub tab", V.getAttribute("data-page") === "o1");
+    V.querySelector('.rb[data-group="mod"]').click();
+    check("modulation page shows matrix and editors", V.getAttribute("data-group") === "mod" && V.querySelector(".bs-mtx .mtx2"));
+    V.querySelector('.rb[data-group="synth"]').click();
+    check("synth page remembers the sub tab", V.getAttribute("data-page") === "o1");
     check("old LFO/ENV/MOD pages are gone", !V.querySelector(".p-lfo, .p-env, .p-mod"));
     check("10 LFO + 10 ENV chips", V.querySelectorAll(".bs-lfo .msrc").length === 10 && V.querySelectorAll(".bs-env .msrc:not(.misc)").length === 10);
 

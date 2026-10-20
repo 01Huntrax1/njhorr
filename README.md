@@ -64,6 +64,9 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 `542767d`), `tools/rack/apply_rack_ui.py` (first UI step, since extended by hand). Tests: `tools/rack/test_rack.py` (audio, needs a build of
 `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
 
+## Layout
+Three pages in the rail on the left, top to bottom: **1 Synth** (OSC 1-6, FM matrix, Global as tabs along the top), **2 Effects** (the three FX racks) and **3 Modulation** (the 20-slot matrix plus the envelope and LFO editors). The envelope / LFO strip stays at the bottom of the Synth and Effects pages so handles can be dragged onto knobs.
+
 ## Oscillator slots, per-slot filter/distortion and the FM matrix
 The oscillator section is six identical slots (OSC 1-6). Each slot's **Source** is one of:
 * **Wavetable** - position, unison (voices/detune/blend), two warp stages.

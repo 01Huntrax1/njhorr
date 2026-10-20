@@ -1154,22 +1154,28 @@ class EisenpulsPatchView extends HTMLElement {
     // ---------- tabs ----------
     buildTabs () {
         this._oscPage = "o0";
-        this.querySelectorAll(".tab").forEach(t => {
+        this.querySelectorAll(".rb").forEach(t => {
             t.setAttribute("tabindex", "-1");
             t.addEventListener("click", () => { this.setGroup(t.dataset.group); t.blur(); });
         });
         this.querySelectorAll(".stab").forEach(t => {
             t.setAttribute("tabindex", "-1");
-            t.addEventListener("click", () => { this._oscPage = t.dataset.page; this.setGroup("osc"); t.blur(); });
+            t.addEventListener("click", () => { this._oscPage = t.dataset.page; this.setGroup("synth"); t.blur(); });
         });
-        this.setGroup("osc");
+        this.setGroup("synth");
     }
 
+    // three pages, top to bottom in the rail: synth, effects, modulation
     setGroup (g) {
         this._group = g;
         this.setAttribute("data-group", g);
-        this.querySelectorAll(".tab").forEach(t => t.classList.toggle("on", t.dataset.group === g));
-        this.setPage(g === "osc" ? this._oscPage : g);
+        this.querySelectorAll(".rb").forEach(t => t.classList.toggle("on", t.dataset.group === g));
+        this.setPage(g === "synth" ? this._oscPage : g);
+        // the matrix page shows the matrix and the envelope / LFO editors together; the other pages keep only the editors
+        if (g !== "mod" && this._bs !== "mod") this.showStrip("mod");
+        if (g === "mod") { this._stripWas = this._stripOpen; if (!this._stripOpen) this.setStripOpen(true); }
+        else if (this._stripWas === false) { this._stripWas = undefined; this.setStripOpen(false); }
+        if (this._stripOpen) { this.drawLfo(); this.drawEnv(); }
     }
 
     setPage (p) {
@@ -2483,7 +2489,7 @@ class EisenpulsPatchView extends HTMLElement {
   .card h2::after { content: ""; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 7px); }
   .cgrid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: space-between; align-items: end; gap: calc(var(--u) * 2) calc(var(--u) * 12); }
 
-  .mgr-status, .wt-status, .s2-status { flex: 0 0 auto; margin-top: calc(var(--u) * 6); padding: calc(var(--u) * 4) calc(var(--u) * 6); border: 1px solid var(--line); border-radius: 1px; background: #110505; box-shadow: inset 0 0 6px rgba(0,0,0,0.9);
+  .mgr-status, .wt-status, .s2-status { flex: 0 0 auto; margin-top: calc(var(--u) * 6); padding: calc(var(--u) * 4) calc(var(--u) * 6); border: 1px solid var(--line); border-radius: 1px; background: #110505; box-shadow: inset 0 0 6px rgba(0,0,0,0.9); }
   /* mod page */
   .p-lfo, .p-env, .p-mod { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
   .m-lfo { grid-column: 2 / span 10; grid-row: 1; }
@@ -2818,7 +2824,7 @@ class EisenpulsPatchView extends HTMLElement {
 
   /* serum style layout: top groups, oscillator sub tabs, bottom modulation strip */
   .subtabs { display: none; flex: 0 0 auto; gap: calc(var(--u) * 3); }
-  eisenpuls-view[data-group="osc"] .subtabs { display: flex; }
+  eisenpuls-view[data-group="synth"] .subtabs { display: flex; }
   .stab { font-family: inherit; font-size: calc(var(--u) * 9); font-weight: 800; letter-spacing: 0.06em; padding: calc(var(--u) * 4) calc(var(--u) * 10); border: 1px solid var(--line); border-radius: 1px; background: var(--panel); color: var(--dim); cursor: pointer; }
   .stab.on { background: var(--panel2); color: var(--yel); border-color: var(--yel); }
   .bstrip { flex: 0 0 auto; height: calc(var(--u) * 190); display: flex; flex-direction: column; background: linear-gradient(#25282c, #1a1c1f); border: 1px solid var(--line); border-radius: calc(var(--u) * 2); min-height: 0; }
@@ -2914,25 +2920,50 @@ class EisenpulsPatchView extends HTMLElement {
   .p-glob { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
   .g-voice { grid-column: 1 / span 2; } .g-amp { grid-column: 3 / span 3; } .g-peg { grid-column: 6 / span 2; } .g-out { grid-column: 8 / span 5; }
   .g-voice .cgrid, .g-peg .cgrid { grid-template-columns: minmax(0, 1fr); } .g-amp .cgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g-out .cgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* left page rail: synth / effects / modulation, top to bottom */
+  .body { flex: 1 1 0; min-height: 0; display: flex; gap: calc(var(--u) * 8); }
+  .main { flex: 1 1 0; min-width: 0; min-height: 0; display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
+  .prail { flex: 0 0 calc(var(--u) * 66); display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
+  .rb { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--u) * 6); font-family: inherit; font-size: calc(var(--u) * 8); font-weight: 800; letter-spacing: 0.06em; color: var(--ink); cursor: pointer; background: linear-gradient(#303134, #17181a); border: 1px solid #4c4d51; border-radius: calc(var(--u) * 8) 1px calc(var(--u) * 8) 1px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.12); }
+  .rb b { font-family: Impact, "Arial Black", sans-serif; font-size: calc(var(--u) * 26); font-weight: 400; color: var(--dim); letter-spacing: 0; }
+  .rb:hover { border-color: #ff3b30; color: #fff; }
+  .rb.on { background: linear-gradient(#ff4a3a, #a3140c); color: #fff; border-color: #ff6a5c; text-shadow: 0 1px 0 rgba(0,0,0,0.6); box-shadow: 0 0 10px var(--glow), inset 0 1px 0 rgba(255,255,255,0.35); }
+  .rb.on b { color: rgba(255,255,255,0.85); }
+  .stab-x { margin-left: auto; }
+  .stab-x + .stab { margin-left: 0; }
+  /* modulation page: matrix and editors fill the window, the stage is hidden */
+  eisenpuls-view[data-group="mod"] .stage { display: none; }
+  eisenpuls-view[data-group="mod"] .bstrip { flex: 1 1 0; height: auto; min-height: 0; }
+  eisenpuls-view[data-group="mod"] .bs-tabs .bst, eisenpuls-view[data-group="mod"] .bs-toggle, eisenpuls-view[data-group="mod"] .bs-hint { display: none; }
+  eisenpuls-view[data-group="mod"] .bs-tabs::before { content: "MODULATION MATRIX"; font-family: Impact, "Arial Black", sans-serif; letter-spacing: 0.12em; font-size: calc(var(--u) * 11); color: var(--yel); }
+  eisenpuls-view[data-group="mod"] .bs-body { display: flex; flex-direction: column; gap: calc(var(--u) * 6); }
+  eisenpuls-view[data-group="mod"] .bs-pane { position: relative; inset: auto; display: flex !important; flex: 1 1 0; min-height: 0; }
+  eisenpuls-view[data-group="mod"] .bs-mtx { display: block !important; overflow: auto; flex: 1.1 1 0; }
+  eisenpuls-view:not([data-group="mod"]) .bst[data-bs="mtx"] { display: none; }
 </style>
 <div class="shell">
   <div class="top">
     <span class="logo">NJOHRR</span><span class="model">SYNTH</span><span class="version">V1.0.0</span>
-    <div class="tabs"><button type="button" class="tab on" data-group="osc">OSC</button><button type="button" class="tab" data-group="fm">FM</button><button type="button" class="tab" data-group="fx">FX</button><button type="button" class="tab" data-group="glob">GLOBAL</button></div>
     <div class="vu"><div class="vu-fill"></div></div>
     <select class="dd sizesel" title="Window size" style="display:none"><option value="0.75">75%</option><option value="1">100%</option><option value="1.25">125%</option><option value="1.5">150%</option><option value="1.75">175%</option><option value="2">200%</option><option value="custom" hidden>Custom</option></select>
     <div class="lcd"><span class="lcd-mode">OSC</span><span class="lcd-name">--</span><span class="lcd-val">--</span></div><span class="led"></span>
   </div>
   <div class="hz"></div>
-  <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button></div>
-  ${MGR_HTML}
-  <div class="stage">
-    ${oscPages}
-    <div class="page p-fm">${this.fmPageHTML()}</div>
-    <div class="page p-glob">${this.globalPageHTML()}</div>
-    <div class="page p-fx">${fxPage}</div>
+  <div class="body">
+    <nav class="prail"><button type="button" class="rb on" data-group="synth"><b>1</b>SYNTH</button><button type="button" class="rb" data-group="fx"><b>2</b>EFFECTS</button><button type="button" class="rb" data-group="mod"><b>3</b>MODULATION</button></nav>
+    <div class="main">
+    <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button><button type="button" class="stab stab-x" data-page="fm">FM MATRIX</button><button type="button" class="stab" data-page="glob">GLOBAL</button></div>
+      ${MGR_HTML}
+      <div class="stage">
+        ${oscPages}
+        <div class="page p-fm">${this.fmPageHTML()}</div>
+        <div class="page p-glob">${this.globalPageHTML()}</div>
+        <div class="page p-fx">${fxPage}</div>
+      </div>
+      ${strip}
+    </div>
   </div>
-  ${strip}
   ${MGR_OVERLAY_HTML}
 </div>`;
     }
