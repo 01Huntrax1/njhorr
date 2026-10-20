@@ -2,7 +2,8 @@
 OSC_COUNT = 6
 BASE = 1000          # first oscillator parameter id
 STRIDE = 64          # ids (and op[] entries) per oscillator
-FM_BASE = 1400       # 6x6 FM matrix: FM_BASE + 6*src + dst
+FM_BASE = 1400       # 6x6 frequency modulation matrix: FM_BASE + 6*src + dst
+PM_BASE = 1440       # 6x6 phase modulation matrix: PM_BASE + 6*src + dst
 OSC_STRIDE_NAMES = ["OSC %d" % (i + 1) for i in range(OSC_COUNT)]
 FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "HP24", "BP24", "Notch12", "Notch24",
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
@@ -66,3 +67,4 @@ def dst_index(o, j): return 6 + 9 * o + j
 N_DST = 6 + 9 * OSC_COUNT   # 60
 def pid(o, k): return BASE + STRIDE * o + k
 def fm_id(src, dst): return FM_BASE + 6 * src + dst
+def pm_id(src, dst): return PM_BASE + 6 * src + dst

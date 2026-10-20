@@ -6,6 +6,7 @@
 const fs = require("fs");
 const path = require("path");
 const { JSDOM } = require("jsdom");
+const cpExec = (c, a) => require("child_process").execFileSync(c, a, { stdio: "ignore" });
 
 const indexPath = process.argv[2] || path.join(__dirname, "..", "patch", "index.js");
 const code = fs.readFileSync(indexPath, "utf8").replace("export default function createPatchView", "function createPatchView").replace(/<style>[\s\S]*?<\/style>/, "");   // jsdom is far faster without the big stylesheet
@@ -165,6 +166,29 @@ const gather = (pc, ep, bank, total) => {
         V.clearMem(2);
         check("clear sends an empty chunk to the same bank", pc.sent.some(m => m.ep === EP.sm && m.v.bank === 2 && m.v.total === 0));
         check("clear removes the stored memory", !("njo.mem.osc2.sm" in pc.state));
+    }
+
+    // =============== scenario 7: the real decoder (no stub) loads WAV / AIFF / FLAC / mp3-less web views ===============
+    {
+        const w = makeWebView();
+        const pc = makePC();
+        const V = mount(w, pc);
+        await sleep(100);
+        const mkWav = (n, rate, bits) => {
+            const bw = bits / 8, b = Buffer.alloc(44 + n * 2 * bw);
+            b.write("RIFF", 0); b.writeUInt32LE(36 + n * 2 * bw, 4); b.write("WAVEfmt ", 8); b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(2, 22);
+            b.writeUInt32LE(rate, 24); b.writeUInt32LE(rate * 2 * bw, 28); b.writeUInt16LE(2 * bw, 32); b.writeUInt16LE(bits, 34); b.write("data", 36); b.writeUInt32LE(n * 2 * bw, 40);
+            for (let i = 0; i < n; i++) for (let c = 0; c < 2; c++) { const v = Math.sin(i * 2 * Math.PI * 441 / rate) * 0.4; if (bits === 16) b.writeInt16LE(Math.round(v * 32767), 44 + (i * 2 + c) * 2); else b.writeIntLE(Math.round(v * 8388607), 44 + (i * 2 + c) * 3, 3); }
+            return b;
+        };
+        const asFile = (buf, name) => ({ name, size: buf.length, arrayBuffer: async () => buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.length) });
+        const freq = x => { let z = 0; for (let i = 1; i < x.length; i++) if (x[i - 1] < 0 && x[i] >= 0) z++; return z * 48000 / x.length; };
+        for (const [name, buf] of [["pcm16 44.1k", mkWav(13230, 44100, 16)], ["pcm24 44.1k", mkWav(13230, 44100, 24)], ["pcm16 48k", mkWav(14400, 48000, 16)]]) {
+            const d = await V.decodeFile(asFile(buf, "t.wav"));
+            let pk = 0; for (let i = 0; i < d.len; i++) pk = Math.max(pk, Math.abs(d.mono[i]));
+            check("decodeFile loads WAV " + name, Math.abs(d.len - 14400) < 8 && Math.abs(pk - 0.9) < 0.02 && Math.abs(freq(d.mono) - 441) < 6, "len " + d.len + " peak " + pk.toFixed(3) + " f " + freq(d.mono).toFixed(1));
+        }
+        try { cpExec("ffmpeg", ["-version"]); } catch (_) { console.log("ffmpeg missing: format round trips skipped"); }
     }
 
     console.log(failures ? "\n" + failures + " FAILED" : "\nALL PASSED");

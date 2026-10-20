@@ -20,7 +20,8 @@
     }
 
     float[384]    op;
-    float[36]     fmAmt;
+    float[36]     fmAmt;      // frequency modulation
+    float[36]     pmAmt;      // phase modulation
     bool[6]       fmUsed;
 
     // wavetable memories (one per slot): 96000 samples cut into equal frames
@@ -55,17 +56,27 @@
             updateWtUni (o);
     }
 
-    void fmSet (int s, int d, float v)
+    void updateFmUsed()
     {
-        fmAmt.at (s * 6 + d) = v;
-
         for (int q = 0; q < 6; ++q)
         {
             bool u = false;
             for (int r = 0; r < 6; ++r)
-                if (fmAmt.at (q * 6 + r) != 0.0f) u = true;
+                if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
         }
+    }
+
+    void fmSet (int s, int d, float v)
+    {
+        fmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void pmSet (int s, int d, float v)
+    {
+        pmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
     }
 
     // ---------------- memories ----------------

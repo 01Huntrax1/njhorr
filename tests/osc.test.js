@@ -36,7 +36,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("labels are per slot", V.querySelector(".n1089 .lbl").textContent === "Species" && V.querySelector(".n1025 .lbl").textContent === "Attack");
     check("slot dest list covers 59", opts(308).length === 60 && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive");
     V.querySelector('.stab[data-page="fm"]').click();
-    check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fm-c").length === 36);
+    check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 72 && V.querySelectorAll(".fmx-panel").length === 2);
     V.querySelector('.stab[data-page="glob"]').click();
     check("global page opens", V.getAttribute("data-page") === "glob");
     console.log(failures ? failures + " FAILED" : "all passed");

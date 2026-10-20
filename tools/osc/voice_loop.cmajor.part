@@ -50,18 +50,24 @@
                 float cf     = voices.at (i).curFreq;
                 int   nnote  = voices.at (i).noteNumber;
 
-                // FM: every slot is modulated by the previous sample of the slots that feed it
+                // FM (frequency) and PM (phase): every slot is modulated by the previous sample of the slots that feed it
                 float[6] fmIn;
+                float[6] pmIn;
                 for (int fd = 0; fd < 6; ++fd)
                 {
                     float acc = 0.0f;
+                    float acp = 0.0f;
                     for (int fs = 0; fs < 6; ++fs)
                     {
                         float am = fmAmt.at (fs * 6 + fd);
                         if (am != 0.0f)
                             acc += am * voices.at (i).fmPrev.at (fs);
+                        float ap = pmAmt.at (fs * 6 + fd);
+                        if (ap != 0.0f)
+                            acp += ap * voices.at (i).fmPrev.at (fs);
                     }
                     fmIn.at (fd) = acc;
+                    pmIn.at (fd) = acp;
                 }
 
                 float[3] bInL;
@@ -86,8 +92,11 @@
                     float base  = cf;
                     if (op.at (ob + 7) <= 0.5f)
                         base = float (std::notes::noteToFrequency (int (op.at (ob + 12) + 0.5f)));
+                    float fmx   = fmIn.at (o);
+                    if (fmx != 0.0f)
+                        sExp += clamp (fmx, -2.0f, 2.0f) * 4.0f;   // exponential FM: +-4 octaves at full amount and full scale modulator
                     float freq  = clamp (base * float (pow (2.0f, sExp)), 1.0f, sr * 0.45f);
-                    float pm    = fmIn.at (o);
+                    float pm    = pmIn.at (o);
 
                     float sL = 0.0f;
                     float sR = 0.0f;

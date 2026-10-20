@@ -140,29 +140,29 @@ for t in range(1, 7):
     if not np.isfinite(a).all() or rms(a) < 1e-3: ok = False; print("  dist type", t)
 check("all 6 distortion types work", ok)
 
-# ---------------------------------------------------------------- FM matrix
-fm = L.fm_id
-base = [(28, 0), "wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1)]
-a0 = render(base, tag="fm0")
-check("without FM slot 2 is a pure sine", band(seg(a0)[:, 0], 600, 6000) < 0.05 * band(seg(a0)[:, 0], 400, 480))
-a1 = render(base + [(fm(0, 1), 0.3)], tag="fm1")
-check("FM from a silent (level 0) slot 1 into slot 2 creates sidebands", band(seg(a1)[:, 0], 600, 6000) > 0.2 * band(seg(a1)[:, 0], 400, 480))
-a2 = render(base + [(fm(0, 1), 0.6)], tag="fm2")
-check("more FM, more sidebands", band(seg(a2)[:, 0], 600, 6000) > band(seg(a1)[:, 0], 600, 6000))
-a3 = render(base + [(fm(0, 1), -0.3)], tag="fm3")
-check("negative FM amount works too", band(seg(a3)[:, 0], 600, 6000) > 0.2 * band(seg(a3)[:, 0], 400, 480))
-a4 = render([(28, 0), "wt 0 sine", P(0, "level", 0.8), FOFF(0), (fm(0, 0), 0.4)], tag="fmfb")
-check("self feedback (slot 1 into slot 1)", band(seg(a4)[:, 0], 600, 6000) > 0.1 * band(seg(a4)[:, 0], 400, 480) and np.isfinite(a4).all())
-ok = True
-for amt in (1.0, -1.0):
-    cm = ["wt %d morph" % o for o in range(6)] + [P(o, "wsize", 0) for o in range(6)] + [P(o, "level", 0.3) for o in range(6)]
-    for s in range(6):
-        for d in range(6): cm.append((fm(s, d), amt))
-    a = render(cm, hold=0.3, tail=0.05, tag="fmall")
-    if not np.isfinite(a).all() or np.abs(a).max() > 1.0001: ok = False
-check("full 6x6 matrix at +/-100% stays finite and bounded", ok)
-a5 = render(["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), (fm(0, 1), 0.3), P(0, "sloop", 1), P(1, "sloop", 1)], note=60, tag="fmsmp")
-check("sampler slots can FM each other", band(seg(a5)[:, 0], 400, 6000) > 0.2 * band(seg(a5)[:, 0], 240, 290) and np.isfinite(a5).all())
+# ---------------------------------------------------------------- FM and PM matrices
+for MOD, fm in (("FM", L.fm_id), ("PM", L.pm_id)):
+    base = [(28, 0), "wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1)]
+    a0 = render(base, tag=MOD+"fm0")
+    check(MOD + " without " + MOD + " slot 2 is a pure sine", band(seg(a0)[:, 0], 600, 6000) < 0.05 * band(seg(a0)[:, 0], 400, 480))
+    a1 = render(base + [(fm(0, 1), 0.3)], tag=MOD+"fm1")
+    check(MOD + " "+MOD+" from a silent (level 0) slot 1 into slot 2 creates sidebands", band(seg(a1)[:, 0], 600, 6000) > 0.2 * band(seg(a1)[:, 0], 400, 480))
+    a2 = render(base + [(fm(0, 1), 0.6)], tag=MOD+"fm2")
+    check(MOD + " more " + MOD + ", more sidebands", band(seg(a2)[:, 0], 600, 6000) > band(seg(a1)[:, 0], 600, 6000))
+    a3 = render(base + [(fm(0, 1), -0.3)], tag=MOD+"fm3")
+    check(MOD + " negative " + MOD + " amount works too", band(seg(a3)[:, 0], 600, 6000) > 0.2 * band(seg(a3)[:, 0], 400, 480))
+    a4 = render([(28, 0), "wt 0 sine", P(0, "level", 0.8), FOFF(0), (fm(0, 0), 0.4)], tag=MOD+"fmfb")
+    check(MOD + " self feedback (slot 1 into slot 1)", band(seg(a4)[:, 0], 600, 6000) > 0.1 * band(seg(a4)[:, 0], 400, 480) and np.isfinite(a4).all())
+    ok = True
+    for amt in (1.0, -1.0):
+        cm = ["wt %d morph" % o for o in range(6)] + [P(o, "wsize", 0) for o in range(6)] + [P(o, "level", 0.3) for o in range(6)]
+        for s in range(6):
+            for d in range(6): cm.append((fm(s, d), amt))
+        a = render(cm, hold=0.3, tail=0.05, tag=MOD+"fmall")
+        if not np.isfinite(a).all() or np.abs(a).max() > 1.0001: ok = False
+    check(MOD + " full 6x6 matrix at +/-100% stays finite and bounded", ok)
+    a5 = render(["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), (fm(0, 1), 0.3), P(0, "sloop", 1), P(1, "sloop", 1)], note=60, tag=MOD+"fmsmp")
+    check(MOD + " sampler slots can " + MOD + " each other", band(seg(a5)[:, 0], 400, 6000) > 0.2 * band(seg(a5)[:, 0], 240, 290) and np.isfinite(a5).all())
 
 # ---------------------------------------------------------------- unison / warp
 a_u = render(["wt 0 saw", FOFF(0), P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], tag="uni")

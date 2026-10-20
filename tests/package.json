@@ -1,6 +1,12 @@
 {
   "name": "njohrr-ui-tests",
   "private": true,
-  "scripts": { "test": "node persistence.test.js && node fxrack.test.js && node modui.test.js && node osc.test.js" },
-  "devDependencies": { "jsdom": "^24.1.3" }
+  "scripts": {
+    "test": "node audio.test.js && node persistence.test.js && node fxrack.test.js && node modui.test.js && node osc.test.js && npm run lint",
+    "lint": "eslint --no-eslintrc -c eslintrc.json ../patch/index.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3",
+    "eslint": "^8.57.0"
+  }
 }
