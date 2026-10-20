@@ -1,0 +1,138 @@
+    // ---------------- engine 13: Wavetable (plaits/dsp/engine/wavetable_engine.cc, factory banks) ----------------
+//@LUT lut_g4_waves
+
+    struct PlG4Wt { float phase; float xPre; float yPre; float zPre; float xLp; float yLp; float zLp;
+                  float prevX; float prevY; float prevZ; float prevF0; float dLp; float dPrev; }
+
+    PlG4Wt[48] plG4Wt;
+
+    void plInit_13 (int inst)
+    {
+        plG4Wt.at (inst).phase = 0.0f;
+        plG4Wt.at (inst).xLp = 0.0f;  plG4Wt.at (inst).yLp = 0.0f;  plG4Wt.at (inst).zLp = 0.0f;
+        plG4Wt.at (inst).xPre = 0.0f; plG4Wt.at (inst).yPre = 0.0f; plG4Wt.at (inst).zPre = 0.0f;
+        plG4Wt.at (inst).prevX = 0.0f; plG4Wt.at (inst).prevY = 0.0f; plG4Wt.at (inst).prevZ = 0.0f;
+        plG4Wt.at (inst).prevF0 = plA0;
+        plG4Wt.at (inst).dLp = 0.0f;
+        plG4Wt.at (inst).dPrev = 0.0f;
+    }
+
+    float plG4WtClamp (float x, float amount)
+    {
+        x = x - 0.5f;
+        x *= amount;
+        x = clamp (x, -0.5f, 0.5f);
+        return x + 0.5f;
+    }
+
+    float plG4WtRead (int x, int y, int z, int pi, float pf)
+    {
+        int i = x + y * 8 + z * 64;
+        int w = i < 192 ? i : (i * 101) % 192;
+        int b = w * 132 + pi;
+        float xm1 = float (g4WaveData.at (b));
+        float x0  = float (g4WaveData.at (b + 1));
+        float x1  = float (g4WaveData.at (b + 2));
+        float x2  = float (g4WaveData.at (b + 3));
+        float c = (x1 - xm1) * 0.5f;
+        float v = x0 - x1;
+        float ww = c + v;
+        float a = ww + v + (x2 - x0) * 0.5f;
+        float bn = ww + a;
+        return (((a * pf) - bn) * pf + c) * pf + x0;
+    }
+
+    void plRender_13 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+
+        plG4Wt.at (inst).xPre += 0.2f * (timb * 6.9999f - plG4Wt.at (inst).xPre);
+        plG4Wt.at (inst).yPre += 0.2f * (morph * 6.9999f - plG4Wt.at (inst).yPre);
+        plG4Wt.at (inst).zPre += 0.05f * (harm * 6.9999f - plG4Wt.at (inst).zPre);
+
+        float x = plG4Wt.at (inst).xPre;
+        float y = plG4Wt.at (inst).yPre;
+        float z = plG4Wt.at (inst).zPre;
+
+        float quantization = min (max (z - 3.0f, 0.0f), 1.0f);
+        float lpCoef = min (max (2.0f * f0 * (4.0f - 3.0f * quantization), 0.01f), 0.1f);
+
+        int xi = int (x);  float xf = x - float (xi);
+        int yi = int (y);  float yf = y - float (yi);
+        int zi = int (z);  float zf = z - float (zi);
+
+        xf += quantization * (plG4WtClamp (xf, 16.0f) - xf);
+        yf += quantization * (plG4WtClamp (yf, 16.0f) - yf);
+        zf += quantization * (plG4WtClamp (zf, 16.0f) - zf);
+
+        float xV = plG4Wt.at (inst).prevX;  float xI = (float (xi) + xf - xV) / 12.0f;
+        float yV = plG4Wt.at (inst).prevY;  float yI = (float (yi) + yf - yV) / 12.0f;
+        float zV = plG4Wt.at (inst).prevZ;  float zI = (float (zi) + zf - zV) / 12.0f;
+        float fV = plG4Wt.at (inst).prevF0; float fI = (f0 - fV) / 12.0f;
+
+        float xLp = plG4Wt.at (inst).xLp;
+        float yLp = plG4Wt.at (inst).yLp;
+        float zLp = plG4Wt.at (inst).zLp;
+        float phase = plG4Wt.at (inst).phase;
+        float dLp = plG4Wt.at (inst).dLp;
+        float dPrev = plG4Wt.at (inst).dPrev;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            fV += fI;
+            float ff = fV;
+            float gain = (1.0f / (ff * 131072.0f)) * (0.95f - ff);
+            float cutoff = min (128.0f * ff, 1.0f);
+
+            xV += xI;  yV += yI;  zV += zI;
+            xLp += lpCoef * (xV - xLp);
+            yLp += lpCoef * (yV - yLp);
+            zLp += lpCoef * (zV - zLp);
+
+            int xx = int (xLp);  float xfr = xLp - float (xx);
+            int yy = int (yLp);  float yfr = yLp - float (yy);
+            int zz = int (zLp);  float zfr = zLp - float (zz);
+
+            phase += ff;
+            if (phase >= 1.0f)
+                phase -= 1.0f;
+
+            float p = phase * 128.0f;
+            int pi = int (p);
+            float pf = p - float (pi);
+
+            int x0 = xx;  int x1 = xx + 1;
+            int y0 = yy;  int y1 = yy + 1;
+            int z0 = zz;  int z1 = zz + 1;
+            if (z0 >= 4) z0 = 7 - z0;
+            if (z1 >= 4) z1 = 7 - z1;
+
+            float x0y0z0 = plG4WtRead (x0, y0, z0, pi, pf);
+            float x1y0z0 = plG4WtRead (x1, y0, z0, pi, pf);
+            float xy0z0 = x0y0z0 + (x1y0z0 - x0y0z0) * xfr;
+            float x0y1z0 = plG4WtRead (x0, y1, z0, pi, pf);
+            float x1y1z0 = plG4WtRead (x1, y1, z0, pi, pf);
+            float xy1z0 = x0y1z0 + (x1y1z0 - x0y1z0) * xfr;
+            float xyz0 = xy0z0 + (xy1z0 - xy0z0) * yfr;
+
+            float x0y0z1 = plG4WtRead (x0, y0, z1, pi, pf);
+            float x1y0z1 = plG4WtRead (x1, y0, z1, pi, pf);
+            float xy0z1 = x0y0z1 + (x1y0z1 - x0y0z1) * xfr;
+            float x0y1z1 = plG4WtRead (x0, y1, z1, pi, pf);
+            float x1y1z1 = plG4WtRead (x1, y1, z1, pi, pf);
+            float xy1z1 = x0y1z1 + (x1y1z1 - x0y1z1) * xfr;
+            float xyz1 = xy0z1 + (xy1z1 - xy0z1) * yfr;
+
+            float mix = xyz0 + (xyz1 - xyz0) * zfr;
+            dLp += cutoff * ((mix - dPrev) - dLp);
+            dPrev = mix;
+            mix = dLp * gain;
+
+            plOut.at (inst * 12 + n) = mix;
+            plAux.at (inst * 12 + n) = float (int (mix * 32.0f)) / 32.0f;
+        }
+
+        plG4Wt.at (inst).prevX = xV;  plG4Wt.at (inst).prevY = yV;  plG4Wt.at (inst).prevZ = zV;  plG4Wt.at (inst).prevF0 = fV;
+        plG4Wt.at (inst).xLp = xLp;  plG4Wt.at (inst).yLp = yLp;  plG4Wt.at (inst).zLp = zLp;
+        plG4Wt.at (inst).phase = phase;  plG4Wt.at (inst).dLp = dLp;  plG4Wt.at (inst).dPrev = dPrev;
+    }

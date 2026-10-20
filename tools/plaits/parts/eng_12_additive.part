@@ -1,0 +1,139 @@
+    // ---------------- engine 12: Additive (plaits/dsp/engine/additive_engine.cc + harmonic_oscillator.h) ----------------
+    struct PlAdd { float[36] amps; float[3] phase; float[3] freq; float[36] oscAmp; }
+
+    PlAdd[48] plAdd;
+
+    void plInit_12 (int inst)
+    {
+        for (int i = 0; i < 36; ++i) { plAdd.at (inst).amps.at (i) = 0.0f; plAdd.at (inst).oscAmp.at (i) = 0.0f; }
+        for (int i = 0; i < 3; ++i)  { plAdd.at (inst).phase.at (i) = 0.0f; plAdd.at (inst).freq.at (i) = 0.0f; }
+    }
+
+    int plAddHarmonicIndex (bool organ, int i)
+    {
+        if (! organ) return i;
+        return i == 0 ? 0 : (i == 1 ? 1 : (i == 2 ? 2 : (i == 3 ? 3 : (i == 4 ? 5 : (i == 5 ? 7 : (i == 6 ? 9 : 11))))));
+    }
+
+    void plAddUpdateAmplitudes (int inst, float centroid, float slope, float bumps, int base, bool organ, int num)
+    {
+        float n = float (num) - 1.0f;
+        float margin = (1.0f / slope - 1.0f) / (1.0f + bumps);
+        float center = centroid * (n + margin) - 0.5f * margin;
+        float sum = 0.001f;
+
+        for (int i = 0; i < num; ++i)
+        {
+            float order = abs (float (i) - center) * slope;
+            float gain = 1.0f - order;
+            gain += abs (gain);
+            gain *= gain;
+
+            float b = 0.25f + order * bumps;
+            float bumpFactor = 1.0f + plG1Sine (b);
+
+            gain *= bumpFactor;
+            gain *= gain;
+            gain *= gain;
+
+            int j = base + plAddHarmonicIndex (organ, i);
+            plAdd.at (inst).amps.at (j) += 0.001f * (gain - plAdd.at (inst).amps.at (j));
+            sum += plAdd.at (inst).amps.at (j);
+        }
+
+        sum = 1.0f / sum;
+
+        for (int i = 0; i < num; ++i)
+        {
+            int j = base + plAddHarmonicIndex (organ, i);
+            plAdd.at (inst).amps.at (j) *= sum;
+        }
+    }
+
+    // HarmonicOscillator<12>::Render<first>; osc = 0..2, ampBase = offset in amps
+    void plAddOscRender (int inst, int osc, int first, float frequency, int ampBase, bool add, float[12]& out)
+    {
+        if (frequency >= 0.5f) frequency = 0.5f;
+
+        float fInc = (frequency - plAdd.at (inst).freq.at (osc)) / 12.0f;
+        float fV = plAdd.at (inst).freq.at (osc);
+        float[12] aInc;
+        float[12] aV;
+
+        for (int i = 0; i < 12; ++i)
+        {
+            float f = frequency * float (first + i);
+            if (f >= 0.5f) f = 0.5f;
+            float target = plAdd.at (inst).amps.at (ampBase + i) * (1.0f - f * 2.0f);
+            aV.at (i) = plAdd.at (inst).oscAmp.at (osc * 12 + i);
+            aInc.at (i) = (target - aV.at (i)) / 12.0f;
+        }
+
+        float phase = plAdd.at (inst).phase.at (osc);
+
+        for (int n = 0; n < 12; ++n)
+        {
+            fV += fInc;
+            phase += fV;
+            if (phase >= 1.0f) phase -= 1.0f;
+
+            float twoX = 2.0f * plInterpolate (lut_sine, phase, 512.0f);
+            float previous = 0.0f;
+            float current = 0.0f;
+
+            if (first == 1)
+            {
+                previous = 1.0f;
+                current = twoX * 0.5f;
+            }
+            else
+            {
+                float k = float (first);
+                previous = plG1Sine (phase * (k - 1.0f) + 0.25f);
+                current = plG1Sine (phase * k);
+            }
+
+            float sum = 0.0f;
+
+            for (int i = 0; i < 12; ++i)
+            {
+                aV.at (i) += aInc.at (i);
+                sum += aV.at (i) * current;
+                float temp = current;
+                current = twoX * current - previous;
+                previous = temp;
+            }
+
+            if (add) out.at (n) += sum; else out.at (n) = sum;
+        }
+
+        plAdd.at (inst).phase.at (osc) = phase;
+        plAdd.at (inst).freq.at (osc) = fV;
+        for (int i = 0; i < 12; ++i) plAdd.at (inst).oscAmp.at (osc * 12 + i) = aV.at (i);
+    }
+
+    void plRender_12 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+        float centroid = timb;
+        float rawBumps = harm;
+        float rawSlope = (1.0f - 0.6f * rawBumps) * morph;
+        float slope = 0.01f + 1.99f * rawSlope * rawSlope * rawSlope;
+        float bumps = 16.0f * rawBumps * rawBumps;
+
+        float[12] out;
+        float[12] aux;
+
+        plAddUpdateAmplitudes (inst, centroid, slope, bumps, 0, false, 24);
+        plAddOscRender (inst, 0, 1, f0, 0, false, out);
+        plAddOscRender (inst, 1, 13, f0, 12, true, out);
+
+        plAddUpdateAmplitudes (inst, centroid, slope, bumps, 24, true, 8);
+        plAddOscRender (inst, 2, 1, f0, 24, false, aux);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = out.at (i);
+            plAux.at (inst * 12 + i) = aux.at (i);
+        }
+    }

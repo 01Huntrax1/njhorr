@@ -1,0 +1,76 @@
+//@LUT lut_fm_frequency_quantizer
+    // ---------------- engine 10: FM (plaits/dsp/engine/fm_engine.cc) ----------------
+    struct PlFm
+    {
+        int64 carrierPhase; int64 modulatorPhase; int64 subPhase;
+        float prevCarrierF; float prevModulatorF; float prevAmount; float prevFeedback; float prevSample;
+        float subFir; float carrierFir;
+    }
+
+    PlFm[48] plFm;
+
+    void plInit_10 (int inst)
+    {
+        plFm.at (inst).carrierPhase = 0; plFm.at (inst).modulatorPhase = 0; plFm.at (inst).subPhase = 0;
+        plFm.at (inst).prevCarrierF = plA0 * 1.0f; plFm.at (inst).prevModulatorF = plA0 * 1.0f;
+        plFm.at (inst).prevAmount = 0.0f; plFm.at (inst).prevFeedback = 0.0f; plFm.at (inst).prevSample = 0.0f;
+        plFm.at (inst).subFir = 0.0f; plFm.at (inst).carrierFir = 0.0f;
+    }
+
+    void plRender_10 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        note -= 24.0f;
+        float ratio = plInterpolate (lut_fm_frequency_quantizer, harm, 128.0f);
+        float modNote = note + ratio;
+        float targetModF = clamp (plNoteToFrequency (modNote), 0.0f, 0.5f);
+
+        float hf = clamp (1.0f - (modNote - 72.0f) * 0.025f, 0.0f, 1.0f);
+        hf *= hf;
+
+        float cfT = plNoteToFrequency (note);
+        float amT = 2.0f * timb * timb * hf;
+        float fbT = 2.0f * morph - 1.0f;
+
+        float cfInc = (cfT - plFm.at (inst).prevCarrierF) / 12.0f;       float cfV = plFm.at (inst).prevCarrierF;
+        float mfInc = (targetModF - plFm.at (inst).prevModulatorF) / 12.0f; float mfV = plFm.at (inst).prevModulatorF;
+        float amInc = (amT - plFm.at (inst).prevAmount) / 12.0f;         float amV = plFm.at (inst).prevAmount;
+        float fbInc = (fbT - plFm.at (inst).prevFeedback) / 12.0f;       float fbV = plFm.at (inst).prevFeedback;
+
+        float cHead = plFm.at (inst).carrierFir; float cTail = 0.0f;
+        float sHead = plFm.at (inst).subFir;     float sTail = 0.0f;
+        float prev  = plFm.at (inst).prevSample;
+        int64 cph = plFm.at (inst).carrierPhase;
+        int64 mph = plFm.at (inst).modulatorPhase;
+        int64 sph = plFm.at (inst).subPhase;
+
+        for (int i = 0; i < 12; ++i)
+        {
+            cfV += cfInc; mfV += mfInc; amV += amInc; fbV += fbInc;
+            float amount = amV;
+            float feedback = fbV;
+            float phaseFb = feedback < 0.0f ? 0.5f * feedback * feedback : 0.0f;
+            int64 carrierInc = int64 (4294967296.0f * cfV);
+            float modF = mfV;
+
+            for (int j = 0; j < 4; ++j)
+            {
+                mph = (mph + int64 (4294967296.0f * modF * (1.0f + prev * phaseFb))) & 4294967295i64;
+                cph = (cph + carrierInc) & 4294967295i64;
+                sph = (sph + (carrierInc >> 1)) & 4294967295i64;
+                float modFb = feedback > 0.0f ? 0.25f * feedback * feedback : 0.0f;
+                float modulator = plG1SinePM (mph, modFb * prev);
+                float carrier = plG1SinePM (cph, amount * modulator);
+                float sub = plG1SinePM (sph, amount * carrier * 0.25f);
+                prev += 0.05f * (carrier - prev);
+                cHead += carrier * lut_4x_downsampler_fir.at (3 - j);  cTail += carrier * lut_4x_downsampler_fir.at (j);
+                sHead += sub * lut_4x_downsampler_fir.at (3 - j);      sTail += sub * lut_4x_downsampler_fir.at (j);
+            }
+
+            plOut.at (inst * 12 + i) = cHead;  cHead = cTail;  cTail = 0.0f;
+            plAux.at (inst * 12 + i) = sHead;  sHead = sTail;  sTail = 0.0f;
+        }
+
+        plFm.at (inst).carrierFir = cHead; plFm.at (inst).subFir = sHead; plFm.at (inst).prevSample = prev;
+        plFm.at (inst).carrierPhase = cph; plFm.at (inst).modulatorPhase = mph; plFm.at (inst).subPhase = sph;
+        plFm.at (inst).prevCarrierF = cfV; plFm.at (inst).prevModulatorF = mfV; plFm.at (inst).prevAmount = amV; plFm.at (inst).prevFeedback = fbV;
+    }

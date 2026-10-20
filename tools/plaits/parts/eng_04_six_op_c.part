@@ -1,0 +1,6 @@
+    // ---------------- engine 4: Six-op FM, bank 2 ----------------
+    void plInit_4 (int inst)  { plSixInit (inst); }
+    void plRender_4 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plSixRender (inst, 2, trig, note, harm, timb, morph, accent);
+    }

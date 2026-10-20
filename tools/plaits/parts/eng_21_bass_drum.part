@@ -1,0 +1,258 @@
+    // ---------------- engine 21: Bass drum (plaits/dsp/engine/bass_drum_engine.cc, analog + synthetic bass drum, sustain/unpatched mode unused) ----------------
+    struct PlBd
+    {
+        // analog bass drum
+        int   pulseRem; int fmPulseRem; float pulse; float pulseHeight; float pulseLp; float fmPulseLp; float retrigPulse;
+        float lpOut; float toneLp; PlSvf res;
+        // overdrive
+        float odPre; float odPost;
+        // synthetic bass drum
+        float f0; float phase; float phaseNoise; float fm; float fmLp; float bodyEnv; float bodyEnvLp; float transientEnv; float transientEnvLp;
+        float toneLp2; float clickLp; float clickHp; PlSvf clickFilter; float noiseLp; float noiseHp; int bodyEnvPulseWidth; int fmPulseWidth;
+    }
+
+    PlBd[48] plBd;
+
+    void plBdInit (PlBd& d)
+    {
+        d.pulseRem = 0; d.fmPulseRem = 0; d.pulse = 0.0f; d.pulseHeight = 0.0f; d.pulseLp = 0.0f; d.fmPulseLp = 0.0f; d.retrigPulse = 0.0f;
+        d.lpOut = 0.0f; d.toneLp = 0.0f;
+        plSvfInit (d.res);
+        d.odPre = 0.0f; d.odPost = 0.0f;
+        d.f0 = 0.0f; d.phase = 0.0f; d.phaseNoise = 0.0f; d.fm = 0.0f; d.fmLp = 0.0f; d.bodyEnv = 0.0f; d.bodyEnvLp = 0.0f;
+        d.transientEnv = 0.0f; d.transientEnvLp = 0.0f; d.toneLp2 = 0.0f; d.bodyEnvPulseWidth = 0; d.fmPulseWidth = 0;
+        d.clickLp = 0.0f; d.clickHp = 0.0f;
+        plSvfInit (d.clickFilter);
+        plSvfSetFQ (d.clickFilter, 2, 5000.0f / 48000.0f, 2.0f);
+        d.noiseLp = 0.0f; d.noiseHp = 0.0f;
+    }
+
+    float plBdDiode (float x)
+    {
+        if (x >= 0.0f) return x;
+        x *= 2.0f;
+        return 0.7f * x / (1.0f + abs (x));
+    }
+
+    void plBdAnalog (PlBd& d, bool trigger, float accent, float f0, float tone, float decay, float attackFmAmount, float selfFmAmount, float[12]& out)
+    {
+        float kPulseDecayTime  = 9.599999f;
+        float kPulseFilterTime = 4.7999997f;
+        float kRetrigPulseDuration = 2400.0f;
+
+        float scale  = 0.001f / f0;
+        float q      = 1500.0f * plSemitonesToRatio (decay * 80.0f);
+        float toneF  = min (4.0f * f0 * plSemitonesToRatio (tone * 108.0f), 1.0f);
+        float exciterLeak = 0.08f * (tone + 0.25f);
+
+        if (trigger)
+        {
+            d.pulseRem = 48;
+            d.fmPulseRem = 288;
+            d.pulseHeight = 3.0f + 7.0f * accent;
+            d.lpOut = 0.0f;
+        }
+
+        for (int i = 0; i < 12; ++i)
+        {
+            float pulse = 0.0f;
+            if (d.pulseRem != 0)
+            {
+                --d.pulseRem;
+                pulse = d.pulseRem != 0 ? d.pulseHeight : d.pulseHeight - 1.0f;
+                d.pulse = pulse;
+            }
+            else
+            {
+                d.pulse *= 1.0f - 1.0f / kPulseDecayTime;
+                pulse = d.pulse;
+            }
+
+            d.pulseLp += (1.0f / kPulseFilterTime) * (pulse - d.pulseLp);
+            pulse = plBdDiode ((pulse - d.pulseLp) + pulse * 0.044f);
+
+            float fmPulse = 0.0f;
+            if (d.fmPulseRem != 0)
+            {
+                --d.fmPulseRem;
+                fmPulse = 1.0f;
+                d.retrigPulse = d.fmPulseRem != 0 ? 0.0f : -0.8f;
+            }
+            else
+            {
+                d.retrigPulse *= 1.0f - 1.0f / kRetrigPulseDuration;
+            }
+            d.fmPulseLp += (1.0f / kPulseFilterTime) * (fmPulse - d.fmPulseLp);
+
+            float punch    = 0.7f + plBdDiode (10.0f * d.lpOut - 1.0f);
+            float attackFm = d.fmPulseLp * 1.7f * attackFmAmount;
+            float selfFm   = punch * 0.08f * selfFmAmount;
+            float f = f0 * (1.0f + attackFm + selfFm);
+            f = clamp (f, 0.0f, 0.4f);
+
+            plSvfSetFQ (d.res, 3, f, 1.0f + q * f);
+            float bp = 0.0f; float lp = 0.0f;
+            plG5SvfBpLp (d.res, (pulse - d.retrigPulse * 0.2f) * scale, bp, lp);
+            d.lpOut = lp;
+
+            d.toneLp += toneF * ((pulse * exciterLeak + bp) - d.toneLp);
+            out.at (i) = d.toneLp;
+        }
+    }
+
+    void plBdOverdrive (PlBd& d, float drive, float[12]& io)
+    {
+        float drive2 = drive * drive;
+        float preGainA = drive * 0.5f;
+        float preGainB = drive2 * drive2 * drive * 24.0f;
+        float preGain  = preGainA + (preGainB - preGainA) * drive2;
+        float driveSquashed = drive * (2.0f - drive);
+        float postGain = 1.0f / plSoftClip (0.33f + driveSquashed * (preGain - 0.33f));
+
+        float preInc  = (preGain - d.odPre) / 12.0f;   float preV  = d.odPre;
+        float postInc = (postGain - d.odPost) / 12.0f; float postV = d.odPost;
+
+        for (int i = 0; i < 12; ++i)
+        {
+            preV += preInc;
+            float pre = preV * io.at (i);
+            postV += postInc;
+            io.at (i) = plSoftClip (pre) * postV;
+        }
+
+        d.odPre = preV;
+        d.odPost = postV;
+    }
+
+    float plBdDistortedSine (float phase, float phaseNoise, float dirtiness)
+    {
+        phase += phaseNoise * dirtiness;
+        phase = phase - float (int (phase));
+        float triangle = (phase < 0.5f ? phase : 1.0f - phase) * 4.0f - 1.0f;
+        float sine = 2.0f * triangle / (1.0f + abs (triangle));
+        float cleanSine = plG5Sine (phase + 0.75f);
+        return sine + (1.0f - dirtiness) * (cleanSine - sine);
+    }
+
+    float plBdTransistorVca (float s, float gain)
+    {
+        s = (s - 0.6f) * gain;
+        return 3.0f * s / (2.0f + abs (s)) + gain * 0.3f;
+    }
+
+    void plBdSynthetic (int inst, PlBd& d, bool trigger, float accent, float f0, float tone, float decay, float dirtiness,
+                        float fmEnvelopeAmount, float fmEnvelopeDecay, float[12]& out)
+    {
+        decay *= decay;
+        fmEnvelopeDecay *= fmEnvelopeDecay;
+
+        float f0Inc = (f0 - d.f0) / 12.0f;
+        float f0V   = d.f0;
+
+        dirtiness *= max (1.0f - 8.0f * f0, 0.0f);
+
+        float fmDecay = 1.0f - 1.0f / (0.008f * (1.0f + fmEnvelopeDecay * 4.0f) * 48000.0f);
+        float bodyEnvDecay = 1.0f - 1.0f / (0.02f * 48000.0f) * plSemitonesToRatio (-decay * 60.0f);
+        float transientEnvDecay = 1.0f - 1.0f / (0.005f * 48000.0f);
+        float toneF = min (4.0f * f0 * plSemitonesToRatio (tone * 108.0f), 1.0f);
+        float transientLevel = tone;
+
+        if (trigger)
+        {
+            d.fm = 1.0f;
+            d.bodyEnv = 0.3f + 0.7f * accent;
+            d.transientEnv = d.bodyEnv;
+            d.bodyEnvPulseWidth = 48;
+            d.fmPulseWidth = 62;
+        }
+
+        for (int i = 0; i < 12; ++i)
+        {
+            d.phaseNoise += 0.002f * ((plRandFloat (inst) - 0.5f) - d.phaseNoise);
+
+            float mix = 0.0f;
+
+            if (d.fmPulseWidth != 0)
+            {
+                --d.fmPulseWidth;
+                d.phase = 0.25f;
+            }
+            else
+            {
+                d.fm *= fmDecay;
+                float fm = 1.0f + fmEnvelopeAmount * 3.5f * d.fmLp;
+                f0V += f0Inc;
+                d.phase += min (f0V * fm, 0.5f);
+                if (d.phase >= 1.0f) d.phase -= 1.0f;
+            }
+
+            if (d.bodyEnvPulseWidth != 0)
+            {
+                --d.bodyEnvPulseWidth;
+            }
+            else
+            {
+                d.bodyEnv *= bodyEnvDecay;
+                d.transientEnv *= transientEnvDecay;
+            }
+
+            d.bodyEnvLp      += 0.1f * (d.bodyEnv - d.bodyEnvLp);
+            d.transientEnvLp += 0.1f * (d.transientEnv - d.transientEnvLp);
+            d.fmLp           += 0.1f * (d.fm - d.fmLp);
+
+            float body = plBdDistortedSine (d.phase, d.phaseNoise, dirtiness);
+
+            // click
+            float clickIn = d.bodyEnvPulseWidth != 0 ? 0.0f : 1.0f;
+            float err = clickIn - d.clickLp;
+            d.clickLp += (err > 0.0f ? 0.5f : 0.1f) * err;
+            d.clickHp += 0.04f * (d.clickLp - d.clickHp);
+            float click = plSvfProcess (d.clickFilter, 0, d.clickLp - d.clickHp);
+
+            // attack noise
+            float sample = plRandFloat (inst);
+            d.noiseLp += 0.05f * (sample - d.noiseLp);
+            d.noiseHp += 0.005f * (d.noiseLp - d.noiseHp);
+            float noise = d.noiseLp - d.noiseHp;
+
+            float transient = click + noise;
+
+            mix -= plBdTransistorVca (body, d.bodyEnvLp);
+            mix -= transient * d.transientEnvLp * transientLevel;
+
+            d.toneLp2 += toneF * (mix - d.toneLp2);
+            out.at (i) = d.toneLp2;
+        }
+
+        d.f0 = f0V;
+    }
+
+    void plBdRender (int inst, PlBd& d, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+        bool  rising = (trig & 1) != 0;
+
+        float attackFmAmount = min (harm * 4.0f, 1.0f);
+        float selfFmAmount   = max (min (harm * 4.0f - 1.0f, 1.0f), 0.0f);
+        float drive = max (harm * 2.0f - 1.0f, 0.0f) * max (1.0f - 16.0f * f0, 0.0f);
+
+        float[12] a;
+        float[12] b;
+
+        plBdAnalog (d, rising, accent, f0, timb, morph, attackFmAmount, selfFmAmount, a);
+        plBdOverdrive (d, 0.5f + 0.5f * drive, a);
+        plBdSynthetic (inst, d, rising, accent, f0, timb, morph, 0.4f - 0.25f * morph * morph, min (harm * 2.0f, 1.0f), max (harm * 2.0f - 1.0f, 0.0f), b);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = a.at (i);
+            plAux.at (inst * 12 + i) = b.at (i);
+        }
+    }
+
+    void plRender_21 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plBdRender (inst, plBd.at (inst), trig, note, harm, timb, morph, accent);
+    }
+
+    void plInit_21 (int inst)  { plBdInit (plBd.at (inst)); }

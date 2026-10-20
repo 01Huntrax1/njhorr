@@ -1,0 +1,207 @@
+    // ---------------- engine 23: Hi-hat (plaits/dsp/engine/hi_hat_engine.cc, SquareNoise/SwingVCA + RingModNoise/LinearVCA, sustain mode unused) ----------------
+    struct PlHhOsc { float phase; float nextSample; float lpState; float hpState; bool high; float frequency; float pw; }
+    struct PlHhV   { float envelope; float noiseClock; float noiseSample; PlSvf col; PlSvf hpf; }
+    struct PlHh    { PlHhV h1; PlHhV h2; int64[6] sqPhase; PlHhOsc[6] osc; }
+
+    PlHh[48] plHh;
+
+    void plHhOscInit (PlHhOsc& o)
+    {
+        o.phase = 0.5f; o.nextSample = 0.0f; o.lpState = 1.0f; o.hpState = 0.0f; o.high = true; o.frequency = 0.001f; o.pw = 0.5f;
+    }
+
+    void plHhVInit (PlHhV& v)
+    {
+        v.envelope = 0.0f; v.noiseClock = 0.0f; v.noiseSample = 0.0f;
+        plSvfInit (v.col);
+        plSvfInit (v.hpf);
+    }
+
+    void plHhInit (PlHh& d)
+    {
+        plHhVInit (d.h1);
+        plHhVInit (d.h2);
+        for (int i = 0; i < 6; ++i) { d.sqPhase.at (i) = 0; plHhOscInit (d.osc.at (i)); }
+    }
+
+    void plInit_23 (int inst)  { plHhInit (plHh.at (inst)); }
+
+    void plHhSquareNoise (PlHh& d, float f0, float[12]& out)
+    {
+        const float[6] ratios = (1.0f, 1.304f, 1.466f, 1.787f, 1.932f, 2.536f);
+        int64[6] inc;
+        int64[6] ph;
+        for (int i = 0; i < 6; ++i)
+        {
+            float f = f0 * ratios.at (i);
+            if (f >= 0.499f) f = 0.499f;
+            inc.at (i) = int64 (f * 4294967296.0f);
+            ph.at (i)  = d.sqPhase.at (i);
+        }
+
+        for (int n = 0; n < 12; ++n)
+        {
+            int noise = 0;
+            for (int i = 0; i < 6; ++i)
+            {
+                ph.at (i) = (ph.at (i) + inc.at (i)) & 4294967295i64;
+                noise += int ((ph.at (i) >> 31) & 1);
+            }
+            out.at (n) = 0.33f * float (noise) - 1.0f;
+        }
+
+        for (int i = 0; i < 6; ++i) d.sqPhase.at (i) = ph.at (i);
+    }
+
+    // shape 0 = saw, 1 = square (pw 0.5 always); render of plaits::Oscillator without external fm
+    void plHhOscRender (PlHhOsc& o, int shape, float frequency, float pw, float[12]& out)
+    {
+        frequency = clamp (frequency, 0.000001f, 0.25f);
+        float lo = abs (frequency) * 2.0f;
+        float hi = 1.0f - 2.0f * abs (frequency);
+        if (pw < lo) pw = lo; else if (pw > hi) pw = hi;
+
+        float fInc = (frequency - o.frequency) / 12.0f;  float fV = o.frequency;
+        float pInc = (pw - o.pw) / 12.0f;                float pV = o.pw;
+        float nextSample = o.nextSample;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            float thisSample = nextSample;
+            nextSample = 0.0f;
+
+            fV += fInc;
+            float f = fV;
+            pV += pInc;
+            float p = pV;
+            o.phase += f;
+
+            if (shape == 0)
+            {
+                if (o.phase >= 1.0f)
+                {
+                    o.phase -= 1.0f;
+                    float t = o.phase / f;
+                    thisSample -= plThisBlep (t);
+                    nextSample -= plNextBlep (t);
+                }
+                nextSample += o.phase;
+                out.at (n) = 2.0f * thisSample - 1.0f;
+            }
+            else
+            {
+                if (o.high != (o.phase >= p))
+                {
+                    float t = (o.phase - p) / f;
+                    thisSample += plThisBlep (t);
+                    nextSample += plNextBlep (t);
+                    o.high = o.phase >= p;
+                }
+                if (o.phase >= 1.0f)
+                {
+                    o.phase -= 1.0f;
+                    float t = o.phase / f;
+                    thisSample -= plThisBlep (t);
+                    nextSample -= plNextBlep (t);
+                    o.high = false;
+                }
+                nextSample += o.phase < p ? 0.0f : 1.0f;
+                out.at (n) = 2.0f * thisSample - 1.0f;
+            }
+        }
+
+        o.frequency = fV;
+        o.pw = pV;
+        o.nextSample = nextSample;
+    }
+
+    void plHhRingModNoise (PlHh& d, float f0, float[12]& out)
+    {
+        float ratio = f0 / (0.01f + f0);
+        float[3] fa = (200.0f / 48000.0f * ratio, 510.0f / 48000.0f * ratio, 730.0f / 48000.0f * ratio);
+        float[3] fb = (7530.0f / 48000.0f * ratio, 8075.0f / 48000.0f * ratio, 10500.0f / 48000.0f * ratio);
+        float[12] t1;
+        float[12] t2;
+
+        for (int n = 0; n < 12; ++n) out.at (n) = 0.0f;
+
+        for (int i = 0; i < 3; ++i)
+        {
+            plHhOscRender (d.osc.at (2 * i), 1, fa.at (i), 0.5f, t1);
+            plHhOscRender (d.osc.at (2 * i + 1), 0, fb.at (i), 0.5f, t2);
+            for (int n = 0; n < 12; ++n) out.at (n) += t1.at (n) * t2.at (n);
+        }
+    }
+
+    // kind 0: SwingVCA, resonance, single stage envelope. kind 1: LinearVCA, no resonance, two stage envelope
+    void plHhVoice (int inst, PlHhV& v, int kind, bool trigger, float accent, float f0, float tone, float decay, float noisiness, float[12]& out)
+    {
+        float envelopeDecay = 1.0f - 0.003f * plSemitonesToRatio (-decay * 84.0f);
+        float cutDecay      = 1.0f - 0.0025f * plSemitonesToRatio (-decay * 36.0f);
+
+        if (trigger)
+            v.envelope = (1.5f + 0.5f * (1.0f - decay)) * (0.3f + 0.7f * accent);
+
+        float cutoff = 150.0f / 48000.0f * plSemitonesToRatio (tone * 72.0f);
+        cutoff = clamp (cutoff, 0.0f, 16000.0f / 48000.0f);
+        plSvfSetFQ (v.col, 1, cutoff, kind == 0 ? 3.0f + 3.0f * tone : 1.0f);
+        for (int i = 0; i < 12; ++i) out.at (i) = plSvfProcess (v.col, 1, out.at (i));
+
+        noisiness *= noisiness;
+        float noiseF = f0 * (16.0f + 16.0f * (1.0f - noisiness));
+        noiseF = clamp (noiseF, 0.0f, 0.5f);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            v.noiseClock += noiseF;
+            if (v.noiseClock >= 1.0f)
+            {
+                v.noiseClock -= 1.0f;
+                v.noiseSample = plRandFloat (inst) - 0.5f;
+            }
+            out.at (i) += noisiness * (v.noiseSample - out.at (i));
+        }
+
+        for (int i = 0; i < 12; ++i)
+        {
+            v.envelope *= (v.envelope > 0.5f || kind == 0) ? envelopeDecay : cutDecay;
+            float s = out.at (i);
+            if (kind == 0)
+            {
+                s *= s > 0.0f ? 4.0f : 0.1f;
+                s = s / (1.0f + abs (s));
+                out.at (i) = (s + 0.1f) * v.envelope;
+            }
+            else
+            {
+                out.at (i) = s * v.envelope;
+            }
+        }
+
+        plSvfSetFQ (v.hpf, 1, cutoff, 0.5f);
+        for (int i = 0; i < 12; ++i) out.at (i) = plSvfProcess (v.hpf, 3, out.at (i));
+    }
+
+    void plHhRender (int inst, PlHh& d, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+        bool rising = (trig & 1) != 0;
+        float[12] a;
+        float[12] b;
+
+        plHhSquareNoise (d, 2.0f * f0, a);
+        plHhVoice (inst, d.h1, 0, rising, accent, f0, timb, morph, harm, a);
+        plHhRingModNoise (d, 2.0f * f0, b);
+        plHhVoice (inst, d.h2, 1, rising, accent, f0, timb, morph, harm, b);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = a.at (i);
+            plAux.at (inst * 12 + i) = b.at (i);
+        }
+    }
+
+    void plRender_23 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plHhRender (inst, plHh.at (inst), trig, note, harm, timb, morph, accent);
+    }

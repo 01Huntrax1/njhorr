@@ -1,0 +1,101 @@
+    // ---------------- plaits/dsp/fx/diffuser.h + fx_engine.h (12 bit format, one 8192 sample line per instance) ----------------
+    int[393216] plG4DiffBuf;                       // 48 instances x 8192 (values are the signed 16 bit codes)
+
+    struct PlG4Diff { int wp; float lp; float y0; float y1; float coef; float lfoValue; }
+
+    int plG4DiffComp (float v)   { return clamp (int (v * 4096.0f), -32768, 32767); }
+    float plG4DiffDec (int v)    { return float (v) / 4096.0f; }
+
+    void plG4DiffInit (int inst, PlG4Diff& d)
+    {
+        // CosineOscillator::InitApproximate (0.3 / 48000 * 32)
+        float frequency = 0.3f / 48000.0f * 32.0f;
+        float sign = 16.0f;
+        frequency -= 0.25f;
+        if (frequency < 0.0f)
+            frequency = -frequency;
+        else if (frequency > 0.5f)
+            frequency -= 0.5f;
+        else
+            sign = -16.0f;
+        d.coef = sign * frequency * (1.0f - 2.0f * frequency);
+        d.y1 = d.coef * 0.25f;
+        d.y0 = 0.5f;
+        d.lfoValue = d.y1 + 0.5f;
+        d.lp = 0.0f;
+        d.wp = 0;
+        for (int i = 0; i < 8192; ++i)
+            plG4DiffBuf.at (inst * 8192 + i) = 0;
+    }
+
+    // one allpass step: reads the tail of the line, writes at its head
+    void plG4DiffProcess (int inst, PlG4Diff& d, float amount, float rt, float[12]& io)
+    {
+        int base = inst * 8192;
+        float kap = 0.625f;
+        float klp = 0.75f;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            d.wp = d.wp - 1;
+            if (d.wp < 0)
+                d.wp += 8192;
+            int wp = d.wp;
+
+            if ((wp & 31) == 0)
+            {
+                float temp = d.y0;
+                d.y0 = d.coef * d.y0 - d.y1;
+                d.y1 = temp;
+                d.lfoValue = temp + 0.5f;
+            }
+
+            float lfo = d.lfoValue;
+            float acc = io.at (n);
+            float prev = 0.0f;
+            float r = 0.0f;
+
+            // ap1 (base 0, length 126)
+            prev = plG4DiffDec (plG4DiffBuf.at (base + ((wp + 0 + 126 - 1) & 8191)));   acc += prev * kap;
+            plG4DiffBuf.at (base + ((wp + 0) & 8191)) = plG4DiffComp (acc);               acc *= -kap;  acc += prev;
+            // ap2 (base 127, length 180)
+            prev = plG4DiffDec (plG4DiffBuf.at (base + ((wp + 127 + 180 - 1) & 8191)));  acc += prev * kap;
+            plG4DiffBuf.at (base + ((wp + 127) & 8191)) = plG4DiffComp (acc);             acc *= -kap;  acc += prev;
+            // ap3 (base 308, length 269)
+            prev = plG4DiffDec (plG4DiffBuf.at (base + ((wp + 308 + 269 - 1) & 8191)));  acc += prev * kap;
+            plG4DiffBuf.at (base + ((wp + 308) & 8191)) = plG4DiffComp (acc);             acc *= -kap;  acc += prev;
+            // ap4 (base 578, modulated read at 400 + 43 lfo)
+            {
+                float off = 400.0f + 43.0f * lfo;
+                int oi = int (off);
+                float of = off - float (oi);
+                float a = plG4DiffDec (plG4DiffBuf.at (base + ((wp + oi + 578) & 8191)));
+                float b = plG4DiffDec (plG4DiffBuf.at (base + ((wp + oi + 578 + 1) & 8191)));
+                prev = a + (b - a) * of;
+                acc += prev * kap;
+            }
+            plG4DiffBuf.at (base + ((wp + 578) & 8191)) = plG4DiffComp (acc);             acc *= -kap;  acc += prev;
+            // del (base 4688, modulated read at 3070 + 340 lfo)
+            {
+                float off = 3070.0f + 340.0f * lfo;
+                int oi = int (off);
+                float of = off - float (oi);
+                float a = plG4DiffDec (plG4DiffBuf.at (base + ((wp + oi + 4688) & 8191)));
+                float b = plG4DiffDec (plG4DiffBuf.at (base + ((wp + oi + 4688 + 1) & 8191)));
+                prev = a + (b - a) * of;
+                acc += prev * rt;
+            }
+            d.lp += klp * (acc - d.lp);
+            acc = d.lp;
+            // dapa (base 1023, length 1653)
+            prev = plG4DiffDec (plG4DiffBuf.at (base + ((wp + 1023 + 1653 - 1) & 8191)));  acc += prev * -kap;
+            plG4DiffBuf.at (base + ((wp + 1023) & 8191)) = plG4DiffComp (acc);              acc *= kap;  acc += prev;
+            // dapb (base 2677, length 2010)
+            prev = plG4DiffDec (plG4DiffBuf.at (base + ((wp + 2677 + 2010 - 1) & 8191)));  acc += prev * kap;
+            plG4DiffBuf.at (base + ((wp + 2677) & 8191)) = plG4DiffComp (acc);              acc *= -kap;  acc += prev;
+            // write del, wet
+            plG4DiffBuf.at (base + ((wp + 4688) & 8191)) = plG4DiffComp (acc);              acc *= 2.0f;
+            float wet = acc;
+            io.at (n) = io.at (n) + amount * (wet - io.at (n));
+        }
+    }

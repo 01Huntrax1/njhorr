@@ -1,0 +1,158 @@
+    // ---------------- engine 6: String machine (plaits/dsp/engine2/string_machine_engine.cc) ----------------
+    struct PlSmSvf { float f; float damp; float lp; float bp; }
+
+    void plSmSvfSet (PlSmSvf& s, float f, float resonance)
+    {
+        f = f < 0.158f ? f : 0.158f;
+        s.f = 2.0f * plPi * f;
+        s.damp = 1.0f / resonance;
+    }
+
+    float plSmSvfLP (PlSmSvf& s, float in)
+    {
+        float bpn = s.bp * s.damp;
+        float notch = in - bpn;
+        s.lp += s.f * s.bp;
+        float hp = notch - s.lp;
+        s.bp += s.f * hp;
+        return s.lp;
+    }
+
+    struct PlStringMachine
+    {
+        PlG3Chords chords;
+        PlG3Sso[4] voice;
+        PlSmSvf[2] svf;
+        float morphLp; float timbreLp;
+        float[1024] buf;          // Ensemble delay memory
+        int writePtr;
+        int phase1; int phase2;   // 32 bit phases (kept in int64 below)
+        int64 ph1; int64 ph2;
+    }
+
+    PlStringMachine[48] plStringMachine;
+
+    const float[66] plSmRegistrations = (
+        1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,    0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f,    0.4f, 0.0f, 0.2f, 0.0f, 0.4f, 0.0f,
+        0.3f, 0.0f, 0.0f, 0.3f, 0.0f, 0.4f,    0.3f, 0.0f, 0.0f, 0.0f, 0.0f, 0.7f,    0.2f, 0.0f, 0.0f, 0.2f, 0.0f, 0.6f,
+        0.0f, 0.2f, 0.1f, 0.0f, 0.2f, 0.5f,    0.0f, 0.3f, 0.0f, 0.3f, 0.0f, 0.4f,    0.0f, 0.4f, 0.0f, 0.3f, 0.0f, 0.3f,
+        0.0f, 0.5f, 0.0f, 0.5f, 0.0f, 0.0f,    0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+    void plInit_6 (int inst)
+    {
+        for (int i = 0; i < 4; ++i) plG3SsoInit (plStringMachine.at (inst).voice.at (i));
+        plG3ChordsInit (plStringMachine.at (inst).chords);
+        plStringMachine.at (inst).morphLp = 0.0f;
+        plStringMachine.at (inst).timbreLp = 0.0f;
+        for (int i = 0; i < 2; ++i)
+        {
+            plSmSvfSet (plStringMachine.at (inst).svf.at (i), 0.01f, 100.0f);
+            plStringMachine.at (inst).svf.at (i).lp = 0.0f;
+            plStringMachine.at (inst).svf.at (i).bp = 0.0f;
+        }
+        for (int i = 0; i < 1024; ++i) plStringMachine.at (inst).buf.at (i) = 0.0f;
+        plStringMachine.at (inst).writePtr = 0;
+        plStringMachine.at (inst).ph1 = 0;
+        plStringMachine.at (inst).ph2 = 0;
+        plG3ChordsSort (plStringMachine.at (inst).chords);
+    }
+
+    void plRender_6 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plStringMachine.at (inst).morphLp  += 0.1f * (morph - plStringMachine.at (inst).morphLp);
+        plStringMachine.at (inst).timbreLp += 0.1f * (timb - plStringMachine.at (inst).timbreLp);
+        plG3SetChord (plStringMachine.at (inst).chords, harm);
+
+        float[8] harmonics;
+        float registration = max (plStringMachine.at (inst).morphLp, 0.0f);
+        registration *= (11.0f - 1.001f);
+        int   ri = int (registration);
+        float rf = registration - float (ri);
+        for (int i = 0; i < 6; ++i)
+        {
+            float a = plSmRegistrations.at (ri * 6 + i);
+            float b = plSmRegistrations.at ((ri + 1) * 6 + i);
+            harmonics.at (i) = a + (b - a) * rf;
+        }
+        harmonics.at (6) = 0.0f;
+
+        float[12] out;
+        float[12] aux;
+        float f0 = plNoteToFrequency (note) * 0.998f;
+
+        for (int n = 0; n < 4; ++n)
+        {
+            float noteF0 = f0 * plG3ChordRatio (plStringMachine.at (inst).chords, n);
+            float g = clamp (4.0f - noteF0 * 32.0f, 0.0f, 1.0f);
+            if ((n & 1) != 0)
+                plG3SsoRender (plStringMachine.at (inst).voice.at (n), noteF0, harmonics, 0.25f * g, aux);
+            else
+                plG3SsoRender (plStringMachine.at (inst).voice.at (n), noteF0, harmonics, 0.25f * g, out);
+        }
+
+        float cutoff = 2.2f * f0 * plSemitonesToRatio (120.0f * timb);
+        plSmSvfSet (plStringMachine.at (inst).svf.at (0), cutoff, 1.0f);
+        plSmSvfSet (plStringMachine.at (inst).svf.at (1), cutoff * 1.5f, 1.0f);
+        for (int i = 0; i < 12; ++i)
+        {
+            float l = plSmSvfLP (plStringMachine.at (inst).svf.at (0), out.at (i));
+            float r = plSmSvfLP (plStringMachine.at (inst).svf.at (1), aux.at (i));
+            out.at (i) = 0.66f * l + 0.33f * r;
+            aux.at (i) = 0.66f * r + 0.33f * l;
+        }
+
+        // Ensemble (plaits/dsp/fx/ensemble.h)
+        float amount = abs (timb - 0.5f) * 2.0f;
+        float depth  = 0.35f + 0.65f * timb;
+        for (int i = 0; i < 12; ++i)
+        {
+            int wp = plStringMachine.at (inst).writePtr - 1;
+            if (wp < 0) wp += 1024;
+            plStringMachine.at (inst).writePtr = wp;
+
+            float dryAmount = 1.0f - amount * 0.5f;
+            plStringMachine.at (inst).ph1 = (plStringMachine.at (inst).ph1 + 67289) & 4294967295i64;
+            plStringMachine.at (inst).ph2 = (plStringMachine.at (inst).ph2 + 589980) & 4294967295i64;
+            int64 p1 = plStringMachine.at (inst).ph1;
+            int64 p2 = plStringMachine.at (inst).ph2;
+            float slow0   = lut_sine.at (int (p1 >> 23));
+            float slow120 = lut_sine.at (int (((p1 + 1417339207i64) & 4294967295i64) >> 23));
+            float slow240 = lut_sine.at (int (((p1 + 2834678415i64) & 4294967295i64) >> 23));
+            float fast0   = lut_sine.at (int (p2 >> 23));
+            float fast120 = lut_sine.at (int (((p2 + 1417339207i64) & 4294967295i64) >> 23));
+            float fast240 = lut_sine.at (int (((p2 + 2834678415i64) & 4294967295i64) >> 23));
+
+            float a = depth * 160.0f;
+            float b = depth * 16.0f;
+            float mod1 = slow0 * a + fast0 * b;
+            float mod2 = slow120 * a + fast120 * b;
+            float mod3 = slow240 * a + fast240 * b;
+
+            float l = out.at (i);
+            float r = aux.at (i);
+            plStringMachine.at (inst).buf.at (wp & 1023) = l;
+            plStringMachine.at (inst).buf.at ((wp + 512) & 1023) = r;
+
+            float o1 = mod1 + 192.0f; int i1 = int (o1); float f1 = o1 - float (i1);
+            float o2 = mod2 + 192.0f; int i2 = int (o2); float f2 = o2 - float (i2);
+            float o3 = mod3 + 192.0f; int i3 = int (o3); float f3 = o3 - float (i3);
+
+            float acc = 0.0f;
+            { float x = plStringMachine.at (inst).buf.at ((wp + i1) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + i1 + 1) & 1023); acc += (x + (y - x) * f1) * 0.33f; }
+            { float x = plStringMachine.at (inst).buf.at ((wp + i2) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + i2 + 1) & 1023); acc += (x + (y - x) * f2) * 0.33f; }
+            { float x = plStringMachine.at (inst).buf.at ((wp + 512 + i3) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + 512 + i3 + 1) & 1023); acc += (x + (y - x) * f3) * 0.33f; }
+            out.at (i) = acc * amount + l * dryAmount;
+
+            acc = 0.0f;
+            { float x = plStringMachine.at (inst).buf.at ((wp + 512 + i1) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + 512 + i1 + 1) & 1023); acc += (x + (y - x) * f1) * 0.33f; }
+            { float x = plStringMachine.at (inst).buf.at ((wp + 512 + i2) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + 512 + i2 + 1) & 1023); acc += (x + (y - x) * f2) * 0.33f; }
+            { float x = plStringMachine.at (inst).buf.at ((wp + i3) & 1023); float y = plStringMachine.at (inst).buf.at ((wp + i3 + 1) & 1023); acc += (x + (y - x) * f3) * 0.33f; }
+            aux.at (i) = acc * amount + r * dryAmount;
+        }
+
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = out.at (i);
+            plAux.at (inst * 12 + i) = aux.at (i);
+        }
+    }

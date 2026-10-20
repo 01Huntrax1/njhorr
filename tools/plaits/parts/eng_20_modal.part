@@ -1,0 +1,192 @@
+    // ---------------- engine 20: Modal resonator (plaits/dsp/engine/modal_engine.cc + physical_modelling/modal_voice, resonator; sustain mode unused) ----------------
+//@LUT lut_stiffness
+    struct PlModal
+    {
+        float harmonicsLp;
+        float exS1; float exS2;                 // excitation filter (ResonatorSvf<1>)
+        float[24] modeAmplitude;
+        float[24] s1; float[24] s2;             // mode filter states
+    }
+
+    PlModal[48] plModal;
+
+    void plModalInit (PlModal& d)
+    {
+        d.harmonicsLp = 0.0f;
+        d.exS1 = 0.0f; d.exS2 = 0.0f;
+        // CosineOscillator::Init<APPROXIMATE>(0.015)
+        float frequency = 0.015f;
+        float sign = 16.0f;
+        frequency -= 0.25f;
+        if (frequency < 0.0f) frequency = -frequency;
+        else if (frequency > 0.5f) frequency -= 0.5f;
+        else sign = -16.0f;
+        float iir = sign * frequency * (1.0f - 2.0f * frequency);
+        float y1 = iir * 0.25f;
+        float y0 = 0.5f;
+        for (int i = 0; i < 24; ++i)
+        {
+            float temp = y0;
+            y0 = iir * y0 - y1;
+            y1 = temp;
+            d.modeAmplitude.at (i) = (temp + 0.5f) * 0.25f;
+            d.s1.at (i) = 0.0f;
+            d.s2.at (i) = 0.0f;
+        }
+    }
+
+    void plInit_20 (int inst)  { plModalInit (plModal.at (inst)); }
+
+    float plModalNthHarmonicCompensation (int n, float stiffness)
+    {
+        float stretchFactor = 1.0f;
+        for (int i = 0; i < n - 1; ++i)
+        {
+            stretchFactor += stiffness;
+            if (stiffness < 0.0f) stiffness *= 0.93f; else stiffness *= 0.98f;
+        }
+        return 1.0f / stretchFactor;
+    }
+
+    void plModalResonator (PlModal& d, float f0, float structure, float brightness, float damping, float[12]& in, float[12]& out)
+    {
+        float stiffness = plInterpolate (lut_stiffness, structure, 64.0f);
+        f0 *= plModalNthHarmonicCompensation (3, stiffness);
+
+        float harmonic = f0;
+        float stretchFactor = 1.0f;
+        float qSqrt = plSemitonesToRatio (damping * 79.7f);
+        float q = 500.0f * qSqrt * qSqrt;
+        brightness *= 1.0f - structure * 0.3f;
+        brightness *= 1.0f - damping * 0.3f;
+        float qLoss = brightness * (2.0f - brightness) * 0.85f + 0.15f;
+
+        float[4] modeQ;
+        float[4] modeF;
+        float[4] modeA;
+        int batchCounter = 0;
+        int batch = 0;
+
+        for (int i = 0; i < 24; ++i)
+        {
+            float modeFrequency = harmonic * stretchFactor;
+            if (modeFrequency >= 0.499f) modeFrequency = 0.499f;
+            float modeAttenuation = 1.0f - modeFrequency * 2.0f;
+
+            modeF.at (batchCounter) = modeFrequency;
+            modeQ.at (batchCounter) = 1.0f + modeFrequency * q;
+            modeA.at (batchCounter) = d.modeAmplitude.at (i) * modeAttenuation;
+            ++batchCounter;
+
+            if (batchCounter == 4)
+            {
+                batchCounter = 0;
+
+                float[4] g; float[4] r; float[4] rpg; float[4] h; float[4] st1; float[4] st2;
+                for (int k = 0; k < 4; ++k)
+                {
+                    g.at (k) = plTan (2, modeF.at (k));
+                    r.at (k) = 1.0f / modeQ.at (k);
+                    h.at (k) = 1.0f / (1.0f + r.at (k) * g.at (k) + g.at (k) * g.at (k));
+                    rpg.at (k) = r.at (k) + g.at (k);
+                    st1.at (k) = d.s1.at (batch * 4 + k);
+                    st2.at (k) = d.s2.at (batch * 4 + k);
+                }
+
+                for (int n = 0; n < 12; ++n)
+                {
+                    float sIn = in.at (n);
+                    float sOut = 0.0f;
+                    for (int k = 0; k < 4; ++k)
+                    {
+                        float hp = (sIn - rpg.at (k) * st1.at (k) - st2.at (k)) * h.at (k);
+                        float bp = g.at (k) * hp + st1.at (k);
+                        st1.at (k) = g.at (k) * hp + bp;
+                        float lp = g.at (k) * bp + st2.at (k);
+                        st2.at (k) = g.at (k) * bp + lp;
+                        sOut += modeA.at (k) * bp;
+                    }
+                    out.at (n) += sOut;
+                }
+
+                for (int k = 0; k < 4; ++k)
+                {
+                    d.s1.at (batch * 4 + k) = st1.at (k);
+                    d.s2.at (batch * 4 + k) = st2.at (k);
+                }
+                ++batch;
+            }
+
+            stretchFactor += stiffness;
+            if (stiffness < 0.0f) stiffness *= 0.93f; else stiffness *= 0.98f;
+            harmonic += f0;
+            q *= qLoss;
+        }
+    }
+
+    void plModalRender (PlModal& d, int trig, float note, float harm, float timb, float morph, float accent, int inst)
+    {
+        float[12] out;
+        float[12] aux;
+        float[12] temp;
+        for (int i = 0; i < 12; ++i) { out.at (i) = 0.0f; aux.at (i) = 0.0f; temp.at (i) = 0.0f; }
+
+        d.harmonicsLp += 0.01f * (harm - d.harmonicsLp);
+
+        float f0 = plNoteToFrequency (note);
+        float structure  = d.harmonicsLp;
+        float brightness = timb;
+        float damping    = morph;
+
+        brightness += 0.25f * accent * (1.0f - brightness);
+        damping    += 0.25f * accent * (1.0f - damping);
+
+        float range  = 60.0f;
+        float f      = 2.0f * f0;
+        float cutoff = min (f * plSemitonesToRatio ((brightness * (2.0f - brightness) - 0.5f) * range), 0.499f);
+        float q      = 1.5f;
+
+        if ((trig & 1) != 0)
+        {
+            float attenuation = 1.0f - damping * 0.5f;
+            float amplitude = (0.12f + 0.08f * accent) * attenuation;
+            temp.at (0) = amplitude * plSemitonesToRatio (cutoff * cutoff * 24.0f) / cutoff;
+        }
+
+        // excitation filter, low pass (ResonatorSvf<1>)
+        {
+            float g = plTan (2, cutoff);
+            float r = 1.0f / q;
+            float h = 1.0f / (1.0f + r * g + g * g);
+            float rpg = r + g;
+            float st1 = d.exS1;
+            float st2 = d.exS2;
+            for (int n = 0; n < 12; ++n)
+            {
+                float sIn = temp.at (n);
+                float hp = (sIn - rpg * st1 - st2) * h;
+                float bp = g * hp + st1;
+                st1 = g * hp + bp;
+                float lp = g * bp + st2;
+                st2 = g * bp + lp;
+                temp.at (n) = 0.0f + 1.0f * lp;
+            }
+            d.exS1 = st1;
+            d.exS2 = st2;
+        }
+
+        for (int i = 0; i < 12; ++i) aux.at (i) += temp.at (i);
+
+        plModalResonator (d, f0, structure, brightness, damping, temp, out);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = out.at (i);
+            plAux.at (inst * 12 + i) = aux.at (i);
+        }
+    }
+
+    void plRender_20 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plModalRender (plModal.at (inst), trig, note, harm, timb, morph, accent, inst);
+    }

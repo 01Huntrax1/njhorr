@@ -1,0 +1,103 @@
+//@LUT lut_sine
+    // ---------------- helpers shared by engines 0, 1, 9..12 (group 1) ----------------
+    // Svf::Process<LOW_PASS, HIGH_PASS>: returns lp, hp through the reference
+    float plG1SvfLpHp (PlSvf& s, float in, float& hpOut)
+    {
+        float hp = (in - s.r * s.s1 - s.g * s.s1 - s.s2) * s.h;
+        float bp = s.g * hp + s.s1;
+        s.s1 = s.g * hp + bp;
+        float lp = s.g * bp + s.s2;
+        s.s2 = s.g * bp + lp;
+        hpOut = hp;
+        return lp;
+    }
+
+    float plG1Sine (float phase)   { return plInterpolateWrap (lut_sine, phase, 512.0f); }
+
+    // InterpolateHermite (table + 1, ...)
+    float plG1HermiteOff1 (const float[] table, float index, float size)
+    {
+        index *= size;
+        int   i   = int (index);
+        float f   = index - float (i);
+        float xm1 = table.at (i);
+        float x0  = table.at (i + 1);
+        float x1  = table.at (i + 2);
+        float x2  = table.at (i + 3);
+        float c   = (x1 - xm1) * 0.5f;
+        float v   = x0 - x1;
+        float w   = c + v;
+        float a   = w + v + (x2 - x0) * 0.5f;
+        float bn  = w + a;
+        return (((a * f) - bn) * f + c) * f + x0;
+    }
+
+    // ---------------- plaits/dsp/oscillator/oscillator.h: SLOPE shape, no external FM ----------------
+    struct PlG1Osc { float phase; float nextSample; float lpState; float hpState; bool high; float frequency; float pw; }
+
+    void plG1OscInit (PlG1Osc& o)
+    {
+        o.phase = 0.5f; o.nextSample = 0.0f; o.lpState = 1.0f; o.hpState = 0.0f; o.high = true; o.frequency = 0.001f; o.pw = 0.5f;
+    }
+
+    void plG1OscSlope (PlG1Osc& o, bool triangle, float frequency, float pw, float[12]& out)
+    {
+        frequency = clamp (frequency, 0.000001f, 0.25f);
+        pw = clamp (pw, abs (frequency) * 2.0f, 1.0f - 2.0f * abs (frequency));
+
+        float fInc = (frequency - o.frequency) / 12.0f;  float fV = o.frequency;
+        float pInc = (pw - o.pw) / 12.0f;                float pV = o.pw;
+        float nextSample = o.nextSample;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            float thisSample = nextSample;
+            nextSample = 0.0f;
+            fV += fInc;
+            float f = fV;
+            pV += pInc;
+            float p = triangle ? 0.5f : pV;
+            o.phase += f;
+
+            float slopeUp   = 1.0f / p;
+            float slopeDown = 1.0f / (1.0f - p);
+
+            if (o.high != (o.phase < p))
+            {
+                float t = (o.phase - p) / f;
+                float d = (slopeUp + slopeDown) * f;
+                thisSample -= plThisIntegratedBlep (t) * d;
+                nextSample -= plNextIntegratedBlep (t) * d;
+                o.high = o.phase < p;
+            }
+
+            if (o.phase >= 1.0f)
+            {
+                o.phase -= 1.0f;
+                float t = o.phase / f;
+                float d = (slopeUp + slopeDown) * f;
+                thisSample += plThisIntegratedBlep (t) * d;
+                nextSample += plNextIntegratedBlep (t) * d;
+                o.high = true;
+            }
+
+            nextSample += o.high ? o.phase * slopeUp : 1.0f - (o.phase - p) * slopeDown;
+            out.at (n) = 2.0f * thisSample - 1.0f;
+        }
+
+        o.frequency = fV; o.pw = pV; o.nextSample = nextSample;
+    }
+
+    // ---------------- plaits/dsp/oscillator/sine_oscillator.h: SinePM with a 32 bit phase kept in an int64 ----------------
+    float plG1SinePM (int64 phase, float pm)
+    {
+        phase = (phase + (int64 ((pm + 32.0f) * 67108864.0f) * 64) ) & 4294967295i64;
+        int   integral   = int (phase >> 23);
+        float fractional = float ((phase & 8388607i64) << 9) / 4294967296.0f;
+        float a = lut_sine.at (integral);
+        float b = lut_sine.at (integral + 1);
+        return a + (b - a) * fractional;
+    }
+
+    // Downsampler (4x) as 2 floats of state: head and tail are kept per call by the caller
+//@LUT lut_4x_downsampler_fir

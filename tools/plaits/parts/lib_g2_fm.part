@@ -1,0 +1,520 @@
+    // ---------------- six-op FM engines (plaits/dsp/fm/*, plaits/dsp/engine2/six_op_engine.*) ----------------
+//@LUT lut_sine
+//@LUT syx_banks
+//@LUT fm_algos
+
+    const float[32] plFmCoarse = (-12.0f, 0.0f, 12.0f, 19.01955f, 24.0f, 27.863137f, 31.01955f, 33.688259f, 36.0f, 38.0391f, 39.863137f,
+        41.51318f, 43.01955f, 44.405276f, 45.688259f, 46.882687f, 48.0f, 49.049554f, 50.0391f, 50.97513f, 51.863137f, 52.707809f,
+        53.51318f, 54.282743f, 55.01955f, 55.726274f, 56.405276f, 57.05865f, 57.688259f, 58.295772f, 58.882687f, 59.450356f);
+    const float[4] plFmAmpSens = (0.0f, 0.2588f, 0.4274f, 1.0f);
+    const float[8] plFmPitchSens = (0.0f, 0.078125f, 0.15625f, 0.2578125f, 0.4296875f, 0.71875f, 1.1953125f, 2.0f);
+    const float[17] plFmCubeRoot = (0.0f, 0.39685062976f, 0.5f, 0.57235744065f, 0.62996081605f, 0.67860466725f, 0.72112502092f,
+        0.75914745216f, 0.79370070937f, 0.82548197054f, 0.85498810729f, 0.88258719406f, 0.90856038354f, 0.93312785379f,
+        0.95646563396f, 0.97871693135f, 1.0f);
+
+    const float plFmSr    = 47872.34f;
+    const float plFmMinLfo = 0.005865f;
+
+    struct PlFmEnv { int stage; float phase; float start; float[4] inc; float[4] lev; float scale; }
+
+    struct PlFmVoice
+    {
+        int patch;  int dirty;  int gate;  float note;  float normVel;
+        float[6] ratios;  float[6] headroom;
+        int64[6] phase;  float[6] amp;
+        PlFmEnv[6] opEnv;  PlFmEnv pitchEnv;
+        float[2] fb;
+        float lPhase;  float lFreq;  float lDelayPhase;  float lDelayInc0;  float lDelayInc1;  float lValue;  float lRand;
+        float lAmpDepth;  float lPitchDepth;  int lWave;  int lReset;  int lPhaseInt;
+        int pSustain;  int pGate;  float pNote;  float pVel;  float pBright;  float pEnvCtl;  float pPitchMod;  float pAmpMod;
+    }
+
+    struct PlSix { PlFmVoice[2] voice;  float[12] acc;  int quant;  int active;  int rendered; }
+
+    PlSix[48] plSix;
+
+    // ---- patch bytes (bank 0..2, patch 0..31) ----
+    int plFmB (int bank, int patch, int off)  { return plSyx.at (bank * 4096 + patch * 128 + off); }
+
+    float plFmPow2Fast1 (float x)
+    {
+        float s = 127.0f + x;
+        float fl = floor (s);
+        return pow (2.0f, fl - 127.0f) * (1.0f + (s - fl));
+    }
+
+    float plFmPow2Fast2 (float x)
+    {
+        int xi = int (x);
+        if (x < 0.0f) --xi;
+        float fr = x - float (xi);
+        return (1.0f + fr * (0.6565f + fr * 0.3435f)) * pow (2.0f, float (xi));
+    }
+
+    float plSemitonesToRatioSafe (float semitones)
+    {
+        float scale = 1.0f;
+        while (semitones > 120.0f)  { semitones -= 120.0f; scale *= 1024.0f; }
+        while (semitones < -120.0f) { semitones += 120.0f; scale *= 1.0f / 1024.0f; }
+        return scale * plSemitonesToRatio (semitones);
+    }
+
+    int plFmOperatorLevel (int level)
+    {
+        int tlc = level;
+        if (level < 20)  tlc = tlc < 15 ? ((tlc * (36 - tlc)) >> 3) : 27 + tlc;
+        else             tlc += 28;
+        return tlc;
+    }
+
+    float plFmPitchEnvLevel (int level)
+    {
+        float l = (float (level) - 50.0f) / 32.0f;
+        float tail = max (abs (l + 0.02f) - 1.0f, 0.0f);
+        return l * (1.0f + tail * tail * 5.3056f);
+    }
+
+    float plFmOpEnvIncrement (int rate)
+    {
+        int rs = (rate * 41) >> 6;
+        int mantissa = 4 + (rs & 3);
+        int exponent = 2 + (rs >> 2);
+        return float (mantissa << exponent) / float (1 << 24);
+    }
+
+    float plFmPitchEnvIncrement (int rate)
+    {
+        float r = float (rate) * 0.01f;
+        return (1.0f + 192.0f * r * (r * r * r * r + 0.3333f)) / (21.3f * 44100.0f);
+    }
+
+    // ---- envelopes ----
+    void plFmEnvInit (PlFmEnv& e, float scale)
+    {
+        e.scale = scale;  e.stage = 3;  e.phase = 1.0f;  e.start = 0.0f;
+        for (int i = 0; i < 4; ++i) { e.inc.at (i) = 0.001f; e.lev.at (i) = 1.0f / float (1 << i); }
+        e.lev.at (3) = 0.0f;
+    }
+
+    float plFmEnvValue (PlFmEnv& e, int stage, float phase, float startLevel, bool reshape)
+    {
+        float from = startLevel == -100.0f ? e.lev.at ((stage - 1 + 4) % 4) : startLevel;
+        float to = e.lev.at (stage);
+        if (reshape && from < to)
+        {
+            from = max (6.7f, from);
+            to = max (6.7f, to);
+            phase *= (2.5f - phase) * 0.666667f;
+        }
+        return phase * (to - from) + from;
+    }
+
+    float plFmEnvRender (PlFmEnv& e, bool gate, float rate, float ad, float rel, bool reshape)
+    {
+        if (gate)
+        {
+            if (e.stage == 3)
+            {
+                e.start = plFmEnvValue (e, e.stage, e.phase, e.start, reshape);
+                e.stage = 0;
+                e.phase = 0.0f;
+            }
+        }
+        else if (e.stage != 3)
+        {
+            e.start = plFmEnvValue (e, e.stage, e.phase, e.start, reshape);
+            e.stage = 3;
+            e.phase = 0.0f;
+        }
+
+        e.phase += e.inc.at (e.stage) * rate * (e.stage == 3 ? rel : ad);
+
+        if (e.phase >= 1.0f)
+        {
+            if (e.stage >= 2) e.phase = 1.0f;
+            else { e.phase = 0.0f; ++e.stage; }
+            e.start = -100.0f;
+        }
+
+        return plFmEnvValue (e, e.stage, e.phase, e.start, reshape);
+    }
+
+    void plFmSetOpEnv (PlFmEnv& e, int bank, int patch, int op)
+    {
+        int b = op * 17;
+        int globalLevel = plFmOperatorLevel (min (plFmB (bank, patch, b + 14) & 127, 99));
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int ls = plFmOperatorLevel (min (plFmB (bank, patch, b + 4 + i) & 127, 99));
+            ls = (ls & -2) + globalLevel - 133;
+            e.lev.at (i) = 0.125f * (ls < 1 ? 0.5f : float (ls));
+        }
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int rate = min (plFmB (bank, patch, b + i) & 127, 99);
+            int lvl  = min (plFmB (bank, patch, b + 4 + i) & 127, 99);
+            float increment = plFmOpEnvIncrement (rate);
+            float from = e.lev.at ((i - 1 + 4) % 4);
+            float to = e.lev.at (i);
+
+            if (from == to)
+            {
+                increment *= 0.6f;
+                if (i == 0 && lvl == 0) increment *= 20.0f;
+            }
+            else if (from < to)
+            {
+                from = max (6.7f, from);
+                to = max (6.7f, to);
+                if (from == to) increment = 1.0f;
+                else increment *= 7.2f / (to - from);
+            }
+            else increment *= 1.0f / (from - to);
+
+            e.inc.at (i) = increment * e.scale;
+        }
+    }
+
+    void plFmSetPitchEnv (PlFmEnv& e, int bank, int patch)
+    {
+        for (int i = 0; i < 4; ++i)
+            e.lev.at (i) = plFmPitchEnvLevel (min (plFmB (bank, patch, 106 + i) & 127, 99));
+
+        for (int i = 0; i < 4; ++i)
+        {
+            float from = e.lev.at ((i - 1 + 4) % 4);
+            float to = e.lev.at (i);
+            float increment = plFmPitchEnvIncrement (min (plFmB (bank, patch, 102 + i) & 127, 99));
+            if (from != to)  increment *= 1.0f / abs (from - to);
+            else if (i != 3) increment = 0.2f;
+            e.inc.at (i) = increment * e.scale;
+        }
+    }
+
+    // ---- LFO ----
+    float plFmLfoValue (PlFmVoice& v)
+    {
+        int w = v.lWave;
+        if (w == 0) return 2.0f * (v.lPhase < 0.5f ? 0.5f - v.lPhase : v.lPhase - 0.5f);
+        if (w == 1) return 1.0f - v.lPhase;
+        if (w == 2) return v.lPhase;
+        if (w == 3) return v.lPhase < 0.5f ? 0.0f : 1.0f;
+        if (w == 4) return 0.5f + 0.5f * plInterpolateWrap (lut_sine, v.lPhase + 0.5f, 512.0f);
+        return v.lRand;
+    }
+
+    void plFmLfoStep (PlFmVoice& v, int inst, float scale)
+    {
+        v.lPhase += scale * v.lFreq;
+        if (v.lPhase >= 1.0f)
+        {
+            v.lPhase -= 1.0f;
+            v.lRand = plRandFloat (inst);
+        }
+        v.lValue = plFmLfoValue (v);
+        v.lDelayPhase += scale * (v.lDelayPhase < 0.5f ? v.lDelayInc0 : v.lDelayInc1);
+        if (v.lDelayPhase >= 1.0f) v.lDelayPhase = 1.0f;
+    }
+
+    float plFmDelayRamp (PlFmVoice& v)  { return v.lDelayPhase < 0.5f ? 0.0f : (v.lDelayPhase - 0.5f) * 2.0f; }
+    float plFmLfoPitchMod (PlFmVoice& v) { return (v.lValue - 0.5f) * plFmDelayRamp (v) * v.lPitchDepth; }
+    float plFmLfoAmpMod (PlFmVoice& v)   { return (1.0f - v.lValue) * plFmDelayRamp (v) * v.lAmpDepth; }
+
+    void plFmLfoSet (PlFmVoice& v, int bank, int patch)
+    {
+        float oneHz = 1.0f / plFmSr;
+        int rate = min (plFmB (bank, patch, 112) & 127, 99);
+        int rs = rate == 0 ? 1 : ((rate * 165) >> 6);
+        rs *= rs < 160 ? 11 : (11 + ((rs - 160) >> 4));
+        v.lFreq = float (rs) * plFmMinLfo * oneHz;
+
+        int delay = min (plFmB (bank, patch, 113) & 127, 99);
+        if (delay == 0) { v.lDelayInc0 = 100000.0f; v.lDelayInc1 = 100000.0f; }
+        else
+        {
+            int d = 99 - delay;
+            d = (16 + (d & 15)) << (1 + (d >> 4));
+            v.lDelayInc0 = float (d) * plFmMinLfo;
+            v.lDelayInc1 = float (max (128, d & 65408)) * plFmMinLfo;
+        }
+        v.lDelayInc0 *= oneHz;
+        v.lDelayInc1 *= oneHz;
+
+        int b116 = plFmB (bank, patch, 116);
+        v.lWave = min ((b116 >> 1) & 7, 5);
+        v.lReset = b116 & 1;
+        v.lAmpDepth = float (min (plFmB (bank, patch, 115) & 127, 99)) * 0.01f;
+        v.lPitchDepth = float (min (plFmB (bank, patch, 114) & 127, 99)) * 0.01f * plFmPitchSens.at ((b116 >> 4) & 7);
+    }
+
+    // ---- voice ----
+    void plFmVoiceInit (PlFmVoice& v)
+    {
+        float oneHz = 1.0f / plFmSr;
+        float envScale = 44100.0f * oneHz;
+        for (int i = 0; i < 6; ++i) { v.phase.at (i) = 0; v.amp.at (i) = 0.0f; plFmEnvInit (v.opEnv.at (i), envScale); v.ratios.at (i) = 0.0f; v.headroom.at (i) = 0.0f; }
+        plFmEnvInit (v.pitchEnv, envScale);
+        v.fb.at (0) = 0.0f;  v.fb.at (1) = 0.0f;
+        v.gate = 0;  v.note = 48.0f;  v.normVel = 10.0f;  v.dirty = 1;  v.patch = -1;
+        v.lPhase = 0.0f;  v.lFreq = 0.1f;  v.lDelayPhase = 0.0f;  v.lDelayInc0 = 0.1f;  v.lDelayInc1 = 0.1f;
+        v.lRand = 0.0f;  v.lValue = 0.0f;  v.lAmpDepth = 0.0f;  v.lPitchDepth = 0.0f;  v.lWave = 0;  v.lReset = 0;  v.lPhaseInt = 0;
+        v.pSustain = 0;  v.pGate = 0;  v.pNote = 48.0f;  v.pVel = 0.5f;  v.pBright = 0.5f;  v.pEnvCtl = 0.5f;  v.pPitchMod = 0.0f;  v.pAmpMod = 0.0f;
+    }
+
+    void plFmLoadPatch (PlFmVoice& v, int bank, int patch)
+    {
+        if (patch == v.patch) return;
+        v.patch = patch;
+        v.dirty = 1;
+        plFmLfoSet (v, bank, patch);
+    }
+
+    float plFmFrequencyRatio (int bank, int patch, int op)
+    {
+        int b = op * 17;
+        int mode = plFmB (bank, patch, b + 15) & 1;
+        int coarse = (plFmB (bank, patch, b + 15) >> 1) & 31;
+        int fine = min (plFmB (bank, patch, b + 16) & 127, 99);
+        int detuneI = min ((plFmB (bank, patch, b + 12) >> 3) & 15, 14);
+        float detune = (mode == 0 && fine != 0) ? 1.0f + 0.01f * float (fine) : 1.0f;
+        float base = mode == 0 ? plFmCoarse.at (coarse) : float ((coarse & 3) * 100 + fine) * 0.39864f;
+        base += (float (detuneI) - 7.0f) * 0.015f;
+        return plSemitonesToRatioSafe (base) * detune;
+    }
+
+    bool plFmSetup (PlFmVoice& v, int bank)
+    {
+        if (v.dirty == 0) return false;
+        int p = v.patch;
+        plFmSetPitchEnv (v.pitchEnv, bank, p);
+        for (int i = 0; i < 6; ++i)
+        {
+            int level = plFmOperatorLevel (min (plFmB (bank, p, i * 17 + 14) & 127, 99));
+            plFmSetOpEnv (v.opEnv.at (i), bank, p, i);
+            v.headroom.at (i) = float (127 - level);
+            float sign = (plFmB (bank, p, i * 17 + 15) & 1) == 0 ? 1.0f : -1.0f;
+            v.ratios.at (i) = sign * plFmFrequencyRatio (bank, p, i);
+        }
+        v.dirty = 0;
+        return true;
+    }
+
+    float plFmSinePM (int64 phase, float pm)
+    {
+        int64 add = int64 ((pm + 32.0f) * 67108864.0f);
+        phase = (phase + add * 64) & 4294967295i64;
+        int integral = int (phase >> 23);
+        float fractional = float ((phase << 9) & 4294967295i64) / 4294967296.0f;
+        float a = lut_sine.at (integral);
+        float b = lut_sine.at (integral + 1);
+        return a + (b - a) * fractional;
+    }
+
+    float plFmKeyboardScaling (float note, int bank, int patch, int op)
+    {
+        int b = op * 17;
+        int bp = min (plFmB (bank, patch, b + 8) & 127, 99);
+        int ld = min (plFmB (bank, patch, b + 9) & 127, 99);
+        int rd = min (plFmB (bank, patch, b + 10) & 127, 99);
+        int lc = plFmB (bank, patch, b + 11) & 3;
+        int rc = (plFmB (bank, patch, b + 11) >> 2) & 3;
+        float x = note - float (bp) - 15.0f;
+        int curve = x > 0.0f ? rc : lc;
+        float t = abs (x);
+        if (curve == 1 || curve == 2)
+        {
+            t = min (t * 0.010467f, 1.0f);
+            t = t * t * t;
+            t *= 96.0f;
+        }
+        if (curve < 2) t = -t;
+        float depth = float (x > 0.0f ? rd : ld);
+        return t * depth * 0.02677f;
+    }
+
+    // renders n operators starting at i0 (RenderOperators of operator.h); bufs holds the 4 buffers of 24 samples
+    void plFmRenderOps (PlFmVoice& v, int i0, int n, int ms, bool additive, float[6]& f, float[6]& a, int fbAmount,
+                        float[96]& bufs, int inBase, int outBase, int size)
+    {
+        float prev0 = 0.0f;
+        float prev1 = 0.0f;
+        if (ms >= 0) { prev0 = v.fb.at (0); prev1 = v.fb.at (1); }
+
+        int64[3] freq;
+        int64[3] ph;
+        float[3] amp;
+        float[3] ampInc;
+        float scale = 1.0f / float (size);
+
+        for (int i = 0; i < n; ++i)
+        {
+            freq.at (i) = int64 (min (f.at (i0 + i), 0.5f) * 4294967296.0f);
+            ph.at (i) = v.phase.at (i0 + i);
+            amp.at (i) = v.amp.at (i0 + i);
+            ampInc.at (i) = (min (a.at (i0 + i), 4.0f) - amp.at (i)) * scale;
+        }
+
+        float fbScale = fbAmount != 0 ? float (1 << fbAmount) / 512.0f : 0.0f;
+
+        for (int s = 0; s < size; ++s)
+        {
+            float pm = 0.0f;
+            if (ms >= 0)       pm = (prev0 + prev1) * fbScale;
+            else if (ms == -2) pm = bufs.at (inBase + s);
+
+            for (int i = 0; i < n; ++i)
+            {
+                ph.at (i) = (ph.at (i) + freq.at (i)) & 4294967295i64;
+                pm = plFmSinePM (ph.at (i), pm) * amp.at (i);
+                amp.at (i) += ampInc.at (i);
+                if (i == ms) { prev1 = prev0; prev0 = pm; }
+            }
+
+            if (additive) bufs.at (outBase + s) += pm;
+            else          bufs.at (outBase + s) = pm;
+        }
+
+        for (int i = 0; i < n; ++i) { v.phase.at (i0 + i) = ph.at (i); v.amp.at (i0 + i) = amp.at (i); }
+        if (ms >= 0) { v.fb.at (0) = prev0; v.fb.at (1) = prev1; }
+    }
+
+    // fm::Voice<6>::Render for the patched case (sustain = false); size = 24
+    void plFmVoiceRender (PlFmVoice& v, int bank, float[96]& bufs)
+    {
+        if (v.patch < 0) return;
+        if (plFmSetup (v, bank)) return;
+
+        int p = v.patch;
+        int size = 24;
+        float oneHz = 1.0f / plFmSr;
+        float a0 = 55.0f / plFmSr;
+        bool gate = v.pGate != 0;
+
+        float envRate = float (size);
+        float adScale = plFmPow2Fast1 ((0.5f - v.pEnvCtl) * 8.0f);
+        float rScale = plFmPow2Fast1 (-abs (v.pEnvCtl - 0.3f) * 8.0f);
+
+        float pitchEnv = plFmEnvRender (v.pitchEnv, gate, envRate, adScale, rScale, false);
+        float pitchMod = pitchEnv + v.pPitchMod;
+        float f0 = a0 * 0.25f * plSemitonesToRatioSafe (v.pNote - 9.0f + pitchMod * 12.0f);
+
+        bool noteOn = gate && v.gate == 0;
+        v.gate = gate ? 1 : 0;
+        if (noteOn)
+        {
+            float vel = v.pVel;
+            float cr = plInterpolate (plFmCubeRoot, vel, 16.0f);
+            v.normVel = 16.0f * (cr - 0.918f);
+            v.note = v.pNote;
+        }
+
+        int algo = plFmB (bank, p, 110) & 31;
+        int feedback = plFmB (bank, p, 111) & 7;
+        if (noteOn && ((plFmB (bank, p, 111) >> 3) & 1) != 0)
+            for (int i = 0; i < 6; ++i) v.phase.at (i) = 0;
+
+        float[6] f;
+        float[6] a;
+        for (int i = 0; i < 6; ++i)
+        {
+            int b = i * 17;
+            float ratio = v.ratios.at (i);
+            f.at (i) = ratio * (ratio < 0.0f ? -oneHz : f0);
+
+            int rateScalingI = plFmB (bank, p, b + 12) & 7;
+            float rateScaling = plFmPow2Fast1 (float (rateScalingI) * (v.note * 0.33333f - 7.0f) * 0.03125f);
+            float level = plFmEnvRender (v.opEnv.at (i), gate, envRate * rateScaling, adScale, rScale, true);
+            float kb = plFmKeyboardScaling (v.note, bank, p, i);
+            int velSens = (plFmB (bank, p, b + 13) >> 2) & 7;
+            float velScaling = v.normVel * float (velSens);
+            float brightness = plFmIsMod.at (algo * 6 + i) != 0 ? (v.pBright - 0.5f) * 32.0f : 0.0f;
+            level += 0.125f * min (kb + velScaling + brightness, v.headroom.at (i));
+
+            float sensitivity = plFmAmpSens.at (plFmB (bank, p, b + 13) & 3);
+            float logLevelMod = sensitivity * v.pAmpMod - 1.0f;
+            float levelMod = 1.0f - plFmPow2Fast2 (6.4f * logLevelMod);
+            a.at (i) = plFmPow2Fast2 (-14.0f + level * levelMod);
+        }
+
+        int i = 0;
+        while (i < 6)
+        {
+            int k = (algo * 6 + i) * 5;
+            int n = plFmCalls.at (k);
+            int inIdx = plFmCalls.at (k + 3);
+            int outIdx = plFmCalls.at (k + 4);
+            plFmRenderOps (v, i, n, plFmCalls.at (k + 1), plFmCalls.at (k + 2) != 0, f, a, feedback, bufs,
+                           (inIdx == 3 ? 2 : inIdx) * 24, (outIdx == 3 ? 2 : outIdx) * 24, size);
+            i += n;
+        }
+    }
+
+    void plSixInit (int inst)
+    {
+        for (int i = 0; i < 2; ++i) plFmVoiceInit (plSix.at (inst).voice.at (i));
+        for (int i = 0; i < 12; ++i) plSix.at (inst).acc.at (i) = 0.0f;
+        plSix.at (inst).quant = 0;
+        plSix.at (inst).active = 1;
+        plSix.at (inst).rendered = 0;
+    }
+
+    void plSixRender (int inst, int bank, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        // HysteresisQuantizer2 (32 steps, 0.005, not symmetric)
+        float value = harm * 1.02f * 32.0f - 0.5f;
+        float hs = value > float (plSix.at (inst).quant) ? -1.0f : 1.0f;
+        int q = clamp (int (value + hs * 0.005f + 0.5f), 0, 31);
+        plSix.at (inst).quant = q;
+
+        if ((trig & 1) != 0)
+        {
+            plSix.at (inst).active = (plSix.at (inst).active + 1) % 2;
+            int ac = plSix.at (inst).active;
+            plFmLoadPatch (plSix.at (inst).voice.at (ac), bank, q);
+            if (plSix.at (inst).voice.at (ac).lReset != 0) plSix.at (inst).voice.at (ac).lPhase = 0.0f;
+            plSix.at (inst).voice.at (ac).lDelayPhase = 0.0f;
+        }
+
+        int ac = plSix.at (inst).active;
+        plSix.at (inst).voice.at (ac).pNote = note;
+        plSix.at (inst).voice.at (ac).pVel = accent;
+        plSix.at (inst).voice.at (ac).pEnvCtl = morph;
+        plFmLfoStep (plSix.at (inst).voice.at (ac), inst, 12.0f);
+
+        for (int i = 0; i < 2; ++i)
+        {
+            plSix.at (inst).voice.at (i).pBright = timb;
+            plSix.at (inst).voice.at (i).pSustain = 0;
+            plSix.at (inst).voice.at (i).pGate = ((trig & 4) != 0 && i == ac) ? 1 : 0;
+
+            if (plSix.at (inst).voice.at (i).patch != plSix.at (inst).voice.at (ac).patch)
+            {
+                plFmLfoStep (plSix.at (inst).voice.at (i), inst, 12.0f);
+                plSix.at (inst).voice.at (i).pPitchMod = plFmLfoPitchMod (plSix.at (inst).voice.at (i));
+                plSix.at (inst).voice.at (i).pAmpMod = plFmLfoAmpMod (plSix.at (inst).voice.at (i));
+            }
+            else
+            {
+                float pmod = plFmLfoPitchMod (plSix.at (inst).voice.at (ac));
+                float amod = plFmLfoAmpMod (plSix.at (inst).voice.at (ac));
+                plSix.at (inst).voice.at (i).pPitchMod = pmod;
+                plSix.at (inst).voice.at (i).pAmpMod = amod;
+            }
+        }
+
+        float[96] bufs;
+        for (int i = 0; i < 12; ++i) bufs.at (i) = plSix.at (inst).acc.at (i);
+
+        plSix.at (inst).rendered = (plSix.at (inst).rendered + 1) % 2;
+        plFmVoiceRender (plSix.at (inst).voice.at (plSix.at (inst).rendered), bank, bufs);
+
+        for (int i = 0; i < 12; ++i)
+        {
+            float s = plSoftClip (bufs.at (i) * 0.25f);
+            plOut.at (inst * 12 + i) = s;
+            plAux.at (inst * 12 + i) = s;
+            plSix.at (inst).acc.at (i) = bufs.at (12 + i);
+        }
+    }

@@ -1,0 +1,216 @@
+    // ---------------- engine 22: Snare drum (plaits/dsp/engine/snare_drum_engine.cc, analog + synthetic snare drum, sustain mode unused) ----------------
+    struct PlSn
+    {
+        // analog snare drum
+        int pulseRem; float pulse; float pulseHeight; float pulseLp; float noiseEnvelope; PlSvf[5] res; PlSvf noiseFilter;
+        // synthetic snare drum
+        float phase0; float phase1; float drumAmplitude; float snareAmplitude; float fm; int holdCounter;
+        PlOnePole drumLp; PlOnePole snareHp; PlSvf snareLp;
+    }
+
+    PlSn[48] plSn;
+
+    void plSnInit (PlSn& d)
+    {
+        d.pulseRem = 0; d.pulse = 0.0f; d.pulseHeight = 0.0f; d.pulseLp = 0.0f; d.noiseEnvelope = 0.0f;
+        for (int i = 0; i < 5; ++i) plSvfInit (d.res.at (i));
+        plSvfInit (d.noiseFilter);
+        d.phase0 = 0.0f; d.phase1 = 0.0f; d.drumAmplitude = 0.0f; d.snareAmplitude = 0.0f; d.fm = 0.0f; d.holdCounter = 0;
+        plOnePoleInit (d.drumLp);
+        plOnePoleInit (d.snareHp);
+        plSvfInit (d.snareLp);
+    }
+
+    void plInit_22 (int inst)  { plSnInit (plSn.at (inst)); }
+
+    void plSnAnalog (int inst, PlSn& d, bool trigger, float accent, float f0, float tone, float decay, float snappy, float[12]& out)
+    {
+        float decayXt = decay * (1.0f + decay * (decay - 1.0f));
+        float kPulseDecayTime = 4.7999997f;
+        float q = 2000.0f * plSemitonesToRatio (decayXt * 84.0f);
+        float noiseEnvelopeDecay = 1.0f - 0.0017f * plSemitonesToRatio (-decay * (50.0f + snappy * 10.0f));
+        float exciterLeak = snappy * (2.0f - snappy) * 0.1f;
+
+        snappy = snappy * 1.1f - 0.05f;
+        snappy = clamp (snappy, 0.0f, 1.0f);
+
+        if (trigger)
+        {
+            d.pulseRem = 48;
+            d.pulseHeight = 3.0f + 7.0f * accent;
+            d.noiseEnvelope = 2.0f;
+        }
+
+        const float[5] kModeFrequencies = (1.0f, 2.0f, 3.18f, 4.16f, 5.62f);
+        float[5] f;
+        float[5] gain;
+
+        for (int i = 0; i < 5; ++i)
+        {
+            f.at (i) = min (f0 * kModeFrequencies.at (i), 0.499f);
+            plSvfSetFQ (d.res.at (i), 2, f.at (i), 1.0f + f.at (i) * (i == 0 ? q : q * 0.25f));
+        }
+
+        if (tone < 0.666667f)
+        {
+            tone *= 1.5f;
+            gain.at (0) = 1.5f + (1.0f - tone) * (1.0f - tone) * 4.5f;
+            gain.at (1) = 2.0f * tone + 0.15f;
+            gain.at (2) = 0.0f; gain.at (3) = 0.0f; gain.at (4) = 0.0f;
+        }
+        else
+        {
+            tone = (tone - 0.666667f) * 3.0f;
+            gain.at (0) = 1.5f - tone * 0.5f;
+            gain.at (1) = 2.15f - tone * 0.7f;
+            for (int i = 2; i < 5; ++i)
+            {
+                gain.at (i) = tone;
+                tone *= tone;
+            }
+        }
+
+        float fNoise = f0 * 16.0f;
+        fNoise = clamp (fNoise, 0.0f, 0.499f);
+        plSvfSetFQ (d.noiseFilter, 2, fNoise, 1.0f + fNoise * 1.5f);
+
+        for (int n = 0; n < 12; ++n)
+        {
+            float pulse = 0.0f;
+            if (d.pulseRem != 0)
+            {
+                --d.pulseRem;
+                pulse = d.pulseRem != 0 ? d.pulseHeight : d.pulseHeight - 1.0f;
+                d.pulse = pulse;
+            }
+            else
+            {
+                d.pulse *= 1.0f - 1.0f / kPulseDecayTime;
+                pulse = d.pulse;
+            }
+
+            d.pulseLp += 0.75f * (pulse - d.pulseLp);
+
+            float shell = 0.0f;
+            for (int i = 0; i < 5; ++i)
+            {
+                float excitation = i == 0 ? (pulse - d.pulseLp) + 0.006f * pulse : 0.026f * pulse;
+                shell += gain.at (i) * (plSvfProcess (d.res.at (i), 1, excitation) + excitation * exciterLeak);
+            }
+            shell = plSoftClip (shell);
+
+            float noise = 2.0f * plRandFloat (inst) - 1.0f;
+            if (noise < 0.0f) noise = 0.0f;
+            d.noiseEnvelope *= noiseEnvelopeDecay;
+            noise *= d.noiseEnvelope * snappy * 2.0f;
+
+            noise = plSvfProcess (d.noiseFilter, 1, noise);
+
+            out.at (n) = noise + shell * (1.0f - snappy);
+        }
+    }
+
+    float plSnDistortedSine (float phase)
+    {
+        float triangle = (phase < 0.5f ? phase : 1.0f - phase) * 4.0f - 1.3f;
+        return 2.0f * triangle / (1.0f + abs (triangle));
+    }
+
+    void plSnSynthetic (int inst, PlSn& d, bool trigger, float accent, float f0, float fmAmount, float decay, float snappy, float[12]& out)
+    {
+        float decayXt = decay * (1.0f + decay * (decay - 1.0f));
+        fmAmount *= fmAmount;
+        float drumDecay  = 1.0f - 1.0f / (0.015f * 48000.0f) * plSemitonesToRatio (-decayXt * 72.0f - fmAmount * 12.0f + snappy * 7.0f);
+        float snareDecay = 1.0f - 1.0f / (0.01f * 48000.0f) * plSemitonesToRatio (-decay * 60.0f - snappy * 7.0f);
+        float fmDecay    = 1.0f - 1.0f / (0.007f * 48000.0f);
+
+        snappy = snappy * 1.1f - 0.05f;
+        snappy = clamp (snappy, 0.0f, 1.0f);
+
+        float drumLevel  = sqrt (1.0f - snappy);
+        float snareLevel = sqrt (snappy);
+
+        float snareFMin = min (10.0f * f0, 0.5f);
+        float snareFMax = min (35.0f * f0, 0.5f);
+
+        plOnePoleSetF (d.snareHp, 2, snareFMin);
+        plSvfSetFQ (d.snareLp, 2, snareFMax, 0.5f + 2.0f * snappy);
+        plOnePoleSetF (d.drumLp, 2, 3.0f * f0);
+
+        if (trigger)
+        {
+            d.drumAmplitude = 0.3f + 0.7f * accent;
+            d.snareAmplitude = d.drumAmplitude;
+            d.fm = 1.0f;
+            d.phase0 = 0.0f; d.phase1 = 0.0f;
+            d.holdCounter = int ((0.04f + decay * 0.03f) * 48000.0f);
+        }
+
+        for (int n = 0; n < 12; ++n)
+        {
+            int size = 11 - n;
+
+            d.drumAmplitude *= (d.drumAmplitude > 0.03f || (size & 1) == 0) ? drumDecay : 1.0f;
+            if (d.holdCounter != 0)
+                --d.holdCounter;
+            else
+                d.snareAmplitude *= snareDecay;
+            d.fm *= fmDecay;
+
+            float resetNoise = 0.0f;
+            float resetNoiseAmount = (0.125f - f0) * 8.0f;
+            resetNoiseAmount = clamp (resetNoiseAmount, 0.0f, 1.0f);
+            resetNoiseAmount *= resetNoiseAmount;
+            resetNoiseAmount *= fmAmount;
+            resetNoise += d.phase0 > 0.5f ? -1.0f : 1.0f;
+            resetNoise += d.phase1 > 0.5f ? -1.0f : 1.0f;
+            resetNoise *= resetNoiseAmount * 0.025f;
+
+            float f = f0 * (1.0f + fmAmount * (4.0f * d.fm));
+            d.phase0 += f;
+            d.phase1 += f * 1.47f;
+            if (resetNoiseAmount > 0.1f)
+            {
+                if (d.phase0 >= 1.0f + resetNoise) d.phase0 = 1.0f - d.phase0;
+                if (d.phase1 >= 1.0f + resetNoise) d.phase1 = 1.0f - d.phase1;
+            }
+            else
+            {
+                if (d.phase0 >= 1.0f) d.phase0 -= 1.0f;
+                if (d.phase1 >= 1.0f) d.phase1 -= 1.0f;
+            }
+
+            float drum = -0.1f;
+            drum += plSnDistortedSine (d.phase0) * 0.60f;
+            drum += plSnDistortedSine (d.phase1) * 0.25f;
+            drum *= d.drumAmplitude * drumLevel;
+            drum = plOnePoleLP (d.drumLp, drum);
+
+            float noise = plRandFloat (inst);
+            float snare = plSvfProcess (d.snareLp, 0, noise);
+            snare = plOnePoleHP (d.snareHp, snare);
+            snare = (snare + 0.1f) * (d.snareAmplitude + d.fm) * snareLevel;
+
+            out.at (n) = snare + drum;
+        }
+    }
+
+    void plSnRender (int inst, PlSn& d, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+        bool rising = (trig & 1) != 0;
+        float[12] a;
+        float[12] b;
+        plSnAnalog (inst, d, rising, accent, f0, timb, morph, harm, a);
+        plSnSynthetic (inst, d, rising, accent, f0, timb, morph, harm, b);
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = a.at (i);
+            plAux.at (inst * 12 + i) = b.at (i);
+        }
+    }
+
+    void plRender_22 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        plSnRender (inst, plSn.at (inst), trig, note, harm, timb, morph, accent);
+    }

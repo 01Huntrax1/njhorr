@@ -1,0 +1,252 @@
+    // ---------------- engine 11: Grain / formant (plaits/dsp/engine/grain_engine.cc, grainlet + z oscillators) ----------------
+    struct PlGrainlet
+    {
+        float carrierPhase; float formantPhase; float nextSample;
+        float carrierFreq; float formantFreq; float carrierShape; float carrierBleed;
+    }
+
+    struct PlZosc
+    {
+        float carrierPhase; float discPhase; float formantPhase; float nextSample;
+        float carrierFreq; float formantFreq; float carrierShape; float mode;
+    }
+
+    struct PlGrain { PlGrainlet g0; PlGrainlet g1; PlZosc z; PlOnePole dc0; PlOnePole dc1; }
+
+    PlGrain[48] plGrain;
+
+    void plGrainletInit (PlGrainlet& o)
+    {
+        o.carrierPhase = 0.0f; o.formantPhase = 0.0f; o.nextSample = 0.0f;
+        o.carrierFreq = 0.0f; o.formantFreq = 0.0f; o.carrierShape = 0.0f; o.carrierBleed = 0.0f;
+    }
+
+    void plZoscInit (PlZosc& o)
+    {
+        o.carrierPhase = 0.0f; o.discPhase = 0.0f; o.formantPhase = 0.0f; o.nextSample = 0.0f;
+        o.carrierFreq = 0.0f; o.formantFreq = 0.0f; o.carrierShape = 0.0f; o.mode = 0.0f;
+    }
+
+    void plInit_11 (int inst)
+    {
+        plGrainletInit (plGrain.at (inst).g0);
+        plGrainletInit (plGrain.at (inst).g1);
+        plZoscInit (plGrain.at (inst).z);
+        plOnePoleInit (plGrain.at (inst).dc0);
+        plOnePoleInit (plGrain.at (inst).dc1);
+    }
+
+    float plGrainCarrier (float phase, float shape)
+    {
+        shape *= 3.0f;
+        int   si = int (shape);
+        float sf = shape - float (si);
+        float t = 1.0f - sf;
+
+        if (si == 0)
+        {
+            phase = phase * (1.0f + t * t * t * 15.0f);
+            if (phase >= 1.0f) phase = 1.0f;
+            phase += 0.75f;
+        }
+        else if (si == 1)
+        {
+            float bp = 0.001f + 0.499f * t * t * t;
+            if (phase < bp) phase *= (0.5f / bp);
+            else            phase = 0.5f + (phase - bp) * 0.5f / (1.0f - bp);
+            phase += 0.75f;
+        }
+        else
+        {
+            t = 1.0f - t;
+            phase = 0.25f + phase * (0.5f + t * t * t * 14.5f);
+            if (phase >= 0.75f) phase = 0.75f;
+        }
+
+        return (plG1Sine (phase) + 1.0f) * 0.25f;
+    }
+
+    float plGrainGrainlet (float carrierPhase, float formantPhase, float shape, float bleed)
+    {
+        float carrier = plGrainCarrier (carrierPhase, shape);
+        float formant = plG1Sine (formantPhase);
+        return carrier * (formant + bleed) / (1.0f + bleed);
+    }
+
+    void plGrainletRender (PlGrainlet& o, float carrierFrequency, float formantFrequency, float carrierShape, float carrierBleed, float[12]& out)
+    {
+        if (carrierFrequency >= 0.125f) carrierFrequency = 0.125f;
+        if (formantFrequency >= 0.25f)  formantFrequency = 0.25f;
+
+        float cfInc = (carrierFrequency - o.carrierFreq) / 12.0f;  float cfV = o.carrierFreq;
+        float ffInc = (formantFrequency - o.formantFreq) / 12.0f;  float ffV = o.formantFreq;
+        float csInc = (carrierShape - o.carrierShape) / 12.0f;     float csV = o.carrierShape;
+        float cbInc = (carrierBleed - o.carrierBleed) / 12.0f;     float cbV = o.carrierBleed;
+        float nextSample = o.nextSample;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            float thisSample = nextSample;
+            nextSample = 0.0f;
+
+            cfV += cfInc; ffV += ffInc;
+            float f0 = cfV;
+            float f1 = ffV;
+
+            o.carrierPhase += f0;
+            bool reset = o.carrierPhase >= 1.0f;
+
+            if (reset)
+            {
+                o.carrierPhase -= 1.0f;
+                float resetTime = o.carrierPhase / f0;
+                float before = plGrainGrainlet (1.0f, o.formantPhase + (1.0f - resetTime) * f1,
+                                                csV + csInc * (1.0f - resetTime), cbV + cbInc * (1.0f - resetTime));
+                float after  = plGrainGrainlet (0.0f, 0.0f, csV + csInc, cbV + cbInc);
+                float disc = after - before;
+                thisSample += disc * plThisBlep (resetTime);
+                nextSample += disc * plNextBlep (resetTime);
+                o.formantPhase = resetTime * f1;
+            }
+            else
+            {
+                o.formantPhase += f1;
+                if (o.formantPhase >= 1.0f) o.formantPhase -= 1.0f;
+            }
+
+            csV += csInc; cbV += cbInc;
+            nextSample += plGrainGrainlet (o.carrierPhase, o.formantPhase, csV, cbV);
+            out.at (n) = thisSample;
+        }
+
+        o.nextSample = nextSample;
+        o.carrierFreq = cfV; o.formantFreq = ffV; o.carrierShape = csV; o.carrierBleed = cbV;
+    }
+
+    float plGrainZ (float c, float d, float f, float shape, float mode)
+    {
+        float rampDown = 0.5f * (1.0f + plG1Sine (0.5f * d + 0.25f));
+        float offset = 0.0f;
+        float phaseShift = 0.0f;
+
+        if (mode < 0.333f)
+        {
+            offset = 1.0f;
+            phaseShift = 0.25f + mode * 1.50f;
+        }
+        else if (mode < 0.666f)
+        {
+            phaseShift = 0.7495f - (mode - 0.33f) * 0.75f;
+            offset = -plG1Sine (phaseShift);
+        }
+        else
+        {
+            phaseShift = 0.7495f - (mode - 0.33f) * 0.75f;
+            offset = 0.001f;
+        }
+
+        float disc = plG1Sine (f + phaseShift);
+        float contour = 0.0f;
+
+        if (shape < 0.5f)
+        {
+            shape *= 2.0f;
+            if (c >= 0.5f) rampDown *= shape;
+            contour = 1.0f + (plG1Sine (c + 0.25f) - 1.0f) * shape;
+        }
+        else
+        {
+            contour = plG1Sine (c + shape * 0.5f);
+        }
+
+        return (rampDown * (offset + disc) - offset) * contour;
+    }
+
+    void plZoscRender (PlZosc& o, float carrierFrequency, float formantFrequency, float carrierShape, float mode, float[12]& out)
+    {
+        if (carrierFrequency >= 0.125f) carrierFrequency = 0.125f;
+        if (formantFrequency >= 0.25f)  formantFrequency = 0.25f;
+
+        float cfInc = (carrierFrequency - o.carrierFreq) / 12.0f;  float cfV = o.carrierFreq;
+        float ffInc = (formantFrequency - o.formantFreq) / 12.0f;  float ffV = o.formantFreq;
+        float csInc = (carrierShape - o.carrierShape) / 12.0f;     float csV = o.carrierShape;
+        float mdInc = (mode - o.mode) / 12.0f;                     float mdV = o.mode;
+        float nextSample = o.nextSample;
+
+        for (int n = 0; n < 12; ++n)
+        {
+            float thisSample = nextSample;
+            nextSample = 0.0f;
+
+            cfV += cfInc; ffV += ffInc;
+            float f0 = cfV;
+            float f1 = ffV;
+
+            o.discPhase += 2.0f * f0;
+            o.carrierPhase += f0;
+            bool reset = o.discPhase >= 1.0f;
+
+            if (reset)
+            {
+                o.discPhase -= 1.0f;
+                float resetTime = o.discPhase / (2.0f * f0);
+
+                float cBefore = o.carrierPhase >= 1.0f ? 1.0f : 0.5f;
+                float cAfter  = o.carrierPhase >= 1.0f ? 0.0f : 0.5f;
+                float before = plGrainZ (cBefore, 1.0f, o.formantPhase + (1.0f - resetTime) * f1,
+                                         csV + csInc * (1.0f - resetTime), mdV + mdInc * (1.0f - resetTime));
+                float after  = plGrainZ (cAfter, 0.0f, 0.0f, csV + csInc, mdV + mdInc);
+                float disc = after - before;
+                thisSample += disc * plThisBlep (resetTime);
+                nextSample += disc * plNextBlep (resetTime);
+                o.formantPhase = resetTime * f1;
+
+                if (o.carrierPhase > 1.0f)
+                    o.carrierPhase = o.discPhase * 0.5f;
+            }
+            else
+            {
+                o.formantPhase += f1;
+                if (o.formantPhase >= 1.0f) o.formantPhase -= 1.0f;
+            }
+
+            if (o.carrierPhase >= 1.0f) o.carrierPhase -= 1.0f;
+
+            csV += csInc; mdV += mdInc;
+            nextSample += plGrainZ (o.carrierPhase, o.discPhase, o.formantPhase, csV, mdV);
+            out.at (n) = thisSample;
+        }
+
+        o.nextSample = nextSample;
+        o.carrierFreq = cfV; o.formantFreq = ffV; o.carrierShape = csV; o.mode = mdV;
+    }
+
+    void plRender_11 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float root = note;
+        float f0 = plNoteToFrequency (root);
+        float f1 = plNoteToFrequency (24.0f + 84.0f * timb);
+        float ratio = plSemitonesToRatio (-24.0f + 48.0f * harm);
+        float bleed = harm < 0.5f ? 1.0f - 2.0f * harm : 0.0f;
+        float bleedFixed = bleed * (2.0f - bleed);
+        float shape = 0.33f + (morph - 0.33f) * max (1.0f - f0 * 24.0f, 0.0f);
+
+        float[12] out;
+        float[12] aux;
+        plGrainletRender (plGrain.at (inst).g0, f0, f1, shape, bleedFixed, out);
+        plGrainletRender (plGrain.at (inst).g1, f0, f1 * ratio, shape, bleedFixed, aux);
+
+        plOnePoleSetF (plGrain.at (inst).dc0, 3, 0.3f * f0);
+        for (int i = 0; i < 12; ++i)
+            out.at (i) = plOnePoleHP (plGrain.at (inst).dc0, out.at (i) + aux.at (i));
+
+        float cutoff = plNoteToFrequency (root + 96.0f * timb);
+        plZoscRender (plGrain.at (inst).z, f0, cutoff, morph, harm, aux);
+
+        plOnePoleSetF (plGrain.at (inst).dc1, 3, 0.3f * f0);
+        for (int i = 0; i < 12; ++i)
+        {
+            plOut.at (inst * 12 + i) = out.at (i);
+            plAux.at (inst * 12 + i) = plOnePoleHP (plGrain.at (inst).dc1, aux.at (i));
+        }
+    }

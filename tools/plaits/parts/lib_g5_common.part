@@ -1,0 +1,15 @@
+    // ---------------- helpers shared by the engines 19..23 (string, modal, drums) ----------------
+//@LUT lut_sine
+
+    // Svf::Process<FILTER_MODE_BAND_PASS, FILTER_MODE_LOW_PASS> (two outputs from one state update)
+    void plG5SvfBpLp (PlSvf& s, float in, float& bp, float& lp)
+    {
+        float hp = (in - s.r * s.s1 - s.g * s.s1 - s.s2) * s.h;
+        bp = s.g * hp + s.s1;
+        s.s1 = s.g * hp + bp;
+        lp = s.g * bp + s.s2;
+        s.s2 = s.g * bp + lp;
+    }
+
+    // stmlib::OnePole as used by the snare / bass drum (set_f<approx>, LP / HP)
+    float plG5Sine (float phase)  { return plInterpolateWrap (lut_sine, phase, 512.0f); }

@@ -1,0 +1,68 @@
+    // ---------------- engine 0: VA + VCF (plaits/dsp/engine2/virtual_analog_vcf_engine.cc) ----------------
+    struct PlVcf
+    {
+        PlSvf svf0; PlSvf svf1; PlVso osc; PlVso sub;
+        float prevCutoff; float prevStage2; float prevQ; float prevGain; float prevSub;
+    }
+
+    PlVcf[48] plVcf;
+
+    void plInit_0 (int inst)
+    {
+        plSvfInit (plVcf.at (inst).svf0);
+        plSvfInit (plVcf.at (inst).svf1);
+        plVsoInit (plVcf.at (inst).osc);
+        plVsoInit (plVcf.at (inst).sub);
+        plVcf.at (inst).prevSub = 0.0f; plVcf.at (inst).prevCutoff = 0.0f; plVcf.at (inst).prevStage2 = 0.0f;
+        plVcf.at (inst).prevQ = 0.0f;   plVcf.at (inst).prevGain = 0.0f;
+    }
+
+    void plRender_0 (int inst, int trig, float note, float harm, float timb, float morph, float accent)
+    {
+        float f0 = plNoteToFrequency (note);
+        float shape = clamp ((morph - 0.25f) * 2.0f + 0.5f, 0.5f, 1.0f);
+        float pw = (morph - 0.5f) * 2.0f + 0.5f;
+        if (morph > 0.75f) pw = 2.5f - morph * 2.0f;
+        pw = clamp (pw, 0.5f, 0.98f);
+        float subGain = max (abs (morph - 0.5f) - 0.3f, 0.0f) * 5.0f;
+
+        float[12] out;
+        float[12] aux;
+        plVsoRender (plVcf.at (inst).osc, false, false, 0.0f, f0, pw, shape, 0.0f, out);
+        plVsoRender (plVcf.at (inst).sub, false, false, 0.0f, f0 * 0.501f, 0.5f, 1.0f, 0.0f, aux);
+
+        float cutoff = f0 * plSemitonesToRatio ((timb - 0.2f) * 120.0f);
+        float stage2 = clamp (1.0f - (harm - 0.4f) * 4.0f, 0.0f, 1.0f);
+        float res = 2.667f * max (abs (harm - 0.5f) - 0.125f, 0.0f);
+        float res2 = res * res;
+        float q = res2 * res2 * 48.0f;
+        float gain = (harm - 0.7f) + 0.85f;
+        gain = clamp (gain, 0.7f - res2 * 0.3f, 1.0f);
+
+        float subInc = (subGain - plVcf.at (inst).prevSub) / 12.0f;      float subV = plVcf.at (inst).prevSub;
+        float cutInc = (cutoff - plVcf.at (inst).prevCutoff) / 12.0f;    float cutV = plVcf.at (inst).prevCutoff;
+        float s2Inc  = (stage2 - plVcf.at (inst).prevStage2) / 12.0f;    float s2V  = plVcf.at (inst).prevStage2;
+        float qInc   = (q - plVcf.at (inst).prevQ) / 12.0f;              float qV   = plVcf.at (inst).prevQ;
+        float gInc   = (gain - plVcf.at (inst).prevGain) / 12.0f;        float gV   = plVcf.at (inst).prevGain;
+
+        for (int i = 0; i < 12; ++i)
+        {
+            cutV += cutInc; qV += qInc; s2V += s2Inc; gV += gInc; subV += subInc;
+            float c = min (cutV, 0.25f);
+
+            plSvfSetFQ (plVcf.at (inst).svf0, 2, c, 0.5f + qV);
+            plSvfSetFQ (plVcf.at (inst).svf1, 2, c, 0.5f + 0.025f * qV);
+
+            float inp = plSoftClip ((out.at (i) + aux.at (i) * subV) * gV);
+            float hp = 0.0f;
+            float lp = plG1SvfLpHp (plVcf.at (inst).svf0, inp, hp);
+            lp = plSoftClip (lp * gV);
+            lp += s2V * (plSoftClip (plSvfProcess (plVcf.at (inst).svf1, 0, lp)) - lp);
+
+            plOut.at (inst * 12 + i) = lp;
+            plAux.at (inst * 12 + i) = plSoftClip (hp * gV);
+        }
+
+        plVcf.at (inst).prevSub = subV; plVcf.at (inst).prevCutoff = cutV; plVcf.at (inst).prevStage2 = s2V;
+        plVcf.at (inst).prevQ = qV;     plVcf.at (inst).prevGain = gV;
+    }
