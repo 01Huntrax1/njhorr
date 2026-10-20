@@ -1,4 +1,5 @@
 #include "NjoEditor.h"
+#include "NjoLfo.h"
 
 namespace njo
 {
@@ -51,6 +52,7 @@ namespace njo
     EditorContent::EditorContent (Backend& be)
         : ctx (be), memory (ctx), fm (ctx), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
+        ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
         ctx.onStatus = [this] (const juce::String& t) { status = t; statusUntil = juce::Time::getMillisecondCounterHiRes() + 2500; repaint (impl->lcdRect); };
 

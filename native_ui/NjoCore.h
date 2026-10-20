@@ -4,9 +4,11 @@
 #include "NjoData.h"
 #include "NjoTheme.h"
 #include <functional>
+#include <memory>
 
 namespace njo
 {
+    class LfoShapes;
     struct ModSlot { int s = 0, src = 0, dst = 0; float amt = 0; };
 
     class Ctx : private Backend::Listener
@@ -49,6 +51,9 @@ namespace njo
 
         // the selected LFO / envelope in the editors (shared by the strip and the modulation page)
         int selectedLfo = 0, selectedEnv = 0;
+
+        // drawn LFO shapes (implemented with the modulation editors; created lazily by the first user)
+        std::shared_ptr<LfoShapes> lfoShapes;
 
     private:
         void paramChanged (int num, float v) override;
