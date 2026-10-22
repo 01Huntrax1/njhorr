@@ -21,6 +21,7 @@ namespace njo
         Group group() const { return currentGroup; }
         int synthPage() const { return currentSynthPage; }
         Ctx& context() { return ctx; }
+        void restore() { memory.restore(); }   // once after the editor opens: stored sounds -> DSP
 
         std::function<void (float scale)> onScaleRequested;   // the size dropdown (0.75 ... 2.0)
 

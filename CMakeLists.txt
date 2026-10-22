@@ -8,6 +8,7 @@ project(
 )
 
 OPTION (WEBKIT2_GTK_VERSION "Which version of webkit to use")
+option (NJOHRR_NATIVE_UI "Use the native JUCE C++ editor (native_ui/) instead of the WebView UI (patch/index.js)" ON)
 
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
 set(JUCE_ENABLE_MODULE_SOURCE_GROUPS ON)
@@ -82,6 +83,15 @@ target_sources(Njohrr PRIVATE
     ${HEADERS}
 )
 
+if (NJOHRR_NATIVE_UI)
+    file(GLOB NJO_UI_SOURCES CONFIGURE_DEPENDS native_ui/*.cpp native_ui/pages/*.cpp)
+    target_sources(Njohrr PRIVATE ${NJO_UI_SOURCES})
+    target_compile_definitions(Njohrr PRIVATE NJOHRR_NATIVE_UI=1)
+    target_include_directories(Njohrr PRIVATE native_ui)
+else()
+    target_compile_definitions(Njohrr PRIVATE NJOHRR_NATIVE_UI=0)
+endif()
+
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/" FILES ${HEADERS})
 
 target_compile_features(Njohrr PRIVATE cxx_std_17)
@@ -91,6 +101,7 @@ target_include_directories(Njohrr PRIVATE include include/choc)
 target_link_libraries(Njohrr
     PRIVATE
         juce::juce_audio_utils
+        juce::juce_audio_formats
         $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
 )
 

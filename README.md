@@ -64,6 +64,15 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 `542767d`), `tools/rack/apply_rack_ui.py` (first UI step, since extended by hand). Tests: `tools/rack/test_rack.py` (audio, needs a build of
 `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
 
+## Native UI (JUCE C++) and the WebView fallback
+The plugin window is now a native JUCE editor written in C++ (`native_ui/`, see `native_ui/README_UI.md`). It is the default
+(`-DNJOHRR_NATIVE_UI=ON`). The old WebView UI (`patch/index.js`) is still in the repo as a fallback: configure with
+`-DNJOHRR_NATIVE_UI=OFF` to build the plugin with it. The native UI needs `juce_audio_formats` (already linked by CMake) and
+no WebKit at runtime. Sound/preset folders and the `.njopreset` format are the same for both UIs, but the native UI only
+loads its own stored state keys, and old (pre-slot-rework) presets do not load in either.
+Window size: drag the corner (fixed aspect) or use the size dropdown (75-200%).
+Known limits: compressed formats (mp3/ogg) depend on what JUCE decodes on your platform, CAF is only decoded by the JS UI.
+
 ## Layout
 Three pages in the rail on the left, top to bottom: **1 Synth** (OSC 1-6, FM matrix, Global as tabs along the top), **2 Effects** (the three FX racks) and **3 Modulation** (the 20-slot matrix plus the envelope and LFO editors). The envelope / LFO strip stays at the bottom of the Synth and Effects pages so handles can be dragged onto knobs.
 

@@ -35,6 +35,10 @@
 #include "cmaj_PatchWebView.h"
 #include "cmaj_GeneratedCppEngine.h"
 
+#if NJOHRR_NATIVE_UI
+ #include "../../../native_ui/NjoPluginEditor.h"
+#endif
+
 #if CMAJ_USE_QUICKJS_WORKER
  #include "cmaj_PatchWorker_QuickJS.h"
 #else
@@ -135,7 +139,12 @@ public:
         return s;
     }
 
+   #if NJOHRR_NATIVE_UI
+    // native JUCE UI (native_ui/); the WebView UI below stays available with -DNJOHRR_NATIVE_UI=OFF
+    juce::AudioProcessorEditor* createEditor() override   { return new njo::PluginEditor (*this, *patch, lastEditorWidth); }
+   #else
     juce::AudioProcessorEditor* createEditor() override   { return new Editor (static_cast<DerivedType&> (*this)); }
+   #endif
     bool hasEditor() const override                       { return true; }
 
     bool acceptsMidi() const override                     { return patch->hasMIDIInput() || ! patch->isLoaded(); }
