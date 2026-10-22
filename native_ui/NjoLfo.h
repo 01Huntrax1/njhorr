@@ -13,6 +13,8 @@ namespace njo
         std::vector<LfoPoint>& points (int lfo);
         bool isDrawn (int lfo) const;                    // has an edited / loaded point list
         void commit (int lfo, bool final);              // sets wave = Drawn, sends the table to the DSP; final: also persists
+        void setPoints (int lfo, std::vector<LfoPoint> p);   // replaces the shape (a preset) - call commit afterwards
+        void reset (int lfo);                            // back to the built-in wave: forgets the points
         void sendAll();                                  // table of every drawn LFO to the DSP (editor start, preset load)
         juce::var toVar() const;                         // for the stored state and presets
         void fromVar (const juce::var&);                 // replaces all shapes (null / void clears), sends tables
