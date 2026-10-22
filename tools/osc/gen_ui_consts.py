@@ -54,8 +54,12 @@ w("const PLAITS_PARAMS = %s;" % json.dumps([list(e[2:]) for e in ENGINES]))
 dst = ["Off"] + L.MOD_DST_GLOBAL
 for o in range(L.OSC_COUNT):
     dst += ["OSC %d %s" % (o + 1, n) for n in L.MOD_DST_OSC]
+LET = "ABCDEF"
+for kind in ("FM", "PM", "PD"):
+    dst += ["%s %s > %s" % (kind, LET[a], LET[b]) for a in range(6) for b in range(6)]
 w("const MOD_DST = %s;" % json.dumps(dst))
-w("const MOD_DST_GROUPS = %s;" % json.dumps([[0, ""], [1, "Global"]] + [[6 + 9 * o, "OSC %d" % (o + 1)] for o in range(L.OSC_COUNT)]))
+w("const MOD_DST_GROUPS = %s;" % json.dumps([[0, ""], [1, "Global"]] + [[6 + 9 * o, "OSC %d" % (o + 1)] for o in range(L.OSC_COUNT)]
+                                            + [[L.N_DST + 36 * i, "%s matrix (amount)" % n] for i, n in enumerate(("FM", "PM", "PD"))]))
 # mod ring targets: parameter number -> [matrix destination, knob travel per 1.0 amount]
 t = {63: [1, 0.5], 29: [3, 0.5], 28: [4, 0.5], 190: [5, 0.5]}
 for o in range(L.OSC_COUNT):
@@ -63,6 +67,10 @@ for o in range(L.OSC_COUNT):
     for key, j, sc in (("fine", 0, 0.5), ("level", 1, 1), ("pan", 2, 0.5), ("wpos", 3, 0.5), ("pharm", 3, 0.5), ("w1a", 4, 0.5), ("ptimb", 4, 0.5),
                         ("w2a", 5, 0.5), ("pmorph", 5, 0.5), ("fcut", 6, 0.41), ("fres", 7, 0.5), ("ddrv", 8, 0.5)):
         t[L.pid(o, L.K[key])] = [b + j, sc]
+for i, fn in enumerate((L.fm_id, L.pm_id, L.pd_id)):
+    for a in range(6):
+        for b in range(6):
+            t[fn(a, b)] = [L.N_DST + 36 * i + 6 * a + b, 0.5]
 w("const MOD_TARGET = %s;" % json.dumps(t))
 
 def js_labels(p):

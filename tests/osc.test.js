@@ -35,7 +35,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("Plaits knob labels follow the engine", V.querySelector(".n1025 .lbl").textContent === "Attack" && V.querySelector(".n1027 .lbl").textContent === "Decay", V.querySelector(".n1025 .lbl").textContent);
     ctl(1024 + 64).setValue(15, true);
     check("labels are per slot", V.querySelector(".n1089 .lbl").textContent === "Species" && V.querySelector(".n1025 .lbl").textContent === "Attack");
-    check("slot dest list covers 59", opts(308).length === 60 && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive");
+    check("slot dest list covers 167", opts(308).length === 168 && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
     V.querySelector('.stab[data-page="fm"]').click();
     check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 108 && V.querySelectorAll(".fmx-panel").length === 3);
     V.querySelector('.stab[data-page="glob"]').click();

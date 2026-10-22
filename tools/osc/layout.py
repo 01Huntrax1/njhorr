@@ -66,7 +66,8 @@ K = {p[1]: p[0] for p in PARAMS}
 MOD_DST_GLOBAL = ["Pitch (all)", "Amp", "Pan", "Drive", "Out Gain"]   # indices 1..5
 MOD_DST_OSC = ["Pitch", "Level", "Pan", "Position / Harm", "Warp 1 / Timbre", "Warp 2 / Morph", "Cutoff", "Reso", "Dist Drive"]
 def dst_index(o, j): return 6 + 9 * o + j
-N_DST = 6 + 9 * OSC_COUNT   # 60
+N_DST = 6 + 9 * OSC_COUNT   # 60 (osc / global destinations); 60..167 = FM 60+n, PM 96+n, PD 132+n (n = 6*src + dst)
+N_DST_ALL = N_DST + 108
 def pid(o, k): return BASE + STRIDE * o + k
 def fm_id(src, dst): return FM_BASE + 6 * src + dst
 def pm_id(src, dst): return PM_BASE + 6 * src + dst

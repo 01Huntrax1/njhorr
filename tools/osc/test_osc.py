@@ -181,6 +181,16 @@ check("distortion position defaults to after the filter", np.max(np.abs(a_post -
 check("distortion before the filter sounds different from after", rms(a_post - a_pre) > 0.05 * rms(a_post), "%.3f" % rms(a_post - a_pre))
 check("distortion before the filter is darker (filter removes the new harmonics)", band(seg(a_pre)[:, 0], 3000, 12000) < 0.7 * band(seg(a_post)[:, 0], 3000, 12000))
 
+# mod matrix -> FM / PM / PD matrix amounts (destinations 60 + n, 96 + n, 132 + n; n = 6 * src + dst)
+for kind, off in (("FM", 60), ("PM", 96), ("PD", 132)):
+    mbase = [(28, 0), "wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1)]
+    a0 = render(mbase, tag="mm" + kind + "0")
+    a1 = render(mbase + [(307, 1), (308, off + 1), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="mm" + kind + "1")
+    check("mod matrix destination '%s A > B' opens the %s amount (sidebands appear)" % (kind, kind),
+          band(seg(a1)[:, 0], 600, 6000) > 0.2 * band(seg(a1)[:, 0], 400, 480) and band(seg(a0)[:, 0], 600, 6000) < 0.05 * band(seg(a0)[:, 0], 400, 480))
+    a2 = render(mbase + [(307, 1), (308, off + 6), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="mm" + kind + "2")
+    check("mod matrix destination '%s B > A' leaves the A > B amount alone" % kind, band(seg(a2)[:, 0], 600, 6000) < 0.05 * band(seg(a2)[:, 0], 400, 480))
+
 # ---------------------------------------------------------------- unison / warp
 a_u = render(["wt 0 saw", FOFF(0), P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], tag="uni")
 check("unison widens the stereo image", float(np.corrcoef(seg(a_u)[:, 0], seg(a_u)[:, 1])[0, 1]) < 0.95)
