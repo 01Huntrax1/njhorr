@@ -1321,6 +1321,7 @@ const FX_OUT = [28, 536, 175, 189, 221, 222];
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const CHUNK = 256;
 const MAX_SMP = 96000;
+const MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
 const FRAME_SIZES = [256, 512, 1024, 2048, 4096];
 const SMP_DZ_EMPTY = "DROP A SAMPLE / CLICK TO LOAD";
 const WT_DZ_EMPTY = "DROP A WAVETABLE / CLICK TO LOAD";
@@ -1621,16 +1622,21 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     // ---------- file decoding ----------
-    async decodeFile (file) {
+    async decodeFile (file, kind) {
         const AC = window.AudioContext || window.webkitAudioContext;
         let ctx = null;
         try { if (AC) ctx = new AC(); } catch (_) { ctx = null; }
         const sr = (ctx && ctx.sampleRate) || 48000;
         try {
             const ab = await file.arrayBuffer();
+            if (kind === "wt" && (/\.vitaltable$/i.test(file.name || "") || (new Uint8Array(ab, 0, 1)[0] === 123))) {
+                const vt = this.decodeVitalTable(ab);
+                if (vt) return vt;
+            }
             let ch = null, rate = 0;
             // 1. our own decoders (WAV family, AIFF, AU, CAF, FLAC) do not depend on the web view's codecs
-            const nat = AudioDecode.decodeNative(ab, Math.ceil(MAX_SMP * 4));
+            const maxIn = Math.ceil((kind === "wt" ? MAX_WT : MAX_SMP) * 4);
+            const nat = AudioDecode.decodeNative(ab, maxIn);
             if (nat) { ch = nat.ch; rate = nat.rate; }
             // 2. mp3 / ogg / opus / aac / m4a ...: whatever the web view can decode
             if (!ch && ctx) {
@@ -1641,13 +1647,15 @@ class EisenpulsPatchView extends HTMLElement {
                 } catch (_) { ch = null; }
             }
             // 3. headerless dumps: 16 bit little endian mono
-            if (!ch && /\.(raw|pcm|sam|smp|dat|bin|sd|s16)$/i.test(file.name || "")) { const r = AudioDecode.raw(ab, Math.ceil(MAX_SMP * 4)); ch = r.ch; rate = r.rate; }
+            if (!ch && /\.(raw|pcm|sam|smp|dat|bin|sd|s16)$/i.test(file.name || "")) { const r = AudioDecode.raw(ab, maxIn); ch = r.ch; rate = r.rate; }
             if (!ch || !ch.length || !ch[0].length) throw new Error("unsupported audio format");
             let frames = ch[0].length;
             let mono = new Float32Array(frames);
             for (let c = 0; c < ch.length; c++) { const d = ch[c]; for (let i = 0; i < frames; i++) mono[i] += d[i] / ch.length; }
-            if (rate && Math.abs(rate - sr) > 0.5) { mono = await this.resampleMono(mono, rate, sr); frames = mono.length; }
-            const len = Math.min(frames, MAX_SMP);
+            // samples are converted to the host rate; wavetables are not: their frames are single cycles of N samples
+            if (kind !== "wt" && rate && Math.abs(rate - sr) > 0.5) { mono = await this.resampleMono(mono, rate, sr); frames = mono.length; }
+            if (kind === "wt") { mono = this.trimWavetable(mono); frames = mono.length; }
+            const len = Math.min(frames, kind === "wt" ? MAX_WT : MAX_SMP);
             if (len < 1) throw new Error("empty");
             if (mono.length !== len) mono = mono.subarray(0, len);
             let peak = 0;
@@ -1657,6 +1665,54 @@ class EisenpulsPatchView extends HTMLElement {
             for (let i = 0; i < len; i++) out[i] = mono[i] * g;
             return { mono: out, len, rate: sr, sr, dur: len / sr };
         } finally { if (ctx && ctx.close) { try { ctx.close(); } catch (_) {} } }
+    }
+
+    // Vital style frame count: more than 128 frames are thinned out evenly (first and last frame are kept)
+    trimWavetable (x) {
+        const fl = x.length % 4096 === 0 ? 4096 : (x.length >= 2048 ? 2048 : 0);
+        if (!fl) return x;
+        const nF = Math.floor(x.length / fl);
+        if (nF <= MAX_WT_FRAMES) return x;
+        const out = new Float32Array(MAX_WT_FRAMES * fl);
+        for (let t = 0; t < MAX_WT_FRAMES; t++) out.set(x.subarray(Math.round(t * (nF - 1) / (MAX_WT_FRAMES - 1)) * fl).subarray(0, fl), t * fl);
+        return out;
+    }
+
+    // Vital wavetable (.vitaltable, JSON): the keyframes of the first "Wave Source" component (2048 float samples each, base64) are
+    // interpolated linearly over 128 frames (Vital positions run 0..255). Other modifier components are not applied.
+    decodeVitalTable (ab) {
+        let j;
+        try {
+            let txt;
+            if (typeof TextDecoder !== "undefined") txt = new TextDecoder("utf-8").decode(ab);
+            else { const u = new Uint8Array(ab); let b = ""; for (let i = 0; i < u.length; i += 8192) b += String.fromCharCode.apply(null, u.subarray(i, i + 8192)); txt = decodeURIComponent(escape(b)); }
+            j = JSON.parse(txt);
+        } catch (_) { return null; }
+        if (!j || !Array.isArray(j.groups)) return null;
+        let kfs = null;
+        for (const g of j.groups) for (const c of (g.components || [])) if (!kfs && c.type === "Wave Source" && Array.isArray(c.keyframes) && c.keyframes.length) kfs = c.keyframes;
+        if (!kfs) return null;
+        const frames = kfs.map(k => {
+            const bin = atob(k.wave_data || ""), n = Math.min(2048, bin.length >> 2), w = new Float32Array(2048);
+            const dv = new DataView(new ArrayBuffer(4));
+            for (let i = 0; i < n; i++) { for (let b = 0; b < 4; b++) dv.setUint8(b, bin.charCodeAt(i * 4 + b)); w[i] = dv.getFloat32(0, true); }
+            return { pos: +k.position || 0, w };
+        }).sort((a, b) => a.pos - b.pos);
+        const out = new Float32Array(MAX_WT_FRAMES * 2048);
+        const nOut = frames.length === 1 ? 1 : MAX_WT_FRAMES;
+        for (let t = 0; t < nOut; t++) {
+            const p = nOut === 1 ? 0 : t * 255 / (MAX_WT_FRAMES - 1);
+            let a = frames[0], b = frames[frames.length - 1];
+            for (let i = 0; i < frames.length; i++) { if (frames[i].pos <= p) a = frames[i]; }
+            for (let i = frames.length - 1; i >= 0; i--) { if (frames[i].pos >= p) b = frames[i]; }
+            const f = b.pos > a.pos ? (p - a.pos) / (b.pos - a.pos) : 0;
+            for (let i = 0; i < 2048; i++) out[t * 2048 + i] = a.w[i] + (b.w[i] - a.w[i]) * f;
+        }
+        const len = nOut * 2048;
+        let peak = 0; for (let i = 0; i < len; i++) peak = Math.max(peak, Math.abs(out[i]));
+        const g = peak > 0.0001 ? 0.9 / peak : 1;
+        const m = new Float32Array(len); for (let i = 0; i < len; i++) m[i] = out[i] * g;
+        return { mono: m, len, rate: 48000, sr: 48000, dur: len / 48000, name: j.name };
     }
 
     // sample rate conversion to the web audio rate (the web view's decoder resamples the same way)
@@ -1804,7 +1860,7 @@ class EisenpulsPatchView extends HTMLElement {
         const ep = this.memEndpoint(kind), total = s.total;
         let offset = 0;
         this._memTimer[kind][o] = setInterval(() => {
-            for (let k = 0; k < 6 && offset < total; k++) {
+            for (let k = 0; k < 4 && offset < total; k++) {
                 const count = Math.min(CHUNK, total - offset);
                 const data = new Array(CHUNK).fill(0);
                 for (let i = 0; i < count; i++) data[i] = s.data[offset + i];
@@ -1852,9 +1908,9 @@ class EisenpulsPatchView extends HTMLElement {
         this.memCancel(kind, o);
         this.setDz(o, "DECODING...", "busy");
         try {
-            const dec = await this.decodeFile(file);
+            const dec = await this.decodeFile(file, kind);
             this.libTrack(kind + o, file, libId, dec);
-            const name = (file.name || (kind === "wt" ? "TABLE" : "SAMPLE")).replace(/\.[^.]+$/, "").slice(0, 14).toUpperCase();
+            const name = (dec.name || file.name || (kind === "wt" ? "TABLE" : "SAMPLE")).replace(/\.[^.]+$/, "").slice(0, 14).toUpperCase();
             const s = { name, total: dec.len, data: dec.mono };
             if (kind === "wt") { const fc = this._controls.get("param" + oscId(o, "wsize")); if (fc) fc.setValue(this.pickFrameIndex(s.total), true); }
             this.memStream(kind, o, s, () => {
@@ -1895,7 +1951,7 @@ class EisenpulsPatchView extends HTMLElement {
             });
             dz.addEventListener("click", () => {
                 const inp = document.createElement("input");
-                inp.type = "file"; inp.accept = "audio/*,video/mp4,video/webm,.wav,.w64,.rf64,.bwf,.aif,.aiff,.aifc,.au,.snd,.caf,.flac,.mp3,.mp2,.ogg,.oga,.opus,.m4a,.aac,.webm,.raw,.pcm";
+                inp.type = "file"; inp.accept = ".vitaltable,audio/*,video/mp4,video/webm,.wav,.w64,.rf64,.bwf,.aif,.aiff,.aifc,.au,.snd,.caf,.flac,.mp3,.mp2,.ogg,.oga,.opus,.m4a,.aac,.webm,.raw,.pcm";
                 inp.onchange = () => { if (inp.files && inp.files[0]) this.loadMem(this.srcKind(o), o, inp.files[0]); };
                 inp.click();
             });
@@ -4112,7 +4168,7 @@ const mgrMethods = {
         let n = 0, bad = 0;
         for (const f of files) {
             try {
-                const dec = await this.decodeFile(f);
+                const dec = await this.decodeFile(f, this._libKind === "sample" ? "sm" : "wt");
                 const id = await this.libAdd(f, this._libKind, dec.dur);
                 if (id) n++; else bad++;
             } catch (_) { bad++; }
@@ -4358,7 +4414,7 @@ const mgrMethods = {
             case "lb-tab": this._libKind = btn.dataset.kind; this._libTarget = null; this.renderLib(); break;
             case "lb-import": {
                 const inp = document.createElement("input");
-                inp.type = "file"; inp.multiple = true; inp.accept = "audio/*,video/mp4,video/webm,.wav,.w64,.rf64,.bwf,.aif,.aiff,.aifc,.au,.snd,.caf,.flac,.mp3,.mp2,.ogg,.oga,.opus,.m4a,.aac,.webm,.raw,.pcm";
+                inp.type = "file"; inp.multiple = true; inp.accept = ".vitaltable,audio/*,video/mp4,video/webm,.wav,.w64,.rf64,.bwf,.aif,.aiff,.aifc,.au,.snd,.caf,.flac,.mp3,.mp2,.ogg,.oga,.opus,.m4a,.aac,.webm,.raw,.pcm";
                 inp.onchange = () => { if (inp.files && inp.files.length) this.libImport(Array.from(inp.files)); };
                 inp.click();
                 break;

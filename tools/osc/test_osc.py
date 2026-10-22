@@ -191,6 +191,28 @@ for kind, off in (("FM", 60), ("PM", 96), ("PD", 132)):
     a2 = render(mbase + [(307, 1), (308, off + 6), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="mm" + kind + "2")
     check("mod matrix destination '%s B > A' leaves the A > B amount alone" % kind, band(seg(a2)[:, 0], 600, 6000) < 0.05 * band(seg(a2)[:, 0], 400, 480))
 
+# ---------------------------------------------------------------- Vital style wavetables: band-limited mips, 2048 frames, up to 128 frames
+def alias_ratio(a, f0):
+    f, X = spec(seg(a)[:, 0]); k = np.round(f / f0); near = np.abs(f - k * f0) < 12.0
+    return float(np.sqrt(np.sum(X[~near & (f > 100)] ** 2)) / np.sqrt(np.sum(X[near] ** 2)))
+for note, name in ((84, "C6"), (96, "C7"), (105, "A7")):
+    f0 = 440.0 * 2 ** ((note - 69) / 12.0)
+    a = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), FOFF(0)], note=note, tag="alias%d" % note)
+    r = alias_ratio(a, f0)
+    check("band-limited saw at %s has no aliasing" % name, r < 0.03, "residual %.4f" % r)
+lo = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), FOFF(0)], note=36, tag="wtlow")
+check("low note keeps the full saw harmonics", band(seg(lo)[:, 0], 3000, 12000) > 0.15 * band(seg(lo)[:, 0], 60, 3000) * 0.1)
+a0 = render(["wt 0 big", P(0, "level", 0.8), P(0, "wsize", 3), P(0, "wpos", 0), FOFF(0)], tag="big0")
+a1 = render(["wt 0 big", P(0, "level", 0.8), P(0, "wsize", 3), P(0, "wpos", 1), FOFF(0)], tag="big1")
+check("128 frame table: first frame is a sine", band(seg(a0)[:, 0], 600, 6000) < 0.06 * band(seg(a0)[:, 0], 200, 480))
+check("128 frame table: last frame is a saw", band(seg(a1)[:, 0], 600, 6000) > 0.3 * band(seg(a1)[:, 0], 200, 480))
+am = render(["wt 0 morph2k", P(0, "level", 0.8), P(0, "wsize", 3), P(0, "wpos", 0.5), FOFF(0)], tag="mid")
+check("frames crossfade smoothly (middle position is between sine and saw)", band(seg(a0)[:, 0], 600, 6000) < band(seg(am)[:, 0], 600, 6000) < band(seg(a1)[:, 0], 600, 6000))
+a2 = render(["wt 0 morph2k", P(0, "level", 0.8), P(0, "wsize", 2), FOFF(0)], tag="fs1024")
+check("frame size 1024 re-cuts the table (2x the frames, still plays)", np.isfinite(a2).all() and rms(seg(a2)) > 0.05)
+a4 = render(["wt 0 morph2k", P(0, "level", 0.8), P(0, "wsize", 4), FOFF(0)], tag="fs4096")
+check("frame size 4096 re-cuts the table (half the frames, still plays)", np.isfinite(a4).all() and rms(seg(a4)) > 0.05)
+
 # ---------------------------------------------------------------- unison / warp
 a_u = render(["wt 0 saw", FOFF(0), P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], tag="uni")
 check("unison widens the stereo image", float(np.corrcoef(seg(a_u)[:, 0], seg(a_u)[:, 1])[0, 1]) < 0.95)

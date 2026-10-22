@@ -188,6 +188,21 @@ const gather = (pc, ep, bank, total) => {
             let pk = 0; for (let i = 0; i < d.len; i++) pk = Math.max(pk, Math.abs(d.mono[i]));
             check("decodeFile loads WAV " + name, Math.abs(d.len - 14400) < 8 && Math.abs(pk - 0.9) < 0.02 && Math.abs(freq(d.mono) - 441) < 6, "len " + d.len + " peak " + pk.toFixed(3) + " f " + freq(d.mono).toFixed(1));
         }
+        // wavetables keep their cycle length (no rate conversion), long tables are thinned to 128 frames, .vitaltable files load
+        {
+            const dw = await V.decodeFile(asFile(mkWav(4096, 44100, 16), "t.wav"), "wt");
+            check("wavetable decode keeps the frame length (44.1k file, no resampling)", dw.len === 4096, "len " + dw.len);
+            const big = await V.decodeFile(asFile(mkWav(200 * 2048, 48000, 16), "t.wav"), "wt");
+            check("a table with 200 frames is thinned to 128 frames", big.len === 128 * 2048, "len " + big.len);
+            const f32 = fn => { const b = Buffer.alloc(2048 * 4); for (let i = 0; i < 2048; i++) b.writeFloatLE(fn(i / 2048), i * 4); return b.toString("base64"); };
+            const vt = { name: "Test Table", author: "me", groups: [{ components: [{ type: "Wave Source", keyframes: [{ position: 0, wave_data: f32(p => Math.sin(2 * Math.PI * p)) }, { position: 255, wave_data: f32(p => 2 * p - 1) }] }] }] };
+            const vb = Buffer.from(JSON.stringify(vt));
+            const dv = await V.decodeFile(asFile(vb, "x.vitaltable"), "wt");
+            let pk = 0; for (let i = 0; i < dv.len; i++) pk = Math.max(pk, Math.abs(dv.mono[i]));
+            const mid = dv.mono[64 * 2048 + 512], first = dv.mono[512], last = dv.mono[127 * 2048 + 512];
+            check("vitaltable loads as 128 frames of 2048, name from the file", dv.len === 128 * 2048 && dv.name === "Test Table", "len " + dv.len + " " + dv.name);
+            check("vitaltable keyframes: first is the sine, last is the saw, middle is in between", Math.abs(first - 0.9) < 0.02 && Math.abs(last - 0.9 * (2 * 0.25 - 1)) < 0.02 && mid > last && mid < first && Math.abs(pk - 0.9) < 0.02, first.toFixed(3) + " " + mid.toFixed(3) + " " + last.toFixed(3));
+        }
         try { cpExec("ffmpeg", ["-version"]); } catch (_) { console.log("ffmpeg missing: format round trips skipped"); }
     }
 

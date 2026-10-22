@@ -6,7 +6,7 @@
 //
 // script lines:   p <paramNumber> <value>   set parameter N (event)
 //                 shape <lfo 0-9> const <v> | shape <lfo> ramp   load a 256-point LFO shape
-//                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, clear)
+//                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, saw2k, morph2k, big, clear)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
 //                 on <note> <velocity 0-127>
 //                 off <note>
@@ -80,12 +80,16 @@ struct Host
         if (kind == "clear") { }
         else if (wt)
         {
-            int frames = kind == "morph" ? 8 : 1;
+            // kinds: sine, saw, morph (8 frames of 256, sine -> saw); 2k variants use 2048 point frames:
+            // saw2k (1 frame), morph2k (16 frames), big (128 frames), sawhi (1 frame of 2048 with a full-bandwidth saw)
+            bool k2 = kind == "saw2k" || kind == "morph2k" || kind == "big";
+            int frames = kind == "morph" ? 8 : (kind == "morph2k" ? 16 : (kind == "big" ? 128 : 1));
+            int N = k2 ? 2048 : 256;
             for (int f = 0; f < frames; ++f)
-                for (int i = 0; i < 256; ++i)
+                for (int i = 0; i < N; ++i)
                 {
-                    double ph = i / 256.0, sn = sin (tp * ph), sw = 2.0 * ph - 1.0;
-                    double m = kind == "morph" ? f / 7.0 : (kind == "saw" ? 1.0 : 0.0);
+                    double ph = (double) i / N, sn = sin (tp * ph), sw = 2.0 * ph - 1.0;
+                    double m = (kind == "morph" || kind == "morph2k" || kind == "big") ? f / (double) (frames - 1) : ((kind == "saw" || kind == "saw2k") ? 1.0 : 0.0);
                     d.push_back ((float) (0.9 * (sn * (1.0 - m) + sw * m)));
                 }
         }

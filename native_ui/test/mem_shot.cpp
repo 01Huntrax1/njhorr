@@ -35,8 +35,31 @@ int main (int argc, char** argv)
         for (auto& e : be.events) if (e.endpoint == "wtBankLoad" && (int) e.value["bank"] == 0)
         { if ((int) e.value["offset"] != (int) last && chunks) ordered = false; ++chunks; last = (size_t) ((int) e.value["offset"] + 256); total = e.value["total"]; CHECK (e.value["data"].size() == 256); }
         std::printf ("wt0 chunks=%d total=%d ordered=%d\n", chunks, total, (int) ordered);
-        CHECK (total == 14400 && chunks == (14400 + 255) / 256 && ordered);
+        CHECK (total > 0 && chunks == (total + 255) / 256 && ordered);   // wavetables are not resampled to 48 kHz any more
         CHECK (be.stored.count ("njo.mem.osc0.wt") == 1);
+        // Vital wavetable (.vitaltable): two keyframes (sine at 0, saw at 255) -> 128 frames of 2048
+        {
+            auto f32 = [] (std::function<float (float)> fn)
+            {
+                juce::MemoryOutputStream mo; for (int i = 0; i < 2048; ++i) mo.writeFloat (fn ((float) i / 2048.0f));   // little endian
+                return juce::Base64::toBase64 (mo.getData(), mo.getDataSize());
+            };
+            auto* root = new juce::DynamicObject(); juce::var vroot (root);
+            root->setProperty ("name", "Test Table");
+            auto* kf0 = new juce::DynamicObject(); kf0->setProperty ("position", 0); kf0->setProperty ("wave_data", f32 ([] (float p) { return std::sin (6.2831853f * p); }));
+            auto* kf1 = new juce::DynamicObject(); kf1->setProperty ("position", 255); kf1->setProperty ("wave_data", f32 ([] (float p) { return 2 * p - 1; }));
+            auto* comp = new juce::DynamicObject(); comp->setProperty ("type", "Wave Source"); comp->setProperty ("keyframes", juce::Array<juce::var> { juce::var (kf0), juce::var (kf1) });
+            auto* grp = new juce::DynamicObject(); grp->setProperty ("components", juce::Array<juce::var> { juce::var (comp) });
+            root->setProperty ("groups", juce::Array<juce::var> { juce::var (grp) });
+            auto vf = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njo_test.vitaltable");
+            vf.replaceWithText (juce::JSON::toString (vroot));
+            bool ok = false; juce::String msg;
+            mem.load (SoundMemory::Wavetable, 2, vf, [&] (bool o, const juce::String& m) { ok = o; msg = m; });
+            auto* s = mem.get (SoundMemory::Wavetable, 2);
+            CHECK (ok && s && s->data.size() == 128 * 2048 && s->name == "TEST TABLE");
+            if (s) { CHECK (std::abs (s->data[512] - 0.9f) < 0.02f); CHECK (std::abs (s->data[127 * 2048 + 512] - 0.9f * (2 * 0.25f - 1)) < 0.02f); }
+            vf.deleteFile();
+        }
         // clear
         mem.clear (SoundMemory::Wavetable, 0);
         CHECK (mem.get (SoundMemory::Wavetable, 0) == nullptr);

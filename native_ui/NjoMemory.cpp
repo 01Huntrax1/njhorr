@@ -87,12 +87,85 @@ namespace njo
             return true;
         }
 
-        struct Decoded { std::vector<float> mono; bool ok = false; };
+        struct Decoded { std::vector<float> mono; bool ok = false; juce::String name; };
 
-        Decoded decodeAny (const juce::File& file)
+        // more than 128 frames: thinned out evenly (first and last frame are kept)
+        std::vector<float> trimWavetable (std::vector<float> x)
+        {
+            const int n = (int) x.size();
+            const int fl = n % 4096 == 0 ? 4096 : (n >= 2048 ? 2048 : 0);
+            if (fl == 0) return x;
+            const int nF = n / fl;
+            if (nF <= MAX_WT_FRAMES) return x;
+            std::vector<float> out ((size_t) (MAX_WT_FRAMES * fl));
+            for (int t = 0; t < MAX_WT_FRAMES; ++t)
+            {
+                int src = (int) std::lround ((double) t * (nF - 1) / (MAX_WT_FRAMES - 1));
+                std::copy (x.begin() + (size_t) src * (size_t) fl, x.begin() + (size_t) (src + 1) * (size_t) fl, out.begin() + (size_t) t * (size_t) fl);
+            }
+            return out;
+        }
+
+        // Vital wavetable (.vitaltable, JSON): keyframes of the first "Wave Source" component (2048 float samples each, base64),
+        // interpolated linearly over 128 frames (Vital positions run 0..255). Other modifier components are not applied.
+        bool decodeVitalTable (const juce::File& file, Decoded& r)
+        {
+            auto v = juce::JSON::parse (file.loadFileAsString());
+            auto* groups = v["groups"].getArray();
+            if (groups == nullptr) return false;
+            struct Kf { double pos; std::vector<float> w; };
+            std::vector<Kf> kfs;
+            for (auto& g : *groups)
+            {
+                auto* comps = g["components"].getArray();
+                if (comps == nullptr) continue;
+                for (auto& c : *comps)
+                {
+                    auto* ks = c["keyframes"].getArray();
+                    if (! kfs.empty() || c["type"].toString() != "Wave Source" || ks == nullptr) continue;
+                    for (auto& k : *ks)
+                    {
+                        juce::MemoryOutputStream mo;
+                        if (! juce::Base64::convertFromBase64 (mo, k["wave_data"].toString())) continue;
+                        Kf kf { (double) k["position"], std::vector<float> (2048, 0.0f) };
+                        auto* p = (const juce::uint8*) mo.getData();
+                        size_t n = juce::jmin ((size_t) 2048, mo.getDataSize() / 4);
+                        for (size_t i = 0; i < n; ++i) { juce::uint32 u = (juce::uint32) p[i * 4] | (juce::uint32) p[i * 4 + 1] << 8 | (juce::uint32) p[i * 4 + 2] << 16 | (juce::uint32) p[i * 4 + 3] << 24; float f; memcpy (&f, &u, 4); kf.w[i] = f; }
+                        kfs.push_back (std::move (kf));
+                    }
+                }
+            }
+            if (kfs.empty()) return false;
+            std::stable_sort (kfs.begin(), kfs.end(), [] (const Kf& a, const Kf& b) { return a.pos < b.pos; });
+            const int nOut = kfs.size() == 1 ? 1 : MAX_WT_FRAMES;
+            std::vector<float> out ((size_t) nOut * 2048);
+            for (int t = 0; t < nOut; ++t)
+            {
+                double p = nOut == 1 ? 0.0 : t * 255.0 / (MAX_WT_FRAMES - 1);
+                const Kf* a = &kfs.front(); const Kf* b = &kfs.back();
+                for (auto& k : kfs) if (k.pos <= p) a = &k;
+                for (auto it = kfs.rbegin(); it != kfs.rend(); ++it) if (it->pos >= p) b = &*it;
+                float f = b->pos > a->pos ? (float) ((p - a->pos) / (b->pos - a->pos)) : 0.0f;
+                for (int i = 0; i < 2048; ++i) out[(size_t) t * 2048 + (size_t) i] = a->w[(size_t) i] + (b->w[(size_t) i] - a->w[(size_t) i]) * f;
+            }
+            float peak = 0; for (float x : out) peak = juce::jmax (peak, std::abs (x));
+            float g = peak > 0.0001f ? 0.9f / peak : 1.0f;
+            for (auto& x : out) x *= g;
+            r.mono = std::move (out); r.ok = true; r.name = v["name"].toString();
+            return true;
+        }
+
+        Decoded decodeAny (const juce::File& file, bool wavetable)
         {
             Decoded r;
-            const int maxIn = MAX_SMP * 4;
+            auto startsWithBrace = [&]
+            {
+                juce::FileInputStream in (file); char c = 0;
+                return in.openedOk() && in.read (&c, 1) == 1 && c == '{';
+            };
+            if (wavetable && (file.hasFileExtension ("vitaltable") || startsWithBrace()))
+                if (decodeVitalTable (file, r)) return r;
+            const int maxIn = (wavetable ? MAX_WT : MAX_SMP) * 4;
             std::vector<std::vector<float>> ch; double rate = 0;
 
             juce::AudioFormatManager fm; fm.registerBasicFormats();
@@ -132,7 +205,8 @@ namespace njo
             std::vector<float> mono (frames, 0.0f);
             for (auto& c : ch) for (size_t i = 0; i < frames; ++i) mono[i] += c[i] / (float) ch.size();
 
-            if (rate > 0 && std::abs (rate - kRate) > 0.5)
+            // samples are converted to the host rate; wavetables are not (their frames are single cycles of N samples)
+            if (! wavetable && rate > 0 && std::abs (rate - kRate) > 0.5)
             {
                 double ratio = rate / kRate;
                 int outN = juce::jmax (1, (int) std::floor ((double) frames / ratio));
@@ -141,7 +215,9 @@ namespace njo
                 li.process (ratio, mono.data(), out.data(), outN);
                 mono.swap (out);
             }
-            if ((int) mono.size() > MAX_SMP) mono.resize ((size_t) MAX_SMP);
+            if (wavetable) mono = trimWavetable (std::move (mono));
+            const int cap = wavetable ? MAX_WT : MAX_SMP;
+            if ((int) mono.size() > cap) mono.resize ((size_t) cap);
             float peak = 0; for (float v : mono) peak = juce::jmax (peak, std::abs (v));
             float g = peak > 0.0001f ? 0.9f / peak : 1.0f;
             for (auto& v : mono) v *= g;
@@ -225,7 +301,8 @@ namespace njo
     {
         if (o < 0 || o >= OSC_N) return;
         if (data.empty()) { clear (k, o); return; }
-        if ((int) data.size() > MAX_SMP) data.resize ((size_t) MAX_SMP);
+        const int cap = k == Wavetable ? MAX_WT : MAX_SMP;
+        if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
         impl->slots[k][o] = std::move (s);
@@ -236,14 +313,14 @@ namespace njo
 
     void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done)
     {
-        auto dec = decodeAny (f);
+        auto dec = decodeAny (f, k == Wavetable);
         if (! dec.ok)
         {
             impl->ctx.status ("UNSUPPORTED FILE");
             if (done) done (false, "UNSUPPORTED FILE");
             return;
         }
-        auto name = f.getFileNameWithoutExtension().substring (0, 14).toUpperCase();
+        auto name = (dec.name.isNotEmpty() ? dec.name : f.getFileNameWithoutExtension()).substring (0, 14).toUpperCase();
         if (name.isEmpty()) name = k == Wavetable ? "TABLE" : "SAMPLE";
         set (k, o, name, {}, std::move (dec.mono));
         impl->ctx.status ("LOADED " + name);
@@ -274,6 +351,6 @@ namespace njo
 
     juce::String SoundMemory::fileWildcard()
     {
-        return "*.wav;*.wave;*.bwf;*.aif;*.aiff;*.aifc;*.flac;*.ogg;*.oga;*.mp3;*.au;*.snd;*.w64;*.raw;*.pcm;*.sam;*.smp;*.dat;*.bin;*.sd;*.s16";
+        return "*.vitaltable;*.wav;*.wave;*.bwf;*.aif;*.aiff;*.aifc;*.flac;*.ogg;*.oga;*.mp3;*.au;*.snd;*.w64;*.raw;*.pcm;*.sam;*.smp;*.dat;*.bin;*.sd;*.s16";
     }
 }

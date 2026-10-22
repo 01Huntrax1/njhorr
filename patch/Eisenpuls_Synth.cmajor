@@ -3925,12 +3925,24 @@ processor Eisenpuls_Synth
     float[36]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
     bool[6]       fmUsed;
 
-    // wavetable memories (one per slot): 96000 samples cut into equal frames
-    bool[6]       wtHas;
-    int[6]        wtLen;
-    float[576000] wtBuf;
-    float[11520]  wtMeans;      // per-frame DC: (slot * 5 + frame size) * 384 + frame
-    float[6]      wtMeanAll;
+    // wavetable memories (one per slot), Vital style: the source (up to 262144 samples = 128 frames of 2048) is cut into equal
+    // frames, every frame is resampled to 2048 samples, DC is removed and a band-limited mip chain is built (2048, 1024 ... 8
+    // samples per cycle; each level keeps the harmonics up to 40% of its length). Playback picks the level from the note
+    // frequency, so there is no aliasing, and reads it with cubic interpolation. The chain is built in small time slices.
+    bool[6]       wtHas;          // the mip tables of the slot are complete
+    int[6]        wtLen;          // length of the source in samples
+    float[1572864] wtBuf;         // source, slot * 262144
+    float[3145728] wtMip;         // (slot * 128 + frame) * 4096 + level offset
+    bool[6]       wtBuilding;
+    int[6]        wtFr;           // frames in the mip tables
+    int[6]        wtBFl;          // frame length the source was cut with
+    int[6]        wtBNext;        // next frame to build
+    int           wtBCtr;
+    float[4096]   wtTmpA;
+    float[4096]   wtTmpB;
+    const float[15] wtHalfBand = (0.31697223f, -0.10214896f, 0.05726337f, -0.03690093f, 0.02496968f, -0.01710855f, 0.01163983f,
+                                  -0.00776114f, 0.00501722f, -0.00311017f, 0.00182326f, -0.00098904f, 0.00047623f, -0.00018437f,
+                                  0.00004118f);
 
     // sample memories (one per slot)
     bool[6]       smpHas;
@@ -3955,6 +3967,9 @@ processor Eisenpuls_Synth
 
         if (k >= 13 && k <= 17)
             updateWtUni (o);
+
+        if (k == 11 && wtLen.at (o) > 1)
+            wtStartBuild (o);   // other frame size: cut the source again
     }
 
     void updateFmUsed()
@@ -3990,52 +4005,143 @@ processor Eisenpuls_Synth
     void clearWtBank (int o)
     {
         wtHas.at (o) = false;
+        wtBuilding.at (o) = false;
         wtLen.at (o) = 0;
     }
 
-    void calcWtMeans (int o)
+    // ---------------- wavetable mip builder ----------------
+    // half-band low-pass + decimation by 2 of wtTmpA[0..n) into wtTmpB[0..n/2); cutoff = the new Nyquist
+    void wtHalve (int n)
     {
-        int   len  = clamp (wtLen.at (o), 1, 96000);
-        int   base = o * 96000;
-        float tot  = 0.0f;
+        int m    = n >> 1;
+        int mask = n - 1;
 
-        for (int i = 0; i < len; ++i)
-            tot += wtBuf.at (base + i);
-
-        wtMeanAll.at (o) = tot / float (len);
-
-        int fl = 256;
-        for (int k = 0; k < 5; ++k)
+        for (int i = 0; i < m; ++i)
         {
-            if (fl <= len)
+            int   c   = i * 2;
+            float acc = 0.5f * wtTmpA.at (c);
+
+            for (int t = 0; t < 15; ++t)
             {
-                int nF = min (len / fl, 384);
-                for (int f = 0; f < nF; ++f)
-                {
-                    float s  = 0.0f;
-                    int   fo = base + f * fl;
-                    for (int i = 0; i < fl; ++i)
-                        s += wtBuf.at (fo + i);
-                    wtMeans.at ((o * 5 + k) * 384 + f) = s / float (fl);
-                }
+                int d = 2 * t + 1;
+                acc += wtHalfBand.at (t) * (wtTmpA.at ((c + d) & mask) + wtTmpA.at ((c - d) & mask));
             }
-            fl = fl * 2;
+
+            wtTmpB.at (i) = acc;
         }
     }
 
-    float wtMeanOf (int o, int fl, int f)
+    void wtBuildFrame (int o, int f)
     {
-        int k = -1;
-        if (fl == 256)       k = 0;
-        else if (fl == 512)  k = 1;
-        else if (fl == 1024) k = 2;
-        else if (fl == 2048) k = 3;
-        else if (fl == 4096) k = 4;
+        int fl   = wtBFl.at (o);
+        int base = o * 262144 + f * fl;
 
-        if (k < 0 || fl > wtLen.at (o))
-            return wtMeanAll.at (o);
+        if (fl > 2048)
+        {
+            for (int i = 0; i < fl; ++i)
+                wtTmpA.at (i) = wtBuf.at (base + i);
 
-        return wtMeans.at ((o * 5 + k) * 384 + clamp (f, 0, 383));
+            wtHalve (4096);
+
+            for (int i = 0; i < 2048; ++i)
+                wtTmpA.at (i) = wtTmpB.at (i);
+        }
+        else if (fl == 2048)
+        {
+            for (int i = 0; i < 2048; ++i)
+                wtTmpA.at (i) = wtBuf.at (base + i);
+        }
+        else
+        {
+            float step = float (fl) / 2048.0f;
+
+            for (int i = 0; i < 2048; ++i)
+            {
+                float x  = float (i) * step;
+                int   i1 = int (x);
+                float t  = x - float (i1);
+                float p0 = wtBuf.at (base + (i1 + fl - 1) % fl);
+                float p1 = wtBuf.at (base + i1 % fl);
+                float p2 = wtBuf.at (base + (i1 + 1) % fl);
+                float p3 = wtBuf.at (base + (i1 + 2) % fl);
+                wtTmpA.at (i) = p1 + 0.5f * t * (p2 - p0 + t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3 + t * (3.0f * (p1 - p2) + p3 - p0)));
+            }
+        }
+
+        float mean = 0.0f;
+        for (int i = 0; i < 2048; ++i)
+            mean += wtTmpA.at (i);
+        mean = mean / 2048.0f;
+
+        int mb = (o * 128 + f) * 4096;
+
+        for (int i = 0; i < 2048; ++i)
+        {
+            float v = wtTmpA.at (i) - mean;
+            wtTmpA.at (i) = v;
+            wtMip.at (mb + i) = v;
+        }
+
+        int n   = 2048;
+        int off = 2048;
+
+        for (int k = 1; k <= 8; ++k)
+        {
+            wtHalve (n);
+            n = n >> 1;
+
+            for (int i = 0; i < n; ++i)
+            {
+                wtTmpA.at (i) = wtTmpB.at (i);
+                wtMip.at (mb + off + i) = wtTmpB.at (i);
+            }
+
+            off += n;
+        }
+    }
+
+    void wtStartBuild (int o)
+    {
+        int len = wtLen.at (o);
+
+        if (len < 2)
+        {
+            wtHas.at (o) = false;
+            wtBuilding.at (o) = false;
+            return;
+        }
+
+        int fl = min (wtFrameLen (opv (o, 11)), len);
+        wtBFl.at (o)  = fl;
+        wtFr.at (o)   = clamp (len / fl, 1, 128);
+        wtBNext.at (o) = 0;
+        wtHas.at (o)  = false;
+        wtBuilding.at (o) = true;
+    }
+
+    // called once per sample: builds one frame of one slot every 32 samples
+    void wtBuildTick()
+    {
+        wtBCtr = (wtBCtr + 1) & 31;
+        if (wtBCtr != 0) return;
+
+        for (int o = 0; o < 6; ++o)
+        {
+            if (wtBuilding.at (o))
+            {
+                int f = wtBNext.at (o);
+                wtBuildFrame (o, f);
+                wtBNext.at (o) = f + 1;
+
+                if (f + 1 >= wtFr.at (o))
+                {
+                    wtBuilding.at (o) = false;
+                    wtHas.at (o) = true;
+                }
+
+                return;
+            }
+        }
     }
 
     event wtBankLoad (BankChunk c)
@@ -4053,21 +4159,23 @@ processor Eisenpuls_Synth
         if (c.offset == 0)
             wtHas.at (o) = false;
 
+        if (c.offset == 0)
+            wtBuilding.at (o) = false;
+
         int cnt  = clamp (c.count, 0, 256);
-        int base = o * 96000;
+        int base = o * 262144;
 
         for (int i = 0; i < cnt; ++i)
         {
             int pos = c.offset + i;
-            if (pos >= 0 && pos < 96000)
+            if (pos >= 0 && pos < 262144)
                 wtBuf.at (base + pos) = c.data.at (i);
         }
 
         if (c.offset + cnt >= c.total)
         {
-            wtLen.at (o) = clamp (c.total, 1, 96000);
-            calcWtMeans (o);
-            wtHas.at (o) = true;
+            wtLen.at (o) = clamp (c.total, 1, 262144);
+            wtStartBuild (o);
         }
     }
 
@@ -4161,33 +4269,48 @@ processor Eisenpuls_Synth
         }
     }
 
-    // wavetable read: frames morph with pos (0..1), phase (0..1) scans one cycle, both linearly interpolated
-    float wtRead (int o, float64 phase, float wtPos, int frameLen)
+    // mip level for a note frequency (Hz): the level whose content (up to 40% of its length in harmonics) stays below Nyquist
+    int wtLevel (float f)
     {
-        int   len  = wtLen.at (o);
-        int   fl   = clamp (frameLen, 2, max (len, 2));
-        int   nF   = max (len / fl, 1);
-        float p    = clamp (wtPos, 0.0f, 1.0f) * float (nF - 1);
-        int   fa   = clamp (int (p), 0, nF - 1);
-        int   fb   = min (fa + 1, nF - 1);
-        float ff   = p - float (fa);
-        float x    = float (phase) * float (fl);
-        int   i0   = clamp (int (x), 0, fl - 1);
-        int   i1   = i0 + 1;
-        if (i1 >= fl) i1 = 0;
-        float fr   = x - float (i0);
-        int   base = o * 96000;
-        int   top  = base + 95999;
+        float q = f * 1780.0f / float (processor.frequency);   // 1638.4 / 0.92: a little margin for the filter's transition band
+        int   k = 0;
+        float t = 1.0f;
 
-        float a0 = wtBuf.at (clamp (base + fa * fl + i0, base, top));
-        float a1 = wtBuf.at (clamp (base + fa * fl + i1, base, top));
-        float b0 = wtBuf.at (clamp (base + fb * fl + i0, base, top));
-        float b1 = wtBuf.at (clamp (base + fb * fl + i1, base, top));
+        while (t < q && k < 8)
+        {
+            t = t * 2.0f;
+            k = k + 1;
+        }
 
-        float va = a0 * (1.0f - fr) + a1 * fr;
-        float vb = b0 * (1.0f - fr) + b1 * fr;
-        float dc = wtMeanOf (o, fl, fa) * (1.0f - ff) + wtMeanOf (o, fl, fb) * ff;
-        return va * (1.0f - ff) + vb * ff - dc;
+        return k;
+    }
+
+    // cubic (Catmull-Rom) read of one cycle at level base; x = position in samples, len a power of 2
+    float wtMipRead (int base, int len, float x)
+    {
+        int   mask = len - 1;
+        int   i    = int (x);
+        float t    = x - float (i);
+        float p0   = wtMip.at (base + ((i - 1) & mask));
+        float p1   = wtMip.at (base + (i & mask));
+        float p2   = wtMip.at (base + ((i + 1) & mask));
+        float p3   = wtMip.at (base + ((i + 2) & mask));
+        return p1 + 0.5f * t * (p2 - p0 + t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3 + t * (3.0f * (p1 - p2) + p3 - p0)));
+    }
+
+    // wavetable read: frames fa / fb crossfaded by ff, phase (0..1) scans one cycle of mip level lvl
+    float wtRead (int o, int lvl, float64 phase, int fa, int fb, float ff)
+    {
+        int   len = 2048 >> lvl;
+        int   off = 4096 - (4096 >> lvl);
+        float x   = float (phase) * float (len);
+        float va  = wtMipRead ((o * 128 + fa) * 4096 + off, len, x);
+
+        if (fb == fa || ff <= 0.0f)
+            return va;
+
+        float vb = wtMipRead ((o * 128 + fb) * 4096 + off, len, x);
+        return va + (vb - va) * ff;
     }
 
     // one step of the wavetable slot o on voice vi; pm = phase modulation in cycles (FM matrix); returns the stereo sum
@@ -4201,6 +4324,12 @@ processor Eisenpuls_Synth
         float a2  = clamp (opv (o, 21) + a2m * 0.5f, 0.0f, 1.0f);
         float sL  = 0.0f;
         float sR  = 0.0f;
+
+        int   nFr = max (wtFr.at (o), 1);
+        float fp  = clamp (pos, 0.0f, 1.0f) * float (nFr - 1);
+        int   fa  = clamp (int (fp), 0, nFr - 1);
+        int   fb  = min (fa + 1, nFr - 1);
+        float ff  = fp - float (fa);
 
         for (int j = 0; j < n; ++j)
         {
@@ -4218,7 +4347,7 @@ processor Eisenpuls_Synth
             if (m2 >= 1 && m2 <= 6) rp = wtWarpPhase (m2, a2, rp);
             float64 rph = float64 (clamp (rp, 0.0f, 0.99999f));
 
-            float y = wtRead (o, rph, pos, fl);
+            float y = wtRead (o, wtLevel (f), rph, fa, fb, ff);
 
             if (m1 >= 7) y = wtWarpAmp (m1, a1, y);
             if (m2 >= 7) y = wtWarpAmp (m2, a2, y);
@@ -18610,6 +18739,7 @@ processor Eisenpuls_Synth
             if (flfPhase >= 1.0) flfPhase -= 1.0;
 
             // ----- mod page: 10 LFOs + global matrix sums -----
+            wtBuildTick();
             updateModLfos (dt);
             rollEnvMax();
             computeGlobalMod();
