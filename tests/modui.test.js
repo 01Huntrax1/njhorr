@@ -29,7 +29,7 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(150);
 
     check("rail pages are synth, effects, modulation", [...V.querySelectorAll(".rb")].map(t => t.textContent.replace(/^\d/, "")).join() === "SYNTH,EFFECTS,MODULATION");
-    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM / PM,GLOBAL");
+    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM / PM / PD,GLOBAL");
     V.querySelector('.stab[data-page="o1"]').click();
     check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "synth");
     V.querySelector('.rb[data-group="fx"]').click();

@@ -141,37 +141,37 @@ for t in range(1, 7):
 check("all 6 distortion types work", ok)
 
 # ---------------------------------------------------------------- FM and PM matrices
-for MOD, fm in (("FM", L.fm_id), ("PM", L.pm_id)):
+for MOD, fm in (("FM", L.fm_id), ("PM", L.pm_id), ("PD", L.pd_id)):
     base = [(28, 0), "wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1)]
     a0 = render(base, tag=MOD+"fm0")
     check(MOD + " without " + MOD + " slot 2 is a pure sine", band(seg(a0)[:, 0], 600, 6000) < 0.05 * band(seg(a0)[:, 0], 400, 480))
-    a1 = render(base + [(fm(0, 1), 0.3)], tag=MOD+"fm1")
+    a1 = render(base + [(fm(0, 1), 30)], tag=MOD+"fm1")
     check(MOD + " "+MOD+" from a silent (level 0) slot 1 into slot 2 creates sidebands", band(seg(a1)[:, 0], 600, 6000) > 0.2 * band(seg(a1)[:, 0], 400, 480))
-    a2 = render(base + [(fm(0, 1), 0.6)], tag=MOD+"fm2")
+    a2 = render(base + [(fm(0, 1), 60)], tag=MOD+"fm2")
     check(MOD + " more " + MOD + ", more sidebands", band(seg(a2)[:, 0], 600, 6000) > band(seg(a1)[:, 0], 600, 6000))
-    a3 = render(base + [(fm(0, 1), -0.3)], tag=MOD+"fm3")
-    check(MOD + " negative " + MOD + " amount works too", band(seg(a3)[:, 0], 600, 6000) > 0.2 * band(seg(a3)[:, 0], 400, 480))
-    a4 = render([(28, 0), "wt 0 sine", P(0, "level", 0.8), FOFF(0), (fm(0, 0), 0.4)], tag=MOD+"fmfb")
+    a3 = render(base + [(fm(0, 1), 0)], tag=MOD+"fm3")
+    check(MOD + " amount 0 is off", np.max(np.abs(a3 - a0)) < 1e-6)
+    a4 = render([(28, 0), "wt 0 sine", P(0, "level", 0.8), FOFF(0), (fm(0, 0), 40)], tag=MOD+"fmfb")
     check(MOD + " self feedback (slot 1 into slot 1)", band(seg(a4)[:, 0], 600, 6000) > 0.1 * band(seg(a4)[:, 0], 400, 480) and np.isfinite(a4).all())
     ok = True
-    for amt in (1.0, -1.0):
+    for amt in (100, 100.0):
         cm = ["wt %d morph" % o for o in range(6)] + [P(o, "wsize", 0) for o in range(6)] + [P(o, "level", 0.3) for o in range(6)]
         for s in range(6):
             for d in range(6): cm.append((fm(s, d), amt))
         a = render(cm, hold=0.3, tail=0.05, tag=MOD+"fmall")
         if not np.isfinite(a).all() or np.abs(a).max() > 1.0001: ok = False
-    check(MOD + " full 6x6 matrix at +/-100% stays finite and bounded", ok)
-    a5 = render(["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), (fm(0, 1), 0.3), P(0, "sloop", 1), P(1, "sloop", 1)], note=60, tag=MOD+"fmsmp")
+    check(MOD + " full 6x6 matrix at 100% stays finite and bounded", ok)
+    a5 = render(["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), (fm(0, 1), 30), P(0, "sloop", 1), P(1, "sloop", 1)], note=60, tag=MOD+"fmsmp")
     check(MOD + " sampler slots can " + MOD + " each other", band(seg(a5)[:, 0], 400, 6000) > 0.2 * band(seg(a5)[:, 0], 240, 290) and np.isfinite(a5).all())
 
 # ---------------------------------------------------------------- signal flow: osc -> filter -> distortion -> matrix
-fbase = [(28, 0), "wt 0 saw", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), (L.fm_id(0, 1), 0.5)]
+fbase = [(28, 0), "wt 0 saw", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), (L.fm_id(0, 1), 50)]
 a_raw  = render(fbase + [FOFF(0)], tag="flow0")
 a_filt = render(fbase + [P(0, "fon", 1), P(0, "ftype", 1), P(0, "fcut", 150), P(0, "fkey", 0)], tag="flow1")
 check("the FM modulator is the filtered slot (closed LP filter on the modulator removes sidebands)",
       band(seg(a_filt)[:, 0], 700, 8000) < 0.5 * band(seg(a_raw)[:, 0], 700, 8000), "%.3g vs %.3g" % (band(seg(a_filt)[:, 0], 700, 8000), band(seg(a_raw)[:, 0], 700, 8000)))
-a_dist = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), P(0, "dtype", 4), P(0, "ddrv", 1), (L.fm_id(0, 1), 0.0), (L.pm_id(0, 1), 0.5)], tag="flow2")
-a_nod  = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), (L.pm_id(0, 1), 0.5)], tag="flow3")
+a_dist = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), P(0, "dtype", 4), P(0, "ddrv", 1), (L.fm_id(0, 1), 0), (L.pm_id(0, 1), 50)], tag="flow2")
+a_nod  = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), (L.pm_id(0, 1), 50)], tag="flow3")
 check("the matrix modulator is the distorted slot", rms(a_dist - a_nod) > 0.05 * rms(a_nod), "%.3f" % rms(a_dist - a_nod))
 order = [ "wt 0 saw", P(0, "level", 0.8), P(0, "fon", 1), P(0, "ftype", 1), P(0, "fcut", 600), P(0, "fkey", 0), P(0, "dtype", 4), P(0, "ddrv", 1)]
 a_post = render(order + [P(0, "dpos", 0)], tag="ord0")

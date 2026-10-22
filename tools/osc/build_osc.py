@@ -112,11 +112,11 @@ for o in range(L.OSC_COUNT):
 for s in range(6):
     for d in range(6):
         pid = L.fm_id(s, d)
-        decls.append('    input event float param%d [[ name: "FM %d to %d", min: -1.0, max: 1.0, init: 0.0 ]];' % (pid, s + 1, d + 1))
-        handlers.append('    event param%d (float v) { fmSet (%d, %d, v); }' % (pid, s, d))
+        decls.append('    input event float param%d [[ name: "FM %d to %d", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];' % (pid, s + 1, d + 1))
+        handlers.append('    event param%d (float v) { fmSet (%d, %d, v * 0.01f); }' % (pid, s, d))
         pid = L.pm_id(s, d)
-        decls.append('    input event float param%d [[ name: "PM %d to %d", min: -1.0, max: 1.0, init: 0.0 ]];' % (pid, s + 1, d + 1))
-        handlers.append('    event param%d (float v) { pmSet (%d, %d, v); }' % (pid, s, d))
+        decls.append('    input event float param%d [[ name: "PM %d to %d", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];' % (pid, s + 1, d + 1))
+        handlers.append('    event param%d (float v) { pmSet (%d, %d, v * 0.01f); }' % (pid, s, d))
 
 # anchor: right before the first handler of a kept param
 anchor_decl = re.search(r'^    input event float param2 ', src, re.M)

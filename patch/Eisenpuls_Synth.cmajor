@@ -288,78 +288,114 @@ processor Eisenpuls_Synth
     input event float param1363 [[ name: "OSC 6 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1364 [[ name: "OSC 6 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1365 [[ name: "OSC 6 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param1400 [[ name: "FM 1 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1440 [[ name: "PM 1 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1401 [[ name: "FM 1 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1441 [[ name: "PM 1 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1402 [[ name: "FM 1 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1442 [[ name: "PM 1 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1403 [[ name: "FM 1 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1443 [[ name: "PM 1 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1404 [[ name: "FM 1 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1444 [[ name: "PM 1 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1405 [[ name: "FM 1 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1445 [[ name: "PM 1 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1406 [[ name: "FM 2 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1446 [[ name: "PM 2 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1407 [[ name: "FM 2 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1447 [[ name: "PM 2 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1408 [[ name: "FM 2 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1448 [[ name: "PM 2 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1409 [[ name: "FM 2 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1449 [[ name: "PM 2 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1410 [[ name: "FM 2 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1450 [[ name: "PM 2 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1411 [[ name: "FM 2 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1451 [[ name: "PM 2 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1412 [[ name: "FM 3 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1452 [[ name: "PM 3 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1413 [[ name: "FM 3 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1453 [[ name: "PM 3 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1414 [[ name: "FM 3 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1454 [[ name: "PM 3 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1415 [[ name: "FM 3 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1455 [[ name: "PM 3 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1416 [[ name: "FM 3 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1456 [[ name: "PM 3 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1417 [[ name: "FM 3 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1457 [[ name: "PM 3 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1418 [[ name: "FM 4 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1458 [[ name: "PM 4 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1419 [[ name: "FM 4 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1459 [[ name: "PM 4 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1420 [[ name: "FM 4 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1460 [[ name: "PM 4 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1421 [[ name: "FM 4 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1461 [[ name: "PM 4 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1422 [[ name: "FM 4 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1462 [[ name: "PM 4 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1423 [[ name: "FM 4 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1463 [[ name: "PM 4 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1424 [[ name: "FM 5 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1464 [[ name: "PM 5 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1425 [[ name: "FM 5 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1465 [[ name: "PM 5 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1426 [[ name: "FM 5 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1466 [[ name: "PM 5 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1427 [[ name: "FM 5 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1467 [[ name: "PM 5 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1428 [[ name: "FM 5 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1468 [[ name: "PM 5 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1429 [[ name: "FM 5 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1469 [[ name: "PM 5 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1430 [[ name: "FM 6 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1470 [[ name: "PM 6 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1431 [[ name: "FM 6 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1471 [[ name: "PM 6 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1432 [[ name: "FM 6 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1472 [[ name: "PM 6 to 3", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1433 [[ name: "FM 6 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1473 [[ name: "PM 6 to 4", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1434 [[ name: "FM 6 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1474 [[ name: "PM 6 to 5", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1435 [[ name: "FM 6 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
-    input event float param1475 [[ name: "PM 6 to 6", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param1400 [[ name: "FM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1440 [[ name: "PM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1401 [[ name: "FM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1441 [[ name: "PM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1402 [[ name: "FM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1442 [[ name: "PM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1403 [[ name: "FM 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1443 [[ name: "PM 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1404 [[ name: "FM 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1444 [[ name: "PM 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1405 [[ name: "FM 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1445 [[ name: "PM 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1406 [[ name: "FM 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1446 [[ name: "PM 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1407 [[ name: "FM 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1447 [[ name: "PM 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1408 [[ name: "FM 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1448 [[ name: "PM 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1409 [[ name: "FM 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1449 [[ name: "PM 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1410 [[ name: "FM 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1450 [[ name: "PM 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1411 [[ name: "FM 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1451 [[ name: "PM 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1412 [[ name: "FM 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1452 [[ name: "PM 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1413 [[ name: "FM 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1453 [[ name: "PM 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1414 [[ name: "FM 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1454 [[ name: "PM 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1415 [[ name: "FM 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1455 [[ name: "PM 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1416 [[ name: "FM 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1456 [[ name: "PM 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1417 [[ name: "FM 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1457 [[ name: "PM 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1418 [[ name: "FM 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1458 [[ name: "PM 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1419 [[ name: "FM 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1459 [[ name: "PM 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1420 [[ name: "FM 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1460 [[ name: "PM 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1421 [[ name: "FM 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1461 [[ name: "PM 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1422 [[ name: "FM 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1462 [[ name: "PM 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1423 [[ name: "FM 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1463 [[ name: "PM 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1424 [[ name: "FM 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1464 [[ name: "PM 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1425 [[ name: "FM 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1465 [[ name: "PM 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1426 [[ name: "FM 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1466 [[ name: "PM 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1427 [[ name: "FM 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1467 [[ name: "PM 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1428 [[ name: "FM 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1468 [[ name: "PM 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1429 [[ name: "FM 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1469 [[ name: "PM 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1430 [[ name: "FM 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1470 [[ name: "PM 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1431 [[ name: "FM 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1471 [[ name: "PM 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1432 [[ name: "FM 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1472 [[ name: "PM 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1433 [[ name: "FM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1473 [[ name: "PM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1434 [[ name: "FM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1474 [[ name: "PM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1435 [[ name: "FM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1475 [[ name: "PM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1480 [[ name: "PD 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1481 [[ name: "PD 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1482 [[ name: "PD 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1483 [[ name: "PD 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1484 [[ name: "PD 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1485 [[ name: "PD 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1486 [[ name: "PD 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1487 [[ name: "PD 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1488 [[ name: "PD 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1489 [[ name: "PD 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1490 [[ name: "PD 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1491 [[ name: "PD 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1492 [[ name: "PD 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1493 [[ name: "PD 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1494 [[ name: "PD 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1495 [[ name: "PD 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1496 [[ name: "PD 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1497 [[ name: "PD 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1498 [[ name: "PD 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1499 [[ name: "PD 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1500 [[ name: "PD 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1501 [[ name: "PD 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1502 [[ name: "PD 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1503 [[ name: "PD 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1504 [[ name: "PD 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1505 [[ name: "PD 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1506 [[ name: "PD 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1507 [[ name: "PD 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1508 [[ name: "PD 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1509 [[ name: "PD 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1510 [[ name: "PD 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1511 [[ name: "PD 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1512 [[ name: "PD 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1513 [[ name: "PD 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1514 [[ name: "PD 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1515 [[ name: "PD 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
 
     input event float param2  [[ name: "Voice Mode (0 Poly / 1 Mono)", min: 0.0,   max: 1.0,    init: 0.0,   step: 1.0 ]];
     input event float param3  [[ name: "Glide",                        min: 0.0,   max: 1000.0, init: 0.0,   unit: "ms" ]];
@@ -1398,78 +1434,114 @@ processor Eisenpuls_Synth
     event param1363 (float v) { opSet (5, 43, v); }
     event param1364 (float v) { opSet (5, 44, v); }
     event param1365 (float v) { opSet (5, 45, v); }
-    event param1400 (float v) { fmSet (0, 0, v); }
-    event param1440 (float v) { pmSet (0, 0, v); }
-    event param1401 (float v) { fmSet (0, 1, v); }
-    event param1441 (float v) { pmSet (0, 1, v); }
-    event param1402 (float v) { fmSet (0, 2, v); }
-    event param1442 (float v) { pmSet (0, 2, v); }
-    event param1403 (float v) { fmSet (0, 3, v); }
-    event param1443 (float v) { pmSet (0, 3, v); }
-    event param1404 (float v) { fmSet (0, 4, v); }
-    event param1444 (float v) { pmSet (0, 4, v); }
-    event param1405 (float v) { fmSet (0, 5, v); }
-    event param1445 (float v) { pmSet (0, 5, v); }
-    event param1406 (float v) { fmSet (1, 0, v); }
-    event param1446 (float v) { pmSet (1, 0, v); }
-    event param1407 (float v) { fmSet (1, 1, v); }
-    event param1447 (float v) { pmSet (1, 1, v); }
-    event param1408 (float v) { fmSet (1, 2, v); }
-    event param1448 (float v) { pmSet (1, 2, v); }
-    event param1409 (float v) { fmSet (1, 3, v); }
-    event param1449 (float v) { pmSet (1, 3, v); }
-    event param1410 (float v) { fmSet (1, 4, v); }
-    event param1450 (float v) { pmSet (1, 4, v); }
-    event param1411 (float v) { fmSet (1, 5, v); }
-    event param1451 (float v) { pmSet (1, 5, v); }
-    event param1412 (float v) { fmSet (2, 0, v); }
-    event param1452 (float v) { pmSet (2, 0, v); }
-    event param1413 (float v) { fmSet (2, 1, v); }
-    event param1453 (float v) { pmSet (2, 1, v); }
-    event param1414 (float v) { fmSet (2, 2, v); }
-    event param1454 (float v) { pmSet (2, 2, v); }
-    event param1415 (float v) { fmSet (2, 3, v); }
-    event param1455 (float v) { pmSet (2, 3, v); }
-    event param1416 (float v) { fmSet (2, 4, v); }
-    event param1456 (float v) { pmSet (2, 4, v); }
-    event param1417 (float v) { fmSet (2, 5, v); }
-    event param1457 (float v) { pmSet (2, 5, v); }
-    event param1418 (float v) { fmSet (3, 0, v); }
-    event param1458 (float v) { pmSet (3, 0, v); }
-    event param1419 (float v) { fmSet (3, 1, v); }
-    event param1459 (float v) { pmSet (3, 1, v); }
-    event param1420 (float v) { fmSet (3, 2, v); }
-    event param1460 (float v) { pmSet (3, 2, v); }
-    event param1421 (float v) { fmSet (3, 3, v); }
-    event param1461 (float v) { pmSet (3, 3, v); }
-    event param1422 (float v) { fmSet (3, 4, v); }
-    event param1462 (float v) { pmSet (3, 4, v); }
-    event param1423 (float v) { fmSet (3, 5, v); }
-    event param1463 (float v) { pmSet (3, 5, v); }
-    event param1424 (float v) { fmSet (4, 0, v); }
-    event param1464 (float v) { pmSet (4, 0, v); }
-    event param1425 (float v) { fmSet (4, 1, v); }
-    event param1465 (float v) { pmSet (4, 1, v); }
-    event param1426 (float v) { fmSet (4, 2, v); }
-    event param1466 (float v) { pmSet (4, 2, v); }
-    event param1427 (float v) { fmSet (4, 3, v); }
-    event param1467 (float v) { pmSet (4, 3, v); }
-    event param1428 (float v) { fmSet (4, 4, v); }
-    event param1468 (float v) { pmSet (4, 4, v); }
-    event param1429 (float v) { fmSet (4, 5, v); }
-    event param1469 (float v) { pmSet (4, 5, v); }
-    event param1430 (float v) { fmSet (5, 0, v); }
-    event param1470 (float v) { pmSet (5, 0, v); }
-    event param1431 (float v) { fmSet (5, 1, v); }
-    event param1471 (float v) { pmSet (5, 1, v); }
-    event param1432 (float v) { fmSet (5, 2, v); }
-    event param1472 (float v) { pmSet (5, 2, v); }
-    event param1433 (float v) { fmSet (5, 3, v); }
-    event param1473 (float v) { pmSet (5, 3, v); }
-    event param1434 (float v) { fmSet (5, 4, v); }
-    event param1474 (float v) { pmSet (5, 4, v); }
-    event param1435 (float v) { fmSet (5, 5, v); }
-    event param1475 (float v) { pmSet (5, 5, v); }
+    event param1400 (float v) { fmSet (0, 0, v * 0.01f); }
+    event param1440 (float v) { pmSet (0, 0, v * 0.01f); }
+    event param1401 (float v) { fmSet (0, 1, v * 0.01f); }
+    event param1441 (float v) { pmSet (0, 1, v * 0.01f); }
+    event param1402 (float v) { fmSet (0, 2, v * 0.01f); }
+    event param1442 (float v) { pmSet (0, 2, v * 0.01f); }
+    event param1403 (float v) { fmSet (0, 3, v * 0.01f); }
+    event param1443 (float v) { pmSet (0, 3, v * 0.01f); }
+    event param1404 (float v) { fmSet (0, 4, v * 0.01f); }
+    event param1444 (float v) { pmSet (0, 4, v * 0.01f); }
+    event param1405 (float v) { fmSet (0, 5, v * 0.01f); }
+    event param1445 (float v) { pmSet (0, 5, v * 0.01f); }
+    event param1406 (float v) { fmSet (1, 0, v * 0.01f); }
+    event param1446 (float v) { pmSet (1, 0, v * 0.01f); }
+    event param1407 (float v) { fmSet (1, 1, v * 0.01f); }
+    event param1447 (float v) { pmSet (1, 1, v * 0.01f); }
+    event param1408 (float v) { fmSet (1, 2, v * 0.01f); }
+    event param1448 (float v) { pmSet (1, 2, v * 0.01f); }
+    event param1409 (float v) { fmSet (1, 3, v * 0.01f); }
+    event param1449 (float v) { pmSet (1, 3, v * 0.01f); }
+    event param1410 (float v) { fmSet (1, 4, v * 0.01f); }
+    event param1450 (float v) { pmSet (1, 4, v * 0.01f); }
+    event param1411 (float v) { fmSet (1, 5, v * 0.01f); }
+    event param1451 (float v) { pmSet (1, 5, v * 0.01f); }
+    event param1412 (float v) { fmSet (2, 0, v * 0.01f); }
+    event param1452 (float v) { pmSet (2, 0, v * 0.01f); }
+    event param1413 (float v) { fmSet (2, 1, v * 0.01f); }
+    event param1453 (float v) { pmSet (2, 1, v * 0.01f); }
+    event param1414 (float v) { fmSet (2, 2, v * 0.01f); }
+    event param1454 (float v) { pmSet (2, 2, v * 0.01f); }
+    event param1415 (float v) { fmSet (2, 3, v * 0.01f); }
+    event param1455 (float v) { pmSet (2, 3, v * 0.01f); }
+    event param1416 (float v) { fmSet (2, 4, v * 0.01f); }
+    event param1456 (float v) { pmSet (2, 4, v * 0.01f); }
+    event param1417 (float v) { fmSet (2, 5, v * 0.01f); }
+    event param1457 (float v) { pmSet (2, 5, v * 0.01f); }
+    event param1418 (float v) { fmSet (3, 0, v * 0.01f); }
+    event param1458 (float v) { pmSet (3, 0, v * 0.01f); }
+    event param1419 (float v) { fmSet (3, 1, v * 0.01f); }
+    event param1459 (float v) { pmSet (3, 1, v * 0.01f); }
+    event param1420 (float v) { fmSet (3, 2, v * 0.01f); }
+    event param1460 (float v) { pmSet (3, 2, v * 0.01f); }
+    event param1421 (float v) { fmSet (3, 3, v * 0.01f); }
+    event param1461 (float v) { pmSet (3, 3, v * 0.01f); }
+    event param1422 (float v) { fmSet (3, 4, v * 0.01f); }
+    event param1462 (float v) { pmSet (3, 4, v * 0.01f); }
+    event param1423 (float v) { fmSet (3, 5, v * 0.01f); }
+    event param1463 (float v) { pmSet (3, 5, v * 0.01f); }
+    event param1424 (float v) { fmSet (4, 0, v * 0.01f); }
+    event param1464 (float v) { pmSet (4, 0, v * 0.01f); }
+    event param1425 (float v) { fmSet (4, 1, v * 0.01f); }
+    event param1465 (float v) { pmSet (4, 1, v * 0.01f); }
+    event param1426 (float v) { fmSet (4, 2, v * 0.01f); }
+    event param1466 (float v) { pmSet (4, 2, v * 0.01f); }
+    event param1427 (float v) { fmSet (4, 3, v * 0.01f); }
+    event param1467 (float v) { pmSet (4, 3, v * 0.01f); }
+    event param1428 (float v) { fmSet (4, 4, v * 0.01f); }
+    event param1468 (float v) { pmSet (4, 4, v * 0.01f); }
+    event param1429 (float v) { fmSet (4, 5, v * 0.01f); }
+    event param1469 (float v) { pmSet (4, 5, v * 0.01f); }
+    event param1430 (float v) { fmSet (5, 0, v * 0.01f); }
+    event param1470 (float v) { pmSet (5, 0, v * 0.01f); }
+    event param1431 (float v) { fmSet (5, 1, v * 0.01f); }
+    event param1471 (float v) { pmSet (5, 1, v * 0.01f); }
+    event param1432 (float v) { fmSet (5, 2, v * 0.01f); }
+    event param1472 (float v) { pmSet (5, 2, v * 0.01f); }
+    event param1433 (float v) { fmSet (5, 3, v * 0.01f); }
+    event param1473 (float v) { pmSet (5, 3, v * 0.01f); }
+    event param1434 (float v) { fmSet (5, 4, v * 0.01f); }
+    event param1474 (float v) { pmSet (5, 4, v * 0.01f); }
+    event param1435 (float v) { fmSet (5, 5, v * 0.01f); }
+    event param1475 (float v) { pmSet (5, 5, v * 0.01f); }
+    event param1480 (float v) { pdSet (0, 0, v * 0.01f); }
+    event param1481 (float v) { pdSet (0, 1, v * 0.01f); }
+    event param1482 (float v) { pdSet (0, 2, v * 0.01f); }
+    event param1483 (float v) { pdSet (0, 3, v * 0.01f); }
+    event param1484 (float v) { pdSet (0, 4, v * 0.01f); }
+    event param1485 (float v) { pdSet (0, 5, v * 0.01f); }
+    event param1486 (float v) { pdSet (1, 0, v * 0.01f); }
+    event param1487 (float v) { pdSet (1, 1, v * 0.01f); }
+    event param1488 (float v) { pdSet (1, 2, v * 0.01f); }
+    event param1489 (float v) { pdSet (1, 3, v * 0.01f); }
+    event param1490 (float v) { pdSet (1, 4, v * 0.01f); }
+    event param1491 (float v) { pdSet (1, 5, v * 0.01f); }
+    event param1492 (float v) { pdSet (2, 0, v * 0.01f); }
+    event param1493 (float v) { pdSet (2, 1, v * 0.01f); }
+    event param1494 (float v) { pdSet (2, 2, v * 0.01f); }
+    event param1495 (float v) { pdSet (2, 3, v * 0.01f); }
+    event param1496 (float v) { pdSet (2, 4, v * 0.01f); }
+    event param1497 (float v) { pdSet (2, 5, v * 0.01f); }
+    event param1498 (float v) { pdSet (3, 0, v * 0.01f); }
+    event param1499 (float v) { pdSet (3, 1, v * 0.01f); }
+    event param1500 (float v) { pdSet (3, 2, v * 0.01f); }
+    event param1501 (float v) { pdSet (3, 3, v * 0.01f); }
+    event param1502 (float v) { pdSet (3, 4, v * 0.01f); }
+    event param1503 (float v) { pdSet (3, 5, v * 0.01f); }
+    event param1504 (float v) { pdSet (4, 0, v * 0.01f); }
+    event param1505 (float v) { pdSet (4, 1, v * 0.01f); }
+    event param1506 (float v) { pdSet (4, 2, v * 0.01f); }
+    event param1507 (float v) { pdSet (4, 3, v * 0.01f); }
+    event param1508 (float v) { pdSet (4, 4, v * 0.01f); }
+    event param1509 (float v) { pdSet (4, 5, v * 0.01f); }
+    event param1510 (float v) { pdSet (5, 0, v * 0.01f); }
+    event param1511 (float v) { pdSet (5, 1, v * 0.01f); }
+    event param1512 (float v) { pdSet (5, 2, v * 0.01f); }
+    event param1513 (float v) { pdSet (5, 3, v * 0.01f); }
+    event param1514 (float v) { pdSet (5, 4, v * 0.01f); }
+    event param1515 (float v) { pdSet (5, 5, v * 0.01f); }
 
     event param2  (float v) { voiceMode   = v; }
     event param3  (float v) { glideMs     = v; }
@@ -2069,6 +2141,7 @@ processor Eisenpuls_Synth
         float64[42] wtUPh;    // wavetable unison phases: slot * 7 + unison voice
         float[24]   wtDcS;    // wavetable warp DC blocker: slot * 4 + {xL, yL, xR, yR}
         float[6]    fmPrev;   // last output of every slot (FM source)
+        float[6]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
         float[6]    fenv;     // filter envelope level per slot
         int[6]      fstage;   // filter envelope stage per slot
         float[10] menv;       // mod envelope levels
@@ -3841,6 +3914,7 @@ processor Eisenpuls_Synth
     float[384]    op;
     float[36]     fmAmt;      // frequency modulation
     float[36]     pmAmt;      // phase modulation
+    float[36]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
     bool[6]       fmUsed;
 
     // wavetable memories (one per slot): 96000 samples cut into equal frames
@@ -3881,7 +3955,7 @@ processor Eisenpuls_Synth
         {
             bool u = false;
             for (int r = 0; r < 6; ++r)
-                if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f) u = true;
+                if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
         }
     }
@@ -3895,6 +3969,12 @@ processor Eisenpuls_Synth
     void pmSet (int s, int d, float v)
     {
         pmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void pdSet (int s, int d, float v)
+    {
+        pdAmt.at (s * 6 + d) = v;
         updateFmUsed();
     }
 
@@ -18443,6 +18523,9 @@ processor Eisenpuls_Synth
                 voices.at (v).env  = 0.0f;
                 voices.at (v).fdlW = 0;
 
+                for (int po = 0; po < 6; ++po)
+                    voices.at (v).pdPh.at (po) = clamp (op.at (po * 64 + 8), 0.0f, 1.0f);
+
                 for (int fq = 0; fq < 192; ++fq)
                     voices.at (v).fx.at (fq) = 0.0f;
 
@@ -18578,10 +18661,12 @@ processor Eisenpuls_Synth
                 // FM (frequency) and PM (phase): every slot is modulated by the previous sample of the slots that feed it
                 float[6] fmIn;
                 float[6] pmIn;
+                float[6] pdIn;
                 for (int fd = 0; fd < 6; ++fd)
                 {
                     float acc = 0.0f;
                     float acp = 0.0f;
+                    float acd = 0.0f;
                     for (int fs = 0; fs < 6; ++fs)
                     {
                         float am = fmAmt.at (fs * 6 + fd);
@@ -18590,9 +18675,13 @@ processor Eisenpuls_Synth
                         float ap = pmAmt.at (fs * 6 + fd);
                         if (ap != 0.0f)
                             acp += ap * voices.at (i).fmPrev.at (fs);
+                        float ad = pdAmt.at (fs * 6 + fd);
+                        if (ad != 0.0f)
+                            acd += ad * voices.at (i).fmPrev.at (fs);
                     }
                     fmIn.at (fd) = acc;
                     pmIn.at (fd) = acp;
+                    pdIn.at (fd) = acd;
                 }
 
                 float[3] bInL;
@@ -18623,6 +18712,23 @@ processor Eisenpuls_Synth
                     float freq  = clamp (base * float (pow (2.0f, sExp)), 1.0f, sr * 0.45f);
                     float pm    = pmIn.at (o);
 
+                    // phase distortion: the modulator moves the break point of a two-segment phase warp (identity at 0.5), like the Casio CZ
+                    float pdv = pdIn.at (o);
+                    float pdPm = 0.0f;
+                    {
+                        float ph0 = voices.at (i).pdPh.at (o);
+                        float ph1 = ph0 + freq / sr;
+                        ph1 = ph1 - float (floor (ph1));
+                        voices.at (i).pdPh.at (o) = ph1;
+
+                        if (pdv != 0.0f)
+                        {
+                            float brk = clamp (0.5f - 0.49f * clamp (pdv, -1.0f, 1.0f), 0.01f, 0.99f);
+                            float wph = ph0 < brk ? ph0 * 0.5f / brk : 0.5f + (ph0 - brk) * 0.5f / (1.0f - brk);
+                            pdPm = wph - ph0;
+                        }
+                    }
+
                     float sL = 0.0f;
                     float sR = 0.0f;
                     bool  stereo = false;
@@ -18632,7 +18738,7 @@ processor Eisenpuls_Synth
                         if (wtHas.at (o) && wtLen.at (o) > 1)
                         {
                             float pos = clamp (op.at (ob + 10) + vmod.at (dB + 3) * 0.5f, 0.0f, 1.0f);
-                            float<2> w = wtStep (o, i, freq, pos, wtFrameLen (op.at (ob + 11)), pm, vmod.at (dB + 4), vmod.at (dB + 5));
+                            float<2> w = wtStep (o, i, freq, pos, wtFrameLen (op.at (ob + 11)), pm + pdPm, vmod.at (dB + 4), vmod.at (dB + 5));
                             sL = w[0];
                             sR = w[1];
                             stereo = true;
@@ -18642,7 +18748,7 @@ processor Eisenpuls_Synth
                     {
                         if (smpHas.at (o) && smpLen.at (o) > 1)
                         {
-                            sL = smpStep (o, i, freq, cf, pm, sExp);
+                            sL = smpStep (o, i, freq, cf, pm + pdPm, sExp);
                             sR = sL;
                         }
                     }

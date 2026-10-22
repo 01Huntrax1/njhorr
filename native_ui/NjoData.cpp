@@ -95,7 +95,7 @@ namespace njo
         }
         if (s.num == 880 || s.num == 881) return juce::String (juce::roundToInt (v * 100)) + "%";
         if (s.num == 522) return v < 1 ? juce::String ("HOST") : juce::String (juce::roundToInt (v)) + " BPM";
-        if ((s.num >= FM_BASE && s.num < FM_BASE + 36) || (s.num >= PM_BASE && s.num < PM_BASE + 36)) { int p = juce::roundToInt (v * 100); return (p > 0 ? "+" : "") + juce::String (p) + "%"; }
+        if (s.num >= FM_BASE && s.num < PD_BASE + 36) return juce::String (juce::roundToInt (v)) + "%";
         if (s.num >= OSC_BASE && s.num < OSC_BASE + OSC_STRIDE * OSC_N)
         {
             int k = (s.num - OSC_BASE) % OSC_STRIDE;

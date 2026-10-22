@@ -65,7 +65,7 @@ namespace njo
         }
         for (int i = 0; i < 8; ++i)
         {
-            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM" : "GLOBAL");
+            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM / PD" : "GLOBAL");
             auto* b = impl->tabs.add (new NavButton (NavButton::Tab, t));
             b->onClick = [this, i] { setSynthPage (i); };
             addAndMakeVisible (b);

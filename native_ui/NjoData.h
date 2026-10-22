@@ -7,12 +7,13 @@
 namespace njo
 {
     // ---- layout constants (same as the JS UI) ----
-    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, MOD_SLOTS = 20;
+    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, MOD_SLOTS = 20;
     constexpr int BASE_W = 1180, BASE_H = 760;
     constexpr int MAX_SMP = 96000, CHUNK = 256;
     inline int oscId (int o, int k) { return OSC_BASE + OSC_STRIDE * o + k; }
     inline int fmId (int s, int d) { return FM_BASE + 6 * s + d; }
     inline int pmId (int s, int d) { return PM_BASE + 6 * s + d; }
+    inline int pdId (int s, int d) { return PD_BASE + 6 * s + d; }
     inline int slotBase (int s) { return s < 10 ? 307 + 3 * s : 472 + 3 * (s - 10); }   // first (source) parameter of a matrix slot
     const std::map<juce::String, int>& oscKeys();
     int oscKey (const char* name);   // OSC_K["wpos"] ...
