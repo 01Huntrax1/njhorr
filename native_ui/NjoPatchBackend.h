@@ -22,9 +22,13 @@ namespace njo
 
         void setParam (int num, float v) override
         {
-            cache[num] = v;
             if (auto pp = find (num))
+            {
                 pp->setValue (v, true, -1, 0);
+                v = pp->currentValue;          // snapped / constrained by the patch
+            }
+            cache[num] = v;
+            notifyParam (num, v);              // the UI listens for its own edits too (widgets, page layout, matrix ...)
         }
 
         void beginGesture (int num) override { patch.sendGestureStart (id (num)); }
