@@ -164,6 +164,23 @@ for MOD, fm in (("FM", L.fm_id), ("PM", L.pm_id)):
     a5 = render(["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), (fm(0, 1), 0.3), P(0, "sloop", 1), P(1, "sloop", 1)], note=60, tag=MOD+"fmsmp")
     check(MOD + " sampler slots can " + MOD + " each other", band(seg(a5)[:, 0], 400, 6000) > 0.2 * band(seg(a5)[:, 0], 240, 290) and np.isfinite(a5).all())
 
+# ---------------------------------------------------------------- signal flow: osc -> filter -> distortion -> matrix
+fbase = [(28, 0), "wt 0 saw", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), (L.fm_id(0, 1), 0.5)]
+a_raw  = render(fbase + [FOFF(0)], tag="flow0")
+a_filt = render(fbase + [P(0, "fon", 1), P(0, "ftype", 1), P(0, "fcut", 150), P(0, "fkey", 0)], tag="flow1")
+check("the FM modulator is the filtered slot (closed LP filter on the modulator removes sidebands)",
+      band(seg(a_filt)[:, 0], 700, 8000) < 0.5 * band(seg(a_raw)[:, 0], 700, 8000), "%.3g vs %.3g" % (band(seg(a_filt)[:, 0], 700, 8000), band(seg(a_raw)[:, 0], 700, 8000)))
+a_dist = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), P(0, "dtype", 4), P(0, "ddrv", 1), (L.fm_id(0, 1), 0.0), (L.pm_id(0, 1), 0.5)], tag="flow2")
+a_nod  = render(["wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(1), FOFF(0), (L.pm_id(0, 1), 0.5)], tag="flow3")
+check("the matrix modulator is the distorted slot", rms(a_dist - a_nod) > 0.05 * rms(a_nod), "%.3f" % rms(a_dist - a_nod))
+order = [ "wt 0 saw", P(0, "level", 0.8), P(0, "fon", 1), P(0, "ftype", 1), P(0, "fcut", 600), P(0, "fkey", 0), P(0, "dtype", 4), P(0, "ddrv", 1)]
+a_post = render(order + [P(0, "dpos", 0)], tag="ord0")
+a_pre  = render(order + [P(0, "dpos", 1)], tag="ord1")
+a_def  = render(order, tag="ord2")
+check("distortion position defaults to after the filter", np.max(np.abs(a_post - a_def)) < 1e-6)
+check("distortion before the filter sounds different from after", rms(a_post - a_pre) > 0.05 * rms(a_post), "%.3f" % rms(a_post - a_pre))
+check("distortion before the filter is darker (filter removes the new harmonics)", band(seg(a_pre)[:, 0], 3000, 12000) < 0.7 * band(seg(a_post)[:, 0], 3000, 12000))
+
 # ---------------------------------------------------------------- unison / warp
 a_u = render(["wt 0 saw", FOFF(0), P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], tag="uni")
 check("unison widens the stereo image", float(np.corrcoef(seg(a_u)[:, 0], seg(a_u)[:, 1])[0, 1]) < 0.95)

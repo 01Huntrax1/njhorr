@@ -67,6 +67,7 @@ processor Eisenpuls_Synth
     input event float param1042 [[ name: "OSC 1 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1043 [[ name: "OSC 1 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1044 [[ name: "OSC 1 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1045 [[ name: "OSC 1 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1064 [[ name: "OSC 2 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1065 [[ name: "OSC 2 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1066 [[ name: "OSC 2 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -110,6 +111,7 @@ processor Eisenpuls_Synth
     input event float param1106 [[ name: "OSC 2 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1107 [[ name: "OSC 2 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1108 [[ name: "OSC 2 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1109 [[ name: "OSC 2 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1128 [[ name: "OSC 3 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1129 [[ name: "OSC 3 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1130 [[ name: "OSC 3 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -153,6 +155,7 @@ processor Eisenpuls_Synth
     input event float param1170 [[ name: "OSC 3 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1171 [[ name: "OSC 3 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1172 [[ name: "OSC 3 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1173 [[ name: "OSC 3 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1192 [[ name: "OSC 4 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1193 [[ name: "OSC 4 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1194 [[ name: "OSC 4 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -196,6 +199,7 @@ processor Eisenpuls_Synth
     input event float param1234 [[ name: "OSC 4 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1235 [[ name: "OSC 4 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1236 [[ name: "OSC 4 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1237 [[ name: "OSC 4 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1256 [[ name: "OSC 5 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1257 [[ name: "OSC 5 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1258 [[ name: "OSC 5 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -239,6 +243,7 @@ processor Eisenpuls_Synth
     input event float param1298 [[ name: "OSC 5 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1299 [[ name: "OSC 5 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1300 [[ name: "OSC 5 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1301 [[ name: "OSC 5 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1320 [[ name: "OSC 6 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1321 [[ name: "OSC 6 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1322 [[ name: "OSC 6 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -282,6 +287,7 @@ processor Eisenpuls_Synth
     input event float param1362 [[ name: "OSC 6 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
     input event float param1363 [[ name: "OSC 6 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1364 [[ name: "OSC 6 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param1365 [[ name: "OSC 6 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param1400 [[ name: "FM 1 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param1440 [[ name: "PM 1 to 1", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param1401 [[ name: "FM 1 to 2", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -1171,6 +1177,7 @@ processor Eisenpuls_Synth
     event param1042 (float v) { opSet (0, 42, v); }
     event param1043 (float v) { opSet (0, 43, v); }
     event param1044 (float v) { opSet (0, 44, v); }
+    event param1045 (float v) { opSet (0, 45, v); }
     event param1064 (float v) { opSet (1, 0, v); }
     event param1065 (float v) { opSet (1, 1, v); }
     event param1066 (float v) { opSet (1, 2, v); }
@@ -1214,6 +1221,7 @@ processor Eisenpuls_Synth
     event param1106 (float v) { opSet (1, 42, v); }
     event param1107 (float v) { opSet (1, 43, v); }
     event param1108 (float v) { opSet (1, 44, v); }
+    event param1109 (float v) { opSet (1, 45, v); }
     event param1128 (float v) { opSet (2, 0, v); }
     event param1129 (float v) { opSet (2, 1, v); }
     event param1130 (float v) { opSet (2, 2, v); }
@@ -1257,6 +1265,7 @@ processor Eisenpuls_Synth
     event param1170 (float v) { opSet (2, 42, v); }
     event param1171 (float v) { opSet (2, 43, v); }
     event param1172 (float v) { opSet (2, 44, v); }
+    event param1173 (float v) { opSet (2, 45, v); }
     event param1192 (float v) { opSet (3, 0, v); }
     event param1193 (float v) { opSet (3, 1, v); }
     event param1194 (float v) { opSet (3, 2, v); }
@@ -1300,6 +1309,7 @@ processor Eisenpuls_Synth
     event param1234 (float v) { opSet (3, 42, v); }
     event param1235 (float v) { opSet (3, 43, v); }
     event param1236 (float v) { opSet (3, 44, v); }
+    event param1237 (float v) { opSet (3, 45, v); }
     event param1256 (float v) { opSet (4, 0, v); }
     event param1257 (float v) { opSet (4, 1, v); }
     event param1258 (float v) { opSet (4, 2, v); }
@@ -1343,6 +1353,7 @@ processor Eisenpuls_Synth
     event param1298 (float v) { opSet (4, 42, v); }
     event param1299 (float v) { opSet (4, 43, v); }
     event param1300 (float v) { opSet (4, 44, v); }
+    event param1301 (float v) { opSet (4, 45, v); }
     event param1320 (float v) { opSet (5, 0, v); }
     event param1321 (float v) { opSet (5, 1, v); }
     event param1322 (float v) { opSet (5, 2, v); }
@@ -1386,6 +1397,7 @@ processor Eisenpuls_Synth
     event param1362 (float v) { opSet (5, 42, v); }
     event param1363 (float v) { opSet (5, 43, v); }
     event param1364 (float v) { opSet (5, 44, v); }
+    event param1365 (float v) { opSet (5, 45, v); }
     event param1400 (float v) { fmSet (0, 0, v); }
     event param1440 (float v) { pmSet (0, 0, v); }
     event param1401 (float v) { fmSet (0, 1, v); }
@@ -18644,8 +18656,6 @@ processor Eisenpuls_Synth
                         sR = sL;
                     }
 
-                    voices.at (i).fmPrev.at (o) = stereo ? (sL + sR) * 0.5f : sL;
-
                     // ----- filter envelope of the slot -----
                     int   fst = voices.at (i).fstage.at (o);
                     float fe  = voices.at (i).fenv.at (o);
@@ -18665,8 +18675,19 @@ processor Eisenpuls_Synth
                     voices.at (i).fenv.at (o)   = fe;
                     voices.at (i).fstage.at (o) = fst;
 
-                    if (lvl <= 0.0005f)
-                        continue;
+                    // signal flow per slot: source -> filter -> distortion -> FM / PM matrix and output
+                    // (the "Distortion Position" switch puts the distortion before the filter instead)
+                    int   dty  = int (op.at (ob + 42) + 0.5f);
+                    float dd   = clamp (op.at (ob + 43) + vmod.at (dB + 8) * 0.5f, 0.0f, 1.0f);
+                    float dx   = op.at (ob + 44);
+                    bool  dPre = op.at (ob + 45) > 0.5f;
+
+                    // ----- distortion before the filter -----
+                    if (dPre && dty > 0)
+                    {
+                        sL = oscDist (sL, dty, dd, dx);
+                        sR = stereo ? oscDist (sR, dty, dd, dx) : sL;
+                    }
 
                     // ----- filter -----
                     if (op.at (ob + 30) > 0.5f)
@@ -18700,15 +18721,18 @@ processor Eisenpuls_Synth
                         sR = yR;
                     }
 
-                    // ----- distortion -----
-                    int dty = int (op.at (ob + 42) + 0.5f);
-                    if (dty > 0)
+                    // ----- distortion after the filter -----
+                    if (! dPre && dty > 0)
                     {
-                        float dd = clamp (op.at (ob + 43) + vmod.at (dB + 8) * 0.5f, 0.0f, 1.0f);
-                        float dx = op.at (ob + 44);
                         sL = oscDist (sL, dty, dd, dx);
                         sR = stereo ? oscDist (sR, dty, dd, dx) : sL;
                     }
+
+                    // the matrix modulators are the processed slot outputs (after filter and distortion)
+                    voices.at (i).fmPrev.at (o) = stereo ? (sL + sR) * 0.5f : sL;
+
+                    if (lvl <= 0.0005f)
+                        continue;
 
                     // ----- level, pan, output route -----
                     float pn  = clamp (op.at (ob + 2) + vmod.at (dB + 2), -1.0f, 1.0f);

@@ -57,6 +57,7 @@ PARAMS = [
  (42, "dtype",  "Distortion Type",  "Type",      0, 6, 0, "", "sel", DIST_TYPES),
  (43, "ddrv",   "Distortion Drive", "Drive",     0, 1, 0.3, "", "sld", None),
  (44, "dmix",   "Distortion Mix",   "Mix",       0, 1, 1, "", "sld", None),
+ (45, "dpos",   "Distortion Position", "Dist vs Filter", 0, 1, 0, "", "btn", ["Post", "Pre"]),   # Post = filter -> distortion, Pre = distortion -> filter
 ]
 K = {p[1]: p[0] for p in PARAMS}
 

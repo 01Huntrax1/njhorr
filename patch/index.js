@@ -608,7 +608,7 @@ const AudioDecode = (() => {
 })();
 /*AUDIODEC-END*/
 const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440;
-const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44};
+const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "dpos": 45};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
@@ -665,6 +665,7 @@ const OSC_SPEC_ROWS = [
     [1042, "OSC 1 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1043, "OSC 1 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1044, "OSC 1 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1064, "OSC 2 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1066, "OSC 2 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -708,6 +709,7 @@ const OSC_SPEC_ROWS = [
     [1106, "OSC 2 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1107, "OSC 2 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1108, "OSC 2 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1128, "OSC 3 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1130, "OSC 3 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -751,6 +753,7 @@ const OSC_SPEC_ROWS = [
     [1170, "OSC 3 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1171, "OSC 3 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1172, "OSC 3 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1192, "OSC 4 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1194, "OSC 4 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -794,6 +797,7 @@ const OSC_SPEC_ROWS = [
     [1234, "OSC 4 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1235, "OSC 4 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1236, "OSC 4 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1256, "OSC 5 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1258, "OSC 5 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -837,6 +841,7 @@ const OSC_SPEC_ROWS = [
     [1298, "OSC 5 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1299, "OSC 5 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1300, "OSC 5 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1320, "OSC 6 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1322, "OSC 6 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -880,6 +885,7 @@ const OSC_SPEC_ROWS = [
     [1362, "OSC 6 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
     [1363, "OSC 6 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1364, "OSC 6 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1365, "OSC 6 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1400, "FM 1 to 1", -1, 1, 0, "", "knb", null, 1, "1→1", null],
     [1401, "FM 1 to 2", -1, 1, 0, "", "knb", null, 1, "1→2", null],
     [1402, "FM 1 to 3", -1, 1, 0, "", "knb", null, 1, "1→3", null],
@@ -2079,7 +2085,7 @@ class EisenpulsPatchView extends HTMLElement {
             <div class="cgrid o-g3">${["fon", "ftype"].map(c).join("")}${["fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel"].map(c).join("")}</div>
           </section>`;
         const out = `<section class="card o-out"><h2>Distortion / Out</h2>
-            <div class="cgrid o-g2">${["dtype", "ddrv", "dmix"].map(c).join("")}</div>
+            <div class="cgrid o-g2">${["dtype", "dpos", "ddrv", "dmix"].map(c).join("")}</div>
             <h2 class="o-h2">Output</h2>
             <div class="cgrid o-g2">${["level", "pan", "out"].map(c).join("")}</div>
           </section>`;

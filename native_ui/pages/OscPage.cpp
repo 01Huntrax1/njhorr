@@ -146,7 +146,7 @@ namespace njo
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
-                              "dtype", "ddrv", "dmix", "level", "pan", "out" })
+                              "dtype", "dpos", "ddrv", "dmix", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
                 if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
@@ -350,9 +350,10 @@ namespace njo
             // ---- distortion / output ----
             {
                 auto c = cardOut; int w = c.getWidth();
-                put ("dtype", 12, 58, w - 24, 36, c); strip ("dtype", 12, 58, w - 24, c, false);
+                put ("dtype", 12, 54, w - 24, 34, c); strip ("dtype", 12, 54, w - 24, c, false);
+                put ("dpos", 12, 94, w - 24, 26, c);
                 const int cl = 12 + (w - 24) / 4, cr = 12 + (w - 24) * 3 / 4;
-                knob ("ddrv", cl, 130, c); knob ("dmix", cr, 130, c);
+                knob ("ddrv", cl, 160, c); knob ("dmix", cr, 160, c);
                 knob ("level", cl, 270, c); knob ("pan", cr, 270, c);
                 put ("out", 12, 362, w - 24, 31, c);
             }
