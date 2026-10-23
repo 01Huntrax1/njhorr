@@ -9,7 +9,7 @@ OSC_STRIDE_NAMES = ["OSC %d" % (i + 1) for i in range(OSC_COUNT)]
 FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "HP24", "BP24", "Notch12", "Notch24",
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
-DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"]
+DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
 SRC_TYPES = ["Wavetable", "Sampler", "Plaits"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
@@ -44,7 +44,7 @@ PARAMS = [
  (26, "ptimb",  "Plaits Timbre", "Timbre",    0, 1, 0.5, "", "sld", None),
  (27, "pmorph", "Plaits Morph",  "Morph",     0, 1, 0.5, "", "sld", None),
  (30, "fon",    "Filter On",     "Filter",    0, 1, 1, "", "btn", ["Off", "On"]),
- (31, "ftype",  "Filter Type",   "Type",      0, 29, 0, "", "sel", None),
+ (31, "ftype",  "Filter Type",   "Type",      0, 30, 0, "", "sel", None),
  (32, "fcut",   "Filter Cutoff", "Cutoff",   20, 18000, 8000, "Hz", "sld", None),
  (33, "fres",   "Filter Resonance", "Resonance", 0, 1, 0.25, "", "sld", None),
  (34, "fdrv",   "Filter Drive",  "Drive",     0, 1, 0, "", "sld", None),
@@ -55,9 +55,11 @@ PARAMS = [
  (39, "fdec",   "Filter EG Decay",   "Decay",   10, 5000, 300, "ms", "sld", None),
  (40, "fsus",   "Filter EG Sustain", "Sustain",  0, 1, 0, "", "sld", None),
  (41, "frel",   "Filter EG Release", "Release",  5, 5000, 250, "ms", "sld", None),
- (42, "dtype",  "Distortion Type",  "Type",      0, 6, 0, "", "sel", DIST_TYPES),
+ (42, "dtype",  "Distortion Type",  "Type",      0, 7, 0, "", "sel", DIST_TYPES),
  (43, "ddrv",   "Distortion Drive", "Drive",     0, 1, 0.3, "", "sld", None),
  (44, "dmix",   "Distortion Mix",   "Mix",       0, 1, 1, "", "sld", None),
+ (46, "wfpos",  "Wavefilter Position", "Table Pos", 0, 1, 0, "", "sld", None),
+ (47, "wdpos",  "Wavedistortion Position", "Table Pos", 0, 1, 0, "", "sld", None),
  (45, "dpos",   "Distortion Position", "Dist vs Filter", 0, 1, 0, "", "btn", ["Post", "Pre"]),   # Post = filter -> distortion, Pre = distortion -> filter
 ]
 K = {p[1]: p[0] for p in PARAMS}
@@ -67,7 +69,8 @@ MOD_DST_GLOBAL = ["Pitch (all)", "Amp", "Pan", "Drive", "Out Gain"]   # indices 
 MOD_DST_OSC = ["Pitch", "Level", "Pan", "Position / Harm", "Warp 1 / Timbre", "Warp 2 / Morph", "Cutoff", "Reso", "Dist Drive"]
 def dst_index(o, j): return 6 + 9 * o + j
 N_DST = 6 + 9 * OSC_COUNT   # 60 (osc / global destinations); 60..167 = FM 60+n, PM 96+n, PD 132+n (n = 6*src + dst)
-N_DST_ALL = N_DST + 108
+N_TBL_DST = N_DST + 108   # 168..179: Wavefilter / Wavedistortion table position of OSC 1..6 (168 + 2 * o, 169 + 2 * o)
+N_DST_ALL = N_DST + 108 + 12
 def pid(o, k): return BASE + STRIDE * o + k
 def fm_id(src, dst): return FM_BASE + 6 * src + dst
 def pm_id(src, dst): return PM_BASE + 6 * src + dst

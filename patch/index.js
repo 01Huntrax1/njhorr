@@ -256,6 +256,9 @@ const FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP1
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"];
 const FILTER_GROUPS = [[0, "Basic"], [4, "6 / 18 dB"], [8, "24 dB / Notch"], [12, "Peak / Shelf / Allpass"], [16, "Ladder / Dirty"], [20, "Comb / Phaser / Vowel"], [24, "MG Low"], [28, "Flange"]];
+const TBL_FL = 512, TBL_MAX_FR = 64;   // Wavefilter / Wavedistortion tables
+const OSC_FILTER_TYPES = FILTER_TYPES.concat(["Wavefilter"]);
+const OSC_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Table"]]);
 // LFO sync divisions, in the order of the DSP table
 const SYNC_DIVS = ["8/1", "4/1", "2/1", "1/1", "1/2.", "1/2", "1/2T", "1/4.", "1/4", "1/4T", "1/8.", "1/8", "1/8T", "1/16.", "1/16", "1/16T", "1/32", "1/32T"];
 
@@ -608,20 +611,20 @@ const AudioDecode = (() => {
 })();
 /*AUDIODEC-END*/
 const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480;
-const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "dpos": 45};
+const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "wfpos": 46, "wdpos": 47, "dpos": 45};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
 const pdId = (s, d) => PD_BASE + 6 * s + d;
 const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits"];
-const DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"];
+const DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"];
 const OSC_OUTS = ["Main", "Bus 1", "Bus 2"];
 const PLAITS_ENGINES = ["VA + Filter", "Phase Distortion", "6-Op FM A", "6-Op FM B", "6-Op FM C", "Wave Terrain", "String Machine", "Chiptune", "Virtual Analog", "Waveshaper", "FM", "Formant / Grain", "Additive", "Wavetable", "Chords", "Speech", "Swarm", "Filtered Noise", "Particle", "String", "Modal", "Bass Drum", "Snare Drum", "Hi-Hat"];
 const PLAITS_GROUPS = [[0, "Classic"], [2, "FM"], [5, "Classic"], [10, "FM"], [11, "Classic"], [15, "Texture"], [19, "Physical"], [21, "Drums"]];
 const PLAITS_PARAMS = [["Detune", "Cutoff", "Shape"], ["Detune", "Distortion", "Shape"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Terrain", "Radius", "Offset"], ["Chord", "Registration", "Waveform"], ["Chord", "Pulse Width", "Arp / Env"], ["Detune", "Pulse Width", "Saw Shape"], ["Waveform", "Fold", "Asymmetry"], ["Ratio", "Mod Amount", "Feedback"], ["Formant Ratio", "Formant Freq", "Formant Shape"], ["Bumps", "Prominence", "Bump Shape"], ["Bank", "Row", "Column"], ["Chord", "Inversion", "Waveform"], ["Species", "Phoneme", "Word / Vowel"], ["Pitch Random", "Density", "Overlap"], ["Filter Type", "Clock Freq", "Resonance"], ["Freq Random", "Density", "Filter"], ["Inharmonicity", "Brightness", "Decay"], ["Material", "Brightness", "Decay"], ["Attack", "Brightness", "Decay"], ["Mode Balance", "Excitation", "Decay"], ["Metallic", "High-Pass", "Decay"]];
-const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1 Pitch", "OSC 1 Level", "OSC 1 Pan", "OSC 1 Position / Harm", "OSC 1 Warp 1 / Timbre", "OSC 1 Warp 2 / Morph", "OSC 1 Cutoff", "OSC 1 Reso", "OSC 1 Dist Drive", "OSC 2 Pitch", "OSC 2 Level", "OSC 2 Pan", "OSC 2 Position / Harm", "OSC 2 Warp 1 / Timbre", "OSC 2 Warp 2 / Morph", "OSC 2 Cutoff", "OSC 2 Reso", "OSC 2 Dist Drive", "OSC 3 Pitch", "OSC 3 Level", "OSC 3 Pan", "OSC 3 Position / Harm", "OSC 3 Warp 1 / Timbre", "OSC 3 Warp 2 / Morph", "OSC 3 Cutoff", "OSC 3 Reso", "OSC 3 Dist Drive", "OSC 4 Pitch", "OSC 4 Level", "OSC 4 Pan", "OSC 4 Position / Harm", "OSC 4 Warp 1 / Timbre", "OSC 4 Warp 2 / Morph", "OSC 4 Cutoff", "OSC 4 Reso", "OSC 4 Dist Drive", "OSC 5 Pitch", "OSC 5 Level", "OSC 5 Pan", "OSC 5 Position / Harm", "OSC 5 Warp 1 / Timbre", "OSC 5 Warp 2 / Morph", "OSC 5 Cutoff", "OSC 5 Reso", "OSC 5 Dist Drive", "OSC 6 Pitch", "OSC 6 Level", "OSC 6 Pan", "OSC 6 Position / Harm", "OSC 6 Warp 1 / Timbre", "OSC 6 Warp 2 / Morph", "OSC 6 Cutoff", "OSC 6 Reso", "OSC 6 Dist Drive", "FM A > A", "FM A > B", "FM A > C", "FM A > D", "FM A > E", "FM A > F", "FM B > A", "FM B > B", "FM B > C", "FM B > D", "FM B > E", "FM B > F", "FM C > A", "FM C > B", "FM C > C", "FM C > D", "FM C > E", "FM C > F", "FM D > A", "FM D > B", "FM D > C", "FM D > D", "FM D > E", "FM D > F", "FM E > A", "FM E > B", "FM E > C", "FM E > D", "FM E > E", "FM E > F", "FM F > A", "FM F > B", "FM F > C", "FM F > D", "FM F > E", "FM F > F", "PM A > A", "PM A > B", "PM A > C", "PM A > D", "PM A > E", "PM A > F", "PM B > A", "PM B > B", "PM B > C", "PM B > D", "PM B > E", "PM B > F", "PM C > A", "PM C > B", "PM C > C", "PM C > D", "PM C > E", "PM C > F", "PM D > A", "PM D > B", "PM D > C", "PM D > D", "PM D > E", "PM D > F", "PM E > A", "PM E > B", "PM E > C", "PM E > D", "PM E > E", "PM E > F", "PM F > A", "PM F > B", "PM F > C", "PM F > D", "PM F > E", "PM F > F", "PD A > A", "PD A > B", "PD A > C", "PD A > D", "PD A > E", "PD A > F", "PD B > A", "PD B > B", "PD B > C", "PD B > D", "PD B > E", "PD B > F", "PD C > A", "PD C > B", "PD C > C", "PD C > D", "PD C > E", "PD C > F", "PD D > A", "PD D > B", "PD D > C", "PD D > D", "PD D > E", "PD D > F", "PD E > A", "PD E > B", "PD E > C", "PD E > D", "PD E > E", "PD E > F", "PD F > A", "PD F > B", "PD F > C", "PD F > D", "PD F > E", "PD F > F"];
-const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"]];
-const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5]};
+const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1 Pitch", "OSC 1 Level", "OSC 1 Pan", "OSC 1 Position / Harm", "OSC 1 Warp 1 / Timbre", "OSC 1 Warp 2 / Morph", "OSC 1 Cutoff", "OSC 1 Reso", "OSC 1 Dist Drive", "OSC 2 Pitch", "OSC 2 Level", "OSC 2 Pan", "OSC 2 Position / Harm", "OSC 2 Warp 1 / Timbre", "OSC 2 Warp 2 / Morph", "OSC 2 Cutoff", "OSC 2 Reso", "OSC 2 Dist Drive", "OSC 3 Pitch", "OSC 3 Level", "OSC 3 Pan", "OSC 3 Position / Harm", "OSC 3 Warp 1 / Timbre", "OSC 3 Warp 2 / Morph", "OSC 3 Cutoff", "OSC 3 Reso", "OSC 3 Dist Drive", "OSC 4 Pitch", "OSC 4 Level", "OSC 4 Pan", "OSC 4 Position / Harm", "OSC 4 Warp 1 / Timbre", "OSC 4 Warp 2 / Morph", "OSC 4 Cutoff", "OSC 4 Reso", "OSC 4 Dist Drive", "OSC 5 Pitch", "OSC 5 Level", "OSC 5 Pan", "OSC 5 Position / Harm", "OSC 5 Warp 1 / Timbre", "OSC 5 Warp 2 / Morph", "OSC 5 Cutoff", "OSC 5 Reso", "OSC 5 Dist Drive", "OSC 6 Pitch", "OSC 6 Level", "OSC 6 Pan", "OSC 6 Position / Harm", "OSC 6 Warp 1 / Timbre", "OSC 6 Warp 2 / Morph", "OSC 6 Cutoff", "OSC 6 Reso", "OSC 6 Dist Drive", "FM A > A", "FM A > B", "FM A > C", "FM A > D", "FM A > E", "FM A > F", "FM B > A", "FM B > B", "FM B > C", "FM B > D", "FM B > E", "FM B > F", "FM C > A", "FM C > B", "FM C > C", "FM C > D", "FM C > E", "FM C > F", "FM D > A", "FM D > B", "FM D > C", "FM D > D", "FM D > E", "FM D > F", "FM E > A", "FM E > B", "FM E > C", "FM E > D", "FM E > E", "FM E > F", "FM F > A", "FM F > B", "FM F > C", "FM F > D", "FM F > E", "FM F > F", "PM A > A", "PM A > B", "PM A > C", "PM A > D", "PM A > E", "PM A > F", "PM B > A", "PM B > B", "PM B > C", "PM B > D", "PM B > E", "PM B > F", "PM C > A", "PM C > B", "PM C > C", "PM C > D", "PM C > E", "PM C > F", "PM D > A", "PM D > B", "PM D > C", "PM D > D", "PM D > E", "PM D > F", "PM E > A", "PM E > B", "PM E > C", "PM E > D", "PM E > E", "PM E > F", "PM F > A", "PM F > B", "PM F > C", "PM F > D", "PM F > E", "PM F > F", "PD A > A", "PD A > B", "PD A > C", "PD A > D", "PD A > E", "PD A > F", "PD B > A", "PD B > B", "PD B > C", "PD B > D", "PD B > E", "PD B > F", "PD C > A", "PD C > B", "PD C > C", "PD C > D", "PD C > E", "PD C > F", "PD D > A", "PD D > B", "PD D > C", "PD D > D", "PD D > E", "PD D > F", "PD E > A", "PD E > B", "PD E > C", "PD E > D", "PD E > E", "PD E > F", "PD F > A", "PD F > B", "PD F > C", "PD F > D", "PD F > E", "PD F > F", "OSC 1 Wavefilter Pos", "OSC 1 Wavedistortion Pos", "OSC 2 Wavefilter Pos", "OSC 2 Wavedistortion Pos", "OSC 3 Wavefilter Pos", "OSC 3 Wavedistortion Pos", "OSC 4 Wavefilter Pos", "OSC 4 Wavedistortion Pos", "OSC 5 Wavefilter Pos", "OSC 5 Wavedistortion Pos", "OSC 6 Wavefilter Pos", "OSC 6 Wavedistortion Pos"];
+const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"], [168, "Tables"]];
+const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5]};
 const OSC_SPEC_ROWS = [
     [1000, "OSC 1 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1001, "OSC 1 Level", 0, 1, 0.8, "", "sld", null, 1, "Level", null],
@@ -652,7 +655,7 @@ const OSC_SPEC_ROWS = [
     [1026, "OSC 1 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1027, "OSC 1 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1030, "OSC 1 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1031, "OSC 1 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1031, "OSC 1 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1032, "OSC 1 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1033, "OSC 1 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1034, "OSC 1 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -663,9 +666,11 @@ const OSC_SPEC_ROWS = [
     [1039, "OSC 1 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1040, "OSC 1 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1041, "OSC 1 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1042, "OSC 1 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1042, "OSC 1 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1043, "OSC 1 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1044, "OSC 1 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1046, "OSC 1 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1047, "OSC 1 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1064, "OSC 2 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -696,7 +701,7 @@ const OSC_SPEC_ROWS = [
     [1090, "OSC 2 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1091, "OSC 2 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1094, "OSC 2 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1095, "OSC 2 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1095, "OSC 2 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1096, "OSC 2 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1097, "OSC 2 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1098, "OSC 2 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -707,9 +712,11 @@ const OSC_SPEC_ROWS = [
     [1103, "OSC 2 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1104, "OSC 2 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1105, "OSC 2 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1106, "OSC 2 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1106, "OSC 2 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1107, "OSC 2 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1108, "OSC 2 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1110, "OSC 2 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1111, "OSC 2 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1128, "OSC 3 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -740,7 +747,7 @@ const OSC_SPEC_ROWS = [
     [1154, "OSC 3 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1155, "OSC 3 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1158, "OSC 3 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1159, "OSC 3 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1159, "OSC 3 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1160, "OSC 3 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1161, "OSC 3 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1162, "OSC 3 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -751,9 +758,11 @@ const OSC_SPEC_ROWS = [
     [1167, "OSC 3 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1168, "OSC 3 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1169, "OSC 3 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1170, "OSC 3 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1170, "OSC 3 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1171, "OSC 3 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1172, "OSC 3 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1174, "OSC 3 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1175, "OSC 3 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1192, "OSC 4 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -784,7 +793,7 @@ const OSC_SPEC_ROWS = [
     [1218, "OSC 4 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1219, "OSC 4 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1222, "OSC 4 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1223, "OSC 4 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1223, "OSC 4 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1224, "OSC 4 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1225, "OSC 4 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1226, "OSC 4 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -795,9 +804,11 @@ const OSC_SPEC_ROWS = [
     [1231, "OSC 4 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1232, "OSC 4 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1233, "OSC 4 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1234, "OSC 4 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1234, "OSC 4 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1235, "OSC 4 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1236, "OSC 4 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1238, "OSC 4 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1239, "OSC 4 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1256, "OSC 5 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -828,7 +839,7 @@ const OSC_SPEC_ROWS = [
     [1282, "OSC 5 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1283, "OSC 5 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1286, "OSC 5 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1287, "OSC 5 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1287, "OSC 5 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1288, "OSC 5 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1289, "OSC 5 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1290, "OSC 5 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -839,9 +850,11 @@ const OSC_SPEC_ROWS = [
     [1295, "OSC 5 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1296, "OSC 5 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1297, "OSC 5 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1298, "OSC 5 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1298, "OSC 5 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1299, "OSC 5 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1300, "OSC 5 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1302, "OSC 5 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1303, "OSC 5 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1320, "OSC 6 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -872,7 +885,7 @@ const OSC_SPEC_ROWS = [
     [1346, "OSC 6 Plaits Timbre", 0, 1, 0.5, "", "sld", null, 1, "Timbre", null],
     [1347, "OSC 6 Plaits Morph", 0, 1, 0.5, "", "sld", null, 1, "Morph", null],
     [1350, "OSC 6 Filter On", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Filter", null],
-    [1351, "OSC 6 Filter Type", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Type", FILTER_GROUPS],
+    [1351, "OSC 6 Filter Type", 0, 30, 0, "", "sel", OSC_FILTER_TYPES, 1, "Type", OSC_FILTER_GROUPS],
     [1352, "OSC 6 Filter Cutoff", 20, 18000, 8000, "Hz", "sld", null, 1, "Cutoff", null],
     [1353, "OSC 6 Filter Resonance", 0, 1, 0.25, "", "sld", null, 1, "Resonance", null],
     [1354, "OSC 6 Filter Drive", 0, 1, 0, "", "sld", null, 1, "Drive", null],
@@ -883,9 +896,11 @@ const OSC_SPEC_ROWS = [
     [1359, "OSC 6 Filter EG Decay", 10, 5000, 300, "ms", "sld", null, 1, "Decay", null],
     [1360, "OSC 6 Filter EG Sustain", 0, 1, 0, "", "sld", null, 1, "Sustain", null],
     [1361, "OSC 6 Filter EG Release", 5, 5000, 250, "ms", "sld", null, 1, "Release", null],
-    [1362, "OSC 6 Distortion Type", 0, 6, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"], 1, "Type", null],
+    [1362, "OSC 6 Distortion Type", 0, 7, 0, "", "sel", ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"], 1, "Type", null],
     [1363, "OSC 6 Distortion Drive", 0, 1, 0.3, "", "sld", null, 1, "Drive", null],
     [1364, "OSC 6 Distortion Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1366, "OSC 6 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1367, "OSC 6 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1365, "OSC 6 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1400, "FM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
     [1401, "FM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
@@ -1422,8 +1437,8 @@ class EisenpulsPatchView extends HTMLElement {
         this._smpTimer = null;
         this._fxTypes = new Array(30).fill(0);   // effect type held by each rack slot
         this._page = "o0";
-        this._mem = { wt: new Array(OSC_N).fill(null), sm: new Array(OSC_N).fill(null) };
-        this._memTimer = { wt: new Array(OSC_N).fill(null), sm: new Array(OSC_N).fill(null) };
+        this._mem = { wt: new Array(OSC_N).fill(null), sm: new Array(OSC_N).fill(null), ft: new Array(OSC_N).fill(null), sh: new Array(OSC_N).fill(null) };
+        this._memTimer = { wt: new Array(OSC_N).fill(null), sm: new Array(OSC_N).fill(null), ft: new Array(OSC_N).fill(null), sh: new Array(OSC_N).fill(null) };
         this._memStart = [];
         this._oscReady = false;
         this._lfoPts = new Array(10).fill(null);
@@ -1817,7 +1832,10 @@ class EisenpulsPatchView extends HTMLElement {
     // ======================================================================
     memKey (kind, o) { return "njo.mem.osc" + o + "." + kind; }
 
-    memEndpoint (kind) { return kind === "wt" ? "wtBankLoad" : "smpBankLoad"; }
+    memEndpoint (kind) { return kind === "wt" ? "wtBankLoad" : (kind === "ft" || kind === "sh") ? "tblLoad" : "smpBankLoad"; }
+
+    // DSP bank of a memory: wavetable / sample = slot, Wavefilter table = slot, Wavedistortion table = 6 + slot
+    memBank (kind, o) { return kind === "sh" ? OSC_N + o : o; }
 
     oscVal (o, key) {
         const id = oscId(o, key);
@@ -1833,10 +1851,10 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     loadMemStore () {
-        for (const kind of ["wt", "sm"]) {
+        for (const kind of ["wt", "sm", "ft", "sh"]) {
             for (let o = 0; o < OSC_N; o++) {
                 if (this._mem[kind][o]) continue;   // loaded by the user since startup: newer than the saved copy
-                try { const m = decodeMem(this.kvGet(this.memKey(kind, o)), kind === "wt" ? "TABLE" : "SAMPLE"); if (m) this._mem[kind][o] = m; } catch (_) {}
+                try { const m = decodeMem(this.kvGet(this.memKey(kind, o)), kind === "sm" ? "SAMPLE" : "TABLE"); if (m) this._mem[kind][o] = m; } catch (_) {}
             }
         }
     }
@@ -1864,10 +1882,10 @@ class EisenpulsPatchView extends HTMLElement {
                 const count = Math.min(CHUNK, total - offset);
                 const data = new Array(CHUNK).fill(0);
                 for (let i = 0; i < count; i++) data[i] = s.data[offset + i];
-                this.pc.sendEventOrValue(ep, { bank: o, offset, count, total, data });
+                this.pc.sendEventOrValue(ep, { bank: this.memBank(kind, o), offset, count, total, data });
                 offset += count;
             }
-            if (this.srcKind(o) === kind) this.setDz(o, "LOADING " + Math.round(offset / total * 100) + "%", "busy");
+            if (this.srcKind(o) === kind && (kind === "wt" || kind === "sm")) this.setDz(o, "LOADING " + Math.round(offset / total * 100) + "%", "busy");
             if (offset >= total) { this.memCancel(kind, o); if (done) done(); }
         }, 6);
     }
@@ -1875,7 +1893,7 @@ class EisenpulsPatchView extends HTMLElement {
     // UI -> DSP: stream every saved memory back, staggered
     startMemRestore () {
         let n = 0;
-        for (const kind of ["wt", "sm"]) {
+        for (const kind of ["wt", "sm", "ft", "sh"]) {
             for (let o = 0; o < OSC_N; o++) {
                 const s = this._mem[kind][o];
                 if (!s) continue;
@@ -1938,6 +1956,110 @@ class EisenpulsPatchView extends HTMLElement {
         this.setMgr("OSC " + (o + 1) + " CLEARED");
     }
 
+    // ---------- Wavefilter / Wavedistortion tables (512 points per frame, up to 64 frames) ----------
+    // built-in tables (mirror of tblDefault in the DSP): kind "ft" gain = (value + 1) / 2 over 8 octaves around the cutoff, "sh" = transfer curve
+    tblDefault (kind, f, i) {
+        const u = i / 511;
+        if (kind === "ft") {
+            const o = (u - 0.5) * 8, sig = z => 1 / (1 + Math.exp(z)), ga = (c) => Math.exp(-(o - c) * (o - c) * 2);
+            const g = [sig(o * 2), sig(o * 6), Math.exp(-o * o * 0.5), Math.exp(-o * o * 3), sig(-o * 6), sig(-o * 2), 1 - Math.exp(-o * o * 3),
+                Math.min(1, sig(o * 3) + 0.9 * Math.exp(-o * o * 8)), 0.5 + 0.5 * Math.cos(o * 6.2831853), 0.5 + 0.5 * Math.cos(o * 12.566371),
+                Math.min(1, ga(-1.6) + ga(-0.3)), Math.min(1, ga(-1.9) + ga(0.7)), Math.min(1, ga(-2.4) + ga(1)), Math.min(1, ga(-1.5) + ga(-0.6)),
+                Math.min(1, ga(-2.2) + ga(-0.9)), sig(-o * 0.8)][f];
+            return g * 2 - 1;
+        }
+        const x = u * 2 - 1, PI = Math.PI, ax = Math.abs(x);
+        const v = [x, Math.tanh(2 * x) / 0.9640276, Math.tanh(5 * x) / 0.9999092, Math.max(-1, Math.min(1, 2 * x)), Math.sin(x * PI / 2), Math.sin(x * 1.5 * PI), Math.sin(x * 2.5 * PI),
+            Math.sin(x * 4.5 * PI), 4 * x * x * x - 3 * x, 16 * Math.pow(x, 5) - 20 * x * x * x + 5 * x, 2 * ax - 1, (Math.min(Math.floor((x + 1) * 2), 3) + 0.5) * 0.5 - 1,
+            (Math.min(Math.floor((x + 1) * 4), 7) + 0.5) * 0.25 - 1, (Math.tanh(2 * x + 0.6) - 0.5370496) / 0.4524, Math.sin(x * 2 * PI), Math.sin(x * 4 * PI)][f];
+        return Math.max(-1, Math.min(1, v));
+    }
+
+    // frame at position pos (0..1) of the table of kind / slot o as 512 values (loaded file or built-in)
+    tblFrame (kind, o, pos) {
+        const s = this._mem[kind][o];
+        const nF = s ? Math.max(1, Math.min(TBL_MAX_FR, Math.floor(s.total / TBL_FL))) : 16;
+        const fp = Math.max(0, Math.min(1, pos)) * (nF - 1), f0 = Math.floor(fp), f1 = Math.min(f0 + 1, nF - 1), ff = fp - f0;
+        const at = (f, i) => s ? Math.max(-1, Math.min(1, s.data[f * TBL_FL + i] || 0)) : this.tblDefault(kind, f, i);
+        const out = new Float32Array(TBL_FL);
+        for (let i = 0; i < TBL_FL; i++) { const a = at(f0, i); out[i] = a + (at(f1, i) - a) * ff; }
+        return out;
+    }
+
+    // a wavetable file cut into frames (Vital rule: 4096 / 2048 samples; shorter files are one frame), every frame reduced to 512 points
+    tblFromMono (mono) {
+        const fl = mono.length % 4096 === 0 ? 4096 : (mono.length >= 2048 ? 2048 : mono.length);
+        const nF = Math.max(1, Math.floor(mono.length / fl)), take = Math.min(nF, TBL_MAX_FR);
+        const out = new Float32Array(take * TBL_FL);
+        for (let t = 0; t < take; t++) {
+            const f = take === 1 ? 0 : Math.round(t * (nF - 1) / (take - 1)), b = f * fl;
+            for (let i = 0; i < TBL_FL; i++) {
+                const x = i * (fl - 1) / (TBL_FL - 1), i0 = Math.floor(x), i1 = Math.min(i0 + 1, fl - 1), xf = x - i0;
+                out[t * TBL_FL + i] = mono[b + i0] + (mono[b + i1] - mono[b + i0]) * xf;
+            }
+        }
+        return out;
+    }
+
+    setTblDz (kind, o, text, cls) {
+        const dz = this.querySelector('.dz-tbl[data-o="' + o + '"][data-k="' + kind + '"]');
+        if (!dz) return;
+        dz.querySelector(".dz-txt").textContent = text;
+        dz.classList.toggle("loaded", cls === "loaded");
+        dz.classList.toggle("busy", cls === "busy");
+        dz.classList.toggle("err", cls === "err");
+    }
+
+    async loadTbl (kind, o, file) {
+        this.memCancel(kind, o);
+        this.setTblDz(kind, o, "DECODING...", "busy");
+        try {
+            const dec = await this.decodeFile(file, "wt");
+            const data = this.tblFromMono(dec.mono);
+            const name = (dec.name || file.name || "TABLE").replace(/\.[^.]+$/, "").slice(0, 14).toUpperCase();
+            const m = { name, total: data.length, data };
+            this.memStream(kind, o, m, () => {
+                this._mem[kind][o] = m;
+                this.memPersist(kind, o);
+                this.updateOscUi(o);
+                this.setMgr("LOADED " + name);
+            });
+        } catch (err) {
+            this.memCancel(kind, o);
+            this.setTblDz(kind, o, "UNSUPPORTED FILE", "err");
+        }
+    }
+
+    clearTbl (kind, o) {
+        this.memCancel(kind, o);
+        this.pc.sendEventOrValue("tblLoad", { bank: this.memBank(kind, o), offset: 0, count: 0, total: 0, data: new Array(CHUNK).fill(0) });
+        this._mem[kind][o] = null;
+        this.memPersist(kind, o);
+        this.updateOscUi(o);
+    }
+
+    buildTblZones () {
+        for (let o = 0; o < OSC_N; o++) for (const kind of ["ft", "sh"]) {
+            const dz = this.querySelector('.dz-tbl[data-o="' + o + '"][data-k="' + kind + '"]');
+            if (!dz) continue;
+            dz.addEventListener("dragover", ev => { ev.preventDefault(); dz.classList.add("over"); });
+            dz.addEventListener("dragleave", () => dz.classList.remove("over"));
+            dz.addEventListener("drop", ev => {
+                ev.preventDefault(); dz.classList.remove("over");
+                const f = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
+                if (f) this.loadTbl(kind, o, f);
+            });
+            dz.addEventListener("click", () => {
+                const inp = document.createElement("input");
+                inp.type = "file"; inp.accept = ".vitaltable,audio/*,.wav,.w64,.rf64,.aif,.aiff,.aifc,.au,.caf,.flac,.mp3,.ogg,.opus,.m4a,.aac";
+                inp.onchange = () => { if (inp.files && inp.files[0]) this.loadTbl(kind, o, inp.files[0]); };
+                inp.click();
+            });
+            const clr = dz.querySelector(".dz-clr");
+            if (clr) clr.addEventListener("click", ev => { ev.stopPropagation(); this.clearTbl(kind, o); });
+        }
+    }
+
     buildOscPages () {
         for (let o = 0; o < OSC_N; o++) {
             const dz = this.querySelector('.dz-osc[data-o="' + o + '"]');
@@ -1961,6 +2083,7 @@ class EisenpulsPatchView extends HTMLElement {
             if (lib) lib.addEventListener("click", () => { lib.dataset.slot = this.srcKind(o) + o; });
             this.updateOscUi(o);
         }
+        this.buildTblZones();
         this._oscReady = true;
     }
 
@@ -1980,6 +2103,15 @@ class EisenpulsPatchView extends HTMLElement {
             const lbl = this.querySelector(".n" + oscId(o, key) + " .lbl");
             if (lbl) lbl.textContent = PLAITS_PARAMS[eng][i];
         });
+        // Wavefilter / Wavedistortion: table drop zone and position knob are live only while that type is selected
+        for (const [kind, tkey, pkey, tv] of [["ft", "ftype", "wfpos", 30], ["sh", "dtype", "wdpos", 7]]) {
+            const on = Math.round(this.oscVal(o, tkey)) === tv, m = this._mem[kind][o];
+            const pc = this.querySelector(".n" + oscId(o, pkey));
+            if (pc) pc.classList.toggle("dim", !on);
+            const dz = this.querySelector('.dz-tbl[data-o="' + o + '"][data-k="' + kind + '"]');
+            if (dz) dz.style.display = on ? "" : "none";
+            if (!this._memTimer[kind][o]) this.setTblDz(kind, o, m ? m.name : (kind === "ft" ? "DROP TABLE" : "DROP SHAPER TABLE"), m ? "loaded" : "");
+        }
         this.drawOsc(o);
         this.drawOscFlt(o);
     }
@@ -1990,6 +2122,8 @@ class EisenpulsPatchView extends HTMLElement {
         if (k === OSC_K.wpos || k === OSC_K.wsize || k === OSC_K.w1m || k === OSC_K.w1a || k === OSC_K.w2m || k === OSC_K.w2a
             || k === OSC_K.sstart || k === OSC_K.sloop || k === OSC_K.root) this.drawOsc(o);
         if (k >= OSC_K.fon && k <= OSC_K.fkey) this.drawOscFlt(o);
+        if (k === OSC_K.ftype || k === OSC_K.dtype) this.updateOscUi(o);
+        if (k === OSC_K.wfpos) this.drawOscFlt(o);
     }
 
     // interpolated single cycle of slot o at the current position / frame size
@@ -2135,6 +2269,15 @@ class EisenpulsPatchView extends HTMLElement {
     oscFltCurve (o, N, sweep) {
         const ft = Math.round(this.oscVal(o, "ftype")), fc = this.oscVal(o, "fcut"), res = this.oscVal(o, "fres");
         const out = [];
+        if (ft === 30) {   // Wavefilter: the table frame along 8 octaves around the cutoff
+            const fr = this.tblFrame("ft", o, this.oscVal(o, "wfpos"));
+            for (let i = 0; i < N; i++) {
+                const u = Math.max(0, Math.min(1, 0.5 + Math.log2(20 * Math.pow(1000, i / (N - 1)) / fc) / 8));
+                const x = u * 511, i0 = Math.floor(x), i1 = Math.min(i0 + 1, 511);
+                out.push([((fr[i0] + (fr[i1] - fr[i0]) * (x - i0)) + 1) / 2, 0]);
+            }
+            return out;
+        }
         for (let i = 0; i < N; i++) out.push(filterH(ft, fc, res, 20 * Math.pow(1000, i / (N - 1)), sweep));
         return out;
     }
@@ -2176,9 +2319,11 @@ class EisenpulsPatchView extends HTMLElement {
         const flt = `<section class="card o-flt"><h2>Filter</h2>
             <canvas class="flt-canvas" data-o="${o}" width="600" height="200"></canvas>
             <div class="cgrid o-g3">${["fon", "ftype"].map(c).join("")}${["fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel"].map(c).join("")}</div>
+            <div class="o-tbl"><div class="dz dz-tbl" data-o="${o}" data-k="ft" title="Wavefilter table: a wavetable file whose frames are filter curves"><span class="dz-txt"></span><span class="dz-clr" title="Back to the built-in table">&times;</span></div>${c("wfpos")}</div>
           </section>`;
         const out = `<section class="card o-out"><h2>Distortion / Out</h2>
             <div class="cgrid o-g2">${["dtype", "dpos", "ddrv", "dmix"].map(c).join("")}</div>
+            <div class="o-tbl"><div class="dz dz-tbl" data-o="${o}" data-k="sh" title="Wavedistortion table: a wavetable file whose frames are transfer curves"><span class="dz-txt"></span><span class="dz-clr" title="Back to the built-in table">&times;</span></div>${c("wdpos")}</div>
             <h2 class="o-h2">Output</h2>
             <div class="cgrid o-g2">${["level", "pan", "out"].map(c).join("")}</div>
           </section>`;
@@ -3540,6 +3685,7 @@ class EisenpulsPatchView extends HTMLElement {
   /* oscillator slot pages */
   .page[data-src] { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
   .o-src { grid-column: 1 / span 4; } .o-tune { grid-column: 5 / span 2; } .o-flt { grid-column: 7 / span 4; } .o-out { grid-column: 11 / span 2; }
+  .o-tbl { display: flex; flex-direction: column; gap: calc(var(--u) * 4); margin-top: calc(var(--u) * 4); } .o-tbl .dz { margin: 0; } .control.dim { opacity: 0.45; }
   .o-g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .o-g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .o-g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .card .cgrid { flex: 1 1 auto; align-content: space-evenly; align-items: center; row-gap: calc(var(--u) * 3); }
   .o-src .cgrid, .o-flt .cgrid, .o-tune .cgrid { margin-top: calc(var(--u) * 4); }

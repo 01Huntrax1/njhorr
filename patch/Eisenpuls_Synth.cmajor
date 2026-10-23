@@ -9,6 +9,7 @@ processor Eisenpuls_Synth
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
     input event LfoShapeChunk lfoShapeLoad;
     input event BankChunk wtBankLoad;
+    input event BankChunk tblLoad;       // Wavefilter / Wavedistortion tables: bank 0..5 filter table of OSC 1..6, 6..11 shaper table
     input event BankChunk smpBankLoad;
 
     // Dedicated loader for the synth sample oscillator (loads into the selected Synth Sample Memory)
@@ -53,7 +54,7 @@ processor Eisenpuls_Synth
     input event float param1026 [[ name: "OSC 1 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1027 [[ name: "OSC 1 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1030 [[ name: "OSC 1 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1031 [[ name: "OSC 1 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1031 [[ name: "OSC 1 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1032 [[ name: "OSC 1 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1033 [[ name: "OSC 1 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1034 [[ name: "OSC 1 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -64,10 +65,12 @@ processor Eisenpuls_Synth
     input event float param1039 [[ name: "OSC 1 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1040 [[ name: "OSC 1 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1041 [[ name: "OSC 1 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1042 [[ name: "OSC 1 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1042 [[ name: "OSC 1 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1043 [[ name: "OSC 1 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1044 [[ name: "OSC 1 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1045 [[ name: "OSC 1 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1046 [[ name: "OSC 1 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1047 [[ name: "OSC 1 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1064 [[ name: "OSC 2 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1065 [[ name: "OSC 2 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1066 [[ name: "OSC 2 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -97,7 +100,7 @@ processor Eisenpuls_Synth
     input event float param1090 [[ name: "OSC 2 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1091 [[ name: "OSC 2 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1094 [[ name: "OSC 2 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1095 [[ name: "OSC 2 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1095 [[ name: "OSC 2 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1096 [[ name: "OSC 2 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1097 [[ name: "OSC 2 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1098 [[ name: "OSC 2 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -108,10 +111,12 @@ processor Eisenpuls_Synth
     input event float param1103 [[ name: "OSC 2 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1104 [[ name: "OSC 2 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1105 [[ name: "OSC 2 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1106 [[ name: "OSC 2 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1106 [[ name: "OSC 2 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1107 [[ name: "OSC 2 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1108 [[ name: "OSC 2 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1109 [[ name: "OSC 2 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1110 [[ name: "OSC 2 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1111 [[ name: "OSC 2 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1128 [[ name: "OSC 3 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1129 [[ name: "OSC 3 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1130 [[ name: "OSC 3 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -141,7 +146,7 @@ processor Eisenpuls_Synth
     input event float param1154 [[ name: "OSC 3 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1155 [[ name: "OSC 3 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1158 [[ name: "OSC 3 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1159 [[ name: "OSC 3 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1159 [[ name: "OSC 3 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1160 [[ name: "OSC 3 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1161 [[ name: "OSC 3 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1162 [[ name: "OSC 3 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -152,10 +157,12 @@ processor Eisenpuls_Synth
     input event float param1167 [[ name: "OSC 3 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1168 [[ name: "OSC 3 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1169 [[ name: "OSC 3 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1170 [[ name: "OSC 3 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1170 [[ name: "OSC 3 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1171 [[ name: "OSC 3 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1172 [[ name: "OSC 3 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1173 [[ name: "OSC 3 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1174 [[ name: "OSC 3 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1175 [[ name: "OSC 3 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1192 [[ name: "OSC 4 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1193 [[ name: "OSC 4 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1194 [[ name: "OSC 4 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -185,7 +192,7 @@ processor Eisenpuls_Synth
     input event float param1218 [[ name: "OSC 4 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1219 [[ name: "OSC 4 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1222 [[ name: "OSC 4 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1223 [[ name: "OSC 4 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1223 [[ name: "OSC 4 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1224 [[ name: "OSC 4 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1225 [[ name: "OSC 4 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1226 [[ name: "OSC 4 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -196,10 +203,12 @@ processor Eisenpuls_Synth
     input event float param1231 [[ name: "OSC 4 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1232 [[ name: "OSC 4 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1233 [[ name: "OSC 4 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1234 [[ name: "OSC 4 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1234 [[ name: "OSC 4 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1235 [[ name: "OSC 4 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1236 [[ name: "OSC 4 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1237 [[ name: "OSC 4 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1238 [[ name: "OSC 4 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1239 [[ name: "OSC 4 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1256 [[ name: "OSC 5 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1257 [[ name: "OSC 5 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1258 [[ name: "OSC 5 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -229,7 +238,7 @@ processor Eisenpuls_Synth
     input event float param1282 [[ name: "OSC 5 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1283 [[ name: "OSC 5 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1286 [[ name: "OSC 5 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1287 [[ name: "OSC 5 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1287 [[ name: "OSC 5 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1288 [[ name: "OSC 5 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1289 [[ name: "OSC 5 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1290 [[ name: "OSC 5 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -240,10 +249,12 @@ processor Eisenpuls_Synth
     input event float param1295 [[ name: "OSC 5 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1296 [[ name: "OSC 5 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1297 [[ name: "OSC 5 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1298 [[ name: "OSC 5 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1298 [[ name: "OSC 5 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1299 [[ name: "OSC 5 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1300 [[ name: "OSC 5 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1301 [[ name: "OSC 5 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1302 [[ name: "OSC 5 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1303 [[ name: "OSC 5 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1320 [[ name: "OSC 6 Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param1321 [[ name: "OSC 6 Level", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1322 [[ name: "OSC 6 Pan", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -273,7 +284,7 @@ processor Eisenpuls_Synth
     input event float param1346 [[ name: "OSC 6 Plaits Timbre", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1347 [[ name: "OSC 6 Plaits Morph", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1350 [[ name: "OSC 6 Filter On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
-    input event float param1351 [[ name: "OSC 6 Filter Type", min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
+    input event float param1351 [[ name: "OSC 6 Filter Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];
     input event float param1352 [[ name: "OSC 6 Filter Cutoff", min: 20.0, max: 18000.0, init: 8000.0, unit: "Hz" ]];
     input event float param1353 [[ name: "OSC 6 Filter Resonance", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1354 [[ name: "OSC 6 Filter Drive", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -284,10 +295,12 @@ processor Eisenpuls_Synth
     input event float param1359 [[ name: "OSC 6 Filter EG Decay", min: 10.0, max: 5000.0, init: 300.0, unit: "ms" ]];
     input event float param1360 [[ name: "OSC 6 Filter EG Sustain", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1361 [[ name: "OSC 6 Filter EG Release", min: 5.0, max: 5000.0, init: 250.0, unit: "ms" ]];
-    input event float param1362 [[ name: "OSC 6 Distortion Type", min: 0.0, max: 6.0, init: 0.0, step: 1.0 ]];
+    input event float param1362 [[ name: "OSC 6 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1363 [[ name: "OSC 6 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1364 [[ name: "OSC 6 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1365 [[ name: "OSC 6 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1366 [[ name: "OSC 6 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1367 [[ name: "OSC 6 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1400 [[ name: "FM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1440 [[ name: "PM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1401 [[ name: "FM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
@@ -526,64 +539,64 @@ processor Eisenpuls_Synth
     //         21-24 WT1 Pos/Pitch/Level/Pan, 25-28 WT2 Pos/Pitch/Level/Pan, 29-32 WT3 Pos/Pitch/Level/Pan,
     //         33/34 WT1 Warp1/Warp2 Amount, 35/36 WT2 Warp1/Warp2 Amount, 37/38 WT3 Warp1/Warp2 Amount, 39 WT1 Detune, 40 WT2 Detune, 41 WT3 Detune, 42 Filter2 Cutoff, 43 Filter2 Resonance, 44 Filter2 Drive, 45 Filter2 Mix
     input event float param307 [[ name: "Mod Slot 1 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param308 [[ name: "Mod Slot 1 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param308 [[ name: "Mod Slot 1 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param309 [[ name: "Mod Slot 1 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param310 [[ name: "Mod Slot 2 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param311 [[ name: "Mod Slot 2 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param311 [[ name: "Mod Slot 2 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param312 [[ name: "Mod Slot 2 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param313 [[ name: "Mod Slot 3 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param314 [[ name: "Mod Slot 3 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param314 [[ name: "Mod Slot 3 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param315 [[ name: "Mod Slot 3 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param316 [[ name: "Mod Slot 4 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param317 [[ name: "Mod Slot 4 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param317 [[ name: "Mod Slot 4 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param318 [[ name: "Mod Slot 4 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param319 [[ name: "Mod Slot 5 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param320 [[ name: "Mod Slot 5 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param320 [[ name: "Mod Slot 5 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param321 [[ name: "Mod Slot 5 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param322 [[ name: "Mod Slot 6 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param323 [[ name: "Mod Slot 6 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param323 [[ name: "Mod Slot 6 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param324 [[ name: "Mod Slot 6 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param325 [[ name: "Mod Slot 7 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param326 [[ name: "Mod Slot 7 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param326 [[ name: "Mod Slot 7 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param327 [[ name: "Mod Slot 7 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param328 [[ name: "Mod Slot 8 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param329 [[ name: "Mod Slot 8 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param329 [[ name: "Mod Slot 8 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param330 [[ name: "Mod Slot 8 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param331 [[ name: "Mod Slot 9 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param332 [[ name: "Mod Slot 9 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param332 [[ name: "Mod Slot 9 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param333 [[ name: "Mod Slot 9 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param334 [[ name: "Mod Slot 10 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param335 [[ name: "Mod Slot 10 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param335 [[ name: "Mod Slot 10 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param336 [[ name: "Mod Slot 10 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param472 [[ name: "Mod Slot 11 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param473 [[ name: "Mod Slot 11 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param473 [[ name: "Mod Slot 11 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param474 [[ name: "Mod Slot 11 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param475 [[ name: "Mod Slot 12 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param476 [[ name: "Mod Slot 12 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param476 [[ name: "Mod Slot 12 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param477 [[ name: "Mod Slot 12 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param478 [[ name: "Mod Slot 13 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param479 [[ name: "Mod Slot 13 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param479 [[ name: "Mod Slot 13 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param480 [[ name: "Mod Slot 13 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param481 [[ name: "Mod Slot 14 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param482 [[ name: "Mod Slot 14 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param482 [[ name: "Mod Slot 14 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param483 [[ name: "Mod Slot 14 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param484 [[ name: "Mod Slot 15 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param485 [[ name: "Mod Slot 15 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param485 [[ name: "Mod Slot 15 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param486 [[ name: "Mod Slot 15 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param487 [[ name: "Mod Slot 16 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param488 [[ name: "Mod Slot 16 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param488 [[ name: "Mod Slot 16 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param489 [[ name: "Mod Slot 16 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param490 [[ name: "Mod Slot 17 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param491 [[ name: "Mod Slot 17 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param491 [[ name: "Mod Slot 17 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param492 [[ name: "Mod Slot 17 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param493 [[ name: "Mod Slot 18 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param494 [[ name: "Mod Slot 18 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param494 [[ name: "Mod Slot 18 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param495 [[ name: "Mod Slot 18 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param496 [[ name: "Mod Slot 19 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param497 [[ name: "Mod Slot 19 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param497 [[ name: "Mod Slot 19 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param498 [[ name: "Mod Slot 19 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param499 [[ name: "Mod Slot 20 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand)", min: 0.0, max: 23.0, init: 0.0, step: 1.0 ]];
-    input event float param500 [[ name: "Mod Slot 20 Dest (0-167, see Dest list)", min: 0.0, max: 167.0, init: 0.0, step: 1.0 ]];
+    input event float param500 [[ name: "Mod Slot 20 Dest (0-179, see Dest list)", min: 0.0, max: 179.0, init: 0.0, step: 1.0 ]];
     input event float param501 [[ name: "Mod Slot 20 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param502 [[ name: "LFO 1 Beat Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param503 [[ name: "LFO 1 Sync Division (8/1 .. 1/32T)", min: 0.0, max: 17.0, init: 8.0, step: 1.0 ]];
@@ -1156,8 +1169,8 @@ processor Eisenpuls_Synth
     int[20]     mmDstI;
     float[20]   mmAmt;
 
-    float[172]  vmod;
-    float[172]  gmod;
+    float[184]  vmod;
+    float[184]  gmod;
     bool        vmodMat;    // some mod slot targets an FM / PM / PD matrix cell (dest 60..167)
     float       lastVelV  = 0.0f;   // matrix source values of the most recent note (global destinations)
     float       lastKeyV  = 0.0f;
@@ -1215,6 +1228,8 @@ processor Eisenpuls_Synth
     event param1043 (float v) { opSet (0, 43, v); }
     event param1044 (float v) { opSet (0, 44, v); }
     event param1045 (float v) { opSet (0, 45, v); }
+    event param1046 (float v) { opSet (0, 46, v); }
+    event param1047 (float v) { opSet (0, 47, v); }
     event param1064 (float v) { opSet (1, 0, v); }
     event param1065 (float v) { opSet (1, 1, v); }
     event param1066 (float v) { opSet (1, 2, v); }
@@ -1259,6 +1274,8 @@ processor Eisenpuls_Synth
     event param1107 (float v) { opSet (1, 43, v); }
     event param1108 (float v) { opSet (1, 44, v); }
     event param1109 (float v) { opSet (1, 45, v); }
+    event param1110 (float v) { opSet (1, 46, v); }
+    event param1111 (float v) { opSet (1, 47, v); }
     event param1128 (float v) { opSet (2, 0, v); }
     event param1129 (float v) { opSet (2, 1, v); }
     event param1130 (float v) { opSet (2, 2, v); }
@@ -1303,6 +1320,8 @@ processor Eisenpuls_Synth
     event param1171 (float v) { opSet (2, 43, v); }
     event param1172 (float v) { opSet (2, 44, v); }
     event param1173 (float v) { opSet (2, 45, v); }
+    event param1174 (float v) { opSet (2, 46, v); }
+    event param1175 (float v) { opSet (2, 47, v); }
     event param1192 (float v) { opSet (3, 0, v); }
     event param1193 (float v) { opSet (3, 1, v); }
     event param1194 (float v) { opSet (3, 2, v); }
@@ -1347,6 +1366,8 @@ processor Eisenpuls_Synth
     event param1235 (float v) { opSet (3, 43, v); }
     event param1236 (float v) { opSet (3, 44, v); }
     event param1237 (float v) { opSet (3, 45, v); }
+    event param1238 (float v) { opSet (3, 46, v); }
+    event param1239 (float v) { opSet (3, 47, v); }
     event param1256 (float v) { opSet (4, 0, v); }
     event param1257 (float v) { opSet (4, 1, v); }
     event param1258 (float v) { opSet (4, 2, v); }
@@ -1391,6 +1412,8 @@ processor Eisenpuls_Synth
     event param1299 (float v) { opSet (4, 43, v); }
     event param1300 (float v) { opSet (4, 44, v); }
     event param1301 (float v) { opSet (4, 45, v); }
+    event param1302 (float v) { opSet (4, 46, v); }
+    event param1303 (float v) { opSet (4, 47, v); }
     event param1320 (float v) { opSet (5, 0, v); }
     event param1321 (float v) { opSet (5, 1, v); }
     event param1322 (float v) { opSet (5, 2, v); }
@@ -1435,6 +1458,8 @@ processor Eisenpuls_Synth
     event param1363 (float v) { opSet (5, 43, v); }
     event param1364 (float v) { opSet (5, 44, v); }
     event param1365 (float v) { opSet (5, 45, v); }
+    event param1366 (float v) { opSet (5, 46, v); }
+    event param1367 (float v) { opSet (5, 47, v); }
     event param1400 (float v) { fmSet (0, 0, v * 0.01f); }
     event param1440 (float v) { pmSet (0, 0, v * 0.01f); }
     event param1401 (float v) { fmSet (0, 1, v * 0.01f); }
@@ -1642,64 +1667,64 @@ processor Eisenpuls_Synth
 
     // Mod matrix handlers (source, destination, amount)
     event param307 (float v) { mmSrcI.at (0) = clamp (int (v + 0.5f), 0, 23); }
-    event param308 (float v) { mmDstI.at (0) = clamp (int (v + 0.5f), 0, 167); }
+    event param308 (float v) { mmDstI.at (0) = clamp (int (v + 0.5f), 0, 179); }
     event param309 (float v) { mmAmt.at (0)  = v; }
     event param310 (float v) { mmSrcI.at (1) = clamp (int (v + 0.5f), 0, 23); }
-    event param311 (float v) { mmDstI.at (1) = clamp (int (v + 0.5f), 0, 167); }
+    event param311 (float v) { mmDstI.at (1) = clamp (int (v + 0.5f), 0, 179); }
     event param312 (float v) { mmAmt.at (1)  = v; }
     event param313 (float v) { mmSrcI.at (2) = clamp (int (v + 0.5f), 0, 23); }
-    event param314 (float v) { mmDstI.at (2) = clamp (int (v + 0.5f), 0, 167); }
+    event param314 (float v) { mmDstI.at (2) = clamp (int (v + 0.5f), 0, 179); }
     event param315 (float v) { mmAmt.at (2)  = v; }
     event param316 (float v) { mmSrcI.at (3) = clamp (int (v + 0.5f), 0, 23); }
-    event param317 (float v) { mmDstI.at (3) = clamp (int (v + 0.5f), 0, 167); }
+    event param317 (float v) { mmDstI.at (3) = clamp (int (v + 0.5f), 0, 179); }
     event param318 (float v) { mmAmt.at (3)  = v; }
     event param319 (float v) { mmSrcI.at (4) = clamp (int (v + 0.5f), 0, 23); }
-    event param320 (float v) { mmDstI.at (4) = clamp (int (v + 0.5f), 0, 167); }
+    event param320 (float v) { mmDstI.at (4) = clamp (int (v + 0.5f), 0, 179); }
     event param321 (float v) { mmAmt.at (4)  = v; }
     event param322 (float v) { mmSrcI.at (5) = clamp (int (v + 0.5f), 0, 23); }
-    event param323 (float v) { mmDstI.at (5) = clamp (int (v + 0.5f), 0, 167); }
+    event param323 (float v) { mmDstI.at (5) = clamp (int (v + 0.5f), 0, 179); }
     event param324 (float v) { mmAmt.at (5)  = v; }
     event param325 (float v) { mmSrcI.at (6) = clamp (int (v + 0.5f), 0, 23); }
-    event param326 (float v) { mmDstI.at (6) = clamp (int (v + 0.5f), 0, 167); }
+    event param326 (float v) { mmDstI.at (6) = clamp (int (v + 0.5f), 0, 179); }
     event param327 (float v) { mmAmt.at (6)  = v; }
     event param328 (float v) { mmSrcI.at (7) = clamp (int (v + 0.5f), 0, 23); }
-    event param329 (float v) { mmDstI.at (7) = clamp (int (v + 0.5f), 0, 167); }
+    event param329 (float v) { mmDstI.at (7) = clamp (int (v + 0.5f), 0, 179); }
     event param330 (float v) { mmAmt.at (7)  = v; }
     event param331 (float v) { mmSrcI.at (8) = clamp (int (v + 0.5f), 0, 23); }
-    event param332 (float v) { mmDstI.at (8) = clamp (int (v + 0.5f), 0, 167); }
+    event param332 (float v) { mmDstI.at (8) = clamp (int (v + 0.5f), 0, 179); }
     event param333 (float v) { mmAmt.at (8)  = v; }
     event param334 (float v) { mmSrcI.at (9) = clamp (int (v + 0.5f), 0, 23); }
-    event param335 (float v) { mmDstI.at (9) = clamp (int (v + 0.5f), 0, 167); }
+    event param335 (float v) { mmDstI.at (9) = clamp (int (v + 0.5f), 0, 179); }
     event param336 (float v) { mmAmt.at (9)  = v; }
     event param472 (float v) { mmSrcI.at (10) = clamp (int (v + 0.5f), 0, 23); }
-    event param473 (float v) { mmDstI.at (10) = clamp (int (v + 0.5f), 0, 167); }
+    event param473 (float v) { mmDstI.at (10) = clamp (int (v + 0.5f), 0, 179); }
     event param474 (float v) { mmAmt.at (10)  = v; }
     event param475 (float v) { mmSrcI.at (11) = clamp (int (v + 0.5f), 0, 23); }
-    event param476 (float v) { mmDstI.at (11) = clamp (int (v + 0.5f), 0, 167); }
+    event param476 (float v) { mmDstI.at (11) = clamp (int (v + 0.5f), 0, 179); }
     event param477 (float v) { mmAmt.at (11)  = v; }
     event param478 (float v) { mmSrcI.at (12) = clamp (int (v + 0.5f), 0, 23); }
-    event param479 (float v) { mmDstI.at (12) = clamp (int (v + 0.5f), 0, 167); }
+    event param479 (float v) { mmDstI.at (12) = clamp (int (v + 0.5f), 0, 179); }
     event param480 (float v) { mmAmt.at (12)  = v; }
     event param481 (float v) { mmSrcI.at (13) = clamp (int (v + 0.5f), 0, 23); }
-    event param482 (float v) { mmDstI.at (13) = clamp (int (v + 0.5f), 0, 167); }
+    event param482 (float v) { mmDstI.at (13) = clamp (int (v + 0.5f), 0, 179); }
     event param483 (float v) { mmAmt.at (13)  = v; }
     event param484 (float v) { mmSrcI.at (14) = clamp (int (v + 0.5f), 0, 23); }
-    event param485 (float v) { mmDstI.at (14) = clamp (int (v + 0.5f), 0, 167); }
+    event param485 (float v) { mmDstI.at (14) = clamp (int (v + 0.5f), 0, 179); }
     event param486 (float v) { mmAmt.at (14)  = v; }
     event param487 (float v) { mmSrcI.at (15) = clamp (int (v + 0.5f), 0, 23); }
-    event param488 (float v) { mmDstI.at (15) = clamp (int (v + 0.5f), 0, 167); }
+    event param488 (float v) { mmDstI.at (15) = clamp (int (v + 0.5f), 0, 179); }
     event param489 (float v) { mmAmt.at (15)  = v; }
     event param490 (float v) { mmSrcI.at (16) = clamp (int (v + 0.5f), 0, 23); }
-    event param491 (float v) { mmDstI.at (16) = clamp (int (v + 0.5f), 0, 167); }
+    event param491 (float v) { mmDstI.at (16) = clamp (int (v + 0.5f), 0, 179); }
     event param492 (float v) { mmAmt.at (16)  = v; }
     event param493 (float v) { mmSrcI.at (17) = clamp (int (v + 0.5f), 0, 23); }
-    event param494 (float v) { mmDstI.at (17) = clamp (int (v + 0.5f), 0, 167); }
+    event param494 (float v) { mmDstI.at (17) = clamp (int (v + 0.5f), 0, 179); }
     event param495 (float v) { mmAmt.at (17)  = v; }
     event param496 (float v) { mmSrcI.at (18) = clamp (int (v + 0.5f), 0, 23); }
-    event param497 (float v) { mmDstI.at (18) = clamp (int (v + 0.5f), 0, 167); }
+    event param497 (float v) { mmDstI.at (18) = clamp (int (v + 0.5f), 0, 179); }
     event param498 (float v) { mmAmt.at (18)  = v; }
     event param499 (float v) { mmSrcI.at (19) = clamp (int (v + 0.5f), 0, 23); }
-    event param500 (float v) { mmDstI.at (19) = clamp (int (v + 0.5f), 0, 167); }
+    event param500 (float v) { mmDstI.at (19) = clamp (int (v + 0.5f), 0, 179); }
     event param501 (float v) { mmAmt.at (19)  = v; }
     event param502 (float v) { mLfoSync.at (0) = v; }
     event param503 (float v) { mLfoDiv.at (0)  = v; }
@@ -2159,6 +2184,7 @@ processor Eisenpuls_Synth
         float   modRand;      // per-note random value for the mod matrix
         float[192]  fx;       // filter states: slot * 32 + channel * 16 + stage state
         float[24576] fdl;     // comb filter delay lines: slot * 4096 + channel * 2048 + position
+        float[384]  wfs;      // Wavefilter band states: (slot * 2 + channel) * 32 + band * 2 + {ic1, ic2}
         int     fdlW;         // comb delay write position
         bool    active;
     }
@@ -2188,6 +2214,17 @@ processor Eisenpuls_Synth
         divBeats.at (15) = 0.1667f;  divBeats.at (16) = 0.125f;   divBeats.at (17) = 0.0833f;
         for (int ld = 0; ld < 10; ++ld)
             mLfoDiv.at (ld) = 8.0f;
+
+        // Wavefilter bank centres and the built-in filter / shaper tables
+        for (int wb = 0; wb < 16; ++wb)
+        {
+            float fl = 4.907f + 0.58f * float (wb);
+            wfL.at (wb) = fl;
+            wfG.at (wb) = float (tan (float64 (30.0f * float (pow (2.0f, 0.58f * float (wb)))) * pi * processor.period));
+        }
+
+        for (int tb = 0; tb < 12; ++tb)
+            tblDefault (tb);
 
         // slot defaults (the annotated parameter inits) and wavetable unison tables
         for (int io = 0; io < 6; ++io)
@@ -3596,7 +3633,7 @@ processor Eisenpuls_Synth
     // Sums the matrix for one voice into vmod[dest]
     void computeVoiceMod (int vi)
     {
-        for (int d = 0; d < 172; ++d)
+        for (int d = 0; d < 184; ++d)
             vmod.at (d) = 0.0f;
 
         bool mat = false;
@@ -3608,7 +3645,7 @@ processor Eisenpuls_Synth
             if (dd > 0 && ss > 0)
             {
                 vmod.at (dd) += srcValueVoice (ss, vi) * mmAmt.at (s);
-                if (dd >= 60) mat = true;
+                if (dd >= 60 && dd < 168) mat = true;
             }
         }
 
@@ -3618,7 +3655,7 @@ processor Eisenpuls_Synth
     // Sums the matrix for the global (post-voice) destinations into gmod[dest]
     void computeGlobalMod()
     {
-        for (int d = 0; d < 172; ++d)
+        for (int d = 0; d < 184; ++d)
             gmod.at (d) = 0.0f;
 
         for (int s = 0; s < 20; ++s)
@@ -3943,6 +3980,13 @@ processor Eisenpuls_Synth
     const float[15] wtHalfBand = (0.31697223f, -0.10214896f, 0.05726337f, -0.03690093f, 0.02496968f, -0.01710855f, 0.01163983f,
                                   -0.00776114f, 0.00501722f, -0.00311017f, 0.00182326f, -0.00098904f, 0.00047623f, -0.00018437f,
                                   0.00004118f);
+
+    // Wavefilter / Wavedistortion tables (per slot): 512 points per frame, up to 64 frames. Filter table: gain (value + 1) / 2 over
+    // 8 octaves of frequency around the cutoff; shaper table: output over the input range -1..1. Defaults are built in.
+    float[393216] tblBuf;         // bank * 32768 + frame * 512 + point; bank 0..5 filter, 6..11 shaper
+    int[12]       tblFr;
+    float[16]     wfG;            // tan() of the 16 band centres of the Wavefilter bank
+    float[16]     wfL;            // log2 of the band centres
 
     // sample memories (one per slot)
     bool[6]       smpHas;
@@ -4439,13 +4483,167 @@ processor Eisenpuls_Synth
         return out;
     }
 
-    // per-slot distortion (type 1..6 = Soft Tube Hard Fold Sine Crunch)
-    float oscDist (float x, int ty, float d, float mix)
+    // ---------------- Wavefilter / Wavedistortion tables ----------------
+    float tblGauss (float o, float c)
+    {
+        return exp (-(o - c) * (o - c) * 2.0f);
+    }
+
+    float tblSig (float z)
+    {
+        return 1.0f / (1.0f + exp (z));
+    }
+
+    void tblDefault (int b)
+    {
+        int base = b * 32768;
+        tblFr.at (b) = 16;
+
+        for (int f = 0; f < 16; ++f)
+        {
+            for (int i = 0; i < 512; ++i)
+            {
+                float u = float (i) / 511.0f;
+                float v = 0.0f;
+
+                if (b < 6)
+                {
+                    float o = (u - 0.5f) * 8.0f;
+                    float g = 1.0f;
+
+                    if (f == 0)       g = tblSig (o * 2.0f);
+                    else if (f == 1)  g = tblSig (o * 6.0f);
+                    else if (f == 2)  g = exp (-o * o * 0.5f);
+                    else if (f == 3)  g = exp (-o * o * 3.0f);
+                    else if (f == 4)  g = tblSig (-o * 6.0f);
+                    else if (f == 5)  g = tblSig (-o * 2.0f);
+                    else if (f == 6)  g = 1.0f - exp (-o * o * 3.0f);
+                    else if (f == 7)  g = min (1.0f, tblSig (o * 3.0f) + 0.9f * exp (-o * o * 8.0f));
+                    else if (f == 8)  g = 0.5f + 0.5f * cos (o * 6.2831853f);
+                    else if (f == 9)  g = 0.5f + 0.5f * cos (o * 12.566371f);
+                    else if (f == 10) g = min (1.0f, tblGauss (o, -1.6f) + tblGauss (o, -0.3f));
+                    else if (f == 11) g = min (1.0f, tblGauss (o, -1.9f) + tblGauss (o, 0.7f));
+                    else if (f == 12) g = min (1.0f, tblGauss (o, -2.4f) + tblGauss (o, 1.0f));
+                    else if (f == 13) g = min (1.0f, tblGauss (o, -1.5f) + tblGauss (o, -0.6f));
+                    else if (f == 14) g = min (1.0f, tblGauss (o, -2.2f) + tblGauss (o, -0.9f));
+                    else              g = tblSig (-o * 0.8f);
+
+                    v = g * 2.0f - 1.0f;
+                }
+                else
+                {
+                    float x = u * 2.0f - 1.0f;
+
+                    if (f == 0)       v = x;
+                    else if (f == 1)  v = float (tanh (2.0f * x)) / 0.9640276f;
+                    else if (f == 2)  v = float (tanh (5.0f * x)) / 0.9999092f;
+                    else if (f == 3)  v = clamp (2.0f * x, -1.0f, 1.0f);
+                    else if (f == 4)  v = sin (x * 1.5707963f);
+                    else if (f == 5)  v = sin (x * 4.712389f);
+                    else if (f == 6)  v = sin (x * 7.853982f);
+                    else if (f == 7)  v = sin (x * 14.137167f);
+                    else if (f == 8)  v = 4.0f * x * x * x - 3.0f * x;
+                    else if (f == 9)  v = 16.0f * x * x * x * x * x - 20.0f * x * x * x + 5.0f * x;
+                    else if (f == 10) v = 2.0f * abs (x) - 1.0f;
+                    else if (f == 11) v = (min (floor ((x + 1.0f) * 2.0f), 3.0f) + 0.5f) * 0.5f - 1.0f;
+                    else if (f == 12) v = (min (floor ((x + 1.0f) * 4.0f), 7.0f) + 0.5f) * 0.25f - 1.0f;
+                    else if (f == 13) v = clamp ((float (tanh (2.0f * x + 0.6f)) - 0.5370496f) / 0.4524f, -1.0f, 1.0f);
+                    else if (f == 14) v = sin (x * 6.2831853f);
+                    else              v = sin (x * 12.566371f);
+                }
+
+                tblBuf.at (base + f * 512 + i) = clamp (v, -1.0f, 1.0f);
+            }
+        }
+    }
+
+    event tblLoad (BankChunk c)
+    {
+        int b = clamp (c.bank, 0, 11);
+
+        if (c.total <= 0)
+        {
+            tblDefault (b);
+            return;
+        }
+
+        int cnt  = clamp (c.count, 0, 256);
+        int base = b * 32768;
+
+        for (int i = 0; i < cnt; ++i)
+        {
+            int pos = c.offset + i;
+            if (pos >= 0 && pos < 32768)
+                tblBuf.at (base + pos) = clamp (c.data.at (i), -1.0f, 1.0f);
+        }
+
+        if (c.offset + cnt >= c.total)
+            tblFr.at (b) = clamp (c.total / 512, 1, 64);
+    }
+
+    // table lookup: pos = frame position 0..1, u = position inside the frame 0..1 (bilinear)
+    float tblRead (int b, float pos, float u)
+    {
+        int   fr = tblFr.at (b);
+        float fp = clamp (pos, 0.0f, 1.0f) * float (fr - 1);
+        int   f0 = int (fp);
+        int   f1 = min (f0 + 1, fr - 1);
+        float ff = fp - float (f0);
+        float x  = clamp (u, 0.0f, 1.0f) * 511.0f;
+        int   i0 = int (x);
+        int   i1 = min (i0 + 1, 511);
+        float xf = x - float (i0);
+        int   ba = b * 32768 + f0 * 512;
+        int   bb = b * 32768 + f1 * 512;
+        float a  = tblBuf.at (ba + i0) + (tblBuf.at (ba + i1) - tblBuf.at (ba + i0)) * xf;
+        float c  = tblBuf.at (bb + i0) + (tblBuf.at (bb + i1) - tblBuf.at (bb + i0)) * xf;
+        return a + (c - a) * ff;
+    }
+
+    // Wavefilter: 16 band-pass filters (0.58 octave apart); the filter table gives the gain of every band along a frequency axis
+    // of 8 octaves centred on the cutoff, the resonance narrows the bands
+    float wfStep (int vi, int ch, int o, float x, float fc, float res, float pos)
+    {
+        float k   = 1.0f / (0.9f + res * 7.0f);
+        float lfc = float (log (fc)) * 1.442695f;
+        int   sb  = (o * 2 + ch) * 32;
+        float acc = 0.0f;
+
+        for (int b = 0; b < 16; ++b)
+        {
+            float gn = tblRead (o, pos, 0.5f + (wfL.at (b) - lfc) * 0.125f) * 0.5f + 0.5f;
+            float g  = wfG.at (b);
+            float a1 = 1.0f / (1.0f + g * (g + k));
+            float a2 = g * a1;
+            float a3 = g * a2;
+            float s1 = voices.at (vi).wfs.at (sb + b * 2);
+            float s2 = voices.at (vi).wfs.at (sb + b * 2 + 1);
+            float v3 = x - s2;
+            float v1 = a1 * s1 + a2 * v3;
+            float v2 = s2 + a2 * s1 + a3 * v3;
+            voices.at (vi).wfs.at (sb + b * 2)     = 2.0f * v1 - s1;
+            voices.at (vi).wfs.at (sb + b * 2 + 1) = 2.0f * v2 - s2;
+            acc += gn * k * v1;
+        }
+
+        return acc * WF_NORM;
+    }
+
+    const float WF_NORM = 0.93f;
+
+    // per-slot distortion (type 1..6 = Soft Tube Hard Fold Sine Crunch, 7 = Wavedistortion: shaper table)
+    float oscDist (float x, int ty, float d, float mix, int o, float pos)
     {
         if (ty <= 0 || mix <= 0.0005f)
             return x;
 
-        float y = shapeSigAlg (x, d, ty - 1);
+        float y = 0.0f;
+
+        if (ty == 7)
+            y = tblRead (6 + o, pos, clamp (x * (1.0f + d * 3.0f), -1.0f, 1.0f) * 0.5f + 0.5f);
+        else
+            y = shapeSigAlg (x, d, ty - 1);
+
         return x * (1.0f - mix) + y * mix;
     }
 
@@ -18666,6 +18864,9 @@ processor Eisenpuls_Synth
                 for (int fq = 0; fq < 192; ++fq)
                     voices.at (v).fx.at (fq) = 0.0f;
 
+                for (int wq = 0; wq < 384; ++wq)
+                    voices.at (v).wfs.at (wq) = 0.0f;
+
                 for (int fd = 0; fd < 24576; ++fd)
                     voices.at (v).fdl.at (fd) = 0.0f;
 
@@ -18932,12 +19133,13 @@ processor Eisenpuls_Synth
                     float dd   = clamp (op.at (ob + 43) + vmod.at (dB + 8) * 0.5f, 0.0f, 1.0f);
                     float dx   = op.at (ob + 44);
                     bool  dPre = op.at (ob + 45) > 0.5f;
+                    float dwp  = clamp (op.at (ob + 47) + vmod.at (169 + 2 * o) * 0.5f, 0.0f, 1.0f);
 
                     // ----- distortion before the filter -----
                     if (dPre && dty > 0)
                     {
-                        sL = oscDist (sL, dty, dd, dx);
-                        sR = stereo ? oscDist (sR, dty, dd, dx) : sL;
+                        sL = oscDist (sL, dty, dd, dx, o, dwp);
+                        sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
                     }
 
                     // ----- filter -----
@@ -18962,12 +19164,26 @@ processor Eisenpuls_Synth
                         float g     = float (tan (float64 (fc) * pi * processor.period));
                         float resE  = clamp (op.at (ob + 33) + vmod.at (dB + 7) * 0.5f, 0.0f, 1.0f);
                         float k     = 2.0f - 1.96f * resE;
-                        int   ft    = clamp (int (op.at (ob + 31) + 0.5f), 0, 29);
+                        int   ft    = clamp (int (op.at (ob + 31) + 0.5f), 0, 30);
 
-                        float yL = filterStepX (i, 0, o, sL, g, k, resE, fc, ft);
-                        float yR = yL;
-                        if (stereo)
-                            yR = filterStepX (i, 1, o, sR, g, k, resE, fc, ft);
+                        float yL = 0.0f;
+                        float yR = 0.0f;
+
+                        if (ft >= 30)
+                        {
+                            float wfp = clamp (op.at (ob + 46) + vmod.at (168 + 2 * o) * 0.5f, 0.0f, 1.0f);
+                            yL = wfStep (i, 0, o, sL, fc, resE, wfp);
+                            yR = yL;
+                            if (stereo)
+                                yR = wfStep (i, 1, o, sR, fc, resE, wfp);
+                        }
+                        else
+                        {
+                            yL = filterStepX (i, 0, o, sL, g, k, resE, fc, ft);
+                            yR = yL;
+                            if (stereo)
+                                yR = filterStepX (i, 1, o, sR, g, k, resE, fc, ft);
+                        }
                         sL = yL;
                         sR = yR;
                     }
@@ -18975,8 +19191,8 @@ processor Eisenpuls_Synth
                     // ----- distortion after the filter -----
                     if (! dPre && dty > 0)
                     {
-                        sL = oscDist (sL, dty, dd, dx);
-                        sR = stereo ? oscDist (sR, dty, dd, dx) : sL;
+                        sL = oscDist (sL, dty, dd, dx, o, dwp);
+                        sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
                     }
 
                     // the matrix modulators are the processed slot outputs (after filter and distortion)

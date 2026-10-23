@@ -65,6 +65,23 @@ int main (int argc, char** argv)
         CHECK (mem.get (SoundMemory::Wavetable, 0) == nullptr);
         CHECK (be.stored.count ("njo.mem.osc0.wt") == 0);
         CHECK (be.events.back().endpoint == "wtBankLoad" && (int) be.events.back().value["count"] == 0);
+        // Wavefilter / Wavedistortion tables: a wavetable file cut into 512 point frames, own banks (filter = slot, shaper = 6 + slot)
+        {
+            be.events.clear();
+            bool ok = false;
+            mem.load (SoundMemory::FilterTable, 3, audio.getChildFile ("t.wav"), [&] (bool o, const juce::String&) { ok = o; });
+            auto* ft = mem.get (SoundMemory::FilterTable, 3);
+            CHECK (ok && ft && ft->data.size() >= 512 && ft->data.size() % 512 == 0 && ft->data.size() <= 64 * 512);
+            mem.load (SoundMemory::ShaperTable, 3, audio.getChildFile ("t.wav"), {});
+            pump (200);
+            bool b3 = false, b9 = false;
+            for (auto& e : be.events) if (e.endpoint == "tblLoad") { int b = (int) e.value["bank"]; b3 |= b == 3; b9 |= b == 9; }
+            CHECK (b3 && b9);
+            CHECK (be.stored.count ("njo.mem.osc3.ft") == 1 && be.stored.count ("njo.mem.osc3.sh") == 1);
+            mem.clear (SoundMemory::FilterTable, 3);
+            CHECK (mem.get (SoundMemory::FilterTable, 3) == nullptr && be.stored.count ("njo.mem.osc3.ft") == 0);
+            CHECK (be.events.back().endpoint == "tblLoad" && (int) be.events.back().value["total"] == 0);
+        }
         // set() with decoded data
         std::vector<float> d (2048 * 3); for (size_t i = 0; i < d.size(); ++i) d[i] = std::sin (i * 0.05f) * 0.9f;
         mem.set (SoundMemory::Wavetable, 2, "MYTABLE", "lib:1", d);

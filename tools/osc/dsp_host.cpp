@@ -7,6 +7,7 @@
 // script lines:   p <paramNumber> <value>   set parameter N (event)
 //                 shape <lfo 0-9> const <v> | shape <lfo> ramp   load a 256-point LFO shape
 //                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, saw2k, morph2k, big, clear)
+//                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
 //                 on <note> <velocity 0-127>
 //                 off <note>
@@ -104,6 +105,36 @@ struct Host
                 d.push_back (kind == "saw" ? (float) (0.9 * (2 * ph - 1)) : kind == "noise" ? (float) ((rng >> 8) / 8388608.0 - 1.0) * 0.9f : (float) (0.9 * sin (tp * ph)));
             }
         }
+        sendBank (wt, slot, d);
+    }
+
+    void table (int bank, const std::string& kind)
+    {
+        std::vector<float> d;
+        if (kind != "clear")
+            for (int i = 0; i < 512; ++i)
+                d.push_back (kind == "ones" ? 1.0f : kind == "zeros" ? 0.0f : (float) (i / 511.0 * 2.0 - 1.0));
+        sendTable (bank, d);
+    }
+
+    void sendTable (int bank, const std::vector<float>& d)
+    {
+        int total = (int) d.size();
+        for (int off = 0; off == 0 || off < total; off += 256)
+        {
+            Eisenpuls_Synth::_Eisenpuls_Synth_BankChunk c {};
+            c.bank = bank; c.offset = off; c.total = total;
+            c.count = total - off < 256 ? (total - off > 0 ? total - off : 0) : 256;
+            for (int i = 0; i < c.count; ++i) c.data[i] = d[(size_t) off + i];
+            dsp.addEvent_tblLoad (c);
+            ++queued;
+            flushIfNeeded();
+            if (total == 0) break;
+        }
+    }
+
+    void sendBank (bool wt, int slot, const std::vector<float>& d)
+    {
         int total = (int) d.size();
         for (int off = 0; off == 0 || off < total; off += 256)
         {
@@ -146,6 +177,7 @@ int main (int argc, char** argv)
 
         if (cmd == "p")        { int n; float v; ls >> n >> v; h.setParam (n, v); }
         else if (cmd == "shape") { int n; std::string k; float v = 0; ls >> n >> k >> v; h.lfoShape (n, k, v); }
+        else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }

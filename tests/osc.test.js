@@ -20,7 +20,9 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("every slot has all 44 parameters", [0, 1, 2, 3, 4, 5].every(o => [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44].every(k => ctl(1000 + 64 * o + k))));
     check("36 PD amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1480 + 6 * s + d))));
     check("36 FM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1400 + 6 * s + d))));
-    check("filter has all 30 types", opts(1031).length === 30 && opts(1031 + 64 * 5).length === 30);
+    check("filter has all 30 types plus the Wavefilter", opts(1031).length === 31 && opts(1031 + 64 * 5).length === 31 && opts(1031)[30] === "Wavefilter");
+    check("distortion has 6 types plus the Wavedistortion", opts(1042).length === 8 && opts(1042)[7] === "Wavedistortion");
+    check("table position controls exist for every slot", [0,1,2,3,4,5].every(o => ctl(1046 + 64 * o) && ctl(1047 + 64 * o)));
     check("old filter / mixer / sampler controls are gone", !V.querySelector(".p-flt, .p-mix, .p-smp, .p-s2, .p-wt1") && !ctl(12) && !ctl(176) && !ctl(154));
     check("Plaits engine selector lists 24 engines", opts(1024).length === 24);
 
@@ -35,11 +37,30 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("Plaits knob labels follow the engine", V.querySelector(".n1025 .lbl").textContent === "Attack" && V.querySelector(".n1027 .lbl").textContent === "Decay", V.querySelector(".n1025 .lbl").textContent);
     ctl(1024 + 64).setValue(15, true);
     check("labels are per slot", V.querySelector(".n1089 .lbl").textContent === "Species" && V.querySelector(".n1025 .lbl").textContent === "Attack");
-    check("slot dest list covers 167", opts(308).length === 168 && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
+    check("slot dest list covers 179", opts(308).length === 180 && opts(308)[168] === "OSC 1 Wavefilter Pos" && opts(308)[179] === "OSC 6 Wavedistortion Pos" && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
     V.querySelector('.stab[data-page="fm"]').click();
     check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 108 && V.querySelectorAll(".fmx-panel").length === 3);
     V.querySelector('.stab[data-page="glob"]').click();
     check("global page opens", V.getAttribute("data-page") === "glob");
+    // Wavefilter / Wavedistortion tables
+    {
+        const mono = new Float32Array(3 * 2048); for (let f = 0; f < 3; f++) for (let i = 0; i < 2048; i++) mono[f * 2048 + i] = f / 2;
+        const t = V.tblFromMono(mono);
+        check("a 3 frame wavetable file becomes 3 frames of 512 points", t.length === 3 * 512 && Math.abs(t[512 * 2 + 100] - 1) < 1e-6 && Math.abs(t[512 + 7] - 0.5) < 1e-6);
+        check("built-in filter table 0 is a low-pass (open below the cutoff)", V.tblFrame("ft", 0, 0)[10] > 0.9 && V.tblFrame("ft", 0, 0)[500] < -0.9);
+        check("built-in shaper table 0 is the identity", Math.abs(V.tblFrame("sh", 0, 0)[255] + 0.002) < 0.01 && Math.abs(V.tblFrame("sh", 0, 0)[511] - 1) < 1e-6);
+        pc.sent.length = 0;
+        V.memStream("ft", 2, { name: "T", total: 1024, data: new Float32Array(1024) }, null); V.memStream("sh", 2, { name: "S", total: 512, data: new Float32Array(512) }, null);
+        await sleep(100);
+        const banks = pc.sent.filter(x => x.ep === "tblLoad").map(x => x.v.bank);
+        check("filter table streams to bank o, shaper table to bank 6 + o", banks.includes(2) && banks.includes(8) && pc.sent.every(x => x.ep === "tblLoad"), banks.join());
+        ctl(1031).setValue(30, true); ctl(1042).setValue(7, true);
+        V.updateOscUi(0);
+        check("table drop zones appear with the table types", V.querySelector('.dz-tbl[data-o="0"][data-k="ft"]').style.display === "" && V.querySelector('.dz-tbl[data-o="0"][data-k="sh"]').style.display === "");
+        ctl(1031).setValue(0, true); V.updateOscUi(0);
+        check("and hide again", V.querySelector('.dz-tbl[data-o="0"][data-k="ft"]').style.display === "none");
+    }
+
     console.log(failures ? failures + " FAILED" : "all passed");
     process.exit(failures ? 1 : 0);
 })();

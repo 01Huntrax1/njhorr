@@ -8,7 +8,7 @@ namespace njo
     class SoundMemory : public juce::ChangeBroadcaster
     {
     public:
-        enum Kind { Wavetable = 0, Sample = 1 };
+        enum Kind { Wavetable = 0, Sample = 1, FilterTable = 2, ShaperTable = 3 };   // the two tables: Wavefilter / Wavedistortion (512 points per frame, 64 frames max)
         struct Slot { juce::String name; juce::String libId; std::vector<float> data; };
 
         explicit SoundMemory (Ctx&);

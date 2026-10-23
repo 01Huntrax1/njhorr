@@ -327,14 +327,48 @@ namespace njo
         g.drawText (info, getLocalBounds().withTrimmedTop (pictureH + 3).withHeight (12), juce::Justification::centredLeft, true);
     }
 
+    namespace oscmodel
+    {
+        float tblDefault (bool filter, int f, int i)
+        {
+            const double u = i / 511.0, PI = juce::MathConstants<double>::pi;
+            if (filter)
+            {
+                const double o = (u - 0.5) * 8.0;
+                auto sig = [] (double z) { return 1.0 / (1.0 + std::exp (z)); };
+                auto ga = [&] (double c) { return std::exp (-(o - c) * (o - c) * 2.0); };
+                const double g[16] = { sig (o * 2), sig (o * 6), std::exp (-o * o * 0.5), std::exp (-o * o * 3), sig (-o * 6), sig (-o * 2), 1 - std::exp (-o * o * 3),
+                    std::min (1.0, sig (o * 3) + 0.9 * std::exp (-o * o * 8)), 0.5 + 0.5 * std::cos (o * 6.2831853), 0.5 + 0.5 * std::cos (o * 12.566371),
+                    std::min (1.0, ga (-1.6) + ga (-0.3)), std::min (1.0, ga (-1.9) + ga (0.7)), std::min (1.0, ga (-2.4) + ga (1.0)), std::min (1.0, ga (-1.5) + ga (-0.6)),
+                    std::min (1.0, ga (-2.2) + ga (-0.9)), sig (-o * 0.8) };
+                return (float) (g[juce::jlimit (0, 15, f)] * 2.0 - 1.0);
+            }
+            const double x = u * 2.0 - 1.0;
+            const double v[16] = { x, std::tanh (2 * x) / 0.9640276, std::tanh (5 * x) / 0.9999092, juce::jlimit (-1.0, 1.0, 2 * x), std::sin (x * PI / 2), std::sin (x * 1.5 * PI),
+                std::sin (x * 2.5 * PI), std::sin (x * 4.5 * PI), 4 * x * x * x - 3 * x, 16 * std::pow (x, 5) - 20 * x * x * x + 5 * x, 2 * std::abs (x) - 1,
+                (std::min (std::floor ((x + 1) * 2), 3.0) + 0.5) * 0.5 - 1, (std::min (std::floor ((x + 1) * 4), 7.0) + 0.5) * 0.25 - 1,
+                (std::tanh (2 * x + 0.6) - 0.5370496) / 0.4524, std::sin (x * 2 * PI), std::sin (x * 4 * PI) };
+            return (float) juce::jlimit (-1.0, 1.0, v[juce::jlimit (0, 15, f)]);
+        }
+
+        void tblFrame (const std::vector<float>* loaded, bool filter, float pos, float* out)
+        {
+            const int nF = loaded ? juce::jlimit (1, 64, (int) loaded->size() / 512) : 16;
+            const float fp = juce::jlimit (0.0f, 1.0f, pos) * (float) (nF - 1);
+            const int f0 = (int) fp, f1 = juce::jmin (f0 + 1, nF - 1); const float ff = fp - (float) f0;
+            auto at = [&] (int f, int i) { return loaded ? juce::jlimit (-1.0f, 1.0f, (*loaded)[(size_t) (f * 512 + i)]) : tblDefault (filter, f, i); };
+            for (int i = 0; i < 512; ++i) { float a = at (f0, i); out[i] = a + (at (f1, i) - a) * ff; }
+        }
+    }
+
     // =============================================================== FilterDisplay
-    FilterDisplay::FilterDisplay (Ctx& c, int osc) : ctx (c), o (osc) { ctx.addListener (this); setInterceptsMouseClicks (false, false); }
-    FilterDisplay::~FilterDisplay() { ctx.removeListener (this); }
+    FilterDisplay::FilterDisplay (Ctx& c, SoundMemory& m, int osc) : ctx (c), mem (m), o (osc) { ctx.addListener (this); mem.addChangeListener (this); setInterceptsMouseClicks (false, false); }
+    FilterDisplay::~FilterDisplay() { mem.removeChangeListener (this); ctx.removeListener (this); }
 
     void FilterDisplay::paramChanged (int num, float)
     {
         int k = num - oscId (o, 0);
-        if (k >= oscKey ("fon") && k <= oscKey ("fkey")) repaint();
+        if ((k >= oscKey ("fon") && k <= oscKey ("fkey")) || k == oscKey ("wfpos")) repaint();
     }
 
     void FilterDisplay::paint (juce::Graphics& g)
@@ -363,13 +397,26 @@ namespace njo
             const int N = 220;
             const int ft = juce::roundToInt (ctx.get (oscId (o, oscKey ("ftype"))));
             const double fc = ctx.get (oscId (o, oscKey ("fcut"))), res = ctx.get (oscId (o, oscKey ("fres")));
+            float tbl[512];
+            if (ft >= 30)
+            {
+                auto* sl = mem.get (SoundMemory::FilterTable, o);
+                oscmodel::tblFrame (sl ? &sl->data : nullptr, true, ctx.get (oscId (o, oscKey ("wfpos"))), tbl);
+            }
             auto curve = [&] (double sweep, bool fill, juce::Colour col, float lw, bool glow)
             {
                 juce::Path p;
                 for (int i = 0; i < N; ++i)
                 {
                     double f = 20.0 * std::pow (1000.0, (double) i / (N - 1));
-                    double mag = std::abs (oscmodel::filterH (ft, fc, res, f, sweep));
+                    double mag;
+                    if (ft >= 30)   // Wavefilter: the table frame along 8 octaves around the cutoff
+                    {
+                        double u = juce::jlimit (0.0, 1.0, 0.5 + std::log2 (f / juce::jmax (20.0, fc)) / 8.0), x = u * 511.0;
+                        int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511);
+                        mag = ((tbl[i0] + (tbl[i1] - tbl[i0]) * (x - i0)) + 1.0) * 0.5;
+                    }
+                    else mag = std::abs (oscmodel::filterH (ft, fc, res, f, sweep));
                     float x = W * (float) i / (N - 1), y = yOf (20.0 * std::log10 (juce::jmax (1e-5, mag)));
                     if (i == 0) p.startNewSubPath (x, y); else p.lineTo (x, y);
                 }

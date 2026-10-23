@@ -11,8 +11,36 @@ namespace njo
         constexpr double kRate = 48000.0;          // the memories are kept at this rate (the web UI used the AudioContext rate)
         constexpr int kChunksPerTick = 6, kTickMs = 6, kStaggerMs = 150;
 
-        juce::String keyFor (SoundMemory::Kind k, int o) { return "njo.mem.osc" + juce::String (o) + (k == SoundMemory::Wavetable ? ".wt" : ".sm"); }
-        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        constexpr int kTblFl = 512, kTblMaxFr = 64;   // Wavefilter / Wavedistortion tables: 512 points per frame, up to 64 frames
+        bool isTable (SoundMemory::Kind k) { return k == SoundMemory::FilterTable || k == SoundMemory::ShaperTable; }
+        juce::String keyFor (SoundMemory::Kind k, int o)
+        {
+            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh" };
+            return "njo.mem.osc" + juce::String (o) + ext[(int) k];
+        }
+        const char* endpointFor (SoundMemory::Kind k) { return isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        int bankFor (SoundMemory::Kind k, int o) { return k == SoundMemory::ShaperTable ? OSC_N + o : o; }
+
+        // a wavetable file cut into frames (4096 / 2048 samples; shorter files are one frame), every frame reduced to 512 points
+        std::vector<float> tableFromMono (const std::vector<float>& mono)
+        {
+            const int n = (int) mono.size();
+            const int fl = n % 4096 == 0 ? 4096 : (n >= 2048 ? 2048 : n);
+            const int nF = juce::jmax (1, n / fl), take = juce::jmin (nF, kTblMaxFr);
+            std::vector<float> out ((size_t) (take * kTblFl));
+            for (int t = 0; t < take; ++t)
+            {
+                int f = take == 1 ? 0 : (int) std::lround ((double) t * (nF - 1) / (take - 1));
+                const int b = f * fl;
+                for (int i = 0; i < kTblFl; ++i)
+                {
+                    double x = (double) i * (fl - 1) / (kTblFl - 1);
+                    int i0 = (int) x, i1 = juce::jmin (i0 + 1, fl - 1); float xf = (float) (x - i0);
+                    out[(size_t) (t * kTblFl + i)] = mono[(size_t) (b + i0)] + (mono[(size_t) (b + i1)] - mono[(size_t) (b + i0)]) * xf;
+                }
+            }
+            return out;
+        }
 
         juce::var encodeMem (const SoundMemory::Slot& s)
         {
@@ -234,7 +262,7 @@ namespace njo
         ~Impl() override { stopTimer(); }
 
         SoundMemory& owner; Ctx& ctx;
-        std::unique_ptr<Slot> slots[2][OSC_N];
+        std::unique_ptr<Slot> slots[4][OSC_N];
         std::vector<Stream> streams;
 
         void cancel (Kind k, int o)
@@ -256,7 +284,7 @@ namespace njo
             int count = (int) juce::jmin ((size_t) CHUNK, total - offset);
             juce::Array<juce::var> arr; arr.ensureStorageAllocated (CHUNK);
             for (int i = 0; i < CHUNK; ++i) arr.add (i < count ? (double) d[offset + (size_t) i] : 0.0);
-            ev->setProperty ("bank", o); ev->setProperty ("offset", (int) offset); ev->setProperty ("count", count);
+            ev->setProperty ("bank", bankFor (k, o)); ev->setProperty ("offset", (int) offset); ev->setProperty ("count", count);
             ev->setProperty ("total", (int) total); ev->setProperty ("data", juce::var (arr));
             ctx.be.sendEvent (endpointFor (k), juce::var (ev));
         }
@@ -282,11 +310,11 @@ namespace njo
     SoundMemory::SoundMemory (Ctx& c) : impl (new Impl (*this, c))
     {
         // the saved copies are available to the displays at once; restore() streams them to the DSP
-        for (int k = 0; k < 2; ++k)
+        for (int k = 0; k < 4; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                if (decodeMem (c.be.getStored (keyFor ((Kind) k, o)), k == Wavetable ? "TABLE" : "SAMPLE", *s)) impl->slots[k][o] = std::move (s);
+                if (decodeMem (c.be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
             }
     }
     SoundMemory::~SoundMemory() = default;
@@ -301,7 +329,7 @@ namespace njo
     {
         if (o < 0 || o >= OSC_N) return;
         if (data.empty()) { clear (k, o); return; }
-        const int cap = k == Wavetable ? MAX_WT : MAX_SMP;
+        const int cap = isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
         if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
@@ -313,7 +341,8 @@ namespace njo
 
     void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done)
     {
-        auto dec = decodeAny (f, k == Wavetable);
+        auto dec = decodeAny (f, k != Sample);
+        if (dec.ok && isTable (k)) dec.mono = tableFromMono (dec.mono);
         if (! dec.ok)
         {
             impl->ctx.status ("UNSUPPORTED FILE");
@@ -321,7 +350,7 @@ namespace njo
             return;
         }
         auto name = (dec.name.isNotEmpty() ? dec.name : f.getFileNameWithoutExtension()).substring (0, 14).toUpperCase();
-        if (name.isEmpty()) name = k == Wavetable ? "TABLE" : "SAMPLE";
+        if (name.isEmpty()) name = k == Sample ? "SAMPLE" : "TABLE";
         set (k, o, name, {}, std::move (dec.mono));
         impl->ctx.status ("LOADED " + name);
         if (done) done (true, "LOADED " + name);
@@ -334,17 +363,17 @@ namespace njo
         impl->slots[k][o].reset();
         auto* ev = new juce::DynamicObject();
         juce::Array<juce::var> arr; for (int i = 0; i < CHUNK; ++i) arr.add (0.0);
-        ev->setProperty ("bank", o); ev->setProperty ("offset", 0); ev->setProperty ("count", 0); ev->setProperty ("total", 0); ev->setProperty ("data", juce::var (arr));
+        ev->setProperty ("bank", bankFor (k, o)); ev->setProperty ("offset", 0); ev->setProperty ("count", 0); ev->setProperty ("total", 0); ev->setProperty ("data", juce::var (arr));
         impl->ctx.be.sendEvent (endpointFor (k), juce::var (ev));
         impl->persist (k, o);
-        impl->ctx.status ("OSC " + juce::String (o + 1) + " CLEARED");
+        if (! isTable (k)) impl->ctx.status ("OSC " + juce::String (o + 1) + " CLEARED");
         sendChangeMessage();
     }
 
     void SoundMemory::restore()
     {
         int n = 0;
-        for (int k = 0; k < 2; ++k)
+        for (int k = 0; k < 4; ++k)
             for (int o = 0; o < OSC_N; ++o)
                 if (impl->slots[k][o]) impl->startStream ((Kind) k, o, kStaggerMs * n++);
     }

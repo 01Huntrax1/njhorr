@@ -13,6 +13,10 @@ namespace njo
         float warpAmp (int mode, float amt, float y);
         int pickFrameIndex (int len);                      // frame size index (0-4) that fits a freshly loaded wavetable
         constexpr int frameSizes[5] = { 256, 512, 1024, 2048, 4096 };
+        // Wavefilter / Wavedistortion tables: built-in frame values (mirror of tblDefault in the DSP) and the frame at position pos (0..1),
+        // taken from the loaded table (slot, may be null) or the built-in one; out has 512 values
+        float tblDefault (bool filter, int frame, int i);
+        void tblFrame (const std::vector<float>* loaded, bool filter, float pos, float* out);
     }
 
     // waveform of the current wavetable frame (with warp), sample waveform with start marker, or the Plaits engine name;
@@ -31,14 +35,15 @@ namespace njo
         Ctx& ctx; SoundMemory& mem; int o;
     };
 
-    class FilterDisplay : public juce::Component, private Ctx::Listener
+    class FilterDisplay : public juce::Component, private Ctx::Listener, private juce::ChangeListener
     {
     public:
-        FilterDisplay (Ctx&, int osc);
+        FilterDisplay (Ctx&, SoundMemory&, int osc);
         ~FilterDisplay() override;
         void paint (juce::Graphics&) override;
     private:
         void paramChanged (int num, float v) override;
-        Ctx& ctx; int o;
+        void changeListenerCallback (juce::ChangeBroadcaster*) override { repaint(); }
+        Ctx& ctx; SoundMemory& mem; int o;
     };
 }

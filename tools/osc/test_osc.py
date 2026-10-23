@@ -236,6 +236,42 @@ check("matrix destination 'slot 1 Cutoff' opens the filter", band(seg(a)[:, 0], 
 a = render(["wt 0 sine", FOFF(0), (307, 1), (308, 3), (309, -0.5), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="modpan")
 check("matrix destination 'Pan (global)' still works", rms(seg(a)[:, 0]) > 1.5 * rms(seg(a)[:, 1]))
 
+# ---------------------------------------------------------------- Wavefilter / Wavedistortion (table filter and table shaper)
+SAW = ["wt 0 saw"]
+dry = seg(render(SAW + [P(0, "fon", 0)], tag="wfdry"))[:, 0]
+WF = lambda pos, extra=(): SAW + [P(0, "fon", 1), P(0, "ftype", 30), P(0, "fcut", 1000), P(0, "fres", 0.3), P(0, "fkey", 0), P(0, "wfpos", pos)] + list(extra)
+x = seg(render(WF(0, ["tbl 0 ones"]), tag="wfone"))[:, 0]
+check("Wavefilter with a flat table passes the signal at about unity gain", abs(20 * math.log10(rms(x) / rms(dry))) < 1.5, "%.2f dB" % (20 * math.log10(rms(x) / rms(dry))))
+lp = seg(render(WF(0), tag="wflp"))[:, 0]
+check("built-in table 0 acts as a low-pass at the cutoff", band(lp, 3000, 12000) < 0.5 * band(dry, 3000, 12000) and band(lp, 100, 800) > 0.8 * band(dry, 100, 800), "%.1f / %.1f" % (band(lp, 3000, 12000), band(dry, 3000, 12000)))
+hp = seg(render(WF(4 / 15), tag="wfhp"))[:, 0]
+check("built-in table 4 acts as a high-pass (lows fall away, highs stay)", band(hp, 100, 800) < 0.4 * band(dry, 100, 800) and band(hp, 3000, 12000) > 0.7 * band(dry, 3000, 12000), "%.1f / %.1f" % (band(hp, 100, 800), band(dry, 100, 800)))
+check("the table position morphs between the filter shapes", band(lp, 100, 800) > 2 * band(hp, 100, 800))
+x = seg(render(WF(0, ["tbl 0 zeros"]), tag="wfzero"))[:, 0]
+check("a loaded table replaces the built-in one (gain (0 + 1) / 2 = -6 dB)", abs(20 * math.log10(rms(x) / rms(dry)) + 6.0) < 2.0, "%.2f dB" % (20 * math.log10(rms(x) / rms(dry))))
+x = seg(render(WF(0, ["tbl 0 ones", "tbl 0 clear"]), tag="wfclr"))[:, 0]
+check("clearing a table restores the built-in one", band(x, 3000, 12000) < 0.5 * band(dry, 3000, 12000))
+x = seg(render(WF(0, [P(0, "fres", 1.0), P(0, "fcut", 20000)]), hold=0.4, tail=0.1, tag="wfext"))
+check("Wavefilter stays finite with extreme settings", np.isfinite(x).all() and np.abs(x).max() < 4)
+x = seg(render(WF(0, [(307, 1), (308, L.N_TBL_DST), (309, -1.0), ("shape", 0, "const", 1), (882, 1), (247, 6), P(0, "wfpos", 4 / 15)]), tag="wfmod"))[:, 0]
+check("mod destination 'OSC 1 Wavefilter Pos' moves the table position", band(x, 100, 800) > 2 * band(hp, 100, 800), "%.1f vs %.1f" % (band(x, 100, 800), band(hp, 100, 800)))
+
+SH = lambda pos, extra=(), ty=7: SAW + [P(0, "fon", 0), P(0, "dtype", ty), P(0, "ddrv", 0.0), P(0, "dmix", 1.0), P(0, "wdpos", pos)] + list(extra)
+x = seg(render(SH(0), tag="shid"))[:, 0]
+check("Wavedistortion table 0 (identity) leaves the signal alone", abs(rms(x) / rms(dry) - 1) < 0.03 and band(x, 100, 800) > 0.95 * band(dry, 100, 800))
+x = seg(render(SH(0, ["tbl 6 lin"]), tag="shlin"))[:, 0]
+check("a loaded linear table does the same", abs(rms(x) / rms(dry) - 1) < 0.03)
+x = seg(render(SH(5 / 15, [P(0, "ddrv", 0.6)]), tag="shfold"))[:, 0]
+check("a fold / sine table reshapes the waveform", rms(x - dry) > 0.15 * rms(dry), "%.3f / %.3f" % (rms(x - dry), rms(dry)))
+x = seg(render(SH(0, [P(0, "dmix", 0.0), P(0, "ddrv", 0.5)]), tag="shmix"))[:, 0]
+check("mix 0 is the dry signal", abs(rms(x) / rms(dry) - 1) < 0.02)
+x = seg(render(SH(0, [(307, 1), (308, L.N_TBL_DST + 1), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)]), tag="shmod"))[:, 0]
+check("mod destination 'OSC 1 Wavedistortion Pos' moves the table position", rms(x - dry) > 0.15 * rms(dry), "%.3f / %.3f" % (rms(x - dry), rms(dry)))
+a = render(SH(0, ["tbl 6 clear", "tbl 6 ones"]), tag="shdc")
+check("Wavedistortion with a constant table stays finite and DC free", np.isfinite(a).all() and abs(float(np.mean(seg(a)))) < 0.01)
+x = seg(render(SH(0, [P(0, "dpos", 1), P(0, "ftype", 1), P(0, "fon", 1), P(0, "fcut", 600), P(0, "ddrv", 0.5), P(0, "wdpos", 5 / 15)]), tag="shpre"))[:, 0]
+check("Wavedistortion honours the Pre / Post switch", np.isfinite(x).all() and rms(x) > 0.01)
+
 # ---------------------------------------------------------------- polyphony, release, extremes
 a = render(WT0 + [FOFF(0), P(0, "level", 0.8)], note=60, tag="poly")
 script = os.path.join(TMP, "chord.txt"); out = os.path.join(TMP, "chord.f32")

@@ -57,9 +57,10 @@ for o in range(L.OSC_COUNT):
 LET = "ABCDEF"
 for kind in ("FM", "PM", "PD"):
     dst += ["%s %s > %s" % (kind, LET[a], LET[b]) for a in range(6) for b in range(6)]
+dst += ["OSC %d %s" % (o + 1, n) for o in range(L.OSC_COUNT) for n in ("Wavefilter Pos", "Wavedistortion Pos")]
 w("const MOD_DST = %s;" % json.dumps(dst))
 w("const MOD_DST_GROUPS = %s;" % json.dumps([[0, ""], [1, "Global"]] + [[6 + 9 * o, "OSC %d" % (o + 1)] for o in range(L.OSC_COUNT)]
-                                            + [[L.N_DST + 36 * i, "%s matrix (amount)" % n] for i, n in enumerate(("FM", "PM", "PD"))]))
+                                            + [[L.N_DST + 36 * i, "%s matrix (amount)" % n] for i, n in enumerate(("FM", "PM", "PD"))] + [[L.N_TBL_DST, "Tables"]]))
 # mod ring targets: parameter number -> [matrix destination, knob travel per 1.0 amount]
 t = {63: [1, 0.5], 29: [3, 0.5], 28: [4, 0.5], 190: [5, 0.5]}
 for o in range(L.OSC_COUNT):
@@ -67,6 +68,8 @@ for o in range(L.OSC_COUNT):
     for key, j, sc in (("fine", 0, 0.5), ("level", 1, 1), ("pan", 2, 0.5), ("wpos", 3, 0.5), ("pharm", 3, 0.5), ("w1a", 4, 0.5), ("ptimb", 4, 0.5),
                         ("w2a", 5, 0.5), ("pmorph", 5, 0.5), ("fcut", 6, 0.41), ("fres", 7, 0.5), ("ddrv", 8, 0.5)):
         t[L.pid(o, L.K[key])] = [b + j, sc]
+    t[L.pid(o, L.K["wfpos"])] = [L.N_TBL_DST + 2 * o, 0.5]
+    t[L.pid(o, L.K["wdpos"])] = [L.N_TBL_DST + 2 * o + 1, 0.5]
 for i, fn in enumerate((L.fm_id, L.pm_id, L.pd_id)):
     for a in range(6):
         for b in range(6):
@@ -76,7 +79,7 @@ w("const MOD_TARGET = %s;" % json.dumps(t))
 def js_labels(p):
     k, key, label, short, lo, hi, init, unit, kind, labels = p
     if key in ("w1m", "w2m"): return "WARP_MODES", "null"
-    if key == "ftype": return "FILTER_TYPES", "FILTER_GROUPS"
+    if key == "ftype": return "OSC_FILTER_TYPES", "OSC_FILTER_GROUPS"
     if key == "pleng": return "PLAITS_ENGINES", "PLAITS_GROUPS"
     if labels: return json.dumps(labels), "null"
     return "null", "null"

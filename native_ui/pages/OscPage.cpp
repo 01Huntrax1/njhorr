@@ -141,16 +141,16 @@ namespace njo
     struct OscPage::Impl : private Ctx::Listener, private juce::ChangeListener
     {
         Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc)
-            : owner (p), ctx (c), mem (m), o (osc), display (c, m, osc), fdisplay (c, osc), vault ("VAULT")
+            : owner (p), ctx (c), mem (m), o (osc), display (c, m, osc), fdisplay (c, m, osc), vault ("VAULT")
         {
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
-                              "dtype", "dpos", "ddrv", "dmix", "level", "pan", "out" })
+                              "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
                 if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
-                else w = makeWidget (ctx, oscId (o, oscKey (key)), true);
+                else w = makeWidget (ctx, oscId (o, oscKey (key)), juce::String (key) != "wdpos");
                 w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
@@ -162,6 +162,22 @@ namespace njo
             owner.addAndMakeVisible (fdisplay);
             owner.addAndMakeVisible (dz);
             owner.addAndMakeVisible (vault);
+            owner.addAndMakeVisible (dzF);
+            owner.addAndMakeVisible (dzS);
+            for (auto* t : { &dzF, &dzS })
+            {
+                auto k = t == &dzF ? SoundMemory::FilterTable : SoundMemory::ShaperTable;
+                t->onFile = [this, k] (const juce::File& f) { loadTable (k, f); };
+                t->onClick = [this, k]
+                {
+                    chooser = std::make_shared<juce::FileChooser> ("Load a wavetable as table", juce::File(), SoundMemory::fileWildcard());
+                    auto self = juce::Component::SafePointer<OscPage> (&owner);
+                    chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
+                                          [self, k] (const juce::FileChooser& fc)
+                                          { auto f = fc.getResult(); if (self != nullptr && f.existsAsFile()) self->impl->loadTable (k, f); });
+                };
+                t->onClear = [this, k] { mem.clear (k, o); refreshDz(); };
+            }
 
             dz.onFile = [this] (const juce::File& f) { loadFile (f); };
             dz.onClick = [this] { chooseFile(); };
@@ -184,11 +200,28 @@ namespace njo
         // ---- memory / drop zone ----
         void refreshDz()
         {
+            refreshTblDz();
             if (dz.getState() == DropZone::Busy) return;
             auto k = kind();
             auto* s = mem.get (k, o);
             if (s != nullptr) dz.setState (DropZone::Loaded, s->name);
             else dz.setState (DropZone::Empty, k == SoundMemory::Wavetable ? WT_DZ_EMPTY : SMP_DZ_EMPTY);
+        }
+
+        // Wavefilter / Wavedistortion tables (a wavetable file whose frames are filter curves / transfer curves)
+        void loadTable (SoundMemory::Kind k, const juce::File& f)
+        {
+            mem.load (k, o, f, {});
+            refreshDz();
+        }
+        void refreshTblDz()
+        {
+            for (auto* t : { &dzF, &dzS })
+            {
+                auto k = t == &dzF ? SoundMemory::FilterTable : SoundMemory::ShaperTable;
+                if (auto* s = mem.get (k, o)) t->setState (DropZone::Loaded, s->name);
+                else t->setState (DropZone::Empty, k == SoundMemory::FilterTable ? "+ TABLE" : "DROP SHAPER TABLE");
+            }
         }
 
         void loadFile (const juce::File& f)
@@ -248,6 +281,7 @@ namespace njo
             if (k < 0 || k >= OSC_STRIDE) return;
             if (k == oscKey ("type")) { if (dz.getState() != DropZone::Busy) dz.setState (DropZone::Empty, ""); refreshDz(); updateEngineLabels(); layoutChildren(); }
             else if (k == oscKey ("pleng")) updateEngineLabels();
+            else if (k == oscKey ("ftype") || k == oscKey ("dtype")) layoutChildren();
             owner.repaint();
         }
 
@@ -267,6 +301,7 @@ namespace njo
         std::vector<Strip> strips;
         juce::Rectangle<int> cardSrc, cardTune, cardFlt, cardOut;
         bool showUnison = false;
+        int outTitleY = 231;
 
         void put (const char* key, int x, int y, int w, int h, juce::Rectangle<int> card, bool visible = true)
         {
@@ -346,16 +381,28 @@ namespace njo
                 const char* keys[10] = { "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel" };
                 for (int i = 0; i < 10; ++i)
                     knob (keys[i], 12 + juce::roundToInt (pitch * (i % 4) + pitch / 2), 192 + 79 * (i / 4), c);
+                // Wavefilter: table position knob and table drop zone take the two free places of the last row
+                const bool wf = juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30;
+                knob ("wfpos", 12 + juce::roundToInt (pitch * 2 + pitch / 2), 192 + 79 * 2, c, wf);
+                dzF.setBounds (c.getX() + 12 + juce::roundToInt (pitch * 3) + 2, c.getY() + 192 + 79 * 2 + 14, juce::roundToInt (pitch) - 4, 26);
+                dzF.setVisible (wf);
             }
             // ---- distortion / output ----
             {
                 auto c = cardOut; int w = c.getWidth();
                 put ("dtype", 12, 54, w - 24, 34, c); strip ("dtype", 12, 54, w - 24, c, false);
                 put ("dpos", 12, 94, w - 24, 26, c);
+                // Wavedistortion: table drop zone and position slider (the rest moves down)
+                const bool wd = juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7;
+                const int dy = wd ? 30 : 0;
+                dzS.setBounds (c.getX() + 12, c.getY() + 124, w - 24, 22);
+                dzS.setVisible (wd);
+                put ("wdpos", 12, 150, w - 24, 30, c, wd);
                 const int cl = 12 + (w - 24) / 4, cr = 12 + (w - 24) * 3 / 4;
-                knob ("ddrv", cl, 160, c); knob ("dmix", cr, 160, c);
-                knob ("level", cl, 270, c); knob ("pan", cr, 270, c);
-                put ("out", 12, 362, w - 24, 31, c);
+                knob ("ddrv", cl, 160 + dy, c); knob ("dmix", cr, 160 + dy, c);
+                outTitleY = 231 + dy;
+                knob ("level", cl, 270 + dy, c); knob ("pan", cr, 270 + dy, c);
+                put ("out", 12, 362 + dy, w - 24, 31, c);
             }
         }
 
@@ -382,7 +429,7 @@ namespace njo
             title (g, "Tune", cardTune.getX() + 14, 15, cardTune.getRight() - 12);
             title (g, "Filter", cardFlt.getX() + 14, 15, cardFlt.getRight() - 12);
             title (g, "Distortion / Out", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
-            title (g, "Output", cardOut.getX() + 14, 231, cardOut.getRight() - 12);
+            title (g, "Output", cardOut.getX() + 14, outTitleY, cardOut.getRight() - 12);
             if (showUnison)
             {
                 g.setColour (orange); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
@@ -408,7 +455,7 @@ namespace njo
         OscPage& owner; Ctx& ctx; SoundMemory& mem; int o;
         std::map<juce::String, std::unique_ptr<ParamWidget>> widgets;
         OscDisplay display; FilterDisplay fdisplay;
-        DropZone dz; PushButton vault;
+        DropZone dz, dzF, dzS; PushButton vault;
         std::shared_ptr<juce::FileChooser> chooser;
     };
 
