@@ -299,6 +299,21 @@ check("a rising curve sweeps the pitch up over its Rate", peak_freq(e2) > 1.8 * 
 r = render(FQ(0.5) + [(307, 24), (308, DFQ(0)), (309, 0.25), ("fshape", 0, "ramp"), (1600, 100), (1603, 1)], note=45, hold=0.9, tail=0.1, tag="fq5")
 y1, y2 = r[int(0.3 * RATE):int(0.35 * RATE), 0], r[int(0.8 * RATE):int(0.85 * RATE), 0]
 check("Loop repeats the curve, one shot holds its end", np.isfinite(r).all() and peak_freq(y1) > 0 and peak_freq(y2) > 0)
+# ---------------------------------------------------------------- duplicated notes are ignored
+def render_script(lines, tag):
+    script = os.path.join(TMP, tag + ".txt"); out = os.path.join(TMP, tag + ".f32")
+    open(script, "w").write("\n".join(lines) + "\n")
+    subprocess.run([args.host, script, out], check=True)
+    return np.fromfile(out, dtype=np.float32).reshape(-1, 2)
+base = ["wt 0 saw", "p %d 0" % L.pid(0, K["fon"]), "run 0.05"]
+one = render_script(base + ["on 72 100", "run 0.4"], "dup1")
+two = render_script(base + ["on 72 100", "on 72 100", "on 72 100", "run 0.4"], "dup3")
+check("the same note pressed again while it sounds is ignored (one voice)", abs(rms(seg(two, 0.2, 0.4)) / rms(seg(one, 0.2, 0.4)) - 1) < 0.01, "%.4f vs %.4f" % (rms(seg(two, 0.2, 0.4)), rms(seg(one, 0.2, 0.4))))
+oct2 = render_script(base + ["on 72 100", "on 60 100", "run 0.4"], "dup_other")
+check("different notes still play together", rms(seg(oct2, 0.2, 0.4)) > 1.2 * rms(seg(one, 0.2, 0.4)))
+rt = render_script(base + ["on 72 100", "run 0.2", "off 72", "run 0.5", "on 72 100", "run 0.4"], "dup_re")
+check("after the release the note plays again", rms(rt[int(1.0 * RATE):int(1.15 * RATE)]) > 0.02)
+
 # ---------------------------------------------------------------- polyphony, release, extremes
 a = render(WT0 + [FOFF(0), P(0, "level", 0.8)], note=60, tag="poly")
 script = os.path.join(TMP, "chord.txt"); out = os.path.join(TMP, "chord.f32")

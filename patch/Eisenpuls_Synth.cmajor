@@ -19002,6 +19002,12 @@ processor Eisenpuls_Synth
         if (msg.isNoteOn())
         {
             int   nn       = msg.getNoteNumber();
+
+            // a note that is already sounding (held, not released) is not played a second time
+            for (int dv = 0; dv < 8; ++dv)
+                if (voices.at (dv).active && voices.at (dv).noteNumber == nn && voices.at (dv).stage != 3)
+                    return;
+
             float vel      = msg.getFloatVelocity();
             float velGainV = (1.0f - velSens) + velSens * vel;
             bool  monoMode = voiceMode > 0.5f;

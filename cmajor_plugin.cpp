@@ -24020,6 +24020,7 @@ namespace performer
         void _Eisenpuls_Synth__midiIn (_Eisenpuls_Synth_State& _state, std_midi_Message msg) noexcept
         {
             int32_t  nn;
+            int32_t  dv;
             float  vel;
             float  velGainV;
             bool  monoMode;
@@ -24048,6 +24049,23 @@ namespace performer
             if (std__midi__isNoteOn (msg))
             {
                 nn = std__midi__getNoteNumber (msg);
+                {
+                    dv = int32_t {0};
+                    for (;;)
+                    {
+                        if  (! (dv < int32_t {8}))
+                        {
+                            break;
+                        }
+                        if ((_state.voices[std__intrinsics___wrap_8 (dv)].active ? (_state.voices[std__intrinsics___wrap_8 (dv)].noteNumber == nn) : false) ? (_state.voices[std__intrinsics___wrap_8 (dv)].stage != int32_t {3}) : false)
+                        {
+                            return;
+                        }
+                        {
+                            intrinsics::addTo (dv, 1);
+                        }
+                    }
+                }
                 vel = std__midi__getFloatVelocity (msg);
                 velGainV = (1.0f - _state.velSens) + (_state.velSens * vel);
                 monoMode = _state.voiceMode > 0.5f;
@@ -24300,6 +24318,11 @@ namespace performer
             return (this_.message >> int32_t {8}) & int32_t {127};
         }
 
+        int32_t std__intrinsics___wrap_8 (int32_t n) noexcept
+        {
+            return n & int32_t {7};
+        }
+
         float std__midi__getFloatVelocity (const std_midi_Message& this_) noexcept
         {
             return static_cast<float> (std__midi__getVelocity (this_)) * 0.007874016f;
@@ -24341,11 +24364,6 @@ namespace performer
                 }
             }
             return oldest;
-        }
-
-        int32_t std__intrinsics___wrap_8 (int32_t n) noexcept
-        {
-            return n & int32_t {7};
         }
 
         float std__notes__noteToFrequency (int32_t midiNoteNumber) noexcept
