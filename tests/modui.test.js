@@ -75,6 +75,23 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     V.updateModRings();
     check("ring + dot on the modulated knob", knob.classList.contains("modded") && !!knob.querySelector(".mdot"));
     check("dot shows count of 2", knob.querySelector(".mdot").textContent === "2");
+    // drop onto a cell of the FM / PM / PD matrix
+    {
+        const cell = V.querySelector('.fmx-panel[data-k="pm"] .fmx-c[data-s="1"][data-d="3"]');
+        const tg = V.modTargetOf(cell && cell.querySelector(".fmx-dot") || cell);
+        check("a PM matrix cell is a mod target (dest 96 + 9)", !!tg && tg.num === 1440 + 9 && tg.dst === 105, tg ? tg.dst : "none");
+        const fb = V.querySelector('.fmx-panel[data-k="pd"] .fmx-d[data-s="2"] .fmx-fb');
+        const tf = V.modTargetOf(fb);
+        check("a PD feedback box is a mod target (dest 132 + 14)", !!tf && tf.num === 1480 + 14 && tf.dst === 146, tf ? tf.dst : "none");
+        const free = V.modSlots().findIndex(x => x.src === 0 || x.dst === 0);
+        const sl = V.modAssign(1, tg.dst, 0.5);
+        check("drop assigns a slot with the cell as destination", sl === free && Math.round(ctl(V, (sl < 10 ? 307 + 3 * sl : 472 + 3 * (sl - 10)) + 1).value) === 105);
+        V.updateModRings();
+        check("modulated cell gets a mark", !!cell.querySelector(".fmx-md") && cell.classList.contains("modded"));
+        V.modClear(sl);
+        V.updateModRings();
+        check("clearing removes the mark", !cell.querySelector(".fmx-md"));
+    }
     V.modClear(1);
     V.updateModRings();
     check("clearing a slot lowers the count", knob.querySelector(".mdot").textContent === "");

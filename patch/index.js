@@ -2852,6 +2852,15 @@ class EisenpulsPatchView extends HTMLElement {
 
     // ---- drag and drop modulation ----
     modTargetOf (node) {
+        const cell = node && node.closest ? node.closest(".fmx-c") : null;
+        if (cell) {   // a cell of the FM / PM / PD matrix: modulates its amount
+            const panel = cell.closest(".fmx-panel"), k = panel ? this.fmxKinds().find(x => x.key === panel.dataset.k) : null;
+            if (k) {
+                const num = k.base + 6 * Number(cell.dataset.s) + Number(cell.dataset.d), t = MOD_TARGET[num];
+                if (t) return { node: cell.classList.contains("fmx-d") ? cell.querySelector(".fmx-fb") : cell, num, dst: t[0], scale: t[1] };
+            }
+            return null;
+        }
         const c = node && node.closest ? node.closest(".control[data-param]") : null;
         if (!c) return null;
         const num = Number(String(c.dataset.param).replace("param", ""));
@@ -2892,7 +2901,7 @@ class EisenpulsPatchView extends HTMLElement {
         const nums = onlyNum ? [onlyNum] : Object.keys(MOD_TARGET).map(Number);
         nums.forEach(num => {
             const t = MOD_TARGET[num];
-            if (!t) return;
+            if (!t || (num >= FM_BASE && num < PD_BASE + 36)) return;   // matrix cells have their own marks (fmxModMarks)
             const ctl = this.fxCtl(num);
             if (!ctl || !ctl.node) return;
             const node = ctl.node, mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
@@ -2923,6 +2932,32 @@ class EisenpulsPatchView extends HTMLElement {
             dot.style.background = MOD_SRC_COLOR(mods[0].src);
             dot.textContent = mods.length > 1 ? String(mods.length) : "";
         });
+        if (!onlyNum || (onlyNum >= FM_BASE && onlyNum < PD_BASE + 36)) this.fmxModMarks();
+    }
+
+    // little dots on the FM / PM / PD cells that are modulated (click = amount popup)
+    fmxModMarks () {
+        this.fmxKinds().forEach(k => {
+            const panel = this.querySelector('.fmx-panel[data-k="' + k.key + '"]');
+            if (!panel) return;
+            panel.querySelectorAll(".fmx-c").forEach(el => {
+                const sr = Number(el.dataset.s), d = Number(el.dataset.d), num = k.base + 6 * sr + d, t = MOD_TARGET[num];
+                const box = el.classList.contains("fmx-d") ? el.querySelector(".fmx-fb") : el;
+                if (!t || !box) return;
+                const mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
+                let dot = box.querySelector(".fmx-md");
+                if (!mods.length) { if (dot) dot.remove(); box.classList.remove("modded"); return; }
+                box.classList.add("modded");
+                if (!dot) {
+                    dot = document.createElement("span"); dot.className = "fmx-md"; dot.title = "Modulation amount";
+                    dot.addEventListener("pointerdown", e => e.stopPropagation());
+                    dot.addEventListener("click", e => { e.stopPropagation(); this.showModPop(box, num); });
+                    box.appendChild(dot);
+                }
+                dot.style.background = MOD_SRC_COLOR(mods[0].src);
+                dot.textContent = mods.length > 1 ? String(mods.length) : "";
+            });
+        });
     }
 
     closeModPop () { if (this._modPop) { this._modPop.remove(); this._modPop = null; } }
@@ -2935,7 +2970,8 @@ class EisenpulsPatchView extends HTMLElement {
         if (!mods.length) return;
         const pop = document.createElement("div");
         pop.className = "modpop";
-        const label = (SPEC_BY_NUM.get(num) || {}).short || (SPEC_BY_NUM.get(num) || {}).label || "";
+        const sp0 = SPEC_BY_NUM.get(num) || {};
+        const label = (num >= FM_BASE && num < PD_BASE + 36) ? sp0.label : (sp0.short || sp0.label || "");
         pop.innerHTML = `<div class="mp-title">${label} modulation</div>` + mods.map(m => `<div class="mp-row" data-s="${m.s}"><span class="mp-src" style="background:${MOD_SRC_COLOR(m.src)}">${MOD_SRC_SHORT(m.src)}</span>`
             + `<input type="range" min="-100" max="100" step="1" value="${Math.round(m.amt * 100)}"><span class="mp-val">${Math.round(m.amt * 100)}%</span><button type="button" class="mp-x" title="Remove">&times;</button></div>`).join("");
         this.appendChild(pop);
@@ -3538,6 +3574,8 @@ class EisenpulsPatchView extends HTMLElement {
   .fmx-c:has(.fmx-v:empty) .fmx-v { display: none; }
   .fmx-c .fmx-v, .fmx-fb .fmx-v { position: relative; z-index: 3; font-size: calc(var(--u) * 8.5); font-weight: 800; color: #fff; padding: calc(var(--u) * 1.5) calc(var(--u) * 4); border-radius: calc(var(--u) * 3); background: #7d1a14; border: 1px solid #ff5a4a; box-shadow: 0 0 8px rgba(255,59,48,0.45); min-width: calc(var(--u) * 22); text-align: center; }
   .fmx-c.on .fmx-dot { display: none; }
+  .fmx-fb { position: relative; }
+  .fmx-md { position: absolute; top: calc(var(--u) * 2); right: calc(var(--u) * 2); min-width: calc(var(--u) * 11); height: calc(var(--u) * 11); border-radius: 50%; z-index: 5; cursor: pointer; font-size: calc(var(--u) * 7); font-weight: 800; color: #000; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 6px rgba(0,0,0,0.8); }
   .fmx-c.neg .fmx-v { background: #163e66; border-color: #59b7ff; box-shadow: 0 0 8px rgba(89,183,255,0.45); }
   .fmx-d { gap: calc(var(--u) * 6); cursor: default; }
   .fmx-n { position: relative; z-index: 3; font-family: Impact, "Arial Black", sans-serif; font-size: calc(var(--u) * 16); width: calc(var(--u) * 30); height: calc(var(--u) * 30); color: var(--dim); background: linear-gradient(#303134, #17181a); border: 1px solid #4c4d51; border-radius: calc(var(--u) * 6); cursor: pointer; }

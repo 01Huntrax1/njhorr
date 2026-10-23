@@ -20,11 +20,11 @@ namespace njo
         juce::Rectangle<float> panel[3], inset[3], grid[3];
         juce::Rectangle<float> noteRect, headRect;
         std::unique_ptr<juce::Component> overlay;
-        Hit hover, drag; bool dragMoved = false; float dragStartV = 0; int dragStartY = 0; bool dragging = false;
+        Hit hover, drag, modHover; bool dragMoved = false; float dragStartV = 0; int dragStartY = 0; bool dragging = false;
 
         void paramChanged (int n, float) override
         {
-            if (n >= FM_BASE && n < PD_BASE + 36) owner.repaint();
+            if ((n >= FM_BASE && n < PD_BASE + 36) || (n >= 307 && n <= 336) || (n >= 472 && n <= 501)) owner.repaint();
         }
 
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }
@@ -65,6 +65,21 @@ namespace njo
                 return { k, s, d, Cell };
             }
             return {};
+        }
+
+        // little dot of the modulated cells (top right of the value box); click = amount popup
+        juce::Rectangle<float> modDotRect (int k, int s, int d) const
+        {
+            auto r = s == d ? fbRect (k, s) : cellRect (k, s, d).withSizeKeepingCentre (30.0f, 15.0f);
+            return { r.getRight() - 4.0f, r.getY() - 2.0f, 9.0f, 9.0f };
+        }
+        std::vector<ModSlot> modsOf (int k, int s, int d) const
+        {
+            std::vector<ModSlot> out;
+            int id = pid (k, s, d);
+            if (! ctx.isModTarget (id)) return out;
+            for (auto& m : ctx.modsFor (modTarget().at (id).first)) if (std::abs (m.amt) > 0.0005f) out.push_back (m);
+            return out;
         }
 
         static juce::String pct (float v) { return juce::String (juce::roundToInt (v)); }
@@ -164,7 +179,24 @@ namespace njo
                         g.drawText ("FB", f.withHeight (9).toNearestInt(), juce::Justification::centred);
                         drawValueBox (g, f.withTrimmedTop (10).withSizeKeepingCentre (f.getWidth(), 15).withY (f.getY() + 10), pct (v), false, on (v));
                     }
+
+                    // modulation: dot with the colour of the first source, number of sources when more than one
+                    auto mods = modsOf (k, s, d);
+                    if (! mods.empty())
+                    {
+                        auto dr = modDotRect (k, s, d);
+                        g.setColour (srcColour (mods[0].src)); g.fillEllipse (dr);
+                        if (mods.size() > 1) { g.setColour (juce::Colours::black); g.setFont (font (7.0f, true)); g.drawText (juce::String ((int) mods.size()), dr, juce::Justification::centred); }
+                    }
                 }
+
+            // a modulation source is being dragged over a cell
+            if (modHover.k == k && modHover.part != None && modHover.part != Node)
+            {
+                auto c = cellRect (k, modHover.s, modHover.d).reduced (2);
+                g.setColour (red.withAlpha (0.22f)); g.fillRoundedRectangle (c, 5.0f);
+                g.setColour (red); g.drawRoundedRectangle (c, 5.0f, 1.5f);
+            }
         }
     };
     constexpr FmPage::Impl::Kind FmPage::Impl::kinds[3];
@@ -177,10 +209,43 @@ namespace njo
                           : h.part == FmPage::Impl::Node ? juce::MouseCursor::PointingHandCursor : juce::MouseCursor::NormalCursor);
     }
 
-        struct Overlay : public juce::Component
+        struct Overlay : public juce::Component, public juce::DragAndDropTarget
         {
-            Overlay (FmPage& p, FmPage::Impl& i) : page (p), im (i) { setInterceptsMouseClicks (true, false); }
+            Overlay (FmPage& p, FmPage::Impl& i) : page (p), im (i)
+            {
+                setInterceptsMouseClicks (true, false);
+                addChildComponent (anchor); anchor.setInterceptsMouseClicks (false, false);
+            }
             FmPage& page; FmPage::Impl& im;
+            juce::Component anchor;   // invisible, parked over a cell so the amount popup opens next to it
+
+            // ---- drop of a modulation source (LFO / ENV / VEL / KEY / RND handle) onto a cell ----
+            bool isInterestedInDragSource (const SourceDetails& d) override { return d.description.toString().startsWith (kModDrag); }
+            void setModHover (juce::Point<int> p)
+            {
+                auto h = im.hitTest (p.toFloat());
+                if (h.part == FmPage::Impl::Node) h = {};
+                if (! (h == im.modHover)) { im.modHover = h; page.repaint(); }
+            }
+            void itemDragEnter (const SourceDetails& d) override { setModHover (d.localPosition); }
+            void itemDragMove (const SourceDetails& d) override  { setModHover (d.localPosition); }
+            void itemDragExit (const SourceDetails&) override    { im.modHover = {}; page.repaint(); }
+            void itemDropped (const SourceDetails& d) override
+            {
+                auto h = im.hitTest (d.localPosition.toFloat());
+                im.modHover = {}; page.repaint();
+                if (h.part == FmPage::Impl::None || h.part == FmPage::Impl::Node) return;
+                int id = im.pid (h.k, h.s, h.d);
+                if (! im.ctx.isModTarget (id)) return;
+                int src = d.description.toString().fromFirstOccurrenceOf (kModDrag, false, false).getIntValue();
+                if (im.ctx.modAssign (src, modTarget().at (id).first, 0.5f) < 0) { im.ctx.status ("MOD MATRIX FULL (20 SLOTS)"); return; }
+                openPopup (h);
+            }
+            void openPopup (const FmPage::Impl::Hit& h)
+            {
+                anchor.setBounds (im.cellRect (h.k, h.s, h.d).toNearestInt());
+                showModPopup (im.ctx, anchor, im.pid (h.k, h.s, h.d));
+            }
 
             void mouseMove (const juce::MouseEvent& e) override { refreshHover (page, im, e.position); }
             void mouseExit (const juce::MouseEvent&) override { im.hover = {}; page.repaint(); }
@@ -189,6 +254,8 @@ namespace njo
                 auto h = im.hitTest (e.position);
                 im.drag = h; im.dragMoved = false; im.dragging = false;
                 if (h.part == FmPage::Impl::None) return;
+                if (h.part != FmPage::Impl::Node && ! im.modsOf (h.k, h.s, h.d).empty() && im.modDotRect (h.k, h.s, h.d).expanded (3).contains (e.position))
+                { im.drag = {}; openPopup (h); return; }
                 if (h.part == FmPage::Impl::Node) return;
                 if (e.mods.isPopupMenu()) { im.setVal (h, 0); return; }
                 int id = im.pid (h.k, h.s, h.d);
