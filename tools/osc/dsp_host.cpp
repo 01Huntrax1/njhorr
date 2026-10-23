@@ -7,6 +7,7 @@
 // script lines:   p <paramNumber> <value>   set parameter N (event)
 //                 shape <lfo 0-9> const <v> | shape <lfo> ramp   load a 256-point LFO shape
 //                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, saw2k, morph2k, big, clear)
+//                 fshape <freq mod 0-9> const <v> | ramp   load the 256-point curve (0..1) of a Freq modulator
 //                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
 //                 on <note> <velocity 0-127>
@@ -69,6 +70,16 @@ struct Host
         for (int i = 0; i < 256; ++i)
             c.data[i] = kind == "ramp" ? -1.0f + 2.0f * (float) i / 255.0f : v;
         dsp.addEvent_lfoShapeLoad (c);
+        ++queued;
+        flushIfNeeded();
+    }
+
+    void freqShape (int m, const std::string& kind, float v)
+    {
+        Eisenpuls_Synth::_Eisenpuls_Synth_LfoShapeChunk c {};
+        c.lfo = m;
+        for (int i = 0; i < 256; ++i) c.data[i] = kind == "ramp" ? (float) i / 255.0f : v;
+        dsp.addEvent_frqShapeLoad (c);
         ++queued;
         flushIfNeeded();
     }
@@ -177,6 +188,7 @@ int main (int argc, char** argv)
 
         if (cmd == "p")        { int n; float v; ls >> n >> v; h.setParam (n, v); }
         else if (cmd == "shape") { int n; std::string k; float v = 0; ls >> n >> k >> v; h.lfoShape (n, k, v); }
+        else if (cmd == "fshape") { int m; std::string k; float v = 0; ls >> m >> k >> v; h.freqShape (m, k, v); }
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }

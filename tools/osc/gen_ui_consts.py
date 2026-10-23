@@ -58,9 +58,10 @@ LET = "ABCDEF"
 for kind in ("FM", "PM", "PD"):
     dst += ["%s %s > %s" % (kind, LET[a], LET[b]) for a in range(6) for b in range(6)]
 dst += ["OSC %d %s" % (o + 1, n) for o in range(L.OSC_COUNT) for n in ("Wavefilter Pos", "Wavedistortion Pos")]
+dst += ["OSC %d Frequency" % (o + 1) for o in range(L.OSC_COUNT)]
 w("const MOD_DST = %s;" % json.dumps(dst))
 w("const MOD_DST_GROUPS = %s;" % json.dumps([[0, ""], [1, "Global"]] + [[6 + 9 * o, "OSC %d" % (o + 1)] for o in range(L.OSC_COUNT)]
-                                            + [[L.N_DST + 36 * i, "%s matrix (amount)" % n] for i, n in enumerate(("FM", "PM", "PD"))] + [[L.N_TBL_DST, "Tables"]]))
+                                            + [[L.N_DST + 36 * i, "%s matrix (amount)" % n] for i, n in enumerate(("FM", "PM", "PD"))] + [[L.N_TBL_DST, "Tables"], [L.N_FREQ_DST, "Frequency"]]))
 # mod ring targets: parameter number -> [matrix destination, knob travel per 1.0 amount]
 t = {63: [1, 0.5], 29: [3, 0.5], 28: [4, 0.5], 190: [5, 0.5]}
 for o in range(L.OSC_COUNT):
@@ -70,6 +71,7 @@ for o in range(L.OSC_COUNT):
         t[L.pid(o, L.K[key])] = [b + j, sc]
     t[L.pid(o, L.K["wfpos"])] = [L.N_TBL_DST + 2 * o, 0.5]
     t[L.pid(o, L.K["wdpos"])] = [L.N_TBL_DST + 2 * o + 1, 0.5]
+    t[L.pid(o, L.K["freq"])] = [L.N_FREQ_DST + o, 1.0]
 for i, fn in enumerate((L.fm_id, L.pm_id, L.pd_id)):
     for a in range(6):
         for b in range(6):

@@ -144,7 +144,7 @@ namespace njo
             : owner (p), ctx (c), mem (m), o (osc), display (c, m, osc), fdisplay (c, m, osc), vault ("VAULT")
         {
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
-                              "oct", "semi", "fine", "track", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
+                              "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
                               "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "level", "pan", "out" })
             {
@@ -362,6 +362,7 @@ namespace njo
                 put ("track", rx, fineTop + 24, 72, 18, c); strip ("track", rx, fineTop + 11, 72, c, true);
                 int phaseTop = wt ? 152 : 309;
                 knob ("phase", cl, phaseTop, c, ! pl);
+                knob ("freq", cr, wt ? 198 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
                 put ("rphase", rx, phaseTop + 24, 72, 18, c, ! pl); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! pl);
 
                 showUnison = wt;

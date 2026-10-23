@@ -17,6 +17,8 @@ namespace njo
 
         enum Group { Synth = 0, Effects = 1, Modulation = 2 };
         void setGroup (Group);
+        void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ
+        void setModTab (int t) { modTab = t; layoutAll(); }       // modulation page: 0 = ENV / LFO, 1 = FREQ
         void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM, 7 = Global
         Group group() const { return currentGroup; }
         int synthPage() const { return currentSynthPage; }
@@ -36,7 +38,8 @@ namespace njo
         Group currentGroup = Synth; int currentSynthPage = 0;
         juce::OwnedArray<OscPage> osc;
         FmPage fm; GlobalPage glob; FxPage fx;
-        ModEditors editors, editorsFull; MatrixPanel matrix;
+        ModEditors editors, editorsFull; FreqEditor freq, freqFull; MatrixPanel matrix;
+        int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators
         ManagerBar manager;
         juce::OwnedArray<juce::TextButton> railButtons, subButtons;   // plain buttons, painted by us
         struct Impl; std::unique_ptr<Impl> impl;

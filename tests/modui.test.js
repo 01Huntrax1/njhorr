@@ -92,6 +92,29 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
         V.updateModRings();
         check("clearing removes the mark", !cell.querySelector(".fmx-md"));
     }
+    // Freq modulators
+    {
+        check("10 FREQ chips and the FREQ tab", V.querySelectorAll(".bs-frq .msrc").length === 10 && !!V.querySelector('.bst[data-bs="frq"]'));
+        const cutKnob = V.querySelector('.control[data-param="param1032"]'), frqKnob = V.querySelector('.control[data-param="param1048"]'), lvlKnob = V.querySelector('.control[data-param="param1001"]');
+        check("a Freq modulator can be dropped on a cutoff knob", !!V.modTargetOf(cutKnob, 24) && V.modTargetOf(cutKnob, 24).dst === 12);
+        check("... and on the oscillator Frequency knob", !!V.modTargetOf(frqKnob, 33) && V.modTargetOf(frqKnob, 33).dst === 180);
+        check("... but on no other knob", V.modTargetOf(lvlKnob, 24) === null && !!V.modTargetOf(lvlKnob, 1));
+        const sl = V.modAssign(24, 180, 0.3);
+        check("assigning a Freq modulator uses a slot with source 24", sl >= 0 && Math.round(ctl(V, sl < 10 ? 307 + 3 * sl : 472 + 3 * (sl - 10)).value) === 24);
+        V.modClear(sl);
+        pc.sent.length = 0;
+        V.selectFrq(3);
+        const P = V.frqEnsurePts(3); P.splice(1, 0, { x: 0.1, y: 0.9, c: 0 });
+        V.frqCommit(3, true);
+        const fs = pc.sent.filter(x => x.ep === "frqShapeLoad");
+        check("the Freq curve is sent to the DSP (256 points, 0..1)", fs.length === 1 && fs[0].v.lfo === 3 && fs[0].v.data.length === 256 && fs[0].v.data.every(v => v >= 0 && v <= 1) && Math.abs(fs[0].v.data[Math.round(0.1 * 256)] - 0.9) < 0.03);
+        check("the curve is saved with the instance", Array.isArray(pc.store["njo.frq"]) && pc.store["njo.frq"][3].length === P.length);
+        check("rate / transpose / retrig / loop controls exist", [0,1,2,3].every(k => ctl(V, 1600 + 4 * 3 + k)) && ctl(V, 1600 + 4 * 3 + 2).value === 1);
+        const rec = V.collectFrq(); V.applyFrq(null);
+        check("a preset without curves resets them", V._frqPts.every(p => p === null));
+        V.applyFrq(rec);
+        check("a preset restores them", !!V._frqPts[3] && V._frqPts[3].length === P.length);
+    }
     V.modClear(1);
     V.updateModRings();
     check("clearing a slot lowers the count", knob.querySelector(".mdot").textContent === "");

@@ -40,7 +40,9 @@ namespace njo
 
     bool ParamWidget::isInterestedInDragSource (const SourceDetails& d)
     {
-        return d.description.toString().startsWith (kModDrag) && ctx.isModTarget (paramNum);
+        auto desc = d.description.toString();
+        return desc.startsWith (kModDrag) && ctx.isModTarget (paramNum)
+            && modSourceAllowed (desc.fromFirstOccurrenceOf (kModDrag, false, false).getIntValue(), paramNum);
     }
 
     void ParamWidget::itemDropped (const SourceDetails& d)

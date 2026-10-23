@@ -58,6 +58,7 @@ PARAMS = [
  (42, "dtype",  "Distortion Type",  "Type",      0, 7, 0, "", "sel", DIST_TYPES),
  (43, "ddrv",   "Distortion Drive", "Drive",     0, 1, 0.3, "", "sld", None),
  (44, "dmix",   "Distortion Mix",   "Mix",       0, 1, 1, "", "sld", None),
+ (48, "freq",   "Frequency", "Frequency", 0, 1, 0, "", "sld", None),   # 0 = Off (key pitch), else fixed 20 Hz .. 20 kHz
  (46, "wfpos",  "Wavefilter Position", "Table Pos", 0, 1, 0, "", "sld", None),
  (47, "wdpos",  "Wavedistortion Position", "Table Pos", 0, 1, 0, "", "sld", None),
  (45, "dpos",   "Distortion Position", "Dist vs Filter", 0, 1, 0, "", "btn", ["Post", "Pre"]),   # Post = filter -> distortion, Pre = distortion -> filter
@@ -70,7 +71,9 @@ MOD_DST_OSC = ["Pitch", "Level", "Pan", "Position / Harm", "Warp 1 / Timbre", "W
 def dst_index(o, j): return 6 + 9 * o + j
 N_DST = 6 + 9 * OSC_COUNT   # 60 (osc / global destinations); 60..167 = FM 60+n, PM 96+n, PD 132+n (n = 6*src + dst)
 N_TBL_DST = N_DST + 108   # 168..179: Wavefilter / Wavedistortion table position of OSC 1..6 (168 + 2 * o, 169 + 2 * o)
-N_DST_ALL = N_DST + 108 + 12
+N_FREQ_DST = N_TBL_DST + 12    # 180..185: oscillator Frequency knob of OSC 1..6 (the Freq modulators only reach these and the cutoffs)
+N_DST_ALL = N_DST + 108 + 12 + 6
+FRQ_BASE = 1600                 # Freq modulator m: rate (ms), transpose (semitones), retrig, loop = FRQ_BASE + 4 * m + 0..3
 def pid(o, k): return BASE + STRIDE * o + k
 def fm_id(src, dst): return FM_BASE + 6 * src + dst
 def pm_id(src, dst): return PM_BASE + 6 * src + dst

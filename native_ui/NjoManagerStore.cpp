@@ -62,6 +62,7 @@ namespace njo::mgr
         }
         o->setProperty ("refs", juce::var (refs));
         if (! p.lfo.isVoid()) o->setProperty ("lfo", p.lfo);
+        if (! p.frq.isVoid()) o->setProperty ("frq", p.frq);
         return juce::JSON::toString (juce::var (o), true);
     }
 
@@ -87,6 +88,7 @@ namespace njo::mgr
                 if (auto* r = kv.value.getDynamicObject())
                     out.refs[kv.name.toString()] = { r->getProperty ("name").toString(), (juce::int64) r->getProperty ("size") };
         out.lfo = o->getProperty ("lfo");
+        out.frq = o->getProperty ("frq");
         return true;
     }
 

@@ -220,7 +220,11 @@ namespace njo
             juce::Component anchor;   // invisible, parked over a cell so the amount popup opens next to it
 
             // ---- drop of a modulation source (LFO / ENV / VEL / KEY / RND handle) onto a cell ----
-            bool isInterestedInDragSource (const SourceDetails& d) override { return d.description.toString().startsWith (kModDrag); }
+            bool isInterestedInDragSource (const SourceDetails& d) override
+            {
+                auto t = d.description.toString();   // Freq modulators only reach the cutoff and Frequency knobs
+                return t.startsWith (kModDrag) && t.fromFirstOccurrenceOf (kModDrag, false, false).getIntValue() < 24;
+            }
             void setModHover (juce::Point<int> p)
             {
                 auto h = im.hitTest (p.toFloat());

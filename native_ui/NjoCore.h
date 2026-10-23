@@ -9,6 +9,7 @@
 namespace njo
 {
     class LfoShapes;
+    class FreqShapes;
     struct ModSlot { int s = 0, src = 0, dst = 0; float amt = 0; };
 
     class Ctx : private Backend::Listener
@@ -54,6 +55,10 @@ namespace njo
 
         // drawn LFO shapes (implemented with the modulation editors; created lazily by the first user)
         std::shared_ptr<LfoShapes> lfoShapes;
+
+        // Freq modulators: the selected one and the drawn curves
+        int selectedFrq = 0;
+        std::shared_ptr<FreqShapes> freqShapes;
 
     private:
         void paramChanged (int num, float v) override;

@@ -25,7 +25,7 @@ namespace njo::mgr
         juce::int64 saved = 0;
         std::map<int, double> params;
         std::map<juce::String, Ref> refs;     // slot key (wt0..wt5, sm0..sm5); absent = null
-        juce::var lfo;
+        juce::var lfo, frq;
     };
 
     struct LibRec

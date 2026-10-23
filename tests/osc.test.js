@@ -23,6 +23,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("filter has all 30 types plus the Wavefilter", opts(1031).length === 31 && opts(1031 + 64 * 5).length === 31 && opts(1031)[30] === "Wavefilter");
     check("distortion has 6 types plus the Wavedistortion", opts(1042).length === 8 && opts(1042)[7] === "Wavedistortion");
     check("table position controls exist for every slot", [0,1,2,3,4,5].every(o => ctl(1046 + 64 * o) && ctl(1047 + 64 * o)));
+    check("every slot has a Frequency knob (0 = Off)", [0,1,2,3,4,5].every(o => ctl(1048 + 64 * o)) && V.querySelector(".control[data-param=\"param1048\"] .val") !== undefined);
     check("old filter / mixer / sampler controls are gone", !V.querySelector(".p-flt, .p-mix, .p-smp, .p-s2, .p-wt1") && !ctl(12) && !ctl(176) && !ctl(154));
     check("Plaits engine selector lists 24 engines", opts(1024).length === 24);
 
@@ -37,7 +38,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("Plaits knob labels follow the engine", V.querySelector(".n1025 .lbl").textContent === "Attack" && V.querySelector(".n1027 .lbl").textContent === "Decay", V.querySelector(".n1025 .lbl").textContent);
     ctl(1024 + 64).setValue(15, true);
     check("labels are per slot", V.querySelector(".n1089 .lbl").textContent === "Species" && V.querySelector(".n1025 .lbl").textContent === "Attack");
-    check("slot dest list covers 179", opts(308).length === 180 && opts(308)[168] === "OSC 1 Wavefilter Pos" && opts(308)[179] === "OSC 6 Wavedistortion Pos" && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
+    check("slot dest list covers 185 (incl. the Frequency knobs)", opts(308).length === 186 && opts(308)[180] === "OSC 1 Frequency" && opts(308)[185] === "OSC 6 Frequency" && opts(308)[168] === "OSC 1 Wavefilter Pos" && opts(308)[179] === "OSC 6 Wavedistortion Pos" && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
     V.querySelector('.stab[data-page="fm"]').click();
     check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 108 && V.querySelectorAll(".fmx-panel").length === 3);
     V.querySelector('.stab[data-page="glob"]').click();

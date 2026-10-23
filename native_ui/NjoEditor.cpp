@@ -1,5 +1,6 @@
 #include "NjoEditor.h"
 #include "NjoLfo.h"
+#include "NjoFreq.h"
 
 namespace njo
 {
@@ -44,15 +45,16 @@ namespace njo
     struct EditorContent::Impl
     {
         juce::OwnedArray<NavButton> rail, tabs;
-        std::unique_ptr<NavButton> stripToggle, sizeButton;
+        std::unique_ptr<NavButton> stripToggle, sizeButton, stripModBtn, stripFrqBtn, modEnvBtn, modFrqBtn;
         juce::Rectangle<int> topBar, lcdRect, stripRect, mainRect, stageRect, subRect, mgrRect;
         juce::Component* shownPage = nullptr;
     };
 
     EditorContent::EditorContent (Backend& be)
-        : ctx (be), memory (ctx), fm (ctx), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), memory (ctx), fm (ctx), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
+        if (! ctx.freqShapes) ctx.freqShapes = std::make_shared<FreqShapes> (ctx);
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
         ctx.onStatus = [this] (const juce::String& t) { status = t; statusUntil = juce::Time::getMillisecondCounterHiRes() + 2500; repaint (impl->lcdRect); };
 
@@ -95,8 +97,15 @@ namespace njo
         glob.onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
         fx.onModDropped = glob.onModDropped;
         addChildComponent (fm); addChildComponent (glob); addChildComponent (fx);
-        addChildComponent (editorsFull); addChildComponent (matrix);
+        addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (matrix);
+        addChildComponent (freq);
         addAndMakeVisible (editors);
+        // tabs of the bottom strip (MOD / FREQ) and of the top panel of the modulation page (ENV / LFO | FREQ)
+        auto mk = [this] (std::unique_ptr<NavButton>& b, const char* t, std::function<void()> f) { b = std::make_unique<NavButton> (NavButton::Mini, t); b->onClick = std::move (f); addChildComponent (*b); };
+        mk (impl->stripModBtn, "MOD", [this] { stripTab = 0; stripOpen = true; layoutAll(); });
+        mk (impl->stripFrqBtn, "FREQ", [this] { stripTab = 1; stripOpen = true; layoutAll(); });
+        mk (impl->modEnvBtn, "ENV / LFO", [this] { modTab = 0; layoutAll(); });
+        mk (impl->modFrqBtn, "FREQ", [this] { modTab = 1; layoutAll(); });
         addAndMakeVisible (manager);
         setSize (BASE_W, BASE_H);
         setGroup (Synth);
@@ -167,7 +176,8 @@ namespace njo
 
         for (auto* p : osc) p->setVisible (false);
         fm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false);
-        editors.setVisible (false);
+        editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false);
+        for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get() }) b->setVisible (false);
         if (synth)
         {
             if (currentSynthPage < 6) { osc[currentSynthPage]->setBounds (impl->stageRect); osc[currentSynthPage]->setVisible (true); }
@@ -182,7 +192,11 @@ namespace njo
             impl->stripRect = area.withHeight (0);
             auto top = area.removeFromTop (juce::roundToInt (area.getHeight() * 0.48f));
             area.removeFromTop (6);
-            editorsFull.setBounds (top.withTrimmedTop (0)); editorsFull.setVisible (true);
+            editorsFull.setBounds (top); freqFull.setBounds (top);
+            editorsFull.setVisible (modTab == 0); freqFull.setVisible (modTab == 1);
+            impl->modEnvBtn->setBounds (top.getRight() - 128, top.getY() + 5, 70, 18); impl->modFrqBtn->setBounds (top.getRight() - 54, top.getY() + 5, 46, 18);
+            impl->modEnvBtn->text = "ENV / LFO"; impl->modEnvBtn->setOn (modTab == 0); impl->modFrqBtn->setOn (modTab == 1);
+            impl->modEnvBtn->setVisible (true); impl->modFrqBtn->setVisible (true);
             matrix.setBounds (area); matrix.setVisible (true);
         }
         if (! mod)
@@ -191,7 +205,11 @@ namespace njo
             impl->stripToggle->setBounds (s.getRight() - 26, s.getY() + 3, 22, 18);
             impl->stripToggle->text = stripOpen ? juce::String (juce::CharPointer_UTF8 ("\xe2\x96\xbe")) : juce::String (juce::CharPointer_UTF8 ("\xe2\x96\xb4"));
             impl->stripToggle->setVisible (true);
-            editors.setBounds (s.withTrimmedTop (26)); editors.setVisible (stripOpen);
+            editors.setBounds (s.withTrimmedTop (26)); freq.setBounds (s.withTrimmedTop (26));
+            editors.setVisible (stripOpen && stripTab == 0); freq.setVisible (stripOpen && stripTab == 1);
+            impl->stripModBtn->setBounds (s.getX() + 8, s.getY() + 4, 46, 18); impl->stripFrqBtn->setBounds (s.getX() + 8 + 49, s.getY() + 4, 46, 18);
+            impl->stripModBtn->setOn (stripTab == 0); impl->stripFrqBtn->setOn (stripTab == 1);
+            impl->stripModBtn->setVisible (true); impl->stripFrqBtn->setVisible (true);
         }
         else impl->stripToggle->setVisible (false);
         impl->sizeButton->setBounds (impl->topBar.getRight() - 346, impl->topBar.getY() + 12, 44, 20);
@@ -246,11 +264,11 @@ namespace njo
             g.setGradientFill (vertical (juce::Colour (0xff25282c), juce::Colour (0xff1a1c1f), s));
             g.fillRoundedRectangle (s, 2.0f); g.setColour (line); g.drawRoundedRectangle (s, 2.0f, 1.0f);
             auto h = s.removeFromTop (26).reduced (8, 4);
-            auto tab = h.removeFromLeft (46);
-            g.setColour (red); g.fillRoundedRectangle (tab, 1.5f);
-            g.setColour (juce::Colour (0xff111111)); g.setFont (font (9.0f, true)); g.drawText ("MOD", tab.toNearestInt(), juce::Justification::centred);
+            h.removeFromLeft (46 + 3 + 46);
             g.setColour (dim); g.setFont (font (8.5f));
-            g.drawText ("drag an LFO / ENV handle onto a knob  -  click a knob's dot to set the amount", h.withTrimmedRight (30).toNearestInt(), juce::Justification::centredRight, true);
+            g.drawText (stripTab == 0 ? "drag an LFO / ENV handle onto a knob  -  click a knob's dot to set the amount"
+                                      : "drag a FREQ handle onto a cutoff or Frequency knob  -  click the knob's dot to set the amount",
+                        h.withTrimmedRight (30).toNearestInt(), juce::Justification::centredRight, true);
         }
     }
 

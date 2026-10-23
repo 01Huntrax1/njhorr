@@ -1,6 +1,7 @@
 // Envelope + LFO editors with the drag handles for the modulation sources.
 #include "ModUi.h"
 #include "../NjoLfo.h"
+#include "../NjoFreq.h"
 
 namespace njo
 {
@@ -397,6 +398,231 @@ namespace njo
                 I.modeBtn[i]->setBounds (ma); I.syncBtn[i]->setBounds (mr); I.divSel[i]->setBounds (dr);
                 for (int k = 0; k < 5; ++k) I.lfoKnobs[i * 5 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
             }
+        }
+    }
+}
+
+namespace njo
+{
+    using namespace theme;
+
+    namespace
+    {
+        FreqShapes& freqShapes (Ctx& c) { if (! c.freqShapes) c.freqShapes = std::make_shared<FreqShapes> (c); return *c.freqShapes; }
+        const double kFrqAxis[] = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000 };
+        const char* const kFrqAxisText[] = { "20", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k" };
+        std::vector<struct FreqRefresh*> gFrqAll;
+        struct FreqRefresh { virtual ~FreqRefresh() = default; virtual void refreshAll() = 0; };
+    }
+
+    // ------------------------------------------------------------------ Freq curve canvas: frequency (log) over time
+    struct FreqCanvas : juce::Component
+    {
+        Ctx& ctx; std::function<void()> changed;
+        explicit FreqCanvas (Ctx& c) : ctx (c) {}
+        static constexpr float padL = 34, padR = 10, padT = 10, padB = 18;
+        float px (float x) const { return padL + x * (getWidth() - padL - padR); }
+        float py (float y) const { return getHeight() - padB - y * (getHeight() - padT - padB); }
+        float ix (float X) const { return (X - padL) / (getWidth() - padL - padR); }
+        float iy (float Y) const { return (getHeight() - padB - Y) / (getHeight() - padT - padB); }
+        int sel() const { return ctx.selectedFrq; }
+
+        void paint (juce::Graphics& g) override
+        {
+            float W = (float) getWidth(), H = (float) getHeight();
+            auto& P = freqShapes (ctx).points (sel());
+            const float rate = ctx.get (frqParam (sel()));
+            g.setColour (juce::Colour (0xff0b0405)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
+            g.setFont (font (9.0f));
+            for (int k = 0; k < 10; ++k)
+            {
+                float y = std::floor (py ((float) (std::log (kFrqAxis[k] / 20.0) / std::log (1000.0)))) + 0.5f;
+                g.setColour (juce::Colours::white.withAlpha (0.07f)); g.drawHorizontalLine ((int) y, padL, W - padR);
+                g.setColour (juce::Colours::white.withAlpha (0.45f));
+                g.drawText (kFrqAxisText[k], juce::Rectangle<float> (0, y - 6, padL - 4, 12).toNearestInt(), juce::Justification::centredRight);
+            }
+            for (int k = 1; k <= 5; ++k)
+            {
+                float x = std::floor (px (k / 6.0f)) + 0.5f, ms = rate * k / 6.0f;
+                g.setColour (juce::Colours::white.withAlpha (0.07f)); g.drawVerticalLine ((int) x, padT, H - padB);
+                g.setColour (juce::Colours::white.withAlpha (0.45f));
+                g.drawText (ms >= 1000 ? juce::String (ms / 1000, 1) + " s" : juce::String (juce::roundToInt (ms)) + " ms",
+                            juce::Rectangle<float> (x - 30, H - 14, 60, 12).toNearestInt(), juce::Justification::centred);
+            }
+            juce::Path line;
+            for (int k = 0; k <= 400; ++k) { float p = k / 400.0f, y = LfoShapes::sampleAt (P, p); if (k == 0) line.startNewSubPath (px (p), py (y)); else line.lineTo (px (p), py (y)); }
+            juce::Path fill (line); fill.lineTo (px (1), py (0)); fill.lineTo (px (0), py (0)); fill.closeSubPath();
+            g.setColour (juce::Colour::fromFloatRGBA (1, 0.35f, 0.24f, 0.16f)); g.fillPath (fill);
+            g.setColour (juce::Colour (0xffff6a4d)); g.strokePath (line, juce::PathStrokeType (2.0f));
+            for (size_t k = 0; k + 1 < P.size(); ++k)
+            {
+                auto& a = P[k]; auto& b = P[k + 1];
+                if (b.x - a.x < 0.02f) continue;
+                auto e = juce::Rectangle<float> (7, 7).withCentre ({ px ((a.x + b.x) / 2), py (LfoShapes::curve (a.y, b.y, a.c, 0.5f)) });
+                g.setColour (juce::Colour (0xff2a1210)); g.fillEllipse (e);
+                g.setColour (juce::Colour (0xffffb09e)); g.drawEllipse (e, 1.2f);
+            }
+            for (auto& q : P)
+            {
+                auto e = juce::Rectangle<float> (10, 10).withCentre ({ px (q.x), py (q.y) });
+                g.setColour (juce::Colour (0xffff8068)); g.fillEllipse (e);
+                g.setColour (juce::Colour (0xffffd9cf)); g.drawEllipse (e, 1.5f);
+            }
+        }
+
+        struct Hit { int kind = 0, k = 0; };   // 1 point, 2 curve handle
+        Hit hit (const std::vector<LfoPoint>& P, float X, float Y) const
+        {
+            for (size_t k = 0; k < P.size(); ++k) if (std::hypot (px (P[k].x) - X, py (P[k].y) - Y) < 11) return { 1, (int) k };
+            for (size_t k = 0; k + 1 < P.size(); ++k)
+            {
+                auto& a = P[k]; auto& b = P[k + 1];
+                if (b.x - a.x < 0.02f) continue;
+                if (std::hypot (px ((a.x + b.x) / 2) - X, py (LfoShapes::curve (a.y, b.y, a.c, 0.5f)) - Y) < 10) return { 2, (int) k };
+            }
+            return {};
+        }
+        Hit dragHit; float y0 = 0, c0 = 0; bool dragging = false;
+        void commit (bool final) { freqShapes (ctx).commit (sel(), final); if (changed) changed(); }
+
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            auto& P = freqShapes (ctx).points (sel());
+            float X = e.position.x, Y = e.position.y;
+            auto h = hit (P, X, Y);
+            if (h.kind == 0)
+            {
+                float x = juce::jlimit (0.004f, 0.996f, ix (X)), y = juce::jlimit (0.0f, 1.0f, iy (Y));
+                size_t k = 0; while (k < P.size() && P[k].x < x) ++k;
+                if (k == 0 || k >= P.size()) return;
+                P.insert (P.begin() + (long) k, { x, y, 0.0f });
+                h = { 1, (int) k };
+                commit (false);
+            }
+            dragHit = h; y0 = Y; c0 = h.kind == 2 ? P[(size_t) h.k].c : 0.0f; dragging = true;
+        }
+        void mouseDrag (const juce::MouseEvent& e) override
+        {
+            if (! dragging) return;
+            auto& P = freqShapes (ctx).points (sel());
+            float X = e.position.x, Y = e.position.y;
+            if (dragHit.kind == 1)
+            {
+                auto& q = P[(size_t) dragHit.k];
+                q.y = juce::jlimit (0.0f, 1.0f, iy (Y));
+                if (dragHit.k > 0 && dragHit.k < (int) P.size() - 1)
+                    q.x = juce::jmax (P[(size_t) dragHit.k - 1].x + 0.002f, juce::jmin (P[(size_t) dragHit.k + 1].x - 0.002f, ix (X)));
+            }
+            else
+            {
+                auto& a = P[(size_t) dragHit.k]; auto& b = P[(size_t) dragHit.k + 1];
+                float dir = b.y > a.y ? 1.0f : (b.y < a.y ? -1.0f : 1.0f);
+                a.c = juce::jlimit (-1.0f, 1.0f, c0 + (Y - y0) / 70.0f * dir);
+            }
+            commit (false);
+        }
+        void mouseUp (const juce::MouseEvent&) override { if (dragging) { dragging = false; commit (true); } }
+        void mouseDoubleClick (const juce::MouseEvent& e) override
+        {
+            auto& P = freqShapes (ctx).points (sel());
+            auto h = hit (P, e.position.x, e.position.y);
+            if (h.kind == 1 && h.k > 0 && h.k < (int) P.size() - 1) P.erase (P.begin() + h.k);
+            else if (h.kind == 2) P[(size_t) h.k].c = 0;
+            else return;
+            commit (true);
+        }
+    };
+
+    struct FreqEditor::Impl : Ctx::Listener, FreqRefresh
+    {
+        Ctx& ctx; FreqEditor& owner;
+        juce::OwnedArray<SourceChip> chips;
+        FreqCanvas cv;
+        juce::OwnedArray<ParamWidget> knobs, retrig, loop;
+        bool full = false; juce::Rectangle<int> helpRect, btnLabels[2];
+
+        Impl (Ctx& c, FreqEditor& o) : ctx (c), owner (o), cv (c)
+        {
+            ctx.addListener (this); gFrqAll.push_back (this);
+            freqShapes (ctx);
+            cv.changed = [] { for (auto* a : gFrqAll) a->refreshAll(); };
+            for (int i = 0; i < 10; ++i)
+            {
+                auto* ch = chips.add (new SourceChip (24 + i)); ch->onClick = [this, i] { ctx.selectedFrq = i; for (auto* a : gFrqAll) a->refreshAll(); };
+                owner.addAndMakeVisible (ch);
+                for (int k = 0; k < 2; ++k) { auto* w = knobs.add (makeWidget (ctx, frqParam (i) + k, true).release()); w->setLook (true); owner.addChildComponent (w); }
+                auto* r = static_cast<ButtonsWidget*> (retrig.add (makeWidget (ctx, frqParam (i) + 2, false).release())); r->setShowLabel (false); owner.addChildComponent (r);
+                auto* l = static_cast<ButtonsWidget*> (loop.add (makeWidget (ctx, frqParam (i) + 3, false).release())); l->setShowLabel (false); owner.addChildComponent (l);
+            }
+            owner.addAndMakeVisible (cv);
+            refreshAll();
+        }
+        ~Impl() override { ctx.removeListener (this); gFrqAll.erase (std::remove (gFrqAll.begin(), gFrqAll.end(), this), gFrqAll.end()); }
+
+        void paramChanged (int n, float) override { if (n == frqParam (ctx.selectedFrq)) cv.repaint(); }
+
+        void refreshAll() override
+        {
+            int s = ctx.selectedFrq;
+            for (int i = 0; i < 10; ++i)
+            {
+                chips[i]->on = i == s; chips[i]->repaint();
+                knobs[i * 2]->setVisible (i == s); knobs[i * 2 + 1]->setVisible (i == s);
+                retrig[i]->setVisible (i == s); loop[i]->setVisible (i == s);
+            }
+            cv.repaint();
+        }
+    };
+
+    FreqEditor::FreqEditor (Ctx& c) : impl (new Impl (c, *this)) {}
+    FreqEditor::~FreqEditor() = default;
+
+    void FreqEditor::paint (juce::Graphics& g)
+    {
+        auto& I = *impl;
+        if (I.full)
+        {
+            paintCard (g, getLocalBounds().toFloat());
+            g.setColour (red); g.setFont (impact (11.0f));
+            g.drawText ("FREQUENCY MODULATORS", 10, 4, 260, 16, juce::Justification::centredLeft);
+        }
+        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+        g.drawText (juce::String (juce::CharPointer_UTF8 ("click: add point \xc2\xb7 drag: move \xc2\xb7 dbl-click point: delete \xc2\xb7 drag the diamond: curve")), I.helpRect, juce::Justification::centredLeft, true);
+        g.setFont (font (8.5f, true)); g.setColour (dim);
+        g.drawText ("RETRIG", I.btnLabels[0], juce::Justification::topLeft);
+        g.drawText ("LOOP", I.btnLabels[1], juce::Justification::topLeft);
+        if (! I.full)
+        {
+            g.setColour (srcColour (24).withAlpha (0.8f));
+            g.drawText ("only onto the cutoff and Frequency knobs", getLocalBounds().reduced (10, 4).removeFromTop (18).removeFromRight (230), juce::Justification::centredRight, true);
+        }
+    }
+
+    void FreqEditor::resized()
+    {
+        auto& I = *impl;
+        I.full = getHeight() > 230;
+        auto b = getLocalBounds().reduced (10, I.full ? 6 : 2);
+        if (I.full) b.removeFromTop (16);
+        const int ch = 18, cg = 3;
+        auto row = b.removeFromTop (ch); b.removeFromTop (4);
+        int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
+        for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
+        auto right = b.removeFromRight (230); b.removeFromRight (10);
+        I.helpRect = b.removeFromBottom (12);
+        I.cv.setBounds (b.withTrimmedBottom (2));
+        // right column: Retrig / Loop and the two knobs
+        auto c = right;
+        auto lab = c.removeFromTop (12); I.btnLabels[0] = lab.removeFromLeft (lab.getWidth() / 2); I.btnLabels[1] = lab;
+        auto br = c.removeFromTop (20);
+        auto ra = br.removeFromLeft (br.getWidth() / 2 - 3); br.removeFromLeft (3);
+        c.removeFromTop (6);
+        auto knobs = c.removeFromBottom (juce::jmin (c.getHeight(), 60));
+        int kw = knobs.getWidth() / 2;
+        for (int i = 0; i < 10; ++i)
+        {
+            I.retrig[i]->setBounds (ra); I.loop[i]->setBounds (br);
+            for (int k = 0; k < 2; ++k) I.knobs[i * 2 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
         }
     }
 }

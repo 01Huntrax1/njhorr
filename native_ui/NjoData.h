@@ -7,7 +7,7 @@
 namespace njo
 {
     // ---- layout constants (same as the JS UI) ----
-    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, MOD_SLOTS = 20;
+    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, FRQ_BASE = 1600, PM_BASE = 1440, PD_BASE = 1480, MOD_SLOTS = 20;
     constexpr int BASE_W = 1180, BASE_H = 760;
     constexpr int MAX_SMP = 96000, CHUNK = 256;
     constexpr int MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
@@ -74,6 +74,8 @@ namespace njo
     inline int lfoDivParam (int i) { return 503 + 2 * i; }
     inline int lfoModeParam (int i) { return 882 + 5 * i; }       // +1 delay +2 rise +3 smooth +4 phase
     inline int envParam (int i) { return 267 + 4 * i; }           // +0 attack +1 decay +2 sustain +3 release
+    inline int frqParam (int i) { return FRQ_BASE + 4 * i; }      // Freq modulator i: +0 rate (ms) +1 transpose (st) +2 retrig +3 loop
+    bool modSourceAllowed (int src, int paramNum);                 // Freq modulators (24..33) only reach the cutoff and Frequency knobs
     juce::String srcShort (int n);           // "LFO 3", "ENV 2", "VEL" ...
     juce::Colour srcColour (int n);
 

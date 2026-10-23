@@ -66,6 +66,7 @@ namespace njo
         if (n >= 1 && n <= 10) return "LFO " + juce::String (n);
         if (n >= 11 && n <= 20) return "ENV " + juce::String (n - 10);
         if (n == 21) return "VEL"; if (n == 22) return "KEY"; if (n == 23) return "RND";
+        if (n >= 24 && n <= 33) return "FRQ " + juce::String (n - 23);
         return {};
     }
 
@@ -73,7 +74,16 @@ namespace njo
     {
         if (n >= 1 && n <= 10) return juce::Colour (0xffff6a4d);
         if (n >= 11 && n <= 20) return juce::Colour (0xff4db8ff);
+        if (n >= 24) return juce::Colour (0xffb57bff);
         return juce::Colour (0xffc9c24a);
+    }
+
+    bool modSourceAllowed (int src, int num)
+    {
+        if (src < 24) return true;
+        if (num < OSC_BASE || num >= OSC_BASE + OSC_STRIDE * OSC_N) return false;
+        int k = (num - OSC_BASE) % OSC_STRIDE;
+        return k == oscKey ("fcut") || k == oscKey ("freq");
     }
 
     juce::String formatValue (const Spec& s, double v, const int* fxSlotTypes)
@@ -100,6 +110,7 @@ namespace njo
         {
             int k = (s.num - OSC_BASE) % OSC_STRIDE;
             if (k == oscKey ("pan")) { int p = juce::roundToInt (v * 50); return p == 0 ? juce::String ("C") : (p < 0 ? "L" + juce::String (-p) : "R" + juce::String (p)); }
+            if (k == oscKey ("freq")) { if (v < 0.001) return "Off"; double f = 20.0 * std::pow (1000.0, v); return f >= 1000 ? juce::String (f / 1000, 2) + " kHz" : juce::String (f, f < 100 ? 1 : 0) + " Hz"; }
             if (k == oscKey ("phase")) return juce::String (juce::roundToInt (v * 360)) + juce::String (juce::CharPointer_UTF8 ("\xc2\xb0"));
             if (k == oscKey ("root")) { int n = juce::roundToInt (v); return noteNames()[n % 12] + juce::String (n / 12 - 1); }
             if (k == oscKey ("uvox")) { int n = juce::roundToInt (v); return juce::String (n) + (n == 1 ? " voice" : " voices"); }

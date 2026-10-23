@@ -3,6 +3,7 @@
 #include "NjoManager.h"
 #include "NjoManagerStore.h"
 #include "NjoLfo.h"
+#include "NjoFreq.h"
 
 using namespace njo;
 using namespace njo::mgr;
@@ -634,6 +635,7 @@ PresetRec ManagerBar::Impl::collectRec (const juce::String& name)
         if (auto* l = findLib (it->second.id)) r.refs[d.key] = { l->fname, l->size };
     }
     if (ctx.lfoShapes) r.lfo = ctx.lfoShapes->toVar();
+    if (ctx.freqShapes) r.frq = ctx.freqShapes->toVar();
     return r;
 }
 
@@ -685,6 +687,7 @@ void ManagerBar::Impl::presetApply (const PresetRec& rec, const juce::String& la
         ctx.set (s.num, (float) v);
     }
     if (ctx.lfoShapes) ctx.lfoShapes->fromVar (rec.lfo);
+    if (ctx.freqShapes) ctx.freqShapes->fromVar (rec.frq);
     ctx.touchAll();
     applying = false;
     cur = { rec.id, label.isNotEmpty() ? label : rec.name, false };

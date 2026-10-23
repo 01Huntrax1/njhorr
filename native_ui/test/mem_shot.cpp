@@ -1,4 +1,5 @@
 // PRIVATE (memory worker): SoundMemory round trip checks + FM / Global page screenshots.
+#include "../NjoFreq.h"
 #include "../NjoEditor.h"
 #include "../NjoMock.h"
 #include <cstdio>
@@ -99,6 +100,27 @@ int main (int argc, char** argv)
         int n = 0; for (auto& e : be.events) if (e.endpoint == "wtBankLoad" || e.endpoint == "smpBankLoad") ++n;
         std::printf ("restore events=%d\n", n);
         CHECK (n > 20);
+    }
+    // Freq modulator curves: table to the DSP (256 points, 0..1), stored state, round trip
+    {
+        be.events.clear();
+        njo::FreqShapes fs (ctx);
+        be.events.clear();
+        auto& P = fs.points (2); P.insert (P.begin() + 1, { 0.1f, 0.9f, 0.0f });
+        fs.commit (2, true);
+        const MockBackend::Event* ev = nullptr;
+        for (auto& e : be.events) if (e.endpoint == "frqShapeLoad") ev = &e;
+        CHECK (ev != nullptr && (int) ev->value["lfo"] == 2 && ev->value["data"].size() == 256);
+        if (ev) { bool in01 = true; for (int i = 0; i < 256; ++i) { double v = (double) ev->value["data"][i]; in01 &= v >= 0 && v <= 1; } CHECK (in01); CHECK (std::abs ((double) ev->value["data"][26] - 0.9) < 0.03); }
+        CHECK (be.stored.count ("njo.frq") == 1);
+        njo::FreqShapes fs2 (ctx);
+        CHECK (fs2.points (2).size() == 6 && std::abs (fs2.points (2)[1].y - 0.9f) < 0.001f && fs2.points (0).size() == 5);
+        auto v = fs2.toVar(); fs2.fromVar (juce::var());
+        CHECK (fs2.points (2).size() == 5);
+        fs2.fromVar (v);
+        CHECK (fs2.points (2).size() == 6);
+        CHECK (njo::modSourceAllowed (24, njo::oscId (0, njo::oscKey ("fcut"))) && njo::modSourceAllowed (33, njo::oscId (5, njo::oscKey ("freq"))));
+        CHECK (! njo::modSourceAllowed (24, njo::oscId (0, njo::oscKey ("level"))) && njo::modSourceAllowed (1, njo::oscId (0, njo::oscKey ("level"))));
     }
     // FM / GLOBAL pages
     MockBackend be2; EditorContent ed (be2);

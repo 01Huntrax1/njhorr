@@ -25,6 +25,7 @@ def render(cmds, note=69, hold=0.7, tail=0.3, tag="x", vel=100):
     with open(script, "w") as f:
         for c in cmds:
             if isinstance(c, str): f.write(c + "\n")
+            elif c[0] == "fshape": f.write("fshape %d %s %s\n" % (c[1], c[2], c[3] if len(c) > 3 else 0))
             elif c[0] == "shape": f.write("shape %d %s %s\n" % (c[1], c[2], c[3] if len(c) > 3 else 0))
             else: f.write("p %d %s\n" % (c[0], c[1]))
         f.write("run 0.05\n")
@@ -272,6 +273,32 @@ check("Wavedistortion with a constant table stays finite and DC free", np.isfini
 x = seg(render(SH(0, [P(0, "dpos", 1), P(0, "ftype", 1), P(0, "fon", 1), P(0, "fcut", 600), P(0, "ddrv", 0.5), P(0, "wdpos", 5 / 15)]), tag="shpre"))[:, 0]
 check("Wavedistortion honours the Pre / Post switch", np.isfinite(x).all() and rms(x) > 0.01)
 
+# ---------------------------------------------------------------- Frequency knob and Freq modulators
+FQ = lambda v: ["wt 0 sine", FOFF(0), P(0, "freq", v)]
+x = seg(render(FQ(0.5), note=45, tag="fq1"))[:, 0]
+check("Frequency knob sets a fixed oscillator frequency (0.5 = 632.5 Hz, any key)", abs(peak_freq(x) - 632.5) < 4, "%.1f Hz" % peak_freq(x))
+x = seg(render(FQ(0.0), note=69, tag="fq0"))[:, 0]
+check("Frequency knob at 0 is off (key pitch)", abs(peak_freq(x) - 440) < 2)
+DFQ = lambda o: L.N_FREQ_DST + o
+x = seg(render(FQ(0.5) + [(307, 24), (308, DFQ(0)), (309, 0.25), ("fshape", 0, "const", 1.0)], note=45, tag="fq2"))[:, 0]
+exp = 632.5 * 2 ** (0.25 * 9.9658)
+check("Freq modulator 1 on the Frequency knob (curve 1.0, amount 0.25 = +2.49 octaves)", abs(peak_freq(x) / exp - 1) < 0.04, "%.0f Hz, expected %.0f" % (peak_freq(x), exp))
+x = seg(render(FQ(0.0) + [(307, 24), (308, DFQ(0)), (309, 0.1), ("fshape", 0, "const", 1.0)], note=57, tag="fq3"))[:, 0]
+exp = 220 * 2 ** (0.1 * 9.9658)
+check("with the knob off the Freq modulator adds octaves to the key pitch", abs(peak_freq(x) / exp - 1) < 0.04, "%.0f Hz, expected %.0f" % (peak_freq(x), exp))
+CUT = ["wt 0 saw", P(0, "fon", 1), P(0, "ftype", 1), P(0, "fcut", 200), P(0, "fkey", 0), P(0, "fres", 0.1)]
+a0 = seg(render(CUT, tag="fqc0"))[:, 0]
+a1 = seg(render(CUT + [(307, 24), (308, L.dst_index(0, 6)), (309, 0.4), ("fshape", 0, "const", 1.0)], tag="fqc1"))[:, 0]
+check("Freq modulator on the cutoff opens the filter", band(a1, 2000, 10000) > 3 * band(a0, 2000, 10000), "%.1f vs %.1f" % (band(a1, 2000, 10000), band(a0, 2000, 10000)))
+a2 = seg(render(["wt 0 sine", FOFF(0), P(0, "level", 0.4), (307, 24), (308, L.dst_index(0, 1)), (309, 1.0), ("fshape", 0, "const", 1.0)], tag="fql"))[:, 0]
+a3 = seg(render(["wt 0 sine", FOFF(0), P(0, "level", 0.4)], tag="fql0"))[:, 0]
+check("Freq modulators do nothing on other destinations", abs(rms(a2) / rms(a3) - 1) < 0.01)
+r = render(FQ(0.5) + [(307, 24), (308, DFQ(0)), (309, 0.25), ("fshape", 0, "ramp"), (1600, 400), (1602, 1)], note=45, hold=0.6, tail=0.1, tag="fq4")
+e1, e2 = r[int(0.1 * RATE):int(0.2 * RATE), 0], r[int(0.4 * RATE):int(0.5 * RATE), 0]
+check("a rising curve sweeps the pitch up over its Rate", peak_freq(e2) > 1.8 * peak_freq(e1), "%.0f -> %.0f Hz" % (peak_freq(e1), peak_freq(e2)))
+r = render(FQ(0.5) + [(307, 24), (308, DFQ(0)), (309, 0.25), ("fshape", 0, "ramp"), (1600, 100), (1603, 1)], note=45, hold=0.9, tail=0.1, tag="fq5")
+y1, y2 = r[int(0.3 * RATE):int(0.35 * RATE), 0], r[int(0.8 * RATE):int(0.85 * RATE), 0]
+check("Loop repeats the curve, one shot holds its end", np.isfinite(r).all() and peak_freq(y1) > 0 and peak_freq(y2) > 0)
 # ---------------------------------------------------------------- polyphony, release, extremes
 a = render(WT0 + [FOFF(0), P(0, "level", 0.8)], note=60, tag="poly")
 script = os.path.join(TMP, "chord.txt"); out = os.path.join(TMP, "chord.f32")

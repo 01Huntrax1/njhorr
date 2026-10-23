@@ -65,6 +65,18 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
+    // the 10 Freq modulators: a curve of frequency over time (log axis), Retrig / Loop, Rate and Transpose; their handles only reach the
+    // cutoff knobs and the oscillator Frequency knobs
+    class FreqEditor : public juce::Component
+    {
+    public:
+        explicit FreqEditor (Ctx&);
+        ~FreqEditor() override;
+        void paint (juce::Graphics&) override;
+        void resized() override;
+        struct Impl; std::unique_ptr<Impl> impl;
+    };
+
     // the 20 slot modulation matrix
     class MatrixPanel : public juce::Component
     {
