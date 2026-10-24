@@ -375,7 +375,7 @@ namespace njo
     {
         auto box = getLocalBounds().toFloat();
         displayBox (g, box);
-        const float W = 600.0f, H = 200.0f;
+        const float W = 600.0f, H = W * box.getHeight() / juce::jmax (1.0f, box.getWidth());   // uniform scale: the picture keeps its proportions at any size
         {
             juce::Graphics::ScopedSaveState ss (g);
             g.reduceClipRegion (getLocalBounds());
@@ -445,5 +445,123 @@ namespace njo
             }
         }
         displayBorder (g, box);
+    }
+
+    // =============================================================== DistDisplay
+    DistDisplay::DistDisplay (Ctx& c, SoundMemory& m, int osc) : ctx (c), mem (m), o (osc) { ctx.addListener (this); mem.addChangeListener (this); setInterceptsMouseClicks (false, false); }
+    DistDisplay::~DistDisplay() { mem.removeChangeListener (this); ctx.removeListener (this); }
+
+    void DistDisplay::paramChanged (int num, float)
+    {
+        int k = num - oscId (o, 0);
+        for (const char* n : { "dtype", "ddrv", "dmix", "wdpos" }) if (k == oscKey (n)) { repaint(); return; }
+    }
+
+    float DistDisplay::transfer (float x) const
+    {
+        const int ty = juce::roundToInt (ctx.get (oscId (o, oscKey ("dtype"))));
+        const float d = ctx.get (oscId (o, oscKey ("ddrv"))), mix = ctx.get (oscId (o, oscKey ("dmix")));
+        if (ty <= 0 || mix <= 0.0005f) return x;
+        float y;
+        if (ty >= 7)
+        {
+            float tbl[512];
+            auto* sl = mem.get (SoundMemory::ShaperTable, o);
+            oscmodel::tblFrame (sl ? &sl->data : nullptr, false, ctx.get (oscId (o, oscKey ("wdpos"))), tbl);
+            float u = (juce::jlimit (-1.0f, 1.0f, x * (1.0f + d * 3.0f)) * 0.5f + 0.5f) * 511.0f;
+            int i0 = (int) u, i1 = juce::jmin (i0 + 1, 511);
+            y = tbl[i0] + (tbl[i1] - tbl[i0]) * (u - (float) i0);
+        }
+        else   // mirror of shapeSigAlg in the DSP
+        {
+            const int al = ty - 1; const float xx = x * (1.0f + d * 8.0f);
+            y = xx / (1.0f + std::abs (xx));
+            if (al == 1) { float bias = 0.3f * d, yb = xx + bias; y = yb / (1.0f + std::abs (yb)) - bias / (1.0f + std::abs (bias)); }
+            else if (al == 2) y = juce::jlimit (-0.9f, 0.9f, xx);
+            else if (al == 3) y = std::sin (xx * 1.5f) * 0.8f;
+            else if (al == 4) y = std::sin (juce::jlimit (-1.5708f, 1.5708f, xx));
+            else if (al == 5) { float lv = 6.0f + (1.0f - d) * 26.0f; y = std::round (y * lv) / lv; }
+            y *= 1.0f + d * 0.5f;
+        }
+        return x * (1.0f - mix) + y * mix;
+    }
+
+    void DistDisplay::paint (juce::Graphics& g)
+    {
+        auto box = getLocalBounds().toFloat();
+        displayBox (g, box);
+        {
+            juce::Graphics::ScopedSaveState ss (g);
+            g.reduceClipRegion (getLocalBounds());
+            const float W = box.getWidth(), H = box.getHeight();
+            g.setColour (juce::Colour (0xffff3b30).withAlpha (0.10f));
+            g.drawLine (0, H / 2, W, H / 2, 1.0f); g.drawLine (W / 2, 0, W / 2, H, 1.0f);
+            g.setColour (juce::Colour (0xffffc8be).withAlpha (0.22f)); g.drawLine (0, H, W, 0, 1.0f);
+            cornerBrackets (g, W, H, 14.0f);
+            const bool on = juce::roundToInt (ctx.get (oscId (o, oscKey ("dtype")))) > 0;
+            juce::Path p; const int N = juce::jmax (2, (int) W);
+            for (int i = 0; i < N; ++i)
+            {
+                float x = (float) i / (N - 1) * 2.0f - 1.0f, y = juce::jlimit (-1.2f, 1.2f, transfer (x));
+                float px = (float) i * W / (N - 1), py = H * 0.5f - y * (H * 0.5f - 4.0f);
+                if (i == 0) p.startNewSubPath (px, py); else p.lineTo (px, py);
+            }
+            glowStroke (g, p, on ? juce::Colour (0xffff3b30) : juce::Colour (0xffb4aaa5).withAlpha (0.45f), 2.5f, on);
+        }
+        displayBorder (g, box);
+    }
+
+    // =============================================================== TableDisplay
+    TableDisplay::TableDisplay (Ctx& c, SoundMemory& m, int osc, bool filter) : ctx (c), mem (m), o (osc), isFilter (filter) { ctx.addListener (this); mem.addChangeListener (this); setInterceptsMouseClicks (false, false); }
+    TableDisplay::~TableDisplay() { mem.removeChangeListener (this); ctx.removeListener (this); }
+
+    void TableDisplay::paramChanged (int num, float)
+    {
+        int k = num - oscId (o, 0);
+        if (k == oscKey (isFilter ? "wfpos" : "wdpos") || k == oscKey (isFilter ? "ftype" : "dtype")) repaint();
+    }
+
+    void TableDisplay::paint (juce::Graphics& g)
+    {
+        auto all = getLocalBounds().toFloat();
+        auto box = all.withTrimmedBottom ((float) infoH);
+        displayBox (g, box);
+        auto* sl = mem.get (isFilter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, o);
+        const std::vector<float>* data = sl ? &sl->data : nullptr;
+        const int nF = data ? juce::jlimit (1, 64, (int) data->size() / 512) : 16;
+        const float pos = juce::jlimit (0.0f, 1.0f, ctx.get (oscId (o, oscKey (isFilter ? "wfpos" : "wdpos"))));
+        const bool on = juce::roundToInt (ctx.get (oscId (o, oscKey (isFilter ? "ftype" : "dtype")))) >= (isFilter ? 30 : 7);
+        {
+            juce::Graphics::ScopedSaveState ss (g);
+            g.reduceClipRegion (box.toNearestInt());
+            const float W = box.getWidth(), H = box.getHeight();
+            const float dx = W * 0.16f, dy = H * 0.42f, pw = W - dx - 6.0f, ph = H - dy - 8.0f;
+            auto at = [&] (int f, int i) { return data ? juce::jlimit (-1.0f, 1.0f, (*data)[(size_t) (f * 512 + i)]) : oscmodel::tblDefault (isFilter, f, i); };
+            auto curve = [&] (std::function<float (int)> v, float t)
+            {
+                juce::Path p; const float ox = 3.0f + dx * t, oy = 4.0f + dy * (1.0f - t);
+                for (int i = 0; i < 128; ++i)
+                {
+                    float x = ox + pw * (float) i / 127.0f, y = oy + ph * (0.5f - v (juce::jmin (511, juce::roundToInt ((float) i * 511.0f / 127.0f))) * 0.5f);
+                    if (i == 0) p.startNewSubPath (x, y); else p.lineTo (x, y);
+                }
+                return p;
+            };
+            const int show = juce::jmin (nF, 24);
+            for (int k = show - 1; k >= 0; --k)
+            {
+                int f = show == 1 ? 0 : juce::roundToInt ((float) k * (float) (nF - 1) / (float) (show - 1));
+                float t = nF == 1 ? 0.0f : (float) f / (float) (nF - 1);
+                auto col = on ? juce::Colour (0xffff7864).withAlpha (0.18f + 0.30f * (1.0f - (float) k / (float) show)) : juce::Colour (0xffa0968f).withAlpha (0.22f);
+                g.setColour (col); g.strokePath (curve ([&] (int i) { return at (f, i); }, t), juce::PathStrokeType (1.0f));
+            }
+            float cur[512]; oscmodel::tblFrame (data, isFilter, pos, cur);
+            glowStroke (g, curve ([&] (int i) { return cur[i]; }, pos), on ? juce::Colour (0xffff3b30) : juce::Colour (0xffc8beb9).withAlpha (0.6f), 2.5f, on);
+            cornerBrackets (g, W, H, 14.0f);
+        }
+        displayBorder (g, box);
+        g.setColour (dim); g.setFont (mono (8.0f, false));
+        juce::String t = (sl ? sl->name : juce::String ("BUILT-IN TABLE")).toUpperCase() + " / FRAME " + juce::String (pos * (float) (nF - 1) + 1.0f, 1) + " OF " + juce::String (nF) + (on ? "" : " / NOT ACTIVE");
+        g.drawText (t, all.withTrimmedTop (box.getHeight() + 2.0f).toNearestInt(), juce::Justification::centredLeft, true);
     }
 }

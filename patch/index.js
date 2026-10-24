@@ -1696,7 +1696,29 @@ class EisenpulsPatchView extends HTMLElement {
         });
         this.querySelectorAll(".stab").forEach(t => {
             t.setAttribute("tabindex", "-1");
-            t.addEventListener("click", () => { this._oscPage = t.dataset.page; this.setGroup("synth"); t.blur(); });
+            t.addEventListener("click", () => {
+                const g = t.dataset.grp;   // FILTER / DIST tabs reopen the oscillator last shown there
+                this._oscPage = g ? g + (this._fdOsc[g] || 0) : t.dataset.page;
+                this.setGroup("synth"); t.blur();
+            });
+        });
+        this._fdOsc = { f: 0, d: 0 };
+        this.querySelectorAll(".otab").forEach(t => t.addEventListener("click", () => {
+            const g = t.dataset.pg, k = Number(t.dataset.oo);
+            this._fdOsc[g] = k; this._oscPage = g + k; this.setGroup("synth"); t.blur();
+        }));
+        // Filter / Wavefilter and Distortion / Wavedistortion switches: the table types are the last entries of the type lists
+        this.querySelectorAll(".o-mode").forEach(md => {
+            const o = Number(md.dataset.o), f = md.dataset.k === "f", key = f ? "ftype" : "dtype", tv = f ? 30 : 7;
+            this._lastNormal = this._lastNormal || {};
+            md.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+                const c = this._controls.get("param" + oscId(o, key));
+                if (!c) return;
+                const cur = Math.round(this.oscVal(o, key));
+                if (Number(b.dataset.m) === 1) { if (cur !== tv) { this._lastNormal[key + o] = cur; c.setValue(tv, true); } }
+                else if (cur === tv) c.setValue(this._lastNormal[key + o] || (f ? 0 : 1), true);
+                b.blur();
+            }));
         });
         this.setGroup("synth");
     }
@@ -1717,7 +1739,8 @@ class EisenpulsPatchView extends HTMLElement {
     setPage (p) {
         this._page = p;
         this.setAttribute("data-page", p);
-        this.querySelectorAll(".stab").forEach(t => t.classList.toggle("on", t.dataset.page === p));
+        this.querySelectorAll(".stab").forEach(t => t.classList.toggle("on", t.dataset.page === p || (t.dataset.grp && p.charAt(0) === t.dataset.grp && /^[fd]\d$/.test(p))));
+        this.querySelectorAll(".otab").forEach(t => t.classList.toggle("on", t.dataset.pg === p.charAt(0) && "ABCDEF"[Number(p.charAt(1))] === t.textContent));
         this.drawAllOsc();
         if (p === "fm" || p === "rm") requestAnimationFrame(() => this.fmxDraw());
     }
@@ -2204,12 +2227,15 @@ class EisenpulsPatchView extends HTMLElement {
             const on = Math.round(this.oscVal(o, tkey)) === tv, m = this._mem[kind][o];
             const pc = this.querySelector(".n" + oscId(o, pkey));
             if (pc) pc.classList.toggle("dim", !on);
-            const dz = this.querySelector('.dz-tbl[data-o="' + o + '"][data-k="' + kind + '"]');
-            if (dz) dz.style.display = on ? "" : "none";
+            const tb = this.querySelector('.o-tb[data-o="' + o + '"][data-k="' + kind + '"]');
+            if (tb) tb.classList.toggle("off", !on);
+            const md = this.querySelector('.o-mode[data-o="' + o + '"][data-k="' + (kind === "ft" ? "f" : "d") + '"]');
+            if (md) md.querySelectorAll("button").forEach(b => b.classList.toggle("on", (Number(b.dataset.m) === 1) === on));
             if (!this._memTimer[kind][o]) this.setTblDz(kind, o, m ? m.name : (kind === "ft" ? "DROP TABLE" : "DROP SHAPER TABLE"), m ? "loaded" : "");
         }
         this.drawOsc(o);
         this.drawOscFlt(o);
+        this.drawTblViews(o);
     }
 
     onOscValue (o, k) {
@@ -2219,7 +2245,8 @@ class EisenpulsPatchView extends HTMLElement {
             || k === OSC_K.sstart || k === OSC_K.sloop || k === OSC_K.root) this.drawOsc(o);
         if (k >= OSC_K.fon && k <= OSC_K.fkey) this.drawOscFlt(o);
         if (k === OSC_K.ftype || k === OSC_K.dtype) this.updateOscUi(o);
-        if (k === OSC_K.wfpos) this.drawOscFlt(o);
+        if (k === OSC_K.wfpos) { this.drawOscFlt(o); this.drawTblViews(o); }
+        if (k === OSC_K.dtype || k === OSC_K.ddrv || k === OSC_K.dmix || k === OSC_K.wdpos || k === OSC_K.dpos) this.drawTblViews(o);
     }
 
     // interpolated single cycle of slot o at the current position / frame size
@@ -2393,7 +2420,93 @@ class EisenpulsPatchView extends HTMLElement {
         this.fltCutMark(fr, this.oscVal(o, "fcut"));
     }
 
-    drawAllOsc () { for (let o = 0; o < OSC_N; o++) { this.drawOsc(o); this.drawOscFlt(o); } }
+    // transfer function of the distortion of slot o (mirror of oscDist / shapeSigAlg in the DSP), x in -1..1
+    distY (o, x) {
+        const ty = Math.round(this.oscVal(o, "dtype")), d = this.oscVal(o, "ddrv"), mix = this.oscVal(o, "dmix");
+        if (ty <= 0 || mix <= 0.0005) return x;
+        let y;
+        if (ty === 7) {
+            const fr = this.tblFrame("sh", o, this.oscVal(o, "wdpos"));
+            const u = (Math.max(-1, Math.min(1, x * (1 + d * 3))) * 0.5 + 0.5) * 511, i0 = Math.floor(u), i1 = Math.min(i0 + 1, 511);
+            y = fr[i0] + (fr[i1] - fr[i0]) * (u - i0);
+        } else {
+            const al = ty - 1, xx = x * (1 + d * 8);
+            y = xx / (1 + Math.abs(xx));
+            if (al === 1) { const bias = 0.3 * d, yb = xx + bias; y = yb / (1 + Math.abs(yb)) - bias / (1 + Math.abs(bias)); }
+            else if (al === 2) y = Math.max(-0.9, Math.min(0.9, xx));
+            else if (al === 3) y = Math.sin(xx * 1.5) * 0.8;
+            else if (al === 4) y = Math.sin(Math.max(-1.5708, Math.min(1.5708, xx)));
+            else if (al === 5) { const lv = 6 + (1 - d) * 26; y = Math.round(y * lv) / lv; }
+            y *= 1 + d * 0.5;
+        }
+        return x * (1 - mix) + y * mix;
+    }
+
+    drawDist (o) {
+        const cv = this.querySelector('.dist-canvas[data-o="' + o + '"]');
+        if (!cv) return;
+        const fr = this.hudFrame(cv);
+        if (!fr) return;
+        const { ctx, W, H } = fr;
+        ctx.strokeStyle = "rgba(255,255,255,0.10)"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2); ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H); ctx.stroke();
+        ctx.strokeStyle = "rgba(255,200,190,0.25)"; ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(W, 0); ctx.stroke(); ctx.setLineDash([]);
+        const on = Math.round(this.oscVal(o, "dtype")) > 0;
+        ctx.strokeStyle = on ? "#ff3b30" : "rgba(180,170,165,0.45)"; ctx.lineWidth = 2.5;
+        ctx.shadowColor = "rgba(255,59,48,0.9)"; ctx.shadowBlur = on ? 8 : 0;
+        ctx.beginPath();
+        for (let px = 0; px < W; px++) {
+            const x = px / (W - 1) * 2 - 1, y = Math.max(-1.2, Math.min(1.2, this.distY(o, x)));
+            const py = H / 2 - y * (H / 2 - 4);
+            if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke(); ctx.shadowBlur = 0;
+    }
+
+    // frames of a Wavefilter / Wavedistortion table drawn behind each other, the frame at Table Pos in front
+    drawTbl (kind, o) {
+        const cv = this.querySelector('.tbl-canvas[data-o="' + o + '"][data-k="' + kind + '"]');
+        const info = this.querySelector('.osc-info[data-o="' + o + '"][data-k="' + kind + '"]');
+        if (!cv) return;
+        const fr = this.hudFrame(cv);
+        if (!fr) return;
+        const { ctx, W, H } = fr;
+        const s = this._mem[kind][o], nF = s ? Math.max(1, Math.min(TBL_MAX_FR, Math.floor(s.total / TBL_FL))) : 16;
+        const pos = this.oscVal(o, kind === "ft" ? "wfpos" : "wdpos");
+        const on = Math.round(this.oscVal(o, kind === "ft" ? "ftype" : "dtype")) === (kind === "ft" ? 30 : 7);
+        const at = (f, i) => s ? Math.max(-1, Math.min(1, s.data[f * TBL_FL + i] || 0)) : this.tblDefault(kind, f, i);
+        const show = Math.min(nF, 24), dx = W * 0.16, dy = H * 0.42, pw = W - dx - 6, ph = H - dy - 8;
+        const line = (f, color, lw) => {
+            ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.beginPath();
+            const t = nF === 1 ? 0 : f / (nF - 1), ox = 3 + dx * t, oy = 4 + dy * (1 - t);
+            for (let i = 0; i < 128; i++) {
+                const v = at(f, Math.min(511, Math.round(i * 511 / 127)));
+                const x = ox + pw * i / 127, y = oy + ph * (0.5 - v * 0.5);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        };
+        for (let k = show - 1; k >= 0; k--) {
+            const f = show === 1 ? 0 : Math.round(k * (nF - 1) / (show - 1));
+            line(f, on ? "rgba(255,120,100," + (0.18 + 0.3 * (1 - k / show)).toFixed(2) + ")" : "rgba(160,150,145,0.22)", 1);
+        }
+        // the interpolated frame at Table Pos
+        const cur = this.tblFrame(kind, o, pos), t = Math.max(0, Math.min(1, pos)), ox = 3 + dx * t, oy = 4 + dy * (1 - t);
+        ctx.strokeStyle = on ? "#ff3b30" : "rgba(200,190,185,0.6)"; ctx.lineWidth = 2.5;
+        ctx.shadowColor = "rgba(255,59,48,0.9)"; ctx.shadowBlur = on ? 8 : 0; ctx.beginPath();
+        for (let i = 0; i < 128; i++) {
+            const v = cur[Math.min(511, Math.round(i * 511 / 127))];
+            const x = ox + pw * i / 127, y = oy + ph * (0.5 - v * 0.5);
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke(); ctx.shadowBlur = 0;
+        if (info) info.textContent = (s ? s.name : "BUILT-IN TABLE") + " / FRAME " + (t * (nF - 1) + 1).toFixed(1) + " OF " + nF + (on ? "" : " / NOT ACTIVE");
+    }
+
+    drawTblViews (o) { this.drawDist(o); this.drawTbl("ft", o); this.drawTbl("sh", o); }
+
+    drawAllOsc () { for (let o = 0; o < OSC_N; o++) { this.drawOsc(o); this.drawOscFlt(o); this.drawTblViews(o); } }
 
     // ---------- page HTML ----------
     oscPageHTML (o) {
@@ -2412,18 +2525,49 @@ class EisenpulsPatchView extends HTMLElement {
             <div class="cgrid o-g2">${["oct", "semi", "fine", "track", "freq"].map(c).join("")}${sh("0,1", ["phase", "rphase"].map(c).join(""), "o-sub o-g2")}</div>
             ${sh("0", "<div class=\"o-uh\">Unison</div>" + ["uvox", "udet", "ublend", "uwid", "ustyle"].map(c).join(""), "cgrid o-g2 o-uni")}
           </section>`;
-        const flt = `<section class="card o-flt"><h2>Filter</h2>
-            <canvas class="flt-canvas" data-o="${o}" width="600" height="200"></canvas>
-            <div class="cgrid o-g3">${["fon", "ftype"].map(c).join("")}${["fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel"].map(c).join("")}</div>
+        const out = `<section class="card o-out"><h2>Output</h2>
+            <div class="cgrid o-g2">${["level", "pan"].map(c).join("")}</div>
+            <div class="cgrid o-g2">${c("out")}</div>
+            <div class="o-note">Filter and distortion of this oscillator have their own pages (FILTER, DIST).</div>
+          </section>`;
+        return src + tune + out;
+    }
+
+    // chips A-F that switch the oscillator shown on the FILTER / DIST page
+    oscChips (kind, o) {
+        return `<span class="fxtabs">${"ABCDEF".split("").map((l, k) => `<button type="button" class="otab${k === o ? " on" : ""}" data-pg="${kind}" data-oo="${k}" title="OSC ${k + 1}">${l}</button>`).join("")}</span>`;
+    }
+
+    // FILTER page of oscillator o: response display, Filter / Wavefilter switch, controls; the table card shows the frames of the Wavefilter table
+    fltPageHTML (o) {
+        const c = key => this.controlHTML(oscId(o, key), true);
+        return `<section class="card o-fl"><h2>OSC ${o + 1} Filter ${this.oscChips("f", o)}</h2>
+            <canvas class="flt-canvas" data-o="${o}" width="900" height="260"></canvas>
+            <div class="o-frow">${["fon", "ftype"].map(c).join("")}<div class="o-mode" data-o="${o}" data-k="f"><button type="button" data-m="0">FILTER</button><button type="button" data-m="1">WAVEFILTER</button></div></div>
+            <div class="cgrid o-g5">${["fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel"].map(c).join("")}</div>
+          </section>
+          <section class="card o-tb" data-o="${o}" data-k="ft"><h2>Wavefilter table</h2>
+            <canvas class="tbl-canvas" data-o="${o}" data-k="ft" width="520" height="300"></canvas>
+            <div class="osc-info" data-o="${o}" data-k="ft">--</div>
             <div class="o-tbl"><div class="dz dz-tbl" data-o="${o}" data-k="ft" title="Wavefilter table: a wavetable file whose frames are filter curves"><span class="dz-txt"></span><span class="dz-clr" title="Back to the built-in table">&times;</span></div>${c("wfpos")}</div>
+            <div class="o-note">Every frame is a gain curve along 8 octaves around the cutoff. Table Pos morphs between the frames; drop a wavetable file to use your own.</div>
           </section>`;
-        const out = `<section class="card o-out"><h2>Distortion / Out</h2>
-            <div class="cgrid o-g2">${["dtype", "dpos", "ddrv", "dmix"].map(c).join("")}</div>
+    }
+
+    // DIST page of oscillator o: transfer curve, Distortion / Wavedistortion switch, controls; the table card shows the shaper frames
+    distPageHTML (o) {
+        const c = key => this.controlHTML(oscId(o, key), true);
+        return `<section class="card o-fl"><h2>OSC ${o + 1} Distortion ${this.oscChips("d", o)}</h2>
+            <canvas class="dist-canvas" data-o="${o}" width="900" height="260"></canvas>
+            <div class="o-frow">${["dtype", "dpos"].map(c).join("")}<div class="o-mode" data-o="${o}" data-k="d"><button type="button" data-m="0">DISTORTION</button><button type="button" data-m="1">WAVEDISTORTION</button></div></div>
+            <div class="cgrid o-g2">${["ddrv", "dmix"].map(c).join("")}</div>
+          </section>
+          <section class="card o-tb" data-o="${o}" data-k="sh"><h2>Wavedistortion table</h2>
+            <canvas class="tbl-canvas" data-o="${o}" data-k="sh" width="520" height="300"></canvas>
+            <div class="osc-info" data-o="${o}" data-k="sh">--</div>
             <div class="o-tbl"><div class="dz dz-tbl" data-o="${o}" data-k="sh" title="Wavedistortion table: a wavetable file whose frames are transfer curves"><span class="dz-txt"></span><span class="dz-clr" title="Back to the built-in table">&times;</span></div>${c("wdpos")}</div>
-            <h2 class="o-h2">Output</h2>
-            <div class="cgrid o-g2">${["level", "pan", "out"].map(c).join("")}</div>
+            <div class="o-note">Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.</div>
           </section>`;
-        return src + tune + flt + out;
     }
 
     // FM / PM matrices: graphical node matrices. Row = modulator, column = carrier; the diagonal holds the oscillator nodes (and their
@@ -2839,7 +2983,7 @@ class EisenpulsPatchView extends HTMLElement {
             const b = FRQ_BASE + 4 * i;
             sets += `<div class="frq-set" data-frq="${i}"><div class="fs-btns">${this.controlHTML(b + 2)}${this.controlHTML(b + 3)}</div><div class="fs-knobs">${this.controlHTML(b, true)}${this.controlHTML(b + 1, true)}</div></div>`;
         }
-        return `<section class="bs-frq"><div class="bs-chips">${chips}<span class="bs-gap"></span><span class="frq-note">only onto cutoff and Frequency knobs</span></div>`
+        return `<section class="bs-frqs"><div class="bs-chips">${chips}<span class="bs-gap"></span><span class="frq-note">only onto cutoff and Frequency knobs</span></div>`
             + `<div class="bs-frqbody"><div class="lfo-cv"><canvas class="frq-canvas" width="640" height="150"></canvas><div class="lfo-help">click: add point &middot; drag: move &middot; dbl-click point: delete &middot; drag the diamond: curve</div></div>`
             + `<div class="frq-sets">${sets}</div></div></section>`;
     }
@@ -3123,7 +3267,7 @@ class EisenpulsPatchView extends HTMLElement {
     }
     selectFrq (i) {
         this._frqSel = i;
-        this.querySelectorAll(".bs-frq .msrc").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 24));
+        this.querySelectorAll(".bs-frqs .msrc").forEach(c => c.classList.toggle("on", Number(c.dataset.src) === i + 24));
         this.querySelectorAll(".frq-set").forEach(s => s.classList.toggle("on", Number(s.dataset.frq) === i));
         this.drawFrq();
     }
@@ -3494,7 +3638,9 @@ class EisenpulsPatchView extends HTMLElement {
     }
 
     getHTML () {
-        const oscPages = Array.from({ length: OSC_N }, (_, o) => `<div class="page p-o${o}" data-src="0">${this.oscPageHTML(o)}</div>`).join("\n    ");
+        const oscPages = Array.from({ length: OSC_N }, (_, o) => `<div class="page p-o${o}" data-src="0">${this.oscPageHTML(o)}</div>`).join("\n    ")
+            + "\n    " + Array.from({ length: OSC_N }, (_, o) => `<div class="page p-f${o}" data-src="f">${this.fltPageHTML(o)}</div>`).join("\n    ")
+            + "\n    " + Array.from({ length: OSC_N }, (_, o) => `<div class="page p-d${o}" data-src="d">${this.distPageHTML(o)}</div>`).join("\n    ");
         const fxPage = this.fxPageHTML();
         const strip = this.modStripHTML();
         return `
@@ -3539,6 +3685,9 @@ class EisenpulsPatchView extends HTMLElement {
   eisenpuls-view[data-page="o3"] .p-o3 { display: grid; }
   eisenpuls-view[data-page="o4"] .p-o4 { display: grid; }
   eisenpuls-view[data-page="o5"] .p-o5 { display: grid; }
+  eisenpuls-view[data-page="f0"] .p-f0, eisenpuls-view[data-page="f1"] .p-f1, eisenpuls-view[data-page="f2"] .p-f2, eisenpuls-view[data-page="f3"] .p-f3,
+  eisenpuls-view[data-page="f4"] .p-f4, eisenpuls-view[data-page="f5"] .p-f5, eisenpuls-view[data-page="d0"] .p-d0, eisenpuls-view[data-page="d1"] .p-d1,
+  eisenpuls-view[data-page="d2"] .p-d2, eisenpuls-view[data-page="d3"] .p-d3, eisenpuls-view[data-page="d4"] .p-d4, eisenpuls-view[data-page="d5"] .p-d5 { display: grid; }
   eisenpuls-view[data-page="fm"] .p-fm { display: grid; }
   eisenpuls-view[data-page="rm"] .p-rm { display: grid; }
   eisenpuls-view[data-page="glob"] .p-glob { display: grid; }
@@ -3920,15 +4069,15 @@ class EisenpulsPatchView extends HTMLElement {
   .lfo-cv { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
   .lfo-help { flex: 0 0 auto; font-size: calc(var(--u) * 7); color: var(--dim); margin-top: calc(var(--u) * 2); }
   .lfo-sets { flex: 0 0 38%; min-width: 0; position: relative; }
-  .bs-frq { flex: 1 1 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-  .bs-frq .msrc { border-color: #5b3a85; } .bs-frq .msrc.on { background: #b57bff; color: #111; }
+  .bs-frqs { flex: 1 1 0; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+  .bs-frqs .msrc { border-color: #5b3a85; } .bs-frqs .msrc.on { background: #b57bff; color: #111; }
   .bs-frqbody { flex: 1 1 0; min-height: 0; display: flex; gap: calc(var(--u) * 8); }
   .frq-canvas { width: 100%; flex: 1 1 0; min-height: 0; display: block; background: #0b0405; border: 1px solid var(--line); border-radius: 2px; touch-action: none; }
   .frq-sets { flex: 0 0 calc(var(--u) * 190); display: flex; flex-direction: column; justify-content: center; }
   .frq-note { font-size: calc(var(--u) * 8); color: var(--dim); letter-spacing: 0.05em; align-self: center; }
   .frq-set { display: none; } .frq-set.on { display: flex; flex-direction: column; gap: calc(var(--u) * 10); }
   .fs-btns { display: flex; flex-direction: column; gap: calc(var(--u) * 4); } .fs-knobs { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 6); }
-  .bs-frq .knb .knob { width: calc(var(--u) * 28); height: calc(var(--u) * 28); }
+  .bs-frqs .knb .knob { width: calc(var(--u) * 28); height: calc(var(--u) * 28); }
   .lfo-set, .env-set { display: none; }
   .lfo-set.on { display: grid; grid-template-rows: auto 1fr; gap: calc(var(--u) * 4); height: 100%; }
   .env-set.on { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: calc(var(--u) * 6); }
@@ -3963,11 +4112,24 @@ class EisenpulsPatchView extends HTMLElement {
 
   /* oscillator slot pages */
   .page[data-src] { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); }
-  .o-src { grid-column: 1 / span 4; } .o-tune { grid-column: 5 / span 2; } .o-flt { grid-column: 7 / span 4; } .o-out { grid-column: 11 / span 2; }
+  .o-src { grid-column: 1 / span 5; } .o-tune { grid-column: 6 / span 4; } .o-out { grid-column: 10 / span 3; }
+  .o-fl { grid-column: 1 / span 8; } .o-tb { grid-column: 9 / span 4; } .o-tb.off .tbl-canvas, .o-tb.off .o-tbl { opacity: 0.45; }
+  .o-note { flex: 0 0 auto; margin-top: calc(var(--u) * 6); font-size: calc(var(--u) * 8); line-height: 1.35; color: var(--dim); letter-spacing: 0.04em; }
+  .o-frow { flex: 0 0 auto; display: flex; gap: calc(var(--u) * 8); align-items: center; margin-top: calc(var(--u) * 6); }
+  .o-frow .control { flex: 1 1 0; min-width: 0; }
+  .o-mode { display: flex; flex: 0 0 auto; gap: 0; }
+  .o-mode button { font-family: inherit; font-size: calc(var(--u) * 9); font-weight: 800; letter-spacing: 0.08em; padding: calc(var(--u) * 6) calc(var(--u) * 12); border: 1px solid var(--line); background: var(--panel2); color: var(--ink); cursor: pointer; }
+  .o-mode button.on { background: var(--yel); color: #111; border-color: var(--yel); }
+  .o-g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .o-fl .cgrid { margin-top: calc(var(--u) * 4); }
+  .o-fl .flt-canvas, .o-fl .dist-canvas { height: calc(var(--u) * 150); } .tbl-canvas, .dist-canvas { display: block; flex: 0 0 auto; width: 100%; background: #0d0404; border: 1px solid #7a1d18; border-radius: calc(var(--u) * 4); margin-top: calc(var(--u) * 5); }
+  .o-tb .tbl-canvas { height: calc(var(--u) * 190); }
+  .otab { font-family: inherit; font-size: calc(var(--u) * 9.5); font-weight: 800; letter-spacing: 0.08em; padding: calc(var(--u) * 3) calc(var(--u) * 9); border: 1px solid var(--line); border-radius: 1px; background: var(--panel2); color: var(--ink); cursor: pointer; }
+  .otab.on { background: var(--yel); color: #111; border-color: var(--yel); }
   .o-tbl { display: flex; flex-direction: column; gap: calc(var(--u) * 4); margin-top: calc(var(--u) * 4); } .o-tbl .dz { margin: 0; } .control.dim { opacity: 0.45; }
   .o-g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .o-g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .o-g4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .card .cgrid { flex: 1 1 auto; align-content: space-evenly; align-items: center; row-gap: calc(var(--u) * 3); }
-  .o-src .cgrid, .o-flt .cgrid, .o-tune .cgrid { margin-top: calc(var(--u) * 4); }
+  .o-src .cgrid, .o-tune .cgrid { margin-top: calc(var(--u) * 4); }
   .o-type { flex: 0 0 auto; } .o-type .control .row { display: none; }
   .osc-canvas, .flt-canvas { display: block; flex: 0 0 auto; width: 100%; height: calc(var(--u) * 96); margin-top: calc(var(--u) * 5); background: #0d0404; border: 1px solid #7a1d18; border-radius: calc(var(--u) * 4); box-shadow: inset 0 0 14px rgba(0,0,0,0.95), 0 0 14px rgba(255,59,48,0.25); }
   .osc-info { flex: 0 0 auto; margin-top: calc(var(--u) * 3); font-family: ui-monospace, Menlo, Consolas, monospace; font-size: calc(var(--u) * 7.5); letter-spacing: 0.06em; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -3977,9 +4139,8 @@ class EisenpulsPatchView extends HTMLElement {
   .o-uni { display: grid; margin-top: calc(var(--u) * 2); }
   .o-uh { grid-column: 1 / -1; font-size: calc(var(--u) * 8); font-weight: 800; letter-spacing: 0.16em; color: var(--org); text-transform: uppercase; }
   .o-h2 { margin-top: calc(var(--u) * 8); }
-  .o-flt .cgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .o-fl .cgrid.o-g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page[data-src] .cgrid > .control.w2, .page[data-src] .cgrid > .control.wide { grid-column: auto; }
-  .page[data-src] .o-flt .cgrid > .control.sel, .page[data-src] .o-flt .cgrid > .control.btns { grid-column: span 2; }
   .page[data-src] .o-out .cgrid > .control.sel, .page[data-src] .o-out .cgrid > .control.btns, .page[data-src] .o-pl > .control.sel,
   .page[data-src] .o-tune .cgrid > .control.btns.wide, .page[data-src] .o-g3 > .control.btns { grid-column: 1 / -1; }
   .page[data-src] .knb .knob { width: calc(var(--u) * 32); height: calc(var(--u) * 32); }
@@ -4049,7 +4210,7 @@ class EisenpulsPatchView extends HTMLElement {
   <div class="body">
     <nav class="prail"><button type="button" class="rb on" data-group="synth"><b>1</b>SYNTH</button><button type="button" class="rb" data-group="fx"><b>2</b>EFFECTS</button><button type="button" class="rb" data-group="mod"><b>3</b>MODULATION</button></nav>
     <div class="main">
-    <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button><button type="button" class="stab stab-x" data-page="fm">FM / PM / PD</button><button type="button" class="stab stab-x" data-page="rm">RM / AM</button><button type="button" class="stab" data-page="glob">GLOBAL</button></div>
+    <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button><button type="button" class="stab stab-x" data-page="f0" data-grp="f">FILTER</button><button type="button" class="stab" data-page="d0" data-grp="d">DIST</button><button type="button" class="stab" data-page="fm">FM / PM / PD</button><button type="button" class="stab stab-x" data-page="rm">RM / AM</button><button type="button" class="stab" data-page="glob">GLOBAL</button></div>
       ${MGR_HTML}
       <div class="stage">
         ${oscPages}

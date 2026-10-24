@@ -2,6 +2,7 @@
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
 #include "../NjoPages.h"
 #include "OscDisplays.h"
+#include <array>
 
 namespace njo
 {
@@ -51,10 +52,12 @@ namespace njo
         public:
             explicit PushButton (const juce::String& t) : text (t) {}
             std::function<void()> onClick;
+            bool on = false;
+            void setOn (bool b) { if (b != on) { on = b; repaint(); } }
             void paint (juce::Graphics& g) override
             {
                 auto r = getLocalBounds().toFloat().reduced (0.5f);
-                paintButton (g, r, false, hover, down, 3.0f);
+                paintButton (g, r, on, hover, down, 3.0f);
                 g.setColour (ink); g.setFont (font (9.0f, true).withExtraKerningFactor (0.06f));
                 g.drawText (text, r.toNearestInt(), juce::Justification::centred);
             }
@@ -140,8 +143,9 @@ namespace njo
     // ============================================================================================ Impl
     struct OscPage::Impl : private Ctx::Listener, private juce::ChangeListener
     {
-        Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc)
-            : owner (p), ctx (c), mem (m), o (osc), display (c, m, osc), fdisplay (c, m, osc), vault ("VAULT")
+        Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc, int pageMode)
+            : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
+              modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER")
         {
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
@@ -160,6 +164,18 @@ namespace njo
 
             owner.addAndMakeVisible (display);
             owner.addAndMakeVisible (fdisplay);
+            owner.addAndMakeVisible (ddisplay);
+            owner.addAndMakeVisible (tdisplay);
+            owner.addAndMakeVisible (modeA); owner.addAndMakeVisible (modeB);
+            for (int i = 0; i < OSC_N; ++i)
+            {
+                chips[(size_t) i] = std::make_unique<PushButton> (juce::String::charToString ((juce::juce_wchar) ('A' + i)));
+                chips[(size_t) i]->onClick = [this, i] { if (owner.onSelectOsc) owner.onSelectOsc (i); };
+                owner.addAndMakeVisible (*chips[(size_t) i]);
+            }
+            // Filter / Wavefilter and Distortion / Wavedistortion: the table types are the last entries of the type lists
+            modeA.onClick = [this] { setTableMode (false); };
+            modeB.onClick = [this] { setTableMode (true); };
             owner.addAndMakeVisible (dz);
             owner.addAndMakeVisible (vault);
             owner.addAndMakeVisible (dzF);
@@ -220,7 +236,7 @@ namespace njo
             {
                 auto k = t == &dzF ? SoundMemory::FilterTable : SoundMemory::ShaperTable;
                 if (auto* s = mem.get (k, o)) t->setState (DropZone::Loaded, s->name);
-                else t->setState (DropZone::Empty, k == SoundMemory::FilterTable ? "+ TABLE" : "DROP SHAPER TABLE");
+                else t->setState (DropZone::Empty, k == SoundMemory::FilterTable ? "DROP A TABLE / CLICK TO LOAD" : "DROP A SHAPER TABLE / CLICK TO LOAD");
             }
         }
 
@@ -274,6 +290,18 @@ namespace njo
 
         void changeListenerCallback (juce::ChangeBroadcaster*) override { refreshDz(); }
 
+        // the switch next to the type list: remembers the last normal type and returns to it
+        void setTableMode (bool table)
+        {
+            const char* key = mode == 2 ? "dtype" : "ftype";
+            const int tv = mode == 2 ? 7 : 30, n = pnum (key), cur = juce::roundToInt (ctx.get (n));
+            if (table == (cur >= tv)) return;
+            int target;
+            if (table) { lastNormal = cur; target = tv; }
+            else target = lastNormal < tv && lastNormal >= (mode == 2 ? 0 : 0) ? lastNormal : (mode == 2 ? 1 : 0);
+            ctx.begin (n); ctx.set (n, (float) target); ctx.end (n);
+        }
+
         // ---- parameter changes ----
         void paramChanged (int num, float) override
         {
@@ -317,18 +345,27 @@ namespace njo
         void layoutChildren()
         {
             strips.clear();
+            for (auto& kv : widgets) kv.second->setVisible (false);
+            for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &tdisplay,
+                                        (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
+                                        (juce::Component*) &modeA, (juce::Component*) &modeB })
+                c->setVisible (false);
+            for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
             const bool wt = type == 0, sm = type == 1, pl = type == 2;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
-            cardSrc = span (0, 4); cardTune = span (4, 2); cardFlt = span (6, 4); cardOut = span (10, 2);
+            if (mode == 0) { cardSrc = span (0, 5); cardTune = span (5, 4); cardOut = span (9, 3); cardFlt = {}; }
+            else { cardSrc = cardTune = {}; cardFlt = span (0, 8); cardOut = span (8, 4); }
 
             // ---- source ----
+            if (mode == 0)
             {
                 auto c = cardSrc; int w = c.getWidth();
                 put ("type", 13, 24, w - 26, 19, c);
                 display.setBounds (c.getX() + 13, c.getY() + 49, w - 26, 86);
+                display.setVisible (true);
                 dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - 56, 26);
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
                 dz.setVisible (! pl); vault.setVisible (! pl);
@@ -352,6 +389,7 @@ namespace njo
                 knob ("pmorph", 13 + juce::roundToInt (fw * 5 / 6), 302, c, pl);
             }
             // ---- tune ----
+            if (mode == 0)
             {
                 auto c = cardTune; int w = c.getWidth();
                 const int lx = 12, rx = w - 12 - 72, cl = lx + 36, cr = rx + 36;
@@ -362,7 +400,7 @@ namespace njo
                 put ("track", rx, fineTop + 24, 72, 18, c); strip ("track", rx, fineTop + 11, 72, c, true);
                 int phaseTop = wt ? 152 : 309;
                 knob ("phase", cl, phaseTop, c, ! pl);
-                knob ("freq", cr, wt ? 198 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
+                knob ("freq", cr, wt ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
                 put ("rphase", rx, phaseTop + 24, 72, 18, c, ! pl); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! pl);
 
                 showUnison = wt;
@@ -372,39 +410,59 @@ namespace njo
                 knob ("uwid", cr, 319, c, wt);
                 put ("ustyle", lx, 387, w - 24, 31, c, wt);
             }
-            // ---- filter ----
-            {
-                auto c = cardFlt; int w = c.getWidth();
-                fdisplay.setBounds (c.getX() + 12, c.getY() + 29, w - 24, 71);
-                put ("fon", 12, 132, 162, 31, c);
-                put ("ftype", w - 12 - 162, 131, 162, 36, c); strip ("ftype", w - 12 - 162, 131, 162, c, false);
-                const double pitch = (w - 24) / 4.0;
-                const char* keys[10] = { "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel" };
-                for (int i = 0; i < 10; ++i)
-                    knob (keys[i], 12 + juce::roundToInt (pitch * (i % 4) + pitch / 2), 192 + 79 * (i / 4), c);
-                // Wavefilter: table position knob and table drop zone take the two free places of the last row
-                const bool wf = juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30;
-                knob ("wfpos", 12 + juce::roundToInt (pitch * 2 + pitch / 2), 192 + 79 * 2, c, wf);
-                dzF.setBounds (c.getX() + 12 + juce::roundToInt (pitch * 3) + 2, c.getY() + 192 + 79 * 2 + 14, juce::roundToInt (pitch) - 4, 26);
-                dzF.setVisible (wf);
-            }
-            // ---- distortion / output ----
+            // ---- output (oscillator page) ----
+            if (mode == 0)
             {
                 auto c = cardOut; int w = c.getWidth();
-                put ("dtype", 12, 54, w - 24, 34, c); strip ("dtype", 12, 54, w - 24, c, false);
-                put ("dpos", 12, 94, w - 24, 26, c);
-                // Wavedistortion: table drop zone and position slider (the rest moves down)
-                const bool wd = juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7;
-                const int dy = wd ? 30 : 0;
-                dzS.setBounds (c.getX() + 12, c.getY() + 124, w - 24, 22);
-                dzS.setVisible (wd);
-                put ("wdpos", 12, 150, w - 24, 30, c, wd);
                 const int cl = 12 + (w - 24) / 4, cr = 12 + (w - 24) * 3 / 4;
-                knob ("ddrv", cl, 160 + dy, c); knob ("dmix", cr, 160 + dy, c);
-                outTitleY = 231 + dy;
-                knob ("level", cl, 270 + dy, c); knob ("pan", cr, 270 + dy, c);
-                put ("out", 12, 362 + dy, w - 24, 31, c);
+                knob ("level", cl, 60, c); knob ("pan", cr, 60, c);
+                put ("out", 12, 170, w - 24, 31, c);
             }
+            // ---- filter page: response, Filter / Wavefilter switch, controls; table card ----
+            if (mode == 1)
+            {
+                auto c = cardFlt; int w = c.getWidth();
+                fdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); fdisplay.setVisible (true);
+                const int modeW = 100;
+                put ("fon", 12, 196, 162, 31, c);
+                const int tx = 12 + 162 + 12, tw = w - 12 - 2 * modeW - 12 - tx;
+                put ("ftype", tx, 195, tw, 36, c); strip ("ftype", tx, 195, tw, c, false);
+                modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
+                modeA.setVisible (true); modeB.setVisible (true);
+                const double pitch = (w - 24) / 5.0;
+                const char* keys[10] = { "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel" };
+                for (int i = 0; i < 10; ++i)
+                    knob (keys[i], 12 + juce::roundToInt (pitch * (i % 5) + pitch / 2), 262 + 84 * (i / 5), c);
+            }
+            // ---- distortion page ----
+            if (mode == 2)
+            {
+                auto c = cardFlt; int w = c.getWidth();
+                ddisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); ddisplay.setVisible (true);
+                const int modeW = 118;
+                put ("dtype", 12, 195, 220, 36, c); strip ("dtype", 12, 195, 220, c, false);
+                put ("dpos", 244, 200, 190, 27, c);
+                modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
+                modeA.setVisible (true); modeB.setVisible (true);
+                knob ("ddrv", 12 + (w - 24) / 3, 275, c); knob ("dmix", 12 + (w - 24) * 2 / 3, 275, c);
+            }
+            // ---- table card (filter / distortion page) ----
+            if (mode != 0)
+            {
+                auto c = cardOut; int w = c.getWidth();
+                const bool wf = mode == 1;
+                const bool active = juce::roundToInt (ctx.get (pnum (wf ? "ftype" : "dtype"))) >= (wf ? 30 : 7);
+                tdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 220); tdisplay.setVisible (true);
+                auto& zone = wf ? dzF : dzS;
+                zone.setBounds (c.getX() + 12, c.getY() + 262, w - 24, 26); zone.setVisible (true); zone.setAlpha (active ? 1.0f : 0.45f);
+                if (wf) { knob ("wfpos", w / 2, 304, c); if (auto* k = W ("wfpos")) k->setAlpha (active ? 1.0f : 0.45f); }
+                else { put ("wdpos", 12, 304, w - 24, 30, c); if (auto* k = W ("wdpos")) k->setAlpha (active ? 1.0f : 0.45f); }
+                // chips A-F: which oscillator this page shows
+                const int cx0 = cardFlt.getX() + (mode == 2 ? 232 : 200);
+                for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
+            }
+            modeA.setOn (! (mode == 1 ? juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30 : juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7));
+            modeB.setOn (! modeA.on);
         }
 
         // ---- painting ----
@@ -425,12 +483,25 @@ namespace njo
 
         void paintAll (juce::Graphics& g)
         {
-            for (auto c : { cardSrc, cardTune, cardFlt, cardOut }) paintCard (g, c.toFloat());
-            title (g, "OSC " + juce::String (o + 1) + " Source", cardSrc.getX() + 14, 15, cardSrc.getRight() - 12);
-            title (g, "Tune", cardTune.getX() + 14, 15, cardTune.getRight() - 12);
-            title (g, "Filter", cardFlt.getX() + 14, 15, cardFlt.getRight() - 12);
-            title (g, "Distortion / Out", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
-            title (g, "Output", cardOut.getX() + 14, outTitleY, cardOut.getRight() - 12);
+            for (auto c : { cardSrc, cardTune, cardFlt, cardOut }) if (! c.isEmpty()) paintCard (g, c.toFloat());
+            if (mode == 0)
+            {
+                title (g, "OSC " + juce::String (o + 1) + " Source", cardSrc.getX() + 14, 15, cardSrc.getRight() - 12);
+                title (g, "Tune", cardTune.getX() + 14, 15, cardTune.getRight() - 12);
+                title (g, "Output", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                g.setColour (dim); g.setFont (font (8.5f, false));
+                g.drawFittedText ("Filter and distortion of this oscillator have their own pages (FILTER, DIST).", cardOut.getX() + 14, 232, cardOut.getWidth() - 28, 40, juce::Justification::topLeft, 3);
+            }
+            else
+            {
+                const bool wf = mode == 1;
+                title (g, "OSC " + juce::String (o + 1) + (wf ? " Filter" : " Distortion"), cardFlt.getX() + 14, 15, cardFlt.getX() + (wf ? 196 : 228));
+                title (g, wf ? "Wavefilter table" : "Wavedistortion table", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                g.setColour (dim); g.setFont (font (8.5f, false));
+                g.drawFittedText (wf ? "Every frame is a gain curve along 8 octaves around the cutoff. Table Pos morphs between the frames; drop a wavetable file to use your own."
+                                     : "Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.",
+                                  cardOut.getX() + 14, 376, cardOut.getWidth() - 28, 50, juce::Justification::topLeft, 4);
+            }
             if (showUnison)
             {
                 g.setColour (orange); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
@@ -454,14 +525,17 @@ namespace njo
         }
 
         OscPage& owner; Ctx& ctx; SoundMemory& mem; int o;
+        int mode = 0;          // 0 = oscillator page, 1 = filter page, 2 = distortion page
+        int lastNormal = -1;
         std::map<juce::String, std::unique_ptr<ParamWidget>> widgets;
-        OscDisplay display; FilterDisplay fdisplay;
+        OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault;
+        PushButton modeA, modeB; std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
     };
 
     // ============================================================================================ OscPage
-    OscPage::OscPage (Ctx& c, SoundMemory& m, int o) : impl (new Impl (*this, c, m, o)) {}
+    OscPage::OscPage (Ctx& c, SoundMemory& m, int o, int mode) : impl (new Impl (*this, c, m, o, mode)) {}
     OscPage::~OscPage() = default;
 
     void OscPage::paint (juce::Graphics& g) { impl->paintAll (g); }

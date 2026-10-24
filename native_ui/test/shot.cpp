@@ -34,6 +34,15 @@ int main (int argc, char** argv)
     }
     const char* names[] = { "osc1", "osc2", "osc3", "osc4", "osc5", "osc6", "fm", "rmam", "global" };
     for (int i = 0; i < 9; ++i) { ed.setSynthPage (i); pump(); save (ed, dir.getChildFile (juce::String (names[i]) + ".png"), scale); }
+    {
+        auto& cx = ed.context();
+        ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("ftype")), 30.0f); ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt_wf.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f);
+        ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f); ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist_wd.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
+    }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
     ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("fx.png"), scale);
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);

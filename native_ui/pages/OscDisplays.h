@@ -46,4 +46,32 @@ namespace njo
         void changeListenerCallback (juce::ChangeBroadcaster*) override { repaint(); }
         Ctx& ctx; SoundMemory& mem; int o;
     };
+
+    // transfer curve of the distortion of one slot (mirror of oscDist in the DSP)
+    class DistDisplay : public juce::Component, private Ctx::Listener, private juce::ChangeListener
+    {
+    public:
+        DistDisplay (Ctx&, SoundMemory&, int osc);
+        ~DistDisplay() override;
+        void paint (juce::Graphics&) override;
+    private:
+        float transfer (float x) const;
+        void paramChanged (int num, float v) override;
+        void changeListenerCallback (juce::ChangeBroadcaster*) override { repaint(); }
+        Ctx& ctx; SoundMemory& mem; int o;
+    };
+
+    // the frames of a Wavefilter / Wavedistortion table behind each other, the frame at Table Pos in front; the line below says which table
+    class TableDisplay : public juce::Component, private Ctx::Listener, private juce::ChangeListener
+    {
+    public:
+        TableDisplay (Ctx&, SoundMemory&, int osc, bool filter);
+        ~TableDisplay() override;
+        void paint (juce::Graphics&) override;
+        static constexpr int infoH = 14;
+    private:
+        void paramChanged (int num, float v) override;
+        void changeListenerCallback (juce::ChangeBroadcaster*) override { repaint(); }
+        Ctx& ctx; SoundMemory& mem; int o; bool isFilter;
+    };
 }

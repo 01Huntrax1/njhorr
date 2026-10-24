@@ -29,7 +29,7 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(150);
 
     check("rail pages are synth, effects, modulation", [...V.querySelectorAll(".rb")].map(t => t.textContent.replace(/^\d/, "")).join() === "SYNTH,EFFECTS,MODULATION");
-    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM / PM / PD,RM / AM,GLOBAL");
+    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FILTER,DIST,FM / PM / PD,RM / AM,GLOBAL");
     V.querySelector('.stab[data-page="o1"]').click();
     check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "synth");
     V.querySelector('.rb[data-group="fx"]').click();
@@ -98,7 +98,7 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     }
     // Freq modulators
     {
-        check("10 FREQ chips and the FREQ tab", V.querySelectorAll(".bs-frq .msrc").length === 10 && !!V.querySelector('.bst[data-bs="frq"]'));
+        check("10 FREQ chips and the FREQ tab", V.querySelectorAll(".bs-frqs .msrc").length === 10 && !!V.querySelector('.bst[data-bs="frq"]'));
         const cutKnob = V.querySelector('.control[data-param="param1032"]'), frqKnob = V.querySelector('.control[data-param="param1048"]'), lvlKnob = V.querySelector('.control[data-param="param1001"]');
         check("a Freq modulator can be dropped on a cutoff knob", !!V.modTargetOf(cutKnob, 24) && V.modTargetOf(cutKnob, 24).dst === 12);
         check("... and on the oscillator Frequency knob", !!V.modTargetOf(frqKnob, 33) && V.modTargetOf(frqKnob, 33).dst === 180);

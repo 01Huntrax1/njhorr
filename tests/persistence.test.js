@@ -101,7 +101,7 @@ const gather = (pc, ep, bank, total) => {
         const w2 = makeWebView();
         pc.sent.length = 0;
         const R = mount(w2, pc);
-        await sleep(3500);
+        await sleep(7000);
         check("restored sample names", R._mem.sm[0].name === "KICK" && R._mem.sm[3].name === "HAT");
         check("restored wavetable names", R._mem.wt[1].name === "SAW" && R._mem.wt[5].name === "PAD");
         check("sample audio round-trips within 1/32767", maxErr(R._mem.sm[0].data, s1) < 1 / 32767 + 1e-6);

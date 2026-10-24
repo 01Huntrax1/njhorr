@@ -16,7 +16,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(200);
     const ctl = n => V._controls.get("param" + n);
     const opts = n => [...V.querySelectorAll(".control[data-param=\"param" + n + "\"] option")].map(o => o.textContent);
-    check("6 oscillator pages", V.querySelectorAll(".page[data-src]").length === 6);
+    check("6 oscillator pages, 6 filter pages, 6 distortion pages", [..."ofd"].every(k => [...V.querySelectorAll(".page")].filter(e => new RegExp("\\bp-" + k + "\\d\\b").test(e.className)).length === 6));
     check("every slot has all 44 parameters", [0, 1, 2, 3, 4, 5].every(o => [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44].every(k => ctl(1000 + 64 * o + k))));
     check("36 PD amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1480 + 6 * s + d))));
     check("36 RM and 36 AM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1520 + 6 * s + d) && ctl(1560 + 6 * s + d))));
@@ -62,9 +62,34 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
         check("filter table streams to bank o, shaper table to bank 6 + o", banks.includes(2) && banks.includes(8) && pc.sent.every(x => x.ep === "tblLoad"), banks.join());
         ctl(1031).setValue(30, true); ctl(1042).setValue(7, true);
         V.updateOscUi(0);
-        check("table drop zones appear with the table types", V.querySelector('.dz-tbl[data-o="0"][data-k="ft"]').style.display === "" && V.querySelector('.dz-tbl[data-o="0"][data-k="sh"]').style.display === "");
+        const tbf = V.querySelector('.o-tb[data-o="0"][data-k="ft"]'), tbs = V.querySelector('.o-tb[data-o="0"][data-k="sh"]');
+        check("table cards are active with the table types", !tbf.classList.contains("off") && !tbs.classList.contains("off"));
         ctl(1031).setValue(0, true); V.updateOscUi(0);
-        check("and hide again", V.querySelector('.dz-tbl[data-o="0"][data-k="ft"]').style.display === "none");
+        check("and dimmed again", tbf.classList.contains("off"));
+        // Filter / Wavefilter and Distortion / Wavedistortion switches
+        const mf = V.querySelector('.o-mode[data-o="0"][data-k="f"]'), md = V.querySelector('.o-mode[data-o="0"][data-k="d"]');
+        ctl(1031).setValue(5, true); mf.querySelectorAll("button")[1].click();
+        check("WAVEFILTER switch selects the table filter", Math.round(V.oscVal(0, "ftype")) === 30);
+        mf.querySelectorAll("button")[0].click();
+        check("FILTER switch returns to the previous type", Math.round(V.oscVal(0, "ftype")) === 5);
+        ctl(1042).setValue(3, true); md.querySelectorAll("button")[1].click();
+        check("WAVEDISTORTION switch selects the table shaper", Math.round(V.oscVal(0, "dtype")) === 7);
+        md.querySelectorAll("button")[0].click();
+        check("DISTORTION switch returns to the previous type", Math.round(V.oscVal(0, "dtype")) === 3);
+        // FILTER / DIST tabs and oscillator chips
+        V.querySelector('.stab[data-grp="f"]').click();
+        check("FILTER tab opens the filter page", V.getAttribute("data-page") === "f0");
+        V.querySelector('.otab[data-pg="f"][data-oo="3"]').click();
+        check("chip D opens OSC 4 on the filter page", V.getAttribute("data-page") === "f3");
+        V.querySelector('.stab[data-page="o0"]').click(); V.querySelector('.stab[data-grp="d"]').click();
+        check("DIST tab opens the distortion page", V.getAttribute("data-page") === "d0");
+        V.querySelector('.stab[data-grp="f"]').click();
+        check("FILTER tab remembers the oscillator", V.getAttribute("data-page") === "f3");
+        // transfer curve of the distortion display (mirror of the DSP)
+        ctl(1042).setValue(0, true);
+        check("distortion Off is the identity", Math.abs(V.distY(0, 0.4) - 0.4) < 1e-9);
+        ctl(1042).setValue(1, true); ctl(1043).setValue(0, true); ctl(1044).setValue(1, true);
+        check("Soft at drive 0 is x / (1 + |x|)", Math.abs(V.distY(0, 0.5) - 0.5 / 1.5) < 1e-6, String(V.distY(0, 0.5)));
     }
 
     console.log(failures ? failures + " FAILED" : "all passed");

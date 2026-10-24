@@ -19,7 +19,7 @@ namespace njo
         void setGroup (Group);
         void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ
         void setModTab (int t) { modTab = t; layoutAll(); }       // modulation page: 0 = ENV / LFO, 1 = FREQ
-        void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM, 7 = Global
+        void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM / PD, 7 = RM / AM, 8 = Global, 9-14 = filter page of OSC 1-6, 15-20 = distortion page of OSC 1-6
         Group group() const { return currentGroup; }
         int synthPage() const { return currentSynthPage; }
         Ctx& context() { return ctx; }
@@ -36,7 +36,8 @@ namespace njo
         Ctx ctx;
         SoundMemory memory;
         Group currentGroup = Synth; int currentSynthPage = 0;
-        juce::OwnedArray<OscPage> osc;
+        juce::OwnedArray<OscPage> osc, fltPages, distPages;
+        int fltOsc = 0, distOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
         FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx;
         ModEditors editors, editorsFull; FreqEditor freq, freqFull; MatrixPanel matrix;
         int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators
