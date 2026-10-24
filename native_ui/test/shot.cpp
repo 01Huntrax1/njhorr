@@ -32,8 +32,8 @@ int main (int argc, char** argv)
         auto& P = ed.context().freqShapes->points (0);
         P = { { 0, 0.95f, 0 }, { 0.12f, 0.7f, 0 }, { 0.25f, 0.5f, 0 }, { 0.5f, 0.3f, 0 }, { 1, 0.1f, 0 } };
     }
-    const char* names[] = { "osc1", "osc2", "osc3", "osc4", "osc5", "osc6", "fm", "global" };
-    for (int i = 0; i < 8; ++i) { ed.setSynthPage (i); pump(); save (ed, dir.getChildFile (juce::String (names[i]) + ".png"), scale); }
+    const char* names[] = { "osc1", "osc2", "osc3", "osc4", "osc5", "osc6", "fm", "rmam", "global" };
+    for (int i = 0; i < 9; ++i) { ed.setSynthPage (i); pump(); save (ed, dir.getChildFile (juce::String (names[i]) + ".png"), scale); }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
     ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("fx.png"), scale);
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);

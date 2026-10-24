@@ -129,7 +129,8 @@ int main (int argc, char** argv)
     F (0, 0, 1, 0.5f); F (0, 1, 2, -0.35f); F (0, 2, 0, 0.8f); F (0, 3, 3, 0.25f); F (0, 4, 5, 1.0f);
     F (1, 0, 3, 0.4f); F (1, 5, 1, -0.6f); F (1, 2, 2, -0.2f);
     ed.setSynthPage (6); pump(); save (ed, dir.getChildFile ("fm.png"));
-    ed.setSynthPage (7); pump(); save (ed, dir.getChildFile ("global.png"));
+    ed.setSynthPage (7); pump(); save (ed, dir.getChildFile ("rmam.png"));
+    ed.setSynthPage (8); pump(); save (ed, dir.getChildFile ("global.png"));
     std::printf ("%s (%d failures)\n", fails ? "FAILED" : "ALL OK", fails);
     return fails ? 1 : 0;
 }

@@ -611,21 +611,23 @@ const AudioDecode = (() => {
     return { decodeNative, raw, wav, aiff, au, caf, flac };
 })();
 /*AUDIODEC-END*/
-const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480;
+const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560;
 const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "dpos": 45};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
 const pdId = (s, d) => PD_BASE + 6 * s + d;
+const rmId = (s, d) => RM_BASE + 6 * s + d;
+const amId = (s, d) => AM_BASE + 6 * s + d;
 const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits"];
 const DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"];
 const OSC_OUTS = ["Main", "Bus 1", "Bus 2"];
 const PLAITS_ENGINES = ["VA + Filter", "Phase Distortion", "6-Op FM A", "6-Op FM B", "6-Op FM C", "Wave Terrain", "String Machine", "Chiptune", "Virtual Analog", "Waveshaper", "FM", "Formant / Grain", "Additive", "Wavetable", "Chords", "Speech", "Swarm", "Filtered Noise", "Particle", "String", "Modal", "Bass Drum", "Snare Drum", "Hi-Hat"];
 const PLAITS_GROUPS = [[0, "Classic"], [2, "FM"], [5, "Classic"], [10, "FM"], [11, "Classic"], [15, "Texture"], [19, "Physical"], [21, "Drums"]];
 const PLAITS_PARAMS = [["Detune", "Cutoff", "Shape"], ["Detune", "Distortion", "Shape"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Terrain", "Radius", "Offset"], ["Chord", "Registration", "Waveform"], ["Chord", "Pulse Width", "Arp / Env"], ["Detune", "Pulse Width", "Saw Shape"], ["Waveform", "Fold", "Asymmetry"], ["Ratio", "Mod Amount", "Feedback"], ["Formant Ratio", "Formant Freq", "Formant Shape"], ["Bumps", "Prominence", "Bump Shape"], ["Bank", "Row", "Column"], ["Chord", "Inversion", "Waveform"], ["Species", "Phoneme", "Word / Vowel"], ["Pitch Random", "Density", "Overlap"], ["Filter Type", "Clock Freq", "Resonance"], ["Freq Random", "Density", "Filter"], ["Inharmonicity", "Brightness", "Decay"], ["Material", "Brightness", "Decay"], ["Attack", "Brightness", "Decay"], ["Mode Balance", "Excitation", "Decay"], ["Metallic", "High-Pass", "Decay"]];
-const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1 Pitch", "OSC 1 Level", "OSC 1 Pan", "OSC 1 Position / Harm", "OSC 1 Warp 1 / Timbre", "OSC 1 Warp 2 / Morph", "OSC 1 Cutoff", "OSC 1 Reso", "OSC 1 Dist Drive", "OSC 2 Pitch", "OSC 2 Level", "OSC 2 Pan", "OSC 2 Position / Harm", "OSC 2 Warp 1 / Timbre", "OSC 2 Warp 2 / Morph", "OSC 2 Cutoff", "OSC 2 Reso", "OSC 2 Dist Drive", "OSC 3 Pitch", "OSC 3 Level", "OSC 3 Pan", "OSC 3 Position / Harm", "OSC 3 Warp 1 / Timbre", "OSC 3 Warp 2 / Morph", "OSC 3 Cutoff", "OSC 3 Reso", "OSC 3 Dist Drive", "OSC 4 Pitch", "OSC 4 Level", "OSC 4 Pan", "OSC 4 Position / Harm", "OSC 4 Warp 1 / Timbre", "OSC 4 Warp 2 / Morph", "OSC 4 Cutoff", "OSC 4 Reso", "OSC 4 Dist Drive", "OSC 5 Pitch", "OSC 5 Level", "OSC 5 Pan", "OSC 5 Position / Harm", "OSC 5 Warp 1 / Timbre", "OSC 5 Warp 2 / Morph", "OSC 5 Cutoff", "OSC 5 Reso", "OSC 5 Dist Drive", "OSC 6 Pitch", "OSC 6 Level", "OSC 6 Pan", "OSC 6 Position / Harm", "OSC 6 Warp 1 / Timbre", "OSC 6 Warp 2 / Morph", "OSC 6 Cutoff", "OSC 6 Reso", "OSC 6 Dist Drive", "FM A > A", "FM A > B", "FM A > C", "FM A > D", "FM A > E", "FM A > F", "FM B > A", "FM B > B", "FM B > C", "FM B > D", "FM B > E", "FM B > F", "FM C > A", "FM C > B", "FM C > C", "FM C > D", "FM C > E", "FM C > F", "FM D > A", "FM D > B", "FM D > C", "FM D > D", "FM D > E", "FM D > F", "FM E > A", "FM E > B", "FM E > C", "FM E > D", "FM E > E", "FM E > F", "FM F > A", "FM F > B", "FM F > C", "FM F > D", "FM F > E", "FM F > F", "PM A > A", "PM A > B", "PM A > C", "PM A > D", "PM A > E", "PM A > F", "PM B > A", "PM B > B", "PM B > C", "PM B > D", "PM B > E", "PM B > F", "PM C > A", "PM C > B", "PM C > C", "PM C > D", "PM C > E", "PM C > F", "PM D > A", "PM D > B", "PM D > C", "PM D > D", "PM D > E", "PM D > F", "PM E > A", "PM E > B", "PM E > C", "PM E > D", "PM E > E", "PM E > F", "PM F > A", "PM F > B", "PM F > C", "PM F > D", "PM F > E", "PM F > F", "PD A > A", "PD A > B", "PD A > C", "PD A > D", "PD A > E", "PD A > F", "PD B > A", "PD B > B", "PD B > C", "PD B > D", "PD B > E", "PD B > F", "PD C > A", "PD C > B", "PD C > C", "PD C > D", "PD C > E", "PD C > F", "PD D > A", "PD D > B", "PD D > C", "PD D > D", "PD D > E", "PD D > F", "PD E > A", "PD E > B", "PD E > C", "PD E > D", "PD E > E", "PD E > F", "PD F > A", "PD F > B", "PD F > C", "PD F > D", "PD F > E", "PD F > F", "OSC 1 Wavefilter Pos", "OSC 1 Wavedistortion Pos", "OSC 2 Wavefilter Pos", "OSC 2 Wavedistortion Pos", "OSC 3 Wavefilter Pos", "OSC 3 Wavedistortion Pos", "OSC 4 Wavefilter Pos", "OSC 4 Wavedistortion Pos", "OSC 5 Wavefilter Pos", "OSC 5 Wavedistortion Pos", "OSC 6 Wavefilter Pos", "OSC 6 Wavedistortion Pos", "OSC 1 Frequency", "OSC 2 Frequency", "OSC 3 Frequency", "OSC 4 Frequency", "OSC 5 Frequency", "OSC 6 Frequency"];
-const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"], [168, "Tables"], [180, "Frequency"]];
-const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1048": [180, 1.0], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1112": [181, 1.0], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1176": [182, 1.0], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1240": [183, 1.0], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1304": [184, 1.0], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1368": [185, 1.0], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5]};
+const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1 Pitch", "OSC 1 Level", "OSC 1 Pan", "OSC 1 Position / Harm", "OSC 1 Warp 1 / Timbre", "OSC 1 Warp 2 / Morph", "OSC 1 Cutoff", "OSC 1 Reso", "OSC 1 Dist Drive", "OSC 2 Pitch", "OSC 2 Level", "OSC 2 Pan", "OSC 2 Position / Harm", "OSC 2 Warp 1 / Timbre", "OSC 2 Warp 2 / Morph", "OSC 2 Cutoff", "OSC 2 Reso", "OSC 2 Dist Drive", "OSC 3 Pitch", "OSC 3 Level", "OSC 3 Pan", "OSC 3 Position / Harm", "OSC 3 Warp 1 / Timbre", "OSC 3 Warp 2 / Morph", "OSC 3 Cutoff", "OSC 3 Reso", "OSC 3 Dist Drive", "OSC 4 Pitch", "OSC 4 Level", "OSC 4 Pan", "OSC 4 Position / Harm", "OSC 4 Warp 1 / Timbre", "OSC 4 Warp 2 / Morph", "OSC 4 Cutoff", "OSC 4 Reso", "OSC 4 Dist Drive", "OSC 5 Pitch", "OSC 5 Level", "OSC 5 Pan", "OSC 5 Position / Harm", "OSC 5 Warp 1 / Timbre", "OSC 5 Warp 2 / Morph", "OSC 5 Cutoff", "OSC 5 Reso", "OSC 5 Dist Drive", "OSC 6 Pitch", "OSC 6 Level", "OSC 6 Pan", "OSC 6 Position / Harm", "OSC 6 Warp 1 / Timbre", "OSC 6 Warp 2 / Morph", "OSC 6 Cutoff", "OSC 6 Reso", "OSC 6 Dist Drive", "FM A > A", "FM A > B", "FM A > C", "FM A > D", "FM A > E", "FM A > F", "FM B > A", "FM B > B", "FM B > C", "FM B > D", "FM B > E", "FM B > F", "FM C > A", "FM C > B", "FM C > C", "FM C > D", "FM C > E", "FM C > F", "FM D > A", "FM D > B", "FM D > C", "FM D > D", "FM D > E", "FM D > F", "FM E > A", "FM E > B", "FM E > C", "FM E > D", "FM E > E", "FM E > F", "FM F > A", "FM F > B", "FM F > C", "FM F > D", "FM F > E", "FM F > F", "PM A > A", "PM A > B", "PM A > C", "PM A > D", "PM A > E", "PM A > F", "PM B > A", "PM B > B", "PM B > C", "PM B > D", "PM B > E", "PM B > F", "PM C > A", "PM C > B", "PM C > C", "PM C > D", "PM C > E", "PM C > F", "PM D > A", "PM D > B", "PM D > C", "PM D > D", "PM D > E", "PM D > F", "PM E > A", "PM E > B", "PM E > C", "PM E > D", "PM E > E", "PM E > F", "PM F > A", "PM F > B", "PM F > C", "PM F > D", "PM F > E", "PM F > F", "PD A > A", "PD A > B", "PD A > C", "PD A > D", "PD A > E", "PD A > F", "PD B > A", "PD B > B", "PD B > C", "PD B > D", "PD B > E", "PD B > F", "PD C > A", "PD C > B", "PD C > C", "PD C > D", "PD C > E", "PD C > F", "PD D > A", "PD D > B", "PD D > C", "PD D > D", "PD D > E", "PD D > F", "PD E > A", "PD E > B", "PD E > C", "PD E > D", "PD E > E", "PD E > F", "PD F > A", "PD F > B", "PD F > C", "PD F > D", "PD F > E", "PD F > F", "OSC 1 Wavefilter Pos", "OSC 1 Wavedistortion Pos", "OSC 2 Wavefilter Pos", "OSC 2 Wavedistortion Pos", "OSC 3 Wavefilter Pos", "OSC 3 Wavedistortion Pos", "OSC 4 Wavefilter Pos", "OSC 4 Wavedistortion Pos", "OSC 5 Wavefilter Pos", "OSC 5 Wavedistortion Pos", "OSC 6 Wavefilter Pos", "OSC 6 Wavedistortion Pos", "OSC 1 Frequency", "OSC 2 Frequency", "OSC 3 Frequency", "OSC 4 Frequency", "OSC 5 Frequency", "OSC 6 Frequency", "RM A > A", "RM A > B", "RM A > C", "RM A > D", "RM A > E", "RM A > F", "RM B > A", "RM B > B", "RM B > C", "RM B > D", "RM B > E", "RM B > F", "RM C > A", "RM C > B", "RM C > C", "RM C > D", "RM C > E", "RM C > F", "RM D > A", "RM D > B", "RM D > C", "RM D > D", "RM D > E", "RM D > F", "RM E > A", "RM E > B", "RM E > C", "RM E > D", "RM E > E", "RM E > F", "RM F > A", "RM F > B", "RM F > C", "RM F > D", "RM F > E", "RM F > F", "AM A > A", "AM A > B", "AM A > C", "AM A > D", "AM A > E", "AM A > F", "AM B > A", "AM B > B", "AM B > C", "AM B > D", "AM B > E", "AM B > F", "AM C > A", "AM C > B", "AM C > C", "AM C > D", "AM C > E", "AM C > F", "AM D > A", "AM D > B", "AM D > C", "AM D > D", "AM D > E", "AM D > F", "AM E > A", "AM E > B", "AM E > C", "AM E > D", "AM E > E", "AM E > F", "AM F > A", "AM F > B", "AM F > C", "AM F > D", "AM F > E", "AM F > F"];
+const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"], [168, "Tables"], [180, "Frequency"], [186, "RM matrix (amount)"], [222, "AM matrix (amount)"]];
+const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1048": [180, 1.0], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1112": [181, 1.0], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1176": [182, 1.0], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1240": [183, 1.0], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1304": [184, 1.0], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1368": [185, 1.0], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5], "1520": [186, 0.5], "1521": [187, 0.5], "1522": [188, 0.5], "1523": [189, 0.5], "1524": [190, 0.5], "1525": [191, 0.5], "1526": [192, 0.5], "1527": [193, 0.5], "1528": [194, 0.5], "1529": [195, 0.5], "1530": [196, 0.5], "1531": [197, 0.5], "1532": [198, 0.5], "1533": [199, 0.5], "1534": [200, 0.5], "1535": [201, 0.5], "1536": [202, 0.5], "1537": [203, 0.5], "1538": [204, 0.5], "1539": [205, 0.5], "1540": [206, 0.5], "1541": [207, 0.5], "1542": [208, 0.5], "1543": [209, 0.5], "1544": [210, 0.5], "1545": [211, 0.5], "1546": [212, 0.5], "1547": [213, 0.5], "1548": [214, 0.5], "1549": [215, 0.5], "1550": [216, 0.5], "1551": [217, 0.5], "1552": [218, 0.5], "1553": [219, 0.5], "1554": [220, 0.5], "1555": [221, 0.5], "1560": [222, 0.5], "1561": [223, 0.5], "1562": [224, 0.5], "1563": [225, 0.5], "1564": [226, 0.5], "1565": [227, 0.5], "1566": [228, 0.5], "1567": [229, 0.5], "1568": [230, 0.5], "1569": [231, 0.5], "1570": [232, 0.5], "1571": [233, 0.5], "1572": [234, 0.5], "1573": [235, 0.5], "1574": [236, 0.5], "1575": [237, 0.5], "1576": [238, 0.5], "1577": [239, 0.5], "1578": [240, 0.5], "1579": [241, 0.5], "1580": [242, 0.5], "1581": [243, 0.5], "1582": [244, 0.5], "1583": [245, 0.5], "1584": [246, 0.5], "1585": [247, 0.5], "1586": [248, 0.5], "1587": [249, 0.5], "1588": [250, 0.5], "1589": [251, 0.5], "1590": [252, 0.5], "1591": [253, 0.5], "1592": [254, 0.5], "1593": [255, 0.5], "1594": [256, 0.5], "1595": [257, 0.5]};
 const OSC_SPEC_ROWS = [
     [1000, "OSC 1 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1001, "OSC 1 Level", 0, 1, 0.8, "", "sld", null, 1, "Level", null],
@@ -910,113 +912,185 @@ const OSC_SPEC_ROWS = [
     [1367, "OSC 6 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1365, "OSC 6 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1400, "FM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
-    [1401, "FM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
-    [1402, "FM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
-    [1403, "FM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
-    [1404, "FM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
-    [1405, "FM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
-    [1406, "FM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
-    [1407, "FM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
-    [1408, "FM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
-    [1409, "FM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
-    [1410, "FM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
-    [1411, "FM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
-    [1412, "FM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
-    [1413, "FM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
-    [1414, "FM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
-    [1415, "FM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
-    [1416, "FM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
-    [1417, "FM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
-    [1418, "FM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
-    [1419, "FM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
-    [1420, "FM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
-    [1421, "FM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
-    [1422, "FM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
-    [1423, "FM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
-    [1424, "FM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
-    [1425, "FM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
-    [1426, "FM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
-    [1427, "FM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
-    [1428, "FM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
-    [1429, "FM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
-    [1430, "FM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
-    [1431, "FM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
-    [1432, "FM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
-    [1433, "FM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
-    [1434, "FM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
-    [1435, "FM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
     [1440, "PM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
-    [1441, "PM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
-    [1442, "PM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
-    [1443, "PM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
-    [1444, "PM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
-    [1445, "PM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
-    [1446, "PM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
-    [1447, "PM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
-    [1448, "PM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
-    [1449, "PM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
-    [1450, "PM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
-    [1451, "PM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
-    [1452, "PM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
-    [1453, "PM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
-    [1454, "PM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
-    [1455, "PM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
-    [1456, "PM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
-    [1457, "PM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
-    [1458, "PM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
-    [1459, "PM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
-    [1460, "PM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
-    [1461, "PM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
-    [1462, "PM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
-    [1463, "PM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
-    [1464, "PM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
-    [1465, "PM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
-    [1466, "PM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
-    [1467, "PM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
-    [1468, "PM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
-    [1469, "PM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
-    [1470, "PM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
-    [1471, "PM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
-    [1472, "PM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
-    [1473, "PM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
-    [1474, "PM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
-    [1475, "PM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
     [1480, "PD 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
+    [1520, "RM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
+    [1560, "AM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
+    [1401, "FM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
+    [1441, "PM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
     [1481, "PD 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
+    [1521, "RM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
+    [1561, "AM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
+    [1402, "FM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
+    [1442, "PM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
     [1482, "PD 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
+    [1522, "RM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
+    [1562, "AM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
+    [1403, "FM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
+    [1443, "PM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
     [1483, "PD 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
+    [1523, "RM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
+    [1563, "AM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
+    [1404, "FM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
+    [1444, "PM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
     [1484, "PD 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
+    [1524, "RM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
+    [1564, "AM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
+    [1405, "FM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
+    [1445, "PM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
     [1485, "PD 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
+    [1525, "RM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
+    [1565, "AM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
+    [1406, "FM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
+    [1446, "PM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
     [1486, "PD 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
+    [1526, "RM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
+    [1566, "AM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
+    [1407, "FM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
+    [1447, "PM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
     [1487, "PD 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
+    [1527, "RM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
+    [1567, "AM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
+    [1408, "FM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
+    [1448, "PM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
     [1488, "PD 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
+    [1528, "RM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
+    [1568, "AM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
+    [1409, "FM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
+    [1449, "PM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
     [1489, "PD 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
+    [1529, "RM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
+    [1569, "AM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
+    [1410, "FM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
+    [1450, "PM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
     [1490, "PD 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
+    [1530, "RM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
+    [1570, "AM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
+    [1411, "FM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
+    [1451, "PM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
     [1491, "PD 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
+    [1531, "RM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
+    [1571, "AM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
+    [1412, "FM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
+    [1452, "PM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
     [1492, "PD 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
+    [1532, "RM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
+    [1572, "AM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
+    [1413, "FM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
+    [1453, "PM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
     [1493, "PD 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
+    [1533, "RM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
+    [1573, "AM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
+    [1414, "FM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
+    [1454, "PM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
     [1494, "PD 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
+    [1534, "RM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
+    [1574, "AM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
+    [1415, "FM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
+    [1455, "PM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
     [1495, "PD 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
+    [1535, "RM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
+    [1575, "AM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
+    [1416, "FM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
+    [1456, "PM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
     [1496, "PD 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
+    [1536, "RM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
+    [1576, "AM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
+    [1417, "FM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
+    [1457, "PM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
     [1497, "PD 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
+    [1537, "RM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
+    [1577, "AM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
+    [1418, "FM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
+    [1458, "PM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
     [1498, "PD 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
+    [1538, "RM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
+    [1578, "AM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
+    [1419, "FM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
+    [1459, "PM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
     [1499, "PD 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
+    [1539, "RM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
+    [1579, "AM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
+    [1420, "FM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
+    [1460, "PM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
     [1500, "PD 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
+    [1540, "RM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
+    [1580, "AM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
+    [1421, "FM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
+    [1461, "PM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
     [1501, "PD 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
+    [1541, "RM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
+    [1581, "AM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
+    [1422, "FM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
+    [1462, "PM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
     [1502, "PD 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
+    [1542, "RM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
+    [1582, "AM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
+    [1423, "FM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
+    [1463, "PM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
     [1503, "PD 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
+    [1543, "RM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
+    [1583, "AM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
+    [1424, "FM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
+    [1464, "PM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
     [1504, "PD 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
+    [1544, "RM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
+    [1584, "AM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
+    [1425, "FM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
+    [1465, "PM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
     [1505, "PD 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
+    [1545, "RM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
+    [1585, "AM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
+    [1426, "FM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
+    [1466, "PM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
     [1506, "PD 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
+    [1546, "RM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
+    [1586, "AM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
+    [1427, "FM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
+    [1467, "PM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
     [1507, "PD 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
+    [1547, "RM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
+    [1587, "AM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
+    [1428, "FM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
+    [1468, "PM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
     [1508, "PD 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
+    [1548, "RM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
+    [1588, "AM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
+    [1429, "FM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
+    [1469, "PM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
     [1509, "PD 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
+    [1549, "RM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
+    [1589, "AM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
+    [1430, "FM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
+    [1470, "PM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
     [1510, "PD 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
+    [1550, "RM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
+    [1590, "AM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
+    [1431, "FM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
+    [1471, "PM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
     [1511, "PD 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
+    [1551, "RM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
+    [1591, "AM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
+    [1432, "FM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
+    [1472, "PM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
     [1512, "PD 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
+    [1552, "RM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
+    [1592, "AM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
+    [1433, "FM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
+    [1473, "PM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
     [1513, "PD 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
+    [1553, "RM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
+    [1593, "AM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
+    [1434, "FM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
+    [1474, "PM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
     [1514, "PD 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
-    [1515, "PD 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null]
+    [1554, "RM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
+    [1594, "AM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
+    [1435, "FM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
+    [1475, "PM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
+    [1515, "PD 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
+    [1555, "RM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
+    [1595, "AM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null]
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -1399,7 +1473,7 @@ function fmt (s, v) {
     if (fxLocate(s.num)) return fxLocate(s.num).ord !== undefined ? String(Math.round(v) + 1) : fxFmt(s, v);
     if (s.num === 880 || s.num === 881) return Math.round(v * 100) + "%";
     if (s.num === 522) return v < 1 ? "HOST" : Math.round(v) + " BPM";
-    if (s.num >= FM_BASE && s.num < PD_BASE + 36) return Math.round(v) + "%";
+    if (s.num >= FM_BASE && s.num < AM_BASE + 36) return Math.round(v) + "%";
     if (s.num >= OSC_BASE && s.num < OSC_BASE + OSC_STRIDE * OSC_N) {
         const k = (s.num - OSC_BASE) % OSC_STRIDE;
         if (k === OSC_K.pan) { const p = Math.round(v * 50); return p === 0 ? "C" : (p < 0 ? "L" + (-p) : "R" + p); }
@@ -1590,7 +1664,7 @@ class EisenpulsPatchView extends HTMLElement {
         });
         sel.addEventListener("keydown", e => e.stopPropagation());
         this.syncSizeSelect();
-        if (this._page === "fm") this.fmxDraw();
+        if (this._page === "fm" || this._page === "rm") this.fmxDraw();
     }
 
     syncSizeSelect () {
@@ -1645,7 +1719,7 @@ class EisenpulsPatchView extends HTMLElement {
         this.setAttribute("data-page", p);
         this.querySelectorAll(".stab").forEach(t => t.classList.toggle("on", t.dataset.page === p));
         this.drawAllOsc();
-        if (p === "fm") requestAnimationFrame(() => this.fmxDraw());
+        if (p === "fm" || p === "rm") requestAnimationFrame(() => this.fmxDraw());
     }
 
     // highlight matrix rows that have both a source and a destination assigned
@@ -2357,12 +2431,13 @@ class EisenpulsPatchView extends HTMLElement {
     // The first matrix is frequency modulation (exponential, +-4 octaves at 100%), the second is phase modulation, the third is phase
     // distortion (the modulator bends the carrier's phase, Casio CZ style). All amounts run from 0 (off) to 100 (%).
     fmxKinds () {
-        return [{ key: "fm", base: FM_BASE, title: "FM", sub: "frequency modulation" }, { key: "pm", base: PM_BASE, title: "PM", sub: "phase modulation" }, { key: "pd", base: PD_BASE, title: "PD", sub: "phase distortion" }];
+        return [{ key: "fm", base: FM_BASE, title: "FM", sub: "frequency modulation", page: "fm" }, { key: "pm", base: PM_BASE, title: "PM", sub: "phase modulation", page: "fm" }, { key: "pd", base: PD_BASE, title: "PD", sub: "phase distortion", page: "fm" },
+            { key: "rm", base: RM_BASE, title: "RM", sub: "ring modulation", page: "rm" }, { key: "am", base: AM_BASE, title: "AM", sub: "amplitude modulation", page: "rm" }];
     }
 
-    fmPageHTML () {
+    fmPageHTML (page) {
         const L = "ABCDEF";
-        const panels = this.fmxKinds().map(k => {
+        const panels = this.fmxKinds().filter(k => k.page === page).map(k => {
             let cells = "", hid = "";
             for (let sr = 0; sr < OSC_N; sr++) for (let d = 0; d < OSC_N; d++) {
                 hid += this.controlHTML(k.base + 6 * sr + d, true);
@@ -2371,8 +2446,12 @@ class EisenpulsPatchView extends HTMLElement {
             }
             return `<div class="fmx-panel" data-k="${k.key}"><div class="fmx-title"><b>${k.title}</b> ${k.sub}</div><div class="fmx"><svg class="fmx-svg"></svg><div class="fmx-grid">${cells}</div></div><div class="fmx-hid">${hid}</div></div>`;
         }).join("");
-        return `<section class="card fm-card"><h2>FM / PM / PD Matrix</h2><div class="fmx-row">${panels}</div>`
-            + `<div class="fm-note">The letter in a row modulates the letter in the column it meets. FM changes the carrier's pitch (exponential, +-4 octaves at 100%), PM shifts its phase, PD bends its phase (phase distortion). Amounts run from 0 (off) to 100%. Click a dot to connect, drag a value up / down (Shift = fine), double-click to clear. FB is self feedback. Click a letter to open that oscillator.</div></section>`;
+        const title = page === "rm" ? "Ring / Amplitude Modulation Matrix" : "FM / PM / PD Matrix";
+        const note = page === "rm"
+            ? "The letter in a row modulates the letter in the column it meets. RM multiplies the carrier with the modulator (ring modulation: the carrier and modulator themselves disappear, sum and difference tones remain), AM multiplies it with the modulator turned into a 0..1 control (amplitude modulation / tremolo: the carrier stays). The modulators are the slots' processed outputs. Amounts run from 0 (off) to 100%. Click a dot to connect, drag a value up / down (Shift = fine), double-click to clear. A letter on the diagonal is the slot itself (a slot can modulate itself). Click a letter to open that oscillator."
+            : "The letter in a row modulates the letter in the column it meets. FM changes the carrier's pitch (exponential, +-4 octaves at 100%), PM shifts its phase, PD bends its phase (phase distortion). Amounts run from 0 (off) to 100%. Click a dot to connect, drag a value up / down (Shift = fine), double-click to clear. FB is self feedback. Click a letter to open that oscillator.";
+        return `<section class="card fm-card"><h2>${title}</h2><div class="fmx-row">${panels}</div>`
+            + `<div class="fm-note">${note}</div></section>`;
     }
 
     fmxCtl (k, sr, d) { return this._controls.get("param" + (k.base + 6 * sr + d)); }
@@ -2471,7 +2550,7 @@ class EisenpulsPatchView extends HTMLElement {
     // ---------- parameter hooks ----------
     onValue (spec, v, user) {
         const n = spec.num;
-        if (n >= FM_BASE && n < PD_BASE + 36 && this._modReady) this.fmxRefresh();
+        if (n >= FM_BASE && n < AM_BASE + 36 && this._modReady) this.fmxRefresh();
         if (fxLocate(n)) this.onFxValue(spec, v, user);
         if (n >= OSC_BASE && n < OSC_BASE + OSC_STRIDE * OSC_N) this.onOscValue(Math.floor((n - OSC_BASE) / OSC_STRIDE), (n - OSC_BASE) % OSC_STRIDE);
         if ((n >= 307 && n <= 336) || (n >= 472 && n <= 501)) { this.updateSlots(); if (this._modReady) this.updateModRings(); }
@@ -3233,7 +3312,7 @@ class EisenpulsPatchView extends HTMLElement {
         const nums = onlyNum ? [onlyNum] : Object.keys(MOD_TARGET).map(Number);
         nums.forEach(num => {
             const t = MOD_TARGET[num];
-            if (!t || (num >= FM_BASE && num < PD_BASE + 36)) return;   // matrix cells have their own marks (fmxModMarks)
+            if (!t || (num >= FM_BASE && num < AM_BASE + 36)) return;   // matrix cells have their own marks (fmxModMarks)
             const ctl = this.fxCtl(num);
             if (!ctl || !ctl.node) return;
             const node = ctl.node, mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
@@ -3264,7 +3343,7 @@ class EisenpulsPatchView extends HTMLElement {
             dot.style.background = MOD_SRC_COLOR(mods[0].src);
             dot.textContent = mods.length > 1 ? String(mods.length) : "";
         });
-        if (!onlyNum || (onlyNum >= FM_BASE && onlyNum < PD_BASE + 36)) this.fmxModMarks();
+        if (!onlyNum || (onlyNum >= FM_BASE && onlyNum < AM_BASE + 36)) this.fmxModMarks();
     }
 
     // little dots on the FM / PM / PD cells that are modulated (click = amount popup)
@@ -3303,7 +3382,7 @@ class EisenpulsPatchView extends HTMLElement {
         const pop = document.createElement("div");
         pop.className = "modpop";
         const sp0 = SPEC_BY_NUM.get(num) || {};
-        const label = (num >= FM_BASE && num < PD_BASE + 36) ? sp0.label : (sp0.short || sp0.label || "");
+        const label = (num >= FM_BASE && num < AM_BASE + 36) ? sp0.label : (sp0.short || sp0.label || "");
         pop.innerHTML = `<div class="mp-title">${label} modulation</div>` + mods.map(m => `<div class="mp-row" data-s="${m.s}"><span class="mp-src" style="background:${MOD_SRC_COLOR(m.src)}">${MOD_SRC_SHORT(m.src)}</span>`
             + `<input type="range" min="-100" max="100" step="1" value="${Math.round(m.amt * 100)}"><span class="mp-val">${Math.round(m.amt * 100)}%</span><button type="button" class="mp-x" title="Remove">&times;</button></div>`).join("");
         this.appendChild(pop);
@@ -3461,6 +3540,7 @@ class EisenpulsPatchView extends HTMLElement {
   eisenpuls-view[data-page="o4"] .p-o4 { display: grid; }
   eisenpuls-view[data-page="o5"] .p-o5 { display: grid; }
   eisenpuls-view[data-page="fm"] .p-fm { display: grid; }
+  eisenpuls-view[data-page="rm"] .p-rm { display: grid; }
   eisenpuls-view[data-page="glob"] .p-glob { display: grid; }
   eisenpuls-view[data-page="fx"] .p-fx { display: grid; }
 
@@ -3905,7 +3985,7 @@ class EisenpulsPatchView extends HTMLElement {
   .page[data-src] .knb .knob { width: calc(var(--u) * 32); height: calc(var(--u) * 32); }
   .osc-canvas, .flt-canvas { height: calc(var(--u) * 72); }
   /* FM matrix */
-  .p-fm { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .p-fm, .p-rm { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
   .fmx-row { flex: 1 1 0; min-height: 0; display: flex; gap: calc(var(--u) * 8); margin-top: calc(var(--u) * 4); }
   .fmx-panel { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; min-height: 0; }
   .fmx-title { flex: 0 0 auto; font-size: calc(var(--u) * 8); letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); padding: 0 0 calc(var(--u) * 3) calc(var(--u) * 2); }
@@ -3969,11 +4049,12 @@ class EisenpulsPatchView extends HTMLElement {
   <div class="body">
     <nav class="prail"><button type="button" class="rb on" data-group="synth"><b>1</b>SYNTH</button><button type="button" class="rb" data-group="fx"><b>2</b>EFFECTS</button><button type="button" class="rb" data-group="mod"><b>3</b>MODULATION</button></nav>
     <div class="main">
-    <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button><button type="button" class="stab stab-x" data-page="fm">FM / PM / PD</button><button type="button" class="stab" data-page="glob">GLOBAL</button></div>
+    <div class="subtabs"><button type="button" class="stab on" data-page="o0">OSC 1</button><button type="button" class="stab" data-page="o1">OSC 2</button><button type="button" class="stab" data-page="o2">OSC 3</button><button type="button" class="stab" data-page="o3">OSC 4</button><button type="button" class="stab" data-page="o4">OSC 5</button><button type="button" class="stab" data-page="o5">OSC 6</button><button type="button" class="stab stab-x" data-page="fm">FM / PM / PD</button><button type="button" class="stab stab-x" data-page="rm">RM / AM</button><button type="button" class="stab" data-page="glob">GLOBAL</button></div>
       ${MGR_HTML}
       <div class="stage">
         ${oscPages}
-        <div class="page p-fm">${this.fmPageHTML()}</div>
+        <div class="page p-fm">${this.fmPageHTML("fm")}</div>
+        <div class="page p-rm">${this.fmPageHTML("rm")}</div>
         <div class="page p-glob">${this.globalPageHTML()}</div>
         <div class="page p-fx">${fxPage}</div>
       </div>

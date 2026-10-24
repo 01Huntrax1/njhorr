@@ -1,4 +1,4 @@
-// FM / PM matrices: three 6 x 6 node grids like the web UI. The letter of a row modulates the letter of the column it meets.
+// FM / PM / PD matrices (page 0) and RM / AM matrices (page 1): 6 x 6 node grids like the web UI. The letter of a row modulates the letter of the column it meets.
 #include "../NjoPages.h"
 
 namespace njo
@@ -8,14 +8,16 @@ namespace njo
     struct FmPage::Impl : public Ctx::Listener
     {
         struct Kind { const char* title; const char* sub; int base; };
-        static constexpr Kind kinds[3] = { { "FM", "frequency modulation", FM_BASE }, { "PM", "phase modulation", PM_BASE }, { "PD", "phase distortion", PD_BASE } };
+        static constexpr Kind kindsFm[3] = { { "FM", "frequency modulation", FM_BASE }, { "PM", "phase modulation", PM_BASE }, { "PD", "phase distortion", PD_BASE } };
+        static constexpr Kind kindsRm[2] = { { "RM", "ring modulation", RM_BASE }, { "AM", "amplitude modulation", AM_BASE } };
+        const Kind* kinds; int nk;
         enum Part { None, Cell, Fb, Node };
         struct Hit { int k = -1, s = 0, d = 0; Part part = None; bool operator== (const Hit& o) const { return k == o.k && s == o.s && d == o.d && part == o.part; } };
 
-        Impl (FmPage& p, Ctx& c) : owner (p), ctx (c) { ctx.addListener (this); }
+        Impl (FmPage& p, Ctx& c, int page) : kinds (page == 1 ? kindsRm : kindsFm), nk (page == 1 ? 2 : 3), owner (p), ctx (c) { ctx.addListener (this); }
         ~Impl() override { ctx.removeListener (this); }
 
-        FmPage& owner; Ctx& ctx;
+        FmPage& owner; Ctx& ctx; int pageNo = 0;
         std::function<void (int)> openOsc;
         juce::Rectangle<float> panel[3], inset[3], grid[3];
         juce::Rectangle<float> noteRect, headRect;
@@ -24,7 +26,7 @@ namespace njo
 
         void paramChanged (int n, float) override
         {
-            if ((n >= FM_BASE && n < PD_BASE + 36) || (n >= 307 && n <= 336) || (n >= 472 && n <= 501)) owner.repaint();
+            if ((n >= FM_BASE && n < AM_BASE + 36) || (n >= 307 && n <= 336) || (n >= 472 && n <= 501)) owner.repaint();
         }
 
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }
@@ -52,7 +54,7 @@ namespace njo
 
         Hit hitTest (juce::Point<float> p) const
         {
-            for (int k = 0; k < 3; ++k)
+            for (int k = 0; k < nk; ++k)
             {
                 if (! grid[k].contains (p)) continue;
                 int d = juce::jlimit (0, 5, (int) ((p.x - grid[k].getX()) / (grid[k].getWidth() / 6)));
@@ -199,7 +201,8 @@ namespace njo
             }
         }
     };
-    constexpr FmPage::Impl::Kind FmPage::Impl::kinds[3];
+    constexpr FmPage::Impl::Kind FmPage::Impl::kindsFm[3];
+    constexpr FmPage::Impl::Kind FmPage::Impl::kindsRm[2];
 
     static void refreshHover (FmPage& p, FmPage::Impl& i, juce::Point<float> pos)
     {
@@ -303,7 +306,7 @@ namespace njo
             }
         };
 
-    FmPage::FmPage (Ctx& c) : impl (new Impl (*this, c)) { impl->overlay.reset (new Overlay (*this, *impl)); addAndMakeVisible (*impl->overlay); }
+    FmPage::FmPage (Ctx& c, int page) : impl (new Impl (*this, c, page)) { impl->pageNo = page; impl->overlay.reset (new Overlay (*this, *impl)); addAndMakeVisible (*impl->overlay); }
     FmPage::~FmPage() = default;
     void FmPage::setOnOpenOsc (std::function<void (int)> f) { impl->openOsc = std::move (f); }
 
@@ -313,9 +316,9 @@ namespace njo
         impl->headRect = r.withHeight (30).reduced (12, 0);
         auto body = r.reduced (12, 0).withTrimmedTop (34).withTrimmedBottom (28);
         impl->noteRect = r.withTrimmedTop (r.getHeight() - 26).reduced (14, 2);
-        float gap = 12, w = (body.getWidth() - 2 * gap) / 3;
+        float gap = 12, w = (body.getWidth() - (impl->nk - 1) * gap) / impl->nk;
         impl->overlay->setBounds (getLocalBounds());
-        for (int k = 0; k < 3; ++k)
+        for (int k = 0; k < impl->nk; ++k)
         {
             auto p = juce::Rectangle<float> (body.getX() + k * (w + gap), body.getY(), w, body.getHeight());
             impl->panel[k] = p;
@@ -328,11 +331,14 @@ namespace njo
     {
         paintCard (g, getLocalBounds().toFloat());
         g.setColour (red); g.fillRect (juce::Rectangle<float> (12, 13, 7, 7));
-        g.setFont (impact (11.0f)); g.drawText ("FM / PM / PD MATRIX", 24, 8, 200, 16, juce::Justification::centredLeft);
+        g.setFont (impact (11.0f)); g.drawText (impl->pageNo == 1 ? "RING / AMPLITUDE MODULATION MATRIX" : "FM / PM / PD MATRIX", 24, 8, 320, 16, juce::Justification::centredLeft);
         g.setColour (dim); g.setFont (font (8.0f));
-        g.drawText ("The letter in a row modulates the letter in the column it meets. FM = carrier pitch (+-4 octaves at 100%), PM = phase shift, PD = phase distortion. 0 = off, 100 = 100%. "
-                    "Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self feedback. Click a letter to open that oscillator.",
+        g.drawText (impl->pageNo == 1
+                        ? "The letter in a row modulates the letter in the column it meets. RM = ring modulation (carrier x modulator), AM = amplitude modulation (carrier x 0..1 modulator). "
+                          "0 = off, 100 = 100%. Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self modulation. Click a letter to open that oscillator."
+                        : "The letter in a row modulates the letter in the column it meets. FM = carrier pitch (+-4 octaves at 100%), PM = phase shift, PD = phase distortion. 0 = off, 100 = 100%. "
+                          "Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self feedback. Click a letter to open that oscillator.",
                     impl->noteRect.toNearestInt(), juce::Justification::centredLeft, 2);
-        for (int k = 0; k < 3; ++k) impl->paintPanel (g, k);
+        for (int k = 0; k < impl->nk; ++k) impl->paintPanel (g, k);
     }
 }

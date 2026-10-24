@@ -380,6 +380,78 @@ processor Eisenpuls_Synth
     input event float param1474 [[ name: "PM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1435 [[ name: "FM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1475 [[ name: "PM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1520 [[ name: "RM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1521 [[ name: "RM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1522 [[ name: "RM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1523 [[ name: "RM 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1524 [[ name: "RM 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1525 [[ name: "RM 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1526 [[ name: "RM 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1527 [[ name: "RM 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1528 [[ name: "RM 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1529 [[ name: "RM 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1530 [[ name: "RM 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1531 [[ name: "RM 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1532 [[ name: "RM 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1533 [[ name: "RM 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1534 [[ name: "RM 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1535 [[ name: "RM 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1536 [[ name: "RM 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1537 [[ name: "RM 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1538 [[ name: "RM 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1539 [[ name: "RM 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1540 [[ name: "RM 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1541 [[ name: "RM 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1542 [[ name: "RM 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1543 [[ name: "RM 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1544 [[ name: "RM 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1545 [[ name: "RM 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1546 [[ name: "RM 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1547 [[ name: "RM 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1548 [[ name: "RM 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1549 [[ name: "RM 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1550 [[ name: "RM 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1551 [[ name: "RM 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1552 [[ name: "RM 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1553 [[ name: "RM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1554 [[ name: "RM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1555 [[ name: "RM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1560 [[ name: "AM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1561 [[ name: "AM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1562 [[ name: "AM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1563 [[ name: "AM 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1564 [[ name: "AM 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1565 [[ name: "AM 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1566 [[ name: "AM 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1567 [[ name: "AM 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1568 [[ name: "AM 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1569 [[ name: "AM 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1570 [[ name: "AM 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1571 [[ name: "AM 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1572 [[ name: "AM 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1573 [[ name: "AM 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1574 [[ name: "AM 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1575 [[ name: "AM 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1576 [[ name: "AM 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1577 [[ name: "AM 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1578 [[ name: "AM 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1579 [[ name: "AM 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1580 [[ name: "AM 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1581 [[ name: "AM 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1582 [[ name: "AM 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1583 [[ name: "AM 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1584 [[ name: "AM 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1585 [[ name: "AM 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1586 [[ name: "AM 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1587 [[ name: "AM 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1588 [[ name: "AM 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1589 [[ name: "AM 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1590 [[ name: "AM 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1591 [[ name: "AM 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1592 [[ name: "AM 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1593 [[ name: "AM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1594 [[ name: "AM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param1595 [[ name: "AM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1480 [[ name: "PD 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1481 [[ name: "PD 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1482 [[ name: "PD 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
@@ -586,64 +658,64 @@ processor Eisenpuls_Synth
     input event float param1638 [[ name: "Freq Mod 10 Retrig", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param1639 [[ name: "Freq Mod 10 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param307 [[ name: "Mod Slot 1 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param308 [[ name: "Mod Slot 1 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param308 [[ name: "Mod Slot 1 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param309 [[ name: "Mod Slot 1 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param310 [[ name: "Mod Slot 2 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param311 [[ name: "Mod Slot 2 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param311 [[ name: "Mod Slot 2 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param312 [[ name: "Mod Slot 2 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param313 [[ name: "Mod Slot 3 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param314 [[ name: "Mod Slot 3 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param314 [[ name: "Mod Slot 3 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param315 [[ name: "Mod Slot 3 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param316 [[ name: "Mod Slot 4 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param317 [[ name: "Mod Slot 4 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param317 [[ name: "Mod Slot 4 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param318 [[ name: "Mod Slot 4 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param319 [[ name: "Mod Slot 5 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param320 [[ name: "Mod Slot 5 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param320 [[ name: "Mod Slot 5 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param321 [[ name: "Mod Slot 5 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param322 [[ name: "Mod Slot 6 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param323 [[ name: "Mod Slot 6 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param323 [[ name: "Mod Slot 6 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param324 [[ name: "Mod Slot 6 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param325 [[ name: "Mod Slot 7 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param326 [[ name: "Mod Slot 7 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param326 [[ name: "Mod Slot 7 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param327 [[ name: "Mod Slot 7 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param328 [[ name: "Mod Slot 8 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param329 [[ name: "Mod Slot 8 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param329 [[ name: "Mod Slot 8 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param330 [[ name: "Mod Slot 8 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param331 [[ name: "Mod Slot 9 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param332 [[ name: "Mod Slot 9 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param332 [[ name: "Mod Slot 9 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param333 [[ name: "Mod Slot 9 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param334 [[ name: "Mod Slot 10 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param335 [[ name: "Mod Slot 10 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param335 [[ name: "Mod Slot 10 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param336 [[ name: "Mod Slot 10 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param472 [[ name: "Mod Slot 11 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param473 [[ name: "Mod Slot 11 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param473 [[ name: "Mod Slot 11 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param474 [[ name: "Mod Slot 11 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param475 [[ name: "Mod Slot 12 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param476 [[ name: "Mod Slot 12 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param476 [[ name: "Mod Slot 12 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param477 [[ name: "Mod Slot 12 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param478 [[ name: "Mod Slot 13 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param479 [[ name: "Mod Slot 13 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param479 [[ name: "Mod Slot 13 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param480 [[ name: "Mod Slot 13 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param481 [[ name: "Mod Slot 14 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param482 [[ name: "Mod Slot 14 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param482 [[ name: "Mod Slot 14 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param483 [[ name: "Mod Slot 14 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param484 [[ name: "Mod Slot 15 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param485 [[ name: "Mod Slot 15 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param485 [[ name: "Mod Slot 15 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param486 [[ name: "Mod Slot 15 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param487 [[ name: "Mod Slot 16 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param488 [[ name: "Mod Slot 16 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param488 [[ name: "Mod Slot 16 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param489 [[ name: "Mod Slot 16 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param490 [[ name: "Mod Slot 17 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param491 [[ name: "Mod Slot 17 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param491 [[ name: "Mod Slot 17 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param492 [[ name: "Mod Slot 17 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param493 [[ name: "Mod Slot 18 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param494 [[ name: "Mod Slot 18 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param494 [[ name: "Mod Slot 18 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param495 [[ name: "Mod Slot 18 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param496 [[ name: "Mod Slot 19 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param497 [[ name: "Mod Slot 19 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param497 [[ name: "Mod Slot 19 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param498 [[ name: "Mod Slot 19 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param499 [[ name: "Mod Slot 20 Source (Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)", min: 0.0, max: 33.0, init: 0.0, step: 1.0 ]];
-    input event float param500 [[ name: "Mod Slot 20 Dest (0-185, see Dest list)", min: 0.0, max: 185.0, init: 0.0, step: 1.0 ]];
+    input event float param500 [[ name: "Mod Slot 20 Dest (0-257, see Dest list)", min: 0.0, max: 257.0, init: 0.0, step: 1.0 ]];
     input event float param501 [[ name: "Mod Slot 20 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param502 [[ name: "LFO 1 Beat Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param503 [[ name: "LFO 1 Sync Division (8/1 .. 1/32T)", min: 0.0, max: 17.0, init: 8.0, step: 1.0 ]];
@@ -1226,8 +1298,8 @@ processor Eisenpuls_Synth
     float[10]   frqGV;        // free running value (units of 4 octaves)
     int         frqMask = 0;  // bit m: Freq modulator m is used by the matrix
 
-    float[192]  vmod;
-    float[192]  gmod;
+    float[264]  vmod;
+    float[264]  gmod;
     bool        vmodMat;    // some mod slot targets an FM / PM / PD matrix cell (dest 60..167)
     float       lastVelV  = 0.0f;   // matrix source values of the most recent note (global destinations)
     float       lastKeyV  = 0.0f;
@@ -1595,6 +1667,78 @@ processor Eisenpuls_Synth
     event param1474 (float v) { pmSet (5, 4, v * 0.01f); }
     event param1435 (float v) { fmSet (5, 5, v * 0.01f); }
     event param1475 (float v) { pmSet (5, 5, v * 0.01f); }
+    event param1520 (float v) { rmSet (0, 0, v * 0.01f); }
+    event param1521 (float v) { rmSet (0, 1, v * 0.01f); }
+    event param1522 (float v) { rmSet (0, 2, v * 0.01f); }
+    event param1523 (float v) { rmSet (0, 3, v * 0.01f); }
+    event param1524 (float v) { rmSet (0, 4, v * 0.01f); }
+    event param1525 (float v) { rmSet (0, 5, v * 0.01f); }
+    event param1526 (float v) { rmSet (1, 0, v * 0.01f); }
+    event param1527 (float v) { rmSet (1, 1, v * 0.01f); }
+    event param1528 (float v) { rmSet (1, 2, v * 0.01f); }
+    event param1529 (float v) { rmSet (1, 3, v * 0.01f); }
+    event param1530 (float v) { rmSet (1, 4, v * 0.01f); }
+    event param1531 (float v) { rmSet (1, 5, v * 0.01f); }
+    event param1532 (float v) { rmSet (2, 0, v * 0.01f); }
+    event param1533 (float v) { rmSet (2, 1, v * 0.01f); }
+    event param1534 (float v) { rmSet (2, 2, v * 0.01f); }
+    event param1535 (float v) { rmSet (2, 3, v * 0.01f); }
+    event param1536 (float v) { rmSet (2, 4, v * 0.01f); }
+    event param1537 (float v) { rmSet (2, 5, v * 0.01f); }
+    event param1538 (float v) { rmSet (3, 0, v * 0.01f); }
+    event param1539 (float v) { rmSet (3, 1, v * 0.01f); }
+    event param1540 (float v) { rmSet (3, 2, v * 0.01f); }
+    event param1541 (float v) { rmSet (3, 3, v * 0.01f); }
+    event param1542 (float v) { rmSet (3, 4, v * 0.01f); }
+    event param1543 (float v) { rmSet (3, 5, v * 0.01f); }
+    event param1544 (float v) { rmSet (4, 0, v * 0.01f); }
+    event param1545 (float v) { rmSet (4, 1, v * 0.01f); }
+    event param1546 (float v) { rmSet (4, 2, v * 0.01f); }
+    event param1547 (float v) { rmSet (4, 3, v * 0.01f); }
+    event param1548 (float v) { rmSet (4, 4, v * 0.01f); }
+    event param1549 (float v) { rmSet (4, 5, v * 0.01f); }
+    event param1550 (float v) { rmSet (5, 0, v * 0.01f); }
+    event param1551 (float v) { rmSet (5, 1, v * 0.01f); }
+    event param1552 (float v) { rmSet (5, 2, v * 0.01f); }
+    event param1553 (float v) { rmSet (5, 3, v * 0.01f); }
+    event param1554 (float v) { rmSet (5, 4, v * 0.01f); }
+    event param1555 (float v) { rmSet (5, 5, v * 0.01f); }
+    event param1560 (float v) { amSet (0, 0, v * 0.01f); }
+    event param1561 (float v) { amSet (0, 1, v * 0.01f); }
+    event param1562 (float v) { amSet (0, 2, v * 0.01f); }
+    event param1563 (float v) { amSet (0, 3, v * 0.01f); }
+    event param1564 (float v) { amSet (0, 4, v * 0.01f); }
+    event param1565 (float v) { amSet (0, 5, v * 0.01f); }
+    event param1566 (float v) { amSet (1, 0, v * 0.01f); }
+    event param1567 (float v) { amSet (1, 1, v * 0.01f); }
+    event param1568 (float v) { amSet (1, 2, v * 0.01f); }
+    event param1569 (float v) { amSet (1, 3, v * 0.01f); }
+    event param1570 (float v) { amSet (1, 4, v * 0.01f); }
+    event param1571 (float v) { amSet (1, 5, v * 0.01f); }
+    event param1572 (float v) { amSet (2, 0, v * 0.01f); }
+    event param1573 (float v) { amSet (2, 1, v * 0.01f); }
+    event param1574 (float v) { amSet (2, 2, v * 0.01f); }
+    event param1575 (float v) { amSet (2, 3, v * 0.01f); }
+    event param1576 (float v) { amSet (2, 4, v * 0.01f); }
+    event param1577 (float v) { amSet (2, 5, v * 0.01f); }
+    event param1578 (float v) { amSet (3, 0, v * 0.01f); }
+    event param1579 (float v) { amSet (3, 1, v * 0.01f); }
+    event param1580 (float v) { amSet (3, 2, v * 0.01f); }
+    event param1581 (float v) { amSet (3, 3, v * 0.01f); }
+    event param1582 (float v) { amSet (3, 4, v * 0.01f); }
+    event param1583 (float v) { amSet (3, 5, v * 0.01f); }
+    event param1584 (float v) { amSet (4, 0, v * 0.01f); }
+    event param1585 (float v) { amSet (4, 1, v * 0.01f); }
+    event param1586 (float v) { amSet (4, 2, v * 0.01f); }
+    event param1587 (float v) { amSet (4, 3, v * 0.01f); }
+    event param1588 (float v) { amSet (4, 4, v * 0.01f); }
+    event param1589 (float v) { amSet (4, 5, v * 0.01f); }
+    event param1590 (float v) { amSet (5, 0, v * 0.01f); }
+    event param1591 (float v) { amSet (5, 1, v * 0.01f); }
+    event param1592 (float v) { amSet (5, 2, v * 0.01f); }
+    event param1593 (float v) { amSet (5, 3, v * 0.01f); }
+    event param1594 (float v) { amSet (5, 4, v * 0.01f); }
+    event param1595 (float v) { amSet (5, 5, v * 0.01f); }
     event param1480 (float v) { pdSet (0, 0, v * 0.01f); }
     event param1481 (float v) { pdSet (0, 1, v * 0.01f); }
     event param1482 (float v) { pdSet (0, 2, v * 0.01f); }
@@ -1780,64 +1924,64 @@ processor Eisenpuls_Synth
 
     // Mod matrix handlers (source, destination, amount)
     event param307 (float v) { mmSrcI.at (0) = clamp (int (v + 0.5f), 0, 33); }
-    event param308 (float v) { mmDstI.at (0) = clamp (int (v + 0.5f), 0, 185); }
+    event param308 (float v) { mmDstI.at (0) = clamp (int (v + 0.5f), 0, 257); }
     event param309 (float v) { mmAmt.at (0)  = v; }
     event param310 (float v) { mmSrcI.at (1) = clamp (int (v + 0.5f), 0, 33); }
-    event param311 (float v) { mmDstI.at (1) = clamp (int (v + 0.5f), 0, 185); }
+    event param311 (float v) { mmDstI.at (1) = clamp (int (v + 0.5f), 0, 257); }
     event param312 (float v) { mmAmt.at (1)  = v; }
     event param313 (float v) { mmSrcI.at (2) = clamp (int (v + 0.5f), 0, 33); }
-    event param314 (float v) { mmDstI.at (2) = clamp (int (v + 0.5f), 0, 185); }
+    event param314 (float v) { mmDstI.at (2) = clamp (int (v + 0.5f), 0, 257); }
     event param315 (float v) { mmAmt.at (2)  = v; }
     event param316 (float v) { mmSrcI.at (3) = clamp (int (v + 0.5f), 0, 33); }
-    event param317 (float v) { mmDstI.at (3) = clamp (int (v + 0.5f), 0, 185); }
+    event param317 (float v) { mmDstI.at (3) = clamp (int (v + 0.5f), 0, 257); }
     event param318 (float v) { mmAmt.at (3)  = v; }
     event param319 (float v) { mmSrcI.at (4) = clamp (int (v + 0.5f), 0, 33); }
-    event param320 (float v) { mmDstI.at (4) = clamp (int (v + 0.5f), 0, 185); }
+    event param320 (float v) { mmDstI.at (4) = clamp (int (v + 0.5f), 0, 257); }
     event param321 (float v) { mmAmt.at (4)  = v; }
     event param322 (float v) { mmSrcI.at (5) = clamp (int (v + 0.5f), 0, 33); }
-    event param323 (float v) { mmDstI.at (5) = clamp (int (v + 0.5f), 0, 185); }
+    event param323 (float v) { mmDstI.at (5) = clamp (int (v + 0.5f), 0, 257); }
     event param324 (float v) { mmAmt.at (5)  = v; }
     event param325 (float v) { mmSrcI.at (6) = clamp (int (v + 0.5f), 0, 33); }
-    event param326 (float v) { mmDstI.at (6) = clamp (int (v + 0.5f), 0, 185); }
+    event param326 (float v) { mmDstI.at (6) = clamp (int (v + 0.5f), 0, 257); }
     event param327 (float v) { mmAmt.at (6)  = v; }
     event param328 (float v) { mmSrcI.at (7) = clamp (int (v + 0.5f), 0, 33); }
-    event param329 (float v) { mmDstI.at (7) = clamp (int (v + 0.5f), 0, 185); }
+    event param329 (float v) { mmDstI.at (7) = clamp (int (v + 0.5f), 0, 257); }
     event param330 (float v) { mmAmt.at (7)  = v; }
     event param331 (float v) { mmSrcI.at (8) = clamp (int (v + 0.5f), 0, 33); }
-    event param332 (float v) { mmDstI.at (8) = clamp (int (v + 0.5f), 0, 185); }
+    event param332 (float v) { mmDstI.at (8) = clamp (int (v + 0.5f), 0, 257); }
     event param333 (float v) { mmAmt.at (8)  = v; }
     event param334 (float v) { mmSrcI.at (9) = clamp (int (v + 0.5f), 0, 33); }
-    event param335 (float v) { mmDstI.at (9) = clamp (int (v + 0.5f), 0, 185); }
+    event param335 (float v) { mmDstI.at (9) = clamp (int (v + 0.5f), 0, 257); }
     event param336 (float v) { mmAmt.at (9)  = v; }
     event param472 (float v) { mmSrcI.at (10) = clamp (int (v + 0.5f), 0, 33); }
-    event param473 (float v) { mmDstI.at (10) = clamp (int (v + 0.5f), 0, 185); }
+    event param473 (float v) { mmDstI.at (10) = clamp (int (v + 0.5f), 0, 257); }
     event param474 (float v) { mmAmt.at (10)  = v; }
     event param475 (float v) { mmSrcI.at (11) = clamp (int (v + 0.5f), 0, 33); }
-    event param476 (float v) { mmDstI.at (11) = clamp (int (v + 0.5f), 0, 185); }
+    event param476 (float v) { mmDstI.at (11) = clamp (int (v + 0.5f), 0, 257); }
     event param477 (float v) { mmAmt.at (11)  = v; }
     event param478 (float v) { mmSrcI.at (12) = clamp (int (v + 0.5f), 0, 33); }
-    event param479 (float v) { mmDstI.at (12) = clamp (int (v + 0.5f), 0, 185); }
+    event param479 (float v) { mmDstI.at (12) = clamp (int (v + 0.5f), 0, 257); }
     event param480 (float v) { mmAmt.at (12)  = v; }
     event param481 (float v) { mmSrcI.at (13) = clamp (int (v + 0.5f), 0, 33); }
-    event param482 (float v) { mmDstI.at (13) = clamp (int (v + 0.5f), 0, 185); }
+    event param482 (float v) { mmDstI.at (13) = clamp (int (v + 0.5f), 0, 257); }
     event param483 (float v) { mmAmt.at (13)  = v; }
     event param484 (float v) { mmSrcI.at (14) = clamp (int (v + 0.5f), 0, 33); }
-    event param485 (float v) { mmDstI.at (14) = clamp (int (v + 0.5f), 0, 185); }
+    event param485 (float v) { mmDstI.at (14) = clamp (int (v + 0.5f), 0, 257); }
     event param486 (float v) { mmAmt.at (14)  = v; }
     event param487 (float v) { mmSrcI.at (15) = clamp (int (v + 0.5f), 0, 33); }
-    event param488 (float v) { mmDstI.at (15) = clamp (int (v + 0.5f), 0, 185); }
+    event param488 (float v) { mmDstI.at (15) = clamp (int (v + 0.5f), 0, 257); }
     event param489 (float v) { mmAmt.at (15)  = v; }
     event param490 (float v) { mmSrcI.at (16) = clamp (int (v + 0.5f), 0, 33); }
-    event param491 (float v) { mmDstI.at (16) = clamp (int (v + 0.5f), 0, 185); }
+    event param491 (float v) { mmDstI.at (16) = clamp (int (v + 0.5f), 0, 257); }
     event param492 (float v) { mmAmt.at (16)  = v; }
     event param493 (float v) { mmSrcI.at (17) = clamp (int (v + 0.5f), 0, 33); }
-    event param494 (float v) { mmDstI.at (17) = clamp (int (v + 0.5f), 0, 185); }
+    event param494 (float v) { mmDstI.at (17) = clamp (int (v + 0.5f), 0, 257); }
     event param495 (float v) { mmAmt.at (17)  = v; }
     event param496 (float v) { mmSrcI.at (18) = clamp (int (v + 0.5f), 0, 33); }
-    event param497 (float v) { mmDstI.at (18) = clamp (int (v + 0.5f), 0, 185); }
+    event param497 (float v) { mmDstI.at (18) = clamp (int (v + 0.5f), 0, 257); }
     event param498 (float v) { mmAmt.at (18)  = v; }
     event param499 (float v) { mmSrcI.at (19) = clamp (int (v + 0.5f), 0, 33); }
-    event param500 (float v) { mmDstI.at (19) = clamp (int (v + 0.5f), 0, 185); }
+    event param500 (float v) { mmDstI.at (19) = clamp (int (v + 0.5f), 0, 257); }
     event param501 (float v) { mmAmt.at (19)  = v; }
     event param502 (float v) { mLfoSync.at (0) = v; }
     event param503 (float v) { mLfoDiv.at (0)  = v; }
@@ -3808,7 +3952,7 @@ processor Eisenpuls_Synth
     // Sums the matrix for one voice into vmod[dest]
     void computeVoiceMod (int vi)
     {
-        for (int d = 0; d < 192; ++d)
+        for (int d = 0; d < 264; ++d)
             vmod.at (d) = 0.0f;
 
         bool mat = false;
@@ -3823,7 +3967,7 @@ processor Eisenpuls_Synth
             if (dd > 0 && ss > 0)
             {
                 vmod.at (dd) += srcValueVoice (ss, vi) * mmAmt.at (s);
-                if (dd >= 60 && dd < 168) mat = true;
+                if ((dd >= 60 && dd < 168) || dd >= 186) mat = true;
             }
         }
 
@@ -3833,7 +3977,7 @@ processor Eisenpuls_Synth
     // Sums the matrix for the global (post-voice) destinations into gmod[dest]
     void computeGlobalMod()
     {
-        for (int d = 0; d < 192; ++d)
+        for (int d = 0; d < 264; ++d)
             gmod.at (d) = 0.0f;
 
         for (int s = 0; s < 20; ++s)
@@ -4138,6 +4282,8 @@ processor Eisenpuls_Synth
     float[36]     fmAmt;      // frequency modulation
     float[36]     pmAmt;      // phase modulation
     float[36]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
+    float[36]     rmAmt;      // ring modulation (carrier x modulator)
+    float[36]     amAmt;      // amplitude modulation (carrier x unipolar modulator)
     bool[6]       fmUsed;
 
     // wavetable memories (one per slot), Vital style: the source (up to 262144 samples = 128 frames of 2048) is cut into equal
@@ -4200,7 +4346,8 @@ processor Eisenpuls_Synth
         {
             bool u = false;
             for (int r = 0; r < 6; ++r)
-                if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f) u = true;
+                if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f
+                    || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
         }
     }
@@ -4220,6 +4367,18 @@ processor Eisenpuls_Synth
     void pdSet (int s, int d, float v)
     {
         pdAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void rmSet (int s, int d, float v)
+    {
+        rmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void amSet (int s, int d, float v)
+    {
+        amAmt.at (s * 6 + d) = v;
         updateFmUsed();
     }
 
@@ -19222,6 +19381,11 @@ processor Eisenpuls_Synth
                     pdIn.at (fd) = acd;
                 }
 
+                // outputs of the previous sample: the modulators of the ring / amplitude modulation matrices
+                float[6] rmPrev;
+                for (int rq = 0; rq < 6; ++rq)
+                    rmPrev.at (rq) = voices.at (i).fmPrev.at (rq);
+
                 float[3] bInL;
                 float[3] bInR;
 
@@ -19388,6 +19552,28 @@ processor Eisenpuls_Synth
                     {
                         sL = oscDist (sL, dty, dd, dx, o, dwp);
                         sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
+                    }
+
+                    // ----- ring modulation (carrier x modulator) and amplitude modulation (carrier x unipolar modulator) -----
+                    for (int rs = 0; rs < 6; ++rs)
+                    {
+                        int   ri = rs * 6 + o;
+                        float ar = rmAmt.at (ri);
+                        float aa = amAmt.at (ri);
+                        if (vmodMat)   // mod matrix destinations 186.. : RM 186 + n, AM 222 + n (+-50% of the range at full amount)
+                        {
+                            ar = clamp (ar + vmod.at (186 + ri) * 0.5f, 0.0f, 1.0f);
+                            aa = clamp (aa + vmod.at (222 + ri) * 0.5f, 0.0f, 1.0f);
+                        }
+                        if (ar != 0.0f || aa != 0.0f)
+                        {
+                            float rmod = clamp (rmPrev.at (rs), -1.0f, 1.0f);
+                            float rg   = (1.0f - ar) + ar * rmod;
+                            float ag   = (1.0f - aa) + aa * (0.5f + 0.5f * rmod);
+                            float tg   = rg * ag;
+                            sL *= tg;
+                            sR *= tg;
+                        }
                     }
 
                     // the matrix modulators are the processed slot outputs (after filter and distortion)

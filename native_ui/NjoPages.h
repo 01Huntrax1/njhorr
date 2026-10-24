@@ -18,11 +18,11 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
-    // FM / PM matrices
+    // FM / PM / PD matrices (page 0) or the RM / AM matrices (page 1)
     class FmPage : public juce::Component
     {
     public:
-        explicit FmPage (Ctx&);
+        explicit FmPage (Ctx&, int page = 0);
         ~FmPage() override;
         void paint (juce::Graphics&) override;
         void resized() override;

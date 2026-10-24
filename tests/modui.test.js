@@ -29,7 +29,7 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
     const V = w.__create(pc); w.document.body.appendChild(V); await sleep(150);
 
     check("rail pages are synth, effects, modulation", [...V.querySelectorAll(".rb")].map(t => t.textContent.replace(/^\d/, "")).join() === "SYNTH,EFFECTS,MODULATION");
-    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM / PM / PD,GLOBAL");
+    check("osc sub tabs", [...V.querySelectorAll(".stab")].map(t => t.textContent).join() === "OSC 1,OSC 2,OSC 3,OSC 4,OSC 5,OSC 6,FM / PM / PD,RM / AM,GLOBAL");
     V.querySelector('.stab[data-page="o1"]').click();
     check("sub tab opens OSC 2", V.getAttribute("data-page") === "o1" && V.getAttribute("data-group") === "synth");
     V.querySelector('.rb[data-group="fx"]').click();
@@ -83,6 +83,10 @@ const ptr = (w, type, x, y, id) => { const e = new w.Event(type, { bubbles: true
         const fb = V.querySelector('.fmx-panel[data-k="pd"] .fmx-d[data-s="2"] .fmx-fb');
         const tf = V.modTargetOf(fb);
         check("a PD feedback box is a mod target (dest 132 + 14)", !!tf && tf.num === 1480 + 14 && tf.dst === 146, tf ? tf.dst : "none");
+        const rc = V.querySelector('.fmx-panel[data-k="rm"] .fmx-c[data-s="0"][data-d="4"]'), tr = V.modTargetOf(rc);
+        check("an RM matrix cell is a mod target (dest 186 + 4)", !!tr && tr.num === 1520 + 4 && tr.dst === 190, tr ? tr.dst : "none");
+        const ac = V.querySelector('.fmx-panel[data-k="am"] .fmx-d[data-s="5"] .fmx-fb'), ta = V.modTargetOf(ac);
+        check("an AM feedback box is a mod target (dest 222 + 35)", !!ta && ta.num === 1560 + 35 && ta.dst === 257, ta ? ta.dst : "none");
         const free = V.modSlots().findIndex(x => x.src === 0 || x.dst === 0);
         const sl = V.modAssign(1, tg.dst, 0.5);
         check("drop assigns a slot with the cell as destination", sl === free && Math.round(ctl(V, (sl < 10 ? 307 + 3 * sl : 472 + 3 * (sl - 10)) + 1).value) === 105);

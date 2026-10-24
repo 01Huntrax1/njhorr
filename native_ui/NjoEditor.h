@@ -37,7 +37,7 @@ namespace njo
         SoundMemory memory;
         Group currentGroup = Synth; int currentSynthPage = 0;
         juce::OwnedArray<OscPage> osc;
-        FmPage fm; GlobalPage glob; FxPage fx;
+        FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx;
         ModEditors editors, editorsFull; FreqEditor freq, freqFull; MatrixPanel matrix;
         int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators
         ManagerBar manager;

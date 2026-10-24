@@ -192,6 +192,32 @@ for kind, off in (("FM", 60), ("PM", 96), ("PD", 132)):
     a2 = render(mbase + [(307, 1), (308, off + 6), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="mm" + kind + "2")
     check("mod matrix destination '%s B > A' leaves the A > B amount alone" % kind, band(seg(a2)[:, 0], 600, 6000) < 0.05 * band(seg(a2)[:, 0], 400, 480))
 
+# ---------------------------------------------------------------- ring modulation and amplitude modulation matrices
+rbase = [(28, 0), "wt 0 sine", "wt 1 sine", P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1)]
+r0 = render(rbase, tag="rm_dry")
+dry_f = band(seg(r0)[:, 0], 400, 480)
+for nm, fn in (("RM", L.rm_id), ("AM", L.am_id)):
+    r1 = render(rbase + [(fn(0, 1), 100)], tag=nm + "1")
+    f1 = band(seg(r1)[:, 0], 400, 480); h2 = band(seg(r1)[:, 0], 820, 940)
+    if nm == "RM":
+        check("RM 100% of a sine by the same sine removes the fundamental and makes the 2nd harmonic", f1 < 0.25 * dry_f and h2 > 0.2 * dry_f, "%.3g %.3g vs %.3g" % (f1, h2, dry_f))
+    else:
+        check("AM 100% keeps the fundamental and adds the 2nd harmonic", f1 > 0.3 * dry_f and h2 > 0.1 * dry_f, "%.3g %.3g vs %.3g" % (f1, h2, dry_f))
+    r2 = render(rbase + [(fn(0, 1), 0)], tag=nm + "0")
+    check(nm + " amount 0 is off", np.max(np.abs(r2 - r0)) < 1e-6)
+    r3 = render(rbase + [(fn(1, 0), 100)], tag=nm + "rev")
+    check(nm + " B > A leaves the carrier B alone (only A is modulated)", np.max(np.abs(r3 - r0)) < 1e-6)
+    cm = ["wt %d morph" % o for o in range(6)] + [P(o, "level", 0.3) for o in range(6)]
+    for a_ in range(6):
+        for b_ in range(6): cm.append((fn(a_, b_), 100))
+    ra = render(cm, hold=0.3, tail=0.05, tag=nm + "all")
+    check(nm + " full 6x6 matrix at 100% stays finite and bounded", np.isfinite(ra).all() and np.abs(ra).max() < 1.5)
+off = {"RM": 186, "AM": 222}
+for nm, fn in (("RM", L.rm_id), ("AM", L.am_id)):
+    a1 = render(rbase + [(307, 1), (308, off[nm] + 1), (309, 1.0), ("shape", 0, "const", 1), (882, 1), (247, 6)], tag="mm" + nm)
+    a2 = render(rbase + [(fn(0, 1), 100)], tag="mmref" + nm)
+    check("mod matrix destination '%s A > B' opens the %s amount" % (nm, nm), rms(a1 - r0) > 0.2 * rms(r0) and abs(rms(a1) / rms(a2) - 1) < 0.4, "%.3f %.3f" % (rms(a1 - r0), rms(r0)))
+
 # ---------------------------------------------------------------- Vital style wavetables: band-limited mips, 2048 frames, up to 128 frames
 def alias_ratio(a, f0):
     f, X = spec(seg(a)[:, 0]); k = np.round(f / f0); near = np.abs(f - k * f0) < 12.0

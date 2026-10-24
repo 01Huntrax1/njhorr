@@ -5,6 +5,8 @@ STRIDE = 64          # ids (and op[] entries) per oscillator
 FM_BASE = 1400       # 6x6 frequency modulation matrix: FM_BASE + 6*src + dst
 PM_BASE = 1440       # 6x6 phase modulation matrix: PM_BASE + 6*src + dst
 PD_BASE = 1480       # 6x6 phase distortion matrix: PD_BASE + 6*src + dst
+RM_BASE = 1520       # 6x6 ring modulation matrix: RM_BASE + 6*src + dst
+AM_BASE = 1560       # 6x6 amplitude modulation matrix: AM_BASE + 6*src + dst
 OSC_STRIDE_NAMES = ["OSC %d" % (i + 1) for i in range(OSC_COUNT)]
 FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "HP24", "BP24", "Notch12", "Notch24",
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
@@ -72,9 +74,12 @@ def dst_index(o, j): return 6 + 9 * o + j
 N_DST = 6 + 9 * OSC_COUNT   # 60 (osc / global destinations); 60..167 = FM 60+n, PM 96+n, PD 132+n (n = 6*src + dst)
 N_TBL_DST = N_DST + 108   # 168..179: Wavefilter / Wavedistortion table position of OSC 1..6 (168 + 2 * o, 169 + 2 * o)
 N_FREQ_DST = N_TBL_DST + 12    # 180..185: oscillator Frequency knob of OSC 1..6 (the Freq modulators only reach these and the cutoffs)
-N_DST_ALL = N_DST + 108 + 12 + 6
+N_RM_DST = N_FREQ_DST + 6      # 186..221: RM 186 + n, 222..257: AM 222 + n (n = 6 * src + dst)
+N_DST_ALL = N_DST + 108 + 12 + 6 + 72
 FRQ_BASE = 1600                 # Freq modulator m: rate (ms), transpose (semitones), retrig, loop = FRQ_BASE + 4 * m + 0..3
 def pid(o, k): return BASE + STRIDE * o + k
 def fm_id(src, dst): return FM_BASE + 6 * src + dst
 def pm_id(src, dst): return PM_BASE + 6 * src + dst
 def pd_id(src, dst): return PD_BASE + 6 * src + dst
+def rm_id(src, dst): return RM_BASE + 6 * src + dst
+def am_id(src, dst): return AM_BASE + 6 * src + dst

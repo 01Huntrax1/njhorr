@@ -51,7 +51,7 @@ namespace njo
     };
 
     EditorContent::EditorContent (Backend& be)
-        : ctx (be), memory (ctx), fm (ctx), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), memory (ctx), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
         if (! ctx.freqShapes) ctx.freqShapes = std::make_shared<FreqShapes> (ctx);
@@ -65,9 +65,9 @@ namespace njo
             b->onClick = [this, i] { setGroup ((Group) i); };
             addAndMakeVisible (b);
         }
-        for (int i = 0; i < 8; ++i)
+        for (int i = 0; i < 9; ++i)
         {
-            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM / PD" : "GLOBAL");
+            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM / PD" : (i == 7 ? "RM / AM" : "GLOBAL"));
             auto* b = impl->tabs.add (new NavButton (NavButton::Tab, t));
             b->onClick = [this, i] { setSynthPage (i); };
             addAndMakeVisible (b);
@@ -94,9 +94,10 @@ namespace njo
             addChildComponent (p);
         }
         fm.setOnOpenOsc ([this] (int o) { setSynthPage (o); });
+        fmRm.setOnOpenOsc ([this] (int o) { setSynthPage (o); });
         glob.onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
         fx.onModDropped = glob.onModDropped;
-        addChildComponent (fm); addChildComponent (glob); addChildComponent (fx);
+        addChildComponent (fm); addChildComponent (fmRm); addChildComponent (glob); addChildComponent (fx);
         addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (matrix);
         addChildComponent (freq);
         addAndMakeVisible (editors);
@@ -131,7 +132,7 @@ namespace njo
 
     void EditorContent::setSynthPage (int p)
     {
-        currentSynthPage = juce::jlimit (0, 7, p);
+        currentSynthPage = juce::jlimit (0, 8, p);
         currentGroup = Synth;
         for (int i = 0; i < 3; ++i) impl->rail[i]->setOn (i == 0);
         layoutAll();
@@ -163,9 +164,10 @@ namespace njo
         {
             auto s = impl->subRect; int x = s.getX();
             for (int i = 0; i < 6; ++i) { impl->tabs[i]->setBounds (x, s.getY(), 56, s.getHeight()); x += 59; }
-            impl->tabs[7]->setBounds (s.getRight() - 62, s.getY(), 62, s.getHeight());
-            impl->tabs[6]->setBounds (s.getRight() - 62 - 3 - 70, s.getY(), 70, s.getHeight());
-            for (int i = 0; i < 8; ++i) impl->tabs[i]->setOn (i == currentSynthPage);
+            impl->tabs[8]->setBounds (s.getRight() - 62, s.getY(), 62, s.getHeight());
+            impl->tabs[7]->setBounds (s.getRight() - 62 - 3 - 58, s.getY(), 58, s.getHeight());
+            impl->tabs[6]->setBounds (s.getRight() - 62 - 3 - 58 - 3 - 70, s.getY(), 70, s.getHeight());
+            for (int i = 0; i < 9; ++i) impl->tabs[i]->setOn (i == currentSynthPage);
         }
         impl->mgrRect = m.removeFromTop (24); m.removeFromTop (6);
         manager.setBounds (impl->mgrRect);
@@ -175,13 +177,14 @@ namespace njo
         impl->stageRect = m;
 
         for (auto* p : osc) p->setVisible (false);
-        fm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false);
+        fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false);
         editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false);
         for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get() }) b->setVisible (false);
         if (synth)
         {
             if (currentSynthPage < 6) { osc[currentSynthPage]->setBounds (impl->stageRect); osc[currentSynthPage]->setVisible (true); }
             else if (currentSynthPage == 6) { fm.setBounds (impl->stageRect); fm.setVisible (true); }
+            else if (currentSynthPage == 7) { fmRm.setBounds (impl->stageRect); fmRm.setVisible (true); }
             else { glob.setBounds (impl->stageRect); glob.setVisible (true); }
         }
         else if (currentGroup == Effects) { fx.setBounds (impl->stageRect); fx.setVisible (true); }
