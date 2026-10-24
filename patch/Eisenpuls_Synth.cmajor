@@ -1197,21 +1197,21 @@ processor Eisenpuls_Synth
 
     // Wavetable 3 memory bank (1 memory x 96000 samples)
     // ---------------- FX RACK STATE ----------------
-    int[30]       fxType;
-    float[30]     fxOn;
-    float[30]     fxMix;
-    int[30]       fxMode;
-    float[180]    fxP;
-    bool[30]      fxDirty;
-    int[30]       fxOrder;
-    int[30]       fxSeq;
-    float[480]    fxD;
-    float[1200]   fxF;
-    int[720]      fxI;
-    float64[120]  fxPh;
+    int[32]       fxType;  // padded to a power of two (cheap index wrap)
+    float[32]     fxOn;  // padded to a power of two (cheap index wrap)
+    float[32]     fxMix;  // padded to a power of two (cheap index wrap)
+    int[32]       fxMode;  // padded to a power of two (cheap index wrap)
+    float[256]    fxP;  // padded to a power of two (cheap index wrap)
+    bool[32]      fxDirty;  // padded to a power of two (cheap index wrap)
+    int[32]       fxOrder;  // padded to a power of two (cheap index wrap)
+    int[32]       fxSeq;  // padded to a power of two (cheap index wrap)
+    float[512]    fxD;  // padded to a power of two (cheap index wrap)
+    float[2048]   fxF;  // padded to a power of two (cheap index wrap)
+    int[1024]      fxI;  // padded to a power of two (cheap index wrap)
+    float64[128]  fxPh;  // padded to a power of two (cheap index wrap)
     float[5898240] fxArena;   // 30 slots x 196608 floats
-    float[6]      busDcX;
-    float[6]      busDcY;
+    float[8]      busDcX;  // padded to a power of two (cheap index wrap)
+    float[8]      busDcY;  // padded to a power of two (cheap index wrap)
     float         busLevel1 = 1.0f;
     float         busLevel2 = 1.0f;
 
@@ -1257,49 +1257,53 @@ processor Eisenpuls_Synth
     int[4]       apLen;
 
     // ---------------- MOD PAGE STATE ----------------
-    float[10]   mLfoWave;
-    float[10]   mLfoRate;
-    float[10]   mLfoSync;
-    float[10]   mLfoDiv;
+    float[16]   mLfoWave;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoRate;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoSync;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoDiv;  // padded to a power of two (cheap index wrap)
     float       syncBpmOver = 0.0f;   // manual tempo (0 = follow the host)
     float       hostBpm     = 120.0f;
-    float[18]   divBeats;             // beats per LFO cycle of every sync division
-    float64[10] mLfoPhase;
-    float[10]   mLfoSh;
-    float[10]   mLfoV;
-    float[10]   mLfoMode;     // 0 free (global), 1 trig (per voice, restarts on note-on), 2 env (per voice, one shot)
-    float[10]   mLfoDelay;
-    float[10]   mLfoRise;
-    float[10]   mLfoSmooth;
-    float[10]   mLfoStart;
-    float[10]   mLfoSm;       // smoothing state of the free-running (global) LFOs
+    float[32]   divBeats;             // beats per LFO cycle of every sync division
+    float64[16] mLfoPhase;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoSh;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoV;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoMode;     // 0 free (global), 1 trig (per voice, restarts on note-on), 2 env (per voice, one shot)
+    float[16]   mLfoDelay;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoRise;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoSmooth;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoStart;  // padded to a power of two (cheap index wrap)
+    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs
     float[2560] lfoTab;       // drawn shapes, 256 points per LFO
     int         lastVoice = 0;
 
-    float[10]   mEnvA;
-    float[10]   mEnvD;
-    float[10]   mEnvS;
-    float[10]   mEnvR;
-    float[10]   envMax;
-    float[10]   envMaxNext;
+    float[16]   mEnvA;  // padded to a power of two (cheap index wrap)
+    float[16]   mEnvD;  // padded to a power of two (cheap index wrap)
+    float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
+    float[16]   mEnvR;  // padded to a power of two (cheap index wrap)
+    float[16]   envMax;  // padded to a power of two (cheap index wrap)
+    float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
-    float[20]   mmSrc;
-    int[20]     mmSrcI;
-    int[20]     mmDstI;
-    float[20]   mmAmt;
+    float[32]   mmSrc;  // padded to a power of two (cheap index wrap)
+    int[32]     mmSrcI;  // padded to a power of two (cheap index wrap)
+    int[32]     mmDstI;  // padded to a power of two (cheap index wrap)
+    float[32]   mmAmt;  // padded to a power of two (cheap index wrap)
 
     // Freq modulators
     float[2560] frqTab;
-    float[10]   frqRate;
-    float[10]   frqTrans;
-    float[10]   frqRetrig;
-    float[10]   frqLoop;
-    float[10]   frqGT;        // free running time (s)
-    float[10]   frqGV;        // free running value (units of 4 octaves)
+    float[16]   frqRate;  // padded to a power of two (cheap index wrap)
+    float[16]   frqTrans;  // padded to a power of two (cheap index wrap)
+    float[16]   frqRetrig;  // padded to a power of two (cheap index wrap)
+    float[16]   frqLoop;  // padded to a power of two (cheap index wrap)
+    float[16]   frqGT;        // free running time (s)
+    float[16]   frqGV;        // free running value (units of 4 octaves)
     int         frqMask = 0;  // bit m: Freq modulator m is used by the matrix
 
-    float[264]  vmod;
-    float[264]  gmod;
+    float[512]  vmod;  // padded to a power of two (cheap index wrap)
+    int[32]     vmodDirty;  // padded to a power of two (cheap index wrap)
+    int         mmHi;       // 1 + the highest mod matrix slot in use
+    int         vmodHi;     // slots written by the previous computeVoiceMod
+    int[32]     gmodDirty;  // padded to a power of two (cheap index wrap)
+    float[512]  gmod;  // padded to a power of two (cheap index wrap)
     bool        vmodMat;    // some mod slot targets an FM / PM / PD matrix cell (dest 60..167)
     float       lastVelV  = 0.0f;   // matrix source values of the most recent note (global destinations)
     float       lastKeyV  = 0.0f;
@@ -1308,7 +1312,7 @@ processor Eisenpuls_Synth
     // ---------------- MIXER EQ STATE ----------------
     // band index = channel * 4 + band (0 LF shelf, 1 LMF bell, 2 HMF bell, 3 HF shelf)
     // biquad coefficients: channel * 20 + band * 5 + (b0, b1, b2, a1, a2)
-    float[180]  eqC;
+    float[256]  eqC;  // padded to a power of two (cheap index wrap)
 
     // ---------------- WAVETABLE UNISON STATE ----------------
     // engine index: 0 Wavetable 1, 1 Wavetable 2, 2 Wavetable 3; voice slot = engine * 7 + unison voice
@@ -2420,30 +2424,30 @@ processor Eisenpuls_Synth
         int     age;
         float   curFreq;
         float   targetFreq;
-        float64[6]  synPos;   // sampler read position per slot
-        float64[42] wtUPh;    // wavetable unison phases: slot * 7 + unison voice
-        float[24]   wtDcS;    // wavetable warp DC blocker: slot * 4 + {xL, yL, xR, yR}
-        float[6]    fmPrev;   // last output of every slot (FM source)
-        float[6]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
-        float[6]    fenv;     // filter envelope level per slot
-        int[6]      fstage;   // filter envelope stage per slot
-        float[10] menv;       // mod envelope levels
-        float64[10] lfoPh;    // per-voice LFO phases (modes Trig / Env)
-        float[10] lfoV;       // per-voice LFO outputs
-        float[10] lfoAge;     // seconds since note-on, -1 before the first update
-        float[10] frqT;       // Freq modulators: seconds since note-on
-        float[10] frqV;       // Freq modulators: output (units of 4 octaves)
-        float[10] lfoSh;      // per-voice sample & hold values
-        float[10] lfoSm;      // per-voice smoothing state
-        int[10]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
+        float64[8]  synPos;   // sampler read position per slot
+        float64[64] wtUPh;    // wavetable unison phases: slot * 7 + unison voice
+        float[32]   wtDcS;    // wavetable warp DC blocker: slot * 4 + {xL, yL, xR, yR}
+        float[8]    fmPrev;   // last output of every slot (FM source)
+        float[8]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
+        float[8]    fenv;     // filter envelope level per slot
+        int[8]      fstage;   // filter envelope stage per slot
+        float[16] menv;       // mod envelope levels
+        float64[16] lfoPh;    // per-voice LFO phases (modes Trig / Env)
+        float[16] lfoV;       // per-voice LFO outputs
+        float[16] lfoAge;     // seconds since note-on, -1 before the first update
+        float[16] frqT;       // Freq modulators: seconds since note-on
+        float[16] frqV;       // Freq modulators: output (units of 4 octaves)
+        float[16] lfoSh;      // per-voice sample & hold values
+        float[16] lfoSm;      // per-voice smoothing state
+        int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
         float   env;
         float   penv;
         float   velGain;
         float   velRaw;
         float   modRand;      // per-note random value for the mod matrix
-        float[192]  fx;       // filter states: slot * 32 + channel * 16 + stage state
+        float[256]  fx;       // filter states: slot * 32 + channel * 16 + stage state
         float[24576] fdl;     // comb filter delay lines: slot * 4096 + channel * 2048 + position
-        float[384]  wfs;      // Wavefilter band states: (slot * 2 + channel) * 32 + band * 2 + {ic1, ic2}
+        float[512]  wfs;      // Wavefilter band states: (slot * 2 + channel) * 32 + band * 2 + {ic1, ic2}
         int     fdlW;         // comb delay write position
         bool    active;
     }
@@ -3952,41 +3956,55 @@ processor Eisenpuls_Synth
     // Sums the matrix for one voice into vmod[dest]
     void computeVoiceMod (int vi)
     {
-        for (int d = 0; d < 264; ++d)
-            vmod.at (d) = 0.0f;
+        // only the destinations written by the previous call are dirty (0 = nothing: destination 0 is "Off" and never written)
+        for (int s = 0; s < vmodHi; ++s)
+            vmod.at (vmodDirty.at (s)) = 0.0f;
 
         bool mat = false;
 
-        for (int s = 0; s < 20; ++s)
+        for (int s = 0; s < mmHi; ++s)
         {
             int dd = mmDstI.at (s);
             int ss = mmSrcI.at (s);
+            vmodDirty.at (s) = 0;
             // Freq modulators only act on the cutoffs (OSC n Cutoff) and the oscillator frequency knobs
             if (ss >= 24 && ! ((dd >= 6 && dd < 60 && (dd - 6) % 9 == 6) || dd >= 180))
                 continue;
+            vmodDirty.at (s) = 0;
             if (dd > 0 && ss > 0)
             {
+                vmodDirty.at (s) = dd;
                 vmod.at (dd) += srcValueVoice (ss, vi) * mmAmt.at (s);
                 if ((dd >= 60 && dd < 168) || dd >= 186) mat = true;
             }
         }
 
+        vmodHi = mmHi;
         vmodMat = mat;
     }
 
     // Sums the matrix for the global (post-voice) destinations into gmod[dest]
     void computeGlobalMod()
     {
-        for (int d = 0; d < 264; ++d)
-            gmod.at (d) = 0.0f;
+        for (int s = 0; s < 20; ++s)
+            gmod.at (gmodDirty.at (s)) = 0.0f;
+
+        int hi = 0;
 
         for (int s = 0; s < 20; ++s)
         {
             int dd = mmDstI.at (s);
             int ss = mmSrcI.at (s);
+            gmodDirty.at (s) = 0;
             if (dd > 0 && ss > 0)
+            {
+                hi = s + 1;
+                gmodDirty.at (s) = dd;
                 gmod.at (dd) += srcValueGlobal (ss) * mmAmt.at (s);
+            }
         }
+
+        mmHi = hi;
     }
 
     // State-variable filter step for one channel (ch 0 = left states, ch 1 = right states)
@@ -4278,26 +4296,27 @@ processor Eisenpuls_Synth
         float[256] data;
     }
 
-    float[384]    op;
-    float[36]     fmAmt;      // frequency modulation
-    float[36]     pmAmt;      // phase modulation
-    float[36]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
-    float[36]     rmAmt;      // ring modulation (carrier x modulator)
-    float[36]     amAmt;      // amplitude modulation (carrier x unipolar modulator)
-    bool[6]       fmUsed;
+    float[512]    op;  // padded to a power of two (cheap index wrap)
+    float[64]     fmAmt;      // frequency modulation
+    float[64]     pmAmt;      // phase modulation
+    float[64]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
+    float[64]     rmAmt;      // ring modulation (carrier x modulator)
+    float[64]     amAmt;      // amplitude modulation (carrier x unipolar modulator)
+    bool[8]       fmUsed;  // padded to a power of two (cheap index wrap)
+    bool          fmAny;      // any FM / PM / PD / RM / AM amount is set
 
     // wavetable memories (one per slot), Vital style: the source (up to 262144 samples = 128 frames of 2048) is cut into equal
     // frames, every frame is resampled to 2048 samples, DC is removed and a band-limited mip chain is built (2048, 1024 ... 8
     // samples per cycle; each level keeps the harmonics up to 40% of its length). Playback picks the level from the note
     // frequency, so there is no aliasing, and reads it with cubic interpolation. The chain is built in small time slices.
-    bool[6]       wtHas;          // the mip tables of the slot are complete
-    int[6]        wtLen;          // length of the source in samples
+    bool[8]       wtHas;          // the mip tables of the slot are complete
+    int[8]        wtLen;          // length of the source in samples
     float[1572864] wtBuf;         // source, slot * 262144
     float[3145728] wtMip;         // (slot * 128 + frame) * 4096 + level offset
-    bool[6]       wtBuilding;
-    int[6]        wtFr;           // frames in the mip tables
-    int[6]        wtBFl;          // frame length the source was cut with
-    int[6]        wtBNext;        // next frame to build
+    bool[8]       wtBuilding;  // padded to a power of two (cheap index wrap)
+    int[8]        wtFr;           // frames in the mip tables
+    int[8]        wtBFl;          // frame length the source was cut with
+    int[8]        wtBNext;        // next frame to build
     int           wtBCtr;
     float[4096]   wtTmpA;
     float[4096]   wtTmpB;
@@ -4308,21 +4327,21 @@ processor Eisenpuls_Synth
     // Wavefilter / Wavedistortion tables (per slot): 512 points per frame, up to 64 frames. Filter table: gain (value + 1) / 2 over
     // 8 octaves of frequency around the cutoff; shaper table: output over the input range -1..1. Defaults are built in.
     float[393216] tblBuf;         // bank * 32768 + frame * 512 + point; bank 0..5 filter, 6..11 shaper
-    int[12]       tblFr;
+    int[16]       tblFr;  // padded to a power of two (cheap index wrap)
     float[16]     wfG;            // tan() of the 16 band centres of the Wavefilter bank
     float[16]     wfL;            // log2 of the band centres
 
     // sample memories (one per slot)
-    bool[6]       smpHas;
-    int[6]        smpLen;
+    bool[8]       smpHas;  // padded to a power of two (cheap index wrap)
+    int[8]        smpLen;  // padded to a power of two (cheap index wrap)
     float[576000] smpBuf;
 
     // wavetable unison (per slot, up to 7 voices)
-    int[6]        uniCnt;
-    float[42]     uniRatio;
-    float[42]     uniCents;
-    float[42]     uniGL;
-    float[42]     uniGR;
+    int[8]        uniCnt;  // padded to a power of two (cheap index wrap)
+    float[64]     uniRatio;  // padded to a power of two (cheap index wrap)
+    float[64]     uniCents;  // padded to a power of two (cheap index wrap)
+    float[64]     uniGL;  // padded to a power of two (cheap index wrap)
+    float[64]     uniGR;  // padded to a power of two (cheap index wrap)
 
     float opv (int o, int k)
     {
@@ -4342,6 +4361,8 @@ processor Eisenpuls_Synth
 
     void updateFmUsed()
     {
+        bool any = false;
+
         for (int q = 0; q < 6; ++q)
         {
             bool u = false;
@@ -4349,7 +4370,10 @@ processor Eisenpuls_Synth
                 if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f
                     || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
+            if (u) any = true;
         }
+
+        fmAny = any;
     }
 
     void fmSet (int s, int d, float v)
@@ -4712,6 +4736,18 @@ processor Eisenpuls_Synth
         int   fb  = min (fa + 1, nFr - 1);
         float ff  = fp - float (fa);
 
+        // the unison voices are at most +-50 cents (a ratio of 0.9715 .. 1.0293) apart: when the lowest and the highest fall into the same
+        // mip level every voice does, and the level is looked up twice instead of once per voice
+        int lvlAll = -1;
+
+        if (n > 2)
+        {
+            int lvLo = wtLevel (clamp (freq * 0.9710f, 1.0f, sr * 0.45f));
+            int lvHi = wtLevel (clamp (freq * 1.0300f, 1.0f, sr * 0.45f));
+            if (lvLo == lvHi)
+                lvlAll = lvLo;
+        }
+
         for (int j = 0; j < n; ++j)
         {
             int     si = o * 7 + j;
@@ -4728,7 +4764,7 @@ processor Eisenpuls_Synth
             if (m2 >= 1 && m2 <= 6) rp = wtWarpPhase (m2, a2, rp);
             float64 rph = float64 (clamp (rp, 0.0f, 0.99999f));
 
-            float y = wtRead (o, wtLevel (f), rph, fa, fb, ff);
+            float y = wtRead (o, lvlAll >= 0 ? lvlAll : wtLevel (f), rph, fa, fb, ff);
 
             if (m1 >= 7) y = wtWarpAmp (m1, a1, y);
             if (m2 >= 7) y = wtWarpAmp (m2, a2, y);
@@ -19352,7 +19388,7 @@ processor Eisenpuls_Synth
                 float[6] fmIn;
                 float[6] pmIn;
                 float[6] pdIn;
-                for (int fd = 0; fd < 6; ++fd)
+                for (int fd = 0; fd < (fmAny || vmodMat ? 6 : 0); ++fd)
                 {
                     float acc = 0.0f;
                     float acp = 0.0f;
@@ -19555,7 +19591,7 @@ processor Eisenpuls_Synth
                     }
 
                     // ----- ring modulation (carrier x modulator) and amplitude modulation (carrier x unipolar modulator) -----
-                    for (int rs = 0; rs < 6; ++rs)
+                    for (int rs = 0; rs < (fmAny || vmodMat ? 6 : 0); ++rs)
                     {
                         int   ri = rs * 6 + o;
                         float ar = rmAmt.at (ri);

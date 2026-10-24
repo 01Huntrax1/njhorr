@@ -110,3 +110,10 @@ Notes and limits:
 * Per LFO: **Mode** Free / Trig (restart per note) / Env (one-shot), **Rate** in Hz or tempo sync with a division, **Delay**, **Rise** (fade-in), **Smooth**, **Phase**.
 * Tests: `cd tests && npm test` (also `modui.test.js`).
 * **Window size**: the dropdown in the top bar (75% - 200% of 1180x760) resizes the plugin window through a native `njoResize` hook (`cmaj_PatchWebView.h` / `cmaj_JUCEPlugin.h`). It only shows up inside the plugin; dragging the window edge also works and the UI scales to fit. The size is stored with the plugin state.
+
+## Performance notes
+
+- The DSP is profiled with `tools/osc/bench.py` (scripts for `dsp_host`) and `valgrind --tool=callgrind`; optimisations are checked to give bit-identical audio.
+- Per-sample costs removed: the modulation matrix sums only clear / visit the slots that are in use, the FM / PM / PD / RM / AM matrix loops are skipped while no amount is set, the mip level of the unison voices is looked up once per oscillator when all voices share it, and the hot state arrays are sized to powers of two so every `.at()` index wrap is a mask instead of a division. Together about 35-40 % fewer instructions per sample for typical patches.
+- The native UI keeps the parameter objects it polls (one string lookup per parameter, not one per parameter per timer tick).
+- Memory: the DSP state is about 50 MB (FX delay arena 24 MB, wavetable mips 13 MB, wavetable frames 6 MB, tables / samples about 4 MB).

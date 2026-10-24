@@ -11074,30 +11074,30 @@ namespace performer
             int32_t age = {};
             float curFreq = {};
             float targetFreq = {};
-            Array<double, 6> synPos;
-            Array<double, 42> wtUPh;
-            Array<float, 24> wtDcS;
-            Array<float, 6> fmPrev;
-            Array<float, 6> pdPh;
-            Array<float, 6> fenv;
-            Array<int32_t, 6> fstage;
-            Array<float, 10> menv;
-            Array<double, 10> lfoPh;
-            Array<float, 10> lfoV;
-            Array<float, 10> lfoAge;
-            Array<float, 10> frqT;
-            Array<float, 10> frqV;
-            Array<float, 10> lfoSh;
-            Array<float, 10> lfoSm;
-            Array<int32_t, 10> mstage;
+            Array<double, 8> synPos;
+            Array<double, 64> wtUPh;
+            Array<float, 32> wtDcS;
+            Array<float, 8> fmPrev;
+            Array<float, 8> pdPh;
+            Array<float, 8> fenv;
+            Array<int32_t, 8> fstage;
+            Array<float, 16> menv;
+            Array<double, 16> lfoPh;
+            Array<float, 16> lfoV;
+            Array<float, 16> lfoAge;
+            Array<float, 16> frqT;
+            Array<float, 16> frqV;
+            Array<float, 16> lfoSh;
+            Array<float, 16> lfoSm;
+            Array<int32_t, 16> mstage;
             float env = {};
             float penv = {};
             float velGain = {};
             float velRaw = {};
             float modRand = {};
-            Array<float, 192> fx;
+            Array<float, 256> fx;
             Array<float, 24576> fdl;
-            Array<float, 384> wfs;
+            Array<float, 512> wfs;
             int32_t fdlW = {};
             bool active = {};
         };
@@ -11678,21 +11678,21 @@ namespace performer
             float pitchEgInt = {};
             float pitchEgDec = {};
             float masterTune = {};
-            Array<int32_t, 30> fxType;
-            Array<float, 30> fxOn;
-            Array<float, 30> fxMix;
-            Array<int32_t, 30> fxMode;
-            Array<float, 180> fxP;
-            Array<bool, 30> fxDirty;
-            Array<int32_t, 30> fxOrder;
-            Array<int32_t, 30> fxSeq;
-            Array<float, 480> fxD;
-            Array<float, 1200> fxF;
-            Array<int32_t, 720> fxI;
-            Array<double, 120> fxPh;
+            Array<int32_t, 32> fxType;
+            Array<float, 32> fxOn;
+            Array<float, 32> fxMix;
+            Array<int32_t, 32> fxMode;
+            Array<float, 256> fxP;
+            Array<bool, 32> fxDirty;
+            Array<int32_t, 32> fxOrder;
+            Array<int32_t, 32> fxSeq;
+            Array<float, 512> fxD;
+            Array<float, 2048> fxF;
+            Array<int32_t, 1024> fxI;
+            Array<double, 128> fxPh;
             Array<float, 5898240> fxArena;
-            Array<float, 6> busDcX;
-            Array<float, 6> busDcY;
+            Array<float, 8> busDcX;
+            Array<float, 8> busDcY;
             float busLevel1 = {};
             float busLevel2 = {};
             float stereoWidth = {};
@@ -11709,43 +11709,47 @@ namespace performer
             float toneStR = {};
             Array<int32_t, 8> combLen;
             Array<int32_t, 4> apLen;
-            Array<float, 10> mLfoWave;
-            Array<float, 10> mLfoRate;
-            Array<float, 10> mLfoSync;
-            Array<float, 10> mLfoDiv;
+            Array<float, 16> mLfoWave;
+            Array<float, 16> mLfoRate;
+            Array<float, 16> mLfoSync;
+            Array<float, 16> mLfoDiv;
             float syncBpmOver = {};
             float hostBpm = {};
-            Array<float, 18> divBeats;
-            Array<double, 10> mLfoPhase;
-            Array<float, 10> mLfoSh;
-            Array<float, 10> mLfoV;
-            Array<float, 10> mLfoMode;
-            Array<float, 10> mLfoDelay;
-            Array<float, 10> mLfoRise;
-            Array<float, 10> mLfoSmooth;
-            Array<float, 10> mLfoStart;
-            Array<float, 10> mLfoSm;
+            Array<float, 32> divBeats;
+            Array<double, 16> mLfoPhase;
+            Array<float, 16> mLfoSh;
+            Array<float, 16> mLfoV;
+            Array<float, 16> mLfoMode;
+            Array<float, 16> mLfoDelay;
+            Array<float, 16> mLfoRise;
+            Array<float, 16> mLfoSmooth;
+            Array<float, 16> mLfoStart;
+            Array<float, 16> mLfoSm;
             Array<float, 2560> lfoTab;
             int32_t lastVoice = {};
-            Array<float, 10> mEnvA;
-            Array<float, 10> mEnvD;
-            Array<float, 10> mEnvS;
-            Array<float, 10> mEnvR;
-            Array<float, 10> envMax;
-            Array<float, 10> envMaxNext;
-            Array<int32_t, 20> mmSrcI;
-            Array<int32_t, 20> mmDstI;
-            Array<float, 20> mmAmt;
+            Array<float, 16> mEnvA;
+            Array<float, 16> mEnvD;
+            Array<float, 16> mEnvS;
+            Array<float, 16> mEnvR;
+            Array<float, 16> envMax;
+            Array<float, 16> envMaxNext;
+            Array<int32_t, 32> mmSrcI;
+            Array<int32_t, 32> mmDstI;
+            Array<float, 32> mmAmt;
             Array<float, 2560> frqTab;
-            Array<float, 10> frqRate;
-            Array<float, 10> frqTrans;
-            Array<float, 10> frqRetrig;
-            Array<float, 10> frqLoop;
-            Array<float, 10> frqGT;
-            Array<float, 10> frqGV;
+            Array<float, 16> frqRate;
+            Array<float, 16> frqTrans;
+            Array<float, 16> frqRetrig;
+            Array<float, 16> frqLoop;
+            Array<float, 16> frqGT;
+            Array<float, 16> frqGV;
             int32_t frqMask = {};
-            Array<float, 264> vmod;
-            Array<float, 264> gmod;
+            Array<float, 512> vmod;
+            Array<int32_t, 32> vmodDirty;
+            int32_t mmHi = {};
+            int32_t vmodHi = {};
+            Array<int32_t, 32> gmodDirty;
+            Array<float, 512> gmod;
             bool vmodMat = {};
             float lastVelV = {};
             float lastKeyV = {};
@@ -11753,36 +11757,37 @@ namespace performer
             Array<_Eisenpuls_Synth_Voice, 8> voices;
             double flfPhase = {};
             int32_t noiseState = {};
-            Array<float, 384> op;
-            Array<float, 36> fmAmt;
-            Array<float, 36> pmAmt;
-            Array<float, 36> pdAmt;
-            Array<float, 36> rmAmt;
-            Array<float, 36> amAmt;
-            Array<bool, 6> fmUsed;
-            Array<bool, 6> wtHas;
-            Array<int32_t, 6> wtLen;
+            Array<float, 512> op;
+            Array<float, 64> fmAmt;
+            Array<float, 64> pmAmt;
+            Array<float, 64> pdAmt;
+            Array<float, 64> rmAmt;
+            Array<float, 64> amAmt;
+            Array<bool, 8> fmUsed;
+            bool fmAny = {};
+            Array<bool, 8> wtHas;
+            Array<int32_t, 8> wtLen;
             Array<float, 1572864> wtBuf;
             Array<float, 3145728> wtMip;
-            Array<bool, 6> wtBuilding;
-            Array<int32_t, 6> wtFr;
-            Array<int32_t, 6> wtBFl;
-            Array<int32_t, 6> wtBNext;
+            Array<bool, 8> wtBuilding;
+            Array<int32_t, 8> wtFr;
+            Array<int32_t, 8> wtBFl;
+            Array<int32_t, 8> wtBNext;
             int32_t wtBCtr = {};
             Array<float, 4096> wtTmpA;
             Array<float, 4096> wtTmpB;
             Array<float, 393216> tblBuf;
-            Array<int32_t, 12> tblFr;
+            Array<int32_t, 16> tblFr;
             Array<float, 16> wfG;
             Array<float, 16> wfL;
-            Array<bool, 6> smpHas;
-            Array<int32_t, 6> smpLen;
+            Array<bool, 8> smpHas;
+            Array<int32_t, 8> smpLen;
             Array<float, 576000> smpBuf;
-            Array<int32_t, 6> uniCnt;
-            Array<float, 42> uniRatio;
-            Array<float, 42> uniCents;
-            Array<float, 42> uniGL;
-            Array<float, 42> uniGR;
+            Array<int32_t, 8> uniCnt;
+            Array<float, 64> uniRatio;
+            Array<float, 64> uniCents;
+            Array<float, 64> uniGL;
+            Array<float, 64> uniGR;
             _Eisenpuls_Synth_PlSvf plDummySvf;
             Array<float, 576> plOut;
             Array<float, 576> plAux;
@@ -25754,11 +25759,11 @@ namespace performer
                             {
                                 break;
                             }
-                            sLen = _state.smpLen[std__intrinsics___wrap_6 (o)];
+                            sLen = _state.smpLen[std__intrinsics___wrap_8 (o)];
                             _temp = _Eisenpuls_Synth__opv (_state, o, int32_t {22});
                             _temp_0 = static_cast<int32_t> (_temp * static_cast<float> (sLen));
                             sStart = intrinsics::clamp (_temp_0, int32_t {0}, intrinsics::max (intrinsics::subtract (sLen, int32_t {1}), int32_t {0}));
-                            _state.voices[std__intrinsics___wrap_8 (v)].synPos[std__intrinsics___wrap_6 (o)] = static_cast<double> (sStart);
+                            _state.voices[std__intrinsics___wrap_8 (v)].synPos[std__intrinsics___wrap_8 (o)] = static_cast<double> (sStart);
                             _Eisenpuls_Synth__resetWtUni (_state, v, o);
                             _Eisenpuls_Synth__plaitsNoteOn (_state, v, o);
                             {
@@ -25779,7 +25784,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.voices[std__intrinsics___wrap_8 (v)].pdPh[std__intrinsics___wrap_6 (po)] = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (po, int32_t {64}), int32_t {8}))], 0.0f, 1.0f);
+                            _state.voices[std__intrinsics___wrap_8 (v)].pdPh[std__intrinsics___wrap_8 (po)] = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (po, int32_t {64}), int32_t {8}))], 0.0f, 1.0f);
                             {
                                 intrinsics::addTo (po, 1);
                             }
@@ -25793,7 +25798,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.voices[std__intrinsics___wrap_8 (v)].fx[std__intrinsics___wrap_192 (fq)] = 0.0f;
+                            _state.voices[std__intrinsics___wrap_8 (v)].fx[std__intrinsics___wrap_256 (fq)] = 0.0f;
                             {
                                 intrinsics::addTo (fq, 1);
                             }
@@ -25807,7 +25812,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.voices[std__intrinsics___wrap_8 (v)].wfs[std__intrinsics___wrap_384 (wq)] = 0.0f;
+                            _state.voices[std__intrinsics___wrap_8 (v)].wfs[std__intrinsics___wrap_512 (wq)] = 0.0f;
                             {
                                 intrinsics::addTo (wq, 1);
                             }
@@ -25835,7 +25840,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.voices[std__intrinsics___wrap_8 (v)].menv[std__intrinsics___wrap_10 (me)] = 0.0f;
+                            _state.voices[std__intrinsics___wrap_8 (v)].menv[std__intrinsics___wrap_16 (me)] = 0.0f;
                             {
                                 intrinsics::addTo (me, 1);
                             }
@@ -25849,7 +25854,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.voices[std__intrinsics___wrap_8 (v)].fmPrev[std__intrinsics___wrap_6 (o_0)] = 0.0f;
+                            _state.voices[std__intrinsics___wrap_8 (v)].fmPrev[std__intrinsics___wrap_8 (o_0)] = 0.0f;
                             {
                                 intrinsics::addTo (o_0, 1);
                             }
@@ -25865,8 +25870,8 @@ namespace performer
                         {
                             break;
                         }
-                        _state.voices[std__intrinsics___wrap_8 (v)].fstage[std__intrinsics___wrap_6 (o_1)] = int32_t {1};
-                        _state.voices[std__intrinsics___wrap_8 (v)].fenv[std__intrinsics___wrap_6 (o_1)] = ((_Eisenpuls_Synth__opv (_state, o_1, int32_t {38}) > 0.5f) ? 0.0f : 1.0f);
+                        _state.voices[std__intrinsics___wrap_8 (v)].fstage[std__intrinsics___wrap_8 (o_1)] = int32_t {1};
+                        _state.voices[std__intrinsics___wrap_8 (v)].fenv[std__intrinsics___wrap_8 (o_1)] = ((_Eisenpuls_Synth__opv (_state, o_1, int32_t {38}) > 0.5f) ? 0.0f : 1.0f);
                         {
                             intrinsics::addTo (o_1, 1);
                         }
@@ -25880,7 +25885,7 @@ namespace performer
                         {
                             break;
                         }
-                        _state.voices[std__intrinsics___wrap_8 (v)].mstage[std__intrinsics___wrap_10 (ms)] = int32_t {1};
+                        _state.voices[std__intrinsics___wrap_8 (v)].mstage[std__intrinsics___wrap_16 (ms)] = int32_t {1};
                         {
                             intrinsics::addTo (ms, 1);
                         }
@@ -25899,12 +25904,12 @@ namespace performer
                         {
                             break;
                         }
-                        _state.voices[std__intrinsics___wrap_8 (v)].lfoPh[std__intrinsics___wrap_10 (lm)] = 0.0;
-                        _state.voices[std__intrinsics___wrap_8 (v)].lfoAge[std__intrinsics___wrap_10 (lm)] = -1.0f;
-                        _state.voices[std__intrinsics___wrap_8 (v)].lfoSh[std__intrinsics___wrap_10 (lm)] = _Eisenpuls_Synth__nextNoise (_state);
-                        _state.voices[std__intrinsics___wrap_8 (v)].lfoV[std__intrinsics___wrap_10 (lm)] = 0.0f;
-                        _state.voices[std__intrinsics___wrap_8 (v)].frqT[std__intrinsics___wrap_10 (lm)] = 0.0f;
-                        _state.voices[std__intrinsics___wrap_8 (v)].frqV[std__intrinsics___wrap_10 (lm)] = _Eisenpuls_Synth__frqEval (_state, lm, 0.0f);
+                        _state.voices[std__intrinsics___wrap_8 (v)].lfoPh[std__intrinsics___wrap_16 (lm)] = 0.0;
+                        _state.voices[std__intrinsics___wrap_8 (v)].lfoAge[std__intrinsics___wrap_16 (lm)] = -1.0f;
+                        _state.voices[std__intrinsics___wrap_8 (v)].lfoSh[std__intrinsics___wrap_16 (lm)] = _Eisenpuls_Synth__nextNoise (_state);
+                        _state.voices[std__intrinsics___wrap_8 (v)].lfoV[std__intrinsics___wrap_16 (lm)] = 0.0f;
+                        _state.voices[std__intrinsics___wrap_8 (v)].frqT[std__intrinsics___wrap_16 (lm)] = 0.0f;
+                        _state.voices[std__intrinsics___wrap_8 (v)].frqV[std__intrinsics___wrap_16 (lm)] = _Eisenpuls_Synth__frqEval (_state, lm, 0.0f);
                         {
                             intrinsics::addTo (lm, 1);
                         }
@@ -25940,7 +25945,7 @@ namespace performer
                                         {
                                             break;
                                         }
-                                        _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_6 (o_2)] = int32_t {3};
+                                        _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_8 (o_2)] = int32_t {3};
                                         {
                                             intrinsics::addTo (o_2, 1);
                                         }
@@ -25954,7 +25959,7 @@ namespace performer
                                         {
                                             break;
                                         }
-                                        _state.voices[std__intrinsics___wrap_8 (i)].mstage[std__intrinsics___wrap_10 (mq)] = int32_t {3};
+                                        _state.voices[std__intrinsics___wrap_8 (i)].mstage[std__intrinsics___wrap_16 (mq)] = int32_t {3};
                                         {
                                             intrinsics::addTo (mq, 1);
                                         }
@@ -26040,14 +26045,6 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_6 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {6});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {6}) : x;
-        }
-
         int32_t std__intrinsics__clamp (int32_t value, int32_t minimum, int32_t maximum) noexcept
         {
             {
@@ -26057,15 +26054,12 @@ namespace performer
 
         float _Eisenpuls_Synth__opv (_Eisenpuls_Synth_State& _state, int32_t o, int32_t k) noexcept
         {
-            return _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (o, int32_t {64}), k))];
+            return _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (o, int32_t {64}), k))];
         }
 
-        int32_t std__intrinsics___wrap_384 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_512 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {384});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {384}) : x;
+            return n & int32_t {511};
         }
 
         int32_t std__intrinsics__max (int32_t v1, int32_t v2) noexcept
@@ -26093,7 +26087,7 @@ namespace performer
                     {
                         rp = static_cast<double> ((_Eisenpuls_Synth__nextNoise (_state) * 0.5f) + 0.5f);
                     }
-                    _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = rp;
+                    _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = rp;
                     {
                         intrinsics::addTo (j, 1);
                     }
@@ -26114,12 +26108,9 @@ namespace performer
             return ((static_cast<float> (_state.noiseState) / 2147483600.0f) * 2.0f) - 1.0f;
         }
 
-        int32_t std__intrinsics___wrap_42 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_64 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {42});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {42}) : x;
+            return n & int32_t {63};
         }
 
         void _Eisenpuls_Synth__plaitsNoteOn (_Eisenpuls_Synth_State& _state, int32_t vi, int32_t o) noexcept
@@ -26139,12 +26130,9 @@ namespace performer
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {48}) : x;
         }
 
-        int32_t std__intrinsics___wrap_192 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_256 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {192});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {192}) : x;
+            return n & int32_t {255};
         }
 
         int32_t std__intrinsics___wrap_24576 (int32_t n) noexcept
@@ -26155,12 +26143,9 @@ namespace performer
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {24576}) : x;
         }
 
-        int32_t std__intrinsics___wrap_10 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_16 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {10});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {10}) : x;
+            return n & int32_t {15};
         }
 
         float _Eisenpuls_Synth__frqEval (_Eisenpuls_Synth_State& _state, int32_t m, float t) noexcept
@@ -26173,9 +26158,9 @@ namespace performer
             float  ff;
             float  y;
 
-            len = intrinsics::max (_state.frqRate[std__intrinsics___wrap_10 (m)], 1.0f) * 0.001f;
+            len = intrinsics::max (_state.frqRate[std__intrinsics___wrap_16 (m)], 1.0f) * 0.001f;
             x = t / len;
-            if (_state.frqLoop[std__intrinsics___wrap_10 (m)] > 0.5f)
+            if (_state.frqLoop[std__intrinsics___wrap_16 (m)] > 0.5f)
             {
                 x = (x - intrinsics::floor (x));
             }
@@ -26188,7 +26173,7 @@ namespace performer
             i1 = intrinsics::min (intrinsics::add (i0, int32_t {1}), int32_t {255});
             ff = fp - static_cast<float> (i0);
             y = _state.frqTab[std__intrinsics___wrap_2560 (intrinsics::add (intrinsics::multiply (m, int32_t {256}), i0))] + ((_state.frqTab[std__intrinsics___wrap_2560 (intrinsics::add (intrinsics::multiply (m, int32_t {256}), i1))] - _state.frqTab[std__intrinsics___wrap_2560 (intrinsics::add (intrinsics::multiply (m, int32_t {256}), i0))]) * ff);
-            return ((y * 9.9658f) + (_state.frqTrans[std__intrinsics___wrap_10 (m)] / 12.0f)) * 0.25f;
+            return ((y * 9.9658f) + (_state.frqTrans[std__intrinsics___wrap_16 (m)] / 12.0f)) * 0.25f;
         }
 
         float std__intrinsics__max_0 (float v1, float v2) noexcept
@@ -26283,11 +26268,6 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_256 (int32_t n) noexcept
-        {
-            return n & int32_t {255};
-        }
-
         void _sendEvent_wtBankLoad (Eisenpuls_Synth_State& _state, _Eisenpuls_Synth_BankChunk value) noexcept
         {
             _Eisenpuls_Synth__wtBankLoad (_state._state, value);
@@ -26324,11 +26304,11 @@ namespace performer
             }
             if (c.offset == int32_t {0})
             {
-                _state.wtHas[std__intrinsics___wrap_6 (o)] = false;
+                _state.wtHas[std__intrinsics___wrap_8 (o)] = false;
             }
             if (c.offset == int32_t {0})
             {
-                _state.wtBuilding[std__intrinsics___wrap_6 (o)] = false;
+                _state.wtBuilding[std__intrinsics___wrap_8 (o)] = false;
             }
             cnt = intrinsics::clamp (c.count, int32_t {0}, int32_t {256});
             base = intrinsics::multiply (o, int32_t {0x40000});
@@ -26352,16 +26332,16 @@ namespace performer
             }
             if (intrinsics::add (c.offset, cnt) >= c.total)
             {
-                _state.wtLen[std__intrinsics___wrap_6 (o)] = intrinsics::clamp (c.total, int32_t {1}, int32_t {0x40000});
+                _state.wtLen[std__intrinsics___wrap_8 (o)] = intrinsics::clamp (c.total, int32_t {1}, int32_t {0x40000});
                 _Eisenpuls_Synth__wtStartBuild (_state, o);
             }
         }
 
         void _Eisenpuls_Synth__clearWtBank (_Eisenpuls_Synth_State& _state, int32_t o) noexcept
         {
-            _state.wtHas[std__intrinsics___wrap_6 (o)] = false;
-            _state.wtBuilding[std__intrinsics___wrap_6 (o)] = false;
-            _state.wtLen[std__intrinsics___wrap_6 (o)] = int32_t {0};
+            _state.wtHas[std__intrinsics___wrap_8 (o)] = false;
+            _state.wtBuilding[std__intrinsics___wrap_8 (o)] = false;
+            _state.wtLen[std__intrinsics___wrap_8 (o)] = int32_t {0};
         }
 
         int32_t std__intrinsics___wrap_1572864 (int32_t n) noexcept
@@ -26378,20 +26358,20 @@ namespace performer
             int32_t  _temp;
             int32_t  fl;
 
-            len = _state.wtLen[std__intrinsics___wrap_6 (o)];
+            len = _state.wtLen[std__intrinsics___wrap_8 (o)];
             if (len < int32_t {2})
             {
-                _state.wtHas[std__intrinsics___wrap_6 (o)] = false;
-                _state.wtBuilding[std__intrinsics___wrap_6 (o)] = false;
+                _state.wtHas[std__intrinsics___wrap_8 (o)] = false;
+                _state.wtBuilding[std__intrinsics___wrap_8 (o)] = false;
                 return;
             }
             _temp = _Eisenpuls_Synth__wtFrameLen (_Eisenpuls_Synth__opv (_state, o, int32_t {11}));
             fl = intrinsics::min (_temp, len);
-            _state.wtBFl[std__intrinsics___wrap_6 (o)] = fl;
-            _state.wtFr[std__intrinsics___wrap_6 (o)] = intrinsics::clamp (len / fl, int32_t {1}, int32_t {128});
-            _state.wtBNext[std__intrinsics___wrap_6 (o)] = int32_t {0};
-            _state.wtHas[std__intrinsics___wrap_6 (o)] = false;
-            _state.wtBuilding[std__intrinsics___wrap_6 (o)] = true;
+            _state.wtBFl[std__intrinsics___wrap_8 (o)] = fl;
+            _state.wtFr[std__intrinsics___wrap_8 (o)] = intrinsics::clamp (len / fl, int32_t {1}, int32_t {128});
+            _state.wtBNext[std__intrinsics___wrap_8 (o)] = int32_t {0};
+            _state.wtHas[std__intrinsics___wrap_8 (o)] = false;
+            _state.wtBuilding[std__intrinsics___wrap_8 (o)] = true;
         }
 
         int32_t _Eisenpuls_Synth__wtFrameLen (float v) noexcept
@@ -26486,7 +26466,7 @@ namespace performer
             }
             if (intrinsics::add (c.offset, cnt) >= c.total)
             {
-                _state.tblFr[std__intrinsics___wrap_12 (b)] = intrinsics::clamp (c.total / int32_t {512}, int32_t {1}, int32_t {64});
+                _state.tblFr[std__intrinsics___wrap_16 (b)] = intrinsics::clamp (c.total / int32_t {512}, int32_t {1}, int32_t {64});
             }
         }
 
@@ -26502,7 +26482,7 @@ namespace performer
             float  x;
 
             base = intrinsics::multiply (b, int32_t {32768});
-            _state.tblFr[std__intrinsics___wrap_12 (b)] = int32_t {16};
+            _state.tblFr[std__intrinsics___wrap_16 (b)] = int32_t {16};
             {
                 f = int32_t {0};
                 for (;;)
@@ -26756,14 +26736,6 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_12 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {12});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {12}) : x;
-        }
-
         float _Eisenpuls_Synth__tblSig (float z) noexcept
         {
             return 1.0f / (1.0f + intrinsics::exp (z));
@@ -26834,13 +26806,13 @@ namespace performer
             o = intrinsics::clamp (c.bank, int32_t {0}, int32_t {5});
             if (c.total <= int32_t {0})
             {
-                _state.smpHas[std__intrinsics___wrap_6 (o)] = false;
-                _state.smpLen[std__intrinsics___wrap_6 (o)] = int32_t {0};
+                _state.smpHas[std__intrinsics___wrap_8 (o)] = false;
+                _state.smpLen[std__intrinsics___wrap_8 (o)] = int32_t {0};
                 return;
             }
             if (c.offset == int32_t {0})
             {
-                _state.smpHas[std__intrinsics___wrap_6 (o)] = false;
+                _state.smpHas[std__intrinsics___wrap_8 (o)] = false;
             }
             cnt = intrinsics::clamp (c.count, int32_t {0}, int32_t {256});
             base = intrinsics::multiply (o, int32_t {0x17700});
@@ -26864,8 +26836,8 @@ namespace performer
             }
             if (intrinsics::add (c.offset, cnt) >= c.total)
             {
-                _state.smpLen[std__intrinsics___wrap_6 (o)] = intrinsics::clamp (c.total, int32_t {1}, int32_t {0x17700});
-                _state.smpHas[std__intrinsics___wrap_6 (o)] = true;
+                _state.smpLen[std__intrinsics___wrap_8 (o)] = intrinsics::clamp (c.total, int32_t {1}, int32_t {0x17700});
+                _state.smpHas[std__intrinsics___wrap_8 (o)] = true;
             }
         }
 
@@ -26889,12 +26861,12 @@ namespace performer
 
         void _Eisenpuls_Synth__opSet (_Eisenpuls_Synth_State& _state, int32_t o, int32_t k, float v) noexcept
         {
-            _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (o, int32_t {64}), k))] = v;
+            _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (o, int32_t {64}), k))] = v;
             if ((k >= int32_t {13}) ? (k <= int32_t {17}) : false)
             {
                 _Eisenpuls_Synth__updateWtUni (_state, o);
             }
-            if ((k == int32_t {11}) ? (_state.wtLen[std__intrinsics___wrap_6 (o)] > int32_t {1}) : false)
+            if ((k == int32_t {11}) ? (_state.wtLen[std__intrinsics___wrap_8 (o)] > int32_t {1}) : false)
             {
                 _Eisenpuls_Synth__wtStartBuild (_state, o);
             }
@@ -26923,7 +26895,7 @@ namespace performer
             blend = intrinsics::clamp (_Eisenpuls_Synth__opv (_state, o, int32_t {15}), 0.0f, 1.0f);
             width = intrinsics::clamp (_Eisenpuls_Synth__opv (_state, o, int32_t {16}), 0.0f, 1.0f);
             style = intrinsics::clamp (static_cast<int32_t> (_Eisenpuls_Synth__opv (_state, o, int32_t {17}) + 0.5f), int32_t {0}, int32_t {3});
-            _state.uniCnt[std__intrinsics___wrap_6 (o)] = n;
+            _state.uniCnt[std__intrinsics___wrap_8 (o)] = n;
             powSum = 0.0f;
             {
                 j = int32_t {0};
@@ -26958,8 +26930,8 @@ namespace performer
                         }
                     }
                     cents = (dpos * det) * 50.0f;
-                    _state.uniRatio[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = intrinsics::pow (2.0f, cents / 1200.0f);
-                    _state.uniCents[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = (dpos * 50.0f);
+                    _state.uniRatio[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = intrinsics::pow (2.0f, cents / 1200.0f);
+                    _state.uniCents[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = (dpos * 50.0f);
                     w = blend + ((1.0f - blend) * (1.0f - intrinsics::abs (pos)));
                     if (j >= n)
                     {
@@ -26968,8 +26940,8 @@ namespace performer
                     powSum = (powSum + (w * w));
                     pp = pos * width;
                     ang = ((pp + 1.0f) * 0.25f) * 3.1415927f;
-                    _state.uniGL[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = ((w * intrinsics::cos (ang)) * 1.4142f);
-                    _state.uniGR[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = ((w * intrinsics::sin (ang)) * 1.4142f);
+                    _state.uniGL[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = ((w * intrinsics::cos (ang)) * 1.4142f);
+                    _state.uniGR[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j))] = ((w * intrinsics::sin (ang)) * 1.4142f);
                     {
                         intrinsics::addTo (j, 1);
                     }
@@ -26984,8 +26956,8 @@ namespace performer
                     {
                         break;
                     }
-                    _state.uniGL[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] = (_state.uniGL[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] * norm);
-                    _state.uniGR[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] = (_state.uniGR[std__intrinsics___wrap_42 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] * norm);
+                    _state.uniGL[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] = (_state.uniGL[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] * norm);
+                    _state.uniGR[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] = (_state.uniGR[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (o, int32_t {7}), j_0))] * norm);
                     {
                         intrinsics::addTo (j_0, 1);
                     }
@@ -29830,24 +29802,18 @@ namespace performer
 
         void _Eisenpuls_Synth__fmSet (_Eisenpuls_Synth_State& _state, int32_t s, int32_t d, float v) noexcept
         {
-            _state.fmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
+            _state.fmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
             _Eisenpuls_Synth__updateFmUsed (_state);
-        }
-
-        int32_t std__intrinsics___wrap_36 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {36});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {36}) : x;
         }
 
         void _Eisenpuls_Synth__updateFmUsed (_Eisenpuls_Synth_State& _state) noexcept
         {
+            bool  any;
             int32_t  q;
             bool  u;
             int32_t  r;
 
+            any = false;
             {
                 q = int32_t {0};
                 for (;;)
@@ -29865,7 +29831,7 @@ namespace performer
                             {
                                 break;
                             }
-                            if (((((_state.fmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f) ? true : (_state.pmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.pdAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.rmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.amAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f))
+                            if (((((_state.fmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f) ? true : (_state.pmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.pdAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.rmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f)) ? true : (_state.amAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (q, int32_t {6}), r))] != 0.0f))
                             {
                                 u = true;
                             }
@@ -29874,12 +29840,17 @@ namespace performer
                             }
                         }
                     }
-                    _state.fmUsed[std__intrinsics___wrap_6 (q)] = u;
+                    _state.fmUsed[std__intrinsics___wrap_8 (q)] = u;
+                    if (u)
+                    {
+                        any = true;
+                    }
                     {
                         intrinsics::addTo (q, 1);
                     }
                 }
             }
+            _state.fmAny = any;
         }
 
         void _sendEvent_param1440 (Eisenpuls_Synth_State& _state, float value) noexcept
@@ -29894,7 +29865,7 @@ namespace performer
 
         void _Eisenpuls_Synth__pmSet (_Eisenpuls_Synth_State& _state, int32_t s, int32_t d, float v) noexcept
         {
-            _state.pmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
+            _state.pmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
             _Eisenpuls_Synth__updateFmUsed (_state);
         }
 
@@ -30610,7 +30581,7 @@ namespace performer
 
         void _Eisenpuls_Synth__rmSet (_Eisenpuls_Synth_State& _state, int32_t s, int32_t d, float v) noexcept
         {
-            _state.rmAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
+            _state.rmAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
             _Eisenpuls_Synth__updateFmUsed (_state);
         }
 
@@ -30976,7 +30947,7 @@ namespace performer
 
         void _Eisenpuls_Synth__amSet (_Eisenpuls_Synth_State& _state, int32_t s, int32_t d, float v) noexcept
         {
-            _state.amAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
+            _state.amAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
             _Eisenpuls_Synth__updateFmUsed (_state);
         }
 
@@ -31342,7 +31313,7 @@ namespace performer
 
         void _Eisenpuls_Synth__pdSet (_Eisenpuls_Synth_State& _state, int32_t s, int32_t d, float v) noexcept
         {
-            _state.pdAmt[std__intrinsics___wrap_36 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
+            _state.pdAmt[std__intrinsics___wrap_64 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), d))] = v;
             _Eisenpuls_Synth__updateFmUsed (_state);
         }
 
@@ -33730,20 +33701,17 @@ namespace performer
             int32_t  nt;
 
             nt = intrinsics::clamp (t, int32_t {0}, int32_t {11});
-            if (nt != _state.fxType[std__intrinsics___wrap_30 (s)])
+            if (nt != _state.fxType[std__intrinsics___wrap_32 (s)])
             {
-                _state.fxType[std__intrinsics___wrap_30 (s)] = nt;
+                _state.fxType[std__intrinsics___wrap_32 (s)] = nt;
                 _Eisenpuls_Synth__fxResetSlot (_state, s);
             }
-            _state.fxDirty[std__intrinsics___wrap_30 (s)] = true;
+            _state.fxDirty[std__intrinsics___wrap_32 (s)] = true;
         }
 
-        int32_t std__intrinsics___wrap_30 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_32 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {30});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {30}) : x;
+            return n & int32_t {31};
         }
 
         void _Eisenpuls_Synth__fxResetSlot (_Eisenpuls_Synth_State& _state, int32_t s) noexcept
@@ -33777,7 +33745,7 @@ namespace performer
                     {
                         break;
                     }
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::multiply (s, int32_t {40}), i_0))] = 0.0f;
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::multiply (s, int32_t {40}), i_0))] = 0.0f;
                     {
                         intrinsics::addTo (i_0, 1);
                     }
@@ -33791,7 +33759,7 @@ namespace performer
                     {
                         break;
                     }
-                    _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (intrinsics::multiply (s, int32_t {24}), i_1))] = int32_t {0};
+                    _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (intrinsics::multiply (s, int32_t {24}), i_1))] = int32_t {0};
                     {
                         intrinsics::addTo (i_1, 1);
                     }
@@ -33805,7 +33773,7 @@ namespace performer
                     {
                         break;
                     }
-                    _state.fxPh[std__intrinsics___wrap_120 (intrinsics::add (intrinsics::multiply (s, int32_t {4}), i_2))] = 0.0;
+                    _state.fxPh[std__intrinsics___wrap_128 (intrinsics::add (intrinsics::multiply (s, int32_t {4}), i_2))] = 0.0;
                     {
                         intrinsics::addTo (i_2, 1);
                     }
@@ -33821,28 +33789,19 @@ namespace performer
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {0x5a0000}) : x;
         }
 
-        int32_t std__intrinsics___wrap_1200 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_2048 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {1200});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {1200}) : x;
+            return n & int32_t {2047};
         }
 
-        int32_t std__intrinsics___wrap_720 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_1024 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {720});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {720}) : x;
+            return n & int32_t {1023};
         }
 
-        int32_t std__intrinsics___wrap_120 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_128 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {120});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {120}) : x;
+            return n & int32_t {127};
         }
 
         void _sendEvent_param542 (Eisenpuls_Synth_State& _state, float value) noexcept
@@ -34936,7 +34895,7 @@ namespace performer
                     {
                         break;
                     }
-                    s = intrinsics::clamp (_state.fxOrder[std__intrinsics___wrap_30 (intrinsics::add (ob, k))], int32_t {0}, int32_t {9});
+                    s = intrinsics::clamp (_state.fxOrder[std__intrinsics___wrap_32 (intrinsics::add (ob, k))], int32_t {0}, int32_t {9});
                     if (used[std__intrinsics___wrap_10 (s)] != int32_t {0})
                     {
                         valid = false;
@@ -34957,13 +34916,21 @@ namespace performer
                         {
                             break;
                         }
-                        _state.fxSeq[std__intrinsics___wrap_30 (intrinsics::add (ob, k_0))] = intrinsics::clamp (_state.fxOrder[std__intrinsics___wrap_30 (intrinsics::add (ob, k_0))], int32_t {0}, int32_t {9});
+                        _state.fxSeq[std__intrinsics___wrap_32 (intrinsics::add (ob, k_0))] = intrinsics::clamp (_state.fxOrder[std__intrinsics___wrap_32 (intrinsics::add (ob, k_0))], int32_t {0}, int32_t {9});
                         {
                             intrinsics::addTo (k_0, 1);
                         }
                     }
                 }
             }
+        }
+
+        int32_t std__intrinsics___wrap_10 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {10});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {10}) : x;
         }
 
         void _sendEvent_param642 (Eisenpuls_Synth_State& _state, float value) noexcept
@@ -38037,7 +38004,7 @@ namespace performer
                     {
                         break;
                     }
-                    _state.mLfoDiv[std__intrinsics___wrap_10 (ld)] = 8.0f;
+                    _state.mLfoDiv[std__intrinsics___wrap_16 (ld)] = 8.0f;
                     {
                         intrinsics::addTo (ld, 1);
                     }
@@ -38051,8 +38018,8 @@ namespace performer
                     {
                         break;
                     }
-                    _state.frqRate[std__intrinsics___wrap_10 (fm)] = 300.0f;
-                    _state.frqRetrig[std__intrinsics___wrap_10 (fm)] = 1.0f;
+                    _state.frqRate[std__intrinsics___wrap_16 (fm)] = 300.0f;
+                    _state.frqRetrig[std__intrinsics___wrap_16 (fm)] = 1.0f;
                     {
                         fi = int32_t {0};
                         for (;;)
@@ -38119,34 +38086,34 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), ik))] = 0.0f;
+                            _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), ik))] = 0.0f;
                             {
                                 intrinsics::addTo (ik, 1);
                             }
                         }
                     }
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {1}))] = 0.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {7}))] = 1.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {11}))] = 3.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {12}))] = 60.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {13}))] = 1.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {14}))] = 0.25f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {15}))] = 1.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {16}))] = 0.75f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {19}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {21}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {24}))] = 8.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {25}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {26}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {27}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {30}))] = 1.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {32}))] = 8000.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {33}))] = 0.25f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {35}))] = 0.5f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {39}))] = 300.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {41}))] = 250.0f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {43}))] = 0.3f;
-                    _state.op[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {44}))] = 1.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {1}))] = 0.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {7}))] = 1.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {11}))] = 3.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {12}))] = 60.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {13}))] = 1.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {14}))] = 0.25f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {15}))] = 1.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {16}))] = 0.75f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {19}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {21}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {24}))] = 8.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {25}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {26}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {27}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {30}))] = 1.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {32}))] = 8000.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {33}))] = 0.25f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {35}))] = 0.5f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {39}))] = 300.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {41}))] = 250.0f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {43}))] = 0.3f;
+                    _state.op[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::multiply (io, int32_t {64}), int32_t {44}))] = 1.0f;
                     _Eisenpuls_Synth__updateWtUni (_state, io);
                     {
                         intrinsics::addTo (io, 1);
@@ -38162,20 +38129,20 @@ namespace performer
                     {
                         break;
                     }
-                    _state.mLfoWave[std__intrinsics___wrap_10 (mi)] = 0.0f;
-                    _state.mLfoRate[std__intrinsics___wrap_10 (mi)] = 1.0f;
-                    _state.mLfoPhase[std__intrinsics___wrap_10 (mi)] = 0.0;
-                    _state.mLfoSh[std__intrinsics___wrap_10 (mi)] = 0.0f;
-                    _state.mLfoV[std__intrinsics___wrap_10 (mi)] = 0.0f;
-                    _state.mEnvA[std__intrinsics___wrap_10 (mi)] = 10.0f;
-                    _state.mEnvD[std__intrinsics___wrap_10 (mi)] = 300.0f;
-                    _state.mEnvS[std__intrinsics___wrap_10 (mi)] = 0.5f;
-                    _state.mEnvR[std__intrinsics___wrap_10 (mi)] = 300.0f;
-                    _state.envMax[std__intrinsics___wrap_10 (mi)] = 0.0f;
-                    _state.envMaxNext[std__intrinsics___wrap_10 (mi)] = 0.0f;
-                    _state.mmSrcI[std__intrinsics___wrap_20 (mi)] = int32_t {0};
-                    _state.mmDstI[std__intrinsics___wrap_20 (mi)] = int32_t {0};
-                    _state.mmAmt[std__intrinsics___wrap_20 (mi)] = 0.0f;
+                    _state.mLfoWave[std__intrinsics___wrap_16 (mi)] = 0.0f;
+                    _state.mLfoRate[std__intrinsics___wrap_16 (mi)] = 1.0f;
+                    _state.mLfoPhase[std__intrinsics___wrap_16 (mi)] = 0.0;
+                    _state.mLfoSh[std__intrinsics___wrap_16 (mi)] = 0.0f;
+                    _state.mLfoV[std__intrinsics___wrap_16 (mi)] = 0.0f;
+                    _state.mEnvA[std__intrinsics___wrap_16 (mi)] = 10.0f;
+                    _state.mEnvD[std__intrinsics___wrap_16 (mi)] = 300.0f;
+                    _state.mEnvS[std__intrinsics___wrap_16 (mi)] = 0.5f;
+                    _state.mEnvR[std__intrinsics___wrap_16 (mi)] = 300.0f;
+                    _state.envMax[std__intrinsics___wrap_16 (mi)] = 0.0f;
+                    _state.envMaxNext[std__intrinsics___wrap_16 (mi)] = 0.0f;
+                    _state.mmSrcI[std__intrinsics___wrap_32 (mi)] = int32_t {0};
+                    _state.mmDstI[std__intrinsics___wrap_32 (mi)] = int32_t {0};
+                    _state.mmAmt[std__intrinsics___wrap_32 (mi)] = 0.0f;
                     {
                         intrinsics::addTo (mi, 1);
                     }
@@ -38224,11 +38191,6 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_16 (int32_t n) noexcept
-        {
-            return n & int32_t {15};
-        }
-
         double std__intrinsics__tan (double n) noexcept
         {
             {
@@ -38250,14 +38212,6 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_20 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {20});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {20}) : x;
-        }
-
         void _Eisenpuls_Synth__fxInit (_Eisenpuls_Synth_State& _state) noexcept
         {
             int32_t  s;
@@ -38271,13 +38225,13 @@ namespace performer
                     {
                         break;
                     }
-                    _state.fxType[std__intrinsics___wrap_30 (s)] = int32_t {0};
-                    _state.fxOn[std__intrinsics___wrap_30 (s)] = 1.0f;
-                    _state.fxMix[std__intrinsics___wrap_30 (s)] = 1.0f;
-                    _state.fxMode[std__intrinsics___wrap_30 (s)] = int32_t {0};
-                    _state.fxDirty[std__intrinsics___wrap_30 (s)] = true;
-                    _state.fxOrder[std__intrinsics___wrap_30 (s)] = intrinsics::subtract (s, intrinsics::multiply (s / int32_t {10}, int32_t {10}));
-                    _state.fxSeq[std__intrinsics___wrap_30 (s)] = intrinsics::subtract (s, intrinsics::multiply (s / int32_t {10}, int32_t {10}));
+                    _state.fxType[std__intrinsics___wrap_32 (s)] = int32_t {0};
+                    _state.fxOn[std__intrinsics___wrap_32 (s)] = 1.0f;
+                    _state.fxMix[std__intrinsics___wrap_32 (s)] = 1.0f;
+                    _state.fxMode[std__intrinsics___wrap_32 (s)] = int32_t {0};
+                    _state.fxDirty[std__intrinsics___wrap_32 (s)] = true;
+                    _state.fxOrder[std__intrinsics___wrap_32 (s)] = intrinsics::subtract (s, intrinsics::multiply (s / int32_t {10}, int32_t {10}));
+                    _state.fxSeq[std__intrinsics___wrap_32 (s)] = intrinsics::subtract (s, intrinsics::multiply (s / int32_t {10}, int32_t {10}));
                     {
                         k = int32_t {0};
                         for (;;)
@@ -38286,7 +38240,7 @@ namespace performer
                             {
                                 break;
                             }
-                            _state.fxP[std__intrinsics___wrap_180 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), k))] = 0.5f;
+                            _state.fxP[std__intrinsics___wrap_256 (intrinsics::add (intrinsics::multiply (s, int32_t {6}), k))] = 0.5f;
                             {
                                 intrinsics::addTo (k, 1);
                             }
@@ -38297,14 +38251,6 @@ namespace performer
                     }
                 }
             }
-        }
-
-        int32_t std__intrinsics___wrap_180 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {180});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {180}) : x;
         }
 
         void _advance (Eisenpuls_Synth_State& _state, Eisenpuls_Synth_IO& _io, int32_t _frames) noexcept
@@ -38484,9 +38430,9 @@ namespace performer
                         {
                             break;
                         }
-                        if ((_state.mmSrcI[std__intrinsics___wrap_20 (fs)] >= int32_t {24}) ? (_state.mmDstI[std__intrinsics___wrap_20 (fs)] > int32_t {0}) : false)
+                        if ((_state.mmSrcI[std__intrinsics___wrap_32 (fs)] >= int32_t {24}) ? (_state.mmDstI[std__intrinsics___wrap_32 (fs)] > int32_t {0}) : false)
                         {
-                            _state.frqMask = (_state.frqMask | intrinsics::leftShift (int32_t {1}, intrinsics::subtract (_state.mmSrcI[std__intrinsics___wrap_20 (fs)], int32_t {24})));
+                            _state.frqMask = (_state.frqMask | intrinsics::leftShift (int32_t {1}, intrinsics::subtract (_state.mmSrcI[std__intrinsics___wrap_32 (fs)], int32_t {24})));
                         }
                         {
                             intrinsics::addTo (fs, 1);
@@ -38572,7 +38518,7 @@ namespace performer
                                 fd = int32_t {0};
                                 for (;;)
                                 {
-                                    if  (! (fd < int32_t {6}))
+                                    if  (! (fd < ((_state.fmAny ? true : _state.vmodMat) ? int32_t {6} : int32_t {0})))
                                     {
                                         break;
                                     }
@@ -38588,26 +38534,26 @@ namespace performer
                                                 break;
                                             }
                                             mi = intrinsics::add (intrinsics::multiply (fs_0, int32_t {6}), fd);
-                                            am = _state.fmAmt[std__intrinsics___wrap_36 (mi)];
-                                            ap = _state.pmAmt[std__intrinsics___wrap_36 (mi)];
-                                            ad = _state.pdAmt[std__intrinsics___wrap_36 (mi)];
+                                            am = _state.fmAmt[std__intrinsics___wrap_64 (mi)];
+                                            ap = _state.pmAmt[std__intrinsics___wrap_64 (mi)];
+                                            ad = _state.pdAmt[std__intrinsics___wrap_64 (mi)];
                                             if (_state.vmodMat)
                                             {
-                                                am = intrinsics::clamp (am + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {60}, mi))] * 0.5f), 0.0f, 1.0f);
-                                                ap = intrinsics::clamp (ap + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {96}, mi))] * 0.5f), 0.0f, 1.0f);
-                                                ad = intrinsics::clamp (ad + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {132}, mi))] * 0.5f), 0.0f, 1.0f);
+                                                am = intrinsics::clamp (am + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {60}, mi))] * 0.5f), 0.0f, 1.0f);
+                                                ap = intrinsics::clamp (ap + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {96}, mi))] * 0.5f), 0.0f, 1.0f);
+                                                ad = intrinsics::clamp (ad + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {132}, mi))] * 0.5f), 0.0f, 1.0f);
                                             }
                                             if (am != 0.0f)
                                             {
-                                                acc = (acc + (am * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (fs_0)]));
+                                                acc = (acc + (am * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_0)]));
                                             }
                                             if (ap != 0.0f)
                                             {
-                                                acp = (acp + (ap * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (fs_0)]));
+                                                acp = (acp + (ap * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_0)]));
                                             }
                                             if (ad != 0.0f)
                                             {
-                                                acd = (acd + (ad * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (fs_0)]));
+                                                acd = (acd + (ad * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_0)]));
                                             }
                                             {
                                                 intrinsics::addTo (fs_0, 1);
@@ -38631,7 +38577,7 @@ namespace performer
                                     {
                                         break;
                                     }
-                                    rmPrev[std__intrinsics___wrap_6 (rq)] = _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (rq)];
+                                    rmPrev[std__intrinsics___wrap_6 (rq)] = _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (rq)];
                                     {
                                         intrinsics::addTo (rq, 1);
                                     }
@@ -38649,26 +38595,26 @@ namespace performer
                                             break;
                                         }
                                         ob = intrinsics::multiply (o, int32_t {64});
-                                        ty = static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (ob)] + 0.5f);
+                                        ty = static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (ob)] + 0.5f);
                                         dB = intrinsics::add (int32_t {6}, intrinsics::multiply (int32_t {9}, o));
-                                        lvl = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {1}))] + _state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {1}))], 0.0f, 1.0f);
-                                        if (((lvl <= 0.0005f) ? (! _state.fmUsed[std__intrinsics___wrap_6 (o)]) : false) ? (! _state.vmodMat) : false)
+                                        lvl = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {1}))] + _state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {1}))], 0.0f, 1.0f);
+                                        if (((lvl <= 0.0005f) ? (! _state.fmUsed[std__intrinsics___wrap_8 (o)]) : false) ? (! _state.vmodMat) : false)
                                         {
-                                            _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (o)] = 0.0f;
+                                            _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (o)] = 0.0f;
                                             goto _break_1;
                                         }
-                                        sSemi = ((_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {4}))] * 12.0f) + _state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {5}))]) + (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {6}))] * 0.01f);
-                                        sExp = (((sSemi + pe) + tuneSt) / 12.0f) + _state.vmod[std__intrinsics___wrap_264 (dB)];
+                                        sSemi = ((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {4}))] * 12.0f) + _state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {5}))]) + (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {6}))] * 0.01f);
+                                        sExp = (((sSemi + pe) + tuneSt) / 12.0f) + _state.vmod[std__intrinsics___wrap_512 (dB)];
                                         base = cf;
-                                        if (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {7}))] <= 0.5f)
+                                        if (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {7}))] <= 0.5f)
                                         {
-                                            base = std__notes__noteToFrequency (static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {12}))] + 0.5f));
+                                            base = std__notes__noteToFrequency (static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {12}))] + 0.5f));
                                         }
-                                        if (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {48}))] > 0.001f)
+                                        if (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {48}))] > 0.001f)
                                         {
-                                            base = (20.0f * intrinsics::pow (1000.0f, _state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {48}))]));
+                                            base = (20.0f * intrinsics::pow (1000.0f, _state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {48}))]));
                                         }
-                                        sExp = (sExp + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {180}, o))] * 4.0f));
+                                        sExp = (sExp + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {180}, o))] * 4.0f));
                                         fmx = fmIn[std__intrinsics___wrap_6 (o)];
                                         if (fmx != 0.0f)
                                         {
@@ -38679,10 +38625,10 @@ namespace performer
                                         pdv = pdIn[std__intrinsics___wrap_6 (o)];
                                         pdPm = 0.0f;
                                         {
-                                            ph0 = _state.voices[std__intrinsics___wrap_8 (i)].pdPh[std__intrinsics___wrap_6 (o)];
+                                            ph0 = _state.voices[std__intrinsics___wrap_8 (i)].pdPh[std__intrinsics___wrap_8 (o)];
                                             ph1 = ph0 + (freq / sr);
                                             ph1 = (ph1 - intrinsics::floor (ph1));
-                                            _state.voices[std__intrinsics___wrap_8 (i)].pdPh[std__intrinsics___wrap_6 (o)] = ph1;
+                                            _state.voices[std__intrinsics___wrap_8 (i)].pdPh[std__intrinsics___wrap_8 (o)] = ph1;
                                             if (pdv != 0.0f)
                                             {
                                                 brk = intrinsics::clamp (0.5f - (0.49f * intrinsics::clamp (pdv, -1.0f, 1.0f)), 0.01f, 0.99f);
@@ -38695,10 +38641,10 @@ namespace performer
                                         stereo = false;
                                         if (ty == int32_t {0})
                                         {
-                                            if (_state.wtHas[std__intrinsics___wrap_6 (o)] ? (_state.wtLen[std__intrinsics___wrap_6 (o)] > int32_t {1}) : false)
+                                            if (_state.wtHas[std__intrinsics___wrap_8 (o)] ? (_state.wtLen[std__intrinsics___wrap_8 (o)] > int32_t {1}) : false)
                                             {
-                                                pos = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {10}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {3}))] * 0.5f), 0.0f, 1.0f);
-                                                w = _Eisenpuls_Synth__wtStep (_state, o, i, freq, pos, _Eisenpuls_Synth__wtFrameLen (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {11}))]), pm + pdPm, _state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {4}))], _state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {5}))]);
+                                                pos = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {10}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {3}))] * 0.5f), 0.0f, 1.0f);
+                                                w = _Eisenpuls_Synth__wtStep (_state, o, i, freq, pos, _Eisenpuls_Synth__wtFrameLen (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {11}))]), pm + pdPm, _state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {4}))], _state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {5}))]);
                                                 sL = w[int32_t {0}];
                                                 sR = w[int32_t {1}];
                                                 stereo = true;
@@ -38708,7 +38654,7 @@ namespace performer
                                         {
                                             if (ty == int32_t {1})
                                             {
-                                                if (_state.smpHas[std__intrinsics___wrap_6 (o)] ? (_state.smpLen[std__intrinsics___wrap_6 (o)] > int32_t {1}) : false)
+                                                if (_state.smpHas[std__intrinsics___wrap_8 (o)] ? (_state.smpLen[std__intrinsics___wrap_8 (o)] > int32_t {1}) : false)
                                                 {
                                                     sL = _Eisenpuls_Synth__smpStep (_state, o, i, freq, cf, pm + pdPm, sExp);
                                                     sR = sL;
@@ -38716,15 +38662,15 @@ namespace performer
                                             }
                                             else
                                             {
-                                                sL = _Eisenpuls_Synth__plaitsStep (_state, i, o, static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {24}))] + 0.5f), freq / sr, pm, intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {25}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {3}))] * 0.5f), 0.0f, 1.0f), intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {26}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {4}))] * 0.5f), 0.0f, 1.0f), intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {27}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {5}))] * 0.5f), 0.0f, 1.0f), _state.voices[std__intrinsics___wrap_8 (i)].stage <= int32_t {2});
+                                                sL = _Eisenpuls_Synth__plaitsStep (_state, i, o, static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {24}))] + 0.5f), freq / sr, pm, intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {25}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {3}))] * 0.5f), 0.0f, 1.0f), intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {26}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {4}))] * 0.5f), 0.0f, 1.0f), intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {27}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {5}))] * 0.5f), 0.0f, 1.0f), _state.voices[std__intrinsics___wrap_8 (i)].stage <= int32_t {2});
                                                 sR = sL;
                                             }
                                         }
-                                        fst = _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_6 (o)];
-                                        fe = _state.voices[std__intrinsics___wrap_8 (i)].fenv[std__intrinsics___wrap_6 (o)];
+                                        fst = _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_8 (o)];
+                                        fe = _state.voices[std__intrinsics___wrap_8 (i)].fenv[std__intrinsics___wrap_8 (o)];
                                         if (fst == int32_t {1})
                                         {
-                                            fe = (fe + (dt / intrinsics::max (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {38}))] * 0.001f, 0.0005f)));
+                                            fe = (fe + (dt / intrinsics::max (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {38}))] * 0.001f, 0.0005f)));
                                             if (fe >= 1.0f)
                                             {
                                                 fe = 1.0f;
@@ -38735,20 +38681,20 @@ namespace performer
                                         {
                                             if (fst == int32_t {2})
                                             {
-                                                fe = (fe + ((_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {40}))] - fe) * intrinsics::clamp ((dt * 5.0f) / (intrinsics::max (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {39}))], 1.0f) * 0.001f), 0.0f, 0.99f)));
+                                                fe = (fe + ((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {40}))] - fe) * intrinsics::clamp ((dt * 5.0f) / (intrinsics::max (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {39}))], 1.0f) * 0.001f), 0.0f, 0.99f)));
                                             }
                                             else
                                             {
-                                                fe = (fe - (fe * intrinsics::clamp ((dt * 5.0f) / (intrinsics::max (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {41}))], 1.0f) * 0.001f), 0.0f, 0.99f)));
+                                                fe = (fe - (fe * intrinsics::clamp ((dt * 5.0f) / (intrinsics::max (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {41}))], 1.0f) * 0.001f), 0.0f, 0.99f)));
                                             }
                                         }
-                                        _state.voices[std__intrinsics___wrap_8 (i)].fenv[std__intrinsics___wrap_6 (o)] = fe;
-                                        _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_6 (o)] = fst;
-                                        dty = static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {42}))] + 0.5f);
-                                        dd = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {43}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {8}))] * 0.5f), 0.0f, 1.0f);
-                                        dx = _state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {44}))];
-                                        dPre = _state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {45}))] > 0.5f;
-                                        dwp = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {47}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {169}, intrinsics::multiply (int32_t {2}, o)))] * 0.5f), 0.0f, 1.0f);
+                                        _state.voices[std__intrinsics___wrap_8 (i)].fenv[std__intrinsics___wrap_8 (o)] = fe;
+                                        _state.voices[std__intrinsics___wrap_8 (i)].fstage[std__intrinsics___wrap_8 (o)] = fst;
+                                        dty = static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {42}))] + 0.5f);
+                                        dd = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {43}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {8}))] * 0.5f), 0.0f, 1.0f);
+                                        dx = _state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {44}))];
+                                        dPre = _state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {45}))] > 0.5f;
+                                        dwp = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {47}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {169}, intrinsics::multiply (int32_t {2}, o)))] * 0.5f), 0.0f, 1.0f);
                                         if (dPre ? (dty > int32_t {0}) : false)
                                         {
                                             sL = _Eisenpuls_Synth__oscDist (_state, sL, dty, dd, dx, o, dwp);
@@ -38762,9 +38708,9 @@ namespace performer
                                             }
                                             sR = _temp;
                                         }
-                                        if (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {30}))] > 0.5f)
+                                        if (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {30}))] > 0.5f)
                                         {
-                                            fdrv = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {34}))], 0.0f, 1.0f);
+                                            fdrv = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {34}))], 0.0f, 1.0f);
                                             if (fdrv > 0.001f)
                                             {
                                                 dg = 1.0f + (fdrv * 6.0f);
@@ -38774,17 +38720,17 @@ namespace performer
                                                 sL = ((sdL / (1.0f + intrinsics::abs (sdL))) * dm);
                                                 sR = ((sdR / (1.0f + intrinsics::abs (sdR))) * dm);
                                             }
-                                            modExp = ((((_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {36}))] * fe) * 4.0f) + ((_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {35}))] * static_cast<float> (intrinsics::subtract (nnote, int32_t {60}))) / 12.0f)) + ((_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {37}))] * (_state.voices[std__intrinsics___wrap_8 (i)].velRaw - 0.5f)) * 4.0f)) + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {6}))] * 4.0f);
-                                            fc = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {32}))] * intrinsics::pow (2.0f, modExp), 20.0f, sr * 0.45f);
+                                            modExp = ((((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {36}))] * fe) * 4.0f) + ((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {35}))] * static_cast<float> (intrinsics::subtract (nnote, int32_t {60}))) / 12.0f)) + ((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {37}))] * (_state.voices[std__intrinsics___wrap_8 (i)].velRaw - 0.5f)) * 4.0f)) + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {6}))] * 4.0f);
+                                            fc = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {32}))] * intrinsics::pow (2.0f, modExp), 20.0f, sr * 0.45f);
                                             g = static_cast<float> (intrinsics::tan ((static_cast<double> (fc) * 3.141592653589793) * (1.0 / (1.0 * g__frequency))));
-                                            resE = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {33}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {7}))] * 0.5f), 0.0f, 1.0f);
+                                            resE = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {33}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {7}))] * 0.5f), 0.0f, 1.0f);
                                             k = 2.0f - (1.96f * resE);
-                                            ft = intrinsics::clamp (static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {31}))] + 0.5f), int32_t {0}, int32_t {30});
+                                            ft = intrinsics::clamp (static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {31}))] + 0.5f), int32_t {0}, int32_t {30});
                                             yL = 0.0f;
                                             yR = 0.0f;
                                             if (ft >= int32_t {30})
                                             {
-                                                wfp = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {46}))] + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {168}, intrinsics::multiply (int32_t {2}, o)))] * 0.5f), 0.0f, 1.0f);
+                                                wfp = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {46}))] + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {168}, intrinsics::multiply (int32_t {2}, o)))] * 0.5f), 0.0f, 1.0f);
                                                 yL = _Eisenpuls_Synth__wfStep (_state, i, int32_t {0}, o, sL, fc, resE, wfp);
                                                 yR = yL;
                                                 if (stereo)
@@ -38821,17 +38767,17 @@ namespace performer
                                             rs = int32_t {0};
                                             for (;;)
                                             {
-                                                if  (! (rs < int32_t {6}))
+                                                if  (! (rs < ((_state.fmAny ? true : _state.vmodMat) ? int32_t {6} : int32_t {0})))
                                                 {
                                                     break;
                                                 }
                                                 ri = intrinsics::add (intrinsics::multiply (rs, int32_t {6}), o);
-                                                ar = _state.rmAmt[std__intrinsics___wrap_36 (ri)];
-                                                aa = _state.amAmt[std__intrinsics___wrap_36 (ri)];
+                                                ar = _state.rmAmt[std__intrinsics___wrap_64 (ri)];
+                                                aa = _state.amAmt[std__intrinsics___wrap_64 (ri)];
                                                 if (_state.vmodMat)
                                                 {
-                                                    ar = intrinsics::clamp (ar + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {186}, ri))] * 0.5f), 0.0f, 1.0f);
-                                                    aa = intrinsics::clamp (aa + (_state.vmod[std__intrinsics___wrap_264 (intrinsics::add (int32_t {222}, ri))] * 0.5f), 0.0f, 1.0f);
+                                                    ar = intrinsics::clamp (ar + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {186}, ri))] * 0.5f), 0.0f, 1.0f);
+                                                    aa = intrinsics::clamp (aa + (_state.vmod[std__intrinsics___wrap_512 (intrinsics::add (int32_t {222}, ri))] * 0.5f), 0.0f, 1.0f);
                                                 }
                                                 if ((ar != 0.0f) ? true : (aa != 0.0f))
                                                 {
@@ -38847,16 +38793,16 @@ namespace performer
                                                 }
                                             }
                                         }
-                                        _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_6 (o)] = (stereo ? ((sL + sR) * 0.5f) : sL);
+                                        _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (o)] = (stereo ? ((sL + sR) * 0.5f) : sL);
                                         if (lvl <= 0.0005f)
                                         {
                                             goto _break_2;
                                         }
-                                        pn = intrinsics::clamp (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {2}))] + _state.vmod[std__intrinsics___wrap_264 (intrinsics::add (dB, int32_t {2}))], -1.0f, 1.0f);
+                                        pn = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {2}))] + _state.vmod[std__intrinsics___wrap_512 (intrinsics::add (dB, int32_t {2}))], -1.0f, 1.0f);
                                         pa = ((pn + 1.0f) * 0.25f) * 3.1415927f;
                                         gL = (intrinsics::cos (pa) * 1.4142f) * lvl;
                                         gR = (intrinsics::sin (pa) * 1.4142f) * lvl;
-                                        rt = intrinsics::clamp (static_cast<int32_t> (_state.op[std__intrinsics___wrap_384 (intrinsics::add (ob, int32_t {3}))] + 0.5f), int32_t {0}, int32_t {2});
+                                        rt = intrinsics::clamp (static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {3}))] + 0.5f), int32_t {0}, int32_t {2});
                                         {
                                             t_2 = std__intrinsics___wrap_3 (rt);
                                             bInL[t_2] = (bInL[t_2] + (sL * gL));
@@ -38929,12 +38875,12 @@ namespace performer
                         rawL = _temp_1 * gPanL;
                         _temp_2 = _Eisenpuls_Synth__shapeSig (_state, mixSynthR[std__intrinsics___wrap_3 (bg)] * 0.35f, driveEff);
                         rawR = _temp_2 * gPanR;
-                        dcL = (rawL - _state.busDcX[std__intrinsics___wrap_6 (intrinsics::multiply (bg, int32_t {2}))]) + (synDcA * _state.busDcY[std__intrinsics___wrap_6 (intrinsics::multiply (bg, int32_t {2}))]);
-                        dcR = (rawR - _state.busDcX[std__intrinsics___wrap_6 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))]) + (synDcA * _state.busDcY[std__intrinsics___wrap_6 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))]);
-                        _state.busDcX[std__intrinsics___wrap_6 (intrinsics::multiply (bg, int32_t {2}))] = rawL;
-                        _state.busDcY[std__intrinsics___wrap_6 (intrinsics::multiply (bg, int32_t {2}))] = dcL;
-                        _state.busDcX[std__intrinsics___wrap_6 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))] = rawR;
-                        _state.busDcY[std__intrinsics___wrap_6 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))] = dcR;
+                        dcL = (rawL - _state.busDcX[std__intrinsics___wrap_8 (intrinsics::multiply (bg, int32_t {2}))]) + (synDcA * _state.busDcY[std__intrinsics___wrap_8 (intrinsics::multiply (bg, int32_t {2}))]);
+                        dcR = (rawR - _state.busDcX[std__intrinsics___wrap_8 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))]) + (synDcA * _state.busDcY[std__intrinsics___wrap_8 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))]);
+                        _state.busDcX[std__intrinsics___wrap_8 (intrinsics::multiply (bg, int32_t {2}))] = rawL;
+                        _state.busDcY[std__intrinsics___wrap_8 (intrinsics::multiply (bg, int32_t {2}))] = dcL;
+                        _state.busDcX[std__intrinsics___wrap_8 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))] = rawR;
+                        _state.busDcY[std__intrinsics___wrap_8 (intrinsics::add (intrinsics::multiply (bg, int32_t {2}), int32_t {1}))] = dcR;
                         busInL[std__intrinsics___wrap_3 (bg)] = (dcL * _state.masterLevel);
                         busInR[std__intrinsics___wrap_3 (bg)] = (dcR * _state.masterLevel);
                         {
@@ -39015,15 +38961,15 @@ namespace performer
                     {
                         break;
                     }
-                    if (_state.wtBuilding[std__intrinsics___wrap_6 (o)])
+                    if (_state.wtBuilding[std__intrinsics___wrap_8 (o)])
                     {
-                        f = _state.wtBNext[std__intrinsics___wrap_6 (o)];
+                        f = _state.wtBNext[std__intrinsics___wrap_8 (o)];
                         _Eisenpuls_Synth__wtBuildFrame (_state, o, f);
-                        _state.wtBNext[std__intrinsics___wrap_6 (o)] = intrinsics::add (f, int32_t {1});
-                        if (intrinsics::add (f, int32_t {1}) >= _state.wtFr[std__intrinsics___wrap_6 (o)])
+                        _state.wtBNext[std__intrinsics___wrap_8 (o)] = intrinsics::add (f, int32_t {1});
+                        if (intrinsics::add (f, int32_t {1}) >= _state.wtFr[std__intrinsics___wrap_8 (o)])
                         {
-                            _state.wtBuilding[std__intrinsics___wrap_6 (o)] = false;
-                            _state.wtHas[std__intrinsics___wrap_6 (o)] = true;
+                            _state.wtBuilding[std__intrinsics___wrap_8 (o)] = false;
+                            _state.wtHas[std__intrinsics___wrap_8 (o)] = true;
                         }
                         return;
                     }
@@ -39060,7 +39006,7 @@ namespace performer
             int32_t  k;
             int32_t  i_5;
 
-            fl = _state.wtBFl[std__intrinsics___wrap_6 (o)];
+            fl = _state.wtBFl[std__intrinsics___wrap_8 (o)];
             base = intrinsics::add (intrinsics::multiply (o, int32_t {0x40000}), intrinsics::multiply (f, fl));
             if (fl > int32_t {2048})
             {
@@ -39290,23 +39236,23 @@ namespace performer
                     {
                         break;
                     }
-                    _temp = _state.mLfoPhase[std__intrinsics___wrap_10 (m)];
+                    _temp = _state.mLfoPhase[std__intrinsics___wrap_16 (m)];
                     _temp_0 = static_cast<double> (_Eisenpuls_Synth__lfoRateHz (_state, m));
                     np = _temp + (_temp_0 * (1.0 / (1.0 * g__frequency)));
                     if (np >= 1.0)
                     {
                         np = (np - 1.0);
-                        _state.mLfoSh[std__intrinsics___wrap_10 (m)] = _Eisenpuls_Synth__nextNoise (_state);
+                        _state.mLfoSh[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__nextNoise (_state);
                     }
-                    _state.mLfoPhase[std__intrinsics___wrap_10 (m)] = np;
-                    p = static_cast<float> (np) + _state.mLfoStart[std__intrinsics___wrap_10 (m)];
+                    _state.mLfoPhase[std__intrinsics___wrap_16 (m)] = np;
+                    p = static_cast<float> (np) + _state.mLfoStart[std__intrinsics___wrap_16 (m)];
                     if (p >= 1.0f)
                     {
                         p = (p - 1.0f);
                     }
-                    val = _Eisenpuls_Synth__lfoWaveVal (_state, m, p, _state.mLfoSh[std__intrinsics___wrap_10 (m)], true);
-                    _state.mLfoSm[std__intrinsics___wrap_10 (m)] = _Eisenpuls_Synth__lfoLag (_state.mLfoSm[std__intrinsics___wrap_10 (m)], val, _state.mLfoSmooth[std__intrinsics___wrap_10 (m)], dtv);
-                    _state.mLfoV[std__intrinsics___wrap_10 (m)] = _state.mLfoSm[std__intrinsics___wrap_10 (m)];
+                    val = _Eisenpuls_Synth__lfoWaveVal (_state, m, p, _state.mLfoSh[std__intrinsics___wrap_16 (m)], true);
+                    _state.mLfoSm[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__lfoLag (_state.mLfoSm[std__intrinsics___wrap_16 (m)], val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
+                    _state.mLfoV[std__intrinsics___wrap_16 (m)] = _state.mLfoSm[std__intrinsics___wrap_16 (m)];
                     {
                         intrinsics::addTo (m, 1);
                     }
@@ -39316,11 +39262,11 @@ namespace performer
 
         float _Eisenpuls_Synth__lfoRateHz (_Eisenpuls_Synth_State& _state, int32_t m) noexcept
         {
-            if (_state.mLfoSync[std__intrinsics___wrap_10 (m)] > 0.5f)
+            if (_state.mLfoSync[std__intrinsics___wrap_16 (m)] > 0.5f)
             {
-                return _Eisenpuls_Synth__syncHz (_state, _state.mLfoDiv[std__intrinsics___wrap_10 (m)]);
+                return _Eisenpuls_Synth__syncHz (_state, _state.mLfoDiv[std__intrinsics___wrap_16 (m)]);
             }
-            return _state.mLfoRate[std__intrinsics___wrap_10 (m)];
+            return _state.mLfoRate[std__intrinsics___wrap_16 (m)];
         }
 
         float _Eisenpuls_Synth__syncHz (_Eisenpuls_Synth_State& _state, float divIdx) noexcept
@@ -39332,22 +39278,14 @@ namespace performer
             {
                 bpm = _state.syncBpmOver;
             }
-            return (bpm / 60.0f) / _state.divBeats[std__intrinsics___wrap_18 (intrinsics::clamp (static_cast<int32_t> (divIdx + 0.5f), int32_t {0}, int32_t {17}))];
-        }
-
-        int32_t std__intrinsics___wrap_18 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {18});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {18}) : x;
+            return (bpm / 60.0f) / _state.divBeats[std__intrinsics___wrap_32 (intrinsics::clamp (static_cast<int32_t> (divIdx + 0.5f), int32_t {0}, int32_t {17}))];
         }
 
         float _Eisenpuls_Synth__lfoWaveVal (_Eisenpuls_Synth_State& _state, int32_t m, float p, float sh, bool wrapEnd) noexcept
         {
             int32_t  w;
 
-            w = static_cast<int32_t> (_state.mLfoWave[std__intrinsics___wrap_10 (m)] + 0.5f);
+            w = static_cast<int32_t> (_state.mLfoWave[std__intrinsics___wrap_16 (m)] + 0.5f);
             if (w == int32_t {0})
             {
                 return intrinsics::sin (6.2831855f * p);
@@ -39437,10 +39375,10 @@ namespace performer
                             goto _break_0;
                         }
                         {
-                            t = std__intrinsics___wrap_10 (m);
+                            t = std__intrinsics___wrap_16 (m);
                             _state.frqGT[t] = (_state.frqGT[t] + dt);
                         }
-                        _state.frqGV[std__intrinsics___wrap_10 (m)] = _Eisenpuls_Synth__frqEval (_state, m, _state.frqGT[std__intrinsics___wrap_10 (m)]);
+                        _state.frqGV[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__frqEval (_state, m, _state.frqGT[std__intrinsics___wrap_16 (m)]);
                     }
                     _break_0: {}
                     {
@@ -39462,8 +39400,8 @@ namespace performer
                     {
                         break;
                     }
-                    _state.envMax[std__intrinsics___wrap_10 (m)] = _state.envMaxNext[std__intrinsics___wrap_10 (m)];
-                    _state.envMaxNext[std__intrinsics___wrap_10 (m)] = 0.0f;
+                    _state.envMax[std__intrinsics___wrap_16 (m)] = _state.envMaxNext[std__intrinsics___wrap_16 (m)];
+                    _state.envMaxNext[std__intrinsics___wrap_16 (m)] = 0.0f;
                     {
                         intrinsics::addTo (m, 1);
                     }
@@ -39473,28 +39411,15 @@ namespace performer
 
         void _Eisenpuls_Synth__computeGlobalMod (_Eisenpuls_Synth_State& _state) noexcept
         {
-            int32_t  d;
             int32_t  s;
+            int32_t  hi;
+            int32_t  s_0;
             int32_t  dd;
             int32_t  ss;
             int32_t  t;
             float  _temp;
             float  _temp_0;
 
-            {
-                d = int32_t {0};
-                for (;;)
-                {
-                    if  (! (d < int32_t {264}))
-                    {
-                        break;
-                    }
-                    _state.gmod[std__intrinsics___wrap_264 (d)] = 0.0f;
-                    {
-                        intrinsics::addTo (d, 1);
-                    }
-                }
-            }
             {
                 s = int32_t {0};
                 for (;;)
@@ -39503,45 +39428,56 @@ namespace performer
                     {
                         break;
                     }
-                    dd = _state.mmDstI[std__intrinsics___wrap_20 (s)];
-                    ss = _state.mmSrcI[std__intrinsics___wrap_20 (s)];
-                    if ((dd > int32_t {0}) ? (ss > int32_t {0}) : false)
-                    {
-                        {
-                            t = std__intrinsics___wrap_264 (dd);
-                            _temp = _state.gmod[t];
-                            _temp_0 = _Eisenpuls_Synth__srcValueGlobal (_state, ss);
-                            _state.gmod[t] = (_temp + (_temp_0 * _state.mmAmt[std__intrinsics___wrap_20 (s)]));
-                        }
-                    }
+                    _state.gmod[std__intrinsics___wrap_512 (_state.gmodDirty[std__intrinsics___wrap_32 (s)])] = 0.0f;
                     {
                         intrinsics::addTo (s, 1);
                     }
                 }
             }
-        }
-
-        int32_t std__intrinsics___wrap_264 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {264});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {264}) : x;
+            hi = int32_t {0};
+            {
+                s_0 = int32_t {0};
+                for (;;)
+                {
+                    if  (! (s_0 < int32_t {20}))
+                    {
+                        break;
+                    }
+                    dd = _state.mmDstI[std__intrinsics___wrap_32 (s_0)];
+                    ss = _state.mmSrcI[std__intrinsics___wrap_32 (s_0)];
+                    _state.gmodDirty[std__intrinsics___wrap_32 (s_0)] = int32_t {0};
+                    if ((dd > int32_t {0}) ? (ss > int32_t {0}) : false)
+                    {
+                        hi = intrinsics::add (s_0, int32_t {1});
+                        _state.gmodDirty[std__intrinsics___wrap_32 (s_0)] = dd;
+                        {
+                            t = std__intrinsics___wrap_512 (dd);
+                            _temp = _state.gmod[t];
+                            _temp_0 = _Eisenpuls_Synth__srcValueGlobal (_state, ss);
+                            _state.gmod[t] = (_temp + (_temp_0 * _state.mmAmt[std__intrinsics___wrap_32 (s_0)]));
+                        }
+                    }
+                    {
+                        intrinsics::addTo (s_0, 1);
+                    }
+                }
+            }
+            _state.mmHi = hi;
         }
 
         float _Eisenpuls_Synth__srcValueGlobal (_Eisenpuls_Synth_State& _state, int32_t src) noexcept
         {
             if ((src >= int32_t {1}) ? (src <= int32_t {10}) : false)
             {
-                if (_state.mLfoMode[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))] > 0.5f)
+                if (_state.mLfoMode[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))] > 0.5f)
                 {
-                    return _state.voices[std__intrinsics___wrap_8 (_state.lastVoice)].lfoV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))];
+                    return _state.voices[std__intrinsics___wrap_8 (_state.lastVoice)].lfoV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))];
                 }
-                return _state.mLfoV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))];
+                return _state.mLfoV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))];
             }
             if ((src >= int32_t {11}) ? (src <= int32_t {20}) : false)
             {
-                return _state.envMax[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {11}))];
+                return _state.envMax[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {11}))];
             }
             if (src == int32_t {21})
             {
@@ -39557,7 +39493,7 @@ namespace performer
             }
             if ((src >= int32_t {24}) ? (src <= int32_t {33}) : false)
             {
-                return _state.frqGV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {24}))];
+                return _state.frqGV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {24}))];
             }
             return 0.0f;
         }
@@ -39576,11 +39512,11 @@ namespace performer
                     {
                         break;
                     }
-                    ms = _state.voices[std__intrinsics___wrap_8 (vi)].mstage[std__intrinsics___wrap_10 (m)];
-                    me = _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_10 (m)];
+                    ms = _state.voices[std__intrinsics___wrap_8 (vi)].mstage[std__intrinsics___wrap_16 (m)];
+                    me = _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_16 (m)];
                     if (ms == int32_t {1})
                     {
-                        me = (me + (dtv / intrinsics::max (_state.mEnvA[std__intrinsics___wrap_10 (m)] * 0.001f, 0.0005f)));
+                        me = (me + (dtv / intrinsics::max (_state.mEnvA[std__intrinsics___wrap_16 (m)] * 0.001f, 0.0005f)));
                         if (me >= 1.0f)
                         {
                             me = 1.0f;
@@ -39591,21 +39527,21 @@ namespace performer
                     {
                         if (ms == int32_t {2})
                         {
-                            me = (me + ((_state.mEnvS[std__intrinsics___wrap_10 (m)] - me) * intrinsics::clamp ((dtv * 5.0f) / (intrinsics::max (_state.mEnvD[std__intrinsics___wrap_10 (m)], 1.0f) * 0.001f), 0.0f, 0.99f)));
+                            me = (me + ((_state.mEnvS[std__intrinsics___wrap_16 (m)] - me) * intrinsics::clamp ((dtv * 5.0f) / (intrinsics::max (_state.mEnvD[std__intrinsics___wrap_16 (m)], 1.0f) * 0.001f), 0.0f, 0.99f)));
                         }
                         else
                         {
                             if (ms == int32_t {3})
                             {
-                                me = (me - (me * intrinsics::clamp ((dtv * 5.0f) / (intrinsics::max (_state.mEnvR[std__intrinsics___wrap_10 (m)], 1.0f) * 0.001f), 0.0f, 0.99f)));
+                                me = (me - (me * intrinsics::clamp ((dtv * 5.0f) / (intrinsics::max (_state.mEnvR[std__intrinsics___wrap_16 (m)], 1.0f) * 0.001f), 0.0f, 0.99f)));
                             }
                         }
                     }
-                    _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_10 (m)] = me;
-                    _state.voices[std__intrinsics___wrap_8 (vi)].mstage[std__intrinsics___wrap_10 (m)] = ms;
-                    if (me > _state.envMaxNext[std__intrinsics___wrap_10 (m)])
+                    _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_16 (m)] = me;
+                    _state.voices[std__intrinsics___wrap_8 (vi)].mstage[std__intrinsics___wrap_16 (m)] = ms;
+                    if (me > _state.envMaxNext[std__intrinsics___wrap_16 (m)])
                     {
-                        _state.envMaxNext[std__intrinsics___wrap_10 (m)] = me;
+                        _state.envMaxNext[std__intrinsics___wrap_16 (m)] = me;
                     }
                     {
                         intrinsics::addTo (m, 1);
@@ -39640,15 +39576,15 @@ namespace performer
                         {
                             break;
                         }
-                        mode = _state.mLfoMode[std__intrinsics___wrap_10 (m)];
+                        mode = _state.mLfoMode[std__intrinsics___wrap_16 (m)];
                         if (mode < 0.5f)
                         {
                             goto _break_0;
                         }
                         oneShot = mode > 1.5f;
-                        age = _state.voices[std__intrinsics___wrap_8 (vi)].lfoAge[std__intrinsics___wrap_10 (m)];
+                        age = _state.voices[std__intrinsics___wrap_8 (vi)].lfoAge[std__intrinsics___wrap_16 (m)];
                         first = age < 0.0f;
-                        np = _state.voices[std__intrinsics___wrap_8 (vi)].lfoPh[std__intrinsics___wrap_10 (m)];
+                        np = _state.voices[std__intrinsics___wrap_8 (vi)].lfoPh[std__intrinsics___wrap_16 (m)];
                         if (first)
                         {
                             age = 0.0f;
@@ -39668,25 +39604,25 @@ namespace performer
                                 else
                                 {
                                     np = (np - 1.0);
-                                    _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_10 (m)] = _Eisenpuls_Synth__nextNoise (_state);
+                                    _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__nextNoise (_state);
                                 }
                             }
                         }
-                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoPh[std__intrinsics___wrap_10 (m)] = np;
-                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoAge[std__intrinsics___wrap_10 (m)] = age;
+                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoPh[std__intrinsics___wrap_16 (m)] = np;
+                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoAge[std__intrinsics___wrap_16 (m)] = age;
                         p = static_cast<float> (np);
                         if (! oneShot)
                         {
-                            p = (p + _state.mLfoStart[std__intrinsics___wrap_10 (m)]);
+                            p = (p + _state.mLfoStart[std__intrinsics___wrap_16 (m)]);
                             if (p >= 1.0f)
                             {
                                 p = (p - 1.0f);
                             }
                         }
-                        val = _Eisenpuls_Synth__lfoWaveVal (_state, m, p, _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_10 (m)], ! oneShot);
+                        val = _Eisenpuls_Synth__lfoWaveVal (_state, m, p, _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_16 (m)], ! oneShot);
                         fade = 1.0f;
-                        dl = _state.mLfoDelay[std__intrinsics___wrap_10 (m)] * 0.001f;
-                        rs = _state.mLfoRise[std__intrinsics___wrap_10 (m)] * 0.001f;
+                        dl = _state.mLfoDelay[std__intrinsics___wrap_16 (m)] * 0.001f;
+                        rs = _state.mLfoRise[std__intrinsics___wrap_16 (m)] * 0.001f;
                         if (age < dl)
                         {
                             fade = 0.0f;
@@ -39699,14 +39635,14 @@ namespace performer
                             }
                         }
                         val = (val * fade);
-                        st = _state.voices[std__intrinsics___wrap_8 (vi)].lfoSm[std__intrinsics___wrap_10 (m)];
+                        st = _state.voices[std__intrinsics___wrap_8 (vi)].lfoSm[std__intrinsics___wrap_16 (m)];
                         if (first)
                         {
                             st = val;
                         }
-                        st = _Eisenpuls_Synth__lfoLag (st, val, _state.mLfoSmooth[std__intrinsics___wrap_10 (m)], dtv);
-                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoSm[std__intrinsics___wrap_10 (m)] = st;
-                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoV[std__intrinsics___wrap_10 (m)] = st;
+                        st = _Eisenpuls_Synth__lfoLag (st, val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
+                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoSm[std__intrinsics___wrap_16 (m)] = st;
+                        _state.voices[std__intrinsics___wrap_8 (vi)].lfoV[std__intrinsics___wrap_16 (m)] = st;
                     }
                     _break_0: {}
                     {
@@ -39731,16 +39667,16 @@ namespace performer
                         {
                             break;
                         }
-                        if (((_state.frqMask & intrinsics::leftShift (int32_t {1}, m)) == int32_t {0}) ? true : (_state.frqRetrig[std__intrinsics___wrap_10 (m)] < 0.5f))
+                        if (((_state.frqMask & intrinsics::leftShift (int32_t {1}, m)) == int32_t {0}) ? true : (_state.frqRetrig[std__intrinsics___wrap_16 (m)] < 0.5f))
                         {
                             goto _break_0;
                         }
                         {
                             t = std__intrinsics___wrap_8 (vi);
-                            t_0 = std__intrinsics___wrap_10 (m);
+                            t_0 = std__intrinsics___wrap_16 (m);
                             _state.voices[t].frqT[t_0] = (_state.voices[t].frqT[t_0] + dt);
                         }
-                        _state.voices[std__intrinsics___wrap_8 (vi)].frqV[std__intrinsics___wrap_10 (m)] = _Eisenpuls_Synth__frqEval (_state, m, _state.voices[std__intrinsics___wrap_8 (vi)].frqT[std__intrinsics___wrap_10 (m)]);
+                        _state.voices[std__intrinsics___wrap_8 (vi)].frqV[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__frqEval (_state, m, _state.voices[std__intrinsics___wrap_8 (vi)].frqT[std__intrinsics___wrap_16 (m)]);
                     }
                     _break_0: {}
                     {
@@ -39752,9 +39688,9 @@ namespace performer
 
         void _Eisenpuls_Synth__computeVoiceMod (_Eisenpuls_Synth_State& _state, int32_t vi) noexcept
         {
-            int32_t  d;
-            bool  mat;
             int32_t  s;
+            bool  mat;
+            int32_t  s_0;
             int32_t  dd;
             int32_t  ss;
             int32_t  t;
@@ -39762,42 +39698,45 @@ namespace performer
             float  _temp_0;
 
             {
-                d = int32_t {0};
+                s = int32_t {0};
                 for (;;)
                 {
-                    if  (! (d < int32_t {264}))
+                    if  (! (s < _state.vmodHi))
                     {
                         break;
                     }
-                    _state.vmod[std__intrinsics___wrap_264 (d)] = 0.0f;
+                    _state.vmod[std__intrinsics___wrap_512 (_state.vmodDirty[std__intrinsics___wrap_32 (s)])] = 0.0f;
                     {
-                        intrinsics::addTo (d, 1);
+                        intrinsics::addTo (s, 1);
                     }
                 }
             }
             mat = false;
             {
-                s = int32_t {0};
+                s_0 = int32_t {0};
                 for (;;)
                 {
                     {
-                        if  (! (s < int32_t {20}))
+                        if  (! (s_0 < _state.mmHi))
                         {
                             break;
                         }
-                        dd = _state.mmDstI[std__intrinsics___wrap_20 (s)];
-                        ss = _state.mmSrcI[std__intrinsics___wrap_20 (s)];
+                        dd = _state.mmDstI[std__intrinsics___wrap_32 (s_0)];
+                        ss = _state.mmSrcI[std__intrinsics___wrap_32 (s_0)];
+                        _state.vmodDirty[std__intrinsics___wrap_32 (s_0)] = int32_t {0};
                         if ((ss >= int32_t {24}) ? (! ((((dd >= int32_t {6}) ? (dd < int32_t {60}) : false) ? (intrinsics::modulo (intrinsics::subtract (dd, int32_t {6}), int32_t {9}) == int32_t {6}) : false) ? true : (dd >= int32_t {180}))) : false)
                         {
                             goto _break_0;
                         }
+                        _state.vmodDirty[std__intrinsics___wrap_32 (s_0)] = int32_t {0};
                         if ((dd > int32_t {0}) ? (ss > int32_t {0}) : false)
                         {
+                            _state.vmodDirty[std__intrinsics___wrap_32 (s_0)] = dd;
                             {
-                                t = std__intrinsics___wrap_264 (dd);
+                                t = std__intrinsics___wrap_512 (dd);
                                 _temp = _state.vmod[t];
                                 _temp_0 = _Eisenpuls_Synth__srcValueVoice (_state, ss, vi);
-                                _state.vmod[t] = (_temp + (_temp_0 * _state.mmAmt[std__intrinsics___wrap_20 (s)]));
+                                _state.vmod[t] = (_temp + (_temp_0 * _state.mmAmt[std__intrinsics___wrap_32 (s_0)]));
                             }
                             if (((dd >= int32_t {60}) ? (dd < int32_t {168}) : false) ? true : (dd >= int32_t {186}))
                             {
@@ -39807,10 +39746,11 @@ namespace performer
                     }
                     _break_0: {}
                     {
-                        intrinsics::addTo (s, 1);
+                        intrinsics::addTo (s_0, 1);
                     }
                 }
             }
+            _state.vmodHi = _state.mmHi;
             _state.vmodMat = mat;
         }
 
@@ -39818,15 +39758,15 @@ namespace performer
         {
             if ((src >= int32_t {1}) ? (src <= int32_t {10}) : false)
             {
-                if (_state.mLfoMode[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))] > 0.5f)
+                if (_state.mLfoMode[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))] > 0.5f)
                 {
-                    return _state.voices[std__intrinsics___wrap_8 (vi)].lfoV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))];
+                    return _state.voices[std__intrinsics___wrap_8 (vi)].lfoV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))];
                 }
-                return _state.mLfoV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {1}))];
+                return _state.mLfoV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {1}))];
             }
             if ((src >= int32_t {11}) ? (src <= int32_t {20}) : false)
             {
-                return _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {11}))];
+                return _state.voices[std__intrinsics___wrap_8 (vi)].menv[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {11}))];
             }
             if (src == int32_t {21})
             {
@@ -39842,9 +39782,17 @@ namespace performer
             }
             if ((src >= int32_t {24}) ? (src <= int32_t {33}) : false)
             {
-                return (_state.frqRetrig[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {24}))] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (vi)].frqV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {24}))] : _state.frqGV[std__intrinsics___wrap_10 (intrinsics::subtract (src, int32_t {24}))];
+                return (_state.frqRetrig[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {24}))] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (vi)].frqV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {24}))] : _state.frqGV[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {24}))];
             }
             return 0.0f;
+        }
+
+        int32_t std__intrinsics___wrap_6 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {6});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {6}) : x;
         }
 
         Vector<float, 2> _Eisenpuls_Synth__wtStep (_Eisenpuls_Synth_State& _state, int32_t o, int32_t vi, float freq, float pos, int32_t fl, float pm, float a1m, float a2m) noexcept
@@ -39864,6 +39812,9 @@ namespace performer
             int32_t  fa;
             int32_t  fb;
             float  ff;
+            int32_t  lvlAll;
+            int32_t  lvLo;
+            int32_t  lvHi;
             int32_t  j;
             int32_t  si;
             double  ph;
@@ -39877,7 +39828,7 @@ namespace performer
             Vector<float, 2>  _temp_1;
 
             sr = static_cast<float> (1.0 * g__frequency);
-            n = _state.uniCnt[std__intrinsics___wrap_6 (o)];
+            n = _state.uniCnt[std__intrinsics___wrap_8 (o)];
             m1 = intrinsics::clamp (static_cast<int32_t> (_Eisenpuls_Synth__opv (_state, o, int32_t {18}) + 0.5f), int32_t {0}, int32_t {8});
             m2 = intrinsics::clamp (static_cast<int32_t> (_Eisenpuls_Synth__opv (_state, o, int32_t {20}) + 0.5f), int32_t {0}, int32_t {8});
             _temp = _Eisenpuls_Synth__opv (_state, o, int32_t {19});
@@ -39886,11 +39837,21 @@ namespace performer
             a2 = intrinsics::clamp (_temp_0 + (a2m * 0.5f), 0.0f, 1.0f);
             sL = 0.0f;
             sR = 0.0f;
-            nFr = intrinsics::max (_state.wtFr[std__intrinsics___wrap_6 (o)], int32_t {1});
+            nFr = intrinsics::max (_state.wtFr[std__intrinsics___wrap_8 (o)], int32_t {1});
             fp = intrinsics::clamp (pos, 0.0f, 1.0f) * static_cast<float> (intrinsics::subtract (nFr, int32_t {1}));
             fa = intrinsics::clamp (static_cast<int32_t> (fp), int32_t {0}, intrinsics::subtract (nFr, int32_t {1}));
             fb = intrinsics::min (intrinsics::add (fa, int32_t {1}), intrinsics::subtract (nFr, int32_t {1}));
             ff = fp - static_cast<float> (fa);
+            lvlAll = int32_t {-1};
+            if (n > int32_t {2})
+            {
+                lvLo = _Eisenpuls_Synth__wtLevel (intrinsics::clamp (freq * 0.971f, 1.0f, sr * 0.45f));
+                lvHi = _Eisenpuls_Synth__wtLevel (intrinsics::clamp (freq * 1.03f, 1.0f, sr * 0.45f));
+                if (lvLo == lvHi)
+                {
+                    lvlAll = lvLo;
+                }
+            }
             {
                 j = int32_t {0};
                 for (;;)
@@ -39900,8 +39861,8 @@ namespace performer
                         break;
                     }
                     si = intrinsics::add (intrinsics::multiply (o, int32_t {7}), j);
-                    ph = _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_42 (si)];
-                    f = intrinsics::clamp (freq * _state.uniRatio[std__intrinsics___wrap_42 (si)], 1.0f, sr * 0.45f);
+                    ph = _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_64 (si)];
+                    f = intrinsics::clamp (freq * _state.uniRatio[std__intrinsics___wrap_64 (si)], 1.0f, sr * 0.45f);
                     rp = static_cast<float> (ph);
                     if (pm != 0.0f)
                     {
@@ -39917,7 +39878,7 @@ namespace performer
                         rp = _Eisenpuls_Synth__wtWarpPhase (m2, a2, rp);
                     }
                     rph = static_cast<double> (intrinsics::clamp (rp, 0.0f, 0.99999f));
-                    y = _Eisenpuls_Synth__wtRead (_state, o, _Eisenpuls_Synth__wtLevel (f), rph, fa, fb, ff);
+                    y = _Eisenpuls_Synth__wtRead (_state, o, (lvlAll >= int32_t {0}) ? lvlAll : _Eisenpuls_Synth__wtLevel (f), rph, fa, fb, ff);
                     if (m1 >= int32_t {7})
                     {
                         y = _Eisenpuls_Synth__wtWarpAmp (m1, a1, y);
@@ -39926,14 +39887,14 @@ namespace performer
                     {
                         y = _Eisenpuls_Synth__wtWarpAmp (m2, a2, y);
                     }
-                    sL = (sL + (y * _state.uniGL[std__intrinsics___wrap_42 (si)]));
-                    sR = (sR + (y * _state.uniGR[std__intrinsics___wrap_42 (si)]));
+                    sL = (sL + (y * _state.uniGL[std__intrinsics___wrap_64 (si)]));
+                    sR = (sR + (y * _state.uniGR[std__intrinsics___wrap_64 (si)]));
                     ph = (ph + (static_cast<double> (f) * (1.0 / (1.0 * g__frequency))));
                     if (ph >= 1.0)
                     {
                         ph = (ph - 1.0);
                     }
-                    _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_42 (si)] = ph;
+                    _state.voices[std__intrinsics___wrap_8 (vi)].wtUPh[std__intrinsics___wrap_64 (si)] = ph;
                     {
                         intrinsics::addTo (j, 1);
                     }
@@ -39942,25 +39903,46 @@ namespace performer
             zi = intrinsics::multiply (o, int32_t {4});
             if ((m1 != int32_t {0}) ? true : (m2 != int32_t {0}))
             {
-                yl = (sL - _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (zi)]) + (0.9995f * _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {1}))]);
-                yr = (sR - _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {2}))]) + (0.9995f * _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {3}))]);
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (zi)] = sL;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {1}))] = yl;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {2}))] = sR;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {3}))] = yr;
+                yl = (sL - _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (zi)]) + (0.9995f * _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {1}))]);
+                yr = (sR - _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {2}))]) + (0.9995f * _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {3}))]);
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (zi)] = sL;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {1}))] = yl;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {2}))] = sR;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {3}))] = yr;
                 sL = yl;
                 sR = yr;
             }
             else
             {
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (zi)] = 0.0f;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {1}))] = 0.0f;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {2}))] = 0.0f;
-                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_24 (intrinsics::add (zi, int32_t {3}))] = 0.0f;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (zi)] = 0.0f;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {1}))] = 0.0f;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {2}))] = 0.0f;
+                _state.voices[std__intrinsics___wrap_8 (vi)].wtDcS[std__intrinsics___wrap_32 (intrinsics::add (zi, int32_t {3}))] = 0.0f;
             }
             _temp_1[int32_t {0}] = sL;
             _temp_1[int32_t {1}] = sR;
             return _temp_1;
+        }
+
+        int32_t _Eisenpuls_Synth__wtLevel (float f) noexcept
+        {
+            float  q;
+            int32_t  k;
+            float  t;
+
+            q = (f * 1780.0f) / static_cast<float> (1.0 * g__frequency);
+            k = int32_t {0};
+            t = 1.0f;
+            for (;;)
+            {
+                if  (! ((t < q) ? (k < int32_t {8}) : false))
+                {
+                    break;
+                }
+                t = (t * 2.0f);
+                k = intrinsics::add (k, int32_t {1});
+            }
+            return k;
         }
 
         float _Eisenpuls_Synth__wtWarpPhase (int32_t mode, float amt, float ph) noexcept
@@ -40047,27 +40029,6 @@ namespace performer
             return p1 + ((0.5f * t) * ((p2 - p0) + (t * (((((2.0f * p0) - (5.0f * p1)) + (4.0f * p2)) - p3) + (t * (((3.0f * (p1 - p2)) + p3) - p0))))));
         }
 
-        int32_t _Eisenpuls_Synth__wtLevel (float f) noexcept
-        {
-            float  q;
-            int32_t  k;
-            float  t;
-
-            q = (f * 1780.0f) / static_cast<float> (1.0 * g__frequency);
-            k = int32_t {0};
-            t = 1.0f;
-            for (;;)
-            {
-                if  (! ((t < q) ? (k < int32_t {8}) : false))
-                {
-                    break;
-                }
-                t = (t * 2.0f);
-                k = intrinsics::add (k, int32_t {1});
-            }
-            return k;
-        }
-
         float _Eisenpuls_Synth__wtWarpAmp (int32_t mode, float amt, float y) noexcept
         {
             float  s;
@@ -40082,14 +40043,6 @@ namespace performer
                 return (y * (1.0f - amt)) + (amt * intrinsics::sin ((y * (1.0f + (4.0f * amt))) * 1.5708f));
             }
             return y;
-        }
-
-        int32_t std__intrinsics___wrap_24 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {24});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {24}) : x;
         }
 
         float _Eisenpuls_Synth__smpStep (_Eisenpuls_Synth_State& _state, int32_t o, int32_t vi, float freq, float curFreq, float pm, float st) noexcept
@@ -40107,11 +40060,11 @@ namespace performer
             double  fl;
 
             sr = static_cast<float> (1.0 * g__frequency);
-            len = _state.smpLen[std__intrinsics___wrap_6 (o)];
+            len = _state.smpLen[std__intrinsics___wrap_8 (o)];
             _temp = _Eisenpuls_Synth__opv (_state, o, int32_t {22});
             _temp_0 = static_cast<int32_t> (_temp * static_cast<float> (len));
             sSt = intrinsics::clamp (_temp_0, int32_t {0}, intrinsics::max (intrinsics::subtract (len, int32_t {1}), int32_t {0}));
-            sp = _state.voices[std__intrinsics___wrap_8 (vi)].synPos[std__intrinsics___wrap_6 (o)];
+            sp = _state.voices[std__intrinsics___wrap_8 (vi)].synPos[std__intrinsics___wrap_8 (o)];
             out = 0.0f;
             rate = 1.0f;
             if (_Eisenpuls_Synth__opv (_state, o, int32_t {7}) > 0.5f)
@@ -40150,7 +40103,7 @@ namespace performer
                     }
                 }
             }
-            _state.voices[std__intrinsics___wrap_8 (vi)].synPos[std__intrinsics___wrap_6 (o)] = sp;
+            _state.voices[std__intrinsics___wrap_8 (vi)].synPos[std__intrinsics___wrap_8 (o)] = sp;
             return out;
         }
 
@@ -40166,7 +40119,7 @@ namespace performer
             i0 = static_cast<int32_t> (pos);
             fr = static_cast<float> (pos - static_cast<double> (i0));
             i1 = intrinsics::add (i0, int32_t {1});
-            len = _state.smpLen[std__intrinsics___wrap_6 (o)];
+            len = _state.smpLen[std__intrinsics___wrap_8 (o)];
             if (i1 >= len)
             {
                 i1 = i0;
@@ -40658,6 +40611,14 @@ namespace performer
             return n & int32_t {1};
         }
 
+        int32_t std__intrinsics___wrap_12 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {12});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {12}) : x;
+        }
+
         void _Eisenpuls_Synth__plInit_3 (_Eisenpuls_Synth_State& _state, int32_t inst) noexcept
         {
             _Eisenpuls_Synth__plSixInit (_state, inst);
@@ -40775,11 +40736,6 @@ namespace performer
             f = ((f < 0.158f) ? f : 0.158f);
             s.f = (6.2831855f * f);
             s.damp = (1.0f / resonance);
-        }
-
-        int32_t std__intrinsics___wrap_1024 (int32_t n) noexcept
-        {
-            return n & int32_t {1023};
         }
 
         void _Eisenpuls_Synth__plG3ChordsSort (_Eisenpuls_Synth_PlG3Chords& c) noexcept
@@ -41060,6 +41016,14 @@ namespace performer
             }
         }
 
+        int32_t std__intrinsics___wrap_36 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {36});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {36}) : x;
+        }
+
         int32_t std__intrinsics___wrap_3 (int32_t n) noexcept
         {
             int32_t  x;
@@ -41268,6 +41232,14 @@ namespace performer
                 v.seps = 0.0f;
                 v.samp = 0.0f;
             }
+        }
+
+        int32_t std__intrinsics___wrap_384 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {384});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {384}) : x;
         }
 
         void _Eisenpuls_Synth__plInit_17 (_Eisenpuls_Synth_State& _state, int32_t inst) noexcept
@@ -41515,6 +41487,14 @@ namespace performer
                     }
                 }
             }
+        }
+
+        int32_t std__intrinsics___wrap_24 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {24});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {24}) : x;
         }
 
         void _Eisenpuls_Synth__plInit_21 (_Eisenpuls_Synth_State& _state, int32_t inst) noexcept
@@ -43132,11 +43112,6 @@ namespace performer
             return _Eisenpuls_Synth__plSemitonesToRatioSafe (base) * detune;
         }
 
-        int32_t std__intrinsics___wrap_32 (int32_t n) noexcept
-        {
-            return n & int32_t {31};
-        }
-
         float _Eisenpuls_Synth__plSemitonesToRatioSafe (float semitones) noexcept
         {
             float  scale;
@@ -43260,6 +43235,14 @@ namespace performer
             }
             depth = static_cast<float> ((x > 0.0f) ? rd : ld);
             return (t * depth) * 0.02677f;
+        }
+
+        int32_t std__intrinsics___wrap_192 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {192});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {192}) : x;
         }
 
         float _Eisenpuls_Synth__plFmPow2Fast2 (float x) noexcept
@@ -46809,6 +46792,14 @@ namespace performer
             return g_lpcFrames[std__intrinsics___wrap_30144 (intrinsics::add (intrinsics::multiply (intrinsics::add (g_lpcBankBase[std__intrinsics___wrap_5 (bank)], idx), int32_t {12}), k))];
         }
 
+        int32_t std__intrinsics___wrap_180 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {180});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {180}) : x;
+        }
+
         int32_t std__intrinsics___wrap_30144 (int32_t n) noexcept
         {
             int32_t  x;
@@ -49527,7 +49518,7 @@ namespace performer
             float  a;
             float  c;
 
-            fr = _state.tblFr[std__intrinsics___wrap_12 (b)];
+            fr = _state.tblFr[std__intrinsics___wrap_16 (b)];
             fp = intrinsics::clamp (pos, 0.0f, 1.0f) * static_cast<float> (intrinsics::subtract (fr, int32_t {1}));
             f0 = static_cast<int32_t> (fp);
             f1 = intrinsics::min (intrinsics::add (f0, int32_t {1}), intrinsics::subtract (fr, int32_t {1}));
@@ -49628,13 +49619,13 @@ namespace performer
                     a1 = 1.0f / (1.0f + (g * (g + k)));
                     a2 = g * a1;
                     a3 = g * a2;
-                    s1 = _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_384 (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})))];
-                    s2 = _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})), int32_t {1}))];
+                    s1 = _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_512 (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})))];
+                    s2 = _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})), int32_t {1}))];
                     v3 = x - s2;
                     v1 = (a1 * s1) + (a2 * v3);
                     v2 = (s2 + (a2 * s1)) + (a3 * v3);
-                    _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_384 (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})))] = ((2.0f * v1) - s1);
-                    _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_384 (intrinsics::add (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})), int32_t {1}))] = ((2.0f * v2) - s2);
+                    _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_512 (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})))] = ((2.0f * v1) - s1);
+                    _state.voices[std__intrinsics___wrap_8 (vi)].wfs[std__intrinsics___wrap_512 (intrinsics::add (intrinsics::add (sb, intrinsics::multiply (b, int32_t {2})), int32_t {1}))] = ((2.0f * v2) - s2);
                     acc = (acc + ((gn * k) * v1));
                     {
                         intrinsics::addTo (b, 1);
@@ -49832,18 +49823,18 @@ namespace performer
                 {
                     kr = (res * 3.6f);
                 }
-                y4p = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {4}))];
+                y4p = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {4}))];
                 u = _Eisenpuls_Synth__softClip (s - (kr * y4p));
                 y1 = _Eisenpuls_Synth__onePole (_state, vi, b, u, g);
                 y2 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {1}), y1, g);
                 y3 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {2}), y2, g);
                 if (ft == int32_t {18})
                 {
-                    _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {4}))] = y3;
+                    _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {4}))] = y3;
                     return y3 * (1.0f + res);
                 }
                 y4 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {3}), y3, g);
-                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {4}))] = y4;
+                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {4}))] = y4;
                 if (ft == int32_t {17})
                 {
                     return (y3 + y4) * 0.5f;
@@ -49877,13 +49868,13 @@ namespace performer
             if ((ft >= int32_t {24}) ? (ft <= int32_t {27}) : false)
             {
                 kr_0 = res * 3.9f;
-                y4p_0 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {4}))];
+                y4p_0 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {4}))];
                 u_0 = _Eisenpuls_Synth__softClip ((s * 1.2f) - (kr_0 * y4p_0));
                 y1_0 = _Eisenpuls_Synth__onePole (_state, vi, b, u_0, g);
                 y2_0 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {1}), y1_0, g);
                 y3_0 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {2}), y2_0, g);
                 y4_0 = _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {3}), y3_0, g);
-                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {4}))] = y4_0;
+                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {4}))] = y4_0;
                 mk = 1.1f * (1.0f + (0.4f * kr_0));
                 if (ft == int32_t {24})
                 {
@@ -49922,7 +49913,7 @@ namespace performer
             if (ft == int32_t {22})
             {
                 fbk = res * 0.85f;
-                a = s + (fbk * _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {8}))]);
+                a = s + (fbk * _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {8}))]);
                 _temp_25 = 2.0f * _Eisenpuls_Synth__onePole (_state, vi, b, a, g);
                 a = (_temp_25 - a);
                 _temp_26 = 2.0f * _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {1}), a, g);
@@ -49931,7 +49922,7 @@ namespace performer
                 a = (_temp_27 - a);
                 _temp_28 = 2.0f * _Eisenpuls_Synth__onePole (_state, vi, intrinsics::add (b, int32_t {3}), a, g);
                 a = (_temp_28 - a);
-                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (b, int32_t {8}))] = a;
+                _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (b, int32_t {8}))] = a;
                 return 0.5f * (s + a);
             }
             p = intrinsics::clamp (intrinsics::log (intrinsics::max (fc, 100.0f) / 100.0f) / 3.4011974f, 0.0f, 1.0f) * 4.0f;
@@ -49965,13 +49956,13 @@ namespace performer
             a1 = 1.0f / (1.0f + (g * (g + k)));
             a2 = g * a1;
             a3 = g * a2;
-            s1 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (idx)];
-            s2 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (idx, int32_t {1}))];
+            s1 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (idx)];
+            s2 = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (idx, int32_t {1}))];
             v3 = x - s2;
             v1 = (a1 * s1) + (a2 * v3);
             v2 = (s2 + (a2 * s1)) + (a3 * v3);
-            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (idx)] = ((2.0f * v1) - s1);
-            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (intrinsics::add (idx, int32_t {1}))] = ((2.0f * v2) - s2);
+            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (idx)] = ((2.0f * v1) - s1);
+            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (intrinsics::add (idx, int32_t {1}))] = ((2.0f * v2) - s2);
             if (mode == int32_t {1})
             {
                 return v1 * k;
@@ -49999,10 +49990,10 @@ namespace performer
             float  lp;
 
             gg = g / (1.0f + g);
-            s = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (idx)];
+            s = _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (idx)];
             v = (x - s) * gg;
             lp = v + s;
-            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_192 (idx)] = (lp + v);
+            _state.voices[std__intrinsics___wrap_8 (vi)].fx[std__intrinsics___wrap_256 (idx)] = (lp + v);
             return lp;
         }
 
@@ -50091,7 +50082,7 @@ namespace performer
                     {
                         break;
                     }
-                    v = _Eisenpuls_Synth__fxRunSlot (_state, intrinsics::add (intrinsics::multiply (rk, int32_t {10}), _state.fxSeq[std__intrinsics___wrap_30 (intrinsics::add (intrinsics::multiply (rk, int32_t {10}), k))]), v);
+                    v = _Eisenpuls_Synth__fxRunSlot (_state, intrinsics::add (intrinsics::multiply (rk, int32_t {10}), _state.fxSeq[std__intrinsics___wrap_32 (intrinsics::add (intrinsics::multiply (rk, int32_t {10}), k))]), v);
                     {
                         intrinsics::addTo (k, 1);
                     }
@@ -50108,15 +50099,15 @@ namespace performer
             Vector<float, 2>  _temp;
             float  _temp_0;
 
-            ty = _state.fxType[std__intrinsics___wrap_30 (s)];
-            if ((ty == int32_t {0}) ? true : (_state.fxOn[std__intrinsics___wrap_30 (s)] < 0.5f))
+            ty = _state.fxType[std__intrinsics___wrap_32 (s)];
+            if ((ty == int32_t {0}) ? true : (_state.fxOn[std__intrinsics___wrap_32 (s)] < 0.5f))
             {
                 return x;
             }
-            if (_state.fxDirty[std__intrinsics___wrap_30 (s)])
+            if (_state.fxDirty[std__intrinsics___wrap_32 (s)])
             {
                 _Eisenpuls_Synth__fxDerive (_state, s);
-                _state.fxDirty[std__intrinsics___wrap_30 (s)] = false;
+                _state.fxDirty[std__intrinsics___wrap_32 (s)] = false;
             }
             y = x;
             if (ty == int32_t {1})
@@ -50193,7 +50184,7 @@ namespace performer
                     }
                 }
             }
-            mix = intrinsics::clamp (_state.fxMix[std__intrinsics___wrap_30 (s)], 0.0f, 1.0f);
+            mix = intrinsics::clamp (_state.fxMix[std__intrinsics___wrap_32 (s)], 0.0f, 1.0f);
             _temp_0 = mix;
             _temp[int32_t {0}] = _temp_0;
             _temp[int32_t {1}] = _temp_0;
@@ -50216,95 +50207,95 @@ namespace performer
             float  fc;
             float  ratio;
 
-            ty = _state.fxType[std__intrinsics___wrap_30 (s)];
+            ty = _state.fxType[std__intrinsics___wrap_32 (s)];
             db = intrinsics::multiply (s, int32_t {16});
             pb = intrinsics::multiply (s, int32_t {6});
             sr = static_cast<float> (1.0 * g__frequency);
             dt = static_cast<float> (1.0 / (1.0 * g__frequency));
-            p1 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_180 (pb)], 0.0f, 1.0f);
-            p2 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_180 (intrinsics::add (pb, int32_t {1}))], 0.0f, 1.0f);
-            p3 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_180 (intrinsics::add (pb, int32_t {2}))], 0.0f, 1.0f);
-            p4 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_180 (intrinsics::add (pb, int32_t {3}))], 0.0f, 1.0f);
-            p5 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_180 (intrinsics::add (pb, int32_t {4}))], 0.0f, 1.0f);
+            p1 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_256 (pb)], 0.0f, 1.0f);
+            p2 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_256 (intrinsics::add (pb, int32_t {1}))], 0.0f, 1.0f);
+            p3 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_256 (intrinsics::add (pb, int32_t {2}))], 0.0f, 1.0f);
+            p4 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_256 (intrinsics::add (pb, int32_t {3}))], 0.0f, 1.0f);
+            p5 = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_256 (intrinsics::add (pb, int32_t {4}))], 0.0f, 1.0f);
             if (ty == int32_t {1})
             {
-                _state.fxD[std__intrinsics___wrap_480 (db)] = p1;
-                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = intrinsics::clamp ((6.2831855f * _Eisenpuls_Synth__fxExpMap (p2, 500.0f, 20000.0f)) * dt, 0.0f, 1.0f);
-                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = (p3 * 2.0f);
+                _state.fxD[std__intrinsics___wrap_512 (db)] = p1;
+                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = intrinsics::clamp ((6.2831855f * _Eisenpuls_Synth__fxExpMap (p2, 500.0f, 20000.0f)) * dt, 0.0f, 1.0f);
+                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = (p3 * 2.0f);
             }
             else
             {
                 if (ty == int32_t {2})
                 {
-                    _state.fxD[std__intrinsics___wrap_480 (db)] = (16.0f - (12.0f * p1));
-                    _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = (1.0f + intrinsics::rint (p2 * 31.0f));
-                    _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = intrinsics::pow (2.0f, _state.fxD[std__intrinsics___wrap_480 (db)] - 1.0f);
+                    _state.fxD[std__intrinsics___wrap_512 (db)] = (16.0f - (12.0f * p1));
+                    _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = (1.0f + intrinsics::rint (p2 * 31.0f));
+                    _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = intrinsics::pow (2.0f, _state.fxD[std__intrinsics___wrap_512 (db)] - 1.0f);
                 }
                 else
                 {
                     if (ty == int32_t {3})
                     {
-                        _state.fxD[std__intrinsics___wrap_480 (db)] = intrinsics::clamp ((_Eisenpuls_Synth__fxExpMap (p1, 10.0f, 1000.0f) * 0.001f) * sr, 2.0f, 98000.0f);
-                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = (0.95f * p2);
+                        _state.fxD[std__intrinsics___wrap_512 (db)] = intrinsics::clamp ((_Eisenpuls_Synth__fxExpMap (p1, 10.0f, 1000.0f) * 0.001f) * sr, 2.0f, 98000.0f);
+                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = (0.95f * p2);
                         dh = _Eisenpuls_Synth__fxExpMap (p3, 500.0f, 18000.0f);
-                        if (_state.fxMode[std__intrinsics___wrap_30 (s)] == int32_t {1})
+                        if (_state.fxMode[std__intrinsics___wrap_32 (s)] == int32_t {1})
                         {
                             dh = intrinsics::min (dh, 6500.0f);
                         }
-                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = intrinsics::clamp ((6.2831855f * dh) * dt, 0.0f, 1.0f);
-                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))] = p4;
+                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = intrinsics::clamp ((6.2831855f * dh) * dt, 0.0f, 1.0f);
+                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))] = p4;
                     }
                     else
                     {
                         if (ty == int32_t {4})
                         {
-                            _state.fxD[std__intrinsics___wrap_480 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 5.0f);
-                            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = p2;
-                            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = (0.9f * p3);
+                            _state.fxD[std__intrinsics___wrap_512 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 5.0f);
+                            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = p2;
+                            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = (0.9f * p3);
                         }
                         else
                         {
                             if (ty == int32_t {5})
                             {
-                                _state.fxD[std__intrinsics___wrap_480 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 5.0f);
-                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = p2;
-                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = (0.95f * p3);
+                                _state.fxD[std__intrinsics___wrap_512 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 5.0f);
+                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = p2;
+                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = (0.95f * p3);
                             }
                             else
                             {
                                 if (ty == int32_t {6})
                                 {
-                                    _state.fxD[std__intrinsics___wrap_480 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 8.0f);
-                                    _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = p2;
-                                    _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = (0.9f * p3);
+                                    _state.fxD[std__intrinsics___wrap_512 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.05f, 8.0f);
+                                    _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = p2;
+                                    _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = (0.9f * p3);
                                 }
                                 else
                                 {
                                     if (ty == int32_t {7})
                                     {
-                                        _state.fxD[std__intrinsics___wrap_480 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.1f, 20.0f);
-                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = p2;
-                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = p3;
+                                        _state.fxD[std__intrinsics___wrap_512 (db)] = _Eisenpuls_Synth__fxExpMap (p1, 0.1f, 20.0f);
+                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = p2;
+                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = p3;
                                     }
                                     else
                                     {
                                         if (ty == int32_t {8})
                                         {
-                                            _state.fxD[std__intrinsics___wrap_480 (db)] = (0.7f + (0.28f * p1));
-                                            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = (0.2f + (0.7f * p2));
-                                            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = intrinsics::clamp ((p3 * 0.1f) * sr, 0.0f, 8000.0f);
-                                            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))] = p4;
+                                            _state.fxD[std__intrinsics___wrap_512 (db)] = (0.7f + (0.28f * p1));
+                                            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = (0.2f + (0.7f * p2));
+                                            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = intrinsics::clamp ((p3 * 0.1f) * sr, 0.0f, 8000.0f);
+                                            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))] = p4;
                                         }
                                         else
                                         {
                                             if (ty == int32_t {9})
                                             {
                                                 fc = intrinsics::clamp (_Eisenpuls_Synth__fxExpMap (p1, 20.0f, 20000.0f), 20.0f, sr * 0.45f);
-                                                _state.fxD[std__intrinsics___wrap_480 (db)] = static_cast<float> (intrinsics::tan ((static_cast<double> (fc) * 3.141592653589793) * (1.0 / (1.0 * g__frequency))));
-                                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = (2.0f - (1.96f * p2));
-                                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = p2;
-                                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))] = fc;
-                                                _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {4}))] = (1.0f + (8.0f * p3));
+                                                _state.fxD[std__intrinsics___wrap_512 (db)] = static_cast<float> (intrinsics::tan ((static_cast<double> (fc) * 3.141592653589793) * (1.0 / (1.0 * g__frequency))));
+                                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = (2.0f - (1.96f * p2));
+                                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = p2;
+                                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))] = fc;
+                                                _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {4}))] = (1.0f + (8.0f * p3));
                                             }
                                             else
                                             {
@@ -50319,11 +50310,11 @@ namespace performer
                                                     if (ty == int32_t {11})
                                                     {
                                                         ratio = 1.0f + ((19.0f * p2) * p2);
-                                                        _state.fxD[std__intrinsics___wrap_480 (db)] = intrinsics::pow (10.0f, (-60.0f + (60.0f * p1)) / 20.0f);
-                                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))] = ((1.0f / ratio) - 1.0f);
-                                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] = intrinsics::exp (-1.0f / ((sr * 0.001f) * _Eisenpuls_Synth__fxExpMap (p3, 0.1f, 100.0f)));
-                                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))] = intrinsics::exp (-1.0f / ((sr * 0.001f) * _Eisenpuls_Synth__fxExpMap (p4, 10.0f, 1000.0f)));
-                                                        _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {4}))] = intrinsics::pow (10.0f, (24.0f * p5) / 20.0f);
+                                                        _state.fxD[std__intrinsics___wrap_512 (db)] = intrinsics::pow (10.0f, (-60.0f + (60.0f * p1)) / 20.0f);
+                                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))] = ((1.0f / ratio) - 1.0f);
+                                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] = intrinsics::exp (-1.0f / ((sr * 0.001f) * _Eisenpuls_Synth__fxExpMap (p3, 0.1f, 100.0f)));
+                                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))] = intrinsics::exp (-1.0f / ((sr * 0.001f) * _Eisenpuls_Synth__fxExpMap (p4, 10.0f, 1000.0f)));
+                                                        _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {4}))] = intrinsics::pow (10.0f, (24.0f * p5) / 20.0f);
                                                     }
                                                 }
                                             }
@@ -50335,14 +50326,6 @@ namespace performer
                     }
                 }
             }
-        }
-
-        int32_t std__intrinsics___wrap_480 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {480});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {480}) : x;
         }
 
         float _Eisenpuls_Synth__fxExpMap (float n, float lo, float hi) noexcept
@@ -50421,11 +50404,11 @@ namespace performer
                     }
                 }
             }
-            _state.fxD[std__intrinsics___wrap_480 (o)] = cb0;
-            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (o, int32_t {1}))] = cb1;
-            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (o, int32_t {2}))] = cb2;
-            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (o, int32_t {3}))] = ca1;
-            _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (o, int32_t {4}))] = ca2;
+            _state.fxD[std__intrinsics___wrap_512 (o)] = cb0;
+            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (o, int32_t {1}))] = cb1;
+            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (o, int32_t {2}))] = cb2;
+            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (o, int32_t {3}))] = ca1;
+            _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (o, int32_t {4}))] = ca2;
         }
 
         Vector<float, 2> _Eisenpuls_Synth__fxDist (_Eisenpuls_Synth_State& _state, int32_t s, Vector<float, 2> x) noexcept
@@ -50444,16 +50427,16 @@ namespace performer
 
             fb = intrinsics::multiply (s, int32_t {40});
             db = intrinsics::multiply (s, int32_t {16});
-            al = _state.fxMode[std__intrinsics___wrap_30 (s)];
-            d = _state.fxD[std__intrinsics___wrap_480 (db)];
-            a = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
-            g = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))];
+            al = _state.fxMode[std__intrinsics___wrap_32 (s)];
+            d = _state.fxD[std__intrinsics___wrap_512 (db)];
+            a = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
+            g = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))];
             yl = _Eisenpuls_Synth__shapeSigAlg (x[int32_t {0}] * 0.5f, d, al) * 2.0f;
             yr = _Eisenpuls_Synth__shapeSigAlg (x[int32_t {1}] * 0.5f, d, al) * 2.0f;
-            tl = _state.fxF[std__intrinsics___wrap_1200 (fb)] + (a * (yl - _state.fxF[std__intrinsics___wrap_1200 (fb)]));
-            tr = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] + (a * (yr - _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))]));
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = tl;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = tr;
+            tl = _state.fxF[std__intrinsics___wrap_2048 (fb)] + (a * (yl - _state.fxF[std__intrinsics___wrap_2048 (fb)]));
+            tr = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] + (a * (yr - _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))]));
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = tl;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = tr;
             _temp[int32_t {0}] = (tl * g);
             _temp[int32_t {1}] = (tr * g);
             return _temp;
@@ -50473,19 +50456,19 @@ namespace performer
             fb = intrinsics::multiply (s, int32_t {40});
             ib = intrinsics::multiply (s, int32_t {24});
             db = intrinsics::multiply (s, int32_t {16});
-            cnt = intrinsics::add (_state.fxI[std__intrinsics___wrap_720 (ib)], int32_t {1});
-            if (cnt >= static_cast<int32_t> (_state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))]))
+            cnt = intrinsics::add (_state.fxI[std__intrinsics___wrap_1024 (ib)], int32_t {1});
+            if (cnt >= static_cast<int32_t> (_state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))]))
             {
                 cnt = int32_t {0};
-                _state.fxF[std__intrinsics___wrap_1200 (fb)] = x[int32_t {0}];
-                _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = x[int32_t {1}];
+                _state.fxF[std__intrinsics___wrap_2048 (fb)] = x[int32_t {0}];
+                _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = x[int32_t {1}];
             }
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = cnt;
-            yl = _state.fxF[std__intrinsics___wrap_1200 (fb)];
-            yr = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))];
-            if (_state.fxD[std__intrinsics___wrap_480 (db)] < 15.5f)
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = cnt;
+            yl = _state.fxF[std__intrinsics___wrap_2048 (fb)];
+            yr = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))];
+            if (_state.fxD[std__intrinsics___wrap_512 (db)] < 15.5f)
             {
-                lv = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))];
+                lv = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))];
                 yl = (intrinsics::rint (yl * lv) / lv);
                 yr = (intrinsics::rint (yr * lv) / lv);
             }
@@ -50538,21 +50521,21 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             ab = intrinsics::multiply (s, int32_t {0x30000});
             sr = static_cast<float> (1.0 * g__frequency);
-            dty = _state.fxMode[std__intrinsics___wrap_30 (s)];
-            target = _state.fxD[std__intrinsics___wrap_480 (db)];
-            cur = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {2}))];
-            if (_state.fxI[std__intrinsics___wrap_720 (intrinsics::add (ib, int32_t {1}))] == int32_t {0})
+            dty = _state.fxMode[std__intrinsics___wrap_32 (s)];
+            target = _state.fxD[std__intrinsics___wrap_512 (db)];
+            cur = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {2}))];
+            if (_state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (ib, int32_t {1}))] == int32_t {0})
             {
                 cur = target;
-                _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (ib, int32_t {1}))] = int32_t {1};
+                _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (ib, int32_t {1}))] = int32_t {1};
             }
             cur = (cur + ((target - cur) * 0.0005f));
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {2}))] = cur;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {2}))] = cur;
             tapeMod = 0.0f;
             if (dty == int32_t {1})
             {
-                t1 = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (0.55 * (1.0 / (1.0 * g__frequency)));
-                t2 = _state.fxPh[std__intrinsics___wrap_120 (intrinsics::add (pb, int32_t {1}))] + (6.3 * (1.0 / (1.0 * g__frequency)));
+                t1 = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (0.55 * (1.0 / (1.0 * g__frequency)));
+                t2 = _state.fxPh[std__intrinsics___wrap_128 (intrinsics::add (pb, int32_t {1}))] + (6.3 * (1.0 / (1.0 * g__frequency)));
                 if (t1 >= 1.0)
                 {
                     t1 = (t1 - 1.0);
@@ -50561,11 +50544,11 @@ namespace performer
                 {
                     t2 = (t2 - 1.0);
                 }
-                _state.fxPh[std__intrinsics___wrap_120 (pb)] = t1;
-                _state.fxPh[std__intrinsics___wrap_120 (intrinsics::add (pb, int32_t {1}))] = t2;
+                _state.fxPh[std__intrinsics___wrap_128 (pb)] = t1;
+                _state.fxPh[std__intrinsics___wrap_128 (intrinsics::add (pb, int32_t {1}))] = t2;
                 tapeMod = (((0.0004f * intrinsics::sin (6.2831855f * static_cast<float> (t1))) + (0.00008f * intrinsics::sin (6.2831855f * static_cast<float> (t2)))) * sr);
             }
-            wp = _state.fxI[std__intrinsics___wrap_720 (ib)];
+            wp = _state.fxI[std__intrinsics___wrap_1024 (ib)];
             rpos = (static_cast<float> (wp) - cur) - tapeMod;
             if (rpos < 0.0f)
             {
@@ -50580,12 +50563,12 @@ namespace performer
             fr = rpos - static_cast<float> (i0);
             dl = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, i0))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, i1))] * fr);
             dr = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {0x18000}), i0))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {0x18000}), i1))] * fr);
-            dampA = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))];
-            sL = _state.fxF[std__intrinsics___wrap_1200 (fb)] + (dampA * (dl - _state.fxF[std__intrinsics___wrap_1200 (fb)]));
-            sR = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] + (dampA * (dr - _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))]));
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = sL;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = sR;
-            ping = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))];
+            dampA = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))];
+            sL = _state.fxF[std__intrinsics___wrap_2048 (fb)] + (dampA * (dl - _state.fxF[std__intrinsics___wrap_2048 (fb)]));
+            sR = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] + (dampA * (dr - _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))]));
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = sL;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = sR;
+            ping = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))];
             fbSameL = (sL * (1.0f - ping)) + (sR * ping);
             fbSameR = (sR * (1.0f - ping)) + (sL * ping);
             fbSendL = fbSameL;
@@ -50595,7 +50578,7 @@ namespace performer
                 fbSendL = (_Eisenpuls_Synth__softClip (fbSameL * 1.6f) * 0.625f);
                 fbSendR = (_Eisenpuls_Synth__softClip (fbSameR * 1.6f) * 0.625f);
             }
-            fbk = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
+            fbk = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
             _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, wp))] = (x[int32_t {0}] + (fbSendL * fbk));
             _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {0x18000}), wp))] = (x[int32_t {1}] + (fbSendR * fbk));
             dl2 = 0.0f;
@@ -50622,7 +50605,7 @@ namespace performer
             {
                 wp = int32_t {0};
             }
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = wp;
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = wp;
             _temp[int32_t {0}] = ((x[int32_t {0}] + dl) + dl2);
             _temp[int32_t {1}] = ((x[int32_t {1}] + dr) + dr2);
             return _temp;
@@ -50667,13 +50650,13 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             ab = intrinsics::multiply (s, int32_t {0x30000});
             sr = static_cast<float> (1.0 * g__frequency);
-            mode = _state.fxMode[std__intrinsics___wrap_30 (s)];
-            ph = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_480 (db)]) * (1.0 / (1.0 * g__frequency)));
+            mode = _state.fxMode[std__intrinsics___wrap_32 (s)];
+            ph = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_512 (db)]) * (1.0 / (1.0 * g__frequency)));
             if (ph >= 1.0)
             {
                 ph = (ph - 1.0);
             }
-            _state.fxPh[std__intrinsics___wrap_120 (pb)] = ph;
+            _state.fxPh[std__intrinsics___wrap_128 (pb)] = ph;
             chPhL = static_cast<float> (ph);
             chPhR = chPhL + 0.25f;
             if (chPhR >= 1.0f)
@@ -50694,12 +50677,12 @@ namespace performer
                 chBase = 0.007f;
                 chDep = 0.0045f;
             }
-            depth = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
+            depth = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
             chDlyL = (chBase + ((chDep * depth) * chModL)) * sr;
             chDlyR = (chBase + ((chDep * depth) * chModR)) * sr;
-            pos = _state.fxI[std__intrinsics___wrap_720 (ib)];
-            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, pos))] = (x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_1200 (fb)] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]));
-            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {8192}), pos))] = (x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]));
+            pos = _state.fxI[std__intrinsics___wrap_1024 (ib)];
+            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, pos))] = (x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_2048 (fb)] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]));
+            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {8192}), pos))] = (x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]));
             rdL = static_cast<float> (pos) - chDlyL;
             if (rdL < 0.0f)
             {
@@ -50726,14 +50709,14 @@ namespace performer
             frR = rdR - static_cast<float> (r0);
             wetL = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, l0))] * (1.0f - frL)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, l1))] * frL);
             wetR = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {8192}), r0))] * (1.0f - frR)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {8192}), r1))] * frR);
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = wetL;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = wetR;
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = wetL;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = wetR;
             pos = intrinsics::add (pos, int32_t {1});
             if (pos >= int32_t {8192})
             {
                 pos = int32_t {0};
             }
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = pos;
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = pos;
             if (mode == int32_t {2})
             {
                 _temp[int32_t {0}] = wetL;
@@ -50771,17 +50754,17 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             ab = intrinsics::multiply (s, int32_t {0x30000});
             sr = static_cast<float> (1.0 * g__frequency);
-            ph = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_480 (db)]) * (1.0 / (1.0 * g__frequency)));
+            ph = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_512 (db)]) * (1.0 / (1.0 * g__frequency)));
             if (ph >= 1.0)
             {
                 ph = (ph - 1.0);
             }
-            _state.fxPh[std__intrinsics___wrap_120 (pb)] = ph;
+            _state.fxPh[std__intrinsics___wrap_128 (pb)] = ph;
             flMod = 0.5f + (0.5f * intrinsics::sin (6.2831855f * static_cast<float> (ph)));
-            flDly = intrinsics::clamp ((0.0008f + ((0.0042f * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))]) * flMod)) * sr, 2.0f, 4000.0f);
-            pos = _state.fxI[std__intrinsics___wrap_720 (ib)];
-            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, pos))] = (x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_1200 (fb)] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]));
-            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {4096}), pos))] = (x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]));
+            flDly = intrinsics::clamp ((0.0008f + ((0.0042f * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))]) * flMod)) * sr, 2.0f, 4000.0f);
+            pos = _state.fxI[std__intrinsics___wrap_1024 (ib)];
+            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, pos))] = (x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_2048 (fb)] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]));
+            _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {4096}), pos))] = (x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]));
             rd = static_cast<float> (pos) - flDly;
             if (rd < 0.0f)
             {
@@ -50796,14 +50779,14 @@ namespace performer
             fr = rd - static_cast<float> (f0);
             wetL = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, f0))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (ab, f1))] * fr);
             wetR = (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {4096}), f0))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {4096}), f1))] * fr);
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = wetL;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = wetR;
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = wetL;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = wetR;
             pos = intrinsics::add (pos, int32_t {1});
             if (pos >= int32_t {4096})
             {
                 pos = int32_t {0};
             }
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = pos;
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = pos;
             _temp[int32_t {0}] = ((x[int32_t {0}] * 0.5f) + (wetL * 0.6f));
             _temp[int32_t {1}] = ((x[int32_t {1}] * 0.5f) + (wetR * 0.6f));
             return _temp;
@@ -50832,19 +50815,19 @@ namespace performer
             pb = intrinsics::multiply (s, int32_t {4});
             db = intrinsics::multiply (s, int32_t {16});
             sr = static_cast<float> (1.0 * g__frequency);
-            ph = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_480 (db)]) * (1.0 / (1.0 * g__frequency)));
+            ph = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_512 (db)]) * (1.0 / (1.0 * g__frequency)));
             if (ph >= 1.0)
             {
                 ph = (ph - 1.0);
             }
-            _state.fxPh[std__intrinsics___wrap_120 (pb)] = ph;
+            _state.fxPh[std__intrinsics___wrap_128 (pb)] = ph;
             phMod = 0.5f + (0.5f * intrinsics::sin (6.2831855f * static_cast<float> (ph)));
-            phFreq = intrinsics::clamp (200.0f * intrinsics::pow (2.0f, (phMod * 4.0f) * (0.3f + (0.7f * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))]))), 20.0f, sr * 0.45f);
+            phFreq = intrinsics::clamp (200.0f * intrinsics::pow (2.0f, (phMod * 4.0f) * (0.3f + (0.7f * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))]))), 20.0f, sr * 0.45f);
             phTan = static_cast<float> (intrinsics::tan ((static_cast<double> (phFreq) * 3.141592653589793) * (1.0 / (1.0 * g__frequency))));
             phCoef = (1.0f - phTan) / (1.0f + phTan);
-            xL = x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_1200 (fb)] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]);
-            xR = x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]);
-            stages = intrinsics::multiply (int32_t {2}, intrinsics::add (_state.fxMode[std__intrinsics___wrap_30 (s)], int32_t {1}));
+            xL = x[int32_t {0}] + (_state.fxF[std__intrinsics___wrap_2048 (fb)] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]);
+            xR = x[int32_t {1}] + (_state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]);
+            stages = intrinsics::multiply (int32_t {2}, intrinsics::add (_state.fxMode[std__intrinsics___wrap_32 (s)], int32_t {1}));
             {
                 ps = int32_t {0};
                 for (;;)
@@ -50853,19 +50836,19 @@ namespace performer
                     {
                         break;
                     }
-                    yL = (phCoef * xL) + _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {2}), ps))];
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {2}), ps))] = (xL - (phCoef * yL));
+                    yL = (phCoef * xL) + _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {2}), ps))];
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {2}), ps))] = (xL - (phCoef * yL));
                     xL = yL;
-                    yR = (phCoef * xR) + _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {10}), ps))];
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {10}), ps))] = (xR - (phCoef * yR));
+                    yR = (phCoef * xR) + _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {10}), ps))];
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {10}), ps))] = (xR - (phCoef * yR));
                     xR = yR;
                     {
                         intrinsics::addTo (ps, 1);
                     }
                 }
             }
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = intrinsics::clamp (xL, -4.0f, 4.0f);
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = intrinsics::clamp (xR, -4.0f, 4.0f);
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = intrinsics::clamp (xL, -4.0f, 4.0f);
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = intrinsics::clamp (xR, -4.0f, 4.0f);
             _temp[int32_t {0}] = ((x[int32_t {0}] * 0.5f) + (xL * 0.5f));
             _temp[int32_t {1}] = ((x[int32_t {1}] * 0.5f) + (xR * 0.5f));
             return _temp;
@@ -50886,19 +50869,19 @@ namespace performer
 
             pb = intrinsics::multiply (s, int32_t {4});
             db = intrinsics::multiply (s, int32_t {16});
-            ph = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_480 (db)]) * (1.0 / (1.0 * g__frequency)));
+            ph = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (static_cast<double> (_state.fxD[std__intrinsics___wrap_512 (db)]) * (1.0 / (1.0 * g__frequency)));
             if (ph >= 1.0)
             {
                 ph = (ph - 1.0);
             }
-            _state.fxPh[std__intrinsics___wrap_120 (pb)] = ph;
+            _state.fxPh[std__intrinsics___wrap_128 (pb)] = ph;
             pL = static_cast<float> (ph);
-            pR = pL + (0.5f * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]);
+            pR = pL + (0.5f * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]);
             if (pR >= 1.0f)
             {
                 pR = (pR - 1.0f);
             }
-            wv = _state.fxMode[std__intrinsics___wrap_30 (s)];
+            wv = _state.fxMode[std__intrinsics___wrap_32 (s)];
             lL = 0.0f;
             lR = 0.0f;
             if (wv == int32_t {0})
@@ -50949,7 +50932,7 @@ namespace performer
                     }
                 }
             }
-            depth = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
+            depth = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
             _temp[int32_t {0}] = (x[int32_t {0}] * (1.0f - (depth * lL)));
             _temp[int32_t {1}] = (x[int32_t {1}] * (1.0f - (depth * lR)));
             return _temp;
@@ -51004,16 +50987,16 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             ab = intrinsics::multiply (s, int32_t {0x30000});
             dt = static_cast<float> (1.0 / (1.0 * g__frequency));
-            rvFb = _state.fxD[std__intrinsics___wrap_480 (db)];
-            rvDamp = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
-            preS = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))];
-            rvW = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))];
+            rvFb = _state.fxD[std__intrinsics___wrap_512 (db)];
+            rvDamp = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
+            preS = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))];
+            rvW = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))];
             monoRaw = ((x[int32_t {0}] + x[int32_t {1}]) * 0.5f) * 0.03f;
             hpA = 1.0f - intrinsics::clamp (376.99112f * dt, 0.0001f, 0.5f);
-            rvMono = (monoRaw - _state.fxF[std__intrinsics___wrap_1200 (fb)]) + (hpA * _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))]);
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = monoRaw;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {1}))] = rvMono;
-            pdPos = _state.fxI[std__intrinsics___wrap_720 (ib)];
+            rvMono = (monoRaw - _state.fxF[std__intrinsics___wrap_2048 (fb)]) + (hpA * _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))]);
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = monoRaw;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {1}))] = rvMono;
+            pdPos = _state.fxI[std__intrinsics___wrap_1024 (ib)];
             _state.fxArena[std__intrinsics___wrap_5898240 (intrinsics::add (intrinsics::add (ab, int32_t {0x14000}), pdPos))] = rvMono;
             pdRd = static_cast<float> (pdPos) - preS;
             if (pdRd < 0.0f)
@@ -51026,11 +51009,11 @@ namespace performer
             {
                 pdPos = int32_t {0};
             }
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = pdPos;
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = pdPos;
             rvScale = 1.0f;
             rvFbE = rvFb;
             rvDmpE = rvDamp;
-            rvTy = _state.fxMode[std__intrinsics___wrap_30 (s)];
+            rvTy = _state.fxMode[std__intrinsics___wrap_32 (s)];
             if (rvTy == int32_t {1})
             {
                 rvScale = 0.35f;
@@ -51056,11 +51039,11 @@ namespace performer
                     {
                         break;
                     }
-                    rp = _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (intrinsics::add (ib, int32_t {1}), rc))];
+                    rp = _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (intrinsics::add (ib, int32_t {1}), rc))];
                     ci = intrinsics::add (intrinsics::add (ab, intrinsics::multiply (rc, int32_t {8192})), rp);
                     rd = _state.fxArena[std__intrinsics___wrap_5898240 (ci)];
-                    st = (rd * (1.0f - rvDmpE)) + (_state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {6}), rc))] * rvDmpE);
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (intrinsics::add (fb, int32_t {6}), rc))] = st;
+                    st = (rd * (1.0f - rvDmpE)) + (_state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {6}), rc))] * rvDmpE);
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (intrinsics::add (fb, int32_t {6}), rc))] = st;
                     _state.fxArena[std__intrinsics___wrap_5898240 (ci)] = (rvIn + (st * rvFbE));
                     rp = intrinsics::add (rp, int32_t {1});
                     rvCl = intrinsics::clamp (static_cast<int32_t> (static_cast<float> (_state.combLen[std__intrinsics___wrap_8 (rc)]) * rvScale), int32_t {16}, int32_t {8191});
@@ -51068,7 +51051,7 @@ namespace performer
                     {
                         rp = int32_t {0};
                     }
-                    _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (intrinsics::add (ib, int32_t {1}), rc))] = rp;
+                    _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (intrinsics::add (ib, int32_t {1}), rc))] = rp;
                     if (rc < int32_t {4})
                     {
                         rvL = (rvL + rd);
@@ -51090,7 +51073,7 @@ namespace performer
                     {
                         break;
                     }
-                    ap = _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (intrinsics::add (ib, int32_t {9}), ra))];
+                    ap = _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (intrinsics::add (ib, int32_t {9}), ra))];
                     ai = intrinsics::add (intrinsics::add (intrinsics::add (ab, int32_t {0x10000}), intrinsics::multiply (ra, int32_t {4096})), ap);
                     abuf = _state.fxArena[std__intrinsics___wrap_5898240 (ai)];
                     ax = rvL;
@@ -51105,7 +51088,7 @@ namespace performer
                     {
                         ap = int32_t {0};
                     }
-                    _state.fxI[std__intrinsics___wrap_720 (intrinsics::add (intrinsics::add (ib, int32_t {9}), ra))] = ap;
+                    _state.fxI[std__intrinsics___wrap_1024 (intrinsics::add (intrinsics::add (ib, int32_t {9}), ra))] = ap;
                     if (ra < int32_t {2})
                     {
                         rvL = ay;
@@ -51124,12 +51107,12 @@ namespace performer
             rawL = rvMid + rvSide;
             rawR = rvMid - rvSide;
             outA = 1.0f - intrinsics::clamp (50.265484f * dt, 0.0001f, 0.5f);
-            oL = (rawL - _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {2}))]) + (outA * _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {3}))]);
-            oR = (rawR - _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {4}))]) + (outA * _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {5}))]);
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {2}))] = rawL;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {3}))] = oL;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {4}))] = rawR;
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (fb, int32_t {5}))] = oR;
+            oL = (rawL - _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {2}))]) + (outA * _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {3}))]);
+            oR = (rawR - _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {4}))]) + (outA * _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {5}))]);
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {2}))] = rawL;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {3}))] = oL;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {4}))] = rawR;
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (fb, int32_t {5}))] = oR;
             _temp[int32_t {0}] = (x[int32_t {0}] + (oL * 3.0f));
             _temp[int32_t {1}] = (x[int32_t {1}] + (oR * 3.0f));
             return _temp;
@@ -51156,8 +51139,8 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             pb = intrinsics::multiply (s, int32_t {4});
             ib = intrinsics::multiply (s, int32_t {24});
-            ft = _state.fxMode[std__intrinsics___wrap_30 (s)];
-            gd = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {4}))];
+            ft = _state.fxMode[std__intrinsics___wrap_32 (s)];
+            gd = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {4}))];
             inL = x[int32_t {0}];
             inR = x[int32_t {1}];
             if (gd > 1.01f)
@@ -51165,19 +51148,19 @@ namespace performer
                 inL = _Eisenpuls_Synth__softClip (inL * gd);
                 inR = _Eisenpuls_Synth__softClip (inR * gd);
             }
-            g = _state.fxD[std__intrinsics___wrap_480 (db)];
-            k = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))];
-            res = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))];
-            fc = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))];
+            g = _state.fxD[std__intrinsics___wrap_512 (db)];
+            k = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))];
+            res = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))];
+            fc = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))];
             yl = _Eisenpuls_Synth__fxFilterX (_state, s, int32_t {0}, inL, g, k, res, fc, ft);
             yr = _Eisenpuls_Synth__fxFilterX (_state, s, int32_t {1}, inR, g, k, res, fc, ft);
-            _state.fxI[std__intrinsics___wrap_720 (ib)] = (intrinsics::add (_state.fxI[std__intrinsics___wrap_720 (ib)], int32_t {1}) & int32_t {2047});
-            ph = _state.fxPh[std__intrinsics___wrap_120 (pb)] + (0.3 * (1.0 / (1.0 * g__frequency)));
+            _state.fxI[std__intrinsics___wrap_1024 (ib)] = (intrinsics::add (_state.fxI[std__intrinsics___wrap_1024 (ib)], int32_t {1}) & int32_t {2047});
+            ph = _state.fxPh[std__intrinsics___wrap_128 (pb)] + (0.3 * (1.0 / (1.0 * g__frequency)));
             if (ph >= 1.0)
             {
                 ph = (ph - 1.0);
             }
-            _state.fxPh[std__intrinsics___wrap_120 (pb)] = ph;
+            _state.fxPh[std__intrinsics___wrap_128 (pb)] = ph;
             _temp[int32_t {0}] = yl;
             _temp[int32_t {1}] = yr;
             return _temp;
@@ -51363,18 +51346,18 @@ namespace performer
                 {
                     kr = (res * 3.6f);
                 }
-                y4p = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {4}))];
+                y4p = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {4}))];
                 u = _Eisenpuls_Synth__softClip (x - (kr * y4p));
                 y1 = _Eisenpuls_Synth__fxOnePole (_state, b, u, g);
                 y2 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {1}), y1, g);
                 y3 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {2}), y2, g);
                 if (ft == int32_t {18})
                 {
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {4}))] = y3;
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {4}))] = y3;
                     return y3 * (1.0f + res);
                 }
                 y4 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {3}), y3, g);
-                _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {4}))] = y4;
+                _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {4}))] = y4;
                 if (ft == int32_t {17})
                 {
                     return (y3 + y4) * 0.5f;
@@ -51391,7 +51374,7 @@ namespace performer
                 dly = intrinsics::clamp (sr / intrinsics::max (fc, 20.0f), 2.0f, 2040.0f);
                 di = static_cast<int32_t> (dly);
                 fr = dly - static_cast<float> (di);
-                w = _state.fxI[std__intrinsics___wrap_720 (ib)];
+                w = _state.fxI[std__intrinsics___wrap_1024 (ib)];
                 cb = intrinsics::add (intrinsics::multiply (s, int32_t {0x30000}), intrinsics::multiply (ch, int32_t {2048}));
                 r0 = intrinsics::subtract (w, di) & int32_t {2047};
                 r1 = intrinsics::subtract (intrinsics::subtract (w, di), int32_t {1}) & int32_t {2047};
@@ -51408,13 +51391,13 @@ namespace performer
             if ((ft >= int32_t {24}) ? (ft <= int32_t {27}) : false)
             {
                 kr_0 = res * 3.9f;
-                y4p_0 = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {4}))];
+                y4p_0 = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {4}))];
                 u_0 = _Eisenpuls_Synth__softClip ((x * 1.2f) - (kr_0 * y4p_0));
                 y1_0 = _Eisenpuls_Synth__fxOnePole (_state, b, u_0, g);
                 y2_0 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {1}), y1_0, g);
                 y3_0 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {2}), y2_0, g);
                 y4_0 = _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {3}), y3_0, g);
-                _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {4}))] = y4_0;
+                _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {4}))] = y4_0;
                 mk = 1.1f * (1.0f + (0.4f * kr_0));
                 if (ft == int32_t {24})
                 {
@@ -51432,11 +51415,11 @@ namespace performer
             }
             if ((ft == int32_t {28}) ? true : (ft == int32_t {29}))
             {
-                sweep = 1.0f + (0.5f * static_cast<float> (intrinsics::sin ((_state.fxPh[std__intrinsics___wrap_120 (pb)] * 2.0) * 3.141592653589793)));
+                sweep = 1.0f + (0.5f * static_cast<float> (intrinsics::sin ((_state.fxPh[std__intrinsics___wrap_128 (pb)] * 2.0) * 3.141592653589793)));
                 dly_0 = intrinsics::clamp ((sr / intrinsics::max (fc, 20.0f)) * sweep, 2.0f, 2040.0f);
                 di_0 = static_cast<int32_t> (dly_0);
                 fr_0 = dly_0 - static_cast<float> (di_0);
-                w_0 = _state.fxI[std__intrinsics___wrap_720 (ib)];
+                w_0 = _state.fxI[std__intrinsics___wrap_1024 (ib)];
                 cb_0 = intrinsics::add (intrinsics::multiply (s, int32_t {0x30000}), intrinsics::multiply (ch, int32_t {2048}));
                 r0_0 = intrinsics::subtract (w_0, di_0) & int32_t {2047};
                 r1_0 = intrinsics::subtract (intrinsics::subtract (w_0, di_0), int32_t {1}) & int32_t {2047};
@@ -51453,7 +51436,7 @@ namespace performer
             if (ft == int32_t {22})
             {
                 fbk = res * 0.85f;
-                a = x + (fbk * _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {8}))]);
+                a = x + (fbk * _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {8}))]);
                 _temp_19 = 2.0f * _Eisenpuls_Synth__fxOnePole (_state, b, a, g);
                 a = (_temp_19 - a);
                 _temp_20 = 2.0f * _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {1}), a, g);
@@ -51462,7 +51445,7 @@ namespace performer
                 a = (_temp_21 - a);
                 _temp_22 = 2.0f * _Eisenpuls_Synth__fxOnePole (_state, intrinsics::add (b, int32_t {3}), a, g);
                 a = (_temp_22 - a);
-                _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (b, int32_t {8}))] = a;
+                _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (b, int32_t {8}))] = a;
                 return 0.5f * (x + a);
             }
             p = intrinsics::clamp (intrinsics::log (intrinsics::max (fc, 100.0f) / 100.0f) / 3.4011974f, 0.0f, 1.0f) * 4.0f;
@@ -51496,13 +51479,13 @@ namespace performer
             a1 = 1.0f / (1.0f + (g * (g + k)));
             a2 = g * a1;
             a3 = g * a2;
-            s1 = _state.fxF[std__intrinsics___wrap_1200 (idx)];
-            s2 = _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (idx, int32_t {1}))];
+            s1 = _state.fxF[std__intrinsics___wrap_2048 (idx)];
+            s2 = _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (idx, int32_t {1}))];
             v3 = x - s2;
             v1 = (a1 * s1) + (a2 * v3);
             v2 = (s2 + (a2 * s1)) + (a3 * v3);
-            _state.fxF[std__intrinsics___wrap_1200 (idx)] = ((2.0f * v1) - s1);
-            _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (idx, int32_t {1}))] = ((2.0f * v2) - s2);
+            _state.fxF[std__intrinsics___wrap_2048 (idx)] = ((2.0f * v1) - s1);
+            _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (idx, int32_t {1}))] = ((2.0f * v2) - s2);
             if (mode == int32_t {1})
             {
                 return v1 * k;
@@ -51530,10 +51513,10 @@ namespace performer
             float  lp;
 
             gg = g / (1.0f + g);
-            st = _state.fxF[std__intrinsics___wrap_1200 (idx)];
+            st = _state.fxF[std__intrinsics___wrap_2048 (idx)];
             v = (x - st) * gg;
             lp = v + st;
-            _state.fxF[std__intrinsics___wrap_1200 (idx)] = (lp + v);
+            _state.fxF[std__intrinsics___wrap_2048 (idx)] = (lp + v);
             return lp;
         }
 
@@ -51569,20 +51552,20 @@ namespace performer
                     }
                     ci = intrinsics::add (db, intrinsics::multiply (b, int32_t {5}));
                     zi = intrinsics::add (fb, intrinsics::multiply (b, int32_t {4}));
-                    c0 = _state.fxD[std__intrinsics___wrap_480 (ci)];
-                    c1 = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (ci, int32_t {1}))];
-                    c2 = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (ci, int32_t {2}))];
-                    c3 = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (ci, int32_t {3}))];
-                    c4 = _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (ci, int32_t {4}))];
+                    c0 = _state.fxD[std__intrinsics___wrap_512 (ci)];
+                    c1 = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (ci, int32_t {1}))];
+                    c2 = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (ci, int32_t {2}))];
+                    c3 = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (ci, int32_t {3}))];
+                    c4 = _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (ci, int32_t {4}))];
                     xin = yl;
-                    yo = (c0 * xin) + _state.fxF[std__intrinsics___wrap_1200 (zi)];
-                    _state.fxF[std__intrinsics___wrap_1200 (zi)] = (((c1 * xin) - (c3 * yo)) + _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {1}))]);
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {1}))] = ((c2 * xin) - (c4 * yo));
+                    yo = (c0 * xin) + _state.fxF[std__intrinsics___wrap_2048 (zi)];
+                    _state.fxF[std__intrinsics___wrap_2048 (zi)] = (((c1 * xin) - (c3 * yo)) + _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {1}))]);
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {1}))] = ((c2 * xin) - (c4 * yo));
                     yl = yo;
                     xin = yr;
-                    yo = ((c0 * xin) + _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {2}))]);
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {2}))] = (((c1 * xin) - (c3 * yo)) + _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {3}))]);
-                    _state.fxF[std__intrinsics___wrap_1200 (intrinsics::add (zi, int32_t {3}))] = ((c2 * xin) - (c4 * yo));
+                    yo = ((c0 * xin) + _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {2}))]);
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {2}))] = (((c1 * xin) - (c3 * yo)) + _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {3}))]);
+                    _state.fxF[std__intrinsics___wrap_2048 (intrinsics::add (zi, int32_t {3}))] = ((c2 * xin) - (c4 * yo));
                     yr = yo;
                     {
                         intrinsics::addTo (b, 1);
@@ -51609,23 +51592,23 @@ namespace performer
 
             fb = intrinsics::multiply (s, int32_t {40});
             db = intrinsics::multiply (s, int32_t {16});
-            rms = _state.fxMode[std__intrinsics___wrap_30 (s)] == int32_t {1};
-            th = intrinsics::max (_state.fxD[std__intrinsics___wrap_480 (db)], 0.00001f);
+            rms = _state.fxMode[std__intrinsics___wrap_32 (s)] == int32_t {1};
+            th = intrinsics::max (_state.fxD[std__intrinsics___wrap_512 (db)], 0.00001f);
             det = intrinsics::max (intrinsics::abs (x[int32_t {0}]), intrinsics::abs (x[int32_t {1}]));
             if (rms)
             {
                 det = (det * det);
             }
-            env = _state.fxF[std__intrinsics___wrap_1200 (fb)];
+            env = _state.fxF[std__intrinsics___wrap_2048 (fb)];
             if (det > env)
             {
-                env = ((_state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))] * env) + ((1.0f - _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {2}))]) * det));
+                env = ((_state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))] * env) + ((1.0f - _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {2}))]) * det));
             }
             else
             {
-                env = ((_state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))] * env) + ((1.0f - _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {3}))]) * det));
+                env = ((_state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))] * env) + ((1.0f - _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {3}))]) * det));
             }
-            _state.fxF[std__intrinsics___wrap_1200 (fb)] = env;
+            _state.fxF[std__intrinsics___wrap_2048 (fb)] = env;
             lvl = env;
             if (rms)
             {
@@ -51634,9 +51617,9 @@ namespace performer
             gain = 1.0f;
             if (lvl > th)
             {
-                gain = intrinsics::pow (lvl / th, _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {1}))]);
+                gain = intrinsics::pow (lvl / th, _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {1}))]);
             }
-            _temp_0 = gain * _state.fxD[std__intrinsics___wrap_480 (intrinsics::add (db, int32_t {4}))];
+            _temp_0 = gain * _state.fxD[std__intrinsics___wrap_512 (intrinsics::add (db, int32_t {4}))];
             _temp[int32_t {0}] = _temp_0;
             _temp[int32_t {1}] = _temp_0;
             return x * _temp;
