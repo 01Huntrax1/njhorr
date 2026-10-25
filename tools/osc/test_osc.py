@@ -283,6 +283,33 @@ check("Wavefilter stays finite with extreme settings", np.isfinite(x).all() and 
 x = seg(render(WF(0, [(307, 1), (308, L.N_TBL_DST), (309, -1.0), ("shape", 0, "const", 1), (882, 1), (247, 6), P(0, "wfpos", 4 / 15)]), tag="wfmod"))[:, 0]
 check("mod destination 'OSC 1 Wavefilter Pos' moves the table position", band(x, 100, 800) > 2 * band(hp, 100, 800), "%.1f vs %.1f" % (band(x, 100, 800), band(hp, 100, 800)))
 
+# ---- Wavefilter controls: Mix / Range / Warp / Contrast / Tilt / Spread / Gain Law
+x = seg(render(WF(4 / 15, [P(0, "wfmix", 0.0)]), tag="wfm0"))[:, 0]
+check("Wavefilter Mix 0 is the dry signal", abs(rms(x) / rms(dry) - 1) < 0.02 and band(x, 100, 800) > 0.95 * band(dry, 100, 800))
+x = seg(render(WF(4 / 15, [P(0, "wfmix", 0.5)]), tag="wfm5"))[:, 0]
+check("Wavefilter Mix 0.5 lets half of the cut lows through", 1.5 * band(hp, 100, 800) < band(x, 100, 800) < 0.9 * band(dry, 100, 800), "%.1f" % band(x, 100, 800))
+narrow = seg(render(WF(0, [P(0, "wfrange", 2)]), tag="wfr2"))[:, 0]
+wide = seg(render(WF(0, [P(0, "wfrange", 14)]), tag="wfr14"))[:, 0]
+check("Wavefilter Range: a narrow range makes the slope steeper than a wide one", band(narrow, 3000, 12000) < 0.8 * band(wide, 3000, 12000), "%.1f / %.1f" % (band(narrow, 3000, 12000), band(wide, 3000, 12000)))
+c1 = seg(render(WF(0, [P(0, "wfcont", 1.0)]), tag="wfc1"))[:, 0]
+c0 = seg(render(WF(0, [P(0, "wfcont", -1.0)]), tag="wfcm"))[:, 0]
+check("Wavefilter Contrast sharpens (+) or flattens (-) the curve", band(c1, 1500, 6000) < band(lp, 1500, 6000) < band(c0, 1500, 6000), "%.1f < %.1f < %.1f" % (band(c1, 1500, 6000), band(lp, 1500, 6000), band(c0, 1500, 6000)))
+tu = seg(render(WF(0, ["tbl 0 ones", P(0, "wftilt", 1.0)]), tag="wft1"))[:, 0]
+td = seg(render(WF(0, ["tbl 0 ones", P(0, "wftilt", -1.0)]), tag="wftm"))[:, 0]
+check("Wavefilter Tilt raises the highs (+) or the lows (-)", band(tu, 3000, 12000) / band(tu, 100, 800) > 4 * band(td, 3000, 12000) / band(td, 100, 800), "%.2f vs %.2f" % (band(tu, 3000, 12000) / band(tu, 100, 800), band(td, 3000, 12000) / band(td, 100, 800)))
+x = seg(render(WF(0, ["tbl 0 zeros", P(0, "wflaw", 1)]), tag="wflawb"))[:, 0]
+check("Gain Law Bipolar: a table of zeros is silence", rms(x) < 0.05 * rms(dry), "%.4f" % rms(x))
+x = seg(render(WF(0, ["tbl 0 ones", P(0, "wflaw", 2)]), tag="wflawd"))[:, 0]
+check("Gain Law dB: the top of the table is 0 dB", abs(20 * math.log10(rms(x) / rms(dry))) < 1.5, "%.2f dB" % (20 * math.log10(rms(x) / rms(dry))))
+x = seg(render(WF(0, ["tbl 0 zeros", P(0, "wflaw", 2)]), tag="wflawz"))[:, 0]
+check("Gain Law dB: the middle of the table is about -30 dB", abs(20 * math.log10(rms(x) / rms(dry)) + 30.0) < 4.0, "%.2f dB" % (20 * math.log10(rms(x) / rms(dry))))
+a = render(WF(0, [P(0, "wfspr", 1.0), P(0, "wfwarp", 0.7), P(0, "wfcont", 0.5), P(0, "wftilt", 0.4), P(0, "uvox", 3), P(0, "uwid", 1.0)]), tag="wfspr")
+sp = seg(a)
+check("Wavefilter Spread differs between the channels (stereo sources) and stays finite", np.isfinite(a).all() and abs(band(sp[:, 0], 200, 3000) - band(sp[:, 1], 200, 3000)) > 0.02 * band(sp[:, 0], 200, 3000),
+      "%.1f vs %.1f" % (band(sp[:, 0], 200, 3000), band(sp[:, 1], 200, 3000)))
+x = seg(render(WF(0, [P(0, "wfrange", 14), P(0, "wfwarp", -1), P(0, "wfcont", 1), P(0, "wftilt", 1), P(0, "fres", 1.0), P(0, "wflaw", 1)]), hold=0.4, tail=0.1, tag="wfext2"))
+check("Wavefilter stays finite with every control at its extreme", np.isfinite(x).all() and np.abs(x).max() < 8)
+
 SH = lambda pos, extra=(), ty=7: SAW + [P(0, "fon", 0), P(0, "dtype", ty), P(0, "ddrv", 0.0), P(0, "dmix", 1.0), P(0, "wdpos", pos)] + list(extra)
 x = seg(render(SH(0), tag="shid"))[:, 0]
 check("Wavedistortion table 0 (identity) leaves the signal alone", abs(rms(x) / rms(dry) - 1) < 0.03 and band(x, 100, 800) > 0.95 * band(dry, 100, 800))

@@ -368,7 +368,7 @@ namespace njo
     void FilterDisplay::paramChanged (int num, float)
     {
         int k = num - oscId (o, 0);
-        if ((k >= oscKey ("fon") && k <= oscKey ("fkey")) || k == oscKey ("wfpos")) repaint();
+        if ((k >= oscKey ("fon") && k <= oscKey ("fkey")) || k == oscKey ("wfpos") || (k >= oscKey ("wfmix") && k <= oscKey ("wflaw"))) repaint();
     }
 
     void FilterDisplay::paint (juce::Graphics& g)
@@ -410,11 +410,22 @@ namespace njo
                 {
                     double f = 20.0 * std::pow (1000.0, (double) i / (N - 1));
                     double mag;
-                    if (ft >= 30)   // Wavefilter: the table frame along 8 octaves around the cutoff
+                    if (ft >= 30)   // Wavefilter: the table frame along Range octaves around the cutoff, with Warp / Law / Contrast / Tilt / Mix
                     {
-                        double u = juce::jlimit (0.0, 1.0, 0.5 + std::log2 (f / juce::jmax (20.0, fc)) / 8.0), x = u * 511.0;
+                        auto P = [&] (const char* key) { return (double) ctx.get (oscId (o, oscKey (key))); };
+                        const double W2 = juce::jlimit (2.0, 14.0, P ("wfrange")), pw = std::pow (2.0, juce::jlimit (-1.0, 1.0, P ("wfwarp")));
+                        const double ex = std::pow (2.0, 1.5 * juce::jlimit (-1.0, 1.0, P ("wfcont"))), tilt = juce::jlimit (-1.0, 1.0, P ("wftilt"));
+                        const int law = juce::jlimit (0, 2, juce::roundToInt (P ("wflaw")));
+                        const double mix = juce::jlimit (0.0, 1.0, P ("wfmix"));
+                        const double r = std::log2 (f / juce::jmax (20.0, fc));
+                        const double t = juce::jlimit (-1.0, 1.0, 2.0 * r / W2);
+                        const double u = 0.5 + (t < 0 ? -0.5 : 0.5) * std::pow (std::abs (t), pw), x = u * 511.0;
                         int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511);
-                        mag = ((tbl[i0] + (tbl[i1] - tbl[i0]) * (x - i0)) + 1.0) * 0.5;
+                        const double v = tbl[i0] + (tbl[i1] - tbl[i0]) * (x - i0);
+                        double gn = law == 0 ? v * 0.5 + 0.5 : law == 1 ? v : std::pow (10.0, (v - 1.0) * 1.5);
+                        if (ex != 1.0) gn = (gn < 0 ? -1.0 : 1.0) * std::pow (std::abs (gn), ex);
+                        if (tilt != 0.0) gn = juce::jmin (gn * std::pow (2.0, tilt * r), 4.0);
+                        mag = std::abs (1.0 + (gn - 1.0) * mix);
                     }
                     else mag = std::abs (oscmodel::filterH (ft, fc, res, f, sweep));
                     float x = W * (float) i / (N - 1), y = yOf (20.0 * std::log10 (juce::jmax (1e-5, mag)));

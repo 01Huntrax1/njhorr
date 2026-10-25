@@ -612,7 +612,7 @@ const AudioDecode = (() => {
 })();
 /*AUDIODEC-END*/
 const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560;
-const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "dpos": 45};
+const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
@@ -675,6 +675,13 @@ const OSC_SPEC_ROWS = [
     [1048, "OSC 1 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1046, "OSC 1 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1047, "OSC 1 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1049, "OSC 1 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1050, "OSC 1 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1051, "OSC 1 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1052, "OSC 1 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1053, "OSC 1 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1054, "OSC 1 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1055, "OSC 1 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1064, "OSC 2 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -722,6 +729,13 @@ const OSC_SPEC_ROWS = [
     [1112, "OSC 2 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1110, "OSC 2 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1111, "OSC 2 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1113, "OSC 2 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1114, "OSC 2 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1115, "OSC 2 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1116, "OSC 2 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1117, "OSC 2 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1118, "OSC 2 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1119, "OSC 2 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1128, "OSC 3 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -769,6 +783,13 @@ const OSC_SPEC_ROWS = [
     [1176, "OSC 3 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1174, "OSC 3 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1175, "OSC 3 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1177, "OSC 3 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1178, "OSC 3 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1179, "OSC 3 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1180, "OSC 3 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1181, "OSC 3 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1182, "OSC 3 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1183, "OSC 3 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1192, "OSC 4 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -816,6 +837,13 @@ const OSC_SPEC_ROWS = [
     [1240, "OSC 4 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1238, "OSC 4 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1239, "OSC 4 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1241, "OSC 4 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1242, "OSC 4 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1243, "OSC 4 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1244, "OSC 4 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1245, "OSC 4 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1246, "OSC 4 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1247, "OSC 4 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1256, "OSC 5 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -863,6 +891,13 @@ const OSC_SPEC_ROWS = [
     [1304, "OSC 5 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1302, "OSC 5 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1303, "OSC 5 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1305, "OSC 5 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1306, "OSC 5 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1307, "OSC 5 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1308, "OSC 5 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1309, "OSC 5 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1310, "OSC 5 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1311, "OSC 5 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1320, "OSC 6 Source", 0, 2, 0, "", "btn", ["Wavetable", "Sampler", "Plaits"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
@@ -910,6 +945,13 @@ const OSC_SPEC_ROWS = [
     [1368, "OSC 6 Frequency", 0, 1, 0, "", "sld", null, 1, "Frequency", null],
     [1366, "OSC 6 Wavefilter Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
     [1367, "OSC 6 Wavedistortion Position", 0, 1, 0, "", "sld", null, 1, "Table Pos", null],
+    [1369, "OSC 6 Wavefilter Mix", 0, 1, 1, "", "sld", null, 1, "Mix", null],
+    [1370, "OSC 6 Wavefilter Range", 2, 14, 8, "oct", "sld", null, 1, "Range", null],
+    [1371, "OSC 6 Wavefilter Warp", -1, 1, 0, "", "sld", null, 1, "Warp", null],
+    [1372, "OSC 6 Wavefilter Contrast", -1, 1, 0, "", "sld", null, 1, "Contrast", null],
+    [1373, "OSC 6 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
+    [1374, "OSC 6 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
+    [1375, "OSC 6 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1365, "OSC 6 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
     [1400, "FM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
     [1440, "PM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
@@ -2225,8 +2267,10 @@ class EisenpulsPatchView extends HTMLElement {
         // Wavefilter / Wavedistortion: table drop zone and position knob are live only while that type is selected
         for (const [kind, tkey, pkey, tv] of [["ft", "ftype", "wfpos", 30], ["sh", "dtype", "wdpos", 7]]) {
             const on = Math.round(this.oscVal(o, tkey)) === tv, m = this._mem[kind][o];
-            const pc = this.querySelector(".n" + oscId(o, pkey));
-            if (pc) pc.classList.toggle("dim", !on);
+            for (const key of (kind === "ft" ? [pkey, "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw"] : [pkey])) {
+                const pc = this.querySelector(".n" + oscId(o, key));
+                if (pc) pc.classList.toggle("dim", !on);
+            }
             const tb = this.querySelector('.o-tb[data-o="' + o + '"][data-k="' + kind + '"]');
             if (tb) tb.classList.toggle("off", !on);
             const md = this.querySelector('.o-mode[data-o="' + o + '"][data-k="' + (kind === "ft" ? "f" : "d") + '"]');
@@ -2243,7 +2287,7 @@ class EisenpulsPatchView extends HTMLElement {
         if (k === OSC_K.type || k === OSC_K.pleng) { this.updateOscUi(o); return; }
         if (k === OSC_K.wpos || k === OSC_K.wsize || k === OSC_K.w1m || k === OSC_K.w1a || k === OSC_K.w2m || k === OSC_K.w2a
             || k === OSC_K.sstart || k === OSC_K.sloop || k === OSC_K.root) this.drawOsc(o);
-        if (k >= OSC_K.fon && k <= OSC_K.fkey) this.drawOscFlt(o);
+        if (k >= OSC_K.fon && k <= OSC_K.fkey || (k >= OSC_K.wfmix && k <= OSC_K.wflaw)) this.drawOscFlt(o);
         if (k === OSC_K.ftype || k === OSC_K.dtype) this.updateOscUi(o);
         if (k === OSC_K.wfpos) { this.drawOscFlt(o); this.drawTblViews(o); }
         if (k === OSC_K.dtype || k === OSC_K.ddrv || k === OSC_K.dmix || k === OSC_K.wdpos || k === OSC_K.dpos) this.drawTblViews(o);
@@ -2392,12 +2436,20 @@ class EisenpulsPatchView extends HTMLElement {
     oscFltCurve (o, N, sweep) {
         const ft = Math.round(this.oscVal(o, "ftype")), fc = this.oscVal(o, "fcut"), res = this.oscVal(o, "fres");
         const out = [];
-        if (ft === 30) {   // Wavefilter: the table frame along 8 octaves around the cutoff
+        if (ft === 30) {   // Wavefilter: the table frame along Range octaves around the cutoff, with Warp / Law / Contrast / Tilt / Mix
             const fr = this.tblFrame("ft", o, this.oscVal(o, "wfpos"));
+            const W = Math.max(2, Math.min(14, this.oscVal(o, "wfrange"))), pw = Math.pow(2, this.oscVal(o, "wfwarp")), ex = Math.pow(2, 1.5 * this.oscVal(o, "wfcont"));
+            const tilt = this.oscVal(o, "wftilt"), law = Math.round(this.oscVal(o, "wflaw")), mix = this.oscVal(o, "wfmix");
             for (let i = 0; i < N; i++) {
-                const u = Math.max(0, Math.min(1, 0.5 + Math.log2(20 * Math.pow(1000, i / (N - 1)) / fc) / 8));
+                const r = Math.log2(20 * Math.pow(1000, i / (N - 1)) / fc);
+                const t = Math.max(-1, Math.min(1, 2 * r / W));
+                const u = 0.5 + (t < 0 ? -0.5 : 0.5) * Math.pow(Math.abs(t), pw);
                 const x = u * 511, i0 = Math.floor(x), i1 = Math.min(i0 + 1, 511);
-                out.push([((fr[i0] + (fr[i1] - fr[i0]) * (x - i0)) + 1) / 2, 0]);
+                const v = fr[i0] + (fr[i1] - fr[i0]) * (x - i0);
+                let g = law === 0 ? v * 0.5 + 0.5 : law === 1 ? v : Math.pow(10, (v - 1) * 1.5);
+                if (ex !== 1) g = Math.sign(g) * Math.pow(Math.abs(g), ex);
+                if (tilt !== 0) g = Math.min(g * Math.pow(2, tilt * r), 4);
+                out.push([Math.abs(1 + (g - 1) * mix), 0]);
             }
             return out;
         }
@@ -2550,7 +2602,8 @@ class EisenpulsPatchView extends HTMLElement {
             <canvas class="tbl-canvas" data-o="${o}" data-k="ft" width="520" height="300"></canvas>
             <div class="osc-info" data-o="${o}" data-k="ft">--</div>
             <div class="o-tbl"><div class="dz dz-tbl" data-o="${o}" data-k="ft" title="Wavefilter table: a wavetable file whose frames are filter curves"><span class="dz-txt"></span><span class="dz-clr" title="Back to the built-in table">&times;</span></div>${c("wfpos")}</div>
-            <div class="o-note">Every frame is a gain curve along 8 octaves around the cutoff. Table Pos morphs between the frames; drop a wavetable file to use your own.</div>
+            <div class="cgrid o-g3 o-wfc">${["wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw"].map(c).join("")}</div>
+            <div class="o-note">Every frame is a gain curve along <b>Range</b> octaves around the cutoff (<b>Warp</b> bends that axis). Table Pos morphs between the frames; drop a wavetable file to use your own. <b>Gain Law</b>: Linear = (value + 1) / 2, Bipolar = value (negative gains invert the band), dB = -60 .. 0 dB. <b>Contrast</b> deepens or flattens the curve, <b>Tilt</b> adds +-6 dB per octave, <b>Spread</b> shifts the curve down on the left and up on the right channel, <b>Mix</b> blends with the dry signal.</div>
           </section>`;
     }
 

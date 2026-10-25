@@ -13,6 +13,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
 SRC_TYPES = ["Wavetable", "Sampler", "Plaits"]
+WF_LAWS = ["Linear", "Bipolar", "dB"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
@@ -63,6 +64,13 @@ PARAMS = [
  (48, "freq",   "Frequency", "Frequency", 0, 1, 0, "", "sld", None),   # 0 = Off (key pitch), else fixed 20 Hz .. 20 kHz
  (46, "wfpos",  "Wavefilter Position", "Table Pos", 0, 1, 0, "", "sld", None),
  (47, "wdpos",  "Wavedistortion Position", "Table Pos", 0, 1, 0, "", "sld", None),
+ (49, "wfmix",  "Wavefilter Mix",      "Mix",       0, 1, 1, "", "sld", None),
+ (50, "wfrange","Wavefilter Range",    "Range",     2, 14, 8, "oct", "sld", None),   # octaves covered by the table frame around the cutoff
+ (51, "wfwarp", "Wavefilter Warp",     "Warp",     -1, 1, 0, "", "sld", None),     # bends the frequency axis (+: wider centre, -: wider edges)
+ (52, "wfcont", "Wavefilter Contrast", "Contrast", -1, 1, 0, "", "sld", None),     # gains ^ (2 ^ (1.5 * contrast))
+ (53, "wftilt", "Wavefilter Tilt",     "Tilt",     -1, 1, 0, "", "sld", None),     # +-6 dB per octave around the cutoff
+ (54, "wfspr",  "Wavefilter Spread",   "Spread",    0, 1, 0, "", "sld", None),     # axis shifted down for the left, up for the right channel (+-1 octave)
+ (55, "wflaw",  "Wavefilter Gain Law", "Gain Law",  0, 2, 0, "", "sel", WF_LAWS),  # table value -> gain
  (45, "dpos",   "Distortion Position", "Dist vs Filter", 0, 1, 0, "", "btn", ["Post", "Pre"]),   # Post = filter -> distortion, Pre = distortion -> filter
 ]
 K = {p[1]: p[0] for p in PARAMS}

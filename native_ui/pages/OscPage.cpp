@@ -150,7 +150,7 @@ namespace njo
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
-                              "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "level", "pan", "out" })
+                              "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
                 if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
@@ -452,10 +452,23 @@ namespace njo
                 auto c = cardOut; int w = c.getWidth();
                 const bool wf = mode == 1;
                 const bool active = juce::roundToInt (ctx.get (pnum (wf ? "ftype" : "dtype"))) >= (wf ? 30 : 7);
-                tdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 220); tdisplay.setVisible (true);
+                tdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, wf ? 150 : 220); tdisplay.setVisible (true);
                 auto& zone = wf ? dzF : dzS;
-                zone.setBounds (c.getX() + 12, c.getY() + 262, w - 24, 26); zone.setVisible (true); zone.setAlpha (active ? 1.0f : 0.45f);
-                if (wf) { knob ("wfpos", w / 2, 304, c); if (auto* k = W ("wfpos")) k->setAlpha (active ? 1.0f : 0.45f); }
+                const int zy = wf ? 192 : 262;
+                zone.setBounds (c.getX() + 12, c.getY() + zy, w - 24, 26); zone.setVisible (true); zone.setAlpha (active ? 1.0f : 0.45f);
+                if (wf)
+                {
+                    // Table Pos, Mix, Range / Warp, Contrast, Tilt / Spread and the Gain Law list
+                    const int x0 = 12 + (w - 24) / 6, x1 = 12 + (w - 24) / 2, x2 = 12 + (w - 24) * 5 / 6;
+                    const char* row[3][3] = { { "wfpos", "wfmix", "wfrange" }, { "wfwarp", "wfcont", "wftilt" }, { "wfspr", nullptr, nullptr } };
+                    const int xs[3] = { x0, x1, x2 };
+                    for (int r = 0; r < 3; ++r)
+                        for (int i = 0; i < 3; ++i)
+                            if (row[r][i]) knob (row[r][i], xs[i], 226 + 62 * r, c);
+                    put ("wflaw", x1 - 70, 226 + 62 * 2 + 8, w - 12 - (x1 - 70), 36, c);
+                    for (auto* key : { "wfpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw" })
+                        if (auto* k = W (key)) k->setAlpha (active ? 1.0f : 0.45f);
+                }
                 else { put ("wdpos", 12, 304, w - 24, 30, c); if (auto* k = W ("wdpos")) k->setAlpha (active ? 1.0f : 0.45f); }
                 // chips A-F: which oscillator this page shows
                 const int cx0 = cardFlt.getX() + (mode == 2 ? 232 : 200);
@@ -498,9 +511,9 @@ namespace njo
                 title (g, "OSC " + juce::String (o + 1) + (wf ? " Filter" : " Distortion"), cardFlt.getX() + 14, 15, cardFlt.getX() + (wf ? 196 : 228));
                 title (g, wf ? "Wavefilter table" : "Wavedistortion table", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
                 g.setColour (dim); g.setFont (font (8.5f, false));
-                g.drawFittedText (wf ? "Every frame is a gain curve along 8 octaves around the cutoff. Table Pos morphs between the frames; drop a wavetable file to use your own."
-                                     : "Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.",
-                                  cardOut.getX() + 14, 376, cardOut.getWidth() - 28, 50, juce::Justification::topLeft, 4);
+if (! wf)
+                    g.drawFittedText ("Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.",
+                                      cardOut.getX() + 14, 376, cardOut.getWidth() - 28, 50, juce::Justification::topLeft, 4);
             }
             if (showUnison)
             {

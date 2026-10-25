@@ -37,7 +37,7 @@ int main (int argc, char** argv)
     {
         auto& cx = ed.context();
         ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt.png"), scale);
-        cx.set (njo::oscId (0, njo::oscKey ("ftype")), 30.0f); ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt_wf.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("ftype")), 30.0f); cx.set (njo::oscId (0, njo::oscKey ("wfwarp")), 0.5f); cx.set (njo::oscId (0, njo::oscKey ("wfcont")), 0.4f); cx.set (njo::oscId (0, njo::oscKey ("wftilt")), -0.3f); ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt_wf.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f);
         ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f); ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist_wd.png"), scale);
