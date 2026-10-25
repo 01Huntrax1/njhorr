@@ -18,6 +18,7 @@ namespace njo
         void load (Kind, int osc, const juce::File&, std::function<void (bool ok, const juce::String& message)> done = {});
         void set (Kind, int osc, const juce::String& name, const juce::String& libId, std::vector<float> data);   // already decoded audio
         void clear (Kind, int osc);
+        void relabel (const juce::String& oldPath, const juce::String& newPath);   // a vault file / folder was renamed or moved: fix the stored ids
         void restore();                                              // after the editor opens: stored state -> DSP
         // lists of formats that load, for file choosers
         static juce::String fileWildcard();

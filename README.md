@@ -117,3 +117,12 @@ Notes and limits:
 - Per-sample costs removed: the modulation matrix sums only clear / visit the slots that are in use, the FM / PM / PD / RM / AM matrix loops are skipped while no amount is set, the mip level of the unison voices is looked up once per oscillator when all voices share it, and the hot state arrays are sized to powers of two so every `.at()` index wrap is a mask instead of a division. Together about 35-40 % fewer instructions per sample for typical patches.
 - The native UI keeps the parameter objects it polls (one string lookup per parameter, not one per parameter per timer tick).
 - Memory: the DSP state is about 50 MB (FX delay arena 24 MB, wavetable mips 13 MB, wavetable frames 6 MB, tables / samples about 4 MB).
+
+## Folders in the Preset Bank and the Sound Vault
+
+Both overlays of the native UI are now folder trees (the files really live in sub folders of `Documents/Njohrr/{Presets,Samples,Wavetables}`):
+
+- **Tree on the left** (expand / collapse with the arrows or a double click). The Vault tree has the roots *Samples* and *Wavetables*, the files of the selected folder are listed on the right (typing in *Search* looks through the selected folder and everything below it). The Preset Bank is one tree with folders and presets.
+- **Folders:** type a name and press *NEW* (creates the folder inside the selected one), *RENAME* or *DELETE* (asks twice; the files go to the trash). Right click a folder for the same actions and *Open in the file manager*. Presets are saved into the selected folder.
+- **Moving:** every vault row has a **MOVE v** dropdown (nested menus of all folders of both kinds), the Preset Bank has **MOVE TO v** for the selected preset, and rows / presets can be dragged onto a folder of the tree. Renaming or moving keeps the oscillator slots and the current preset pointing at the right files; a preset that refers to a file that was moved finds it again by name and size.
+- Files of earlier versions simply sit in the root folders. The web UI (JS fallback) still shows only the root folders.

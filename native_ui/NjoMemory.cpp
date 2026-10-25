@@ -339,6 +339,20 @@ namespace njo
         sendChangeMessage();
     }
 
+    void SoundMemory::relabel (const juce::String& oldPath, const juce::String& newPath)
+    {
+        for (int k = 0; k < 4; ++k)
+            for (int o = 0; o < OSC_N; ++o)
+            {
+                auto& s = impl->slots[k][o];
+                if (! s || s->libId.isEmpty()) continue;
+                if (s->libId == oldPath) s->libId = newPath;
+                else if (s->libId.startsWith (oldPath + "/")) s->libId = newPath + s->libId.substring (oldPath.length());
+                else continue;
+                impl->persist ((Kind) k, o);
+            }
+    }
+
     void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done)
     {
         auto dec = decodeAny (f, k != Sample);

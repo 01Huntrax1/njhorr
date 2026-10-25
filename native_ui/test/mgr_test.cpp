@@ -54,11 +54,11 @@ int main (int argc, char** argv)
     CHECK (bar.presetName() == "Init");
     ctx.set (pLevel, 0.31f); pump();
     CHECK (bar.presetName() == "Init *");
-    CHECK (im.presetSaveAs ("Test One", {}) == "Test One.njopreset");
+    CHECK (im.presetSaveAs ("Test One", {}, {}) == "Test One.njopreset");
     CHECK (bar.presetName() == "Test One");
     CHECK (root.getChildFile ("Presets/Test One.njopreset").existsAsFile());
     ctx.set (pLevel, 0.62f);
-    CHECK (im.presetSaveAs ("Test Two", {}) == "Test Two.njopreset");
+    CHECK (im.presetSaveAs ("Test Two", {}, {}) == "Test Two.njopreset");
     CHECK (im.presets.size() == 2);
     ctx.set (pLevel, 0.9f); pump();
     CHECK (bar.presetName() == "Test Two *");
@@ -69,16 +69,19 @@ int main (int argc, char** argv)
     CHECK (bar.presetName() == "Test Two");
     CHECK (std::abs (ctx.get (pLevel) - 0.62f) < 1e-4f);
     // reserved / duplicate names
-    CHECK (im.presetSaveAs ("init", {}).isEmpty());
-    CHECK (im.presetSaveAs ("test one", {}).isEmpty());
+    CHECK (im.presetSaveAs ("init", {}, {}).isEmpty());
+    CHECK (im.presetSaveAs ("test one", {}, {}).isEmpty());
     // lfo shapes travel with the preset
     {
-        auto* o = new juce::DynamicObject(); o->setProperty ("x", 42);
-        ctx.lfoShapes->fromVar (juce::var (o));
-        im.presetSaveAs ("Test Two", im.cur.id);
+        auto& pts = ctx.lfoShapes->points (0);
+        int before = (int) pts.size();
+        pts.insert (pts.begin() + 1, { 0.3f, 0.7f, 0.0f });
+        ctx.lfoShapes->commit (0, true);
+        im.presetSaveAs ("Test Two", im.cur.id, {});
         ctx.lfoShapes->fromVar ({});
+        CHECK ((int) ctx.lfoShapes->points (0).size() == before);
         im.presetStep (0 + 1); im.presetStep (-1);   // reload Test Two
-        CHECK (ctx.lfoShapes->toVar().getDynamicObject() != nullptr && (int) ctx.lfoShapes->toVar().getDynamicObject()->getProperty ("x") == 42);
+        CHECK ((int) ctx.lfoShapes->points (0).size() == before + 1);
     }
     // file format of the web UI
     {
@@ -117,12 +120,13 @@ int main (int argc, char** argv)
     makeWav (src.getChildFile ("kick.wav"), 0.5, 60);  makeWav (src.getChildFile ("saw table.wav"), 1.0, 220); makeWav (src.getChildFile ("pad.wav"), 2.25, 110);
     src.getChildFile ("notes.txt").replaceWithText ("x");
     bar.openVault (njo::SoundMemory::Sample, -1); pump();
+    CHECK (im.libFolder == "samples");
     juce::Array<juce::File> fs { src.getChildFile ("kick.wav"), src.getChildFile ("pad.wav"), src.getChildFile ("notes.txt") };
     im.libImport (fs);
     CHECK (im.lib.size() == 2);
     im.libImport ({ src.getChildFile ("kick.wav") });   // duplicate: not added again
     CHECK (im.lib.size() == 2);
-    im.libKind = 0;
+    im.libFolder = "wavetables";
     im.libImport ({ src.getChildFile ("saw table.wav") });
     CHECK (im.lib.size() == 3 && root.getChildFile ("Wavetables/saw table.wav").existsAsFile());
     for (auto& r : im.lib) if (r.fname == "pad.wav") CHECK (std::abs (r.dur - 2.25) < 0.01);
@@ -131,7 +135,7 @@ int main (int argc, char** argv)
     CHECK (mem.get (njo::SoundMemory::Sample, 1) != nullptr && mem.get (njo::SoundMemory::Wavetable, 0) != nullptr);
     CHECK (im.slotLib["sm1"].id == "samples/kick.wav");
     CHECK (be.getStored ("njo.slots").getDynamicObject() != nullptr);
-    CHECK (im.presetSaveAs ("With Sounds", {}) == "With Sounds.njopreset");
+    CHECK (im.presetSaveAs ("With Sounds", {}, {}) == "With Sounds.njopreset");
     {
         auto v = juce::JSON::parse (root.getChildFile ("Presets/With Sounds.njopreset").loadFileAsString());
         CHECK (v["refs"]["sm1"]["name"].toString() == "kick.wav" && (int) v["refs"]["sm1"]["size"] > 100);
@@ -149,10 +153,131 @@ int main (int argc, char** argv)
     // rename + move + delete in the vault
     im.renamingId = "samples/pad.wav"; { juce::String nv = "Warm Pad"; im.libRenameDone ("samples/pad.wav", &nv); }
     CHECK (root.getChildFile ("Samples/Warm Pad.wav").existsAsFile());
-    im.libAct ("lb-kind", "samples/Warm Pad.wav");
+    im.libMoveTo ("samples/Warm Pad.wav", "wavetables");
     CHECK (root.getChildFile ("Wavetables/Warm Pad.wav").existsAsFile() && ! root.getChildFile ("Samples/Warm Pad.wav").existsAsFile());
     im.libAct ("lb-del", "wavetables/Warm Pad.wav"); CHECK (root.getChildFile ("Wavetables/Warm Pad.wav").existsAsFile());
     im.libAct ("lb-del", "wavetables/Warm Pad.wav"); CHECK (! root.getChildFile ("Wavetables/Warm Pad.wav").existsAsFile());
+
+
+    // ---- folders: presets
+    {
+        im.selFolder = {};
+        im.folderAct (false, "new", "Bass");
+        CHECK (root.getChildFile ("Presets/Bass").isDirectory() && im.selFolder == "Bass");
+        ctx.set (pLevel, 0.21f);
+        CHECK (im.presetSaveAs ("Wobble", {}, im.selFolder) == "Bass/Wobble.njopreset");
+        CHECK (root.getChildFile ("Presets/Bass/Wobble.njopreset").existsAsFile() && bar.presetName() == "Wobble");
+        CHECK (im.presetSaveAs ("Wobble", {}, "Bass").isEmpty());                         // the same name in the same folder
+        CHECK (im.presetSaveAs ("Wobble", {}, {}) == "Wobble.njopreset");                // ... is fine in another one
+        im.selFolder = "Bass";
+        im.folderAct (false, "new", "Sub");                                               // below the selected folder Bass
+        CHECK (root.getChildFile ("Presets/Bass/Sub").isDirectory() && im.selFolder == "Bass/Sub");
+        im.folderAct (false, "new", "Sub");                                               // already there
+        im.sel = "Bass/Wobble.njopreset";
+        im.pmMove ("Bass/Wobble.njopreset", "Bass/Sub");
+        CHECK (root.getChildFile ("Presets/Bass/Sub/Wobble.njopreset").existsAsFile() && ! root.getChildFile ("Presets/Bass/Wobble.njopreset").existsAsFile());
+        CHECK (im.findPreset ("Bass/Sub/Wobble.njopreset") != nullptr && im.findPreset ("Bass/Sub/Wobble.njopreset")->folder == "Bass/Sub");
+        // the current preset is the root "Wobble" (saved last): step through the folders in tree order
+        im.presetStep (-1); CHECK (im.cur.id.isNotEmpty());
+        bool sawNested = false; for (int i = 0; i < 10; ++i) { im.presetStep (1); sawNested |= im.cur.id == "Bass/Sub/Wobble.njopreset"; }
+        CHECK (sawNested);
+        // rename the folder: the current preset id follows
+        im.presetApply (*im.findPreset ("Bass/Sub/Wobble.njopreset"));
+        im.selFolder = "Bass"; im.sel = {};
+        im.folderAct (false, "ren", "Basses");
+        CHECK (root.getChildFile ("Presets/Basses/Sub/Wobble.njopreset").existsAsFile() && ! root.getChildFile ("Presets/Bass").exists());
+        CHECK (im.cur.id == "Basses/Sub/Wobble.njopreset" && im.selFolder == "Basses");
+        // the nodes of the tree
+        auto nodes = im.presetNodes();
+        CHECK (nodes.size() == 1 && nodes[0].folder && nodes[0].path == "presets" && nodes[0].count >= 3);
+        bool foundLeaf = false; std::function<void (const njo::FolderTree::Node&)> walk = [&] (const njo::FolderTree::Node& n) { if (n.path == "p:Basses/Sub/Wobble.njopreset") foundLeaf = n.current; for (auto& k : n.kids) walk (k); };
+        walk (nodes[0]); CHECK (foundLeaf);
+        // the tree overlay shows them
+        bar.openBank(); pump (60);
+        im.presetOv->refresh(); pump (60);
+        save (host, shots.getChildFile ("bank_tree.png"));
+        bar.closeOverlays();
+        // delete: armed first, then gone with the preset inside
+        im.selFolder = "Basses";
+        im.folderAct (false, "del", {}); CHECK (root.getChildFile ("Presets/Basses").exists());
+        im.folderAct (false, "del", {}); CHECK (! root.getChildFile ("Presets/Basses").exists());
+        CHECK (im.cur.id.isEmpty() && im.selFolder.isEmpty());
+        CHECK (im.findPreset ("Wobble.njopreset") != nullptr);
+    }
+
+    // ---- folders: store safety
+    {
+        njo::mgr::Store st (root);
+        CHECK (st.dirOf ("samples/../Presets") == juce::File() && st.dirOf ("nothing") == juce::File() && st.dirOf ("presets/a\\b") == juce::File());
+        CHECK (st.folderCreate ("presets", "..").isEmpty() && st.folderCreate ("samples", "").isEmpty());
+        auto odd = st.folderCreate ("presets", "a/b");
+        CHECK (odd == "presets/a_b" && root.getChildFile ("Presets/a_b").isDirectory());
+        CHECK (st.folderRename ("presets", "x").isEmpty() && ! st.folderDelete ("samples"));
+        CHECK (st.folderDelete (odd));
+        CHECK (njo::mgr::safeRel ("A/B c") && ! njo::mgr::safeRel ("../x") && ! njo::mgr::safeRel ("/x") && ! njo::mgr::safeRel ("a//b"));
+    }
+
+    // ---- folders: vault
+    {
+        im.libFolder = "samples";
+        im.folderAct (true, "new", "Drums");
+        CHECK (im.libFolder == "samples/Drums" && root.getChildFile ("Samples/Drums").isDirectory());
+        im.folderAct (true, "new", "Kicks");
+        CHECK (im.libFolder == "samples/Drums/Kicks");
+        im.libImport ({ src.getChildFile ("kick.wav") });     // not a duplicate: it is another folder
+        CHECK (root.getChildFile ("Samples/Drums/Kicks/kick.wav").existsAsFile());
+        CHECK (im.findLib ("samples/Drums/Kicks/kick.wav") != nullptr && im.findLib ("samples/Drums/Kicks/kick.wav")->folder == "Drums/Kicks");
+        im.libLoad ("samples/Drums/Kicks/kick.wav", 3); pump (80);
+        CHECK (im.slotLib["sm3"].id == "samples/Drums/Kicks/kick.wav");
+        CHECK (im.presetSaveAs ("Kick Preset", {}, {}) == "Kick Preset.njopreset");
+        {
+            auto v = juce::JSON::parse (root.getChildFile ("Presets/Kick Preset.njopreset").loadFileAsString());
+            CHECK (v["refs"]["sm3"]["folder"].toString() == "Drums/Kicks");
+        }
+        // rename the parent folder: slots and the files follow
+        im.libFolder = "samples/Drums";
+        im.folderAct (true, "ren", "Percussion");
+        CHECK (root.getChildFile ("Samples/Percussion/Kicks/kick.wav").existsAsFile() && ! root.getChildFile ("Samples/Drums").exists());
+        CHECK (im.libFolder == "samples/Percussion" && im.slotLib["sm3"].id == "samples/Percussion/Kicks/kick.wav");
+        CHECK (im.findLib ("samples/Percussion/Kicks/kick.wav") != nullptr);
+        // a preset that still refers to the old folder finds the file by name and size
+        {
+            auto rec = *im.findPreset ("Kick Preset.njopreset");
+            mem.clear (njo::SoundMemory::Sample, 3); pump (60);
+            im.presetApply (rec); pump (150);
+            CHECK (mem.get (njo::SoundMemory::Sample, 3) != nullptr);
+        }
+        // move a file between folders and kinds
+        im.libMoveTo ("samples/Percussion/Kicks/kick.wav", "samples");
+        CHECK (root.getChildFile ("Samples/kick (2).wav").existsAsFile() || root.getChildFile ("Samples/kick.wav").existsAsFile());
+        CHECK (im.findLib ("samples/Percussion/Kicks/kick.wav") == nullptr);
+        im.libMoveTo ("samples/Percussion/Kicks/nothing.wav", "samples");   // unknown ids are ignored
+        im.libFolder = "samples";
+        auto rows = 0; for (auto& r : im.lib) if (r.kind == 1 && r.folder.isEmpty()) ++rows;
+        CHECK (rows == 2);
+        // nodes of the vault tree: counts include the sub folders
+        auto vn = im.vaultNodes();
+        CHECK (vn.size() == 2 && vn[0].path == "samples" && vn[1].path == "wavetables");
+        CHECK (vn[0].count == (int) std::count_if (im.lib.begin(), im.lib.end(), [] (auto& r) { return r.kind == 1; }));
+        // delete a folder with a file inside: the slot reference goes away
+        im.libFolder = "samples"; im.folderAct (true, "new", "Temp");
+        im.libImport ({ src.getChildFile ("pad.wav") });
+        im.libLoad ("samples/Temp/pad.wav", 4); pump (80);
+        CHECK (im.slotLib.count ("sm4") == 1);
+        im.folderAct (true, "del", {}); CHECK (root.getChildFile ("Samples/Temp").exists());
+        im.folderAct (true, "del", {}); CHECK (! root.getChildFile ("Samples/Temp").exists());
+        CHECK (im.slotLib.count ("sm4") == 0 && im.libFolder == "samples");
+        // screenshots of the tree
+        im.libFolder = "samples"; im.folderAct (true, "new", "Loops"); im.folderAct (true, "new", "Hats");
+        im.libFolder = "samples/Loops"; im.libImport ({ src.getChildFile ("pad.wav") });
+        bar.openVault (1, -1); pump (60);
+        im.libRefresh(); im.setLibFolder ("samples/Loops"); im.vaultOv->refresh(); pump (80);
+        save (host, shots.getChildFile ("vault_tree.png"));
+        im.vaultOv->search.setText ("pad", true); pump (60);
+        save (host, shots.getChildFile ("vault_search.png"));
+        im.vaultOv->search.setText ({}, true);
+        bar.closeOverlays();
+    }
 
     // ---- screenshots
     for (auto& f : root.getChildFile ("Presets").findChildFiles (juce::File::findFiles, false)) (void) f;
