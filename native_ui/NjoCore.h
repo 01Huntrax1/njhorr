@@ -47,8 +47,8 @@ namespace njo
         void lcd (const juce::String& n, const juce::String& v) { if (onLcd) onLcd (n, v); }
         void status (const juce::String& t) { if (onStatus) onStatus (t); }
 
-        // set by the shell: open the Sound Vault for the given kind (SoundMemory::Kind as int) and oscillator slot
-        std::function<void (int kind, int osc)> onOpenVault;
+        // set by the shell: open the vault dropdown (anchored at `anchor`) for the given kind (SoundMemory::Kind as int) and oscillator slot
+        std::function<void (int kind, int osc, juce::Component* anchor)> onOpenVault;
 
         // the selected LFO / envelope in the editors (shared by the strip and the modulation page)
         int selectedLfo = 0, selectedEnv = 0;

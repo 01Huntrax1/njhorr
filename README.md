@@ -21,8 +21,8 @@ Edit patch/Eisenpuls_Synth.cmajor or patch/index.js, then generate into a separa
     cmaj generate --target=juce --output=<folder> --cmajorIncludePath=<cmajor>/include patch/Eisenpuls_Synth.cmajorpatch
 
 ## Preset Bank and Sound Vault (inside the plugin window)
-- PRESET bar under the title: previous / next, SAVE, BANK (the Preset Bank: save as new, overwrite, rename, delete).
-- VAULT (the Sound Vault): samples and wavetables you load into any oscillator are added automatically; add more files, rename, delete, and load them into Sampler 1/2 or Wavetable 1-3. A preset remembers which vault file each oscillator used.
+- PRESET bar under the title: previous / next, the preset name (click: dropdown with folders, save, rename, move, delete, favorites), SAVE.
+- VAULT (dropdown): samples and wavetables you load into any oscillator are added automatically; add more files, rename, delete, and load them into Sampler 1/2 or Wavetable 1-3. A preset remembers which vault file each oscillator used.
 
 ## Folders (Preset Bank and Sound Vault)
 Inside the plugin the managers work on real folders in your Documents folder:
@@ -118,11 +118,11 @@ Notes and limits:
 - The native UI keeps the parameter objects it polls (one string lookup per parameter, not one per parameter per timer tick).
 - Memory: the DSP state is about 50 MB (FX delay arena 24 MB, wavetable mips 13 MB, wavetable frames 6 MB, tables / samples about 4 MB).
 
-## Folders in the Preset Bank and the Sound Vault
+## Preset and Vault dropdowns (native UI)
 
-Both overlays of the native UI are now folder trees (the files really live in sub folders of `Documents/Njohrr/{Presets,Samples,Wavetables}`):
+The Bank and Vault windows were replaced by dropdown menus in the style of Tone2 Icarus (the files still live in sub folders of `Documents/Njohrr/{Presets,Samples,Wavetables}`):
 
-- **Tree on the left** (expand / collapse with the arrows or a double click). The Vault tree has the roots *Samples* and *Wavetables*, the files of the selected folder are listed on the right (typing in *Search* looks through the selected folder and everything below it). The Preset Bank is one tree with folders and presets.
-- **Folders:** type a name and press *NEW* (creates the folder inside the selected one), *RENAME* or *DELETE* (asks twice; the files go to the trash). Right click a folder for the same actions and *Open in the file manager*. Presets are saved into the selected folder.
-- **Moving:** every vault row has a **MOVE v** dropdown (nested menus of all folders of both kinds), the Preset Bank has **MOVE TO v** for the selected preset, and rows / presets can be dragged onto a folder of the tree. Renaming or moving keeps the oscillator slots and the current preset pointing at the right files; a preset that refers to a file that was moved finds it again by name and size.
+- **Preset name (click, or the arrow buttons for previous / next):** *Init*, *Favorites*, then every folder as a nested submenu with its presets (the current one is ticked, favourites have a `*`). Below: *Save*, *Save as new in* (folder picker, then a name), *Rename preset*, *Move preset to*, *Add to / Remove from favorites*, *Delete preset* (asks), *Folders* (*New folder in*, *Rename folder*, *Delete folder*), *Show presets folder*, *Rescan*.
+- **VAULT button (bar) and the VAULT button of each oscillator:** *Load into* (bar only: which oscillator), *Favorites*, the files as nested folder submenus (the oscillator button lists the wavetables or samples of that oscillator directly; the bar lists *Samples* and *Wavetables*), then *Add files* (pick the folder first), *Loaded file of OSC n* (rename, move, favourite, delete), *Folders*, *Show vault folder*, *Rescan*. A click on a file loads it into the oscillator.
+- **Storage:** favourites live in `Documents/Njohrr/library.json`; presets store a content hash of every vault file they use, so a preset finds its samples again even after the files were renamed and moved outside the plugin (first by folder + name + size, then by name + size, then by hash). Renaming or moving inside the plugin keeps slots, the current preset and favourites pointing at the right files.
 - Files of earlier versions simply sit in the root folders. The web UI (JS fallback) still shows only the root folders.

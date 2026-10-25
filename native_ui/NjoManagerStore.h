@@ -7,6 +7,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <map>
+#include <set>
 
 namespace njo::mgr
 {
@@ -17,9 +18,10 @@ namespace njo::mgr
     juce::String stemOf (const juce::String& fname);
     juce::String extOf (const juce::String& fname);                       // with the dot, or ""
     bool isAudioName (const juce::String& fname);                         // the AUDIO_EXT list of the web UI
+    juce::String fileHash (const juce::File&);                            // content identity: size + FNV-1a of the first and last 64 KB ("" when unreadable)
     double audioDuration (const juce::File&);                             // seconds, 0 when JUCE cannot read the header
 
-    struct Ref { juce::String name; juce::int64 size = 0; juce::String folder; };   // folder: relative folder of the vault file (optional)
+    struct Ref { juce::String name; juce::int64 size = 0; juce::String folder; juce::String hash; };   // folder, hash: optional extra keys (hash = fileHash of the vault file, finds it again after renames)
 
     struct PresetRec
     {
@@ -71,6 +73,10 @@ namespace njo::mgr
         juce::String presetMove (const PresetRec&, const juce::String& destFolder);   // new id or ""
         static juce::String toJson (const PresetRec&);
         static bool fromJson (const juce::String& text, PresetRec& out);
+
+        // favourites: ids prefixed "p:" (preset), "s:" (sample), "w:" (wavetable), kept in <root>/library.json
+        std::set<juce::String> favLoad() const;
+        bool favSave (const std::set<juce::String>&) const;
 
         // vault
         std::vector<LibRec> libList (std::map<juce::String, double>& durCache) const;   // recursive

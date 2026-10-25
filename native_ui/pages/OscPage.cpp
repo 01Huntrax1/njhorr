@@ -198,7 +198,7 @@ namespace njo
             dz.onFile = [this] (const juce::File& f) { loadFile (f); };
             dz.onClick = [this] { chooseFile(); };
             dz.onClear = [this] { clearMemory(); };
-            vault.onClick = [this] { if (ctx.onOpenVault) ctx.onOpenVault ((int) kind(), o); };
+            vault.onClick = [this] { if (ctx.onOpenVault) ctx.onOpenVault ((int) kind(), o, &vault); };
 
             ctx.addListener (this);
             mem.addChangeListener (this);

@@ -33,6 +33,25 @@ namespace njo::mgr
         return exts.contains (extOf (fname).substring (1).toLowerCase());
     }
 
+    juce::String fileHash (const juce::File& f)
+    {
+        std::unique_ptr<juce::FileInputStream> in (f.createInputStream());
+        if (in == nullptr) return {};
+        const juce::int64 size = in->getTotalLength();
+        juce::uint64 h = 1469598103934665603ull;
+        auto feed = [&] (juce::int64 pos)
+        {
+            char buf[65536];
+            in->setPosition (pos);
+            auto n = in->read (buf, (int) std::min<juce::int64> (sizeof (buf), size - pos));
+            for (int i = 0; i < n; ++i) { h ^= (juce::uint8) buf[i]; h *= 1099511628211ull; }
+        };
+        feed (0);
+        if (size > 65536) feed (size - std::min<juce::int64> (65536, size - 65536));
+        h ^= (juce::uint64) size; h *= 1099511628211ull;
+        return juce::String::toHexString ((juce::int64) h) + "-" + juce::String (size);
+    }
+
     double audioDuration (const juce::File& f)
     {
         static juce::AudioFormatManager fm;
@@ -58,7 +77,8 @@ namespace njo::mgr
             auto* r = new juce::DynamicObject();
             r->setProperty ("name", kv.second.name);
             r->setProperty ("size", (juce::int64) kv.second.size);
-            if (kv.second.folder.isNotEmpty()) r->setProperty ("folder", kv.second.folder);   // extra key, ignored by the web UI
+            if (kv.second.folder.isNotEmpty()) r->setProperty ("folder", kv.second.folder);
+            if (kv.second.hash.isNotEmpty()) r->setProperty ("hash", kv.second.hash);   // extra key, ignored by the web UI
             refs->setProperty (juce::Identifier (kv.first), juce::var (r));
         }
         o->setProperty ("refs", juce::var (refs));
@@ -87,7 +107,7 @@ namespace njo::mgr
         if (auto* refs = o->getProperty ("refs").getDynamicObject())
             for (auto& kv : refs->getProperties())
                 if (auto* r = kv.value.getDynamicObject())
-                    out.refs[kv.name.toString()] = { r->getProperty ("name").toString(), (juce::int64) r->getProperty ("size"), r->getProperty ("folder").toString() };
+                    out.refs[kv.name.toString()] = { r->getProperty ("name").toString(), (juce::int64) r->getProperty ("size"), r->getProperty ("folder").toString(), r->getProperty ("hash").toString() };
         out.lfo = o->getProperty ("lfo");
         out.frq = o->getProperty ("frq");
         return true;
@@ -234,6 +254,27 @@ namespace njo::mgr
         if (dest == src) return r.id;
         if (dest.exists()) return {};
         return src.moveFileTo (dest) ? joinRel (destFolder, fname) : juce::String();
+    }
+
+    // ------------------------------------------------------------------ favourites
+    std::set<juce::String> Store::favLoad() const
+    {
+        std::set<juce::String> out;
+        auto v = juce::JSON::parse (root.getChildFile ("library.json"));
+        if (auto* a = v.getProperty ("favorites", juce::var()).getArray())
+            for (auto& e : *a) if (e.toString().isNotEmpty()) out.insert (e.toString());
+        return out;
+    }
+
+    bool Store::favSave (const std::set<juce::String>& favs) const
+    {
+        juce::Array<juce::var> a;
+        for (auto& s : favs) a.add (s);
+        auto* o = new juce::DynamicObject();
+        o->setProperty ("format", "njohrr-library");
+        o->setProperty ("favorites", juce::var (a));
+        root.createDirectory();
+        return root.getChildFile ("library.json").replaceWithText (juce::JSON::toString (juce::var (o), true));
     }
 
     // ------------------------------------------------------------------ vault

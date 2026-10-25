@@ -14,7 +14,7 @@ logical size 1180 x 760 (`EditorContent`); the plugin editor scales it to the wi
   parameter number; modulation drop targets). `makeWidget(ctx, num, asKnob)`.
 * `NjoEditor.*` - the shell: top bar, page rail (Synth / Effects / Modulation), OSC tabs, preset bar, bottom strip.
 * `NjoPages.h` - interfaces of the pages; `pages/*.cpp` implement them (stubs until written).
-* `NjoMemory.*` - sample / wavetable memory. `NjoManager.*` - preset bar, Preset Bank, Sound Vault.
+* `NjoMemory.*` - sample / wavetable memory. `NjoManager.*` - preset bar with the preset and vault dropdown menus (folders, favourites).
 
 ## Building and looking at it (headless, no display needed)
 JUCE lives in /home/claude/JUCE. Its object files were built once into /tmp/njo_juce_objs (from `test/CMakeLists.txt`).
