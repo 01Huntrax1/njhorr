@@ -1,4 +1,5 @@
 #include "OscDisplays.h"
+#include "../NjoPhys.h"
 #include <cmath>
 
 namespace njo
@@ -181,6 +182,7 @@ namespace njo
 
     void OscDisplay::paramChanged (int num, float)
     {
+        if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "pleng", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -209,7 +211,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 2, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 3, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -305,6 +307,40 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 3)
+            {
+                // mode spectrum of resonator A (red) and B (orange): x = frequency ratio on a log axis, height = amplitude (dimmer for modes that die quickly)
+                auto V = [&] (const char* key) { return ctx.get (phys::phyId (o, phys::key (key))); };
+                const float bal = V ("phbal"), tune = std::pow (2.0f, V ("phtunB") / 12.0f);
+                auto xo = [&] (float r) { return 14.0f + (W - 28.0f) * std::log2 (juce::jmax (r, 0.5f) / 0.5f) / std::log2 (80.0f / 0.5f); };
+                g.setFont (font (std::round (H * 0.07f), true));
+                for (float f : { 1.0f, 2.0f, 4.0f, 8.0f, 16.0f, 32.0f, 64.0f })
+                {
+                    g.setColour (juce::Colour (0xffffc8be).withAlpha (0.18f)); g.fillRect (xo (f), 4.0f, 1.0f, H - 18.0f);
+                    g.setColour (juce::Colour (0xffffc8be).withAlpha (0.45f)); g.drawText (juce::String ((int) f) + "x", juce::Rectangle<float> (xo (f) - 6.0f, H - 15.0f, 30.0f, 12.0f), juce::Justification::centredLeft, false);
+                }
+                for (int res = 0; res < 2; ++res)
+                {
+                    const char* sfx = res == 0 ? "A" : "B";
+                    const int md = juce::jlimit (0, 8, juce::roundToInt (V (res == 0 ? "phmodA" : "phmodB")));
+                    const float hit = V (res == 0 ? "phhitA" : "phhitB"), inh = V (res == 0 ? "phinhA" : "phinhB"), mat = V (res == 0 ? "phmatA" : "phmatB");
+                    const float mul = res == 0 ? 1.0f : tune, vol = res == 0 ? 1.0f - bal : bal;
+                    juce::ignoreUnused (sfx);
+                    float am[16], sum = 0;
+                    for (int i = 0; i < 16; ++i) { am[i] = std::abs (std::sin (juce::MathConstants<float>::pi * hit * (float) (i + 1))) / std::pow ((float) (i + 1), phys::AEXP[md]); sum += am[i] * am[i]; }
+                    const float nr = 1.0f / std::sqrt (juce::jmax (sum, 0.05f));
+                    g.setColour ((res == 0 ? juce::Colour (0xffff3b30) : juce::Colour (0xffffa040)).withAlpha (0.35f + 0.65f * juce::jmin (1.0f, vol * 1.5f)));
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        const float r = phys::RAT[md][i] * (1.0f + inh * 0.004f * (float) (i * i)) * mul;
+                        const float t60 = juce::jmin (1.0f, std::pow (phys::RAT[md][i], -1.6f * (1.0f - mat)));
+                        const float h = juce::jmin (1.0f, am[i] * nr * 1.2f) * (H - 24.0f) * (0.35f + 0.65f * t60);
+                        g.fillRect (xo (r) - 1.5f + (res == 1 ? 2.0f : 0.0f), H - 16.0f - h, 3.0f, h);
+                    }
+                }
+                auto mname = [&] (const char* key) { return juce::String (phys::model (juce::roundToInt (V (key)))).toUpperCase(); };
+                info = "PHYSICAL / A " + mname ("phmodA") + " + B " + mname ("phmodB") + (V ("phser") > 0.5f ? " / SERIAL" : "");
             }
             else
             {

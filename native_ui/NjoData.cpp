@@ -120,6 +120,7 @@ namespace njo
         if (s.labels.size()) return s.labels[juce::jlimit (0, s.labels.size() - 1, juce::roundToInt (v - s.min))];
         if (s.unit == "oct") { int o = juce::roundToInt (v); return (o > 0 ? "+" : "") + juce::String (o) + " oct"; }
         if (s.unit == "Hz") return hzText (v);
+        if (s.unit == "s") return juce::String (v, v < 10 ? 2 : 1) + " s";
         if (s.unit == "ms") return v >= 1000 ? juce::String (v / 1000, 2) + " s" : juce::String (v, 0) + " ms";
         if (s.unit == "st") return signedText (v, s.kind == "stp" ? 0 : 1, " st");
         if (s.unit == "ct") return signedText (v, 0, " ct");

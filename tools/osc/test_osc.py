@@ -393,5 +393,34 @@ for eng in range(24):
     check("Plaits engine %d sounds and stays finite" % eng, good, "rms %.3f peak %.2f" % (rms(a), np.abs(a).max()))
 a = render([P(0, "type", 2), P(0, "pleng", 10), P(0, "pharm", 0), P(0, "ptimb", 0), P(0, "pmorph", 0), P(0, "level", 0.8), FOFF(0)], note=69, tag="plpitch")
 check("Plaits slot follows the keyboard pitch (A4)", abs(peak_freq(seg(a)[:, 0]) - 440) < 3, "%.1f" % peak_freq(seg(a)[:, 0]))
+
+# ---------------------------------------------------------------- physical modelling slot
+def PH(o, key, v): return (L.phy_id(o, [q[0] for q in L.PHY if q[1] == key][0]), v)
+PHYS = [P(0, "type", 3), P(0, "level", 0.8), FOFF(0)]
+for m, name in enumerate(L.PHY_MODELS):
+    a = render(PHYS + [PH(0, "phmodA", m), PH(0, "phbal", 0)], note=57, hold=0.8, tail=0.3, tag="phy%d" % m)
+    x = a[:, 0]
+    good = np.isfinite(x).all() and rms(x[int(0.05 * RATE):int(0.5 * RATE)]) > 0.01 and np.abs(x).max() < 2
+    check("Physical model %s sounds and stays finite" % name, good, "rms %.3f peak %.2f" % (rms(x[int(0.05 * RATE):int(0.5 * RATE)]), np.abs(x).max()))
+    if m in (0, 7): check("Physical %s plays the keyboard pitch (A3)" % name, abs(peak_freq(x[int(0.05 * RATE):int(0.5 * RATE)]) - 220) < 2.5, "%.1f" % peak_freq(x[int(0.05 * RATE):int(0.5 * RATE)]))
+a = render(PHYS + [PH(0, "phbal", 0), PH(0, "phdecA", 0.15)], note=57, hold=1.0, tail=0.2, tag="phydec1")[:, 0]
+b = render(PHYS + [PH(0, "phbal", 0), PH(0, "phdecA", 4.0)], note=57, hold=1.0, tail=0.2, tag="phydec2")[:, 0]
+check("Decay sets how long the resonator rings", rms(b[int(0.8 * RATE):int(0.9 * RATE)]) > 20 * rms(a[int(0.8 * RATE):int(0.9 * RATE)]), "%.5f vs %.5f" % (rms(b[int(0.8 * RATE):int(0.9 * RATE)]), rms(a[int(0.8 * RATE):int(0.9 * RATE)])))
+a = render(PHYS + [PH(0, "phbal", 0), PH(0, "phhitA", 0.5), PH(0, "phmix", 0)], note=57, hold=0.6, tail=0.1, tag="phyhit")[:, 0]
+h1, h2 = band(a[int(0.05 * RATE):int(0.5 * RATE)], 210, 230), band(a[int(0.05 * RATE):int(0.5 * RATE)], 430, 450)
+check("Hit position 0.5 on a string removes the even harmonics", h2 < 0.05 * h1, "%.1f / %.1f" % (h2, h1))
+a = render(PHYS + [PH(0, "phbal", 1), PH(0, "phmodB", 7), PH(0, "phtunB", 12)], note=57, hold=0.6, tail=0.1, tag="phyB")[:, 0]
+check("Resonator B follows B Tune (open tube, +12 st)", abs(peak_freq(a[int(0.05 * RATE):int(0.5 * RATE)]) - 440) < 5, "%.1f" % peak_freq(a[int(0.05 * RATE):int(0.5 * RATE)]))
+a = render(PHYS + [PH(0, "phbal", 0.5), PH(0, "phser", 0)], note=57, hold=0.6, tail=0.1, tag="phypar")[:, 0]
+b = render(PHYS + [PH(0, "phbal", 0.5), PH(0, "phser", 1)], note=57, hold=0.6, tail=0.1, tag="physer")[:, 0]
+check("Serial coupling sounds and differs from parallel", np.isfinite(b).all() and rms(b[int(0.05 * RATE):int(0.5 * RATE)]) > 0.005 and np.abs(a[:int(0.5 * RATE)] - b[:int(0.5 * RATE)]).max() > 0.01)
+a = render(PHYS + [PH(0, "phmix", 1), PH(0, "phntim", 2000), PH(0, "phbal", 0)], note=57, hold=0.8, tail=0.1, tag="phynz")[:, 0]
+check("Noise exciter with a long Noise Time keeps the resonator sounding", rms(a[int(0.5 * RATE):int(0.7 * RATE)]) > 0.01, "%.4f" % rms(a[int(0.5 * RATE):int(0.7 * RATE)]))
+ok = True
+for t in range(4):
+    a = render(PHYS + [PH(0, "phmodA", 2 * t), PH(0, "phmodB", 8 - t), PH(0, "phdecA", 20), PH(0, "phdecB", 20), PH(0, "phinhA", 1), PH(0, "phinhB", 1), PH(0, "phmatA", t % 2), PH(0, "phbal", 0.5),
+                    PH(0, "phser", t % 2), PH(0, "phhard", 1), PH(0, "phmix", 0.5), P(0, "level", 1)], note=24 + 40 * (t % 2) + 20 * (t // 2), hold=0.4, tail=0.05, tag="phyext%d" % t)
+    if not np.isfinite(a).all() or np.abs(a).max() > 8: ok = False
+check("Physical slot stays finite and bounded at extreme settings", ok)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

@@ -19,6 +19,7 @@
   .page[data-src] .o-flt .cgrid > .control.sel, .page[data-src] .o-flt .cgrid > .control.btns { grid-column: span 2; }
   .page[data-src] .o-out .cgrid > .control.sel, .page[data-src] .o-out .cgrid > .control.btns, .page[data-src] .o-pl > .control.sel,
   .page[data-src] .o-tune .cgrid > .control.btns.wide, .page[data-src] .o-g3 > .control.btns { grid-column: 1 / -1; }
+  .o-phy > .o-uh { grid-column: 1 / -1; margin-top: 4px; } .page[data-src] .o-phy > .control.sel { grid-column: 1 / -1; }
   .page[data-src] .knb .knob { width: calc(var(--u) * 32); height: calc(var(--u) * 32); }
   .osc-canvas, .flt-canvas { height: calc(var(--u) * 72); }
   /* FM matrix */

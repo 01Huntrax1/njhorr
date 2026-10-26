@@ -1,4 +1,5 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
+#include "../NjoPhys.h"
 #include "../NjoEditor.h"
 #include "../NjoMock.h"
 #include "../NjoFreq.h"
@@ -42,6 +43,10 @@ int main (int argc, char** argv)
         ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f); ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist_wd.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
+        // Physical source
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 3.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("phmodA")), 6.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("phmodB")), 3.0f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_phys.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
     ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("fx.png"), scale);

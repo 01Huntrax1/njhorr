@@ -12,13 +12,13 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Plaits"]
+SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 2, 0, "", "btn", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 3, 0, "", "btn", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -91,3 +91,29 @@ def pm_id(src, dst): return PM_BASE + 6 * src + dst
 def pd_id(src, dst): return PD_BASE + 6 * src + dst
 def rm_id(src, dst): return RM_BASE + 6 * src + dst
 def am_id(src, dst): return AM_BASE + 6 * src + dst
+
+# Physical modelling source (Source = Physical, modal resonators in the style of RipplerX), implemented by tools/phys/build_phys.py.
+# Parameter id of slot o: PHY_BASE + PHY_STRIDE * o + j.  j, key, name, short, min, max, init, unit, kind, options
+PHY_BASE = 1700
+PHY_STRIDE = 32
+PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
+PHY_COUPLING = ["Parallel", "Serial"]
+PHY = [
+ (0,  "phmix",  "Noise vs Mallet",      "Noise",     0, 1, 0.25, "", "sld", None),
+ (1,  "phhard", "Mallet Hardness",      "Hardness",  0, 1, 0.6, "", "sld", None),
+ (2,  "phntim", "Noise Time",           "Noise Time", 2, 3000, 60, "ms", "sld", None),
+ (3,  "phmodA", "A Model",              "Model",     0, 8, 0, "", "sel", PHY_MODELS),
+ (4,  "phdecA", "A Decay",              "Decay",     0.02, 20, 2.5, "s", "sld", None),
+ (5,  "phmatA", "A Material",           "Material",  0, 1, 0.5, "", "sld", None),
+ (6,  "phhitA", "A Hit Position",       "Hit",       0, 1, 0.3, "", "sld", None),
+ (7,  "phinhA", "A Inharmonicity",      "Inharm",    0, 1, 0.0, "", "sld", None),
+ (8,  "phmodB", "B Model",              "Model",     0, 8, 3, "", "sel", PHY_MODELS),
+ (9,  "phdecB", "B Decay",              "Decay",     0.02, 20, 1.5, "s", "sld", None),
+ (10, "phmatB", "B Material",           "Material",  0, 1, 0.5, "", "sld", None),
+ (11, "phhitB", "B Hit Position",       "Hit",       0, 1, 0.3, "", "sld", None),
+ (12, "phinhB", "B Inharmonicity",      "Inharm",    0, 1, 0.0, "", "sld", None),
+ (13, "phtunB", "B Tune",               "Tune",      -24, 24, 12, "st", "sld", None),
+ (14, "phbal",  "A / B Balance",        "A / B",     0, 1, 0.35, "", "sld", None),
+ (15, "phser",  "Coupling",             "Coupling",  0, 1, 0, "", "btn", PHY_COUPLING),
+]
+def phy_id(o, j): return PHY_BASE + PHY_STRIDE * o + j

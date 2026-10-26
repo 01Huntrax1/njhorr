@@ -132,3 +132,17 @@ The Bank and Vault windows were replaced by dropdown menus in the style of Tone2
 - The wavetable and sampler buffers have power-of-two sizes (`wtMip` 4 194 304, `smpBuf` 1 048 576 floats), so every array read in the oscillator inner loop wraps with a mask instead of an integer modulo. Measured with `tools/osc/bench.py` and the offline DSP host (8 notes, 6 oscillators, 7 unison voices each, filters on, 4 s): 2.27 s → 1.78 s (-21 %), audio output bit-identical. The cost is about 5 MB more DSP state.
 - The editor only polls the DSP while its window is open (see the sound persistence notes above).
 - Known gap: drawn LFO / FREQ shapes only reach the DSP when an editor has been opened.
+
+## Physical modelling source
+
+Each oscillator slot has a fourth Source type, **Physical**: modal synthesis in the style of RipplerX. An exciter strikes two resonators, A and B, each a bank of 16 two-pole resonators (modes).
+
+- **Exciter**: a mallet (an impulse through a one-pole low-pass; **Hardness** sets its cutoff, 200 Hz to 25 kHz) and a noise burst (**Noise Time** 2 ms to 3 s, same colour filter). **Noise** blends the two; a long Noise Time keeps the resonator driven (bowed or blown sounds).
+- **Models** per resonator: String, Beam, Squared (square membrane), Membrane (circular, Bessel zeros), Plate, Drumhead, Marimba (tuned 1:4:10), Open Tube, Closed Tube (odd harmonics). The mode ratio tables are in `tools/phys/build_phys.py` and are generated into the DSP and into `native_ui/NjoPhys.h`.
+- **Decay** is the decay time (T60) of the fundamental; **Material** sets how fast the upper modes die (0 = wood, high modes damp quickly; 1 = metal, all modes ring equally); **Hit** is the strike position (mode i is weighted by |sin(pi * hit * i)|, so 0.5 on a string removes the even harmonics); **Inharm** stretches the upper modes.
+- **B Tune** moves resonator B by +-24 semitones, **A / B** blends the two. **Coupling**: Parallel (both are excited by the exciter) or Serial (A's output excites B).
+- Mod matrix: the slot's "Position / Harm" destination moves both Hit knobs, "Warp 1 / Timbre" both Material knobs, "Warp 2 / Morph" the Noise knob. The slot's filter, distortion, Tune (Octave, Semi, Fine, Key Track, Frequency), FM / PM and level work as for the other sources.
+- Parameters: ids `1700 + 32 * slot + j` (16 per slot, in `layout.py` as `PHY`). The coefficients of the modes are recomputed every 64 samples, and only when the pitch or a parameter changed. A voice costs 32 resonators per sample for the slot.
+- The mode display of the slot shows the ratio, strength and (dimmer = shorter) decay of every mode of A (red) and B (orange).
+
+`tools/phys/build_phys.py` writes the DSP into `patch/Eisenpuls_Synth.cmajor` (idempotent); `tools/phys/apply_phys_ui.py` was the one-time edit of `patch/index.js`. Tests: `tools/osc/test_osc.py` (every model, pitch, decay, hit position, B tune, serial coupling, noise, extreme settings).

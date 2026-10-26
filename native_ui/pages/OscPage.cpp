@@ -1,6 +1,7 @@
 // OSC 1-6 page: source panel (wavetable / sampler / Plaits), tune + unison, filter, distortion + output.
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
 #include "../NjoPages.h"
+#include "../NjoPhys.h"
 #include "OscDisplays.h"
 #include <array>
 
@@ -159,6 +160,15 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Physical source: its parameters live in their own id block (PHY_BASE + 32 * osc + j)
+            for (auto key : phyKeys)
+            {
+                const int num = phys::phyId (o, phys::key (key));
+                auto w = makeWidget (ctx, num, true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             if (auto* t = dynamic_cast<ButtonsWidget*> (W ("type"))) t->setShowLabel (false);
             for (auto key : { "track", "rphase" }) if (auto* b = dynamic_cast<ButtonsWidget*> (W (key))) b->setShowLabel (false);
 
@@ -210,7 +220,8 @@ namespace njo
 
         ParamWidget* W (const char* key) { auto it = widgets.find (key); return it == widgets.end() ? nullptr : it->second.get(); }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 2, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 3, juce::roundToInt (ctx.get (pnum ("type")))); }
+        static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser" };
         SoundMemory::Kind kind() const { return srcType() == 1 ? SoundMemory::Sample : SoundMemory::Wavetable; }
 
         // ---- memory / drop zone ----
@@ -305,6 +316,7 @@ namespace njo
         // ---- parameter changes ----
         void paramChanged (int num, float) override
         {
+            if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
             int k = num - oscId (o, 0);
             if (k < 0 || k >= OSC_STRIDE) return;
             if (k == oscKey ("type")) { if (dz.getState() != DropZone::Busy) dz.setState (DropZone::Empty, ""); refreshDz(); updateEngineLabels(); layoutChildren(); }
@@ -352,7 +364,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, pl = type == 2;
+            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -368,7 +380,7 @@ namespace njo
                 display.setVisible (true);
                 dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - 56, 26);
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
-                dz.setVisible (! pl); vault.setVisible (! pl);
+                dz.setVisible (wt || sm); vault.setVisible (wt || sm);
 
                 const int colW = (w - 26 - 7) / 2, x2 = 13 + colW + 7;
                 put ("wpos", 13 + colW / 2 - 35, 190, 70, 54, c, wt);
@@ -387,6 +399,27 @@ namespace njo
                 knob ("pharm", 13 + juce::roundToInt (fw / 6), 302, c, pl);
                 knob ("ptimb", 13 + juce::roundToInt (fw / 2), 302, c, pl);
                 knob ("pmorph", 13 + juce::roundToInt (fw * 5 / 6), 302, c, pl);
+
+                // physical: resonators A and B side by side, exciter and balance below
+                if (ph)
+                {
+                    const int cw2 = (w - 26 - 8) / 2, xa = 13, xb = 13 + cw2 + 8;
+                    put ("phmodA", xa, 156, cw2, 36, c);  strip ("phmodA", xa, 156, cw2, c, false);
+                    put ("phmodB", xb, 156, cw2, 36, c);  strip ("phmodB", xb, 156, cw2, c, false);
+                    const char* ka[3] = { "phdecA", "phmatA", "phhitA" }; const char* kb[3] = { "phdecB", "phmatB", "phhitB" };
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        knob (ka[i], xa + cw2 * (2 * i + 1) / 6, 200, c);
+                        knob (kb[i], xb + cw2 * (2 * i + 1) / 6, 200, c);
+                    }
+                    knob ("phinhA", xa + cw2 / 6, 258, c);
+                    knob ("phinhB", xb + cw2 / 6, 258, c);
+                    knob ("phtunB", xb + cw2 / 2, 258, c);
+                    const float fw5 = (float) (w - 26);
+                    const char* ke[4] = { "phmix", "phhard", "phntim", "phbal" };
+                    for (int i = 0; i < 4; ++i) knob (ke[i], 13 + juce::roundToInt (fw5 * (2 * i + 1) / 8), 334, c);
+                    put ("phser", 13, 396, w - 26, 31, c);
+                }
             }
             // ---- tune ----
             if (mode == 0)
@@ -395,13 +428,13 @@ namespace njo
                 const int lx = 12, rx = w - 12 - 72, cl = lx + 36, cr = rx + 36;
                 put ("oct", lx, 52, 72, 17, c);   strip ("oct", lx, 41, 72, c, true);
                 put ("semi", rx, 52, 72, 17, c);  strip ("semi", rx, 41, 72, c, true);
-                int fineTop = wt ? 86 : (sm ? 191 : 269);
+                int fineTop = (wt || ph) ? 86 : (sm ? 191 : 269);
                 knob ("fine", cl, fineTop, c);
                 put ("track", rx, fineTop + 24, 72, 18, c); strip ("track", rx, fineTop + 11, 72, c, true);
                 int phaseTop = wt ? 152 : 309;
-                knob ("phase", cl, phaseTop, c, ! pl);
-                knob ("freq", cr, wt ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
-                put ("rphase", rx, phaseTop + 24, 72, 18, c, ! pl); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! pl);
+                knob ("phase", cl, phaseTop, c, ! (pl || ph));
+                knob ("freq", cr, (wt || ph) ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
+                put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (pl || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (pl || ph));
 
                 showUnison = wt;
                 put ("uvox", lx, 283, 72, 17, c, wt);   strip ("uvox", lx, 272, 72, c, true, wt);
@@ -514,6 +547,13 @@ namespace njo
 if (! wf)
                     g.drawFittedText ("Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.",
                                       cardOut.getX() + 14, 376, cardOut.getWidth() - 28, 50, juce::Justification::topLeft, 4);
+            }
+            if (mode == 0 && srcType() == 3)
+            {
+                g.setColour (orange); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
+                g.drawText ("RESONATOR A", cardSrc.getX() + 13, 142, 150, 12, juce::Justification::centredLeft);
+                g.drawText ("RESONATOR B", cardSrc.getX() + 13 + (cardSrc.getWidth() - 26 - 8) / 2 + 8, 142, 150, 12, juce::Justification::centredLeft);
+                g.drawText ("EXCITER / MIX", cardSrc.getX() + 13, 322, 150, 12, juce::Justification::centredLeft);
             }
             if (showUnison)
             {
