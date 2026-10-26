@@ -313,22 +313,31 @@ namespace njo
                 // two cycles of the DCO mix (saw + pulse + sub, not band-limited), noise as a level bar
                 auto V = [&] (const char* key) { return ctx.get (phys::phyId (o, phys::key (key))); };
                 const int range = juce::jlimit (0, 2, juce::roundToInt (V ("jrange")));
+                const int stp = juce::jlimit (0, 4, juce::roundToInt (V ("jstype"))), ptp = juce::jlimit (0, 2, juce::roundToInt (V ("jptype"))), btp = juce::jlimit (0, 5, juce::roundToInt (V ("jbtype")));
                 const float cv = V ("jcurve") * 4.0f, wd = juce::jlimit (0.05f, 0.95f, V ("jwidth"));
+                auto fr = [] (float x) { return x - std::floor (x); };
+                auto ramp = [] (float q) { return 2.0f * q - 1.0f; };
+                auto sq = [] (float q, float w) { return q < w ? 1.0f : -1.0f; };
                 juce::Path p;
                 const int Wp = (int) W;
                 for (int x = 0; x < Wp; ++x)
                 {
-                    const float t = (float) x / W * 2.0f, ph = t - std::floor (t), sp = t / 2.0f - std::floor (t / 2.0f);
-                    float saw = 2.0f * ph - 1.0f;
-                    if (cv > 0.01f) saw = 2.0f * (std::exp (cv * ph) - 1.0f) / (std::exp (cv) - 1.0f) - 1.0f;
-                    const float y = (saw * V ("jsaw") + (ph < wd ? 1.0f : -1.0f) * V ("jpulse") + (sp < 0.5f ? 1.0f : -1.0f) * V ("jsub")) * 0.55f;
+                    const float t = (float) x / W * 2.0f, ph = fr (t), q2 = fr (t / 2.0f), q4 = fr (t / 4.0f);
+                    float saw;
+                    if (stp == 1) saw = (ph < wd ? ramp (ph / wd) : -1.0f) + (1.0f - wd);
+                    else if (stp == 2) saw = 0.75f * ramp (ph) + 0.25f * ramp (fr (ph * 2.0f));
+                    else if (stp == 3) saw = 0.7f * ramp (ph) + 0.3f * ramp (fr (ph * 3.0f));
+                    else { saw = cv > 0.01f ? 2.0f * (std::exp (cv * ph) - 1.0f) / (std::exp (cv) - 1.0f) - 1.0f : ramp (ph); if (stp == 4) saw = std::tanh (1.7f * saw) * 1.12f; }
+                    const float pul = sq (ph, ptp == 0 ? wd : (ptp == 1 ? 0.25f : 0.125f));
+                    const float subs[6] = { sq (q2, 0.5f), sq (q2, 0.25f), sq (q4, 0.5f), sq (q4, 0.25f), 0.5f * (sq (q2, 0.5f) + sq (q4, 0.5f)), q2 < 0.5f ? 4.0f * q2 - 1.0f : 3.0f - 4.0f * q2 };
+                    const float y = (saw * V ("jsaw") + pul * V ("jpulse") + subs[btp] * V ("jsub")) * 0.55f;
                     const float py = H / 2 - juce::jlimit (-1.2f, 1.2f, y) * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
                 }
                 g.setColour (juce::Colour (0xffff3b30)); g.strokePath (p, juce::PathStrokeType (2.0f));
                 const float nz = V ("jnoise") * (H - 12);
                 g.setColour (juce::Colour (0xffffa040).withAlpha (0.5f)); g.fillRect (W - 14, H - 6 - nz, 8.0f, nz);
-                info = juce::String ("JUNO DCO / ") + (range == 0 ? "16'" : (range == 1 ? "8'" : "4'")) + " / WIDTH " + juce::String (juce::roundToInt (wd * 100)) + " %"
+                info = juce::String ("ALPHA JUNO / SAW ") + juce::String (stp + 1) + " + PULSE " + juce::String (ptp + 1) + " + SUB " + juce::String (btp + 1) + " / " + (range == 0 ? "16'" : (range == 1 ? "8'" : "4'")) + " / WIDTH " + juce::String (juce::roundToInt (wd * 100)) + " %"
                        + (V ("jpwm") > 0.0f ? " / PWM " + juce::String (V ("jpwmr"), 1) + " HZ" : juce::String());
             }
             else if (type == 3)

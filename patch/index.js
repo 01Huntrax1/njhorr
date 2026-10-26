@@ -619,9 +619,9 @@ const pmId = (s, d) => PM_BASE + 6 * s + d;
 const pdId = (s, d) => PD_BASE + 6 * s + d;
 const rmId = (s, d) => RM_BASE + 6 * s + d;
 const amId = (s, d) => AM_BASE + 6 * s + d;
-const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"];
+const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"];
 const PHY_BASE = 1700, PHY_STRIDE = 32;
-const PHY_K = {"phmix": 0, "phhard": 1, "phntim": 2, "phmodA": 3, "phdecA": 4, "phmatA": 5, "phhitA": 6, "phinhA": 7, "phmodB": 8, "phdecB": 9, "phmatB": 10, "phhitB": 11, "phinhB": 12, "phtunB": 13, "phbal": 14, "phser": 15, "jsaw": 16, "jpulse": 17, "jwidth": 18, "jpwm": 19, "jpwmr": 20, "jsub": 21, "jnoise": 22, "jrange": 23, "jdrift": 24, "jcurve": 25};
+const PHY_K = {"phmix": 0, "phhard": 1, "phntim": 2, "phmodA": 3, "phdecA": 4, "phmatA": 5, "phhitA": 6, "phinhA": 7, "phmodB": 8, "phdecB": 9, "phmatB": 10, "phhitB": 11, "phinhB": 12, "phtunB": 13, "phbal": 14, "phser": 15, "jsaw": 16, "jpulse": 17, "jwidth": 18, "jpwm": 19, "jpwmr": 20, "jsub": 21, "jnoise": 22, "jrange": 23, "jdrift": 24, "jcurve": 25, "jptype": 26, "jstype": 27, "jbtype": 28, "jpwms": 29, "jvib": 30};
 const phyId = (o, key) => PHY_BASE + PHY_STRIDE * o + PHY_K[key];
 const PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"];
 const PHY_RAT = [[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 2.7778, 5.4444, 9.0, 13.4444, 18.7778, 25.0, 32.1111, 40.1111, 49.0, 58.7778, 69.4444, 81.0, 93.4444, 106.7778, 121.0], [1.0, 1.5811, 2.0, 2.2361, 2.5495, 2.9155, 3.0, 3.1623, 3.5355, 3.6056, 3.8079, 4.0, 4.1231, 4.3012, 4.4721, 4.5277], [1.0, 1.5934, 2.1356, 2.2955, 2.6531, 2.9173, 3.1555, 3.5002, 3.5985, 3.6475, 4.059, 4.1318, 4.2305, 4.6011, 4.6101, 4.8319], [1.0, 2.1152, 2.8848, 3.974, 4.0, 5.8587, 6.026, 6.5762, 7.1413, 8.461, 9.0, 9.9219, 10.4238, 11.539, 11.6022, 11.8067], [1.0, 1.2967, 1.5678, 1.6477, 1.8266, 1.9587, 2.0777, 2.2501, 2.2993, 2.3237, 2.5295, 2.5659, 2.6152, 2.8005, 2.8051, 2.916], [1, 4, 10, 17.82, 26.62, 37.18, 49.5, 63.58, 79.42, 97.02, 116.38, 137.5, 160.38, 185.02, 211.42, 239.58], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0]];
@@ -636,7 +636,7 @@ const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1
 const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"], [168, "Tables"], [180, "Frequency"], [186, "RM matrix (amount)"], [222, "AM matrix (amount)"]];
 const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1048": [180, 1.0], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1112": [181, 1.0], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1176": [182, 1.0], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1240": [183, 1.0], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1304": [184, 1.0], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1368": [185, 1.0], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5], "1520": [186, 0.5], "1521": [187, 0.5], "1522": [188, 0.5], "1523": [189, 0.5], "1524": [190, 0.5], "1525": [191, 0.5], "1526": [192, 0.5], "1527": [193, 0.5], "1528": [194, 0.5], "1529": [195, 0.5], "1530": [196, 0.5], "1531": [197, 0.5], "1532": [198, 0.5], "1533": [199, 0.5], "1534": [200, 0.5], "1535": [201, 0.5], "1536": [202, 0.5], "1537": [203, 0.5], "1538": [204, 0.5], "1539": [205, 0.5], "1540": [206, 0.5], "1541": [207, 0.5], "1542": [208, 0.5], "1543": [209, 0.5], "1544": [210, 0.5], "1545": [211, 0.5], "1546": [212, 0.5], "1547": [213, 0.5], "1548": [214, 0.5], "1549": [215, 0.5], "1550": [216, 0.5], "1551": [217, 0.5], "1552": [218, 0.5], "1553": [219, 0.5], "1554": [220, 0.5], "1555": [221, 0.5], "1560": [222, 0.5], "1561": [223, 0.5], "1562": [224, 0.5], "1563": [225, 0.5], "1564": [226, 0.5], "1565": [227, 0.5], "1566": [228, 0.5], "1567": [229, 0.5], "1568": [230, 0.5], "1569": [231, 0.5], "1570": [232, 0.5], "1571": [233, 0.5], "1572": [234, 0.5], "1573": [235, 0.5], "1574": [236, 0.5], "1575": [237, 0.5], "1576": [238, 0.5], "1577": [239, 0.5], "1578": [240, 0.5], "1579": [241, 0.5], "1580": [242, 0.5], "1581": [243, 0.5], "1582": [244, 0.5], "1583": [245, 0.5], "1584": [246, 0.5], "1585": [247, 0.5], "1586": [248, 0.5], "1587": [249, 0.5], "1588": [250, 0.5], "1589": [251, 0.5], "1590": [252, 0.5], "1591": [253, 0.5], "1592": [254, 0.5], "1593": [255, 0.5], "1594": [256, 0.5], "1595": [257, 0.5], "1706": [9, 0.5], "1711": [9, 0.5], "1705": [10, 0.5], "1710": [10, 0.5], "1700": [11, 0.5], "1738": [18, 0.5], "1743": [18, 0.5], "1737": [19, 0.5], "1742": [19, 0.5], "1732": [20, 0.5], "1770": [27, 0.5], "1775": [27, 0.5], "1769": [28, 0.5], "1774": [28, 0.5], "1764": [29, 0.5], "1802": [36, 0.5], "1807": [36, 0.5], "1801": [37, 0.5], "1806": [37, 0.5], "1796": [38, 0.5], "1834": [45, 0.5], "1839": [45, 0.5], "1833": [46, 0.5], "1838": [46, 0.5], "1828": [47, 0.5], "1866": [54, 0.5], "1871": [54, 0.5], "1865": [55, 0.5], "1870": [55, 0.5], "1860": [56, 0.5], "1718": [9, 0.5], "1719": [10, 0.5], "1721": [11, 0.5], "1750": [18, 0.5], "1751": [19, 0.5], "1753": [20, 0.5], "1782": [27, 0.5], "1783": [28, 0.5], "1785": [29, 0.5], "1814": [36, 0.5], "1815": [37, 0.5], "1817": [38, 0.5], "1846": [45, 0.5], "1847": [46, 0.5], "1849": [47, 0.5], "1878": [54, 0.5], "1879": [55, 0.5], "1881": [56, 0.5]};
 const OSC_SPEC_ROWS = [
-    [1000, "OSC 1 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1000, "OSC 1 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1001, "OSC 1 Level", 0, 1, 0.8, "", "sld", null, 1, "Level", null],
     [1002, "OSC 1 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1003, "OSC 1 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -690,7 +690,7 @@ const OSC_SPEC_ROWS = [
     [1054, "OSC 1 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1055, "OSC 1 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1064, "OSC 2 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1064, "OSC 2 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1066, "OSC 2 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1067, "OSC 2 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -744,7 +744,7 @@ const OSC_SPEC_ROWS = [
     [1118, "OSC 2 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1119, "OSC 2 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1128, "OSC 3 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1128, "OSC 3 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1130, "OSC 3 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1131, "OSC 3 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -798,7 +798,7 @@ const OSC_SPEC_ROWS = [
     [1182, "OSC 3 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1183, "OSC 3 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1192, "OSC 4 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1192, "OSC 4 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1194, "OSC 4 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1195, "OSC 4 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -852,7 +852,7 @@ const OSC_SPEC_ROWS = [
     [1246, "OSC 4 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1247, "OSC 4 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1256, "OSC 5 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1256, "OSC 5 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1258, "OSC 5 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1259, "OSC 5 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -906,7 +906,7 @@ const OSC_SPEC_ROWS = [
     [1310, "OSC 5 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1311, "OSC 5 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1320, "OSC 6 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
+    [1320, "OSC 6 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1322, "OSC 6 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1323, "OSC 6 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -1295,7 +1295,37 @@ const OSC_SPEC_ROWS = [
     [1882, "OSC 6 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
     [1883, "OSC 6 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
     [1884, "OSC 6 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
-    [1885, "OSC 6 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null]
+    [1885, "OSC 6 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1726, "OSC 1 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1727, "OSC 1 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1728, "OSC 1 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1729, "OSC 1 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1730, "OSC 1 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
+    [1758, "OSC 2 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1759, "OSC 2 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1760, "OSC 2 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1761, "OSC 2 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1762, "OSC 2 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
+    [1790, "OSC 3 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1791, "OSC 3 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1792, "OSC 3 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1793, "OSC 3 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1794, "OSC 3 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
+    [1822, "OSC 4 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1823, "OSC 4 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1824, "OSC 4 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1825, "OSC 4 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1826, "OSC 4 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
+    [1854, "OSC 5 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1855, "OSC 5 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1856, "OSC 5 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1857, "OSC 5 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1858, "OSC 5 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
+    [1886, "OSC 6 Juno Pulse Wave", 0, 2, 0, "", "sel", ["Pulse 1", "Pulse 2", "Pulse 3"], 1, "Pulse Wave", null],
+    [1887, "OSC 6 Juno Saw Wave", 0, 4, 0, "", "sel", ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"], 1, "Saw Wave", null],
+    [1888, "OSC 6 Juno Sub Wave", 0, 5, 0, "", "sel", ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"], 1, "Sub Wave", null],
+    [1889, "OSC 6 Juno PWM Source", 0, 2, 0, "", "btn", ["LFO", "Env", "Manual"], 1, "PWM Source", null],
+    [1890, "OSC 6 Juno Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null]
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -2587,17 +2617,24 @@ class EisenpulsPatchView extends HTMLElement {
             // two cycles of the DCO mix (saw + pulse + sub, not band-limited), noise as a level bar
             const V = key => { const id = phyId(o, key), c = this._controls.get("param" + id); return c ? c.value : SPEC_BY_NUM.get(id).init; };
             const range = Math.round(V("jrange")), cyc = 2, cv = V("jcurve") * 4, wd = Math.max(0.05, Math.min(0.95, V("jwidth")));
+            const stp = Math.round(V("jstype")), ptp = Math.round(V("jptype")), btp = Math.round(V("jbtype"));
+            const fr = x => x - Math.floor(x), ramp = q => 2 * q - 1;
             const arr = new Array(W);
             for (let x = 0; x < W; x++) {
-                const t = x / W * cyc, ph = t - Math.floor(t), sp = (t / 2) - Math.floor(t / 2);
-                let saw = 2 * ph - 1;
-                if (cv > 0.01) saw = 2 * (Math.exp(cv * ph) - 1) / (Math.exp(cv) - 1) - 1;
-                const pul = ph < wd ? 1 : -1, sub = sp < 0.5 ? 1 : -1;
+                const t = x / W * cyc, ph = fr(t), q2 = fr(t / 2), q4 = fr(t / 4);
+                let saw;
+                if (stp === 1) saw = (ph < wd ? ramp(ph / wd) : -1) + (1 - wd);
+                else if (stp === 2) saw = 0.75 * ramp(ph) + 0.25 * ramp(fr(ph * 2));
+                else if (stp === 3) saw = 0.7 * ramp(ph) + 0.3 * ramp(fr(ph * 3));
+                else { saw = cv > 0.01 ? 2 * (Math.exp(cv * ph) - 1) / (Math.exp(cv) - 1) - 1 : ramp(ph); if (stp === 4) saw = Math.tanh(1.7 * saw) * 1.12; }
+                const pul = ph < (ptp === 0 ? wd : (ptp === 1 ? 0.25 : 0.125)) ? 1 : -1;
+                const sq = (q, w) => q < w ? 1 : -1;
+                const sub = [sq(q2, 0.5), sq(q2, 0.25), sq(q4, 0.5), sq(q4, 0.25), 0.5 * (sq(q2, 0.5) + sq(q4, 0.5)), q2 < 0.5 ? 4 * q2 - 1 : 3 - 4 * q2][btp];
                 arr[x] = (saw * V("jsaw") + pul * V("jpulse") + sub * V("jsub")) * 0.55;
             }
             trace(arr, "#ff3b30", 2);
             ctx.fillStyle = "rgba(255,160,64,0.5)"; ctx.fillRect(W - 14, H - 6 - V("jnoise") * (H - 12), 8, V("jnoise") * (H - 12));
-            if (info) info.textContent = "JUNO DCO / " + ["16'", "8'", "4'"][range] + " / WIDTH " + Math.round(wd * 100) + " %" + (V("jpwm") > 0 ? " / PWM " + V("jpwmr").toFixed(1) + " HZ" : "");
+            if (info) info.textContent = "ALPHA JUNO / " + ["SAW 1", "SAW 2", "SAW 3", "SAW 4", "SAW 5"][stp] + " + PULSE " + (ptp + 1) + " + SUB " + (btp + 1) + " / " + ["16'", "8'", "4'"][range] + " / WIDTH " + Math.round(wd * 100) + " %" + (V("jpwm") > 0 ? " / PWM " + V("jpwmr").toFixed(1) + " HZ" : "");
         } else if (type === 3) {
             // mode spectrum of resonator A (red) and B (orange): position = frequency ratio on a log axis, height = amplitude
             const V = key => { const id = phyId(o, key), c = this._controls.get("param" + id); return c ? c.value : SPEC_BY_NUM.get(id).init; };
@@ -2775,7 +2812,8 @@ class EisenpulsPatchView extends HTMLElement {
             ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join(""), "cgrid o-g2")}
             ${sh("1", ["root", "sstart", "sloop"].map(c).join(""), "cgrid o-g3")}
             ${sh("2", ["pleng", "pharm", "ptimb", "pmorph"].map(c).join(""), "cgrid o-g3 o-pl")}
-            ${sh("4", `<div class="o-uh">Oscillator</div>` + ["jsaw", "jpulse", "jsub", "jnoise", "jcurve", "jdrift"].map(p).join("") + `<div class="o-uh">Pulse width</div>` + ["jwidth", "jpwm", "jpwmr", "jrange"].map(p).join(""), "cgrid o-g3 o-phy")}
+            ${sh("4", `<div class="o-uh">Waves</div>` + ["jstype", "jptype", "jbtype", "jsaw", "jpulse", "jsub"].map(p).join("") + `<div class="o-uh">Pulse width</div>` + ["jwidth", "jpwm", "jpwmr", "jpwms", "jrange"].map(p).join("")
+                + `<div class="o-uh">Character</div>` + ["jnoise", "jcurve", "jdrift", "jvib"].map(p).join(""), "cgrid o-g3 o-phy o-juno")}
             ${sh("3", `<div class="o-uh">Exciter</div>` + ["phmix", "phhard", "phntim"].map(p).join("") + `<div class="o-uh">Resonator A</div>` + ["phmodA", "phdecA", "phmatA", "phhitA", "phinhA"].map(p).join("")
                 + `<div class="o-uh">Resonator B</div>` + ["phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB"].map(p).join("") + `<div class="o-uh">Mix</div>` + ["phbal", "phser"].map(p).join(""), "cgrid o-g3 o-phy")}
           </section>`;
@@ -4403,7 +4441,7 @@ class EisenpulsPatchView extends HTMLElement {
   .page[data-src] .cgrid > .control.w2, .page[data-src] .cgrid > .control.wide { grid-column: auto; }
   .page[data-src] .o-out .cgrid > .control.sel, .page[data-src] .o-out .cgrid > .control.btns, .page[data-src] .o-pl > .control.sel,
   .page[data-src] .o-tune .cgrid > .control.btns.wide, .page[data-src] .o-g3 > .control.btns { grid-column: 1 / -1; }
-  .o-phy > .o-uh { grid-column: 1 / -1; margin-top: 4px; } .page[data-src] .o-phy > .control.sel { grid-column: 1 / -1; }
+  .o-phy > .o-uh { grid-column: 1 / -1; margin-top: 4px; } .page[data-src] .o-phy:not(.o-juno) > .control.sel { grid-column: 1 / -1; }
   .page[data-src] .knb .knob { width: calc(var(--u) * 32); height: calc(var(--u) * 32); }
   .osc-canvas, .flt-canvas { height: calc(var(--u) * 72); }
   /* FM matrix */

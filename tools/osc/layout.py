@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"]
+SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
@@ -99,6 +99,10 @@ PHY_STRIDE = 32
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
 PHY_COUPLING = ["Parallel", "Serial"]
 JUNO_RANGES = ["16'", "8'", "4'"]
+JUNO_PULSE = ["Pulse 1", "Pulse 2", "Pulse 3"]
+JUNO_SAW = ["Saw 1", "Saw 2", "Saw 3", "Saw 4", "Saw 5"]
+JUNO_SUB = ["Sub 1", "Sub 2", "Sub 3", "Sub 4", "Sub 5", "Sub 6"]
+JUNO_PWMS = ["LFO", "Env", "Manual"]
 PHY = [
  (0,  "phmix",  "Noise vs Mallet",      "Noise",     0, 1, 0.25, "", "sld", None),
  (1,  "phhard", "Mallet Hardness",      "Hardness",  0, 1, 0.6, "", "sld", None),
@@ -127,5 +131,10 @@ PHY = [
  (23, "jrange", "Juno Range",           "Range",     0, 2, 1, "", "btn", JUNO_RANGES),
  (24, "jdrift", "Juno Drift",           "Drift",     0, 1, 0.2, "", "sld", None),
  (25, "jcurve", "Juno Saw Curve",       "Curve",     0, 1, 0.3, "", "sld", None),
+ (26, "jptype", "Juno Pulse Wave",      "Pulse Wave", 0, 2, 0, "", "sel", JUNO_PULSE),
+ (27, "jstype", "Juno Saw Wave",        "Saw Wave",  0, 4, 0, "", "sel", JUNO_SAW),
+ (28, "jbtype", "Juno Sub Wave",        "Sub Wave",  0, 5, 0, "", "sel", JUNO_SUB),
+ (29, "jpwms",  "Juno PWM Source",      "PWM Source", 0, 2, 0, "", "btn", JUNO_PWMS),
+ (30, "jvib",   "Juno Vibrato",         "Vibrato",   0, 1, 0.0, "", "sld", None),
 ]
 def phy_id(o, j): return PHY_BASE + PHY_STRIDE * o + j

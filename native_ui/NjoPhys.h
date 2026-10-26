@@ -44,6 +44,11 @@ namespace njo::phys
         if (std::string_view (name) == "jrange") return 23;
         if (std::string_view (name) == "jdrift") return 24;
         if (std::string_view (name) == "jcurve") return 25;
+        if (std::string_view (name) == "jptype") return 26;
+        if (std::string_view (name) == "jstype") return 27;
+        if (std::string_view (name) == "jbtype") return 28;
+        if (std::string_view (name) == "jpwms") return 29;
+        if (std::string_view (name) == "jvib") return 30;
         return 0;
     }
     inline const char* model (int m)

@@ -48,7 +48,7 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_phys.png"), scale);
         // Juno DCO source
         cx.set (njo::oscId (0, njo::oscKey ("type")), 4.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jpulse")), 0.7f); cx.set (njo::phys::phyId (0, njo::phys::key ("jwidth")), 0.3f);
-        cx.set (njo::phys::phyId (0, njo::phys::key ("jpwm")), 0.4f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsub")), 0.5f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsaw")), 0.8f);
+        cx.set (njo::phys::phyId (0, njo::phys::key ("jpwm")), 0.4f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsub")), 0.5f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsaw")), 0.8f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_juno.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }

@@ -686,6 +686,11 @@ processor Eisenpuls_Synth
     input event float param1723 [[ name: "OSC 1 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1724 [[ name: "OSC 1 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1725 [[ name: "OSC 1 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1726 [[ name: "OSC 1 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1727 [[ name: "OSC 1 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1728 [[ name: "OSC 1 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1729 [[ name: "OSC 1 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1730 [[ name: "OSC 1 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1732 [[ name: "OSC 2 Physical Noise vs Mallet", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1733 [[ name: "OSC 2 Physical Mallet Hardness", min: 0.0, max: 1.0, init: 0.6 ]];
     input event float param1734 [[ name: "OSC 2 Physical Noise Time", min: 2.0, max: 3000.0, init: 60.0 ]];
@@ -712,6 +717,11 @@ processor Eisenpuls_Synth
     input event float param1755 [[ name: "OSC 2 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1756 [[ name: "OSC 2 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1757 [[ name: "OSC 2 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1758 [[ name: "OSC 2 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1759 [[ name: "OSC 2 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1760 [[ name: "OSC 2 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1761 [[ name: "OSC 2 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1762 [[ name: "OSC 2 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1764 [[ name: "OSC 3 Physical Noise vs Mallet", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1765 [[ name: "OSC 3 Physical Mallet Hardness", min: 0.0, max: 1.0, init: 0.6 ]];
     input event float param1766 [[ name: "OSC 3 Physical Noise Time", min: 2.0, max: 3000.0, init: 60.0 ]];
@@ -738,6 +748,11 @@ processor Eisenpuls_Synth
     input event float param1787 [[ name: "OSC 3 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1788 [[ name: "OSC 3 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1789 [[ name: "OSC 3 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1790 [[ name: "OSC 3 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1791 [[ name: "OSC 3 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1792 [[ name: "OSC 3 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1793 [[ name: "OSC 3 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1794 [[ name: "OSC 3 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1796 [[ name: "OSC 4 Physical Noise vs Mallet", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1797 [[ name: "OSC 4 Physical Mallet Hardness", min: 0.0, max: 1.0, init: 0.6 ]];
     input event float param1798 [[ name: "OSC 4 Physical Noise Time", min: 2.0, max: 3000.0, init: 60.0 ]];
@@ -764,6 +779,11 @@ processor Eisenpuls_Synth
     input event float param1819 [[ name: "OSC 4 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1820 [[ name: "OSC 4 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1821 [[ name: "OSC 4 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1822 [[ name: "OSC 4 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1823 [[ name: "OSC 4 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1824 [[ name: "OSC 4 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1825 [[ name: "OSC 4 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1826 [[ name: "OSC 4 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1828 [[ name: "OSC 5 Physical Noise vs Mallet", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1829 [[ name: "OSC 5 Physical Mallet Hardness", min: 0.0, max: 1.0, init: 0.6 ]];
     input event float param1830 [[ name: "OSC 5 Physical Noise Time", min: 2.0, max: 3000.0, init: 60.0 ]];
@@ -790,6 +810,11 @@ processor Eisenpuls_Synth
     input event float param1851 [[ name: "OSC 5 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1852 [[ name: "OSC 5 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1853 [[ name: "OSC 5 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1854 [[ name: "OSC 5 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1855 [[ name: "OSC 5 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1856 [[ name: "OSC 5 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1857 [[ name: "OSC 5 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1858 [[ name: "OSC 5 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1860 [[ name: "OSC 6 Physical Noise vs Mallet", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1861 [[ name: "OSC 6 Physical Mallet Hardness", min: 0.0, max: 1.0, init: 0.6 ]];
     input event float param1862 [[ name: "OSC 6 Physical Noise Time", min: 2.0, max: 3000.0, init: 60.0 ]];
@@ -816,6 +841,11 @@ processor Eisenpuls_Synth
     input event float param1883 [[ name: "OSC 6 Juno Range", min: 0.0, max: 2.0, init: 1.0, step: 1.0 ]];
     input event float param1884 [[ name: "OSC 6 Juno Drift", min: 0.0, max: 1.0, init: 0.2 ]];
     input event float param1885 [[ name: "OSC 6 Juno Saw Curve", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1886 [[ name: "OSC 6 Juno Pulse Wave", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1887 [[ name: "OSC 6 Juno Saw Wave", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];
+    input event float param1888 [[ name: "OSC 6 Juno Sub Wave", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
+    input event float param1889 [[ name: "OSC 6 Juno PWM Source", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param1890 [[ name: "OSC 6 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     // PHYS-DECL-END
     input event float param1600 [[ name: "Freq Mod 1 Rate (ms)", min: 5.0, max: 10000.0, init: 300.0 ]];
     input event float param1601 [[ name: "Freq Mod 1 Transpose (semitones)", min: -48.0, max: 48.0, init: 0.0 ]];
@@ -2146,6 +2176,11 @@ processor Eisenpuls_Synth
     event param1723 (float v) { phySet (0, 23, v); }
     event param1724 (float v) { phySet (0, 24, v); }
     event param1725 (float v) { phySet (0, 25, v); }
+    event param1726 (float v) { phySet (0, 26, v); }
+    event param1727 (float v) { phySet (0, 27, v); }
+    event param1728 (float v) { phySet (0, 28, v); }
+    event param1729 (float v) { phySet (0, 29, v); }
+    event param1730 (float v) { phySet (0, 30, v); }
     event param1732 (float v) { phySet (1, 0, v); }
     event param1733 (float v) { phySet (1, 1, v); }
     event param1734 (float v) { phySet (1, 2, v); }
@@ -2172,6 +2207,11 @@ processor Eisenpuls_Synth
     event param1755 (float v) { phySet (1, 23, v); }
     event param1756 (float v) { phySet (1, 24, v); }
     event param1757 (float v) { phySet (1, 25, v); }
+    event param1758 (float v) { phySet (1, 26, v); }
+    event param1759 (float v) { phySet (1, 27, v); }
+    event param1760 (float v) { phySet (1, 28, v); }
+    event param1761 (float v) { phySet (1, 29, v); }
+    event param1762 (float v) { phySet (1, 30, v); }
     event param1764 (float v) { phySet (2, 0, v); }
     event param1765 (float v) { phySet (2, 1, v); }
     event param1766 (float v) { phySet (2, 2, v); }
@@ -2198,6 +2238,11 @@ processor Eisenpuls_Synth
     event param1787 (float v) { phySet (2, 23, v); }
     event param1788 (float v) { phySet (2, 24, v); }
     event param1789 (float v) { phySet (2, 25, v); }
+    event param1790 (float v) { phySet (2, 26, v); }
+    event param1791 (float v) { phySet (2, 27, v); }
+    event param1792 (float v) { phySet (2, 28, v); }
+    event param1793 (float v) { phySet (2, 29, v); }
+    event param1794 (float v) { phySet (2, 30, v); }
     event param1796 (float v) { phySet (3, 0, v); }
     event param1797 (float v) { phySet (3, 1, v); }
     event param1798 (float v) { phySet (3, 2, v); }
@@ -2224,6 +2269,11 @@ processor Eisenpuls_Synth
     event param1819 (float v) { phySet (3, 23, v); }
     event param1820 (float v) { phySet (3, 24, v); }
     event param1821 (float v) { phySet (3, 25, v); }
+    event param1822 (float v) { phySet (3, 26, v); }
+    event param1823 (float v) { phySet (3, 27, v); }
+    event param1824 (float v) { phySet (3, 28, v); }
+    event param1825 (float v) { phySet (3, 29, v); }
+    event param1826 (float v) { phySet (3, 30, v); }
     event param1828 (float v) { phySet (4, 0, v); }
     event param1829 (float v) { phySet (4, 1, v); }
     event param1830 (float v) { phySet (4, 2, v); }
@@ -2250,6 +2300,11 @@ processor Eisenpuls_Synth
     event param1851 (float v) { phySet (4, 23, v); }
     event param1852 (float v) { phySet (4, 24, v); }
     event param1853 (float v) { phySet (4, 25, v); }
+    event param1854 (float v) { phySet (4, 26, v); }
+    event param1855 (float v) { phySet (4, 27, v); }
+    event param1856 (float v) { phySet (4, 28, v); }
+    event param1857 (float v) { phySet (4, 29, v); }
+    event param1858 (float v) { phySet (4, 30, v); }
     event param1860 (float v) { phySet (5, 0, v); }
     event param1861 (float v) { phySet (5, 1, v); }
     event param1862 (float v) { phySet (5, 2, v); }
@@ -2276,6 +2331,11 @@ processor Eisenpuls_Synth
     event param1883 (float v) { phySet (5, 23, v); }
     event param1884 (float v) { phySet (5, 24, v); }
     event param1885 (float v) { phySet (5, 25, v); }
+    event param1886 (float v) { phySet (5, 26, v); }
+    event param1887 (float v) { phySet (5, 27, v); }
+    event param1888 (float v) { phySet (5, 28, v); }
+    event param1889 (float v) { phySet (5, 29, v); }
+    event param1890 (float v) { phySet (5, 30, v); }
     // PHYS-HAND-END
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
@@ -2942,6 +3002,11 @@ processor Eisenpuls_Synth
             phyP.at (io * 32 + 23) = 1.0f;
             phyP.at (io * 32 + 24) = 0.2f;
             phyP.at (io * 32 + 25) = 0.3f;
+            phyP.at (io * 32 + 26) = 0.0f;
+            phyP.at (io * 32 + 27) = 0.0f;
+            phyP.at (io * 32 + 28) = 0.0f;
+            phyP.at (io * 32 + 29) = 0.0f;
+            phyP.at (io * 32 + 30) = 0.0f;
             // PHYS-INIT-END
             op.at (io * 64 + 11) = 3.0f;
             op.at (io * 64 + 12) = 60.0f;
@@ -19682,10 +19747,13 @@ processor Eisenpuls_Synth
     }
 
     // JUNO-DSP-BEGIN
-    // ---------------- Alpha Juno style DCO (tools/phys/build_juno.py) ----------------
-    // saw (with an optional capacitor-like curve), pulse with manual / LFO pulse width, sub oscillator (square one octave down), noise;
-    // range 16' / 8' / 4', slow analog drift. Edges are band-limited with PolyBLEP. Parameters: phyP slot * 32 + 16 .. 25.
-    // state: Voice.wtUPh slot * 7 (phase), slot * 7 + 1 (PWM LFO phase); Voice.phs slot * 176 + 0 drift counter, 1 drift target, 2 drift value, 3 noise low-pass, 4 sub state
+    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_juno.py) ----------------
+    // One DCO per voice like the Alpha Juno: a pulse wave (Pulse 1-3) and a saw wave (Saw 1-5) that are summed, a sub oscillator (Sub 1-6) and noise;
+    // pulse width modulation by the LFO, the amp envelope or by hand, vibrato from the same LFO, range 16' / 8' / 4', slow analog drift. The variants are
+    // approximations (the exact Alpha Juno shapes are not documented): Pulse 1 variable width, 2 = 25 %, 3 = 12.5 %; Saw 1 ramp, 2 PWM saw (ramp over the
+    // pulse width, then low), 3 saw + saw an octave up, 4 saw + third harmonic saw, 5 soft saw; Sub 1 square -1 oct, 2 pulse 25 % -1 oct, 3 square -2 oct,
+    // 4 pulse 25 % -2 oct, 5 squares -1 and -2 oct, 6 triangle -1 oct. Edges are band-limited with PolyBLEP. Parameters: phyP slot * 32 + 16 .. 30.
+    // state: Voice.wtUPh slot * 7 (phase), slot * 7 + 1 (LFO phase); Voice.phs slot * 176 + 0 drift counter, 1 drift target, 2 drift value, 3 noise low-pass, 4 sub counter (0..3)
     float junoBlep (float t, float dt)
     {
         if (t < dt)
@@ -19701,6 +19769,19 @@ processor Eisenpuls_Synth
         }
 
         return 0.0f;
+    }
+
+    // band-limited pulse of width w from the phase q (0..1) advancing dt per sample
+    float junoPulse (float q, float w, float dt)
+    {
+        float wp = q - w;
+        if (wp < 0.0f) wp += 1.0f;
+        return (q < w ? 1.0f : -1.0f) + junoBlep (q, dt) - junoBlep (wp, dt);
+    }
+
+    float junoRamp (float q, float dt)
+    {
+        return 2.0f * q - 1.0f - junoBlep (q, dt);
     }
 
     float junoStep (int vi, int o, float freq, float pm, float widthM, float depthM, float subM)
@@ -19724,19 +19805,23 @@ processor Eisenpuls_Synth
         dr += 0.0006f * (voices.at (vi).phs.at (sb + 1) - dr);
         voices.at (vi).phs.at (sb + 2) = dr;
 
-        int   rg = clamp (int (phyP.at (pb + 23) + 0.5f), 0, 2);
-        float f  = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phyP.at (pb + 24) * dr * 0.0046f);
-        f = clamp (f, 1.0f, sr * 0.45f);
-        float dt = f * float (processor.period);
-
-        // pulse width
+        // the LFO (triangle) drives the pulse width and the vibrato
         float64 lph = voices.at (vi).wtUPh.at (ui + 1);
         lph += float64 (phyP.at (pb + 20)) * processor.period;
         if (lph >= 1.0) lph -= 1.0;
         voices.at (vi).wtUPh.at (ui + 1) = lph;
         float tri = float (lph < 0.5 ? lph * 4.0 - 1.0 : 3.0 - lph * 4.0);
+
+        int   rg = clamp (int (phyP.at (pb + 23) + 0.5f), 0, 2);
+        float f  = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phyP.at (pb + 24) * dr * 0.0046f + phyP.at (pb + 30) * 0.0293f * tri);
+        f = clamp (f, 1.0f, sr * 0.45f);
+        float dt = f * float (processor.period);
+
+        // pulse width: manual, LFO or amp envelope
+        int   src = clamp (int (phyP.at (pb + 29) + 0.5f), 0, 2);
         float dep = clamp (phyP.at (pb + 19) + depthM * 0.5f, 0.0f, 1.0f);
-        float w   = clamp (phyP.at (pb + 18) + widthM * 0.5f + dep * 0.45f * tri, 0.05f, 0.95f);
+        float mod = src == 0 ? tri : (src == 1 ? voices.at (vi).env * 2.0f - 1.0f : 0.0f);
+        float w   = clamp (phyP.at (pb + 18) + widthM * 0.5f + dep * 0.45f * mod, 0.05f, 0.95f);
 
         float64 ph = voices.at (vi).wtUPh.at (ui);
         float   rp = float (ph);
@@ -19747,26 +19832,77 @@ processor Eisenpuls_Synth
             rp = rp - float (floor (rp));
         }
 
-        // saw
-        float y = 2.0f * rp - 1.0f;
-        float cv = phyP.at (pb + 25) * 4.0f;
+        // saw wave
+        float saw = 0.0f;
 
-        if (cv > 0.01f)
-            y = 2.0f * (float (exp (cv * rp)) - 1.0f) / (float (exp (cv)) - 1.0f) - 1.0f;
+        if (phyP.at (pb + 16) > 0.0f)
+        {
+            int stp = clamp (int (phyP.at (pb + 27) + 0.5f), 0, 4);
+            float cv = phyP.at (pb + 25) * 4.0f;
 
-        float saw = y - junoBlep (rp, dt);
+            if (stp == 0 || stp == 4)
+            {
+                float y = 2.0f * rp - 1.0f;
 
-        // pulse
-        float wp = rp - w;
-        if (wp < 0.0f) wp += 1.0f;
-        float pul = (rp < w ? 1.0f : -1.0f) + junoBlep (rp, dt) - junoBlep (wp, dt);
+                if (cv > 0.01f)
+                    y = 2.0f * (float (exp (cv * rp)) - 1.0f) / (float (exp (cv)) - 1.0f) - 1.0f;
 
-        // sub: square one octave below, toggles on every wrap of the main phase
-        float st  = voices.at (vi).phs.at (sb + 4);
-        float sg  = st > 0.5f ? 1.0f : -1.0f;
-        float sub = sg;
-        if (rp < dt)             sub += sg * junoBlep (rp, dt);
-        else if (rp > 1.0f - dt) sub -= sg * junoBlep (rp, dt);
+                saw = y - junoBlep (rp, dt);
+
+                if (stp == 4)
+                    saw = float (tanh (1.7f * saw)) * 1.12f;
+            }
+            else if (stp == 1)
+            {
+                // PWM saw: the ramp runs over the pulse width and drops to the bottom, DC removed
+                float q  = rp < w ? rp / w : 1.0f;
+                float wp = rp - w;
+                if (wp < 0.0f) wp += 1.0f;
+                saw = (rp < w ? 2.0f * q - 1.0f : -1.0f) - 2.0f * junoBlep (wp, dt) * 0.5f + (1.0f - w) - 0.0f;
+                saw = saw * 0.9f;
+            }
+            else if (stp == 2)
+            {
+                float q2 = rp * 2.0f;
+                q2 = q2 - float (floor (q2));
+                saw = 0.75f * junoRamp (rp, dt) + 0.25f * junoRamp (q2, dt * 2.0f);
+            }
+            else
+            {
+                float q3 = rp * 3.0f;
+                q3 = q3 - float (floor (q3));
+                saw = 0.7f * junoRamp (rp, dt) + 0.3f * junoRamp (q3, dt * 3.0f);
+            }
+        }
+
+        // pulse wave
+        float pul = 0.0f;
+
+        if (phyP.at (pb + 17) > 0.0f)
+        {
+            int ptp = clamp (int (phyP.at (pb + 26) + 0.5f), 0, 2);
+            pul = junoPulse (rp, ptp == 0 ? w : (ptp == 1 ? 0.25f : 0.125f), dt);
+        }
+
+        // sub oscillator
+        float s4  = voices.at (vi).phs.at (sb + 4);
+        float sub = 0.0f;
+        float sl  = clamp (phyP.at (pb + 21) + subM * 0.5f, 0.0f, 1.0f);
+
+        if (sl > 0.0f)
+        {
+            int   btp = clamp (int (phyP.at (pb + 28) + 0.5f), 0, 5);
+            float st  = s4 - 2.0f * float (floor (s4 * 0.5f));
+            float q2  = (rp + st) * 0.5f;
+            float q4  = (rp + s4) * 0.25f;
+
+            if (btp == 0)      sub = junoPulse (q2, 0.5f, dt * 0.5f);
+            else if (btp == 1) sub = junoPulse (q2, 0.25f, dt * 0.5f);
+            else if (btp == 2) sub = junoPulse (q4, 0.5f, dt * 0.25f);
+            else if (btp == 3) sub = junoPulse (q4, 0.25f, dt * 0.25f);
+            else if (btp == 4) sub = 0.5f * (junoPulse (q2, 0.5f, dt * 0.5f) + junoPulse (q4, 0.5f, dt * 0.25f));
+            else               sub = q2 < 0.5f ? 4.0f * q2 - 1.0f : 3.0f - 4.0f * q2;
+        }
 
         // noise (slightly dark)
         float ln = voices.at (vi).phs.at (sb + 3);
@@ -19778,12 +19914,13 @@ processor Eisenpuls_Synth
         if (ph >= 1.0)
         {
             ph -= 1.0;
-            voices.at (vi).phs.at (sb + 4) = 1.0f - st;
+            s4 += 1.0f;
+            if (s4 > 3.5f) s4 = 0.0f;
+            voices.at (vi).phs.at (sb + 4) = s4;
         }
 
         voices.at (vi).wtUPh.at (ui) = ph;
 
-        float sl = clamp (phyP.at (pb + 21) + subM * 0.5f, 0.0f, 1.0f);
         return (saw * phyP.at (pb + 16) + pul * phyP.at (pb + 17) + sub * sl + ln * phyP.at (pb + 22)) * 0.5f;
     }
 

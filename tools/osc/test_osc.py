@@ -453,9 +453,25 @@ a1 = render(only(pulse=1) + [JU("jwidth", 0.5), JU("jpwm", 1), JU("jpwmr", 4)], 
 e0 = [band(a0[int(t * RATE):int((t + 0.1) * RATE)], 430, 450) for t in (0.1, 0.2, 0.3, 0.4)]
 e1 = [band(a1[int(t * RATE):int((t + 0.1) * RATE)], 430, 450) for t in (0.1, 0.2, 0.3, 0.4)]
 check("PWM moves the pulse width over time", max(e1) > 5 * (max(e0) + 1e-6) and max(e1) > 1.5 * min(e1), "%.1f..%.1f vs %.2f" % (min(e1), max(e1), max(e0)))
+for st in range(5):
+    f, a = jpk(only(saw=1) + [JU("jstype", st)], tag="jusaw%d" % st)
+    check("Alpha Juno Saw %d plays the keyboard pitch" % (st + 1), abs(f - 220) < 1.5 and rms(a[int(0.1 * RATE):int(0.6 * RATE)]) > 0.02 and np.isfinite(a).all(), "%.2f Hz" % f)
+for pt in range(3):
+    f, a = jpk(only(pulse=1) + [JU("jptype", pt)], tag="jupt%d" % pt)
+    check("Alpha Juno Pulse %d plays the keyboard pitch" % (pt + 1), abs(f - 220) < 1.5, "%.2f Hz" % f)
+for bt, want in ((0, 110), (1, 110), (2, 55), (3, 55), (4, 110), (5, 110)):
+    f, a = jpk(only(sub=1) + [JU("jbtype", bt)], tag="jubt%d" % bt)
+    check("Alpha Juno Sub %d sounds at %d Hz" % (bt + 1, want), abs(f - want) < 1.5 and rms(a[int(0.1 * RATE):int(0.6 * RATE)]) > 0.02, "%.2f Hz" % f)
+a = render(only(saw=1) + [JU("jstype", 1), JU("jwidth", 0.5), JU("jpwm", 1), JU("jpwms", 1)], note=57, hold=0.8, tail=0.1, tag="jupwe")[:, 0]
+check("PWM saw with the envelope as PWM source stays finite", np.isfinite(a).all() and rms(a[int(0.1 * RATE):int(0.6 * RATE)]) > 0.02)
+a0 = render(only(saw=1), note=57, hold=0.8, tail=0.1, tag="juvib0")[:, 0]
+a1 = render(only(saw=1) + [JU("jvib", 1), JU("jpwmr", 5)], note=57, hold=0.8, tail=0.1, tag="juvib1")[:, 0]
+g0 = [peak_freq(a0[int(t * RATE):int((t + 0.08) * RATE)]) for t in np.arange(0.1, 0.6, 0.05)]
+g1 = [peak_freq(a1[int(t * RATE):int((t + 0.08) * RATE)]) for t in np.arange(0.1, 0.6, 0.05)]
+check("Vibrato moves the pitch with the LFO", (max(g1) - min(g1)) > 3 and (max(g0) - min(g0)) < 1.0, "%.1f vs %.1f Hz spread" % (max(g1) - min(g1), max(g0) - min(g0)))
 ok = True
 for t, nt in enumerate((24, 60, 96, 120)):
-    a = render(JUNO + [JU("jsaw", 1), JU("jpulse", 1), JU("jsub", 1), JU("jnoise", 1), JU("jcurve", 1), JU("jdrift", 1), JU("jpwm", 1), P(0, "level", 1)], note=nt, hold=0.3, tail=0.05, tag="juext%d" % t)
+    a = render(JUNO + [JU("jsaw", 1), JU("jpulse", 1), JU("jsub", 1), JU("jnoise", 1), JU("jcurve", 1), JU("jdrift", 1), JU("jpwm", 1), JU("jvib", 1), JU("jstype", 1 + t), JU("jbtype", t + 2), JU("jptype", t % 3), P(0, "level", 1)], note=nt, hold=0.3, tail=0.05, tag="juext%d" % t)
     if not np.isfinite(a).all() or np.abs(a).max() > 4: ok = False
 check("Juno DCO stays finite and bounded at extreme settings", ok)
 print("all passed" if not failures else "%d FAILED" % failures)

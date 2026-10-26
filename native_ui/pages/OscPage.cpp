@@ -223,7 +223,7 @@ namespace njo
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
         int srcType() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
-                                                         "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve" };
+                                                         "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
         SoundMemory::Kind kind() const { return srcType() == 1 ? SoundMemory::Sample : SoundMemory::Wavetable; }
 
         // ---- memory / drop zone ----
@@ -402,15 +402,24 @@ namespace njo
                 knob ("ptimb", 13 + juce::roundToInt (fw / 2), 302, c, pl);
                 knob ("pmorph", 13 + juce::roundToInt (fw * 5 / 6), 302, c, pl);
 
-                // Juno DCO: levels, then pulse width and range
+                // Alpha Juno: wave selectors with their levels, noise / character, pulse width
                 if (type == 4)
                 {
+                    const int cw3 = (w - 26 - 16) / 3;
+                    const char* ks[3] = { "jstype", "jptype", "jbtype" }; const char* kl[3] = { "jsaw", "jpulse", "jsub" };
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        const int x = 13 + i * (cw3 + 8);
+                        put (ks[i], x, 156, cw3, 36, c);  strip (ks[i], x, 156, cw3, c, false);
+                        knob (kl[i], x + cw3 / 2, 196, c);
+                    }
                     const float fw6 = (float) (w - 26);
-                    const char* kl[6] = { "jsaw", "jpulse", "jsub", "jnoise", "jcurve", "jdrift" };
-                    for (int i = 0; i < 6; ++i) knob (kl[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 162, c);
+                    const char* kc[4] = { "jnoise", "jcurve", "jdrift", "jvib" };
+                    for (int i = 0; i < 4; ++i) knob (kc[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 8), 276, c);
                     const char* kp[3] = { "jwidth", "jpwm", "jpwmr" };
-                    for (int i = 0; i < 3; ++i) knob (kp[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 262, c);
-                    put ("jrange", 13 + juce::roundToInt (fw6 * 0.52f), 270, juce::roundToInt (fw6 * 0.48f), 31, c);
+                    for (int i = 0; i < 3; ++i) knob (kp[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 352, c);
+                    put ("jpwms", 13 + juce::roundToInt (fw6 * 0.52f), 354, juce::roundToInt (fw6 * 0.48f), 31, c);
+                    put ("jrange", 13 + juce::roundToInt (fw6 * 0.52f), 396, juce::roundToInt (fw6 * 0.48f), 31, c);
                 }
                 // physical: resonators A and B side by side, exciter and balance below
                 if (type == 3)
@@ -563,8 +572,9 @@ if (! wf)
             if (mode == 0 && srcType() == 4)
             {
                 g.setColour (orange); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
-                g.drawText ("OSCILLATOR", cardSrc.getX() + 13, 146, 150, 12, juce::Justification::centredLeft);
-                g.drawText ("PULSE WIDTH / RANGE", cardSrc.getX() + 13, 246, 200, 12, juce::Justification::centredLeft);
+                g.drawText ("WAVES", cardSrc.getX() + 13, 142, 150, 12, juce::Justification::centredLeft);
+                g.drawText ("CHARACTER", cardSrc.getX() + 13, 262, 150, 12, juce::Justification::centredLeft);
+                g.drawText ("PULSE WIDTH / PWM SOURCE / RANGE", cardSrc.getX() + 13, 338, 300, 12, juce::Justification::centredLeft);
             }
             if (mode == 0 && srcType() == 3)
             {

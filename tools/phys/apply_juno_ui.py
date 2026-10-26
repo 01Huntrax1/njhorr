@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adds the Juno DCO source to patch/index.js (run once, after apply_phys_ui.py)."""
+"""Adds the Alpha Juno source to patch/index.js (run once, after apply_phys_ui.py)."""
 import json, os, re, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "osc"))
