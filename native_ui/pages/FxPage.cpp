@@ -1,5 +1,11 @@
-// FX page: three racks (Bus 1, Bus 2, Main) of 10 slots + the output section. Port of the FX rack of patch/index.js.
+// FX page: three racks (Bus 1, Bus 2, Main) of 10 slots, laid out like a modern synth's effect page: the list of the rack's effects on the left
+// (processing order, on / off, move, drag), "+ ADD FX" opens a grid of all effect types, and the selected effect has its own page with a display and large knobs.
+// Below: the output section. Parameters and the processing order are unchanged (patch/index.js FX rack).
 #include "../NjoPages.h"
+#include "OscDisplays.h"
+#include <algorithm>
+#include <array>
+#include <cmath>
 
 namespace njo
 {
@@ -7,77 +13,13 @@ namespace njo
 
     namespace
     {
-        constexpr int kRowH = 31;
+        constexpr int kItemH = 28, kLeftW = 214;
 
-        // ---- compact controls used inside a row ----
-        class CompactKnob : public ParamWidget
+        juce::Colour fxColour (int type)
         {
-        public:
-            CompactKnob (Ctx& c, int n, int slotG, int pIndex) : ParamWidget (c, n), g (slotG), pi (pIndex) {}
-            void setUsed (bool u) { used = u; setVisible (u); }
-            void paint (juce::Graphics& gr) override
-            {
-                auto b = getLocalBounds().toFloat();
-                auto kr = b.removeFromLeft (26.0f).reduced (1.0f);
-                float d = juce::jmin (kr.getWidth(), kr.getHeight());
-                auto knob = juce::Rectangle<float> (d, d).withCentre (kr.getCentre());
-                paintKnob (gr, knob, (float) sp->toNorm (val), false, hover, dragging);
-                gr.setFont (font (8.0f, true)); gr.setColour (dim);
-                auto t = fxLabel();
-                gr.drawText (t.toUpperCase(), b.removeFromTop (b.getHeight() * 0.5f).toNearestInt(), juce::Justification::bottomLeft, true);
-                gr.setFont (mono (8.5f, true)); gr.setColour (orange);
-                gr.drawText (valueString(), b.toNearestInt(), juce::Justification::topLeft, true);
-            }
-            juce::String fxLabel() const
-            {
-                int ty = ctx.fxSlotTypes()[g];
-                auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, ty)];
-                if (pi < 0) return "Mix";
-                return pi < (int) t.params.size() ? t.params[(size_t) pi].name : juce::String();
-            }
-            void mouseDown (const juce::MouseEvent& e) override { if (e.mods.isPopupMenu()) { setValueFromUser ((float) sp->init); return; } dragging = true; startN = sp->toNorm (val); startY = e.y; ctx.begin (paramNum); repaint(); }
-            void mouseDrag (const juce::MouseEvent& e) override { setValueFromUser ((float) sp->fromNorm (startN + (startY - e.y) * (e.mods.isShiftDown() ? 0.0012 : 0.006))); }
-            void mouseUp (const juce::MouseEvent&) override { dragging = false; ctx.end (paramNum); repaint(); }
-            void mouseDoubleClick (const juce::MouseEvent&) override { setValueFromUser ((float) sp->init); }
-            void mouseWheelMove (const juce::MouseEvent& e, const juce::MouseWheelDetails& w) override { setValueFromUser ((float) sp->fromNorm (sp->toNorm (val) + (e.mods.isShiftDown() ? 0.002 : 0.02) * (w.deltaY > 0 ? 1 : -1))); }
-            int g, pi; bool used = true; double startN = 0; int startY = 0;
-        };
-
-        class CompactSelect : public ParamWidget
-        {
-        public:
-            CompactSelect (Ctx& c, int n, bool isType) : ParamWidget (c, n), type (isType) {}
-            std::function<void (int)> onUserChange;
-            juce::StringArray names; std::vector<std::pair<int, juce::String>> groups;
-            void paint (juce::Graphics& gr) override
-            {
-                auto r = getLocalBounds().toFloat().reduced (0, 3.0f);
-                paintButton (gr, r, false, hover, false, 3.0f);
-                gr.setColour (ink); gr.setFont (font (11.0f, true));
-                int idx = juce::roundToInt (val - sp->min);
-                gr.drawText (idx >= 0 && idx < names.size() ? names[idx] : valueString(), r.reduced (7, 0).toNearestInt(), juce::Justification::centredLeft, true);
-                juce::Path t; auto a = juce::Rectangle<float> (r.getRight() - 15, r.getCentreY() - 3, 9, 6);
-                t.addTriangle (a.getX(), a.getY(), a.getRight(), a.getY(), a.getCentreX(), a.getBottom());
-                gr.setColour (red); gr.fillPath (t);
-            }
-            void mouseDown (const juce::MouseEvent&) override
-            {
-                juce::PopupMenu m; size_t gi = 0;
-                for (int i = 0; i < names.size(); ++i)
-                {
-                    while (gi < groups.size() && groups[gi].first == i) { if (groups[gi].second.isNotEmpty()) m.addSectionHeader (groups[gi].second); ++gi; }
-                    m.addItem (i + 1, names[i], true, juce::roundToInt (val - sp->min) == i);
-                }
-                auto self = juce::Component::SafePointer<CompactSelect> (this);
-                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (this).withMinimumWidth (getWidth()).withMaximumNumColumns (type ? 1 : 3), [self] (int r)
-                {
-                    if (self == nullptr || r <= 0) return;
-                    self->ctx.begin (self->paramNum); self->setValueFromUser ((float) (self->sp->min + r - 1)); self->ctx.end (self->paramNum);
-                    if (self->onUserChange) self->onUserChange (r - 1);
-                });
-            }
-            bool type;
-        };
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030 };
+            return juce::Colour (c[juce::jlimit (0, 11, type)]);
+        }
 
         class OnToggle : public ParamWidget
         {
@@ -85,53 +27,13 @@ namespace njo
             OnToggle (Ctx& c, int n) : ParamWidget (c, n) {}
             void paint (juce::Graphics& gr) override
             {
-                auto r = getLocalBounds().toFloat().reduced (1.0f, 5.0f);
+                auto r = getLocalBounds().toFloat().reduced (1.0f, 2.0f);
                 bool on = val > 0.5f;
                 paintButton (gr, r, on, hover, false, 3.0f);
-                gr.setColour (on ? juce::Colours::white : dim); gr.setFont (font (9.0f, true));
-                gr.drawText (on ? "ON" : "OFF", r.toNearestInt(), juce::Justification::centred);
+                gr.setColour (on ? juce::Colours::white : dim); gr.setFont (font (9.5f, true));
+                gr.drawText (on ? "ON" : "BYPASSED", r.toNearestInt(), juce::Justification::centred);
             }
             void mouseDown (const juce::MouseEvent&) override { ctx.begin (paramNum); setValueFromUser (val > 0.5f ? 0.0f : 1.0f); ctx.end (paramNum); }
-        };
-
-        struct Row : public juce::Component
-        {
-            int rk = 0, sl = 0, g = 0;
-            std::unique_ptr<OnToggle> on; std::unique_ptr<CompactSelect> ty, md; std::unique_ptr<CompactKnob> mix; std::unique_ptr<CompactKnob> ps[6];
-            int pos = 0; bool empty = true, off = false, dragging = false;
-            juce::Rectangle<int> upR, dnR, gripR;
-            void paint (juce::Graphics& gr) override
-            {
-                auto r = getLocalBounds().toFloat().reduced (0, 1.0f);
-                gr.setColour (dragging ? juce::Colour (0xff3a1815) : juce::Colour (0xff131415)); gr.fillRoundedRectangle (r, 2.0f);
-                if (! empty) { gr.setColour (red.withAlpha (off ? 0.0f : 0.5f)); gr.fillRect (r.getX(), r.getY() + 2, 2.0f, r.getHeight() - 4); }
-                gr.setColour (empty ? dim.withAlpha (0.5f) : orange); gr.setFont (mono (11.0f, true));
-                gr.drawText (juce::String (pos + 1), juce::Rectangle<int> (16, 0, 12, getHeight()), juce::Justification::centred);
-                gr.setColour (dim);
-                for (auto& a : { upR, dnR })
-                {
-                    juce::Path p; auto c = a.toFloat();
-                    if (&a == &upR) p.addTriangle (c.getX() + 1, c.getBottom() - 2, c.getRight() - 1, c.getBottom() - 2, c.getCentreX(), c.getY() + 2);
-                    else p.addTriangle (c.getX() + 1, c.getY() + 2, c.getRight() - 1, c.getY() + 2, c.getCentreX(), c.getBottom() - 2);
-                    gr.fillPath (p);
-                }
-                gr.setColour (dim.withAlpha (0.8f));
-                for (int i = 0; i < 3; ++i) for (int j = 0; j < 2; ++j) gr.fillEllipse ((float) gripR.getX() + 2 + j * 5, (float) gripR.getY() + 8 + i * 5.0f, 2.2f, 2.2f);
-                if (off && ! empty) { gr.setColour (juce::Colours::black.withAlpha (0.35f)); gr.fillRoundedRectangle (r.withTrimmedLeft (60), 2.0f); }
-            }
-            void resized() override
-            {
-                auto b = getLocalBounds();
-                upR = { 2, 3, 12, 11 }; dnR = { 2, getHeight() - 14, 12, 11 };
-                gripR = { 30, 0, 14, getHeight() };
-                int x = 48;
-                on->setBounds (x, 0, 40, getHeight()); x += 44;
-                ty->setBounds (x, 0, 128, getHeight()); x += 134;
-                md->setBounds (x, 0, 100, getHeight()); x += 106;
-                mix->setBounds (x, 0, 78, getHeight()); x += 84;
-                int w = juce::jmax (60, (b.getWidth() - x - 6) / 6);
-                for (int k = 0; k < 6; ++k) ps[k]->setBounds (x + k * w, 0, w - 4, getHeight());
-            }
         };
 
         struct DotTab : public juce::Component
@@ -150,31 +52,315 @@ namespace njo
             void mouseExit (const juce::MouseEvent&) override { over = false; repaint(); }
             void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
         };
+
+        struct FxButton : public juce::Component
+        {
+            juce::String text; bool over = false, accent = false; std::function<void()> click;
+            void paint (juce::Graphics& g) override
+            {
+                auto r = getLocalBounds().toFloat().reduced (0.5f);
+                paintButton (g, r, accent, over, false, 3.0f);
+                g.setColour (accent ? juce::Colours::white : ink); g.setFont (font (9.5f, true).withExtraKerningFactor (0.05f));
+                g.drawText (text, r.toNearestInt(), juce::Justification::centred);
+            }
+            void mouseEnter (const juce::MouseEvent&) override { over = true; repaint(); }
+            void mouseExit (const juce::MouseEvent&) override { over = false; repaint(); }
+            void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
+        };
     }
 
     struct FxPage::Impl : public Ctx::Listener
     {
-        Impl (FxPage& o, Ctx& c) : owner (o), ctx (c)
+        // ---- the list of the rack's effects ----
+        struct ListComp : public juce::Component
         {
-            for (int rk = 0; rk < 3; ++rk)
-                for (int sl = 0; sl < 10; ++sl)
+            explicit ListComp (Impl& i) : im (i) {}
+            Impl& im; int dragIdx = -1;
+            juce::Rectangle<int> itemR (int i) const { return { 0, i * kItemH, getWidth(), kItemH }; }
+            void paint (juce::Graphics& g) override
+            {
+                auto used = im.usedSlots (im.current);
+                if (used.empty())
                 {
-                    auto* r = new Row(); rows.add (r);
-                    r->rk = rk; r->sl = sl; r->g = rk * 10 + sl;
-                    int b = fxRacks()[(size_t) rk].id + sl * 10;
-                    r->on  = std::make_unique<OnToggle> (ctx, b + 1);
-                    r->ty  = std::make_unique<CompactSelect> (ctx, b, true);
-                    r->md  = std::make_unique<CompactSelect> (ctx, b + 3, false);
-                    r->mix = std::make_unique<CompactKnob> (ctx, b + 2, r->g, -1);
-                    for (int k = 0; k < 6; ++k) r->ps[k] = std::make_unique<CompactKnob> (ctx, b + 4 + k, r->g, k);
-                    for (auto* ch : std::initializer_list<juce::Component*> { r->on.get(), r->ty.get(), r->md.get(), r->mix.get() }) r->addAndMakeVisible (ch);
-                    for (auto& p : r->ps) r->addAndMakeVisible (*p);
-                    r->ty->names = fxNames();
-                    r->ty->onUserChange = [this, g = r->g] (int) { applyTypeDefaults (g); };
-                    owner.addChildComponent (r);
-                    r->addMouseListener (&dragRelay, false);
-                    refreshRow (*r);
+                    g.setColour (dim); g.setFont (font (9.5f));
+                    g.drawFittedText ("No effects in this rack.\nUse + ADD FX.", getLocalBounds().withHeight (60).reduced (8, 0), juce::Justification::centred, 3);
+                    return;
                 }
+                for (int i = 0; i < (int) used.size(); ++i)
+                {
+                    int sl = used[(size_t) i], gi = im.current * 10 + sl, ty = im.ctx.fxSlotTypes()[gi];
+                    bool on = im.ctx.get (im.slotBase (gi) + 1) > 0.5f, selected = im.sel[im.current] == sl && ! im.adding;
+                    auto r = itemR (i).toFloat().reduced (0, 1.5f);
+                    g.setColour (dragIdx == i ? juce::Colour (0xff3a1815) : (selected ? juce::Colour (0xff2a2020) : juce::Colour (0xff131415))); g.fillRoundedRectangle (r, 3.0f);
+                    if (selected) { g.setColour (red.withAlpha (0.8f)); g.drawRoundedRectangle (r.reduced (0.5f), 3.0f, 1.0f); }
+                    g.setColour (fxColour (ty).withAlpha (on ? 1.0f : 0.3f)); g.fillRect (r.getX() + 1, r.getY() + 3, 3.0f, r.getHeight() - 6);
+                    // on / off dot
+                    auto dot = juce::Rectangle<float> (r.getX() + 12, r.getCentreY() - 4, 8, 8);
+                    g.setColour (on ? fxColour (ty) : juce::Colour (0xff3a3a3d)); g.fillEllipse (dot);
+                    g.setColour (on ? ink : dim); g.setFont (font (11.0f, true));
+                    g.drawText (fxTypes()[(size_t) ty].name, juce::Rectangle<int> (30, (int) r.getY(), getWidth() - 30 - 44, (int) r.getHeight()), juce::Justification::centredLeft, true);
+                    // arrows
+                    g.setColour (dim);
+                    auto up = upR (i).toFloat(), dn = dnR (i).toFloat();
+                    juce::Path p; p.addTriangle (up.getX() + 1, up.getBottom() - 1, up.getRight() - 1, up.getBottom() - 1, up.getCentreX(), up.getY() + 1); g.fillPath (p);
+                    juce::Path q; q.addTriangle (dn.getX() + 1, dn.getY() + 1, dn.getRight() - 1, dn.getY() + 1, dn.getCentreX(), dn.getBottom() - 1); g.fillPath (q);
+                    auto gr = gripR (i).toFloat(); g.setColour (dim.withAlpha (0.8f));
+                    for (int a = 0; a < 3; ++a) for (int b = 0; b < 2; ++b) g.fillEllipse (gr.getX() + 2 + b * 5, gr.getY() + 8 + a * 4.5f, 2.0f, 2.0f);
+                }
+            }
+            juce::Rectangle<int> upR (int i) const { auto r = itemR (i); return { r.getRight() - 40, r.getY() + 3, 11, 10 }; }
+            juce::Rectangle<int> dnR (int i) const { auto r = itemR (i); return { r.getRight() - 40, r.getBottom() - 13, 11, 10 }; }
+            juce::Rectangle<int> gripR (int i) const { auto r = itemR (i); return { r.getRight() - 24, r.getY(), 16, r.getHeight() }; }
+            juce::Rectangle<int> dotR (int i) const { auto r = itemR (i); return { r.getX() + 6, r.getY(), 24, r.getHeight() }; }
+            void mouseDown (const juce::MouseEvent& e) override
+            {
+                auto used = im.usedSlots (im.current);
+                int i = e.y / kItemH; if (i < 0 || i >= (int) used.size()) return;
+                int sl = used[(size_t) i], gi = im.current * 10 + sl;
+                auto p = e.getPosition();
+                if (upR (i).expanded (3).contains (p)) im.moveUsed (im.current, sl, -1);
+                else if (dnR (i).expanded (3).contains (p)) im.moveUsed (im.current, sl, +1);
+                else if (gripR (i).contains (p)) { dragIdx = i; im.select (im.current, sl); }
+                else if (dotR (i).contains (p)) { int n = im.slotBase (gi) + 1; im.ctx.begin (n); im.ctx.set (n, im.ctx.get (n) > 0.5f ? 0.0f : 1.0f); im.ctx.end (n); }
+                else im.select (im.current, sl);
+                repaint();
+            }
+            void mouseDrag (const juce::MouseEvent& e) override
+            {
+                if (dragIdx < 0) return;
+                auto used = im.usedSlots (im.current);
+                int to = juce::jlimit (0, (int) used.size() - 1, e.y / kItemH);
+                if (to != dragIdx) { int sl = used[(size_t) dragIdx]; im.moveUsed (im.current, sl, to - dragIdx); dragIdx = to; }
+            }
+            void mouseUp (const juce::MouseEvent&) override { dragIdx = -1; repaint(); }
+        };
+
+        // ---- grid of all effect types ("+ ADD FX") ----
+        struct Chooser : public juce::Component
+        {
+            explicit Chooser (Impl& i) : im (i) {}
+            Impl& im; int over = -1;
+            static constexpr int cols = 3, bw = 190, bh = 40, gap = 14;
+            juce::Rectangle<int> cell (int i) const
+            {
+                int n = (int) fxTypes().size() - 1, rows = (n + cols - 1) / cols;
+                int totalW = cols * bw + (cols - 1) * gap, totalH = rows * bh + (rows - 1) * gap;
+                int x0 = (getWidth() - totalW) / 2, y0 = 54 + juce::jmax (0, (getHeight() - 54 - totalH) / 2 - 10);
+                return { x0 + (i % cols) * (bw + gap), y0 + (i / cols) * (bh + gap), bw, bh };
+            }
+            void paint (juce::Graphics& g) override
+            {
+                bool full = im.freeSlot (im.current) < 0;
+                g.setColour (ink); g.setFont (impact (14.0f));
+                g.drawText (full ? "THIS RACK IS FULL (10 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
+                g.setColour (dim); g.setFont (font (9.5f));
+                g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
+                for (int i = 0; i < (int) fxTypes().size() - 1; ++i)
+                {
+                    auto r = cell (i).toFloat();
+                    g.setColour (juce::Colour (over == i && ! full ? 0xff2a2c2f : 0xff17181a)); g.fillRoundedRectangle (r, 3.0f);
+                    g.setColour (fxColour (i + 1).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
+                    g.setColour (full ? dim : ink); g.setFont (font (12.0f, true));
+                    g.drawText (fxTypes()[(size_t) i + 1].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);
+                }
+            }
+            void mouseMove (const juce::MouseEvent& e) override { int o = hit (e.getPosition()); if (o != over) { over = o; repaint(); } }
+            void mouseExit (const juce::MouseEvent&) override { over = -1; repaint(); }
+            void mouseUp (const juce::MouseEvent& e) override { int i = hit (e.getPosition()); if (i >= 0) im.addEffect (i + 1); }
+            int hit (juce::Point<int> p) const { for (int i = 0; i < (int) fxTypes().size() - 1; ++i) if (cell (i).contains (p)) return i; return -1; }
+        };
+
+        // ---- display of the selected effect (schematic: follows the knobs, not the exact DSP) ----
+        struct Display : public juce::Component, private Ctx::Listener
+        {
+            explicit Display (Impl& i) : im (i) { im.ctx.addListener (this); setInterceptsMouseClicks (false, false); }
+            ~Display() override { im.ctx.removeListener (this); }
+            void paramChanged (int, float) override { repaint(); }
+            Impl& im;
+            void paint (juce::Graphics& g) override
+            {
+                auto box = getLocalBounds().toFloat();
+                paintInset (g, box, 4.0f);
+                int sl = im.sel[im.current]; if (sl < 0) return;
+                int gi = im.current * 10 + sl, ty = im.ctx.fxSlotTypes()[gi], b = im.slotBase (gi);
+                auto col = fxColour (ty);
+                auto P = [&] (int k) { return (double) juce::jlimit (0.0f, 1.0f, im.ctx.get (b + 4 + k)); };
+                const int mode = juce::roundToInt (im.ctx.get (b + 3));
+                const float mix = im.ctx.get (b + 2);
+                auto r = box.reduced (10, 8); const float W = r.getWidth(), H = r.getHeight();
+                auto X = [&] (double t) { return r.getX() + (float) t * W; };
+                auto Y = [&] (double v) { return r.getY() + (float) (1.0 - v) * H; };   // v in 0..1, 1 = top
+                // grid
+                g.setColour (juce::Colours::white.withAlpha (0.06f));
+                for (int i = 1; i < 8; ++i) g.drawVerticalLine ((int) X (i / 8.0), r.getY(), r.getBottom());
+                for (int i = 1; i < 4; ++i) g.drawHorizontalLine ((int) Y (i / 4.0), r.getX(), r.getRight());
+                auto stroke = [&] (const juce::Path& p, float a = 1.0f, float w = 2.0f) { g.setColour (col.withAlpha (a)); g.strokePath (p, juce::PathStrokeType (w)); };
+                auto fill = [&] (juce::Path p, double baseV) { p.lineTo (X (1), Y (baseV)); p.lineTo (X (0), Y (baseV)); p.closeSubPath(); g.setColour (col.withAlpha (0.14f)); g.fillPath (p); };
+                auto label = [&] (const juce::String& t, juce::Justification j = juce::Justification::topLeft) { g.setColour (dim); g.setFont (font (9.0f, true)); g.drawText (t, r.toNearestInt().reduced (4, 2), j, false); };
+                const double pi = juce::MathConstants<double>::pi;
+
+                auto freqAxis = [&]
+                {
+                    g.setFont (font (9.0f, true));
+                    for (auto [f, t] : { std::pair<double, const char*> { 20.0, "20 Hz" }, { 100.0, "100" }, { 1000.0, "1 kHz" }, { 10000.0, "10 kHz" } })
+                    {
+                        float x = X (std::log (f / 20.0) / std::log (1000.0));
+                        g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawVerticalLine ((int) x, r.getY(), r.getBottom());
+                        g.setColour (dim); g.drawText (t, juce::Rectangle<float> (x + 3, r.getBottom() - 14, 50, 12), juce::Justification::bottomLeft, false);
+                    }
+                };
+                auto curve = [&] (std::function<double (double)> f, int n = 240)
+                {
+                    juce::Path p;
+                    for (int i = 0; i <= n; ++i) { double t = (double) i / n, v = f (t); if (i == 0) p.startNewSubPath (X (t), Y (v)); else p.lineTo (X (t), Y (v)); }
+                    return p;
+                };
+
+                if (ty == 9)   // Filter: response
+                {
+                    const double fc = 20.0 * std::pow (1000.0, P (0)), res = P (1);
+                    auto p = curve ([&] (double t)
+                    {
+                        double f = 20.0 * std::pow (1000.0, t);
+                        double db = 20.0 * std::log10 (juce::jmax (1e-5, std::abs (oscmodel::filterH (juce::jlimit (0, 29, mode), fc, res, f))));
+                        return (juce::jlimit (-48.0, 24.0, db) + 48.0) / 72.0;
+                    });
+                    fill (p, 0.0); stroke (p);
+                    g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (fc / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawHorizontalLine ((int) Y ((0 + 48.0) / 72.0), r.getX(), r.getRight());
+                    freqAxis();
+                }
+                else if (ty == 10)   // EQ: sum of low shelf, peak, high shelf
+                {
+                    const double gL = -12 + 24 * P (0), gM = -12 + 24 * P (1), fM = 200.0 * std::pow (25.0, P (2)), gH = -12 + 24 * P (3), q = 0.3 * std::pow (4.0 / 0.3, P (4));
+                    auto db = [&] (double f)
+                    {
+                        double lo = gL / (1.0 + std::pow (f / 200.0, 2.0)), hi = gH / (1.0 + std::pow (4000.0 / f, 2.0));
+                        double x = std::log2 (f / fM) * q * 1.6, mid = gM / (1.0 + x * x);
+                        return lo + mid + hi;
+                    };
+                    auto p = curve ([&] (double t) { return (juce::jlimit (-18.0, 18.0, db (20.0 * std::pow (1000.0, t))) + 18.0) / 36.0; });
+                    fill (p, 0.5); stroke (p);
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    freqAxis();
+                }
+                else if (ty == 1)   // Distortion: transfer curve
+                {
+                    const double drive = 1.0 + 11.0 * P (0), outg = 2.0 * P (2);
+                    auto shape = [&] (double x)
+                    {
+                        switch (juce::jlimit (0, 5, mode))
+                        {
+                            case 0: return std::tanh (x);
+                            case 1: return x >= 0 ? 1.0 - std::exp (-x) : -(1.0 - std::exp (x * 0.7)) * 0.85;
+                            case 2: return juce::jlimit (-1.0, 1.0, x);
+                            case 3: { double y = x; while (y > 1 || y < -1) y = y > 1 ? 2 - y : -2 - y; return y; }
+                            case 4: return std::sin (x * 1.5708);
+                            default: return std::tanh (x * 2.0) * 0.7 + std::sin (x * 3.0) * 0.12;
+                        }
+                    };
+                    auto p = curve ([&] (double t) { double x = (t * 2 - 1); double y = shape (x * drive) * outg; return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, y); });
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1)); 
+                    stroke (p); label ("INPUT -> OUTPUT");
+                }
+                else if (ty == 2)   // Bit crusher: staircase of a sine
+                {
+                    const double bits = 16.0 - 12.0 * P (0); const int hold = 1 + juce::roundToInt (P (1) * 31);
+                    const double levels = std::pow (2.0, juce::jmax (1.5, bits)) / 2.0;
+                    auto sine = [&] (double t) { return std::sin (t * 2 * pi * 2.0); };
+                    g.setColour (juce::Colours::white.withAlpha (0.18f)); g.strokePath (curve ([&] (double t) { return 0.5 + 0.45 * sine (t); }), juce::PathStrokeType (1.0f));
+                    auto p = curve ([&] (double t) { double tt = std::floor (t * 240.0 / hold) * hold / 240.0; double v = std::round (sine (tt) * levels) / levels; return 0.5 + 0.45 * v; }, 480);
+                    stroke (p); label (juce::String (bits, 1) + " BIT   1/" + juce::String (hold));
+                }
+                else if (ty == 3)   // Delay: taps
+                {
+                    const double ms = 10.0 * std::pow (100.0, P (0)), fb = 0.95 * P (1); const bool pp = P (3) > 0.5;
+                    int taps = 1; while (taps < 14 && std::pow (fb, taps) > 0.03) ++taps;
+                    const double span = ms * (taps + 0.5);
+                    g.setColour (col); 
+                    auto bar = [&] (double t, double a, bool top) { float x = X (t / span); g.setColour (col.withAlpha (0.35f + 0.65f * (float) a)); g.fillRect (x - 2, top ? Y (0.5 + 0.45 * a) : Y (0.5), 4.0f, (float) (0.45 * a * H)); };
+                    g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (0) - 2, Y (0.95), 4.0f, (float) (0.45 * H));
+                    for (int k = 1; k <= taps; ++k) bar (ms * k, std::pow (fb, k - 1) * (0.2 + 0.8 * (mix)), ! pp || (k % 2 == 1));
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    label (juce::String (juce::roundToInt (ms)) + " ms" + (pp ? "   PING-PONG" : ""));
+                }
+                else if (ty == 4 || ty == 5 || ty == 6)   // Chorus / Flanger / Phaser: modulation
+                {
+                    const double rate = (ty == 6 ? 0.05 * std::pow (160.0, P (0)) : 0.05 * std::pow (100.0, P (0))), depth = P (1);
+                    auto lfo = [&] (double t) { return std::sin (t * 2.5 * 2 * pi * std::sqrt (rate)); };
+                    auto p = curve ([&] (double t) { return 0.5 + 0.42 * depth * lfo (t); });
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    if (ty == 6)
+                    {
+                        // notch comb: stages = mode + 1 pairs
+                        const int notches = juce::jlimit (1, 4, mode + 1);
+                        g.setColour (col.withAlpha (0.45f));
+                        for (int n = 0; n < notches; ++n) { double c = (n + 0.5) / notches * (0.6 + 0.3 * lfo (0.25)); g.fillRect (X (c) - 1.0f, r.getY() + 6, 2.0f, H - 12); }
+                    }
+                    stroke (p); label (juce::String (rate, 2) + " Hz  (shape only)");
+                }
+                else if (ty == 7)   // Tremolo
+                {
+                    const double rate = 0.1 * std::pow (200.0, P (0)), depth = P (1);
+                    auto wav = [&] (double ph)
+                    {
+                        ph -= std::floor (ph);
+                        switch (juce::jlimit (0, 4, mode))
+                        {
+                            case 0: return 0.5 - 0.5 * std::cos (2 * pi * ph);
+                            case 1: return ph < 0.5 ? ph * 2 : 2 - ph * 2;
+                            case 2: return ph < 0.5 ? 1.0 : 0.0;
+                            case 3: return 1.0 - ph;
+                            default: return ph;
+                        }
+                    };
+                    const double cycles = juce::jlimit (1.0, 8.0, rate * 0.6);
+                    auto p = curve ([&] (double t) { return 0.08 + 0.84 * (1.0 - depth * (1.0 - wav (t * cycles))); }, 480);
+                    fill (p, 0.0); stroke (p); label (juce::String (rate, 1) + " Hz");
+                }
+                else if (ty == 8)   // Reverb: decay
+                {
+                    const double size = P (0), damp = P (1), pre = P (2) * 0.12, tail = 0.3 + 0.7 * size;
+                    juce::Path p; p.startNewSubPath (X (0), Y (0.04));
+                    juce::Random rng (7);
+                    for (int i = 0; i < 200; ++i)
+                    {
+                        double t = (double) i / 200; if (t < pre) continue;
+                        double e = std::exp (-(t - pre) * (3.0 + 6.0 * damp) / tail) * (0.6 + 0.4 * rng.nextDouble());
+                        g.setColour (col.withAlpha (0.25f + 0.5f * (float) e)); g.fillRect (X (t), Y (0.04 + 0.9 * e), 2.0f, (float) (0.9 * e * H));
+                    }
+                    g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (0), Y (0.95), 2.0f, (float) (0.9 * H));
+                    label (juce::String (juce::roundToInt (P (2) * 100)) + " ms pre-delay");
+                }
+                else if (ty == 11)   // Compressor: transfer curve (input dB -> output dB, -60..0)
+                {
+                    const double th = -60.0 + 60.0 * P (0), ratio = 1.0 + 19.0 * P (1) * P (1), mk = 24.0 * P (4);
+                    auto p = curve ([&] (double t) { double in = -60.0 + 60.0 * t, out = in <= th ? in : th + (in - th) / ratio; return juce::jlimit (0.0, 1.0, (out + mk + 60.0) / 60.0); });
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
+                    g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X ((th + 60.0) / 60.0), r.getY(), r.getBottom());
+                    stroke (p); label ("THRESH " + juce::String (th, 1) + " dB   " + juce::String (ratio, 1) + ":1");
+                }
+            }
+        };
+
+        // ====================================================================================================================
+        Impl (FxPage& o, Ctx& c) : owner (o), ctx (c), list (*this), chooser (*this), display (*this)
+        {
+            for (int g = 0; g < 30; ++g)
+            {
+                int b = slotBase (g);
+                onT[g] = std::make_unique<OnToggle> (ctx, b + 1);
+                mixK[g] = makeWidget (ctx, b + 2, true);
+                modeS[g] = makeWidget (ctx, b + 3, false);
+                for (int k = 0; k < 6; ++k) pK[g][k] = makeWidget (ctx, b + 4 + k, true);
+                for (auto* w : { (ParamWidget*) onT[g].get(), mixK[g].get(), modeS[g].get() }) owner.addChildComponent (w);
+                for (auto& w : pK[g]) owner.addChildComponent (*w);
+                auto drop = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
+                mixK[g]->onModDropped = drop; for (auto& w : pK[g]) w->onModDropped = drop;
+                pos[g] = g % 10;
+                refreshSlot (g);
+            }
             const int tabRk[] = { 1, 2, 0 };
             for (int i = 0; i < 3; ++i)
             {
@@ -188,146 +374,170 @@ namespace njo
                 w->onModDropped = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
                 owner.addAndMakeVisible (*w); outs.add (w.release());
             }
+            owner.addAndMakeVisible (list); owner.addChildComponent (chooser); owner.addChildComponent (display);
+            addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); list.repaint(); };
+            removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
+            owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
+            for (int rk = 0; rk < 3; ++rk) { sel[rk] = -1; }
             ctx.addListener (this);
-            showRack (0);
             applyOrders();
+            for (int rk = 0; rk < 3; ++rk) autoSelect (rk);
+            showRack (0);
         }
         ~Impl() override { ctx.removeListener (this); }
 
-        static juce::StringArray fxNames() { juce::StringArray a; for (auto& t : fxTypes()) a.add (t.name); return a; }
+        int slotBase (int g) const { return fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10; }
 
-        void paramChanged (int num, float) override
-        {
-            auto loc = fxLocate (num);
-            if (loc.valid)
-            {
-                if (loc.ord >= 0) applyOrder (loc.rk);
-                else refreshRow (*rows[loc.g]);
-                updateTabs();
-            }
-        }
-
-        void refreshRow (Row& r)
-        {
-            int ty = ctx.fxSlotTypes()[r.g];
-            auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, ty)];
-            r.empty = ty == 0;
-            r.off = ctx.get (r.on->num()) < 0.5f;
-            r.md->names = t.modes; r.md->groups = t.groups;
-            bool hasMode = t.modes.size() > 0;
-            r.on->setVisible (! r.empty); r.md->setVisible (! r.empty && hasMode); r.mix->setVisible (! r.empty);
-            for (int k = 0; k < 6; ++k) r.ps[k]->setVisible (! r.empty && k < (int) t.params.size());
-            r.repaint(); for (auto* c : { (juce::Component*) r.ty.get(), (juce::Component*) r.md.get(), (juce::Component*) r.mix.get() }) c->repaint();
-            for (auto& p : r.ps) p->repaint();
-        }
-
-        // a new effect starts from its own sensible settings (user changes only)
-        void applyTypeDefaults (int g)
-        {
-            int rk = g / 10, sl = g % 10, b = fxRacks()[(size_t) rk].id + sl * 10;
-            auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, ctx.fxSlotTypes()[g])];
-            ctx.set (b + 1, 1.0f); ctx.set (b + 2, t.mix); ctx.set (b + 3, 0.0f);
-            for (size_t k = 0; k < t.params.size(); ++k) ctx.set (b + 4 + (int) k, t.params[k].def);
-            refreshRow (*rows[g]);
-        }
-
+        // ---- order bookkeeping (same data as before: 10 order parameters per rack) ----
         std::array<int, 10> orderNow (int rk) const
         {
             std::array<int, 10> o {};
             for (int k = 0; k < 10; ++k) o[(size_t) k] = juce::roundToInt (ctx.get (fxRacks()[(size_t) rk].ord + k));
             return o;
         }
-
         void applyOrders() { for (int rk = 0; rk < 3; ++rk) applyOrder (rk); }
-        void applyOrder (int rk, const std::array<int, 10>* preview = nullptr)
+        void applyOrder (int rk)
         {
-            auto order = preview ? *preview : orderNow (rk);
-            int pos[10]; for (int& p : pos) p = -1;
-            for (int k = 0; k < 10; ++k) if (order[(size_t) k] >= 0 && order[(size_t) k] < 10 && pos[order[(size_t) k]] < 0) pos[order[(size_t) k]] = k;
-            int spare = 10; for (int sl = 0; sl < 10; ++sl) if (pos[sl] < 0) pos[sl] = spare++;
-            for (int sl = 0; sl < 10; ++sl) { rows[rk * 10 + sl]->pos = pos[sl]; }
-            layoutRows(); 
+            auto order = orderNow (rk);
+            int p[10]; for (int& x : p) x = -1;
+            for (int k = 0; k < 10; ++k) if (order[(size_t) k] >= 0 && order[(size_t) k] < 10 && p[order[(size_t) k]] < 0) p[order[(size_t) k]] = k;
+            int spare = 10; for (int sl = 0; sl < 10; ++sl) if (p[sl] < 0) p[sl] = spare++;
+            for (int sl = 0; sl < 10; ++sl) pos[rk * 10 + sl] = p[sl];
+            list.repaint();
         }
-
         void commit (int rk, const std::array<int, 10>& order)
         {
             auto cur = orderNow (rk);
             for (int k = 0; k < 10; ++k) if (order[(size_t) k] != cur[(size_t) k]) ctx.set (fxRacks()[(size_t) rk].ord + k, (float) order[(size_t) k]);
             applyOrder (rk);
         }
-
-        void move (int rk, int sl, int to)
+        std::vector<int> usedSlots (int rk) const
         {
+            std::vector<int> v;
+            for (int sl = 0; sl < 10; ++sl) if (ctx.fxSlotTypes()[rk * 10 + sl] > 0) v.push_back (sl);
+            std::sort (v.begin(), v.end(), [&] (int a, int b) { return pos[rk * 10 + a] < pos[rk * 10 + b]; });
+            return v;
+        }
+        int freeSlot (int rk) const { for (int sl = 0; sl < 10; ++sl) if (ctx.fxSlotTypes()[rk * 10 + sl] == 0) return sl; return -1; }
+
+        // moves an effect by `dir` places among the used ones (swapping the processing positions)
+        void moveUsed (int rk, int sl, int dir)
+        {
+            auto used = usedSlots (rk);
+            int idx = (int) (std::find (used.begin(), used.end(), sl) - used.begin());
+            int to = juce::jlimit (0, (int) used.size() - 1, idx + dir); if (idx >= (int) used.size() || to == idx) return;
             auto order = orderNow (rk);
-            int from = -1; for (int k = 0; k < 10; ++k) if (order[(size_t) k] == sl) from = k;
-            if (from < 0) return;
-            to = juce::jlimit (0, 9, to); if (to == from) return;
-            std::vector<int> v (order.begin(), order.end()); v.erase (v.begin() + from); v.insert (v.begin() + to, sl);
+            std::vector<int> v (order.begin(), order.end());
+            int target = pos[rk * 10 + used[(size_t) to]];
+            v.erase (std::find (v.begin(), v.end(), sl)); v.insert (v.begin() + juce::jlimit (0, 9, target), sl);
             std::array<int, 10> n; for (int k = 0; k < 10; ++k) n[(size_t) k] = v[(size_t) k];
             commit (rk, n);
         }
 
-        void showRack (int rk) { current = rk; for (auto* t : tabs) {} updateTabs(); layoutRows(); }
+        // ---- selection / add / remove ----
+        void select (int rk, int sl) { sel[rk] = sl; adding = false; layoutCentre(); list.repaint(); owner.repaint(); }
+        void autoSelect (int rk) { auto u = usedSlots (rk); if (sel[rk] < 0 || ctx.fxSlotTypes()[rk * 10 + sel[rk]] == 0) sel[rk] = u.empty() ? -1 : u.back(); }
+        void showRack (int rk) { current = rk; adding = false; autoSelect (rk); updateTabs(); layoutCentre(); list.repaint(); owner.repaint(); }
         void updateTabs()
         {
             const int tabRk[] = { 1, 2, 0 };
-            for (int i = 0; i < 3; ++i)
-            {
-                bool used = false; for (int s = 0; s < 10; ++s) if (ctx.fxSlotTypes()[tabRk[i] * 10 + s] > 0) used = true;
-                tabs[i]->used = used; tabs[i]->on = tabRk[i] == current; tabs[i]->repaint();
-            }
+            for (int i = 0; i < 3; ++i) { tabs[i]->used = ! usedSlots (tabRk[i]).empty(); tabs[i]->on = tabRk[i] == current; tabs[i]->repaint(); }
         }
 
-        void layoutRows()
+        void addEffect (int type)
         {
-            auto list = rowsArea;
-            for (auto* r : rows)
-            {
-                bool vis = r->rk == current;
-                r->setVisible (vis);
-                if (vis) r->setBounds (list.getX(), list.getY() + r->pos * kRowH, list.getWidth(), kRowH);
-            }
+            int rk = current, sl = freeSlot (rk); if (sl < 0) return;
+            auto used = usedSlots (rk);
+            std::vector<int> v = used; v.push_back (sl);
+            for (int s : std::array<int, 10> (orderNow (rk))) if (std::find (v.begin(), v.end(), s) == v.end()) v.push_back (s);
+            std::array<int, 10> n; for (int k = 0; k < 10; ++k) n[(size_t) k] = v[(size_t) k];
+            int b = slotBase (rk * 10 + sl);
+            ctx.begin (b); ctx.set (b, (float) type); ctx.end (b);
+            applyTypeDefaults (rk * 10 + sl, type);
+            commit (rk, n);
+            sel[rk] = sl; adding = false;
+            refreshSlot (rk * 10 + sl); updateTabs(); layoutCentre(); list.repaint(); owner.repaint();
+        }
+        void removeSelected()
+        {
+            int rk = current, sl = sel[rk]; if (sl < 0) return;
+            int b = slotBase (rk * 10 + sl);
+            ctx.begin (b); ctx.set (b, 0.0f); ctx.end (b);
+            sel[rk] = -1; autoSelect (rk); updateTabs(); layoutCentre(); list.repaint(); owner.repaint();
         }
 
-        // drag the grip / use the arrows
-        struct Relay : public juce::MouseListener
+        // a new effect starts from its own sensible settings (user changes only)
+        void applyTypeDefaults (int g, int type)
         {
-            Impl& im; Row* dragRow = nullptr;
-            explicit Relay (Impl& i) : im (i) {}
-            Row* rowOf (const juce::MouseEvent& e) { for (auto* c = e.eventComponent; c; c = c->getParentComponent()) if (auto* r = dynamic_cast<Row*> (c)) return r; return nullptr; }
-            void mouseDown (const juce::MouseEvent& e) override
+            int b = slotBase (g);
+            auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, type)];
+            ctx.set (b + 1, 1.0f); ctx.set (b + 2, t.mix); ctx.set (b + 3, 0.0f);
+            for (size_t k = 0; k < t.params.size(); ++k) ctx.set (b + 4 + (int) k, t.params[k].def);
+        }
+
+        // labels / mode list of the widgets of one slot follow its effect type
+        void refreshSlot (int g)
+        {
+            auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, ctx.fxSlotTypes()[g])];
+            if (auto* s = dynamic_cast<SelectWidget*> (modeS[g].get())) s->setOptions (t.modes, t.groups);
+            for (int k = 0; k < 6; ++k) if (k < (int) t.params.size()) pK[g][k]->setLabelOverride (t.params[(size_t) k].name);
+        }
+
+        void paramChanged (int num, float) override
+        {
+            auto loc = fxLocate (num);
+            if (! loc.valid) return;
+            if (loc.ord >= 0) { applyOrder (loc.rk); return; }
+            if (loc.off == 0)
             {
-                auto* r = dynamic_cast<Row*> (e.eventComponent); if (! r) return;
-                auto p = e.getPosition();
-                if (r->upR.expanded (2).contains (p)) im.move (r->rk, r->sl, r->pos - 1);
-                else if (r->dnR.expanded (2).contains (p)) im.move (r->rk, r->sl, r->pos + 1);
-                else if (r->gripR.contains (p)) { dragRow = r; r->dragging = true; r->toFront (false); r->repaint(); }
+                refreshSlot (loc.g);
+                if (sel[loc.rk] == loc.sl && ctx.fxSlotTypes()[loc.g] == 0) sel[loc.rk] = -1;
+                autoSelect (loc.rk); updateTabs();
+                if (loc.rk == current) { layoutCentre(); owner.repaint(); }
             }
-            void mouseDrag (const juce::MouseEvent& e) override
+            list.repaint();
+        }
+
+        // ---- centre area ----
+        void layoutCentre()
+        {
+            for (int g = 0; g < 30; ++g)
             {
-                if (! dragRow) return;
-                auto pt = e.getEventRelativeTo (&im.owner).getPosition();
-                int to = juce::jlimit (0, 9, (pt.y - im.rowsArea.getY()) / kRowH);
-                auto order = im.orderNow (dragRow->rk);
-                std::vector<int> v (order.begin(), order.end());
-                v.erase (std::find (v.begin(), v.end(), dragRow->sl)); v.insert (v.begin() + to, dragRow->sl);
-                std::array<int, 10> n; for (int k = 0; k < 10; ++k) n[(size_t) k] = v[(size_t) k];
-                im.preview = n; im.hasPreview = true; im.applyOrder (dragRow->rk, &n);
+                onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false);
+                for (auto& w : pK[g]) w->setVisible (false);
             }
-            void mouseUp (const juce::MouseEvent&) override
-            {
-                if (! dragRow) return;
-                dragRow->dragging = false; dragRow->repaint();
-                int rk = dragRow->rk; dragRow = nullptr;
-                if (im.hasPreview) im.commit (rk, im.preview); else im.applyOrder (rk);
-                im.hasPreview = false;
-            }
-        } dragRelay { *this };
+            int sl = sel[current];
+            bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
+            chooser.setVisible (! effectPage); display.setVisible (effectPage); removeBtn.setVisible (effectPage);
+            chooser.setBounds (centre);
+            addBtn.setBounds (addRect);
+            if (! effectPage) return;
+            int g = current * 10 + sl, ty = ctx.fxSlotTypes()[g];
+            auto& t = fxTypes()[(size_t) ty];
+            auto c = centre;
+            auto head = c.removeFromTop (34);
+            removeBtn.setBounds (head.removeFromRight (84).reduced (0, 4));
+            head.removeFromRight (8);
+            onT[g]->setBounds (head.removeFromRight (96).reduced (0, 3)); onT[g]->setVisible (true);
+            head.removeFromRight (8);
+            titleRect = head.removeFromLeft (220);
+            if (t.modes.size() > 0) { modeS[g]->setBounds (head.removeFromLeft (150).reduced (0, 2)); modeS[g]->setVisible (true); }
+            auto knobs = c.removeFromBottom (84);
+            c.removeFromBottom (6);
+            display.setBounds (c);
+            int n = 1 + (int) t.params.size(), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
+            int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
+            auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
+            put (*mixK[g], 0);
+            for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
+        }
 
         FxPage& owner; Ctx& ctx;
-        juce::OwnedArray<Row> rows; juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
-        juce::Rectangle<int> rowsArea, mainCard, outCard;
-        int current = 0; std::array<int, 10> preview {}; bool hasPreview = false;
+        ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
+        std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], pK[30][6];
+        juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
+        juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
+        int current = 0, sel[3] = { -1, -1, -1 }, pos[30] = {}; bool adding = false;
     };
 
     FxPage::FxPage (Ctx& c) : impl (new Impl (*this, c)) {}
@@ -343,9 +553,13 @@ namespace njo
         head.removeFromLeft (110);
         int x = head.getX();
         for (auto* t : impl->tabs) { t->setBounds (x, head.getY(), 76, 20); x += 80; }
-        m.removeFromTop (6);
-        impl->rowsArea = m.withHeight (kRowH * 10);
-        impl->layoutRows();
+        m.removeFromTop (8);
+        auto left = m.removeFromLeft (kLeftW); m.removeFromLeft (14);
+        impl->addRect = left.removeFromBottom (28); left.removeFromBottom (6);
+        impl->listRect = left;
+        impl->list.setBounds (impl->listRect.withHeight (juce::jmin (impl->listRect.getHeight(), 10 * kItemH)));
+        impl->centre = m;
+        impl->layoutCentre();
         auto o = impl->outCard.reduced (12, 6); o.removeFromTop (18);
         int w = o.getWidth() / 6;
         for (int i = 0; i < impl->outs.size(); ++i) impl->outs[i]->setBounds (o.getX() + i * w + 6, o.getY(), w - 12, o.getHeight());
@@ -363,5 +577,17 @@ namespace njo
         head (impl->mainCard, "FX"); head (impl->outCard, "OUTPUT");
         g.setColour (dim); g.setFont (font (8.5f));
         g.drawText ("Bus 1 + Bus 2 feed Main  -  signal runs top to bottom", impl->mainCard.withTrimmedLeft (320).withHeight (30).reduced (10, 0), juce::Justification::centredRight, true);
+        // panel behind the list and the centre area
+        paintInset (g, impl->listRect.toFloat().expanded (4, 4).withTrimmedBottom (-34), 4.0f);
+        g.setColour (dim); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
+        // effect page title
+        int sl = impl->sel[impl->current];
+        if (! impl->adding && sl >= 0 && impl->ctx.fxSlotTypes()[impl->current * 10 + sl] > 0)
+        {
+            int ty = impl->ctx.fxSlotTypes()[impl->current * 10 + sl];
+            g.setColour (fxColour (ty)); g.fillRect (impl->titleRect.getX(), impl->titleRect.getY() + 6, 4, impl->titleRect.getHeight() - 12);
+            g.setColour (ink); g.setFont (impact (19.0f));
+            g.drawText (fxTypes()[(size_t) ty].name.toUpperCase(), impl->titleRect.withTrimmedLeft (14), juce::Justification::centredLeft, true);
+        }
     }
 }

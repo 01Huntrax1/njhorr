@@ -49,7 +49,32 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
-    ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("fx.png"), scale);
+    {
+        // FX page: empty rack (type grid), a chain of three effects, and one screenshot per effect type
+        auto& cx = ed.context();
+        ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("fx_empty.png"), scale);
+        const int base = njo::fxRacks()[0].id;
+        auto setFx = [&] (int slot, int type)
+        {
+            const int b = base + slot * 10;
+            cx.set (b, (float) type);
+            if (type > 0)
+            {
+                auto& t = njo::fxTypes()[(size_t) type];
+                cx.set (b + 1, 1.0f); cx.set (b + 2, t.mix); cx.set (b + 3, type == 9 ? 1.0f : 0.0f);
+                for (size_t k = 0; k < t.params.size(); ++k) cx.set (b + 4 + (int) k, t.params[k].def);
+            }
+        };
+        for (int t = 1; t <= 11; ++t)
+        {
+            setFx (0, t); pump();
+            save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);
+        }
+        setFx (0, 9); setFx (1, 3); setFx (2, 8); setFx (3, 11); pump();
+        save (ed, dir.getChildFile ("fx.png"), scale);
+        for (int sl = 0; sl < 4; ++sl) setFx (sl, 0);
+        pump();
+    }
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);
     ed.setModTab (1); pump(); save (ed, dir.getChildFile ("frq_mod.png"), scale);
     return 0;

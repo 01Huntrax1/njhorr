@@ -146,3 +146,11 @@ Each oscillator slot has a fourth Source type, **Physical**: modal synthesis in 
 - The mode display of the slot shows the ratio, strength and (dimmer = shorter) decay of every mode of A (red) and B (orange).
 
 `tools/phys/build_phys.py` writes the DSP into `patch/Eisenpuls_Synth.cmajor` (idempotent); `tools/phys/apply_phys_ui.py` was the one-time edit of `patch/index.js`. Tests: `tools/osc/test_osc.py` (every model, pitch, decay, hit position, B tune, serial coupling, noise, extreme settings).
+
+## FX page
+
+The FX page (native editor) is laid out like a modern synth's effect page. The three racks (Bus 1, Bus 2, Main) are the tabs on top; each rack still holds up to 10 effects in the same parameters and processing order as before (presets are unchanged).
+
+- **List** (left): the effects of the rack in processing order. Click an effect to open its page, the dot bypasses it, the arrows and the grip move it (drag to reorder). **+ ADD FX** opens a grid of all effect types; a new effect is appended to the end of the chain with its own default settings and selected.
+- **Effect page** (centre): name, mode dropdown (for effects that have modes), ON / bypass, **REMOVE**, a display and large knobs for Mix and every parameter of the effect (all of them accept modulation drops). The displays follow the knobs and are schematic: Filter and EQ show the frequency response, Distortion the transfer curve of the chosen algorithm, Bit Crush the quantised sine, Delay the echo taps (with Ping-Pong), Chorus / Flanger / Phaser the modulation (the Phaser also its notches), Tremolo the gain shape of the chosen waveform, Reverb the decay with pre-delay, Compressor the transfer curve with threshold, ratio and makeup.
+- The JS fallback UI (`patch/index.js`) still has the old row based rack.
