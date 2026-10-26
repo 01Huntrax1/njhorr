@@ -12,13 +12,13 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical"]
+SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 3, 0, "", "btn", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 4, 0, "", "btn", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -98,6 +98,7 @@ PHY_BASE = 1700
 PHY_STRIDE = 32
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
 PHY_COUPLING = ["Parallel", "Serial"]
+JUNO_RANGES = ["16'", "8'", "4'"]
 PHY = [
  (0,  "phmix",  "Noise vs Mallet",      "Noise",     0, 1, 0.25, "", "sld", None),
  (1,  "phhard", "Mallet Hardness",      "Hardness",  0, 1, 0.6, "", "sld", None),
@@ -115,5 +116,16 @@ PHY = [
  (13, "phtunB", "B Tune",               "Tune",      -24, 24, 12, "st", "sld", None),
  (14, "phbal",  "A / B Balance",        "A / B",     0, 1, 0.35, "", "sld", None),
  (15, "phser",  "Coupling",             "Coupling",  0, 1, 0, "", "btn", PHY_COUPLING),
+ # Alpha Juno style DCO (Source = Juno DCO), implemented by tools/phys/build_juno.py; the second half of the same id block
+ (16, "jsaw",   "Juno Saw Level",       "Saw",       0, 1, 0.8, "", "sld", None),
+ (17, "jpulse", "Juno Pulse Level",     "Pulse",     0, 1, 0.0, "", "sld", None),
+ (18, "jwidth", "Juno Pulse Width",     "Width",     0, 1, 0.5, "", "sld", None),
+ (19, "jpwm",   "Juno PWM Depth",       "PWM Depth", 0, 1, 0.0, "", "sld", None),
+ (20, "jpwmr",  "Juno PWM Rate",        "PWM Rate",  0.1, 20, 1.5, "Hz", "sld", None),
+ (21, "jsub",   "Juno Sub Level",       "Sub",       0, 1, 0.5, "", "sld", None),
+ (22, "jnoise", "Juno Noise Level",     "Noise",     0, 1, 0.0, "", "sld", None),
+ (23, "jrange", "Juno Range",           "Range",     0, 2, 1, "", "btn", JUNO_RANGES),
+ (24, "jdrift", "Juno Drift",           "Drift",     0, 1, 0.2, "", "sld", None),
+ (25, "jcurve", "Juno Saw Curve",       "Curve",     0, 1, 0.3, "", "sld", None),
 ]
 def phy_id(o, j): return PHY_BASE + PHY_STRIDE * o + j

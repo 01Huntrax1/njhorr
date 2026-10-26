@@ -154,7 +154,8 @@ namespace njo
                               "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
-                if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
+                if (juce::String (key) == "type") w = std::make_unique<ButtonsWidget> (ctx, oscId (o, oscKey (key)), 5);   // all five sources in one row
+                else if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
                 else w = makeWidget (ctx, oscId (o, oscKey (key)), juce::String (key) != "wdpos");
                 w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
                 owner.addAndMakeVisible (*w);
@@ -220,8 +221,9 @@ namespace njo
 
         ParamWidget* W (const char* key) { auto it = widgets.find (key); return it == widgets.end() ? nullptr : it->second.get(); }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 3, juce::roundToInt (ctx.get (pnum ("type")))); }
-        static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser" };
+        int srcType() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (pnum ("type")))); }
+        static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
+                                                         "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve" };
         SoundMemory::Kind kind() const { return srcType() == 1 ? SoundMemory::Sample : SoundMemory::Wavetable; }
 
         // ---- memory / drop zone ----
@@ -364,7 +366,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3;
+            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3 || type == 4;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -400,8 +402,18 @@ namespace njo
                 knob ("ptimb", 13 + juce::roundToInt (fw / 2), 302, c, pl);
                 knob ("pmorph", 13 + juce::roundToInt (fw * 5 / 6), 302, c, pl);
 
+                // Juno DCO: levels, then pulse width and range
+                if (type == 4)
+                {
+                    const float fw6 = (float) (w - 26);
+                    const char* kl[6] = { "jsaw", "jpulse", "jsub", "jnoise", "jcurve", "jdrift" };
+                    for (int i = 0; i < 6; ++i) knob (kl[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 162, c);
+                    const char* kp[3] = { "jwidth", "jpwm", "jpwmr" };
+                    for (int i = 0; i < 3; ++i) knob (kp[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 262, c);
+                    put ("jrange", 13 + juce::roundToInt (fw6 * 0.52f), 270, juce::roundToInt (fw6 * 0.48f), 31, c);
+                }
                 // physical: resonators A and B side by side, exciter and balance below
-                if (ph)
+                if (type == 3)
                 {
                     const int cw2 = (w - 26 - 8) / 2, xa = 13, xb = 13 + cw2 + 8;
                     put ("phmodA", xa, 156, cw2, 36, c);  strip ("phmodA", xa, 156, cw2, c, false);
@@ -547,6 +559,12 @@ namespace njo
 if (! wf)
                     g.drawFittedText ("Every frame is a transfer curve (input -1..1 to output). Drive scales the input, Mix blends with the dry signal, Table Pos morphs between the frames.",
                                       cardOut.getX() + 14, 376, cardOut.getWidth() - 28, 50, juce::Justification::topLeft, 4);
+            }
+            if (mode == 0 && srcType() == 4)
+            {
+                g.setColour (orange); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
+                g.drawText ("OSCILLATOR", cardSrc.getX() + 13, 146, 150, 12, juce::Justification::centredLeft);
+                g.drawText ("PULSE WIDTH / RANGE", cardSrc.getX() + 13, 246, 200, 12, juce::Justification::centredLeft);
             }
             if (mode == 0 && srcType() == 3)
             {

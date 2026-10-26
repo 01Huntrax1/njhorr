@@ -34,6 +34,16 @@ namespace njo::phys
         if (std::string_view (name) == "phtunB") return 13;
         if (std::string_view (name) == "phbal") return 14;
         if (std::string_view (name) == "phser") return 15;
+        if (std::string_view (name) == "jsaw") return 16;
+        if (std::string_view (name) == "jpulse") return 17;
+        if (std::string_view (name) == "jwidth") return 18;
+        if (std::string_view (name) == "jpwm") return 19;
+        if (std::string_view (name) == "jpwmr") return 20;
+        if (std::string_view (name) == "jsub") return 21;
+        if (std::string_view (name) == "jnoise") return 22;
+        if (std::string_view (name) == "jrange") return 23;
+        if (std::string_view (name) == "jdrift") return 24;
+        if (std::string_view (name) == "jcurve") return 25;
         return 0;
     }
     inline const char* model (int m)

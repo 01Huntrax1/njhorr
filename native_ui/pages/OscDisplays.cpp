@@ -211,7 +211,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 3, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 4, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -307,6 +307,29 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 4)
+            {
+                // two cycles of the DCO mix (saw + pulse + sub, not band-limited), noise as a level bar
+                auto V = [&] (const char* key) { return ctx.get (phys::phyId (o, phys::key (key))); };
+                const int range = juce::jlimit (0, 2, juce::roundToInt (V ("jrange")));
+                const float cv = V ("jcurve") * 4.0f, wd = juce::jlimit (0.05f, 0.95f, V ("jwidth"));
+                juce::Path p;
+                const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const float t = (float) x / W * 2.0f, ph = t - std::floor (t), sp = t / 2.0f - std::floor (t / 2.0f);
+                    float saw = 2.0f * ph - 1.0f;
+                    if (cv > 0.01f) saw = 2.0f * (std::exp (cv * ph) - 1.0f) / (std::exp (cv) - 1.0f) - 1.0f;
+                    const float y = (saw * V ("jsaw") + (ph < wd ? 1.0f : -1.0f) * V ("jpulse") + (sp < 0.5f ? 1.0f : -1.0f) * V ("jsub")) * 0.55f;
+                    const float py = H / 2 - juce::jlimit (-1.2f, 1.2f, y) * (H / 2 - 4);
+                    if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
+                }
+                g.setColour (juce::Colour (0xffff3b30)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                const float nz = V ("jnoise") * (H - 12);
+                g.setColour (juce::Colour (0xffffa040).withAlpha (0.5f)); g.fillRect (W - 14, H - 6 - nz, 8.0f, nz);
+                info = juce::String ("JUNO DCO / ") + (range == 0 ? "16'" : (range == 1 ? "8'" : "4'")) + " / WIDTH " + juce::String (juce::roundToInt (wd * 100)) + " %"
+                       + (V ("jpwm") > 0.0f ? " / PWM " + juce::String (V ("jpwmr"), 1) + " HZ" : juce::String());
             }
             else if (type == 3)
             {

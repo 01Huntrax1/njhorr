@@ -422,5 +422,41 @@ for t in range(4):
                     PH(0, "phser", t % 2), PH(0, "phhard", 1), PH(0, "phmix", 0.5), P(0, "level", 1)], note=24 + 40 * (t % 2) + 20 * (t // 2), hold=0.4, tail=0.05, tag="phyext%d" % t)
     if not np.isfinite(a).all() or np.abs(a).max() > 8: ok = False
 check("Physical slot stays finite and bounded at extreme settings", ok)
+
+# ---------------------------------------------------------------- Alpha Juno DCO slot
+JUNO = [P(0, "type", 4), P(0, "level", 0.8), FOFF(0)]
+def JU(key, v): return PH(0, key, v)
+only = lambda **kw: JUNO + [JU("jsaw", kw.get("saw", 0)), JU("jpulse", kw.get("pulse", 0)), JU("jsub", kw.get("sub", 0)), JU("jnoise", kw.get("noise", 0)), JU("jdrift", 0), JU("jcurve", kw.get("curve", 0))]
+def jpk(cmds, note=57, tag="ju"):
+    a = render(cmds, note=note, hold=0.8, tail=0.1, tag=tag)[:, 0]
+    return peak_freq(a[int(0.1 * RATE):int(0.6 * RATE)]), a
+f, a = jpk(only(saw=1), tag="jusaw")
+check("Juno DCO saw plays the keyboard pitch (A3)", abs(f - 220) < 1.0 and rms(a[int(0.1 * RATE):int(0.6 * RATE)]) > 0.02, "%.2f Hz" % f)
+f, a = jpk(only(pulse=1) + [JU("jwidth", 0.3)], tag="jupul")
+check("Juno DCO pulse plays the keyboard pitch", abs(f - 220) < 1.0, "%.2f Hz" % f)
+f, a = jpk(only(sub=1), tag="jusub")
+check("Juno DCO sub oscillator sounds one octave below", abs(f - 110) < 1.0, "%.2f Hz" % f)
+f, a = jpk(only(saw=1) + [JU("jrange", 0)], tag="ju16")
+check("Range 16' is an octave down", abs(f - 110) < 1.0, "%.2f Hz" % f)
+f, a = jpk(only(saw=1) + [JU("jrange", 2)], tag="ju4")
+check("Range 4' is an octave up", abs(f - 440) < 2.0, "%.2f Hz" % f)
+f, a = jpk(only(noise=1), tag="junz")
+check("Juno DCO noise is broadband", rms(a[int(0.1 * RATE):int(0.6 * RATE)]) > 0.02 and band(a[int(0.1 * RATE):int(0.6 * RATE)], 5000, 15000) > 0.2 * band(a[int(0.1 * RATE):int(0.6 * RATE)], 100, 3000))
+a = render(only(pulse=1) + [JU("jwidth", 0.5)], note=57, hold=0.6, tail=0.1, tag="jusq")[:, 0]
+h1, h2 = band(a[int(0.1 * RATE):int(0.5 * RATE)], 210, 230), band(a[int(0.1 * RATE):int(0.5 * RATE)], 430, 450)
+check("A pulse of width 50 % has no even harmonics", h2 < 0.05 * h1, "%.1f / %.1f" % (h2, h1))
+a = render(only(pulse=1) + [JU("jwidth", 0.2)], note=57, hold=0.6, tail=0.1, tag="jun")[:, 0]
+h2n = band(a[int(0.1 * RATE):int(0.5 * RATE)], 430, 450)
+check("A narrow pulse has even harmonics", h2n > 0.15 * band(a[int(0.1 * RATE):int(0.5 * RATE)], 210, 230))
+a0 = render(only(pulse=1) + [JU("jwidth", 0.5), JU("jpwm", 0)], note=57, hold=0.8, tail=0.1, tag="jupw0")[:, 0]
+a1 = render(only(pulse=1) + [JU("jwidth", 0.5), JU("jpwm", 1), JU("jpwmr", 4)], note=57, hold=0.8, tail=0.1, tag="jupw1")[:, 0]
+e0 = [band(a0[int(t * RATE):int((t + 0.1) * RATE)], 430, 450) for t in (0.1, 0.2, 0.3, 0.4)]
+e1 = [band(a1[int(t * RATE):int((t + 0.1) * RATE)], 430, 450) for t in (0.1, 0.2, 0.3, 0.4)]
+check("PWM moves the pulse width over time", max(e1) > 5 * (max(e0) + 1e-6) and max(e1) > 1.5 * min(e1), "%.1f..%.1f vs %.2f" % (min(e1), max(e1), max(e0)))
+ok = True
+for t, nt in enumerate((24, 60, 96, 120)):
+    a = render(JUNO + [JU("jsaw", 1), JU("jpulse", 1), JU("jsub", 1), JU("jnoise", 1), JU("jcurve", 1), JU("jdrift", 1), JU("jpwm", 1), P(0, "level", 1)], note=nt, hold=0.3, tail=0.05, tag="juext%d" % t)
+    if not np.isfinite(a).all() or np.abs(a).max() > 4: ok = False
+check("Juno DCO stays finite and bounded at extreme settings", ok)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

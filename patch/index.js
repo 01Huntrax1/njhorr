@@ -619,9 +619,9 @@ const pmId = (s, d) => PM_BASE + 6 * s + d;
 const pdId = (s, d) => PD_BASE + 6 * s + d;
 const rmId = (s, d) => RM_BASE + 6 * s + d;
 const amId = (s, d) => AM_BASE + 6 * s + d;
-const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical"];
+const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"];
 const PHY_BASE = 1700, PHY_STRIDE = 32;
-const PHY_K = {"phmix": 0, "phhard": 1, "phntim": 2, "phmodA": 3, "phdecA": 4, "phmatA": 5, "phhitA": 6, "phinhA": 7, "phmodB": 8, "phdecB": 9, "phmatB": 10, "phhitB": 11, "phinhB": 12, "phtunB": 13, "phbal": 14, "phser": 15};
+const PHY_K = {"phmix": 0, "phhard": 1, "phntim": 2, "phmodA": 3, "phdecA": 4, "phmatA": 5, "phhitA": 6, "phinhA": 7, "phmodB": 8, "phdecB": 9, "phmatB": 10, "phhitB": 11, "phinhB": 12, "phtunB": 13, "phbal": 14, "phser": 15, "jsaw": 16, "jpulse": 17, "jwidth": 18, "jpwm": 19, "jpwmr": 20, "jsub": 21, "jnoise": 22, "jrange": 23, "jdrift": 24, "jcurve": 25};
 const phyId = (o, key) => PHY_BASE + PHY_STRIDE * o + PHY_K[key];
 const PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"];
 const PHY_RAT = [[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 2.7778, 5.4444, 9.0, 13.4444, 18.7778, 25.0, 32.1111, 40.1111, 49.0, 58.7778, 69.4444, 81.0, 93.4444, 106.7778, 121.0], [1.0, 1.5811, 2.0, 2.2361, 2.5495, 2.9155, 3.0, 3.1623, 3.5355, 3.6056, 3.8079, 4.0, 4.1231, 4.3012, 4.4721, 4.5277], [1.0, 1.5934, 2.1356, 2.2955, 2.6531, 2.9173, 3.1555, 3.5002, 3.5985, 3.6475, 4.059, 4.1318, 4.2305, 4.6011, 4.6101, 4.8319], [1.0, 2.1152, 2.8848, 3.974, 4.0, 5.8587, 6.026, 6.5762, 7.1413, 8.461, 9.0, 9.9219, 10.4238, 11.539, 11.6022, 11.8067], [1.0, 1.2967, 1.5678, 1.6477, 1.8266, 1.9587, 2.0777, 2.2501, 2.2993, 2.3237, 2.5295, 2.5659, 2.6152, 2.8005, 2.8051, 2.916], [1, 4, 10, 17.82, 26.62, 37.18, 49.5, 63.58, 79.42, 97.02, 116.38, 137.5, 160.38, 185.02, 211.42, 239.58], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0]];
@@ -634,9 +634,9 @@ const PLAITS_GROUPS = [[0, "Classic"], [2, "FM"], [5, "Classic"], [10, "FM"], [1
 const PLAITS_PARAMS = [["Detune", "Cutoff", "Shape"], ["Detune", "Distortion", "Shape"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Patch", "Mod Level", "Env / Pitch"], ["Terrain", "Radius", "Offset"], ["Chord", "Registration", "Waveform"], ["Chord", "Pulse Width", "Arp / Env"], ["Detune", "Pulse Width", "Saw Shape"], ["Waveform", "Fold", "Asymmetry"], ["Ratio", "Mod Amount", "Feedback"], ["Formant Ratio", "Formant Freq", "Formant Shape"], ["Bumps", "Prominence", "Bump Shape"], ["Bank", "Row", "Column"], ["Chord", "Inversion", "Waveform"], ["Species", "Phoneme", "Word / Vowel"], ["Pitch Random", "Density", "Overlap"], ["Filter Type", "Clock Freq", "Resonance"], ["Freq Random", "Density", "Filter"], ["Inharmonicity", "Brightness", "Decay"], ["Material", "Brightness", "Decay"], ["Attack", "Brightness", "Decay"], ["Mode Balance", "Excitation", "Decay"], ["Metallic", "High-Pass", "Decay"]];
 const MOD_DST = ["Off", "Pitch (all)", "Amp", "Pan", "Drive", "Out Gain", "OSC 1 Pitch", "OSC 1 Level", "OSC 1 Pan", "OSC 1 Position / Harm", "OSC 1 Warp 1 / Timbre", "OSC 1 Warp 2 / Morph", "OSC 1 Cutoff", "OSC 1 Reso", "OSC 1 Dist Drive", "OSC 2 Pitch", "OSC 2 Level", "OSC 2 Pan", "OSC 2 Position / Harm", "OSC 2 Warp 1 / Timbre", "OSC 2 Warp 2 / Morph", "OSC 2 Cutoff", "OSC 2 Reso", "OSC 2 Dist Drive", "OSC 3 Pitch", "OSC 3 Level", "OSC 3 Pan", "OSC 3 Position / Harm", "OSC 3 Warp 1 / Timbre", "OSC 3 Warp 2 / Morph", "OSC 3 Cutoff", "OSC 3 Reso", "OSC 3 Dist Drive", "OSC 4 Pitch", "OSC 4 Level", "OSC 4 Pan", "OSC 4 Position / Harm", "OSC 4 Warp 1 / Timbre", "OSC 4 Warp 2 / Morph", "OSC 4 Cutoff", "OSC 4 Reso", "OSC 4 Dist Drive", "OSC 5 Pitch", "OSC 5 Level", "OSC 5 Pan", "OSC 5 Position / Harm", "OSC 5 Warp 1 / Timbre", "OSC 5 Warp 2 / Morph", "OSC 5 Cutoff", "OSC 5 Reso", "OSC 5 Dist Drive", "OSC 6 Pitch", "OSC 6 Level", "OSC 6 Pan", "OSC 6 Position / Harm", "OSC 6 Warp 1 / Timbre", "OSC 6 Warp 2 / Morph", "OSC 6 Cutoff", "OSC 6 Reso", "OSC 6 Dist Drive", "FM A > A", "FM A > B", "FM A > C", "FM A > D", "FM A > E", "FM A > F", "FM B > A", "FM B > B", "FM B > C", "FM B > D", "FM B > E", "FM B > F", "FM C > A", "FM C > B", "FM C > C", "FM C > D", "FM C > E", "FM C > F", "FM D > A", "FM D > B", "FM D > C", "FM D > D", "FM D > E", "FM D > F", "FM E > A", "FM E > B", "FM E > C", "FM E > D", "FM E > E", "FM E > F", "FM F > A", "FM F > B", "FM F > C", "FM F > D", "FM F > E", "FM F > F", "PM A > A", "PM A > B", "PM A > C", "PM A > D", "PM A > E", "PM A > F", "PM B > A", "PM B > B", "PM B > C", "PM B > D", "PM B > E", "PM B > F", "PM C > A", "PM C > B", "PM C > C", "PM C > D", "PM C > E", "PM C > F", "PM D > A", "PM D > B", "PM D > C", "PM D > D", "PM D > E", "PM D > F", "PM E > A", "PM E > B", "PM E > C", "PM E > D", "PM E > E", "PM E > F", "PM F > A", "PM F > B", "PM F > C", "PM F > D", "PM F > E", "PM F > F", "PD A > A", "PD A > B", "PD A > C", "PD A > D", "PD A > E", "PD A > F", "PD B > A", "PD B > B", "PD B > C", "PD B > D", "PD B > E", "PD B > F", "PD C > A", "PD C > B", "PD C > C", "PD C > D", "PD C > E", "PD C > F", "PD D > A", "PD D > B", "PD D > C", "PD D > D", "PD D > E", "PD D > F", "PD E > A", "PD E > B", "PD E > C", "PD E > D", "PD E > E", "PD E > F", "PD F > A", "PD F > B", "PD F > C", "PD F > D", "PD F > E", "PD F > F", "OSC 1 Wavefilter Pos", "OSC 1 Wavedistortion Pos", "OSC 2 Wavefilter Pos", "OSC 2 Wavedistortion Pos", "OSC 3 Wavefilter Pos", "OSC 3 Wavedistortion Pos", "OSC 4 Wavefilter Pos", "OSC 4 Wavedistortion Pos", "OSC 5 Wavefilter Pos", "OSC 5 Wavedistortion Pos", "OSC 6 Wavefilter Pos", "OSC 6 Wavedistortion Pos", "OSC 1 Frequency", "OSC 2 Frequency", "OSC 3 Frequency", "OSC 4 Frequency", "OSC 5 Frequency", "OSC 6 Frequency", "RM A > A", "RM A > B", "RM A > C", "RM A > D", "RM A > E", "RM A > F", "RM B > A", "RM B > B", "RM B > C", "RM B > D", "RM B > E", "RM B > F", "RM C > A", "RM C > B", "RM C > C", "RM C > D", "RM C > E", "RM C > F", "RM D > A", "RM D > B", "RM D > C", "RM D > D", "RM D > E", "RM D > F", "RM E > A", "RM E > B", "RM E > C", "RM E > D", "RM E > E", "RM E > F", "RM F > A", "RM F > B", "RM F > C", "RM F > D", "RM F > E", "RM F > F", "AM A > A", "AM A > B", "AM A > C", "AM A > D", "AM A > E", "AM A > F", "AM B > A", "AM B > B", "AM B > C", "AM B > D", "AM B > E", "AM B > F", "AM C > A", "AM C > B", "AM C > C", "AM C > D", "AM C > E", "AM C > F", "AM D > A", "AM D > B", "AM D > C", "AM D > D", "AM D > E", "AM D > F", "AM E > A", "AM E > B", "AM E > C", "AM E > D", "AM E > E", "AM E > F", "AM F > A", "AM F > B", "AM F > C", "AM F > D", "AM F > E", "AM F > F"];
 const MOD_DST_GROUPS = [[0, ""], [1, "Global"], [6, "OSC 1"], [15, "OSC 2"], [24, "OSC 3"], [33, "OSC 4"], [42, "OSC 5"], [51, "OSC 6"], [60, "FM matrix (amount)"], [96, "PM matrix (amount)"], [132, "PD matrix (amount)"], [168, "Tables"], [180, "Frequency"], [186, "RM matrix (amount)"], [222, "AM matrix (amount)"]];
-const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1048": [180, 1.0], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1112": [181, 1.0], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1176": [182, 1.0], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1240": [183, 1.0], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1304": [184, 1.0], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1368": [185, 1.0], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5], "1520": [186, 0.5], "1521": [187, 0.5], "1522": [188, 0.5], "1523": [189, 0.5], "1524": [190, 0.5], "1525": [191, 0.5], "1526": [192, 0.5], "1527": [193, 0.5], "1528": [194, 0.5], "1529": [195, 0.5], "1530": [196, 0.5], "1531": [197, 0.5], "1532": [198, 0.5], "1533": [199, 0.5], "1534": [200, 0.5], "1535": [201, 0.5], "1536": [202, 0.5], "1537": [203, 0.5], "1538": [204, 0.5], "1539": [205, 0.5], "1540": [206, 0.5], "1541": [207, 0.5], "1542": [208, 0.5], "1543": [209, 0.5], "1544": [210, 0.5], "1545": [211, 0.5], "1546": [212, 0.5], "1547": [213, 0.5], "1548": [214, 0.5], "1549": [215, 0.5], "1550": [216, 0.5], "1551": [217, 0.5], "1552": [218, 0.5], "1553": [219, 0.5], "1554": [220, 0.5], "1555": [221, 0.5], "1560": [222, 0.5], "1561": [223, 0.5], "1562": [224, 0.5], "1563": [225, 0.5], "1564": [226, 0.5], "1565": [227, 0.5], "1566": [228, 0.5], "1567": [229, 0.5], "1568": [230, 0.5], "1569": [231, 0.5], "1570": [232, 0.5], "1571": [233, 0.5], "1572": [234, 0.5], "1573": [235, 0.5], "1574": [236, 0.5], "1575": [237, 0.5], "1576": [238, 0.5], "1577": [239, 0.5], "1578": [240, 0.5], "1579": [241, 0.5], "1580": [242, 0.5], "1581": [243, 0.5], "1582": [244, 0.5], "1583": [245, 0.5], "1584": [246, 0.5], "1585": [247, 0.5], "1586": [248, 0.5], "1587": [249, 0.5], "1588": [250, 0.5], "1589": [251, 0.5], "1590": [252, 0.5], "1591": [253, 0.5], "1592": [254, 0.5], "1593": [255, 0.5], "1594": [256, 0.5], "1595": [257, 0.5], "1706": [9, 0.5], "1711": [9, 0.5], "1705": [10, 0.5], "1710": [10, 0.5], "1700": [11, 0.5], "1738": [18, 0.5], "1743": [18, 0.5], "1737": [19, 0.5], "1742": [19, 0.5], "1732": [20, 0.5], "1770": [27, 0.5], "1775": [27, 0.5], "1769": [28, 0.5], "1774": [28, 0.5], "1764": [29, 0.5], "1802": [36, 0.5], "1807": [36, 0.5], "1801": [37, 0.5], "1806": [37, 0.5], "1796": [38, 0.5], "1834": [45, 0.5], "1839": [45, 0.5], "1833": [46, 0.5], "1838": [46, 0.5], "1828": [47, 0.5], "1866": [54, 0.5], "1871": [54, 0.5], "1865": [55, 0.5], "1870": [55, 0.5], "1860": [56, 0.5]};
+const MOD_TARGET = {"63": [1, 0.5], "29": [3, 0.5], "28": [4, 0.5], "190": [5, 0.5], "1006": [6, 0.5], "1001": [7, 1], "1002": [8, 0.5], "1010": [9, 0.5], "1025": [9, 0.5], "1019": [10, 0.5], "1026": [10, 0.5], "1021": [11, 0.5], "1027": [11, 0.5], "1032": [12, 0.41], "1033": [13, 0.5], "1043": [14, 0.5], "1046": [168, 0.5], "1047": [169, 0.5], "1048": [180, 1.0], "1070": [15, 0.5], "1065": [16, 1], "1066": [17, 0.5], "1074": [18, 0.5], "1089": [18, 0.5], "1083": [19, 0.5], "1090": [19, 0.5], "1085": [20, 0.5], "1091": [20, 0.5], "1096": [21, 0.41], "1097": [22, 0.5], "1107": [23, 0.5], "1110": [170, 0.5], "1111": [171, 0.5], "1112": [181, 1.0], "1134": [24, 0.5], "1129": [25, 1], "1130": [26, 0.5], "1138": [27, 0.5], "1153": [27, 0.5], "1147": [28, 0.5], "1154": [28, 0.5], "1149": [29, 0.5], "1155": [29, 0.5], "1160": [30, 0.41], "1161": [31, 0.5], "1171": [32, 0.5], "1174": [172, 0.5], "1175": [173, 0.5], "1176": [182, 1.0], "1198": [33, 0.5], "1193": [34, 1], "1194": [35, 0.5], "1202": [36, 0.5], "1217": [36, 0.5], "1211": [37, 0.5], "1218": [37, 0.5], "1213": [38, 0.5], "1219": [38, 0.5], "1224": [39, 0.41], "1225": [40, 0.5], "1235": [41, 0.5], "1238": [174, 0.5], "1239": [175, 0.5], "1240": [183, 1.0], "1262": [42, 0.5], "1257": [43, 1], "1258": [44, 0.5], "1266": [45, 0.5], "1281": [45, 0.5], "1275": [46, 0.5], "1282": [46, 0.5], "1277": [47, 0.5], "1283": [47, 0.5], "1288": [48, 0.41], "1289": [49, 0.5], "1299": [50, 0.5], "1302": [176, 0.5], "1303": [177, 0.5], "1304": [184, 1.0], "1326": [51, 0.5], "1321": [52, 1], "1322": [53, 0.5], "1330": [54, 0.5], "1345": [54, 0.5], "1339": [55, 0.5], "1346": [55, 0.5], "1341": [56, 0.5], "1347": [56, 0.5], "1352": [57, 0.41], "1353": [58, 0.5], "1363": [59, 0.5], "1366": [178, 0.5], "1367": [179, 0.5], "1368": [185, 1.0], "1400": [60, 0.5], "1401": [61, 0.5], "1402": [62, 0.5], "1403": [63, 0.5], "1404": [64, 0.5], "1405": [65, 0.5], "1406": [66, 0.5], "1407": [67, 0.5], "1408": [68, 0.5], "1409": [69, 0.5], "1410": [70, 0.5], "1411": [71, 0.5], "1412": [72, 0.5], "1413": [73, 0.5], "1414": [74, 0.5], "1415": [75, 0.5], "1416": [76, 0.5], "1417": [77, 0.5], "1418": [78, 0.5], "1419": [79, 0.5], "1420": [80, 0.5], "1421": [81, 0.5], "1422": [82, 0.5], "1423": [83, 0.5], "1424": [84, 0.5], "1425": [85, 0.5], "1426": [86, 0.5], "1427": [87, 0.5], "1428": [88, 0.5], "1429": [89, 0.5], "1430": [90, 0.5], "1431": [91, 0.5], "1432": [92, 0.5], "1433": [93, 0.5], "1434": [94, 0.5], "1435": [95, 0.5], "1440": [96, 0.5], "1441": [97, 0.5], "1442": [98, 0.5], "1443": [99, 0.5], "1444": [100, 0.5], "1445": [101, 0.5], "1446": [102, 0.5], "1447": [103, 0.5], "1448": [104, 0.5], "1449": [105, 0.5], "1450": [106, 0.5], "1451": [107, 0.5], "1452": [108, 0.5], "1453": [109, 0.5], "1454": [110, 0.5], "1455": [111, 0.5], "1456": [112, 0.5], "1457": [113, 0.5], "1458": [114, 0.5], "1459": [115, 0.5], "1460": [116, 0.5], "1461": [117, 0.5], "1462": [118, 0.5], "1463": [119, 0.5], "1464": [120, 0.5], "1465": [121, 0.5], "1466": [122, 0.5], "1467": [123, 0.5], "1468": [124, 0.5], "1469": [125, 0.5], "1470": [126, 0.5], "1471": [127, 0.5], "1472": [128, 0.5], "1473": [129, 0.5], "1474": [130, 0.5], "1475": [131, 0.5], "1480": [132, 0.5], "1481": [133, 0.5], "1482": [134, 0.5], "1483": [135, 0.5], "1484": [136, 0.5], "1485": [137, 0.5], "1486": [138, 0.5], "1487": [139, 0.5], "1488": [140, 0.5], "1489": [141, 0.5], "1490": [142, 0.5], "1491": [143, 0.5], "1492": [144, 0.5], "1493": [145, 0.5], "1494": [146, 0.5], "1495": [147, 0.5], "1496": [148, 0.5], "1497": [149, 0.5], "1498": [150, 0.5], "1499": [151, 0.5], "1500": [152, 0.5], "1501": [153, 0.5], "1502": [154, 0.5], "1503": [155, 0.5], "1504": [156, 0.5], "1505": [157, 0.5], "1506": [158, 0.5], "1507": [159, 0.5], "1508": [160, 0.5], "1509": [161, 0.5], "1510": [162, 0.5], "1511": [163, 0.5], "1512": [164, 0.5], "1513": [165, 0.5], "1514": [166, 0.5], "1515": [167, 0.5], "1520": [186, 0.5], "1521": [187, 0.5], "1522": [188, 0.5], "1523": [189, 0.5], "1524": [190, 0.5], "1525": [191, 0.5], "1526": [192, 0.5], "1527": [193, 0.5], "1528": [194, 0.5], "1529": [195, 0.5], "1530": [196, 0.5], "1531": [197, 0.5], "1532": [198, 0.5], "1533": [199, 0.5], "1534": [200, 0.5], "1535": [201, 0.5], "1536": [202, 0.5], "1537": [203, 0.5], "1538": [204, 0.5], "1539": [205, 0.5], "1540": [206, 0.5], "1541": [207, 0.5], "1542": [208, 0.5], "1543": [209, 0.5], "1544": [210, 0.5], "1545": [211, 0.5], "1546": [212, 0.5], "1547": [213, 0.5], "1548": [214, 0.5], "1549": [215, 0.5], "1550": [216, 0.5], "1551": [217, 0.5], "1552": [218, 0.5], "1553": [219, 0.5], "1554": [220, 0.5], "1555": [221, 0.5], "1560": [222, 0.5], "1561": [223, 0.5], "1562": [224, 0.5], "1563": [225, 0.5], "1564": [226, 0.5], "1565": [227, 0.5], "1566": [228, 0.5], "1567": [229, 0.5], "1568": [230, 0.5], "1569": [231, 0.5], "1570": [232, 0.5], "1571": [233, 0.5], "1572": [234, 0.5], "1573": [235, 0.5], "1574": [236, 0.5], "1575": [237, 0.5], "1576": [238, 0.5], "1577": [239, 0.5], "1578": [240, 0.5], "1579": [241, 0.5], "1580": [242, 0.5], "1581": [243, 0.5], "1582": [244, 0.5], "1583": [245, 0.5], "1584": [246, 0.5], "1585": [247, 0.5], "1586": [248, 0.5], "1587": [249, 0.5], "1588": [250, 0.5], "1589": [251, 0.5], "1590": [252, 0.5], "1591": [253, 0.5], "1592": [254, 0.5], "1593": [255, 0.5], "1594": [256, 0.5], "1595": [257, 0.5], "1706": [9, 0.5], "1711": [9, 0.5], "1705": [10, 0.5], "1710": [10, 0.5], "1700": [11, 0.5], "1738": [18, 0.5], "1743": [18, 0.5], "1737": [19, 0.5], "1742": [19, 0.5], "1732": [20, 0.5], "1770": [27, 0.5], "1775": [27, 0.5], "1769": [28, 0.5], "1774": [28, 0.5], "1764": [29, 0.5], "1802": [36, 0.5], "1807": [36, 0.5], "1801": [37, 0.5], "1806": [37, 0.5], "1796": [38, 0.5], "1834": [45, 0.5], "1839": [45, 0.5], "1833": [46, 0.5], "1838": [46, 0.5], "1828": [47, 0.5], "1866": [54, 0.5], "1871": [54, 0.5], "1865": [55, 0.5], "1870": [55, 0.5], "1860": [56, 0.5], "1718": [9, 0.5], "1719": [10, 0.5], "1721": [11, 0.5], "1750": [18, 0.5], "1751": [19, 0.5], "1753": [20, 0.5], "1782": [27, 0.5], "1783": [28, 0.5], "1785": [29, 0.5], "1814": [36, 0.5], "1815": [37, 0.5], "1817": [38, 0.5], "1846": [45, 0.5], "1847": [46, 0.5], "1849": [47, 0.5], "1878": [54, 0.5], "1879": [55, 0.5], "1881": [56, 0.5]};
 const OSC_SPEC_ROWS = [
-    [1000, "OSC 1 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1000, "OSC 1 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1001, "OSC 1 Level", 0, 1, 0.8, "", "sld", null, 1, "Level", null],
     [1002, "OSC 1 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1003, "OSC 1 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -690,7 +690,7 @@ const OSC_SPEC_ROWS = [
     [1054, "OSC 1 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1055, "OSC 1 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1064, "OSC 2 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1064, "OSC 2 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1066, "OSC 2 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1067, "OSC 2 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -744,7 +744,7 @@ const OSC_SPEC_ROWS = [
     [1118, "OSC 2 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1119, "OSC 2 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1128, "OSC 3 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1128, "OSC 3 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1130, "OSC 3 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1131, "OSC 3 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -798,7 +798,7 @@ const OSC_SPEC_ROWS = [
     [1182, "OSC 3 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1183, "OSC 3 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1192, "OSC 4 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1192, "OSC 4 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1194, "OSC 4 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1195, "OSC 4 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -852,7 +852,7 @@ const OSC_SPEC_ROWS = [
     [1246, "OSC 4 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1247, "OSC 4 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1256, "OSC 5 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1256, "OSC 5 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1258, "OSC 5 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1259, "OSC 5 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -906,7 +906,7 @@ const OSC_SPEC_ROWS = [
     [1310, "OSC 5 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1311, "OSC 5 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
     [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
-    [1320, "OSC 6 Source", 0, 3, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical"], 1, "Source", null],
+    [1320, "OSC 6 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Juno DCO"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1322, "OSC 6 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
     [1323, "OSC 6 Output", 0, 2, 0, "", "btn", ["Main", "Bus 1", "Bus 2"], 1, "Output", null],
@@ -1235,7 +1235,67 @@ const OSC_SPEC_ROWS = [
     [1872, "OSC 6 Physical B Inharmonicity", 0, 1, 0.0, "", "sld", null, 1, "Inharm", null],
     [1873, "OSC 6 Physical B Tune", -24, 24, 12, "st", "sld", null, 1, "Tune", null],
     [1874, "OSC 6 Physical A / B Balance", 0, 1, 0.35, "", "sld", null, 1, "A / B", null],
-    [1875, "OSC 6 Physical Coupling", 0, 1, 0, "", "btn", ["Parallel", "Serial"], 1, "Coupling", null]
+    [1875, "OSC 6 Physical Coupling", 0, 1, 0, "", "btn", ["Parallel", "Serial"], 1, "Coupling", null],
+    [1716, "OSC 1 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1717, "OSC 1 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1718, "OSC 1 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1719, "OSC 1 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1720, "OSC 1 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1721, "OSC 1 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1722, "OSC 1 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1723, "OSC 1 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1724, "OSC 1 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1725, "OSC 1 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1748, "OSC 2 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1749, "OSC 2 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1750, "OSC 2 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1751, "OSC 2 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1752, "OSC 2 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1753, "OSC 2 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1754, "OSC 2 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1755, "OSC 2 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1756, "OSC 2 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1757, "OSC 2 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1780, "OSC 3 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1781, "OSC 3 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1782, "OSC 3 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1783, "OSC 3 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1784, "OSC 3 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1785, "OSC 3 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1786, "OSC 3 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1787, "OSC 3 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1788, "OSC 3 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1789, "OSC 3 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1812, "OSC 4 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1813, "OSC 4 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1814, "OSC 4 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1815, "OSC 4 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1816, "OSC 4 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1817, "OSC 4 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1818, "OSC 4 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1819, "OSC 4 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1820, "OSC 4 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1821, "OSC 4 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1844, "OSC 5 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1845, "OSC 5 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1846, "OSC 5 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1847, "OSC 5 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1848, "OSC 5 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1849, "OSC 5 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1850, "OSC 5 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1851, "OSC 5 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1852, "OSC 5 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1853, "OSC 5 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null],
+    [1876, "OSC 6 Juno Saw Level", 0, 1, 0.8, "", "sld", null, 1, "Saw", null],
+    [1877, "OSC 6 Juno Pulse Level", 0, 1, 0.0, "", "sld", null, 1, "Pulse", null],
+    [1878, "OSC 6 Juno Pulse Width", 0, 1, 0.5, "", "sld", null, 1, "Width", null],
+    [1879, "OSC 6 Juno PWM Depth", 0, 1, 0.0, "", "sld", null, 1, "PWM Depth", null],
+    [1880, "OSC 6 Juno PWM Rate", 0.1, 20, 1.5, "Hz", "sld", null, 1, "PWM Rate", null],
+    [1881, "OSC 6 Juno Sub Level", 0, 1, 0.5, "", "sld", null, 1, "Sub", null],
+    [1882, "OSC 6 Juno Noise Level", 0, 1, 0.0, "", "sld", null, 1, "Noise", null],
+    [1883, "OSC 6 Juno Range", 0, 2, 1, "", "btn", ["16'", "8'", "4'"], 1, "Range", null],
+    [1884, "OSC 6 Juno Drift", 0, 1, 0.2, "", "sld", null, 1, "Drift", null],
+    [1885, "OSC 6 Juno Saw Curve", 0, 1, 0.3, "", "sld", null, 1, "Curve", null]
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -1632,6 +1692,7 @@ function fmt (s, v) {
     if (s.labels.length) return s.labels[Math.max(0, Math.min(s.labels.length - 1, Math.round(v - s.min)))];
     if (s.unit === "oct") { const o = Math.round(v); return (o > 0 ? "+" : "") + o + " oct"; }
     if (s.unit === "Hz") return v >= 1000 ? (v / 1000).toFixed(2) + " kHz" : v.toFixed(v < 10 ? 2 : 0) + " Hz";
+    if (s.unit === "Hz" && s.num >= PHY_BASE && s.num < PHY_BASE + PHY_STRIDE * OSC_N) return v.toFixed(2) + " Hz";
     if (s.unit === "s") return v.toFixed(v < 10 ? 2 : 1) + " s";
     if (s.unit === "ms") return v >= 1000 ? (v / 1000).toFixed(2) + " s" : v.toFixed(0) + " ms";
     if (s.unit === "st") return (v > 0 ? "+" : "") + v.toFixed(s.kind === "stp" ? 0 : 1) + " st";
@@ -2354,7 +2415,7 @@ class EisenpulsPatchView extends HTMLElement {
 
     // refreshes everything that depends on the source type / engine of one slot
     updateOscUi (o) {
-        const type = Math.max(0, Math.min(3, Math.round(this.oscVal(o, "type"))));
+        const type = Math.max(0, Math.min(4, Math.round(this.oscVal(o, "type"))));
         const pg = this.querySelector(".p-o" + o);
         if (pg) pg.setAttribute("data-src", String(type));
         this.querySelectorAll('[data-o="' + o + '"][data-show]').forEach(el => {
@@ -2522,6 +2583,21 @@ class EisenpulsPatchView extends HTMLElement {
             ctx.beginPath(); ctx.moveTo(W * start, 0); ctx.lineTo(W * start, H); ctx.stroke();
             ctx.setLineDash([]);
             if (info) info.textContent = s.name + " / " + (n / 48000).toFixed(2) + " S" + (this.oscVal(o, "sloop") > 0.5 ? " / LOOP" : "");
+        } else if (type === 4) {
+            // two cycles of the DCO mix (saw + pulse + sub, not band-limited), noise as a level bar
+            const V = key => { const id = phyId(o, key), c = this._controls.get("param" + id); return c ? c.value : SPEC_BY_NUM.get(id).init; };
+            const range = Math.round(V("jrange")), cyc = 2, cv = V("jcurve") * 4, wd = Math.max(0.05, Math.min(0.95, V("jwidth")));
+            const arr = new Array(W);
+            for (let x = 0; x < W; x++) {
+                const t = x / W * cyc, ph = t - Math.floor(t), sp = (t / 2) - Math.floor(t / 2);
+                let saw = 2 * ph - 1;
+                if (cv > 0.01) saw = 2 * (Math.exp(cv * ph) - 1) / (Math.exp(cv) - 1) - 1;
+                const pul = ph < wd ? 1 : -1, sub = sp < 0.5 ? 1 : -1;
+                arr[x] = (saw * V("jsaw") + pul * V("jpulse") + sub * V("jsub")) * 0.55;
+            }
+            trace(arr, "#ff3b30", 2);
+            ctx.fillStyle = "rgba(255,160,64,0.5)"; ctx.fillRect(W - 14, H - 6 - V("jnoise") * (H - 12), 8, V("jnoise") * (H - 12));
+            if (info) info.textContent = "JUNO DCO / " + ["16'", "8'", "4'"][range] + " / WIDTH " + Math.round(wd * 100) + " %" + (V("jpwm") > 0 ? " / PWM " + V("jpwmr").toFixed(1) + " HZ" : "");
         } else if (type === 3) {
             // mode spectrum of resonator A (red) and B (orange): position = frequency ratio on a log axis, height = amplitude
             const V = key => { const id = phyId(o, key), c = this._controls.get("param" + id); return c ? c.value : SPEC_BY_NUM.get(id).init; };
@@ -2699,6 +2775,7 @@ class EisenpulsPatchView extends HTMLElement {
             ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join(""), "cgrid o-g2")}
             ${sh("1", ["root", "sstart", "sloop"].map(c).join(""), "cgrid o-g3")}
             ${sh("2", ["pleng", "pharm", "ptimb", "pmorph"].map(c).join(""), "cgrid o-g3 o-pl")}
+            ${sh("4", `<div class="o-uh">Oscillator</div>` + ["jsaw", "jpulse", "jsub", "jnoise", "jcurve", "jdrift"].map(p).join("") + `<div class="o-uh">Pulse width</div>` + ["jwidth", "jpwm", "jpwmr", "jrange"].map(p).join(""), "cgrid o-g3 o-phy")}
             ${sh("3", `<div class="o-uh">Exciter</div>` + ["phmix", "phhard", "phntim"].map(p).join("") + `<div class="o-uh">Resonator A</div>` + ["phmodA", "phdecA", "phmatA", "phhitA", "phinhA"].map(p).join("")
                 + `<div class="o-uh">Resonator B</div>` + ["phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB"].map(p).join("") + `<div class="o-uh">Mix</div>` + ["phbal", "phser"].map(p).join(""), "cgrid o-g3 o-phy")}
           </section>`;

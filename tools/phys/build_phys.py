@@ -226,7 +226,7 @@ DSP = r'''    // ---------------- physical modelling source (modal resonators, t
 '''.replace("@RAT@", rat).replace("@AEXP@", aexp)
 
 DECL = "".join('    input event float param%d [[ name: "OSC %d %s", min: %s, max: %s, init: %s%s ]];\n' % (
-    PHY_BASE + 32 * o + p[0], o + 1, "Physical " + p[2], repr(float(p[3])), repr(float(p[4])), repr(float(p[5])), ", step: 1.0" if p[7] else "")
+    PHY_BASE + 32 * o + p[0], o + 1, ("Physical " if p[0] < 16 else "") + p[2], repr(float(p[3])), repr(float(p[4])), repr(float(p[5])), ", step: 1.0" if p[7] else "")
     for o in range(6) for p in PHY)
 HAND = "".join("    event param%d (float v) { phySet (%d, %d, v); }\n" % (PHY_BASE + 32 * o + p[0], o, p[0]) for o in range(6) for p in PHY)
 
@@ -251,7 +251,7 @@ s = s.replace(anchor, anchor + a + INIT + z, 1)
 # Voice state, source type range, note-on and voice loop
 if "float[2048] phs;" not in s:
     s = s.replace("        int     fdlW;         // comb delay write position\n", "        float[2048] phs;      // physical modelling states: slot * 176 + ...\n        int     fdlW;         // comb delay write position\n", 1)
-s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )2\.0', r'\g<1>3.0', s)
+s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )[23]\.0', r'\g<1>4.0', s)
 if "phyNoteOn (v, o);" not in s:
     s = s.replace("                    plaitsNoteOn (v, o);\n", "                    plaitsNoteOn (v, o);\n                    phyNoteOn (v, o);\n", 1)
 if "phyStep (i, o, freq" not in s:
