@@ -4401,7 +4401,7 @@ processor Eisenpuls_Synth
     bool[8]       wtHas;          // the mip tables of the slot are complete
     int[8]        wtLen;          // length of the source in samples
     float[1572864] wtBuf;         // source, slot * 262144
-    float[3145728] wtMip;         // (slot * 128 + frame) * 4096 + level offset
+    float[4194304] wtMip;         // (slot * 128 + frame) * 4096 + level offset
     bool[8]       wtBuilding;  // padded to a power of two (cheap index wrap)
     int[8]        wtFr;           // frames in the mip tables
     int[8]        wtBFl;          // frame length the source was cut with
@@ -4423,7 +4423,7 @@ processor Eisenpuls_Synth
     // sample memories (one per slot)
     bool[8]       smpHas;  // padded to a power of two (cheap index wrap)
     int[8]        smpLen;  // padded to a power of two (cheap index wrap)
-    float[576000] smpBuf;
+    float[1048576] smpBuf;
 
     // wavetable unison (per slot, up to 7 voices)
     int[8]        uniCnt;  // padded to a power of two (cheap index wrap)

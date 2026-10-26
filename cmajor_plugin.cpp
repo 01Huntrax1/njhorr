@@ -12192,7 +12192,7 @@ namespace performer
             Array<bool, 8> wtHas;
             Array<int32_t, 8> wtLen;
             Array<float, 1572864> wtBuf;
-            Array<float, 3145728> wtMip;
+            Array<float, 4194304> wtMip;
             Array<bool, 8> wtBuilding;
             Array<int32_t, 8> wtFr;
             Array<int32_t, 8> wtBFl;
@@ -12206,7 +12206,7 @@ namespace performer
             Array<float, 32> wfL;
             Array<bool, 8> smpHas;
             Array<int32_t, 8> smpLen;
-            Array<float, 576000> smpBuf;
+            Array<float, 1048576> smpBuf;
             Array<int32_t, 8> uniCnt;
             Array<float, 64> uniRatio;
             Array<float, 64> uniCents;
@@ -27833,7 +27833,7 @@ namespace performer
                     pos = intrinsics::add (c.offset, i);
                     if ((pos >= int32_t {0}) ? (pos < int32_t {0x17700}) : false)
                     {
-                        _state.smpBuf[std__intrinsics___wrap_576000 (intrinsics::add (base, pos))] = c.data[std__intrinsics___wrap_256 (i)];
+                        _state.smpBuf[std__intrinsics___wrap_1048576 (intrinsics::add (base, pos))] = c.data[std__intrinsics___wrap_256 (i)];
                     }
                     {
                         intrinsics::addTo (i, 1);
@@ -27847,12 +27847,9 @@ namespace performer
             }
         }
 
-        int32_t std__intrinsics___wrap_576000 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_1048576 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {0x8ca00});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {0x8ca00}) : x;
+            return n & int32_t {0xfffff};
         }
 
         void _sendEvent_param1000 (Eisenpuls_Synth_State& _state, float value) noexcept
@@ -40535,7 +40532,7 @@ namespace performer
                     }
                     v = _state.wtTmpA[std__intrinsics___wrap_4096 (i_4)] - mean;
                     _state.wtTmpA[std__intrinsics___wrap_4096 (i_4)] = v;
-                    _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (mb, i_4))] = v;
+                    _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (mb, i_4))] = v;
                     {
                         intrinsics::addTo (i_4, 1);
                     }
@@ -40562,7 +40559,7 @@ namespace performer
                                 break;
                             }
                             _state.wtTmpA[std__intrinsics___wrap_4096 (i_5)] = _state.wtTmpB[std__intrinsics___wrap_4096 (i_5)];
-                            _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (intrinsics::add (mb, off), i_5))] = _state.wtTmpB[std__intrinsics___wrap_4096 (i_5)];
+                            _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (intrinsics::add (mb, off), i_5))] = _state.wtTmpB[std__intrinsics___wrap_4096 (i_5)];
                             {
                                 intrinsics::addTo (i_5, 1);
                             }
@@ -40634,12 +40631,9 @@ namespace performer
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {15}) : x;
         }
 
-        int32_t std__intrinsics___wrap_3145728 (int32_t n) noexcept
+        int32_t std__intrinsics___wrap_4194304 (int32_t n) noexcept
         {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {0x300000});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {0x300000}) : x;
+            return n & int32_t {0x3fffff};
         }
 
         void _Eisenpuls_Synth__updateModLfos (_Eisenpuls_Synth_State& _state, float dtv) noexcept
@@ -41445,10 +41439,10 @@ namespace performer
             mask = intrinsics::subtract (len, int32_t {1});
             i = static_cast<int32_t> (x);
             t = x - static_cast<float> (i);
-            p0 = _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (base, intrinsics::subtract (i, int32_t {1}) & mask))];
-            p1 = _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (base, i & mask))];
-            p2 = _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (base, intrinsics::add (i, int32_t {1}) & mask))];
-            p3 = _state.wtMip[std__intrinsics___wrap_3145728 (intrinsics::add (base, intrinsics::add (i, int32_t {2}) & mask))];
+            p0 = _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (base, intrinsics::subtract (i, int32_t {1}) & mask))];
+            p1 = _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (base, i & mask))];
+            p2 = _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (base, intrinsics::add (i, int32_t {1}) & mask))];
+            p3 = _state.wtMip[std__intrinsics___wrap_4194304 (intrinsics::add (base, intrinsics::add (i, int32_t {2}) & mask))];
             return p1 + ((0.5f * t) * ((p2 - p0) + (t * (((((2.0f * p0) - (5.0f * p1)) + (4.0f * p2)) - p3) + (t * (((3.0f * (p1 - p2)) + p3) - p0))))));
         }
 
@@ -41549,7 +41543,7 @@ namespace performer
             }
             i0 = intrinsics::clamp (i0, int32_t {0}, int32_t {0x176ff});
             i1 = intrinsics::clamp (i1, int32_t {0}, int32_t {0x176ff});
-            return (_state.smpBuf[std__intrinsics___wrap_576000 (intrinsics::add (base, i0))] * (1.0f - fr)) + (_state.smpBuf[std__intrinsics___wrap_576000 (intrinsics::add (base, i1))] * fr);
+            return (_state.smpBuf[std__intrinsics___wrap_1048576 (intrinsics::add (base, i0))] * (1.0f - fr)) + (_state.smpBuf[std__intrinsics___wrap_1048576 (intrinsics::add (base, i1))] * fr);
         }
 
         float _Eisenpuls_Synth__plaitsStep (_Eisenpuls_Synth_State& _state, int32_t vi, int32_t o, int32_t eng, float f0, float pm, float harm, float timb, float morph, bool gate) noexcept

@@ -126,3 +126,9 @@ The Bank and Vault windows were replaced by dropdown menus in the style of Tone2
 - **VAULT button (bar) and the VAULT button of each oscillator:** *Load into* (bar only: which oscillator), *Favorites*, the files as nested folder submenus (the oscillator button lists the wavetables or samples of that oscillator directly; the bar lists *Samples* and *Wavetables*), then *Add files* (pick the folder first), *Loaded file of OSC n* (rename, move, favourite, delete), *Folders*, *Show vault folder*, *Rescan*. A click on a file loads it into the oscillator.
 - **Storage:** favourites live in `Documents/Njohrr/library.json`; presets store a content hash of every vault file they use, so a preset finds its samples again even after the files were renamed and moved outside the plugin (first by folder + name + size, then by name + size, then by hash). Renaming or moving inside the plugin keeps slots, the current preset and favourites pointing at the right files.
 - Files of earlier versions simply sit in the root folders. The web UI (JS fallback) still shows only the root folders.
+
+## Performance notes
+
+- The wavetable and sampler buffers have power-of-two sizes (`wtMip` 4 194 304, `smpBuf` 1 048 576 floats), so every array read in the oscillator inner loop wraps with a mask instead of an integer modulo. Measured with `tools/osc/bench.py` and the offline DSP host (8 notes, 6 oscillators, 7 unison voices each, filters on, 4 s): 2.27 s → 1.78 s (-21 %), audio output bit-identical. The cost is about 5 MB more DSP state.
+- The editor only polls the DSP while its window is open (see the sound persistence notes above).
+- Known gap: drawn LFO / FREQ shapes only reach the DSP when an editor has been opened.
