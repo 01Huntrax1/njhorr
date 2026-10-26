@@ -256,15 +256,25 @@ namespace njo
 
     struct SoundMemory::Impl : private juce::Timer
     {
-        struct Stream { Kind kind; int osc; std::shared_ptr<std::vector<float>> data; size_t offset = 0; juce::int64 startAt = 0; };
+        struct Stream { Kind kind; int osc; std::shared_ptr<std::vector<float>> data; size_t offset = 0; juce::int64 startAt = 0; unsigned long long sig = 0; };
 
-        Impl (SoundMemory& o, Ctx& c) : owner (o), ctx (c) {}
+        Impl (SoundMemory& o, Backend& b) : owner (o), be (b) {}
         ~Impl() override { stopTimer(); }
 
-        SoundMemory& owner; Ctx& ctx;
+        SoundMemory& owner; Backend& be;
         std::unique_ptr<Slot> slots[4][OSC_N];
+        unsigned long long dspSig[4][OSC_N] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
+        unsigned long long dspGen = 0;
+        bool streaming (Kind k, int o) const { for (auto& s : streams) if (s.kind == k && s.osc == o) return true; return false; }
         std::vector<Stream> streams;
 
+        static unsigned long long sigOf (const Slot& s)
+        {
+            if (s.sig != 0) return s.sig;
+            unsigned long long h = 1469598103934665603ull ^ (unsigned long long) s.data.size();
+            for (float v : s.data) { unsigned int b; std::memcpy (&b, &v, 4); h ^= b; h *= 1099511628211ull; }
+            return s.sig = (h != 0 ? h : 1);
+        }
         void cancel (Kind k, int o)
         {
             streams.erase (std::remove_if (streams.begin(), streams.end(), [&] (const Stream& s) { return s.kind == k && s.osc == o; }), streams.end());
@@ -274,7 +284,8 @@ namespace njo
             cancel (k, o);
             auto& sl = slots[k][o];
             if (! sl) return;
-            Stream s { k, o, std::make_shared<std::vector<float>> (sl->data), 0, juce::Time::getMillisecondCounter() + (juce::int64) delayMs };
+            dspSig[k][o] = 0;     // the bank is overwritten from the start: until the last chunk arrived it holds nothing usable
+            Stream s { k, o, std::make_shared<std::vector<float>> (sl->data), 0, juce::Time::getMillisecondCounter() + (juce::int64) delayMs, sigOf (*sl) };
             streams.push_back (std::move (s));
             if (! isTimerRunning()) startTimer (kTickMs);
         }
@@ -286,7 +297,7 @@ namespace njo
             for (int i = 0; i < CHUNK; ++i) arr.add (i < count ? (double) d[offset + (size_t) i] : 0.0);
             ev->setProperty ("bank", bankFor (k, o)); ev->setProperty ("offset", (int) offset); ev->setProperty ("count", count);
             ev->setProperty ("total", (int) total); ev->setProperty ("data", juce::var (arr));
-            ctx.be.sendEvent (endpointFor (k), juce::var (ev));
+            be.sendEvent (endpointFor (k), juce::var (ev));
         }
         void timerCallback() override
         {
@@ -297,26 +308,30 @@ namespace njo
                 for (int i = 0; i < kChunksPerTick && s.offset < s.data->size(); ++i)
                 { sendChunk (s.kind, s.osc, *s.data, s.offset, s.data->size()); s.offset += (size_t) CHUNK; }
             }
+            for (auto& s : streams) if (s.offset >= s.data->size()) dspSig[s.kind][s.osc] = s.sig;     // complete: the DSP has it
             streams.erase (std::remove_if (streams.begin(), streams.end(), [] (const Stream& s) { return s.offset >= s.data->size(); }), streams.end());
             if (streams.empty()) stopTimer();
         }
         void persist (Kind k, int o)
         {
             auto& sl = slots[k][o];
-            ctx.be.setStored (keyFor (k, o), sl ? encodeMem (*sl) : juce::var());
+            be.setStored (keyFor (k, o), sl ? encodeMem (*sl) : juce::var());
         }
     };
 
-    SoundMemory::SoundMemory (Ctx& c) : impl (new Impl (*this, c))
+    void SoundMemory::status (const juce::String& t) { if (onStatus) onStatus (t); }
+
+    SoundMemory::SoundMemory (Backend& b) : impl (new Impl (*this, b))
     {
-        // the saved copies are available to the displays at once; restore() streams them to the DSP
+        // the saved copies are available to the displays at once; restore() streams what the DSP is missing
         for (int k = 0; k < 4; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                if (decodeMem (c.be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
+                if (decodeMem (b.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
             }
     }
+    SoundMemory::SoundMemory (Ctx& c) : SoundMemory (c.be) { onStatus = [&c] (const juce::String& t) { c.status (t); }; }
     SoundMemory::~SoundMemory() = default;
 
     const SoundMemory::Slot* SoundMemory::get (Kind k, int o) const
@@ -359,14 +374,14 @@ namespace njo
         if (dec.ok && isTable (k)) dec.mono = tableFromMono (dec.mono);
         if (! dec.ok)
         {
-            impl->ctx.status ("UNSUPPORTED FILE");
+            status ("UNSUPPORTED FILE");
             if (done) done (false, "UNSUPPORTED FILE");
             return;
         }
         auto name = (dec.name.isNotEmpty() ? dec.name : f.getFileNameWithoutExtension()).substring (0, 14).toUpperCase();
         if (name.isEmpty()) name = k == Sample ? "SAMPLE" : "TABLE";
         set (k, o, name, {}, std::move (dec.mono));
-        impl->ctx.status ("LOADED " + name);
+        status ("LOADED " + name);
         if (done) done (true, "LOADED " + name);
     }
 
@@ -378,18 +393,55 @@ namespace njo
         auto* ev = new juce::DynamicObject();
         juce::Array<juce::var> arr; for (int i = 0; i < CHUNK; ++i) arr.add (0.0);
         ev->setProperty ("bank", bankFor (k, o)); ev->setProperty ("offset", 0); ev->setProperty ("count", 0); ev->setProperty ("total", 0); ev->setProperty ("data", juce::var (arr));
-        impl->ctx.be.sendEvent (endpointFor (k), juce::var (ev));
+        impl->be.sendEvent (endpointFor (k), juce::var (ev));
         impl->persist (k, o);
-        if (! isTable (k)) impl->ctx.status ("OSC " + juce::String (o + 1) + " CLEARED");
+        impl->dspSig[k][o] = 0;
+        if (! isTable (k)) status ("OSC " + juce::String (o + 1) + " CLEARED");
         sendChangeMessage();
     }
 
     void SoundMemory::restore()
     {
+        // a reloaded patch starts with empty banks; otherwise the DSP still has what it was sent (closing and opening the window must not touch it)
+        auto gen = impl->be.dspGeneration();
+        if (gen != impl->dspGen) { std::memset (impl->dspSig, 0, sizeof (impl->dspSig)); impl->dspGen = gen; }
         int n = 0;
         for (int k = 0; k < 4; ++k)
             for (int o = 0; o < OSC_N; ++o)
-                if (impl->slots[k][o]) impl->startStream ((Kind) k, o, kStaggerMs * n++);
+            {
+                auto& sl = impl->slots[k][o];
+                if (impl->streaming ((Kind) k, o)) continue;
+                if (sl)
+                {
+                    if (impl->dspSig[k][o] != Impl::sigOf (*sl)) impl->startStream ((Kind) k, o, kStaggerMs * n++);
+                }
+                else if (impl->dspSig[k][o] != 0)
+                {
+                    auto* ev = new juce::DynamicObject();
+                    juce::Array<juce::var> arr; for (int i = 0; i < CHUNK; ++i) arr.add (0.0);
+                    ev->setProperty ("bank", bankFor ((Kind) k, o)); ev->setProperty ("offset", 0); ev->setProperty ("count", 0); ev->setProperty ("total", 0); ev->setProperty ("data", juce::var (arr));
+                    impl->be.sendEvent (endpointFor ((Kind) k), juce::var (ev));
+                    impl->dspSig[k][o] = 0;
+                }
+            }
+    }
+
+    void SoundMemory::reloadFromStored()
+    {
+        bool changed = false;
+        for (int k = 0; k < 4; ++k)
+            for (int o = 0; o < OSC_N; ++o)
+            {
+                auto s = std::make_unique<Slot>();
+                bool has = decodeMem (impl->be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s);
+                auto& cur = impl->slots[k][o];
+                if (! has) { if (cur) { impl->cancel ((Kind) k, o); cur.reset(); changed = true; } continue; }
+                if (cur && cur->name == s->name && cur->libId == s->libId && cur->data.size() == s->data.size() && Impl::sigOf (*cur) == Impl::sigOf (*s)) continue;
+                impl->cancel ((Kind) k, o);
+                cur = std::move (s); changed = true;
+            }
+        restore();
+        if (changed) sendChangeMessage();
     }
 
     juce::String SoundMemory::fileWildcard()

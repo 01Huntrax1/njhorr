@@ -101,6 +101,35 @@ int main (int argc, char** argv)
         std::printf ("restore events=%d\n", n);
         CHECK (n > 20);
     }
+    // the memory lives as long as the plugin instance: closing and opening the editor must not send the sounds to the DSP again
+    {
+        SoundMemory shared (be);
+        auto count = [&] { int n = 0; for (auto& e : be.events) if (e.endpoint == "wtBankLoad" || e.endpoint == "smpBankLoad") ++n; return n; };
+        be.events.clear();
+        shared.restore(); pump (2500);                    // first editor: the DSP gets everything
+        int first = count();
+        CHECK (first > 20);
+        be.events.clear();
+        shared.restore(); pump (800);                     // the window is closed and opened again: the DSP already has it
+        CHECK (count() == 0);
+        shared.reloadFromStored(); pump (800);            // state load with the same sounds: still nothing to send
+        CHECK (count() == 0);
+        be.events.clear();
+        be.generation++;                                  // the patch was reloaded (sample rate change): the banks are empty again
+        shared.restore(); pump (2500);
+        CHECK (count() == first);
+        be.events.clear();
+        shared.set (SoundMemory::Sample, 1, "OTHER", {}, std::vector<float> (4000, 0.25f)); pump (800);   // a new sound is sent
+        CHECK (count() >= 16);
+        be.events.clear();
+        shared.restore(); pump (500);
+        CHECK (count() == 0);
+        shared.clear (SoundMemory::Sample, 1); pump (100);
+        be.events.clear();
+        be.setStored ("njo.mem.osc1.sm", juce::var());   // a project state without that sample
+        shared.reloadFromStored(); pump (300);
+        CHECK (shared.get (SoundMemory::Sample, 1) == nullptr);
+    }
     // Freq modulator curves: table to the DSP (256 points, 0..1), stored state, round trip
     {
         be.events.clear();

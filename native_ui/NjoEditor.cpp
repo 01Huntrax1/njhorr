@@ -50,9 +50,10 @@ namespace njo
         juce::Component* shownPage = nullptr;
     };
 
-    EditorContent::EditorContent (Backend& be)
-        : ctx (be), memory (ctx), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
+    EditorContent::EditorContent (Backend& be, SoundMemory* sharedMemory)
+        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
+        if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
         if (! ctx.freqShapes) ctx.freqShapes = std::make_shared<FreqShapes> (ctx);
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
@@ -121,7 +122,7 @@ namespace njo
         startTimerHz (20);
     }
 
-    EditorContent::~EditorContent() = default;
+    EditorContent::~EditorContent() { if (! ownMemory) memory.onStatus = nullptr; }
 
     void EditorContent::timerCallback()
     {

@@ -8,7 +8,7 @@ namespace njo
     class EditorContent : public juce::Component, public juce::DragAndDropContainer, private juce::Timer
     {
     public:
-        EditorContent (Backend&);
+        EditorContent (Backend&, SoundMemory* sharedMemory = nullptr);   // sharedMemory: owned by the plugin instance, survives the window
         ~EditorContent() override;
 
         void paint (juce::Graphics&) override;
@@ -34,7 +34,8 @@ namespace njo
         void layoutAll();
 
         Ctx ctx;
-        SoundMemory memory;
+        std::unique_ptr<SoundMemory> ownMemory;
+        SoundMemory& memory;
         Group currentGroup = Synth; int currentSynthPage = 0;
         juce::OwnedArray<OscPage> osc, fltPages, distPages;
         int fltOsc = 0, distOsc = 0;       // the oscillator the FILTER / DIST tabs reopen

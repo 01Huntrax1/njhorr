@@ -26,6 +26,9 @@ namespace njo
         // ---- the folder with Presets / Samples / Wavetables (Documents/Njohrr by default) ----
         virtual juce::File rootFolder() { return juce::File::getSpecialLocation (juce::File::userDocumentsDirectory).getChildFile ("Njohrr"); }
 
+        // ---- identity of the loaded DSP: changes whenever the patch is (re)loaded and the DSP banks start empty again ----
+        virtual unsigned long long dspGeneration() { return 1; }
+
         // ---- host info for the LCD / meters ----
         virtual float getOutputLevel() { return 0.0f; }
 

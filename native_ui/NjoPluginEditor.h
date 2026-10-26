@@ -6,12 +6,26 @@
 
 namespace njo
 {
+    // What lives as long as the plugin instance: the backend and the sounds of the oscillators. The editor window is created and
+    // destroyed freely; the DSP keeps its sample / wavetable banks, so closing and opening the window never interrupts the sound.
+    struct Bridge
+    {
+        explicit Bridge (cmaj::Patch& p) : backend (p), memory (backend)
+        {
+            backend.onReloaded = [this] { memory.reloadFromStored(); };   // new DSP (load, project state, sample rate): send the stored sounds again
+        }
+        void patchChanged() { backend.checkGeneration(); }
+        PatchBackend backend;
+        SoundMemory memory;
+    };
+
     class PluginEditor : public juce::AudioProcessorEditor
     {
     public:
-        PluginEditor (juce::AudioProcessor& proc, cmaj::Patch& patch, int startWidth = 0)
-            : juce::AudioProcessorEditor (proc), backend (patch), content (backend)
+        PluginEditor (juce::AudioProcessor& proc, Bridge& b, int startWidth = 0)
+            : juce::AudioProcessorEditor (proc), bridge (b), content (b.backend, &b.memory)
         {
+            bridge.backend.setActive (true);
             addAndMakeVisible (content);
             content.onScaleRequested = [this] (float s) { setSize (juce::roundToInt (logicalW * s), juce::roundToInt (logicalH * s)); };
             content.restore();
@@ -25,6 +39,8 @@ namespace njo
             setSize (w, juce::roundToInt (w * logicalH / logicalW));
         }
 
+        ~PluginEditor() override { bridge.backend.setActive (false); }
+
         void resized() override
         {
             const float s = (float) getWidth() / logicalW;
@@ -36,7 +52,7 @@ namespace njo
 
     private:
         static constexpr float logicalW = 1180.0f, logicalH = 760.0f;
-        PatchBackend backend;
+        Bridge& bridge;
         EditorContent content;
     };
 }

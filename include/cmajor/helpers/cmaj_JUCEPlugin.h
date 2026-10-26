@@ -78,6 +78,9 @@ public:
         }
 
         patch->setHostDescription (std::string (getWrapperTypeDescription (wrapperType)));
+       #if NJOHRR_NATIVE_UI
+        njoBridge = std::make_unique<njo::Bridge> (*patch);
+       #endif
 
         patch->stopPlayback  = [this] { suspendProcessing (true); };
         patch->startPlayback = [this] { suspendProcessing (false); };
@@ -111,6 +114,9 @@ public:
 
     ~JUCEPluginBase() override
     {
+       #if NJOHRR_NATIVE_UI
+        njoBridge.reset();
+       #endif
         patch->patchChanged = [] {};
         patch->unload();
         patch.reset();
@@ -141,7 +147,7 @@ public:
 
    #if NJOHRR_NATIVE_UI
     // native JUCE UI (native_ui/); the WebView UI below stays available with -DNJOHRR_NATIVE_UI=OFF
-    juce::AudioProcessorEditor* createEditor() override   { return new njo::PluginEditor (*this, *patch, lastEditorWidth); }
+    juce::AudioProcessorEditor* createEditor() override   { return new njo::PluginEditor (*this, *njoBridge, lastEditorWidth); }
    #else
     juce::AudioProcessorEditor* createEditor() override   { return new Editor (static_cast<DerivedType&> (*this)); }
    #endif
@@ -363,6 +369,9 @@ public:
     }
 
     std::shared_ptr<Patch> patch;
+   #if NJOHRR_NATIVE_UI
+    std::unique_ptr<njo::Bridge> njoBridge;
+   #endif
     std::string statusMessage;
     bool isStatusMessageError = false;
     bool dllLoadedSuccessfully = false;
@@ -451,6 +460,9 @@ protected:
         changes.nonParameterStateChanged = true;
 
         setLatencySamples (newLatency);
+       #if NJOHRR_NATIVE_UI
+        if (njoBridge) njoBridge->patchChanged();    // a new DSP: the stored sounds go to it even when no editor is open
+       #endif
         notifyEditorPatchChanged();
         updateHostDisplay (changes);
 

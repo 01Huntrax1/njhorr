@@ -7,8 +7,30 @@ namespace njo
     class PatchBackend : public Backend, private juce::Timer
     {
     public:
-        explicit PatchBackend (cmaj::Patch& p) : patch (p) { startTimerHz (30); }
+        explicit PatchBackend (cmaj::Patch& p) : patch (p) {}
         ~PatchBackend() override { stopTimer(); }
+
+        // the backend belongs to the plugin instance; the parameter poll only runs while an editor window is open
+        void setActive (bool on)
+        {
+            if (on) { checkGeneration(); if (! isTimerRunning()) startTimerHz (30); }
+            else stopTimer();
+        }
+
+        // true (once) when the patch was (re)loaded: the DSP starts empty again, the kept parameter objects are stale
+        bool checkGeneration()
+        {
+            auto sentinel = patch.findParameter (id (1000));
+            const cmaj::PatchParameter* p = sentinel ? sentinel.get() : nullptr;
+            if (p == sentinelPtr) return false;
+            sentinelPtr = p; ptrs.clear();
+            if (p == nullptr) return false;
+            ++generation;
+            if (onReloaded) onReloaded();
+            return true;
+        }
+        unsigned long long dspGeneration() override { return generation; }
+        std::function<void()> onReloaded;
 
         float getParam (int num) override
         {
@@ -83,11 +105,7 @@ namespace njo
         void timerCallback() override
         {
             // a reloaded patch (sample rate / buffer change) has new parameter objects: drop the kept pointers then
-            if (auto sentinel = patch.findParameter (id (1000)))
-            {
-                if (sentinelPtr != sentinel.get()) { ptrs.clear(); sentinelPtr = sentinel.get(); }
-            }
-            else if (! ptrs.empty()) ptrs.clear();
+            checkGeneration();
 
             for (auto& [num, last] : cache)
                 if (auto* pp = lookup (num))
@@ -102,5 +120,6 @@ namespace njo
         std::map<int, float> cache;
         std::unordered_map<int, cmaj::PatchParameterPtr> ptrs;
         const cmaj::PatchParameter* sentinelPtr = nullptr;
+        unsigned long long generation = 0;
     };
 }

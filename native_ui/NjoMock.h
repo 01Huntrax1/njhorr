@@ -26,6 +26,8 @@ namespace njo
         std::map<juce::String, juce::var> stored;
         struct Event { juce::String endpoint; juce::var value; };
         std::vector<Event> events;
+        unsigned long long generation = 1;
+        unsigned long long dspGeneration() override { return generation; }
         juce::File root;
     };
 }
