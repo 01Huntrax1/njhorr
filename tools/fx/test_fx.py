@@ -75,5 +75,48 @@ check("two conv slots in a rack stay finite", np.isfinite(two).all() and np.abs(
 m0 = render(fx(0, 12, 1, 0.0), tag="m0")
 check("mix 0 equals dry", np.allclose(m0, dry, atol=1e-5))
 
+# ---- extended algorithms / parameters of the other effects: every mode, parameters at both extremes
+import itertools
+MODES = {1: 9, 2: 3, 3: 4, 4: 3, 5: 2, 6: 4, 7: 5, 8: 4, 11: 2}
+for ty, nm in MODES.items():
+    bad = []
+    for md in range(nm):
+        for pv in (0.0, 1.0):
+            a = render(fx(0, ty, md, 1.0, (pv,) * 6), hold=0.2, tail=0.3, tag="sw")
+            if not np.isfinite(a).all() or np.abs(a).max() > 8.0: bad.append((md, pv, float(np.abs(a).max())))
+    check("type %d: all %d modes finite and bounded at parameter extremes" % (ty, nm), not bad, str(bad[:3]))
+
+# new distortion modes actually distort (more harmonics than the clean sine)
+def thd(v):
+    seg = v[int(0.7 * RATE):int(0.85 * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))); k = int(np.argmax(X))
+    return 1.0 - X[max(0, k - 3):k + 4].sum() / (X.sum() + 1e-12)
+for md, nm in ((6, "Rectify"), (7, "Fuzz"), (8, "Tanh")):
+    a = render(fx(0, 1, md, 1.0, (0.8, 1.0, 0.5, 0.5, 0.0, 0.0)), tag="d%d" % md)
+    check("distortion %s adds harmonics" % nm, thd(a) > thd(dry) + 0.02, "%.3f vs %.3f" % (thd(a), thd(dry)))
+
+# bias adds even harmonics, DC stays blocked
+b0 = render(fx(0, 1, 0, 1.0, (0.8, 1.0, 0.5, 0.5, 0.0, 0.0)), tag="b0"); b1 = render(fx(0, 1, 0, 1.0, (0.8, 1.0, 0.5, 1.0, 0.0, 0.0)), tag="b1")
+check("distortion bias changes the spectrum", abs(thd(b0) - thd(b1)) > 0.005 or not np.allclose(b0, b1, atol=1e-3))
+check("distortion DC blocked", abs(float(b1[int(0.8 * RATE):int(0.9 * RATE), 0].mean())) < 0.05)
+
+# negative flanger feedback differs from positive; flanger width 0 = mono wet
+f0 = render(fx(0, 5, 0, 1.0, (0.3, 0.6, 0.9, 0.5, 0.5, 0.5)), tag="f0"); f1 = render(fx(0, 5, 1, 1.0, (0.3, 0.6, 0.9, 0.5, 0.5, 0.5)), tag="f1")
+check("flanger negative mode differs", not np.allclose(f0, f1, atol=1e-3))
+fw = render(fx(0, 4, 0, 1.0, (0.5, 0.5, 0.0, 0.0, 0.5, 0.5)), tag="fw")
+seg2 = fw[int(0.7 * RATE):int(0.9 * RATE)]
+check("chorus width 0 collapses the wet to mono", np.abs(seg2[:, 0] - seg2[:, 1]).max() < 1e-4)
+
+# ducking delay is quieter during the note than the plain delay, and a low cut lowers the echo level
+dp = render(fx(0, 3, 0, 1.0, (0.3, 0.6, 1.0, 0.0, 0.0, 0.0)), tag="dp"); dd = render(fx(0, 3, 3, 1.0, (0.3, 0.6, 1.0, 0.0, 0.0, 0.0)), tag="dd")
+check("ducking delay differs from the plain delay", not np.allclose(dp, dd, atol=1e-3))
+
+# reverb wet low cut / high cut change the level
+r0 = render(fx(0, 8, 0, 1.0, (0.5, 0.5, 0.2, 1.0, 0.0, 1.0)), tag="r0"); r1 = render(fx(0, 8, 0, 1.0, (0.5, 0.5, 0.2, 1.0, 1.0, 0.0)), tag="r1")
+check("reverb tone filters narrow the wet signal", rms(r1[T0:]) < 0.8 * rms(r0[T0:]), "%.5f vs %.5f" % (rms(r1[T0:]), rms(r0[T0:])))
+
+# compressor knee: soft knee reduces the gain below the threshold, hard knee does not
+c0 = render(fx(0, 11, 0, 1.0, (0.8, 0.8, 0.1, 0.4, 0.0, 0.0)), tag="c0"); c1 = render(fx(0, 11, 0, 1.0, (0.8, 0.8, 0.1, 0.4, 0.0, 1.0)), tag="c1")
+check("compressor soft knee acts below the threshold", rms(c1[int(0.7 * RATE):T0]) < rms(c0[int(0.7 * RATE):T0]) - 1e-4, "%.4f vs %.4f" % (rms(c1[int(0.7 * RATE):T0]), rms(c0[int(0.7 * RATE):T0])))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)
