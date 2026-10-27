@@ -1,4 +1,4 @@
-// The 20 slot modulation matrix and the amount popup shown after dropping a source on a parameter.
+// The modulation matrix (pages of 20 slots) and the amount popup shown after dropping a source on a parameter.
 #include "ModUi.h"
 
 namespace njo
@@ -7,41 +7,73 @@ namespace njo
 
     struct MatrixPanel::Impl : Ctx::Listener
     {
+        static constexpr int PER_PAGE = 20;
         Ctx& ctx; MatrixPanel& owner;
-        juce::OwnedArray<MiniSelect> src, dst;
-        juce::OwnedArray<SliderWidget> amt;
-        Impl (Ctx& c, MatrixPanel& o) : ctx (c), owner (o) { ctx.addListener (this); }
+        std::vector<std::unique_ptr<MiniSelect>> src, dst;
+        std::vector<std::unique_ptr<SliderWidget>> amt;
+        juce::TextButton prev { "<" }, next { ">" };
+        int page = 0;
+        Impl (Ctx& c, MatrixPanel& o) : ctx (c), owner (o)
+        {
+            src.resize (MOD_SLOTS); dst.resize (MOD_SLOTS); amt.resize (MOD_SLOTS);
+            ctx.addListener (this);
+        }
         ~Impl() override { ctx.removeListener (this); }
-        void paramChanged (int n, float) override { if ((n >= 307 && n <= 336) || (n >= 472 && n <= 501)) owner.repaint(); }
+        static bool isMatrixParam (int n) { return isModSlotParam (n); }
+        void paramChanged (int n, float) override { if (isMatrixParam (n)) owner.repaint(); }
         bool active (int s) const { return ctx.get (slotBase (s)) > 0.5f && ctx.get (slotBase (s) + 1) > 0.5f; }
+        int used() const { int u = 0; for (int s = 0; s < MOD_SLOTS; ++s) if (active (s)) u = s + 1; return u; }
+        int pages() const { return juce::jmin ((MOD_SLOTS + PER_PAGE - 1) / PER_PAGE, used() / PER_PAGE + 1); }
+
+        void build (int s)
+        {
+            if (src[(size_t) s] != nullptr) return;
+            int b = slotBase (s);
+            auto* a = (src[(size_t) s] = std::make_unique<MiniSelect>()).get();
+            a->names = modSrc(); a->groups = modSrcGroups();
+            a->getIndex = [this, b] { return juce::roundToInt (ctx.get (b)); };
+            a->setIndex = [this, b] (int i) { ctx.begin (b); ctx.set (b, (float) i); ctx.end (b); };
+            owner.addChildComponent (a);
+            auto* d = (dst[(size_t) s] = std::make_unique<MiniSelect>()).get();
+            d->names = modDst(); d->groups = modDstGroups();
+            d->getIndex = [this, b] { return juce::roundToInt (ctx.get (b + 1)); };
+            d->setIndex = [this, b] (int i) { ctx.begin (b + 1); ctx.set (b + 1, (float) i); ctx.end (b + 1); };
+            owner.addChildComponent (d);
+            auto* m = (amt[(size_t) s] = std::make_unique<SliderWidget> (ctx, b + 2)).get();
+            m->setLabelOverride (" ");
+            m->setValueTextOverride ([] (float v) { return juce::String (juce::roundToInt (v * 100)) + "%"; });
+            owner.addChildComponent (m);
+        }
+
+        void showPage (int p)
+        {
+            page = juce::jlimit (0, pages() - 1, p);
+            for (int s = 0; s < MOD_SLOTS; ++s)
+            {
+                bool vis = s / PER_PAGE == page;
+                if (vis) build (s);
+                if (src[(size_t) s] != nullptr) { src[(size_t) s]->setVisible (vis); dst[(size_t) s]->setVisible (vis); amt[(size_t) s]->setVisible (vis); }
+            }
+            prev.setEnabled (page > 0); next.setEnabled (page < pages() - 1);
+            owner.resized(); owner.repaint();
+        }
     };
 
     MatrixPanel::MatrixPanel (Ctx& c) : impl (new Impl (c, *this))
     {
-        for (int s = 0; s < MOD_SLOTS; ++s)
-        {
-            int b = slotBase (s);
-            auto* a = impl->src.add (new MiniSelect());
-            a->names = modSrc(); a->groups = modSrcGroups();
-            a->getIndex = [&c, b] { return juce::roundToInt (c.get (b)); };
-            a->setIndex = [&c, b] (int i) { c.begin (b); c.set (b, (float) i); c.end (b); };
-            addAndMakeVisible (a);
-            auto* d = impl->dst.add (new MiniSelect());
-            d->names = modDst(); d->groups = modDstGroups();
-            d->getIndex = [&c, b] { return juce::roundToInt (c.get (b + 1)); };
-            d->setIndex = [&c, b] (int i) { c.begin (b + 1); c.set (b + 1, (float) i); c.end (b + 1); };
-            addAndMakeVisible (d);
-            auto* m = impl->amt.add (new SliderWidget (c, b + 2));
-            m->setLabelOverride (" ");
-            m->setValueTextOverride ([] (float v) { return juce::String (juce::roundToInt (v * 100)) + "%"; });
-            addAndMakeVisible (m);
-        }
+        for (auto* b : { &impl->prev, &impl->next }) { addAndMakeVisible (b); b->setColour (juce::TextButton::buttonColourId, juce::Colour (0xff202124)); b->setColour (juce::TextButton::textColourOffId, theme::dim); }
+        impl->prev.onClick = [this] { impl->showPage (impl->page - 1); };
+        impl->next.onClick = [this] { impl->showPage (impl->page + 1); };
+        impl->showPage (0);
     }
     MatrixPanel::~MatrixPanel() = default;
+    void MatrixPanel::setPage (int page) { impl->showPage (page); }
+
+    static constexpr int NAV_H = 22;
 
     static juce::Rectangle<int> rowRect (const juce::Rectangle<int>& area, int col, int k)
     {
-        int colW = (area.getWidth() - 14) / 2, rowH = (area.getHeight() - 16) / 10;
+        int colW = (area.getWidth() - 14) / 2, rowH = (area.getHeight() - 16 - NAV_H) / 10;
         return { area.getX() + col * (colW + 14), area.getY() + 16 + k * rowH, colW, rowH };
     }
 
@@ -62,30 +94,40 @@ namespace njo
             g.drawText ("AMOUNT", h, juce::Justification::centred);
             for (int k = 0; k < 10; ++k)
             {
-                int s = col * 10 + k;
+                int s = impl->page * Impl::PER_PAGE + col * 10 + k;
+                if (s >= MOD_SLOTS) break;
                 auto r = rowRect (area, col, k);
                 if (impl->active (s)) { g.setColour (red.withAlpha (0.13f)); g.fillRoundedRectangle (r.reduced (0, 1).toFloat(), 3.0f); }
                 g.setColour (impl->active (s) ? red : dim); g.setFont (font (9.5f, true));
                 g.drawText (juce::String (s + 1), r.withWidth (22), juce::Justification::centredRight);
             }
         }
+        int first = impl->page * Impl::PER_PAGE + 1, last = juce::jmin (MOD_SLOTS, first + Impl::PER_PAGE - 1);
+        g.setColour (dim); g.setFont (font (9.0f, true));
+        g.drawText ("SLOTS " + juce::String (first) + " - " + juce::String (last) + "   |   PAGE " + juce::String (impl->page + 1) + " / " + juce::String (impl->pages()) + "   |   "
+                    + juce::String (impl->used()) + " IN USE, " + juce::String (MOD_SLOTS) + " AVAILABLE",
+                    getLocalBounds().removeFromBottom (NAV_H + 6).reduced (60, 0), juce::Justification::centred);
     }
 
     void MatrixPanel::resized()
     {
         auto area = getLocalBounds().reduced (10, 6);
+        auto nav = getLocalBounds().removeFromBottom (NAV_H + 6).reduced (10, 3);
+        impl->prev.setBounds (nav.removeFromLeft (40));
+        impl->next.setBounds (nav.removeFromRight (40));
         for (int col = 0; col < 2; ++col)
             for (int k = 0; k < 10; ++k)
             {
-                int s = col * 10 + k;
+                int s = impl->page * Impl::PER_PAGE + col * 10 + k;
+                if (s >= MOD_SLOTS || impl->src[(size_t) s] == nullptr) continue;
                 auto r = rowRect (area, col, k).reduced (0, 2);
                 r.removeFromLeft (28);
                 int w = r.getWidth() - 16;
-                impl->src[s]->setBounds (r.removeFromLeft ((int) (w * 0.31f)));
+                impl->src[(size_t) s]->setBounds (r.removeFromLeft ((int) (w * 0.31f)));
                 r.removeFromLeft (8);
-                impl->dst[s]->setBounds (r.removeFromLeft ((int) (w * 0.36f)));
+                impl->dst[(size_t) s]->setBounds (r.removeFromLeft ((int) (w * 0.36f)));
                 r.removeFromLeft (8);
-                impl->amt[s]->setBounds (r);
+                impl->amt[(size_t) s]->setBounds (r);
             }
     }
 

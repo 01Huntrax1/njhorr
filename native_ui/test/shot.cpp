@@ -80,6 +80,12 @@ int main (int argc, char** argv)
         pump();
     }
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);
+    {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix
+        auto& cx = ed.context();
+        for (int k = 0; k < 24; ++k) cx.modAssign (1 + k % 10, 258 + 31 * (k % 6) + (k * 3) % 31, 0.1f + 0.03f * k);
+        pump(); ed.setMatrixPage (0); pump(); save (ed, dir.getChildFile ("mod_p1.png"), scale);
+        ed.setMatrixPage (1); pump(); save (ed, dir.getChildFile ("mod_p2.png"), scale); ed.setMatrixPage (0);
+    }
     ed.setModTab (1); pump(); save (ed, dir.getChildFile ("frq_mod.png"), scale);
     return 0;
 }

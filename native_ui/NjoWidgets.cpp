@@ -25,7 +25,7 @@ namespace njo
     {
         if (n == paramNum) { val = v; valueUpdated(); if (hover || dragging) ctx.lcd (sp->label, valueString()); }
         else if (sp->num >= 541 && sp->num < 891 && fxLocate (sp->num).valid) repaint();   // fx knobs depend on the slot type
-        else if (ctx.isModTarget (paramNum) && ((n >= 307 && n <= 336) || (n >= 472 && n <= 501))) repaint();   // modulation ring
+        else if (ctx.isModTarget (paramNum) && isModSlotParam (n)) repaint();   // modulation ring
     }
 
     void ParamWidget::setValueFromUser (float v)

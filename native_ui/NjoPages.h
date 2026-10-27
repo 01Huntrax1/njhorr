@@ -79,7 +79,7 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
-    // the 20 slot modulation matrix
+    // the modulation matrix (pages of 20 slots)
     class MatrixPanel : public juce::Component
     {
     public:
@@ -87,6 +87,7 @@ namespace njo
         ~MatrixPanel() override;
         void paint (juce::Graphics&) override;
         void resized() override;
+        void setPage (int page);
         struct Impl; std::unique_ptr<Impl> impl;
     };
 

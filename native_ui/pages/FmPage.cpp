@@ -26,7 +26,7 @@ namespace njo
 
         void paramChanged (int n, float) override
         {
-            if ((n >= FM_BASE && n < AM_BASE + 36) || (n >= 307 && n <= 336) || (n >= 472 && n <= 501)) owner.repaint();
+            if ((n >= FM_BASE && n < AM_BASE + 36) || isModSlotParam (n)) owner.repaint();
         }
 
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }

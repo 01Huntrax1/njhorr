@@ -35,6 +35,11 @@ RAT = [
 AEXP = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.35, 1.0, 1.0]
 rat = ", ".join("%.5ff" % v for row in RAT for v in row)
 aexp = ", ".join("%.2ff" % v for v in AEXP)
+def _tab(f): return ", ".join("%sf" % repr(float(f(j))) for j in range(32))
+_P = {p[0]: p for p in PHY}
+LO = _tab(lambda j: _P[j][3] if j in _P else 0)
+HI = _tab(lambda j: _P[j][4] if j in _P else 1)
+LOGF = _tab(lambda j: 1 if j in (2, 4, 9, 20) else 0)
 
 DSP = r'''    // ---------------- physical modelling source (modal resonators, tools/phys/build_phys.py) ----------------
     // two resonators A and B of 16 modes each (2-pole resonators per mode), excited by a mallet impulse and / or a noise burst.
@@ -113,14 +118,38 @@ DSP = r'''    // ---------------- physical modelling source (modal resonators, t
         }
     }
 
-    // one sample of slot o on voice vi at the note frequency f0 (Hz); modifiers from the mod matrix: hit position, material, noise balance
-    float phyStep (int vi, int o, float f0, float hitM, float matM, float noiseM)
+    // Physical / Alpha Juno parameter j of slot o with the mod matrix applied (destination 258 + 31 * o + j). Full amount moves a linear parameter by +-50 %
+    // of its range, a time / rate parameter (noise time, decays, PWM rate) by +-2 octaves.
+    const float[32] phLo   = (@LO@);
+    const float[32] phHi   = (@HI@);
+    const float[32] phLog  = (@LOG@);
+
+    float phq (int o, int pb, int j)
+    {
+        float v = phyP.at (pb + j);
+        float m = vmod.at (258 + 31 * o + j);
+
+        if (m != 0.0f)
+        {
+            if (phLog.at (j) > 0.5f)
+                v *= float (pow (2.0f, m * 4.0f));
+            else
+                v += m * 0.5f * (phHi.at (j) - phLo.at (j));
+
+            v = clamp (v, phLo.at (j), phHi.at (j));
+        }
+
+        return v;
+    }
+
+    // one sample of slot o on voice vi at the note frequency f0 (Hz); every parameter goes through phq (mod matrix destinations 258..)
+    float phyStep (int vi, int o, float f0)
     {
         float sr  = float (processor.frequency);
         int   b   = o * 176;
         int   pb  = o * 32;
-        float bal = phyP.at (pb + 14);
-        bool  ser = phyP.at (pb + 15) > 0.5f;
+        float bal = phq (o, pb, 14);
+        bool  ser = phq (o, pb, 15) > 0.5f;
 
         // coefficients: every 64 samples, and only when the pitch or a parameter has changed
         float cnt = voices.at (vi).phs.at (b + 164);
@@ -128,27 +157,27 @@ DSP = r'''    // ---------------- physical modelling source (modal resonators, t
         if (cnt <= 0.0f)
         {
             voices.at (vi).phs.at (b + 164) = 64.0f;
-            float hA  = clamp (phyP.at (pb + 6)  + hitM * 0.5f, 0.0f, 1.0f);
-            float hB  = clamp (phyP.at (pb + 11) + hitM * 0.5f, 0.0f, 1.0f);
-            float mA  = clamp (phyP.at (pb + 5)  + matM * 0.5f, 0.0f, 1.0f);
-            float mB  = clamp (phyP.at (pb + 10) + matM * 0.5f, 0.0f, 1.0f);
-            float sig = phyP.at (pb + 1) * 1.1f + phyP.at (pb + 2) * 0.0013f + phyP.at (pb + 3) * 3.7f + phyP.at (pb + 4) * 0.77f + mA * 5.3f + hA * 7.1f
-                      + phyP.at (pb + 7) * 11.3f + phyP.at (pb + 8) * 13.1f + phyP.at (pb + 9) * 0.61f + mB * 17.9f + hB * 19.3f
-                      + phyP.at (pb + 12) * 23.9f + phyP.at (pb + 13) * 0.29f;
+            float hA  = clamp (phq (o, pb, 6) , 0.0f, 1.0f);
+            float hB  = clamp (phq (o, pb, 11), 0.0f, 1.0f);
+            float mA  = clamp (phq (o, pb, 5) , 0.0f, 1.0f);
+            float mB  = clamp (phq (o, pb, 10), 0.0f, 1.0f);
+            float sig = phq (o, pb, 1) * 1.1f + phq (o, pb, 2) * 0.0013f + phq (o, pb, 3) * 3.7f + phq (o, pb, 4) * 0.77f + mA * 5.3f + hA * 7.1f
+                      + phq (o, pb, 7) * 11.3f + phq (o, pb, 8) * 13.1f + phq (o, pb, 9) * 0.61f + mB * 17.9f + hB * 19.3f
+                      + phq (o, pb, 12) * 23.9f + phq (o, pb, 13) * 0.29f;
 
             if (voices.at (vi).phs.at (b + 165) != sig || abs (voices.at (vi).phs.at (b + 166) - f0) > f0 * 0.0004f)
             {
                 voices.at (vi).phs.at (b + 165) = sig;
                 voices.at (vi).phs.at (b + 166) = f0;
 
-                int mdA = clamp (int (phyP.at (pb + 3) + 0.5f), 0, 8);
-                int mdB = clamp (int (phyP.at (pb + 8) + 0.5f), 0, 8);
-                phyCoefs (vi, o, 0, f0, mdA, phyP.at (pb + 4), mA, hA, phyP.at (pb + 7));
-                phyCoefs (vi, o, 1, f0 * float (pow (2.0f, phyP.at (pb + 13) / 12.0f)), mdB, phyP.at (pb + 9), mB, hB, phyP.at (pb + 12));
+                int mdA = clamp (int (phq (o, pb, 3) + 0.5f), 0, 8);
+                int mdB = clamp (int (phq (o, pb, 8) + 0.5f), 0, 8);
+                phyCoefs (vi, o, 0, f0, mdA, phq (o, pb, 4), mA, hA, phq (o, pb, 7));
+                phyCoefs (vi, o, 1, f0 * float (pow (2.0f, phq (o, pb, 13) / 12.0f)), mdB, phq (o, pb, 9), mB, hB, phq (o, pb, 12));
 
-                float cut = 200.0f * float (pow (2.0f, phyP.at (pb + 1) * 7.0f));
+                float cut = 200.0f * float (pow (2.0f, phq (o, pb, 1) * 7.0f));
                 voices.at (vi).phs.at (b + 167) = 1.0f - float (exp (-6.2831853f * min (cut, sr * 0.45f) / sr));
-                voices.at (vi).phs.at (b + 168) = float (exp (-6.9078f / (max (phyP.at (pb + 2), 1.0f) * 0.001f * sr)));
+                voices.at (vi).phs.at (b + 168) = float (exp (-6.9078f / (max (phq (o, pb, 2), 1.0f) * 0.001f * sr)));
             }
         }
         else
@@ -175,7 +204,7 @@ DSP = r'''    // ---------------- physical modelling source (modal resonators, t
         ln += lpa * (nz - ln);
         voices.at (vi).phs.at (b + 163) = ln;
 
-        float nmix = clamp (phyP.at (pb) + noiseM * 0.5f, 0.0f, 1.0f);
+        float nmix = clamp (phq (o, pb, 0), 0.0f, 1.0f);
         float exc  = (1.0f - nmix) * lm * 2.0f + nmix * ln * 0.35f;
 
         // resonators
@@ -223,7 +252,7 @@ DSP = r'''    // ---------------- physical modelling source (modal resonators, t
         return outA * (1.0f - bal) + outB * bal;
     }
 
-'''.replace("@RAT@", rat).replace("@AEXP@", aexp)
+'''.replace("@RAT@", rat).replace("@AEXP@", aexp).replace("@LO@", LO).replace("@HI@", HI).replace("@LOG@", LOGF)
 
 DECL = "".join('    input event float param%d [[ name: "OSC %d %s", min: %s, max: %s, init: %s%s ]];\n' % (
     PHY_BASE + 32 * o + p[0], o + 1, ("Physical " if p[0] < 16 else "") + p[2], repr(float(p[3])), repr(float(p[4])), repr(float(p[5])), ", step: 1.0" if p[7] else "")
@@ -254,10 +283,11 @@ if "float[2048] phs;" not in s:
 s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )[23]\.0', r'\g<1>4.0', s)
 if "phyNoteOn (v, o);" not in s:
     s = s.replace("                    plaitsNoteOn (v, o);\n", "                    plaitsNoteOn (v, o);\n                    phyNoteOn (v, o);\n", 1)
+s = s.replace("phyStep (i, o, freq, vmod.at (dB + 3), vmod.at (dB + 4), vmod.at (dB + 5));", "phyStep (i, o, freq);")
 if "phyStep (i, o, freq" not in s:
     old = "                    else\n                    {\n                        sL = plaitsStep ("
     assert old in s
-    s = s.replace(old, "                    else if (ty == 3)\n                    {\n                        sL = phyStep (i, o, freq, vmod.at (dB + 3), vmod.at (dB + 4), vmod.at (dB + 5));\n                        sR = sL;\n                    }\n" + old.replace("                    else\n", "                    else\n"), 1)
+    s = s.replace(old, "                    else if (ty == 3)\n                    {\n                        sL = phyStep (i, o, freq);\n                        sR = sL;\n                    }\n" + old.replace("                    else\n", "                    else\n"), 1)
 open(PATCH, "w").write(s)
 # the same mode tables for the native editor's display
 hdr = os.path.join(os.path.dirname(os.path.abspath(PATCH)), "..", "native_ui", "NjoPhys.h")

@@ -41,7 +41,7 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
         return 2.0f * q - 1.0f - junoBlep (q, dt);
     }
 
-    float junoStep (int vi, int o, float freq, float pm, float widthM, float depthM, float subM)
+    float junoStep (int vi, int o, float freq, float pm)
     {
         float sr = float (processor.frequency);
         int   pb = o * 32;
@@ -64,21 +64,21 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
 
         // the LFO (triangle) drives the pulse width and the vibrato
         float64 lph = voices.at (vi).wtUPh.at (ui + 1);
-        lph += float64 (phyP.at (pb + 20)) * processor.period;
+        lph += float64 (phq (o, pb, 20)) * processor.period;
         if (lph >= 1.0) lph -= 1.0;
         voices.at (vi).wtUPh.at (ui + 1) = lph;
         float tri = float (lph < 0.5 ? lph * 4.0 - 1.0 : 3.0 - lph * 4.0);
 
-        int   rg = clamp (int (phyP.at (pb + 23) + 0.5f), 0, 2);
-        float f  = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phyP.at (pb + 24) * dr * 0.0046f + phyP.at (pb + 30) * 0.0293f * tri);
+        int   rg = clamp (int (phq (o, pb, 23) + 0.5f), 0, 2);
+        float f  = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phq (o, pb, 24) * dr * 0.0046f + phq (o, pb, 30) * 0.0293f * tri);
         f = clamp (f, 1.0f, sr * 0.45f);
         float dt = f * float (processor.period);
 
         // pulse width: manual, LFO or amp envelope
-        int   src = clamp (int (phyP.at (pb + 29) + 0.5f), 0, 2);
-        float dep = clamp (phyP.at (pb + 19) + depthM * 0.5f, 0.0f, 1.0f);
+        int   src = clamp (int (phq (o, pb, 29) + 0.5f), 0, 2);
+        float dep = clamp (phq (o, pb, 19), 0.0f, 1.0f);
         float mod = src == 0 ? tri : (src == 1 ? voices.at (vi).env * 2.0f - 1.0f : 0.0f);
-        float w   = clamp (phyP.at (pb + 18) + widthM * 0.5f + dep * 0.45f * mod, 0.05f, 0.95f);
+        float w   = clamp (phq (o, pb, 18) + dep * 0.45f * mod, 0.05f, 0.95f);
 
         float64 ph = voices.at (vi).wtUPh.at (ui);
         float   rp = float (ph);
@@ -92,10 +92,10 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
         // saw wave
         float saw = 0.0f;
 
-        if (phyP.at (pb + 16) > 0.0f)
+        if (phq (o, pb, 16) > 0.0f)
         {
-            int stp = clamp (int (phyP.at (pb + 27) + 0.5f), 0, 4);
-            float cv = phyP.at (pb + 25) * 4.0f;
+            int stp = clamp (int (phq (o, pb, 27) + 0.5f), 0, 4);
+            float cv = phq (o, pb, 25) * 4.0f;
 
             if (stp == 0 || stp == 4)
             {
@@ -135,20 +135,20 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
         // pulse wave
         float pul = 0.0f;
 
-        if (phyP.at (pb + 17) > 0.0f)
+        if (phq (o, pb, 17) > 0.0f)
         {
-            int ptp = clamp (int (phyP.at (pb + 26) + 0.5f), 0, 2);
+            int ptp = clamp (int (phq (o, pb, 26) + 0.5f), 0, 2);
             pul = junoPulse (rp, ptp == 0 ? w : (ptp == 1 ? 0.25f : 0.125f), dt);
         }
 
         // sub oscillator
         float s4  = voices.at (vi).phs.at (sb + 4);
         float sub = 0.0f;
-        float sl  = clamp (phyP.at (pb + 21) + subM * 0.5f, 0.0f, 1.0f);
+        float sl  = clamp (phq (o, pb, 21), 0.0f, 1.0f);
 
         if (sl > 0.0f)
         {
-            int   btp = clamp (int (phyP.at (pb + 28) + 0.5f), 0, 5);
+            int   btp = clamp (int (phq (o, pb, 28) + 0.5f), 0, 5);
             float st  = s4 - 2.0f * float (floor (s4 * 0.5f));
             float q2  = (rp + st) * 0.5f;
             float q4  = (rp + s4) * 0.25f;
@@ -178,7 +178,7 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
 
         voices.at (vi).wtUPh.at (ui) = ph;
 
-        return (saw * phyP.at (pb + 16) + pul * phyP.at (pb + 17) + sub * sl + ln * phyP.at (pb + 22)) * 0.5f;
+        return (saw * phq (o, pb, 16) + pul * phq (o, pb, 17) + sub * sl + ln * phq (o, pb, 22)) * 0.5f;
     }
 
 '''
@@ -187,9 +187,10 @@ a, z = "    // JUNO-DSP-BEGIN\n", "    // JUNO-DSP-END\n"
 s = re.sub(re.escape(a) + r".*?" + re.escape(z), "", s, flags=re.S)
 m = re.search(r"^    // ---------------- MIDI ----------------", s, re.M)
 s = s[:m.start()] + a + DSP + z + s[m.start():]
+s = s.replace("junoStep (i, o, freq, pm, vmod.at (dB + 3), vmod.at (dB + 4), vmod.at (dB + 5));", "junoStep (i, o, freq, pm);")
 if "junoStep (i, o, freq" not in s:
     old = "                    else if (ty == 3)\n                    {\n                        sL = phyStep ("
     assert old in s
-    s = s.replace(old, "                    else if (ty == 4)\n                    {\n                        sL = junoStep (i, o, freq, pm, vmod.at (dB + 3), vmod.at (dB + 4), vmod.at (dB + 5));\n                        sR = sL;\n                    }\n" + old, 1)
+    s = s.replace(old, "                    else if (ty == 4)\n                    {\n                        sL = junoStep (i, o, freq, pm);\n                        sR = sL;\n                    }\n" + old, 1)
 open(PATCH, "w").write(s)
 print("ok")

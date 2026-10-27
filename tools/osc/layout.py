@@ -138,3 +138,12 @@ PHY = [
  (30, "jvib",   "Juno Vibrato",         "Vibrato",   0, 1, 0.0, "", "sld", None),
 ]
 def phy_id(o, j): return PHY_BASE + PHY_STRIDE * o + j
+
+# ---- mod matrix: 20 original slots (ids 307.. / 472..) + slots 21..MOD_SLOTS_MAX at MODX_BASE + 3 * (s - 20)  (s = 0-based slot index)
+MOD_SLOTS_MAX = 256
+MODX_BASE = 4000
+def mod_slot_base(s): return 307 + 3 * s if s < 10 else (472 + 3 * (s - 10) if s < 20 else MODX_BASE + 3 * (s - 20))
+# destinations 258..443: Physical / Alpha Juno parameter j (0..30) of slot o  ->  258 + 31 * o + j
+PHY_DST_BASE = 258
+def phydst(o, j): return PHY_DST_BASE + 31 * o + j
+N_DST_TOTAL = PHY_DST_BASE + 31 * OSC_COUNT   # 444

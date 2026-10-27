@@ -20,7 +20,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("every slot has all 44 parameters", [0, 1, 2, 3, 4, 5].every(o => [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44].every(k => ctl(1000 + 64 * o + k))));
     check("36 PD amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1480 + 6 * s + d))));
     check("36 RM and 36 AM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1520 + 6 * s + d) && ctl(1560 + 6 * s + d))));
-    check("dest list ends with RM / AM cells (186..257)", opts(308).length === 258 && opts(308)[186] === "RM A > A" && opts(308)[221] === "RM F > F" && opts(308)[222] === "AM A > A" && opts(308)[257] === "AM F > F");
+    check("dest list: RM / AM cells (186..257) then every Physical / Alpha Juno parameter (258..443)", opts(308).length === 444 && opts(308)[258] === "OSC 1 Physical Noise vs Mallet" && opts(308)[443] === "OSC 6 Juno Vibrato" && opts(308)[186] === "RM A > A" && opts(308)[221] === "RM F > F" && opts(308)[222] === "AM A > A" && opts(308)[257] === "AM F > F");
     check("36 FM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1400 + 6 * s + d))));
     check("filter has all 30 types plus the Wavefilter", opts(1031).length === 31 && opts(1031 + 64 * 5).length === 31 && opts(1031)[30] === "Wavefilter");
     check("distortion has 6 types plus the Wavedistortion", opts(1042).length === 8 && opts(1042)[7] === "Wavedistortion");

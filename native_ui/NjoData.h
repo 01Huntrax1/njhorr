@@ -7,7 +7,7 @@
 namespace njo
 {
     // ---- layout constants (same as the JS UI) ----
-    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, FRQ_BASE = 1600, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560, MOD_SLOTS = 20;
+    constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, FRQ_BASE = 1600, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560, MOD_SLOTS = 256, MODX_BASE = 4000;   // 256 matrix slots: 1-10 at 307.., 11-20 at 472.., 21-256 at MODX_BASE + 3 * (slot - 20)
     constexpr int BASE_W = 1180, BASE_H = 760;
     constexpr int MAX_SMP = 96000, CHUNK = 256;
     constexpr int MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
@@ -17,7 +17,8 @@ namespace njo
     inline int pdId (int s, int d) { return PD_BASE + 6 * s + d; }
     inline int rmId (int s, int d) { return RM_BASE + 6 * s + d; }
     inline int amId (int s, int d) { return AM_BASE + 6 * s + d; }
-    inline int slotBase (int s) { return s < 10 ? 307 + 3 * s : 472 + 3 * (s - 10); }   // first (source) parameter of a matrix slot
+    inline bool isModSlotParam (int n) { return (n >= 307 && n <= 336) || (n >= 472 && n <= 501) || (n >= MODX_BASE && n < MODX_BASE + 3 * (MOD_SLOTS - 20)); }
+    inline int slotBase (int s) { return s < 10 ? 307 + 3 * s : (s < 20 ? 472 + 3 * (s - 10) : MODX_BASE + 3 * (s - 20)); }   // first (source) parameter of a matrix slot
     const std::map<juce::String, int>& oscKeys();
     int oscKey (const char* name);   // OSC_K["wpos"] ...
 

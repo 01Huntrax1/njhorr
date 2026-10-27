@@ -208,7 +208,7 @@ namespace njo
         else if (currentGroup == Effects) { fx.setBounds (impl->stageRect); fx.setVisible (true); }
         else
         {
-            // modulation page: editors on top, the 20 slot matrix below
+            // modulation page: editors on top, the matrix below (paged)
             auto area = impl->stageRect;
             impl->stripRect = area.withHeight (0);
             auto top = area.removeFromTop (juce::roundToInt (area.getHeight() * 0.48f));

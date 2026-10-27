@@ -474,5 +474,36 @@ for t, nt in enumerate((24, 60, 96, 120)):
     a = render(JUNO + [JU("jsaw", 1), JU("jpulse", 1), JU("jsub", 1), JU("jnoise", 1), JU("jcurve", 1), JU("jdrift", 1), JU("jpwm", 1), JU("jvib", 1), JU("jstype", 1 + t), JU("jbtype", t + 2), JU("jptype", t % 3), P(0, "level", 1)], note=nt, hold=0.3, tail=0.05, tag="juext%d" % t)
     if not np.isfinite(a).all() or np.abs(a).max() > 4: ok = False
 check("Juno DCO stays finite and bounded at extreme settings", ok)
+
+# ---------------------------------------------------------------- mod matrix: Physical / Alpha Juno destinations and slots 21..256
+CONST1 = [("shape", 0, "const", 1), (882, 1), (247, 6)]
+def MM(slot, src, dst, amt):   # slot is 0-based
+    b = L.mod_slot_base(slot)
+    return [(b, src), (b + 1, dst), (b + 2, amt)]
+# slot 1 (matrix slot 1, LFO 1 constant +1) -> Juno Saw Level of OSC 1 (j = 16): a silent saw becomes audible
+a0 = render(only(saw=0.0), tag="mdj0")
+a1 = render(only(saw=0.0) + MM(0, 1, L.phydst(0, 16), 1.0) + CONST1, tag="mdj1")
+check("Mod destination 'Juno Saw Level' of OSC 1 opens a silent saw", rms(seg(a0)) < 0.002 and rms(seg(a1)) > 0.02, "%.4f -> %.4f" % (rms(seg(a0)), rms(seg(a1))))
+# the same destination of OSC 2 does not touch OSC 1
+a2 = render(only(saw=0.0) + MM(0, 1, L.phydst(1, 16), 1.0) + CONST1, tag="mdj2")
+check("Mod destination of OSC 2 leaves OSC 1 alone", rms(seg(a2)) < 0.002)
+# Physical Material of OSC 1 (j = 5) changes the sound
+pa = render(PHYS + [PH(0, "phbal", 0)], note=57, hold=0.6, tail=0.1, tag="mdp0")[:, 0]
+pb = render(PHYS + [PH(0, "phbal", 0)] + MM(0, 1, L.phydst(0, 5), 1.0) + CONST1, note=57, hold=0.6, tail=0.1, tag="mdp1")[:, 0]
+d = np.abs(pa[:int(0.5 * RATE)] - pb[:int(0.5 * RATE)]).max()
+check("Mod destination 'Physical A Material' changes the sound", d > 0.01 and np.isfinite(pb).all(), "diff %.3f" % d)
+# a slot far beyond the original 20 works: slot 21, 100 and 256
+for sl in (20, 99, 255):
+    a = render(only(saw=0.0) + MM(sl, 1, L.phydst(0, 16), 1.0) + CONST1, tag="mdslot%d" % sl)
+    check("Mod matrix slot %d works" % (sl + 1), rms(seg(a)) > 0.02, "%.4f" % rms(seg(a)))
+# 30 slots summing into one destination: 30 * 0.02 = 0.6, which moves a linear parameter by 0.6 * 50 % = 0.3
+cmds = []
+for sl in range(30): cmds += MM(sl, 1, L.phydst(0, 16), 0.02)
+a = render(only(saw=0.0) + cmds + CONST1, tag="mdsum")
+b = render(only(saw=0.3), tag="mdsum2")
+check("30 mod slots add up on one destination", abs(rms(seg(a)) - rms(seg(b))) < 0.15 * rms(seg(b)) + 1e-4, "%.4f vs %.4f" % (rms(seg(a)), rms(seg(b))))
+# clearing a high slot removes the modulation again
+a = render(only(saw=0.0) + MM(99, 1, L.phydst(0, 16), 1.0) + MM(99, 0, 0, 0.0) + CONST1, tag="mdclr")
+check("Clearing a high slot removes its modulation", rms(seg(a)) < 0.002)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

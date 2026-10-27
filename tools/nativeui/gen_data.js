@@ -32,7 +32,14 @@ o.push("#define NJ_S(x) juce::String (juce::CharPointer_UTF8 (x))");
 o.push("namespace njo {");
 // specs
 o.push("const std::vector<Spec>& allSpecs()\n{\n    static const std::vector<Spec> v = {");
-X.SPECS.forEach(s => o.push("        { " + [s.num, S(s.label), num(s.min), num(s.max), num(s.init), S(s.unit), S(s.kind), arr(s.labels), s.big || 1, S(s.short), grp(s.groups)].join(", ") + " },"));
+// the 256 matrix slots share one source list and one destination list instead of embedding a copy each
+const sameList = (a, b) => a && JSON.stringify(a) === JSON.stringify(b);
+X.SPECS.forEach(s => {
+    const isDst = sameList(s.labels, X.MOD_DST), isSrc = sameList(s.labels, X.MOD_SRC);
+    const lab = isDst ? "modDst()" : isSrc ? "modSrc()" : arr(s.labels);
+    const gr = isDst ? "modDstGroups()" : isSrc ? "modSrcGroups()" : grp(s.groups);
+    o.push("        { " + [s.num, S(s.label), num(s.min), num(s.max), num(s.init), S(s.unit), S(s.kind), lab, s.big || 1, S(s.short), gr].join(", ") + " },");
+});
 o.push("    };\n    return v;\n}");
 const strTable = (name, a) => o.push("const juce::StringArray& " + name + "()\n{\n    static const juce::StringArray v " + arr(a) + ";\n    return v;\n}");
 strTable("filterTypes", X.FILTER_TYPES); strTable("syncDivs", X.SYNC_DIVS); strTable("modWaves", X.MOD_WAVES); strTable("modSrc", X.MOD_SRC); strTable("modDst", X.MOD_DST);
