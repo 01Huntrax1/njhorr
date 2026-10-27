@@ -612,7 +612,7 @@ const AudioDecode = (() => {
 })();
 /*AUDIODEC-END*/
 const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560;
-const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45};
+const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45, "rson": 56, "rsmod": 57, "rsdec": 58, "rsmat": 59, "rshit": 60, "rsinh": 61, "rstune": 62, "rsmix": 63};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
@@ -689,7 +689,15 @@ const OSC_SPEC_ROWS = [
     [1053, "OSC 1 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1054, "OSC 1 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1055, "OSC 1 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1045, "OSC 1 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1045, "OSC 1 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1056, "OSC 1 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1057, "OSC 1 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1058, "OSC 1 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1059, "OSC 1 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1060, "OSC 1 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1061, "OSC 1 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1062, "OSC 1 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1063, "OSC 1 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1064, "OSC 2 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1065, "OSC 2 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1066, "OSC 2 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -743,7 +751,15 @@ const OSC_SPEC_ROWS = [
     [1117, "OSC 2 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1118, "OSC 2 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1119, "OSC 2 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1109, "OSC 2 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1109, "OSC 2 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1120, "OSC 2 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1121, "OSC 2 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1122, "OSC 2 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1123, "OSC 2 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1124, "OSC 2 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1125, "OSC 2 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1126, "OSC 2 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1127, "OSC 2 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1128, "OSC 3 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1129, "OSC 3 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1130, "OSC 3 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -797,7 +813,15 @@ const OSC_SPEC_ROWS = [
     [1181, "OSC 3 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1182, "OSC 3 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1183, "OSC 3 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1173, "OSC 3 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1173, "OSC 3 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1184, "OSC 3 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1185, "OSC 3 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1186, "OSC 3 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1187, "OSC 3 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1188, "OSC 3 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1189, "OSC 3 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1190, "OSC 3 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1191, "OSC 3 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1192, "OSC 4 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1193, "OSC 4 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1194, "OSC 4 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -851,7 +875,15 @@ const OSC_SPEC_ROWS = [
     [1245, "OSC 4 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1246, "OSC 4 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1247, "OSC 4 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1237, "OSC 4 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1237, "OSC 4 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1248, "OSC 4 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1249, "OSC 4 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1250, "OSC 4 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1251, "OSC 4 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1252, "OSC 4 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1253, "OSC 4 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1254, "OSC 4 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1255, "OSC 4 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1256, "OSC 5 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1257, "OSC 5 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1258, "OSC 5 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -905,7 +937,15 @@ const OSC_SPEC_ROWS = [
     [1309, "OSC 5 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1310, "OSC 5 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1311, "OSC 5 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1301, "OSC 5 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1301, "OSC 5 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1312, "OSC 5 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1313, "OSC 5 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1314, "OSC 5 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1315, "OSC 5 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1316, "OSC 5 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1317, "OSC 5 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1318, "OSC 5 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1319, "OSC 5 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1320, "OSC 6 Source", 0, 4, 0, "", "btn", ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"], 1, "Source", null],
     [1321, "OSC 6 Level", 0, 1, 0.0, "", "sld", null, 1, "Level", null],
     [1322, "OSC 6 Pan", -1, 1, 0, "", "sld", null, 1, "Pan", null],
@@ -959,7 +999,15 @@ const OSC_SPEC_ROWS = [
     [1373, "OSC 6 Wavefilter Tilt", -1, 1, 0, "", "sld", null, 1, "Tilt", null],
     [1374, "OSC 6 Wavefilter Spread", 0, 1, 0, "", "sld", null, 1, "Spread", null],
     [1375, "OSC 6 Wavefilter Gain Law", 0, 2, 0, "", "sel", ["Linear", "Bipolar", "dB"], 1, "Gain Law", null],
-    [1365, "OSC 6 Distortion Position", 0, 1, 0, "", "btn", ["Post", "Pre"], 1, "Dist vs Filter", null],
+    [1365, "OSC 6 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
+    [1376, "OSC 6 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
+    [1377, "OSC 6 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
+    [1378, "OSC 6 Resonator Decay", 0.02, 20, 1.0, "s", "sld", null, 1, "Decay", null],
+    [1379, "OSC 6 Resonator Material", 0, 1, 0.5, "", "sld", null, 1, "Material", null],
+    [1380, "OSC 6 Resonator Position", 0, 1, 0.3, "", "sld", null, 1, "Position", null],
+    [1381, "OSC 6 Resonator Inharmonicity", 0, 1, 0, "", "sld", null, 1, "Inharm", null],
+    [1382, "OSC 6 Resonator Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
+    [1383, "OSC 6 Resonator Mix", 0, 1, 0.5, "", "sld", null, 1, "Mix", null],
     [1400, "FM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
     [1440, "PM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
     [1480, "PD 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
@@ -2859,6 +2907,8 @@ class EisenpulsPatchView extends HTMLElement {
             <canvas class="dist-canvas" data-o="${o}" width="900" height="260"></canvas>
             <div class="o-frow">${["dtype", "dpos"].map(c).join("")}<div class="o-mode" data-o="${o}" data-k="d"><button type="button" data-m="0">DISTORTION</button><button type="button" data-m="1">WAVEDISTORTION</button></div></div>
             <div class="cgrid o-g2">${["ddrv", "dmix"].map(c).join("")}</div>
+            <h2>OSC ${o + 1} Resonator (pre-matrix stage, order above)</h2>
+            <div class="cgrid o-g4">${["rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix"].map(c).join("")}</div>
           </section>
           <section class="card o-tb" data-o="${o}" data-k="sh"><h2>Wavedistortion table</h2>
             <canvas class="tbl-canvas" data-o="${o}" data-k="sh" width="520" height="300"></canvas>

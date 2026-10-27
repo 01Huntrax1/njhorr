@@ -61,6 +61,18 @@ namespace njo
         Ctx& ctx; SoundMemory& mem; int o;
     };
 
+    // magnitude response of the slot's resonator stage (16 modes tuned to A3 + Tune)
+    class ResoDisplay : public juce::Component, private Ctx::Listener
+    {
+    public:
+        ResoDisplay (Ctx&, int osc);
+        ~ResoDisplay() override;
+        void paint (juce::Graphics&) override;
+    private:
+        void paramChanged (int num, float v) override;
+        Ctx& ctx; int o;
+    };
+
     // the frames of a Wavefilter / Wavedistortion table behind each other, the frame at Table Pos in front; the line below says which table
     class TableDisplay : public juce::Component, private Ctx::Listener, private juce::ChangeListener
     {

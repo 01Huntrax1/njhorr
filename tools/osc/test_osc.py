@@ -505,5 +505,31 @@ check("30 mod slots add up on one destination", abs(rms(seg(a)) - rms(seg(b))) <
 # clearing a high slot removes the modulation again
 a = render(only(saw=0.0) + MM(99, 1, L.phydst(0, 16), 1.0) + MM(99, 0, 0, 0.0) + CONST1, tag="mdclr")
 check("Clearing a high slot removes its modulation", rms(seg(a)) < 0.002)
+
+# ---------------------------------------------------------------- per-slot Resonator stage and the pre-matrix order
+RS = lambda key, v: P(0, key, v)
+SAW = ["wt 0 saw", RS("level", 0.5), FOFF(0)]
+base = SAW + [RS("rson", 0)]
+a0 = render(base, note=45, hold=0.8, tail=0.1, tag="rs0")[:, 0]
+a1 = render(SAW + [RS("rson", 1), RS("rsmod", 0), RS("rsdec", 3.0), RS("rsmix", 1.0), RS("rstune", 12)], note=45, hold=0.8, tail=0.1, tag="rs1")[:, 0]
+w0, w1 = a0[int(0.2 * RATE):int(0.7 * RATE)], a1[int(0.2 * RATE):int(0.7 * RATE)]
+r0 = band(w0, 210, 230) / (band(w0, 105, 115) + 1e-9); r1 = band(w1, 210, 230) / (band(w1, 105, 115) + 1e-9)
+check("Resonator tuned an octave up (+12 st) emphasises 220 Hz over 110 Hz on a 110 Hz saw", r1 > 4 * r0 and np.isfinite(a1).all(), "%.2f -> %.2f" % (r0, r1))
+a2 = render(SAW + [RS("rson", 1), RS("rsmix", 0.0)], note=45, hold=0.6, tail=0.1, tag="rs2")[:, 0]
+check("Resonator mix 0 leaves the sound alone", np.abs(a2[:int(0.6 * RATE)] - a0[:int(0.6 * RATE)]).max() < 1e-4)
+for m in range(9):
+    a = render(SAW + [RS("rson", 1), RS("rsmod", m), RS("rsdec", 20), RS("rsmix", 1), RS("rsinh", 1)], note=45 + 3 * m, hold=0.4, tail=0.05, tag="rsm%d" % m)
+    check("Resonator model %s stays finite and bounded" % L.PHY_MODELS[m], np.isfinite(a).all() and np.abs(a).max() < 4)
+# order: distortion before / after the resonator differs
+DST = [RS("dtype", 3), RS("ddrv", 1.0), RS("dmix", 1.0)]
+RES = [RS("rson", 1), RS("rsdec", 1.0), RS("rsmix", 1.0)]
+o1 = render(SAW + DST + RES + [RS("dpos", 2)], note=45, hold=0.6, tail=0.1, tag="ord2")[:, 0]   # Filter > Reso > Dist
+o2 = render(SAW + DST + RES + [RS("dpos", 0)], note=45, hold=0.6, tail=0.1, tag="ord0")[:, 0]   # Filter > Dist > Reso
+check("Pre-matrix order changes the result (Dist > Reso vs Reso > Dist)", np.abs(o1[:int(0.5 * RATE)] - o2[:int(0.5 * RATE)]).max() > 0.02 and np.isfinite(o1).all() and np.isfinite(o2).all())
+ok = True
+for t in range(6):
+    a = render(SAW + DST + RES + [RS("fon", 1), RS("fcut", 800), RS("dpos", t), RS("rsdec", 20)], note=33 + 20 * (t % 3), hold=0.3, tail=0.05, tag="rsord%d" % t)
+    if not np.isfinite(a).all() or np.abs(a).max() > 6: ok = False
+check("All six pre-matrix orders stay finite and bounded", ok)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

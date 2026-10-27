@@ -66,11 +66,11 @@ namespace njo
             b->onClick = [this, i] { setGroup ((Group) i); };
             addAndMakeVisible (b);
         }
-        for (int i = 0; i < 11; ++i)
+        for (int i = 0; i < 12; ++i)
         {
-            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM / PD" : (i == 7 ? "RM / AM" : (i == 8 ? "GLOBAL" : (i == 9 ? "FILTER" : "DIST"))));
+            juce::String t = i < 6 ? "OSC " + juce::String (i + 1) : (i == 6 ? "FM / PM / PD" : (i == 7 ? "RM / AM" : (i == 8 ? "GLOBAL" : (i == 9 ? "FILTER" : (i == 10 ? "DIST" : "RESO")))));
             auto* b = impl->tabs.add (new NavButton (NavButton::Tab, t));
-            b->onClick = [this, i] { setSynthPage (i == 9 ? 9 + fltOsc : (i == 10 ? 15 + distOsc : i)); };
+            b->onClick = [this, i] { setSynthPage (i == 9 ? 9 + fltOsc : (i == 10 ? 15 + distOsc : (i == 11 ? 21 + resoOsc : i))); };
             addAndMakeVisible (b);
         }
         impl->stripToggle = std::make_unique<NavButton> (NavButton::Mini, juce::String (juce::CharPointer_UTF8 ("\xe2\x96\xbe")));
@@ -94,12 +94,12 @@ namespace njo
             p->onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
             addChildComponent (p);
         }
-        for (int m = 1; m <= 2; ++m)
+        for (int m = 1; m <= 3; ++m)
             for (int o = 0; o < OSC_N; ++o)
             {
-                auto* p = (m == 1 ? fltPages : distPages).add (new OscPage (ctx, memory, o, m));
+                auto* p = (m == 1 ? fltPages : (m == 2 ? distPages : resoPages)).add (new OscPage (ctx, memory, o, m));
                 p->onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
-                p->onSelectOsc = [this, m] (int k) { setSynthPage ((m == 1 ? 9 : 15) + k); };
+                p->onSelectOsc = [this, m] (int k) { setSynthPage ((m == 1 ? 9 : (m == 2 ? 15 : 21)) + k); };
                 addChildComponent (p);
             }
         fm.setOnOpenOsc ([this] (int o) { setSynthPage (o); });
@@ -141,9 +141,10 @@ namespace njo
 
     void EditorContent::setSynthPage (int p)
     {
-        currentSynthPage = juce::jlimit (0, 20, p);
+        currentSynthPage = juce::jlimit (0, 26, p);
         if (currentSynthPage >= 9 && currentSynthPage < 15) fltOsc = currentSynthPage - 9;
-        else if (currentSynthPage >= 15) distOsc = currentSynthPage - 15;
+        else if (currentSynthPage >= 15 && currentSynthPage < 21) distOsc = currentSynthPage - 15;
+        else if (currentSynthPage >= 21) resoOsc = currentSynthPage - 21;
         currentGroup = Synth;
         for (int i = 0; i < 3; ++i) impl->rail[i]->setOn (i == 0);
         layoutAll();
@@ -176,12 +177,13 @@ namespace njo
             auto s = impl->subRect; int x = s.getX();
             for (int i = 0; i < 6; ++i) { impl->tabs[i]->setBounds (x, s.getY(), 56, s.getHeight()); x += 59; }
             int rx = s.getRight();
-            const int widths[] = { 62, 58, 70, 48, 54 };   // GLOBAL, RM / AM, FM / PM / PD, DIST, FILTER
-            const int order[] = { 8, 7, 6, 10, 9 };
-            for (int k = 0; k < 5; ++k) { rx -= widths[k]; impl->tabs[order[k]]->setBounds (rx, s.getY(), widths[k], s.getHeight()); rx -= 3; }
+            const int widths[] = { 62, 58, 70, 48, 54, 46 };   // GLOBAL, RM / AM, FM / PM / PD, RESO, DIST, FILTER
+            const int order[] = { 8, 7, 6, 11, 10, 9 };
+            for (int k = 0; k < 6; ++k) { rx -= widths[k]; impl->tabs[order[k]]->setBounds (rx, s.getY(), widths[k], s.getHeight()); rx -= 3; }
             for (int i = 0; i < 9; ++i) impl->tabs[i]->setOn (i == currentSynthPage);
             impl->tabs[9]->setOn (currentSynthPage >= 9 && currentSynthPage < 15);
-            impl->tabs[10]->setOn (currentSynthPage >= 15);
+            impl->tabs[10]->setOn (currentSynthPage >= 15 && currentSynthPage < 21);
+            impl->tabs[11]->setOn (currentSynthPage >= 21);
         }
         impl->mgrRect = m.removeFromTop (24); m.removeFromTop (6);
         manager.setBounds (impl->mgrRect);
@@ -193,6 +195,7 @@ namespace njo
         for (auto* p : osc) p->setVisible (false);
         for (auto* p : fltPages) p->setVisible (false);
         for (auto* p : distPages) p->setVisible (false);
+        for (auto* p : resoPages) p->setVisible (false);
         fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false);
         editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false);
         for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get() }) b->setVisible (false);
@@ -202,7 +205,8 @@ namespace njo
             else if (currentSynthPage == 6) { fm.setBounds (impl->stageRect); fm.setVisible (true); }
             else if (currentSynthPage == 7) { fmRm.setBounds (impl->stageRect); fmRm.setVisible (true); }
             else if (currentSynthPage >= 9 && currentSynthPage < 15) { fltPages[currentSynthPage - 9]->setBounds (impl->stageRect); fltPages[currentSynthPage - 9]->setVisible (true); }
-            else if (currentSynthPage >= 15) { distPages[currentSynthPage - 15]->setBounds (impl->stageRect); distPages[currentSynthPage - 15]->setVisible (true); }
+            else if (currentSynthPage >= 15 && currentSynthPage < 21) { distPages[currentSynthPage - 15]->setBounds (impl->stageRect); distPages[currentSynthPage - 15]->setVisible (true); }
+            else if (currentSynthPage >= 21) { resoPages[currentSynthPage - 21]->setBounds (impl->stageRect); resoPages[currentSynthPage - 21]->setVisible (true); }
             else { glob.setBounds (impl->stageRect); glob.setVisible (true); }
         }
         else if (currentGroup == Effects) { fx.setBounds (impl->stageRect); fx.setVisible (true); }

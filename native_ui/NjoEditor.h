@@ -38,8 +38,8 @@ namespace njo
         std::unique_ptr<SoundMemory> ownMemory;
         SoundMemory& memory;
         Group currentGroup = Synth; int currentSynthPage = 0;
-        juce::OwnedArray<OscPage> osc, fltPages, distPages;
-        int fltOsc = 0, distOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
+        juce::OwnedArray<OscPage> osc, fltPages, distPages, resoPages;
+        int fltOsc = 0, distOsc = 0, resoOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
         FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx;
         ModEditors editors, editorsFull; FreqEditor freq, freqFull; MatrixPanel matrix;
         int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators

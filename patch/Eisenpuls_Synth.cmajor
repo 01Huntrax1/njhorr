@@ -69,7 +69,7 @@ processor Eisenpuls_Synth
     input event float param1042 [[ name: "OSC 1 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1043 [[ name: "OSC 1 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1044 [[ name: "OSC 1 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1045 [[ name: "OSC 1 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1045 [[ name: "OSC 1 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1046 [[ name: "OSC 1 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1047 [[ name: "OSC 1 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1048 [[ name: "OSC 1 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -1557,6 +1557,56 @@ processor Eisenpuls_Synth
     input event float param4706 [[ name: "Mod Slot 256 Dest (0-443, see Dest list)", min: 0.0, max: 443.0, init: 0.0, step: 1.0 ]];
     input event float param4707 [[ name: "Mod Slot 256 Amount", min: -1.0, max: 1.0, init: 0.0 ]];
     // MODX-DECL-END
+    // RESO-DECL-BEGIN
+    input event float param1056 [[ name: "OSC 1 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1057 [[ name: "OSC 1 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1058 [[ name: "OSC 1 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1059 [[ name: "OSC 1 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1060 [[ name: "OSC 1 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1061 [[ name: "OSC 1 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1062 [[ name: "OSC 1 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1063 [[ name: "OSC 1 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1120 [[ name: "OSC 2 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1121 [[ name: "OSC 2 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1122 [[ name: "OSC 2 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1123 [[ name: "OSC 2 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1124 [[ name: "OSC 2 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1125 [[ name: "OSC 2 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1126 [[ name: "OSC 2 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1127 [[ name: "OSC 2 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1184 [[ name: "OSC 3 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1185 [[ name: "OSC 3 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1186 [[ name: "OSC 3 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1187 [[ name: "OSC 3 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1188 [[ name: "OSC 3 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1189 [[ name: "OSC 3 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1190 [[ name: "OSC 3 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1191 [[ name: "OSC 3 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1248 [[ name: "OSC 4 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1249 [[ name: "OSC 4 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1250 [[ name: "OSC 4 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1251 [[ name: "OSC 4 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1252 [[ name: "OSC 4 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1253 [[ name: "OSC 4 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1254 [[ name: "OSC 4 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1255 [[ name: "OSC 4 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1312 [[ name: "OSC 5 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1313 [[ name: "OSC 5 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1314 [[ name: "OSC 5 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1315 [[ name: "OSC 5 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1316 [[ name: "OSC 5 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1317 [[ name: "OSC 5 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1318 [[ name: "OSC 5 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1319 [[ name: "OSC 5 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1376 [[ name: "OSC 6 Resonator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1377 [[ name: "OSC 6 Resonator Model", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1378 [[ name: "OSC 6 Resonator Decay", min: 0.02, max: 20.0, init: 1.0 ]];
+    input event float param1379 [[ name: "OSC 6 Resonator Material", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param1380 [[ name: "OSC 6 Resonator Position", min: 0.0, max: 1.0, init: 0.3 ]];
+    input event float param1381 [[ name: "OSC 6 Resonator Inharmonicity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param1382 [[ name: "OSC 6 Resonator Tune", min: -24.0, max: 24.0, init: 0.0 ]];
+    input event float param1383 [[ name: "OSC 6 Resonator Mix", min: 0.0, max: 1.0, init: 0.5 ]];
+    // RESO-DECL-END
     input event float param1600 [[ name: "Freq Mod 1 Rate (ms)", min: 5.0, max: 10000.0, init: 300.0 ]];
     input event float param1601 [[ name: "Freq Mod 1 Transpose (semitones)", min: -48.0, max: 48.0, init: 0.0 ]];
     input event float param1602 [[ name: "Freq Mod 1 Retrig", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
@@ -3759,6 +3809,56 @@ processor Eisenpuls_Synth
     event param4706 (float v) { mmDstI.at (255) = clamp (int (v + 0.5f), 0, 443); mmScan(); }
     event param4707 (float v) { mmAmt.at (255)  = v; }
     // MODX-HAND-END
+    // RESO-HAND-BEGIN
+    event param1056 (float v) { opSet (0, 56, v); }
+    event param1057 (float v) { opSet (0, 57, v); }
+    event param1058 (float v) { opSet (0, 58, v); }
+    event param1059 (float v) { opSet (0, 59, v); }
+    event param1060 (float v) { opSet (0, 60, v); }
+    event param1061 (float v) { opSet (0, 61, v); }
+    event param1062 (float v) { opSet (0, 62, v); }
+    event param1063 (float v) { opSet (0, 63, v); }
+    event param1120 (float v) { opSet (1, 56, v); }
+    event param1121 (float v) { opSet (1, 57, v); }
+    event param1122 (float v) { opSet (1, 58, v); }
+    event param1123 (float v) { opSet (1, 59, v); }
+    event param1124 (float v) { opSet (1, 60, v); }
+    event param1125 (float v) { opSet (1, 61, v); }
+    event param1126 (float v) { opSet (1, 62, v); }
+    event param1127 (float v) { opSet (1, 63, v); }
+    event param1184 (float v) { opSet (2, 56, v); }
+    event param1185 (float v) { opSet (2, 57, v); }
+    event param1186 (float v) { opSet (2, 58, v); }
+    event param1187 (float v) { opSet (2, 59, v); }
+    event param1188 (float v) { opSet (2, 60, v); }
+    event param1189 (float v) { opSet (2, 61, v); }
+    event param1190 (float v) { opSet (2, 62, v); }
+    event param1191 (float v) { opSet (2, 63, v); }
+    event param1248 (float v) { opSet (3, 56, v); }
+    event param1249 (float v) { opSet (3, 57, v); }
+    event param1250 (float v) { opSet (3, 58, v); }
+    event param1251 (float v) { opSet (3, 59, v); }
+    event param1252 (float v) { opSet (3, 60, v); }
+    event param1253 (float v) { opSet (3, 61, v); }
+    event param1254 (float v) { opSet (3, 62, v); }
+    event param1255 (float v) { opSet (3, 63, v); }
+    event param1312 (float v) { opSet (4, 56, v); }
+    event param1313 (float v) { opSet (4, 57, v); }
+    event param1314 (float v) { opSet (4, 58, v); }
+    event param1315 (float v) { opSet (4, 59, v); }
+    event param1316 (float v) { opSet (4, 60, v); }
+    event param1317 (float v) { opSet (4, 61, v); }
+    event param1318 (float v) { opSet (4, 62, v); }
+    event param1319 (float v) { opSet (4, 63, v); }
+    event param1376 (float v) { opSet (5, 56, v); }
+    event param1377 (float v) { opSet (5, 57, v); }
+    event param1378 (float v) { opSet (5, 58, v); }
+    event param1379 (float v) { opSet (5, 59, v); }
+    event param1380 (float v) { opSet (5, 60, v); }
+    event param1381 (float v) { opSet (5, 61, v); }
+    event param1382 (float v) { opSet (5, 62, v); }
+    event param1383 (float v) { opSet (5, 63, v); }
+    // RESO-HAND-END
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -4397,6 +4497,16 @@ processor Eisenpuls_Synth
             op.at (io * 64 + 7)  = 1.0f;
             op.at (io * 64 + 49) = 1.0f;
             op.at (io * 64 + 50) = 8.0f;
+            // RESO-INIT-BEGIN
+            op.at (io * 64 + 56) = 0.0f;
+            op.at (io * 64 + 57) = 0.0f;
+            op.at (io * 64 + 58) = 1.0f;
+            op.at (io * 64 + 59) = 0.5f;
+            op.at (io * 64 + 60) = 0.3f;
+            op.at (io * 64 + 61) = 0.0f;
+            op.at (io * 64 + 62) = 0.0f;
+            op.at (io * 64 + 63) = 0.5f;
+            // RESO-INIT-END
             // PHYS-INIT-BEGIN
             phyP.at (io * 32 + 0) = 0.25f;
             phyP.at (io * 32 + 1) = 0.6f;
@@ -21577,6 +21687,133 @@ processor Eisenpuls_Synth
     }
 
     // JUNO-DSP-END
+    // RESO-DSP-BEGIN
+    // ---------------- per-slot resonator stage (tools/phys/build_reso.py) ----------------
+    // The 16 modal resonators of the Physical source used as an effect on the slot signal (after the source, in the pre-matrix chain). Tuned to the played key
+    // (plus Tune), peak gain 1 per mode, so a mode only rings up what the input has at its frequency. State: Voice.phs 1056 + slot * 116:
+    // +0..31 left states (y1, y2 per mode), +32..63 right states, +64 c1 / +80 c2 / +96 gain, +112 counter, +113 signature, +114 pitch.
+    void resNoteOn (int vi, int o)
+    {
+        int b = 1056 + o * 116;
+
+        for (int i = 0; i < 64; ++i)
+            voices.at (vi).phs.at (b + i) = 0.0f;
+
+        voices.at (vi).phs.at (b + 112) = 0.0f;
+        voices.at (vi).phs.at (b + 113) = -1.0f;
+    }
+
+    void resCoefs (int vi, int cb, float f0, int model, float dec, float mat, float hit, float inh)
+    {
+        float sr    = float (processor.frequency);
+        float damp  = 1.6f * (1.0f - mat);
+        float aex   = phyAmpExp.at (model);
+        float amax  = 0.0001f;
+
+        for (int i = 0; i < 16; ++i)
+        {
+            float r  = phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i));
+            float f  = f0 * r;
+            float g  = 0.0f;
+            float c1 = 0.0f;
+            float c2 = 0.0f;
+
+            if (f < sr * 0.45f)
+            {
+                float w   = 6.2831853f * f / sr;
+                float t60 = max (dec * float (pow (r, -damp)), 0.004f);
+                float rr  = float (exp (-6.9078f / (t60 * sr)));
+                float am  = abs (float (sin (3.14159265f * hit * float (i + 1)))) / float (pow (float (i + 1), aex));
+                c1 = 2.0f * rr * float (cos (w));
+                c2 = rr * rr;
+                // peak gain of the two-pole section at its own frequency is 1 / ((1 - rr) * |1 - rr e^(-2jw)|)
+                g  = am * (1.0f - rr) * float (sqrt (max (1.0f - 2.0f * rr * float (cos (2.0f * w)) + rr * rr, 1.0e-6f)));
+                amax = max (amax, am);
+            }
+
+            voices.at (vi).phs.at (cb + i)      = c1;
+            voices.at (vi).phs.at (cb + 16 + i) = c2;
+            voices.at (vi).phs.at (cb + 32 + i) = g;
+        }
+
+        // the strongest mode keeps gain 1; the others follow their relative amplitude (set above through am)
+        float nrm = 1.0f / amax;
+
+        for (int i = 0; i < 16; ++i)
+            voices.at (vi).phs.at (cb + 32 + i) = voices.at (vi).phs.at (cb + 32 + i) * nrm;
+    }
+
+    // one stereo sample through the resonator of slot o; returns the wet / dry mix
+    float<2> resStep (int vi, int o, float xl, float xr, bool stereo, float f0)
+    {
+        int   ob  = o * 64;
+        int   b   = 1056 + o * 116;
+        float mix = op.at (ob + 63);
+
+        float cnt = voices.at (vi).phs.at (b + 112);
+
+        if (cnt <= 0.0f)
+        {
+            voices.at (vi).phs.at (b + 112) = 64.0f;
+            int   mdl = clamp (int (op.at (ob + 57) + 0.5f), 0, 8);
+            float fr  = f0 * float (pow (2.0f, op.at (ob + 62) / 12.0f));
+            float sig = float (mdl) * 3.7f + op.at (ob + 58) * 0.77f + op.at (ob + 59) * 5.3f + op.at (ob + 60) * 7.1f + op.at (ob + 61) * 11.3f;
+
+            if (voices.at (vi).phs.at (b + 113) != sig || abs (voices.at (vi).phs.at (b + 114) - fr) > fr * 0.0004f)
+            {
+                voices.at (vi).phs.at (b + 113) = sig;
+                voices.at (vi).phs.at (b + 114) = fr;
+                resCoefs (vi, b + 64, fr, mdl, op.at (ob + 58), op.at (ob + 59), op.at (ob + 60), op.at (ob + 61));
+            }
+        }
+        else
+            voices.at (vi).phs.at (b + 112) = cnt - 1.0f;
+
+        float yl = 0.0f;
+        float yr = 0.0f;
+
+        for (int i = 0; i < 16; ++i)
+        {
+            float g = voices.at (vi).phs.at (b + 96 + i);
+
+            if (g != 0.0f)
+            {
+                float c1 = voices.at (vi).phs.at (b + 64 + i);
+                float c2 = voices.at (vi).phs.at (b + 80 + i);
+                float l1 = voices.at (vi).phs.at (b + 2 * i);
+                float l2 = voices.at (vi).phs.at (b + 2 * i + 1);
+                float l0 = c1 * l1 - c2 * l2 + g * xl;
+                voices.at (vi).phs.at (b + 2 * i)     = abs (l0) < 1.0e-20f ? 0.0f : l0;
+                voices.at (vi).phs.at (b + 2 * i + 1) = l1;
+                yl += l0;
+
+                if (stereo)
+                {
+                    float r1 = voices.at (vi).phs.at (b + 32 + 2 * i);
+                    float r2 = voices.at (vi).phs.at (b + 32 + 2 * i + 1);
+                    float r0 = c1 * r1 - c2 * r2 + g * xr;
+                    voices.at (vi).phs.at (b + 32 + 2 * i)     = abs (r0) < 1.0e-20f ? 0.0f : r0;
+                    voices.at (vi).phs.at (b + 32 + 2 * i + 1) = r1;
+                    yr += r0;
+                }
+            }
+        }
+
+        if (! stereo)
+            yr = yl;
+
+        // soft limit the wet signal (high Q modes add up at the key frequency)
+        yl = yl / (1.0f + 0.5f * abs (yl));
+        yr = yr / (1.0f + 0.5f * abs (yr));
+        float<2> r;
+        r.at (0) = xl + (yl - xl) * mix;
+        r.at (1) = xr + (yr - xr) * mix;
+        return r;
+    }
+
+    // RESO-DSP-END
+    const int[18] chainOrder = (0, 1, 2,  1, 0, 2,  0, 2, 1,  2, 0, 1,  1, 2, 0,  2, 1, 0);   // rows = Order 0..5
+
     // ---------------- MIDI ----------------
     event midiIn (std::midi::Message msg)
     {
@@ -21616,6 +21853,7 @@ processor Eisenpuls_Synth
                     resetWtUni (v, o);
                     plaitsNoteOn (v, o);
                     phyNoteOn (v, o);
+                    resNoteOn (v, o);
                 }
             }
 
@@ -21928,72 +22166,76 @@ processor Eisenpuls_Synth
                     voices.at (i).fenv.at (o)   = fe;
                     voices.at (i).fstage.at (o) = fst;
 
-                    // signal flow per slot: source -> filter -> distortion -> FM / PM matrix and output
-                    // (the "Distortion Position" switch puts the distortion before the filter instead)
+                    // signal flow per slot: source -> filter / distortion / resonator in the chosen order -> FM / PM matrix and output
+                    // (the Order parameter puts filter, distortion and resonator in any order)
                     int   dty  = int (op.at (ob + 42) + 0.5f);
                     float dd   = clamp (op.at (ob + 43) + vmod.at (dB + 8) * 0.5f, 0.0f, 1.0f);
                     float dx   = op.at (ob + 44);
-                    bool  dPre = op.at (ob + 45) > 0.5f;
+                    int   chOrd = clamp (int (op.at (ob + 45) + 0.5f), 0, 5);   // RESO-CHAIN
                     float dwp  = clamp (op.at (ob + 47) + vmod.at (169 + 2 * o) * 0.5f, 0.0f, 1.0f);
 
-                    // ----- distortion before the filter -----
-                    if (dPre && dty > 0)
+                    for (int chSt = 0; chSt < 3; ++chSt)
                     {
-                        sL = oscDist (sL, dty, dd, dx, o, dwp);
-                        sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
-                    }
+                        int chStage = chainOrder.at (chOrd * 3 + chSt);
 
-                    // ----- filter -----
-                    if (op.at (ob + 30) > 0.5f)
-                    {
-                        float fdrv = clamp (op.at (ob + 34), 0.0f, 1.0f);
-                        if (fdrv > 0.001f)
+                        // ----- filter -----
+                        if (chStage == 0 && op.at (ob + 30) > 0.5f)
                         {
-                            float dg = 1.0f + fdrv * 6.0f;
-                            float dm = 1.0f + fdrv * 0.8f;
-                            float sdL = sL * dg;
-                            float sdR = sR * dg;
-                            sL = (sdL / (1.0f + abs (sdL))) * dm;
-                            sR = (sdR / (1.0f + abs (sdR))) * dm;
+                            float fdrv = clamp (op.at (ob + 34), 0.0f, 1.0f);
+                            if (fdrv > 0.001f)
+                            {
+                                float dg = 1.0f + fdrv * 6.0f;
+                                float dm = 1.0f + fdrv * 0.8f;
+                                float sdL = sL * dg;
+                                float sdR = sR * dg;
+                                sL = (sdL / (1.0f + abs (sdL))) * dm;
+                                sR = (sdR / (1.0f + abs (sdR))) * dm;
+                            }
+
+                            float modExp = op.at (ob + 36) * fe * 4.0f
+                                         + op.at (ob + 35) * float (nnote - 60) / 12.0f
+                                         + op.at (ob + 37) * (voices.at (i).velRaw - 0.5f) * 4.0f
+                                         + vmod.at (dB + 6) * 4.0f;
+                            float fc    = clamp (op.at (ob + 32) * float (pow (2.0f, modExp)), 20.0f, sr * 0.45f);
+                            float g     = float (tan (float64 (fc) * pi * processor.period));
+                            float resE  = clamp (op.at (ob + 33) + vmod.at (dB + 7) * 0.5f, 0.0f, 1.0f);
+                            float k     = 2.0f - 1.96f * resE;
+                            int   ft    = clamp (int (op.at (ob + 31) + 0.5f), 0, 30);
+
+                            float yL = 0.0f;
+                            float yR = 0.0f;
+
+                            if (ft >= 30)
+                            {
+                                float wfp = clamp (op.at (ob + 46) + vmod.at (168 + 2 * o) * 0.5f, 0.0f, 1.0f);
+                                yL = wfStep (i, 0, o, sL, fc, resE, wfp, stereo);
+                                yR = yL;
+                                if (stereo)
+                                    yR = wfStep (i, 1, o, sR, fc, resE, wfp, stereo);
+                            }
+                            else
+                            {
+                                yL = filterStepX (i, 0, o, sL, g, k, resE, fc, ft);
+                                yR = yL;
+                                if (stereo)
+                                    yR = filterStepX (i, 1, o, sR, g, k, resE, fc, ft);
+                            }
+                            sL = yL;
+                            sR = yR;
                         }
 
-                        float modExp = op.at (ob + 36) * fe * 4.0f
-                                     + op.at (ob + 35) * float (nnote - 60) / 12.0f
-                                     + op.at (ob + 37) * (voices.at (i).velRaw - 0.5f) * 4.0f
-                                     + vmod.at (dB + 6) * 4.0f;
-                        float fc    = clamp (op.at (ob + 32) * float (pow (2.0f, modExp)), 20.0f, sr * 0.45f);
-                        float g     = float (tan (float64 (fc) * pi * processor.period));
-                        float resE  = clamp (op.at (ob + 33) + vmod.at (dB + 7) * 0.5f, 0.0f, 1.0f);
-                        float k     = 2.0f - 1.96f * resE;
-                        int   ft    = clamp (int (op.at (ob + 31) + 0.5f), 0, 30);
-
-                        float yL = 0.0f;
-                        float yR = 0.0f;
-
-                        if (ft >= 30)
+                        if (chStage == 1 && dty > 0)
                         {
-                            float wfp = clamp (op.at (ob + 46) + vmod.at (168 + 2 * o) * 0.5f, 0.0f, 1.0f);
-                            yL = wfStep (i, 0, o, sL, fc, resE, wfp, stereo);
-                            yR = yL;
-                            if (stereo)
-                                yR = wfStep (i, 1, o, sR, fc, resE, wfp, stereo);
+                            sL = oscDist (sL, dty, dd, dx, o, dwp);
+                            sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
                         }
-                        else
-                        {
-                            yL = filterStepX (i, 0, o, sL, g, k, resE, fc, ft);
-                            yR = yL;
-                            if (stereo)
-                                yR = filterStepX (i, 1, o, sR, g, k, resE, fc, ft);
-                        }
-                        sL = yL;
-                        sR = yR;
-                    }
 
-                    // ----- distortion after the filter -----
-                    if (! dPre && dty > 0)
-                    {
-                        sL = oscDist (sL, dty, dd, dx, o, dwp);
-                        sR = stereo ? oscDist (sR, dty, dd, dx, o, dwp) : sL;
+                        if (chStage == 2 && op.at (ob + 56) > 0.5f)
+                        {
+                            float<2> rz = resStep (i, o, sL, sR, stereo, freq);
+                            sL = rz.at (0);
+                            sR = stereo ? rz.at (1) : sL;
+                        }
                     }
 
                     // ----- ring modulation (carrier x modulator) and amplitude modulation (carrier x unipolar modulator) -----

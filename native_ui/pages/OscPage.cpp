@@ -145,13 +145,13 @@ namespace njo
     struct OscPage::Impl : private Ctx::Listener, private juce::ChangeListener
     {
         Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc, int pageMode)
-            : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
+            : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), rdisplay (c, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
               modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER")
         {
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
-                              "dtype", "dpos", "ddrv", "dmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
+                              "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
                 if (juce::String (key) == "type") w = std::make_unique<ButtonsWidget> (ctx, oscId (o, oscKey (key)), 5);   // all five sources in one row
@@ -176,6 +176,7 @@ namespace njo
             owner.addAndMakeVisible (display);
             owner.addAndMakeVisible (fdisplay);
             owner.addAndMakeVisible (ddisplay);
+            owner.addAndMakeVisible (rdisplay);
             owner.addAndMakeVisible (tdisplay);
             owner.addAndMakeVisible (modeA); owner.addAndMakeVisible (modeB);
             for (int i = 0; i < OSC_N; ++i)
@@ -360,7 +361,7 @@ namespace njo
         {
             strips.clear();
             for (auto& kv : widgets) kv.second->setVisible (false);
-            for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &tdisplay,
+            for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &rdisplay, (juce::Component*) &tdisplay,
                                         (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
                                         (juce::Component*) &modeA, (juce::Component*) &modeB })
                 c->setVisible (false);
@@ -495,13 +496,28 @@ namespace njo
                 ddisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); ddisplay.setVisible (true);
                 const int modeW = 118;
                 put ("dtype", 12, 195, 220, 36, c); strip ("dtype", 12, 195, 220, c, false);
-                put ("dpos", 244, 200, 190, 27, c);
+                put ("dpos", 244, 195, 190, 36, c); strip ("dpos", 244, 195, 190, c, false);
                 modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
                 modeA.setVisible (true); modeB.setVisible (true);
                 knob ("ddrv", 12 + (w - 24) / 3, 275, c); knob ("dmix", 12 + (w - 24) * 2 / 3, 275, c);
             }
+            // ---- resonator page: response, On / Model / Order, the six knobs; the right card explains the chain ----
+            if (mode == 3)
+            {
+                auto c = cardFlt; int w = c.getWidth();
+                rdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); rdisplay.setVisible (true);
+                put ("rson", 12, 196, 120, 31, c);
+                const int mw = (w - 24 - 120 - 24) / 2;
+                put ("rsmod", 144, 195, mw, 36, c); strip ("rsmod", 144, 195, mw, c, false);
+                put ("dpos", 144 + mw + 12, 195, mw, 36, c); strip ("dpos", 144 + mw + 12, 195, mw, c, false);
+                const double pitch = (w - 24) / 6.0;
+                const char* keys[6] = { "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix" };
+                for (int i = 0; i < 6; ++i) knob (keys[i], 12 + juce::roundToInt (pitch * i + pitch / 2), 262, c);
+                const int cx0 = cardFlt.getX() + 190;
+                for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
+            }
             // ---- table card (filter / distortion page) ----
-            if (mode != 0)
+            if (mode == 1 || mode == 2)
             {
                 auto c = cardOut; int w = c.getWidth();
                 const bool wf = mode == 1;
@@ -559,6 +575,17 @@ namespace njo
                 g.setColour (dim); g.setFont (font (8.5f, false));
                 g.drawFittedText ("Filter and distortion of this oscillator have their own pages (FILTER, DIST).", cardOut.getX() + 14, 232, cardOut.getWidth() - 28, 40, juce::Justification::topLeft, 3);
             }
+            else if (mode == 3)
+            {
+                title (g, "OSC " + juce::String (o + 1) + " Resonator", cardFlt.getX() + 14, 15, cardFlt.getX() + 186);
+                title (g, "Pre-matrix chain", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                g.setColour (dim); g.setFont (font (8.5f, false));
+                g.drawFittedText ("Every oscillator runs its signal through up to three stages before it reaches the FM / PM matrix and the output: the FILTER, the DISTORTION and this RESONATOR. "
+                                  "The Order list picks the sequence (also on the DIST page). The resonator is the modal bank of the Physical source (16 modes, 9 models) used as an effect: "
+                                  "it is tuned to the played key plus Tune, Decay sets the ring time, Material the damping of the upper modes, Position which modes are heard, "
+                                  "Inharm detunes them. Mix blends the dry signal.",
+                                  cardOut.getX() + 14, 40, cardOut.getWidth() - 28, 260, juce::Justification::topLeft, 20);
+            }
             else
             {
                 const bool wf = mode == 1;
@@ -609,7 +636,8 @@ if (! wf)
         int mode = 0;          // 0 = oscillator page, 1 = filter page, 2 = distortion page
         int lastNormal = -1;
         std::map<juce::String, std::unique_ptr<ParamWidget>> widgets;
-        OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay; TableDisplay tdisplay;
+        OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
+        ResoDisplay rdisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault;
         PushButton modeA, modeB; std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;

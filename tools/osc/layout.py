@@ -14,6 +14,9 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
 SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
+PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
+# order of the three pre-matrix stages (F = filter, D = distortion, R = resonator); index = stage order table row in the DSP
+CHAIN_ORDERS = ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"]
 OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
@@ -71,7 +74,16 @@ PARAMS = [
  (53, "wftilt", "Wavefilter Tilt",     "Tilt",     -1, 1, 0, "", "sld", None),     # +-6 dB per octave around the cutoff
  (54, "wfspr",  "Wavefilter Spread",   "Spread",    0, 1, 0, "", "sld", None),     # axis shifted down for the left, up for the right channel (+-1 octave)
  (55, "wflaw",  "Wavefilter Gain Law", "Gain Law",  0, 2, 0, "", "sel", WF_LAWS),  # table value -> gain
- (45, "dpos",   "Distortion Position", "Dist vs Filter", 0, 1, 0, "", "btn", ["Post", "Pre"]),   # Post = filter -> distortion, Pre = distortion -> filter
+ (45, "dpos",   "Pre-Matrix Order", "Order", 0, 5, 0, "", "sel", CHAIN_ORDERS),   # order of the three stages between the source and the FM / PM matrix
+ # resonator stage: the modal resonators of the Physical source (16 modes) as an effect, tuned to the played key
+ (56, "rson",   "Resonator On",           "On",       0, 1, 0, "", "btn", ["Off", "On"]),
+ (57, "rsmod",  "Resonator Model",        "Model",    0, 8, 0, "", "sel", PHY_MODELS),
+ (58, "rsdec",  "Resonator Decay",        "Decay",    0.02, 20, 1.0, "s", "sld", None),
+ (59, "rsmat",  "Resonator Material",     "Material", 0, 1, 0.5, "", "sld", None),
+ (60, "rshit",  "Resonator Position",     "Position", 0, 1, 0.3, "", "sld", None),
+ (61, "rsinh",  "Resonator Inharmonicity","Inharm",   0, 1, 0, "", "sld", None),
+ (62, "rstune", "Resonator Tune",         "Tune",    -24, 24, 0, "st", "sld", None),
+ (63, "rsmix",  "Resonator Mix",          "Mix",      0, 1, 0.5, "", "sld", None),
 ]
 K = {p[1]: p[0] for p in PARAMS}
 
@@ -96,7 +108,6 @@ def am_id(src, dst): return AM_BASE + 6 * src + dst
 # Parameter id of slot o: PHY_BASE + PHY_STRIDE * o + j.  j, key, name, short, min, max, init, unit, kind, options
 PHY_BASE = 1700
 PHY_STRIDE = 32
-PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
 PHY_COUPLING = ["Parallel", "Serial"]
 JUNO_RANGES = ["16'", "8'", "4'"]
 JUNO_PULSE = ["Pulse 1", "Pulse 2", "Pulse 3"]

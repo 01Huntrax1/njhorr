@@ -590,6 +590,69 @@ namespace njo
         displayBorder (g, box);
     }
 
+    // =============================================================== ResoDisplay
+    ResoDisplay::ResoDisplay (Ctx& c, int osc) : ctx (c), o (osc) { ctx.addListener (this); setInterceptsMouseClicks (false, false); }
+    ResoDisplay::~ResoDisplay() { ctx.removeListener (this); }
+
+    void ResoDisplay::paramChanged (int num, float)
+    {
+        int k = num - oscId (o, 0);
+        for (const char* n : { "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix" }) if (k == oscKey (n)) { repaint(); return; }
+    }
+
+    void ResoDisplay::paint (juce::Graphics& g)
+    {
+        auto box = getLocalBounds().toFloat();
+        displayBox (g, box);
+        {
+            juce::Graphics::ScopedSaveState ss (g);
+            g.reduceClipRegion (getLocalBounds());
+            const float W = box.getWidth(), H = box.getHeight();
+            auto pv = [this] (const char* k) { return ctx.get (oscId (o, oscKey (k))); };
+            const bool on = pv ("rson") > 0.5f;
+            const int model = juce::jlimit (0, 8, juce::roundToInt (pv ("rsmod")));
+            const float dec = pv ("rsdec"), mat = pv ("rsmat"), hit = pv ("rshit"), inh = pv ("rsinh"), mix = pv ("rsmix");
+            const float f0 = 220.0f * std::pow (2.0f, pv ("rstune") / 12.0f);
+            const float fLo = 30.0f, fHi = 16000.0f;
+            auto xOf = [&] (float f) { return std::log (f / fLo) / std::log (fHi / fLo) * W; };
+            // grid: octaves of 100 Hz .. 10 kHz
+            g.setColour (juce::Colour (0xffff3b30).withAlpha (0.08f));
+            for (float f : { 100.0f, 1000.0f, 10000.0f }) g.drawLine (xOf (f), 0, xOf (f), H, 1.0f);
+            for (int d = 1; d < 4; ++d) g.drawLine (0, H * d / 4.0f, W, H * d / 4.0f, 1.0f);
+            cornerBrackets (g, W, H, 14.0f);
+            // modes: frequency, gain, bandwidth (a 2-pole resonator with the mode's decay time)
+            struct Mode { float f, a, bw; } m[16]; float amax = 1.0e-4f;
+            const float aex = phys::AEXP[model], damp = 1.6f * (1.0f - mat);
+            for (int i = 0; i < 16; ++i)
+            {
+                float r = phys::RAT[model][i] * (1.0f + inh * 0.004f * (float) (i * i));
+                float t60 = juce::jmax (dec * std::pow (r, -damp), 0.004f);
+                m[i].f = f0 * r;
+                m[i].a = std::abs (std::sin (3.14159265f * hit * (float) (i + 1))) / std::pow ((float) (i + 1), aex);
+                m[i].bw = 6.9078f / (6.2831853f * t60);
+                amax = juce::jmax (amax, m[i].a);
+            }
+            juce::Path p; const int N = juce::jmax (2, (int) W);
+            for (int i = 0; i < N; ++i)
+            {
+                float f = fLo * std::pow (fHi / fLo, (float) i / (N - 1)), s = 0.0f;
+                for (auto& q : m)
+                {
+                    if (q.f > 20000.0f) continue;
+                    float d = (f - q.f) / juce::jmax (q.bw, 0.5f);
+                    s += q.a / amax / std::sqrt (1.0f + d * d);
+                }
+                float db = 20.0f * std::log10 (juce::jmax (s * 3.0f, 0.003f) * mix + (1.0f - mix));
+                float y = H - 6.0f - juce::jlimit (0.0f, 1.0f, (db + 18.0f) / 40.0f) * (H - 14.0f);
+                if (i == 0) p.startNewSubPath (0.0f, y); else p.lineTo ((float) i * W / (N - 1), y);
+            }
+            glowStroke (g, p, on ? juce::Colour (0xffff3b30) : juce::Colour (0xffb4aaa5).withAlpha (0.45f), 2.5f, on);
+            g.setColour (juce::Colour (0xffffc8be).withAlpha (0.55f)); g.setFont (mono (8.5f, false));
+            g.drawText ("modes tuned to A3 (220 Hz) + Tune", getLocalBounds().reduced (8, 4), juce::Justification::topRight);
+        }
+        displayBorder (g, box);
+    }
+
     // =============================================================== TableDisplay
     TableDisplay::TableDisplay (Ctx& c, SoundMemory& m, int osc, bool filter) : ctx (c), mem (m), o (osc), isFilter (filter) { ctx.addListener (this); mem.addChangeListener (this); setInterceptsMouseClicks (false, false); }
     TableDisplay::~TableDisplay() { mem.removeChangeListener (this); ctx.removeListener (this); }
