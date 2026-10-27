@@ -1,0 +1,608 @@
+    // ---------------- convolution reverb engine (tools/fx/build_fx.py) ----------------
+    // Uniform partitioned convolution (overlap-save): block 1024, FFT 2048, up to 72 partitions (1.5 s at 48 kHz). One engine per rack (the lowest
+    // convolution slot of a rack owns it). The impulse response (built-in generator or a loaded file) is rendered in slices over many samples, turned
+    // into partition spectra in the background (double buffered) and swapped in when ready. Partitions 1.. are accumulated one bin per sample during the
+    // block, so only partition 0, one forward and one inverse FFT run in the burst at the block end. Output latency: one block (1024 samples).
+    // Per engine e: cvI[e * 32 + ...] ints, cvF[e * 32 + ...] floats.
+    //   cvI: 0 position in the block, 1 FDL head, 2 active H buffer, 3 active partitions, 4 job (0 idle, 1 generating, 2 transforming), 5 gen position, 6 IR length,
+    //        7 partition being transformed, 8 FFT progress (-1 = fill next), 9 rebuild countdown, 10 partitions of the IR being built, 11 / 12 noise states,
+    //        13 mode, 14 buffer being built, 15 IR available, 16 reverse flag, 17 user IR length, 18 ER taps added
+    //   cvF: 0 scale, 1 T60, 2 damp, 3 / 4 low-pass states, 5 energy, 6 density build time, 7 initial density, 8 ER level, 9 length (s), 10 tilt state L, 11 R,
+    //        12 hp state L, 13 R, 14 last size, 15 decay, 16 damp, 17 mode (change detection)
+    const int cvP = 72;
+    float[8192]    cvRe;           // FFT scratch: region 0 = audio path, 1..3 = IR preparation of engine 0..2
+    float[8192]    cvIm;
+    float[1024]    cvCos;
+    float[1024]    cvSin;
+    int[2048]      cvRev;
+    float[2097152] cvH;            // spectra of the IR partitions: ((e * 2 + buf) * 72 + p) * 4100 + ch * 2050 + k * 2 (+ 1 imaginary)
+    float[1048576] cvX;            // input spectra history (frequency delay line): (e * 72 + slot) * 4100 + ch * 2050 + k * 2
+    float[16384]   cvS;            // accumulated spectrum of the partitions 1.. of the block being played: e * 4100 + ch * 2050 + k * 2
+    float[8192]    cvInL;          // e * 2048: previous block, current block
+    float[8192]    cvInR;
+    float[4096]    cvOutL;         // e * 1024: result of the previous block
+    float[4096]    cvOutR;
+    float[262144]  cvIrL;          // e * 73728: the impulse response being transformed
+    float[262144]  cvIrR;
+    float[524288]  cvUser;         // e * 96000: loaded impulse response (mono)
+    int[128]       cvI;
+    float[128]     cvF;
+    int[4]         cvOwner;        // slot (0..29) that owns the engine of rack e, or -1
+
+    void cvInit()
+    {
+        for (int i = 0; i < 1024; ++i)
+        {
+            cvCos.at (i) = float (cos (twoPi * float64 (i) / 2048.0));
+            cvSin.at (i) = float (sin (twoPi * float64 (i) / 2048.0));
+        }
+
+        for (int i = 0; i < 2048; ++i)
+        {
+            int r = 0;
+            int v = i;
+
+            for (int b = 0; b < 11; ++b)
+            {
+                r = (r << 1) | (v & 1);
+                v = v >> 1;
+            }
+
+            cvRev.at (i) = r;
+        }
+
+        for (int e = 0; e < 3; ++e)
+        {
+            cvOwner.at (e) = -1;
+            cvI.at (e * 32 + 11) = 12345 + e * 7919;
+            cvI.at (e * 32 + 12) = 54321 + e * 104729;
+            cvI.at (e * 32 + 3)  = 1;
+        }
+
+        cvOwner.at (3) = -1;
+    }
+
+    // butterflies from .. from + count - 1 of the 11264 of a 2048-point FFT in the scratch region at base (input already bit reversed); sgn -1 forward, +1 inverse
+    void cvFft (int base, int from, int count, float sgn)
+    {
+        int end = from + count;
+
+        for (int c = from; c < end; ++c)
+        {
+            int   s  = c >> 10;
+            int   id = c & 1023;
+            int   h  = 1 << s;
+            int   j  = id & (h - 1);
+            int   i0 = base + ((id >> s) << (s + 1)) + j;
+            int   i1 = i0 + h;
+            int   ti = j << (10 - s);
+            float wr = cvCos.at (ti);
+            float wi = sgn * cvSin.at (ti);
+            float xr = cvRe.at (i1);
+            float xi = cvIm.at (i1);
+            float tr = xr * wr - xi * wi;
+            float ti2 = xr * wi + xi * wr;
+            float ar = cvRe.at (i0);
+            float ai = cvIm.at (i0);
+            cvRe.at (i1) = ar - tr;
+            cvIm.at (i1) = ai - ti2;
+            cvRe.at (i0) = ar + tr;
+            cvIm.at (i0) = ai + ti2;
+        }
+    }
+
+    // splits the FFT of z = left + j * right (region at base, natural order) into the two spectra (bins 0..1024) at dst (+ 0 left, + 2050 right)
+    void cvUnpack (int base, bool toH, int dstIdx)
+    {
+        for (int k = 0; k <= 1024; ++k)
+        {
+            int   m   = (2048 - k) & 2047;
+            float zr  = cvRe.at (base + k);
+            float zi  = cvIm.at (base + k);
+            float nr  = cvRe.at (base + m);
+            float ni  = cvIm.at (base + m);
+            int   o   = dstIdx + k * 2;
+
+            if (toH)
+            {
+                cvH.at (o)            = (zr + nr) * 0.5f;
+                cvH.at (o + 1)        = (zi - ni) * 0.5f;
+                cvH.at (o + 2050)     = (zi + ni) * 0.5f;
+                cvH.at (o + 2051)     = -(zr - nr) * 0.5f;
+            }
+            else
+            {
+                cvX.at (o)            = (zr + nr) * 0.5f;
+                cvX.at (o + 1)        = (zi - ni) * 0.5f;
+                cvX.at (o + 2050)     = (zi + ni) * 0.5f;
+                cvX.at (o + 2051)     = -(zr - nr) * 0.5f;
+            }
+        }
+    }
+
+    float cvNoise (int e, int ch)
+    {
+        int k = e * 32 + 11 + ch;
+        int s = (cvI.at (k) * 1103515245 + 12345) & 0x7fffffff;
+        cvI.at (k) = s;
+        return float (s) / 1073741824.0f - 1.0f;
+    }
+
+    // Starts a rebuild of the impulse response of engine e from the parameters of its owner slot
+    void cvStartJob (int e)
+    {
+        int   ii   = e * 32;
+        int   ff   = e * 32;
+        float sr   = float (processor.frequency);
+        int   mode = cvI.at (ii + 13);
+        float size = cvF.at (ff + 14);
+        float dec  = cvF.at (ff + 15);
+        float t60  = 0.3f;
+        float len  = 0.5f;
+        float tb   = 0.03f;
+        float d0   = 0.2f;
+        float er   = 0.0f;
+        float dmp  = cvF.at (ff + 16);
+
+        if (mode == 0)      { t60 = 0.15f + 0.85f * size; tb = 0.02f; d0 = 0.15f; er = 0.5f;  dmp = dmp * 0.9f + 0.15f; }
+        else if (mode == 1) { t60 = 0.5f + 1.3f * size;   tb = 0.08f; d0 = 0.05f; er = 0.25f; }
+        else if (mode == 2) { t60 = 0.4f + 1.3f * size;   tb = 0.004f; d0 = 0.9f; er = 0.0f;  dmp = dmp * 0.5f; }
+        else if (mode == 3) { t60 = 1.2f + 1.5f * size;   tb = 0.15f; d0 = 0.03f; er = 0.15f; dmp = dmp * 0.8f + 0.25f; }
+        else if (mode == 4) { t60 = 0.3f + 0.9f * size;   tb = 0.03f; d0 = 0.12f; er = 0.4f; }
+        else if (mode == 5) { t60 = 0.4f + 1.1f * size;   tb = 0.004f; d0 = 0.9f; er = 0.0f; }
+        else if (mode == 6) { t60 = 0.2f + 0.5f * size;   tb = 0.004f; d0 = 0.9f; er = 0.0f; }
+        else if (mode == 7) { t60 = 0.08f + 0.25f * size; tb = 0.006f; d0 = 0.3f; er = 0.7f; }
+        else                { t60 = 0.2f + 1.5f * size;   tb = 0.001f; d0 = 1.0f; er = 0.0f; }
+
+        // the decay control trades length against tail: low = shorter
+        t60 = t60 * (0.35f + 1.3f * dec);
+
+        len = clamp (t60 * 1.15f + 0.04f, 0.05f, 1.5f);
+
+        if (mode == 6)
+            len = clamp (t60 * 0.8f, 0.05f, 1.5f);
+
+        int ls = clamp (int (len * sr), 512, cvP * 1024 - 1024);
+
+        if (mode == 8)
+        {
+            int ul = cvI.at (ii + 17);
+            ls = clamp (int (float (ul) * (0.1f + 0.9f * size)), 0, cvP * 1024 - 1024);
+        }
+
+        cvI.at (ii + 6)  = ls;
+        cvI.at (ii + 5)  = 0;
+        cvI.at (ii + 4)  = 1;
+        cvI.at (ii + 16) = mode == 5 ? 1 : 0;
+        cvI.at (ii + 18) = 0;
+        cvF.at (ff + 1)  = t60;
+        cvF.at (ff + 2)  = clamp (dmp, 0.0f, 1.0f);
+        cvF.at (ff + 3)  = 0.0f;
+        cvF.at (ff + 4)  = 0.0f;
+        cvF.at (ff + 5)  = 0.0f;
+        cvF.at (ff + 6)  = tb;
+        cvF.at (ff + 7)  = d0;
+        cvF.at (ff + 8)  = er;
+        cvF.at (ff + 9)  = len;
+        cvI.at (ii + 11) = 12345 + e * 7919;
+        cvI.at (ii + 12) = 54321 + e * 104729;
+    }
+
+    // generates count samples of the impulse response; at the end the early reflections are added and the scale computed
+    void cvGenSlice (int e, int count)
+    {
+        int   ii   = e * 32;
+        int   ff   = e * 32;
+        float sr   = float (processor.frequency);
+        int   mode = cvI.at (ii + 13);
+        int   i0   = cvI.at (ii + 5);
+        int   len  = cvI.at (ii + 6);
+        int   end  = min (i0 + count, len);
+        float t60  = cvF.at (ff + 1);
+        float dmp  = cvF.at (ff + 2);
+        float tb   = cvF.at (ff + 6);
+        float d0   = cvF.at (ff + 7);
+        float lpL  = cvF.at (ff + 3);
+        float lpR  = cvF.at (ff + 4);
+        float en   = cvF.at (ff + 5);
+        int   ob   = e * 73728;
+        int   ub   = e * 96000;
+        float fc0  = 16000.0f * (1.0f - 0.7f * dmp);
+        float dec  = -6.9078f / (max (t60, 0.02f) * sr);
+
+        for (int i = i0; i < end; ++i)
+        {
+            float t   = float (i) / sr;
+            float env = float (exp (dec * float (i)));
+
+            if (mode == 6)
+                env = i < len - int (0.02f * sr) ? 1.0f : max (0.0f, float (len - i) / (0.02f * sr));
+            else if (mode == 8)
+                env = float (exp (dec * 0.5f * float (i)));
+
+            float dn  = clamp (d0 + (1.0f - d0) * t / max (tb, 0.0005f), 0.02f, 1.0f);
+            float nl  = 0.0f;
+            float nr  = 0.0f;
+
+            if (mode == 8)
+            {
+                int ui = ub + i;
+                nl = cvUser.at (ui);
+                nr = nl;
+            }
+            else
+            {
+                float ra = cvNoise (e, 0);
+                float rb = cvNoise (e, 1);
+                float pa = cvNoise (e, 0) * 0.5f + 0.5f;
+                float pb = cvNoise (e, 1) * 0.5f + 0.5f;
+                float is = 1.0f / float (sqrt (dn));
+                nl = pa < dn ? ra * is : 0.0f;
+                nr = pb < dn ? rb * is : 0.0f;
+            }
+
+            // darker as the tail goes on: the cut-off falls with t / T60
+            float fc = max (300.0f, fc0 * float (exp (-dmp * 4.0f * t / max (t60, 0.05f))));
+            float a  = 1.0f - float (exp (-twoPi * fc / sr));
+            lpL += a * (nl * env - lpL);
+            lpR += a * (nr * env - lpR);
+            cvIrL.at (ob + i) = lpL;
+            cvIrR.at (ob + i) = lpR;
+            en += lpL * lpL + lpR * lpR;
+        }
+
+        cvF.at (ff + 3) = lpL;
+        cvF.at (ff + 4) = lpR;
+        cvF.at (ff + 5) = en;
+        cvI.at (ii + 5) = end;
+
+        if (end >= len)
+        {
+            // early reflections: a deterministic set of taps in the first 80 ms
+            float er = cvF.at (ff + 8);
+
+            if (er > 0.0f && mode != 8)
+            {
+                for (int r = 0; r < 14; ++r)
+                {
+                    float fr = float (r) * 0.618034f;
+                    fr = fr - float (floor (fr));
+                    int   p  = clamp (int ((0.004f + 0.075f * fr) * sr), 1, len - 1);
+                    float g  = er * 0.35f / (1.0f + float (r) * 0.35f);
+                    cvIrL.at (ob + p) = cvIrL.at (ob + p) + g * ((r & 1) == 1 ? -1.0f : 1.0f);
+                    int   q  = clamp (p + 37 + r * 11, 1, len - 1);
+                    cvIrR.at (ob + q) = cvIrR.at (ob + q) + g * ((r & 1) == 1 ? 1.0f : -1.0f);
+                    en += 2.0f * g * g;
+                }
+            }
+
+            float avg = max (en * 0.5f, 1.0e-9f);
+            cvF.at (ff) = float (sqrt (0.35f / avg));
+            cvI.at (ii + 10) = clamp ((len + 1023) / 1024, 1, cvP);
+            cvI.at (ii + 14) = 1 - cvI.at (ii + 2);
+            cvI.at (ii + 7)  = 0;
+            cvI.at (ii + 8)  = -1;
+            cvI.at (ii + 4)  = 2;
+        }
+    }
+
+    // transforms partitions of the finished impulse response: budget butterflies of work
+    void cvPrepSlice (int e, int budget)
+    {
+        int ii  = e * 32;
+        int ff  = e * 32;
+        int sb  = (1 + e) * 2048;
+        int len = cvI.at (ii + 6);
+        int ob  = e * 73728;
+        int p   = cvI.at (ii + 7);
+        int c   = cvI.at (ii + 8);
+
+        while (budget > 0 && cvI.at (ii + 4) == 2)
+        {
+            if (c < 0)
+            {
+                float sc   = cvF.at (ff);
+                bool  rev  = cvI.at (ii + 16) == 1;
+                float fade = 0.03f * float (processor.frequency);
+
+                for (int i = 0; i < 1024; ++i)
+                {
+                    int   j  = p * 1024 + i;
+                    float l  = 0.0f;
+                    float r  = 0.0f;
+
+                    if (j < len)
+                    {
+                        int   jj = rev ? len - 1 - j : j;
+                        float w  = min (1.0f, float (len - j) / fade) * sc;
+                        l = cvIrL.at (ob + jj) * w;
+                        r = cvIrR.at (ob + jj) * w;
+                    }
+
+                    int ri = sb + cvRev.at (i);
+                    cvRe.at (ri) = l;
+                    cvIm.at (ri) = r;
+                }
+
+                for (int i = 1024; i < 2048; ++i)
+                {
+                    int ri = sb + cvRev.at (i);
+                    cvRe.at (ri) = 0.0f;
+                    cvIm.at (ri) = 0.0f;
+                }
+
+                c = 0;
+                budget -= 600;
+            }
+            else
+            {
+                int n = min (budget, 11264 - c);
+                cvFft (sb, c, n, -1.0f);
+                c += n;
+                budget -= n;
+
+                if (c >= 11264)
+                {
+                    int dst = ((e * 2 + cvI.at (ii + 14)) * cvP + p) * 4100;
+                    cvUnpack (sb, true, dst);
+                    p += 1;
+                    c = -1;
+                    budget -= 1000;
+
+                    if (p >= cvI.at (ii + 10))
+                    {
+                        cvI.at (ii + 2)  = cvI.at (ii + 14);
+                        cvI.at (ii + 3)  = cvI.at (ii + 10);
+                        cvI.at (ii + 15) = 1;
+                        cvI.at (ii + 4)  = 0;
+                    }
+                }
+            }
+        }
+
+        cvI.at (ii + 7) = p;
+        cvI.at (ii + 8) = c;
+    }
+
+    // One stereo sample through engine e (the wet convolution signal)
+    float<2> cvProcess (int e, float<2> x)
+    {
+        int ii = e * 32;
+
+        // rebuild countdown and background jobs
+        int pend = cvI.at (ii + 9);
+
+        if (pend > 0)
+        {
+            pend -= 1;
+            cvI.at (ii + 9) = pend;
+
+            if (pend == 0)
+                cvStartJob (e);
+        }
+
+        int job = cvI.at (ii + 4);
+
+        if (job == 1)
+            cvGenSlice (e, 384);
+        else if (job == 2)
+            cvPrepSlice (e, 260);
+
+        if (cvI.at (ii + 15) == 0)
+            return float<2> (0.0f, 0.0f);
+
+        int t    = cvI.at (ii);
+        int hd   = cvI.at (ii + 1);
+        int pact = cvI.at (ii + 3);
+        int hb   = cvI.at (ii + 2);
+        int ib   = e * 2048;
+
+        cvInL.at (ib + 1024 + t) = x[0];
+        cvInR.at (ib + 1024 + t) = x[1];
+        float<2> y = float<2> (cvOutL.at (e * 1024 + t), cvOutR.at (e * 1024 + t));
+
+        // bins t (and 1024 at the start of the block) of the partitions 1..: S += H_p * X_(n - p)
+        int nb = t == 0 ? 2 : 1;
+
+        for (int q = 0; q < nb; ++q)
+        {
+            int k  = q == 0 ? t : 1024;
+            int ko = k * 2;
+            float sLr = 0.0f;
+            float sLi = 0.0f;
+            float sRr = 0.0f;
+            float sRi = 0.0f;
+
+            for (int p = 1; p < pact; ++p)
+            {
+                int sl = hd - p;
+                if (sl < 0) sl += cvP;
+                int xo = (e * cvP + sl) * 4100 + ko;
+                int ho = ((e * 2 + hb) * cvP + p) * 4100 + ko;
+                float xr = cvX.at (xo);
+                float xi = cvX.at (xo + 1);
+                float hr = cvH.at (ho);
+                float hi = cvH.at (ho + 1);
+                sLr += xr * hr - xi * hi;
+                sLi += xr * hi + xi * hr;
+                xr = cvX.at (xo + 2050);
+                xi = cvX.at (xo + 2051);
+                hr = cvH.at (ho + 2050);
+                hi = cvH.at (ho + 2051);
+                sRr += xr * hr - xi * hi;
+                sRi += xr * hi + xi * hr;
+            }
+
+            int so = e * 4100 + ko;
+            cvS.at (so)        = sLr;
+            cvS.at (so + 1)    = sLi;
+            cvS.at (so + 2050) = sRr;
+            cvS.at (so + 2051) = sRi;
+        }
+
+        t += 1;
+
+        if (t >= 1024)
+        {
+            t = 0;
+
+            // forward FFT of [previous block | current block] (left real, right imaginary)
+            for (int i = 0; i < 2048; ++i)
+            {
+                int ri = cvRev.at (i);
+                cvRe.at (ri) = cvInL.at (ib + i);
+                cvIm.at (ri) = cvInR.at (ib + i);
+            }
+
+            cvFft (0, 0, 11264, -1.0f);
+            int xdst = (e * cvP + hd) * 4100;
+            cvUnpack (0, false, xdst);
+
+            // Y = S + H_0 * X_n, packed for one inverse FFT
+            int h0 = ((e * 2 + hb) * cvP) * 4100;
+
+            for (int k = 0; k <= 1024; ++k)
+            {
+                int   ko = k * 2;
+                float xLr = cvX.at (xdst + ko);
+                float xLi = cvX.at (xdst + ko + 1);
+                float xRr = cvX.at (xdst + ko + 2050);
+                float xRi = cvX.at (xdst + ko + 2051);
+                float hLr = cvH.at (h0 + ko);
+                float hLi = cvH.at (h0 + ko + 1);
+                float hRr = cvH.at (h0 + ko + 2050);
+                float hRi = cvH.at (h0 + ko + 2051);
+                int   so  = e * 4100 + ko;
+                float yLr = cvS.at (so)        + xLr * hLr - xLi * hLi;
+                float yLi = cvS.at (so + 1)    + xLr * hLi + xLi * hLr;
+                float yRr = cvS.at (so + 2050) + xRr * hRr - xRi * hRi;
+                float yRi = cvS.at (so + 2051) + xRr * hRi + xRi * hRr;
+
+                int ia = cvRev.at (k);
+                cvRe.at (ia) = yLr - yRi;
+                cvIm.at (ia) = yLi + yRr;
+
+                if (k > 0 && k < 1024)
+                {
+                    int ib2 = cvRev.at (2048 - k);
+                    cvRe.at (ib2) = yLr + yRi;
+                    cvIm.at (ib2) = -yLi + yRr;
+                }
+            }
+
+            cvFft (0, 0, 11264, 1.0f);
+
+            for (int i = 0; i < 1024; ++i)
+            {
+                cvOutL.at (e * 1024 + i) = cvRe.at (1024 + i) * (1.0f / 2048.0f);
+                cvOutR.at (e * 1024 + i) = cvIm.at (1024 + i) * (1.0f / 2048.0f);
+            }
+
+            // the current block becomes the previous one
+            for (int i = 0; i < 1024; ++i)
+            {
+                cvInL.at (ib + i) = cvInL.at (ib + 1024 + i);
+                cvInR.at (ib + i) = cvInR.at (ib + 1024 + i);
+            }
+
+            hd += 1;
+            if (hd >= cvP) hd = 0;
+            cvI.at (ii + 1) = hd;
+        }
+
+        cvI.at (ii) = t;
+        return y;
+    }
+
+    // owner of the engine of a rack: the lowest slot of the rack whose effect is a convolution reverb
+    void cvUpdateOwner (int rk)
+    {
+        int ow = -1;
+
+        for (int k = 9; k >= 0; --k)
+            if (fxType.at (rk * 10 + k) == 12)
+                ow = rk * 10 + k;
+
+        if (ow != cvOwner.at (rk))
+        {
+            cvOwner.at (rk) = ow;
+
+            if (ow >= 0)
+            {
+                fxDirty.at (ow) = true;
+                cvI.at (rk * 32 + 9) = 1;
+            }
+        }
+    }
+
+    // loaded impulse response (mono, up to 96000 samples) of rack e
+    void cvUserChunk (int e, int offset, int count, int total, BankChunk c)
+    {
+        int ii = e * 32;
+
+        if (total <= 0)
+        {
+            cvI.at (ii + 17) = 0;
+        }
+        else
+        {
+            int base = e * 96000;
+
+            for (int i = 0; i < min (count, 256); ++i)
+            {
+                int pos = offset + i;
+                if (pos >= 0 && pos < 96000)
+                    cvUser.at (base + pos) = clamp (c.data.at (i), -1.0f, 1.0f);
+            }
+
+            if (offset + count >= total)
+                cvI.at (ii + 17) = clamp (total, 0, 96000);
+        }
+
+        if (cvI.at (ii + 13) == 8)
+            cvI.at (ii + 9) = 6000;
+    }
+
+    // the slot s (owner or not) of convolution type: dry when it does not own the engine
+    float<2> fxConv (int s, float<2> x)
+    {
+        int   rk = s / 10;
+
+        if (cvOwner.at (rk) != s)
+            return x;
+
+        int   db = s * 16;
+        int   fb = s * 40;
+        int   ib = s * 24;
+        int   ab = s * 196608;
+        float dt = float (processor.period);
+
+        // pre-delay
+        int pd = int (fxD.at (db + 3));
+        int wp = fxI.at (ib);
+        fxArena.at (ab + wp)         = x[0];
+        fxArena.at (ab + 16384 + wp) = x[1];
+        int rp = (wp - pd) & 16383;
+        float<2> inp = float<2> (fxArena.at (ab + rp), fxArena.at (ab + 16384 + rp));
+        fxI.at (ib) = (wp + 1) & 16383;
+
+        float<2> w = cvProcess (rk, inp);
+
+        // tone: low-pass / high-pass tilt around the middle of the control
+        float lpC = fxD.at (db + 5);
+        float hpC = fxD.at (db + 6);
+        float l = fxF.at (fb)     + lpC * (w[0] - fxF.at (fb));
+        float r = fxF.at (fb + 1) + lpC * (w[1] - fxF.at (fb + 1));
+        fxF.at (fb)     = l;
+        fxF.at (fb + 1) = r;
+        float hl = l - (fxF.at (fb + 2) + hpC * (l - fxF.at (fb + 2)));
+        float hr = r - (fxF.at (fb + 3) + hpC * (r - fxF.at (fb + 3)));
+        fxF.at (fb + 2) = fxF.at (fb + 2) + hpC * (l - fxF.at (fb + 2));
+        fxF.at (fb + 3) = fxF.at (fb + 3) + hpC * (r - fxF.at (fb + 3));
+
+        // width
+        float md = (hl + hr) * 0.5f;
+        float sd = (hl - hr) * 0.5f * fxD.at (db + 4);
+        return float<2> (md + sd, md - sd);
+    }
+

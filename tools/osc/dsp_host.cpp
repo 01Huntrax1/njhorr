@@ -10,10 +10,12 @@
 //                 fshape <freq mod 0-9> const <v> | ramp   load the 256-point curve (0..1) of a Freq modulator
 //                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
+//                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
 //                 on <note> <velocity 0-127>
 //                 off <note>
 //                 run <seconds>             render, appending interleaved stereo float32 to the output file
 #include DSP_HEADER
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -160,6 +162,27 @@ struct Host
         }
     }
 
+    void irLoad (int rack, const std::string& kind, int n)
+    {
+        std::vector<float> d;
+        unsigned rng = 7;
+        if (kind == "impulse") { d.assign ((size_t) n + 64, 0.0f); d[(size_t) n] = 1.0f; }
+        else if (kind == "burst")
+            for (int i = 0; i < 14400; ++i) { rng = rng * 1664525u + 1013904223u; d.push_back ((float) ((rng >> 8) / 8388608.0 - 1.0) * (float) exp (-i / 2400.0)); }
+        int total = (int) d.size();
+        for (int off = 0; off == 0 || off < total; off += 256)
+        {
+            Eisenpuls_Synth::_Eisenpuls_Synth_BankChunk c {};
+            c.bank = rack; c.offset = off; c.total = total;
+            c.count = total - off < 256 ? (total - off > 0 ? total - off : 0) : 256;
+            for (int i = 0; i < c.count; ++i) c.data[i] = d[(size_t) off + i];
+            dsp.addEvent_irLoad (c);
+            ++queued;
+            flushIfNeeded();
+            if (total == 0) break;
+        }
+    }
+
     void midi (int b0, int b1, int b2)
     {
         Eisenpuls_Synth::std_midi_Message m;
@@ -191,6 +214,7 @@ int main (int argc, char** argv)
         else if (cmd == "fshape") { int m; std::string k; float v = 0; ls >> m >> k >> v; h.freqShape (m, k, v); }
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
+        else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }
         else if (cmd == "run") { double s; ls >> s; h.render ((int) (s * kRate)); h.queued = 0; }
