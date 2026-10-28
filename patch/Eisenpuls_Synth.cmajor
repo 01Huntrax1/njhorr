@@ -1750,7 +1750,7 @@ processor Eisenpuls_Synth
     // ---------------- FX ALGORITHMS ----------------
     input event float param536 [[ name: "Drive Algorithm (0 Soft, 1 Tube, 2 Hard, 3 Fold, 4 Sine, 5 Crunch)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     // ---------------- FX RACK (10 slots, see the rack section below for the meaning of P1-P6) ----------------
-    input event float param541     [[ name: "Main FX 1 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param541     [[ name: "Main FX 1 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param542     [[ name: "Main FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param543     [[ name: "Main FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param544     [[ name: "Main FX 1 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1760,7 +1760,7 @@ processor Eisenpuls_Synth
     input event float param548     [[ name: "Main FX 1 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param549     [[ name: "Main FX 1 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param550     [[ name: "Main FX 1 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param551     [[ name: "Main FX 2 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param551     [[ name: "Main FX 2 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param552     [[ name: "Main FX 2 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param553     [[ name: "Main FX 2 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param554     [[ name: "Main FX 2 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1770,7 +1770,7 @@ processor Eisenpuls_Synth
     input event float param558     [[ name: "Main FX 2 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param559     [[ name: "Main FX 2 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param560     [[ name: "Main FX 2 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param561     [[ name: "Main FX 3 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param561     [[ name: "Main FX 3 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param562     [[ name: "Main FX 3 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param563     [[ name: "Main FX 3 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param564     [[ name: "Main FX 3 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1780,7 +1780,7 @@ processor Eisenpuls_Synth
     input event float param568     [[ name: "Main FX 3 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param569     [[ name: "Main FX 3 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param570     [[ name: "Main FX 3 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param571     [[ name: "Main FX 4 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param571     [[ name: "Main FX 4 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param572     [[ name: "Main FX 4 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param573     [[ name: "Main FX 4 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param574     [[ name: "Main FX 4 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1790,7 +1790,7 @@ processor Eisenpuls_Synth
     input event float param578     [[ name: "Main FX 4 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param579     [[ name: "Main FX 4 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param580     [[ name: "Main FX 4 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param581     [[ name: "Main FX 5 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param581     [[ name: "Main FX 5 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param582     [[ name: "Main FX 5 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param583     [[ name: "Main FX 5 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param584     [[ name: "Main FX 5 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1800,7 +1800,7 @@ processor Eisenpuls_Synth
     input event float param588     [[ name: "Main FX 5 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param589     [[ name: "Main FX 5 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param590     [[ name: "Main FX 5 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param591     [[ name: "Main FX 6 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param591     [[ name: "Main FX 6 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param592     [[ name: "Main FX 6 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param593     [[ name: "Main FX 6 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param594     [[ name: "Main FX 6 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1810,7 +1810,7 @@ processor Eisenpuls_Synth
     input event float param598     [[ name: "Main FX 6 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param599     [[ name: "Main FX 6 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param600     [[ name: "Main FX 6 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param601     [[ name: "Main FX 7 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param601     [[ name: "Main FX 7 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param602     [[ name: "Main FX 7 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param603     [[ name: "Main FX 7 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param604     [[ name: "Main FX 7 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1820,7 +1820,7 @@ processor Eisenpuls_Synth
     input event float param608     [[ name: "Main FX 7 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param609     [[ name: "Main FX 7 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param610     [[ name: "Main FX 7 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param611     [[ name: "Main FX 8 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param611     [[ name: "Main FX 8 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param612     [[ name: "Main FX 8 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param613     [[ name: "Main FX 8 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param614     [[ name: "Main FX 8 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1830,7 +1830,7 @@ processor Eisenpuls_Synth
     input event float param618     [[ name: "Main FX 8 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param619     [[ name: "Main FX 8 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param620     [[ name: "Main FX 8 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param621     [[ name: "Main FX 9 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param621     [[ name: "Main FX 9 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param622     [[ name: "Main FX 9 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param623     [[ name: "Main FX 9 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param624     [[ name: "Main FX 9 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1840,7 +1840,7 @@ processor Eisenpuls_Synth
     input event float param628     [[ name: "Main FX 9 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param629     [[ name: "Main FX 9 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param630     [[ name: "Main FX 9 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param631     [[ name: "Main FX 10 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param631     [[ name: "Main FX 10 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param632     [[ name: "Main FX 10 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param633     [[ name: "Main FX 10 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param634     [[ name: "Main FX 10 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1860,7 +1860,7 @@ processor Eisenpuls_Synth
     input event float param648    [[ name: "Main FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
     input event float param649    [[ name: "Main FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
     input event float param650    [[ name: "Main FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
-    input event float param651     [[ name: "Bus 1 FX 1 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param651     [[ name: "Bus 1 FX 1 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param652     [[ name: "Bus 1 FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param653     [[ name: "Bus 1 FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param654     [[ name: "Bus 1 FX 1 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1870,7 +1870,7 @@ processor Eisenpuls_Synth
     input event float param658     [[ name: "Bus 1 FX 1 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param659     [[ name: "Bus 1 FX 1 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param660     [[ name: "Bus 1 FX 1 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param661     [[ name: "Bus 1 FX 2 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param661     [[ name: "Bus 1 FX 2 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param662     [[ name: "Bus 1 FX 2 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param663     [[ name: "Bus 1 FX 2 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param664     [[ name: "Bus 1 FX 2 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1880,7 +1880,7 @@ processor Eisenpuls_Synth
     input event float param668     [[ name: "Bus 1 FX 2 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param669     [[ name: "Bus 1 FX 2 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param670     [[ name: "Bus 1 FX 2 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param671     [[ name: "Bus 1 FX 3 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param671     [[ name: "Bus 1 FX 3 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param672     [[ name: "Bus 1 FX 3 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param673     [[ name: "Bus 1 FX 3 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param674     [[ name: "Bus 1 FX 3 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1890,7 +1890,7 @@ processor Eisenpuls_Synth
     input event float param678     [[ name: "Bus 1 FX 3 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param679     [[ name: "Bus 1 FX 3 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param680     [[ name: "Bus 1 FX 3 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param681     [[ name: "Bus 1 FX 4 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param681     [[ name: "Bus 1 FX 4 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param682     [[ name: "Bus 1 FX 4 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param683     [[ name: "Bus 1 FX 4 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param684     [[ name: "Bus 1 FX 4 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1900,7 +1900,7 @@ processor Eisenpuls_Synth
     input event float param688     [[ name: "Bus 1 FX 4 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param689     [[ name: "Bus 1 FX 4 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param690     [[ name: "Bus 1 FX 4 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param691     [[ name: "Bus 1 FX 5 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param691     [[ name: "Bus 1 FX 5 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param692     [[ name: "Bus 1 FX 5 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param693     [[ name: "Bus 1 FX 5 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param694     [[ name: "Bus 1 FX 5 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1910,7 +1910,7 @@ processor Eisenpuls_Synth
     input event float param698     [[ name: "Bus 1 FX 5 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param699     [[ name: "Bus 1 FX 5 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param700     [[ name: "Bus 1 FX 5 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param701     [[ name: "Bus 1 FX 6 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param701     [[ name: "Bus 1 FX 6 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param702     [[ name: "Bus 1 FX 6 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param703     [[ name: "Bus 1 FX 6 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param704     [[ name: "Bus 1 FX 6 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1920,7 +1920,7 @@ processor Eisenpuls_Synth
     input event float param708     [[ name: "Bus 1 FX 6 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param709     [[ name: "Bus 1 FX 6 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param710     [[ name: "Bus 1 FX 6 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param711     [[ name: "Bus 1 FX 7 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param711     [[ name: "Bus 1 FX 7 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param712     [[ name: "Bus 1 FX 7 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param713     [[ name: "Bus 1 FX 7 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param714     [[ name: "Bus 1 FX 7 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1930,7 +1930,7 @@ processor Eisenpuls_Synth
     input event float param718     [[ name: "Bus 1 FX 7 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param719     [[ name: "Bus 1 FX 7 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param720     [[ name: "Bus 1 FX 7 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param721     [[ name: "Bus 1 FX 8 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param721     [[ name: "Bus 1 FX 8 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param722     [[ name: "Bus 1 FX 8 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param723     [[ name: "Bus 1 FX 8 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param724     [[ name: "Bus 1 FX 8 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1940,7 +1940,7 @@ processor Eisenpuls_Synth
     input event float param728     [[ name: "Bus 1 FX 8 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param729     [[ name: "Bus 1 FX 8 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param730     [[ name: "Bus 1 FX 8 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param731     [[ name: "Bus 1 FX 9 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param731     [[ name: "Bus 1 FX 9 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param732     [[ name: "Bus 1 FX 9 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param733     [[ name: "Bus 1 FX 9 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param734     [[ name: "Bus 1 FX 9 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1950,7 +1950,7 @@ processor Eisenpuls_Synth
     input event float param738     [[ name: "Bus 1 FX 9 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param739     [[ name: "Bus 1 FX 9 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param740     [[ name: "Bus 1 FX 9 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param741     [[ name: "Bus 1 FX 10 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param741     [[ name: "Bus 1 FX 10 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param742     [[ name: "Bus 1 FX 10 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param743     [[ name: "Bus 1 FX 10 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param744     [[ name: "Bus 1 FX 10 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1970,7 +1970,7 @@ processor Eisenpuls_Synth
     input event float param758    [[ name: "Bus 1 FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
     input event float param759    [[ name: "Bus 1 FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
     input event float param760    [[ name: "Bus 1 FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
-    input event float param761     [[ name: "Bus 2 FX 1 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param761     [[ name: "Bus 2 FX 1 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param762     [[ name: "Bus 2 FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param763     [[ name: "Bus 2 FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param764     [[ name: "Bus 2 FX 1 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1980,7 +1980,7 @@ processor Eisenpuls_Synth
     input event float param768     [[ name: "Bus 2 FX 1 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param769     [[ name: "Bus 2 FX 1 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param770     [[ name: "Bus 2 FX 1 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param771     [[ name: "Bus 2 FX 2 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param771     [[ name: "Bus 2 FX 2 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param772     [[ name: "Bus 2 FX 2 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param773     [[ name: "Bus 2 FX 2 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param774     [[ name: "Bus 2 FX 2 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -1990,7 +1990,7 @@ processor Eisenpuls_Synth
     input event float param778     [[ name: "Bus 2 FX 2 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param779     [[ name: "Bus 2 FX 2 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param780     [[ name: "Bus 2 FX 2 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param781     [[ name: "Bus 2 FX 3 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param781     [[ name: "Bus 2 FX 3 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param782     [[ name: "Bus 2 FX 3 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param783     [[ name: "Bus 2 FX 3 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param784     [[ name: "Bus 2 FX 3 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2000,7 +2000,7 @@ processor Eisenpuls_Synth
     input event float param788     [[ name: "Bus 2 FX 3 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param789     [[ name: "Bus 2 FX 3 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param790     [[ name: "Bus 2 FX 3 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param791     [[ name: "Bus 2 FX 4 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param791     [[ name: "Bus 2 FX 4 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param792     [[ name: "Bus 2 FX 4 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param793     [[ name: "Bus 2 FX 4 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param794     [[ name: "Bus 2 FX 4 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2010,7 +2010,7 @@ processor Eisenpuls_Synth
     input event float param798     [[ name: "Bus 2 FX 4 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param799     [[ name: "Bus 2 FX 4 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param800     [[ name: "Bus 2 FX 4 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param801     [[ name: "Bus 2 FX 5 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param801     [[ name: "Bus 2 FX 5 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param802     [[ name: "Bus 2 FX 5 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param803     [[ name: "Bus 2 FX 5 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param804     [[ name: "Bus 2 FX 5 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2020,7 +2020,7 @@ processor Eisenpuls_Synth
     input event float param808     [[ name: "Bus 2 FX 5 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param809     [[ name: "Bus 2 FX 5 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param810     [[ name: "Bus 2 FX 5 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param811     [[ name: "Bus 2 FX 6 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param811     [[ name: "Bus 2 FX 6 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param812     [[ name: "Bus 2 FX 6 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param813     [[ name: "Bus 2 FX 6 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param814     [[ name: "Bus 2 FX 6 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2030,7 +2030,7 @@ processor Eisenpuls_Synth
     input event float param818     [[ name: "Bus 2 FX 6 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param819     [[ name: "Bus 2 FX 6 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param820     [[ name: "Bus 2 FX 6 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param821     [[ name: "Bus 2 FX 7 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param821     [[ name: "Bus 2 FX 7 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param822     [[ name: "Bus 2 FX 7 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param823     [[ name: "Bus 2 FX 7 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param824     [[ name: "Bus 2 FX 7 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2040,7 +2040,7 @@ processor Eisenpuls_Synth
     input event float param828     [[ name: "Bus 2 FX 7 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param829     [[ name: "Bus 2 FX 7 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param830     [[ name: "Bus 2 FX 7 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param831     [[ name: "Bus 2 FX 8 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param831     [[ name: "Bus 2 FX 8 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param832     [[ name: "Bus 2 FX 8 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param833     [[ name: "Bus 2 FX 8 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param834     [[ name: "Bus 2 FX 8 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2050,7 +2050,7 @@ processor Eisenpuls_Synth
     input event float param838     [[ name: "Bus 2 FX 8 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param839     [[ name: "Bus 2 FX 8 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param840     [[ name: "Bus 2 FX 8 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param841     [[ name: "Bus 2 FX 9 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param841     [[ name: "Bus 2 FX 9 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param842     [[ name: "Bus 2 FX 9 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param843     [[ name: "Bus 2 FX 9 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param844     [[ name: "Bus 2 FX 9 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];
@@ -2060,7 +2060,7 @@ processor Eisenpuls_Synth
     input event float param848     [[ name: "Bus 2 FX 9 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param849     [[ name: "Bus 2 FX 9 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param850     [[ name: "Bus 2 FX 9 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param851     [[ name: "Bus 2 FX 10 Type",  min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];
+    input event float param851     [[ name: "Bus 2 FX 10 Type",  min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];
     input event float param852     [[ name: "Bus 2 FX 10 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param853     [[ name: "Bus 2 FX 10 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
     input event float param854     [[ name: "Bus 2 FX 10 Mode",  min: 0.0, max: 29.0, init: 0.0, step: 1.0 ]];

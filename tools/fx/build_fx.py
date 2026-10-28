@@ -1,3 +1,4 @@
+import re
 #!/usr/bin/env python3
 """Idempotent: inserts the convolution reverb (FX type 12) into patch/Eisenpuls_Synth.cmajor."""
 import os, sys
@@ -58,5 +59,7 @@ rep('''        else if (ty == 11)
             // compressor''')
 rep('        else if (ty == 11) y = fxComp   (s, x);\n', '        else if (ty == 11) y = fxComp   (s, x);\n        else if (ty == 12) y = fxConv   (s, x);\n')
 rep('    event tblLoad (BankChunk c)\n', '    event irLoad (BankChunk c)\n    {\n        cvUserChunk (clamp (c.bank, 0, 2), c.offset, c.count, c.total, c);\n    }\n\n    event tblLoad (BankChunk c)\n')
+# the effect type parameters must reach the new type (12 = Convolution), otherwise the host clamps it to the compressor
+src = re.sub(r'(FX \d+ Type",\s*min: 0\.0, max: )11\.0', r'\g<1>12.0', src)
 open(path, 'w').write(src)
 print('ok')
