@@ -557,5 +557,25 @@ for t in range(4):
                note=(24, 60, 96, 120)[t], hold=0.3, tail=0.05, tag="juuni%d" % t)
     if not np.isfinite(a).all() or np.abs(a).max() > 6: ok = False
 check("Juno unison stays finite and bounded at extreme settings", ok)
+
+# ---------------------------------------------------------------- resonator mode edits (modLoad)
+def ME(bank, i, f=1.0, g=1.0, d=1.0): return "moded %d %d %s %s %s" % (bank, i, f, g, d)
+base = render(PHYS + [PH(0, "phmodA", 0), PH(0, "phdecA", 1.0), PH(0, "phhitA", 0.5), PH(0, "phmix", 1.0), PH(0, "phbal", 0.0)], note=57, hold=0.6, tail=0.1, tag="me0")
+e_f = render(["moded 0 2 1.5 1 1"] + PHYS + [PH(0, "phmodA", 0), PH(0, "phdecA", 1.0), PH(0, "phhitA", 0.5), PH(0, "phmix", 1.0), PH(0, "phbal", 0.0)], note=57, hold=0.6, tail=0.1, tag="me1")
+check("mode edit: moving a mode changes the Physical sound", not np.allclose(base, e_f, atol=1e-3) and np.isfinite(e_f).all())
+mute = ["moded 0 %d 1 0 1" % i for i in range(1, 16)]
+e_m = render(mute + PHYS + [PH(0, "phmodA", 0), PH(0, "phdecA", 1.0), PH(0, "phhitA", 0.5), PH(0, "phmix", 1.0), PH(0, "phbal", 0.0)], note=57, hold=0.6, tail=0.1, tag="me2")
+ff, XX = spec(seg(e_m)[:, 0])
+check("mode edit: muting modes 2..16 leaves the fundamental", rms(seg(e_m)) > 1e-3 and abs(peak_freq(seg(e_m)[:, 0]) - 220.0) < 8.0, "%.1f Hz" % peak_freq(seg(e_m)[:, 0]))
+e_r = render(["moded 0 reset"] + mute[:0] + ["moded 0 3 2 2 2", "moded 0 reset"] + PHYS + [PH(0, "phmodA", 0), PH(0, "phdecA", 1.0), PH(0, "phhitA", 0.5), PH(0, "phmix", 1.0), PH(0, "phbal", 0.0)], note=57, hold=0.6, tail=0.1, tag="me3")
+check("mode edit: reset restores the original sound", np.allclose(base, e_r, atol=1e-4))
+e_d = render(["moded 0 0 1 1 0.1"] + PHYS + [PH(0, "phmodA", 0), PH(0, "phdecA", 1.0), PH(0, "phhitA", 0.5), PH(0, "phmix", 1.0), PH(0, "phbal", 0.0)], note=57, hold=0.6, tail=0.1, tag="me4")
+check("mode edit: decay multiplier shortens the ring", rms(e_d[int(0.5 * RATE):int(0.7 * RATE)]) < 0.6 * rms(base[int(0.5 * RATE):int(0.7 * RATE)]), "%.4f vs %.4f" % (rms(e_d[int(0.5 * RATE):int(0.7 * RATE)]), rms(base[int(0.5 * RATE):int(0.7 * RATE)])))
+SAWR = [P(0, "type", 0), FOFF(0), P(0, "level", 0.8)]
+r0 = render(["wt 0 saw"] + SAWR + [RS("rson", 1), RS("rsdec", 1.0), RS("rsmix", 1.0)], note=57, hold=0.5, tail=0.1, tag="mr0")
+r1 = render(["wt 0 saw", "moded 2 4 2 3 1"] + SAWR + [RS("rson", 1), RS("rsdec", 1.0), RS("rsmix", 1.0)], note=57, hold=0.5, tail=0.1, tag="mr1")
+check("mode edit: the Resonator stage (set 2) follows the edit, set 0 does not touch it", not np.allclose(r0, r1, atol=1e-3))
+r2 = render(["wt 0 saw", "moded 0 4 2 3 1"] + SAWR + [RS("rson", 1), RS("rsdec", 1.0), RS("rsmix", 1.0)], note=57, hold=0.5, tail=0.1, tag="mr2")
+check("mode edit: edits of Physical A leave the Resonator stage alone", np.allclose(r0, r2, atol=1e-5))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

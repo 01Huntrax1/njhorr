@@ -11,6 +11,7 @@
 //                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
 //                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
+//                 moded <bank 0-17> reset | <mode 0-15> <freq> <gain> <decay>   resonator mode edits of slot*3+set (0 = Physical A, 1 = B, 2 = Resonator stage)
 //                 on <note> <velocity 0-127>
 //                 off <note>
 //                 run <seconds>             render, appending interleaved stereo float32 to the output file
@@ -183,6 +184,20 @@ struct Host
         }
     }
 
+    std::vector<float> modEdit[18];
+    void modEd (int bank, bool reset, int mode, float f, float g, float d)
+    {
+        auto& v = modEdit[bank];
+        if (v.empty()) v.assign (48, 1.0f);
+        if (reset) std::fill (v.begin(), v.end(), 1.0f); else { v[(size_t) mode * 3] = f; v[(size_t) mode * 3 + 1] = g; v[(size_t) mode * 3 + 2] = d; }
+        Eisenpuls_Synth::_Eisenpuls_Synth_BankChunk c {};
+        c.bank = bank; c.offset = 0; c.total = reset ? 0 : 48; c.count = 48;
+        for (int i = 0; i < 48; ++i) c.data[i] = v[(size_t) i];
+        dsp.addEvent_modLoad (c);
+        ++queued;
+        flushIfNeeded();
+    }
+
     void midi (int b0, int b1, int b2)
     {
         Eisenpuls_Synth::std_midi_Message m;
@@ -215,6 +230,7 @@ int main (int argc, char** argv)
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
+        else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }
         else if (cmd == "run") { double s; ls >> s; h.render ((int) (s * kRate)); h.queued = 0; }

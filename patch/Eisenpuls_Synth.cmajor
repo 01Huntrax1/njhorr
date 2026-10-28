@@ -11,6 +11,7 @@ processor Eisenpuls_Synth
     input event BankChunk wtBankLoad;
     input event LfoShapeChunk frqShapeLoad;   // drawn curve of a Freq modulator (256 points, 0..1)
     input event BankChunk irLoad;        // convolution reverb impulse response (bank = rack 0..2)  // FX-CONV
+    input event BankChunk modLoad;       // per-mode edits of the resonators: bank = slot * 3 + set (0 = Physical A, 1 = Physical B, 2 = Resonator stage)  // MODED
     input event BankChunk tblLoad;       // Wavefilter / Wavedistortion tables: bank 0..5 filter table of OSC 1..6, 6..11 shaper table
     input event BankChunk smpBankLoad;
 
@@ -4631,6 +4632,7 @@ processor Eisenpuls_Synth
 
         fxInit();
         cvInit();
+        modEdInit();
 
         for (int lm = 0; lm < 10; ++lm)
             for (int li = 0; li < 256; ++li)
@@ -22163,18 +22165,55 @@ processor Eisenpuls_Synth
         voices.at (vi).phs.at (b + 165) = -1.0f;
     }
 
+    // ---------------- resonator mode edits (tools/phys/build_modeedit.py) ----------------
+    // modEd[(slot * 3 + set) * 48 + 3 * mode + 0 / 1 / 2] = frequency / gain / decay multiplier of the mode (1 = unchanged); modEdVer[slot] changes with every edit
+    // so the voices recompute their coefficients.
+    float[1024] modEd;
+    float[8]    modEdVer;
+
+    void modEdInit()
+    {
+        for (int i = 0; i < 1024; ++i)
+            modEd.at (i) = 1.0f;
+    }
+
+    event modLoad (BankChunk c)
+    {
+        int b = clamp (c.bank, 0, 17);
+
+        if (c.total <= 0)
+        {
+            for (int i = 0; i < 48; ++i)
+                modEd.at (b * 48 + i) = 1.0f;
+        }
+        else
+        {
+            for (int i = 0; i < min (c.count, 256); ++i)
+            {
+                int pos = c.offset + i;
+
+                if (pos >= 0 && pos < 48)
+                    modEd.at (b * 48 + pos) = clamp (c.data.at (i), (pos % 3) == 0 ? 0.1f : 0.0f, 8.0f);
+            }
+        }
+
+        float v = modEdVer.at (b / 3) + 1.0f;
+        modEdVer.at (b / 3) = v > 1000.0f ? 0.0f : v;
+    }
+
     // coefficients of the 16 modes of resonator res (0 = A, 1 = B)
     void phyCoefs (int vi, int o, int res, float f0, int model, float dec, float mat, float hit, float inh)
     {
         float sr    = float (processor.frequency);
         int   cb    = o * 176 + 64 + res * 48;
+        int   eb    = (o * 3 + res) * 48;
         float damp  = 1.6f * (1.0f - mat);
         float aex   = phyAmpExp.at (model);
         float sumSq = 0.0f;
 
         for (int i = 0; i < 16; ++i)
         {
-            float r = phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i));
+            float r = phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i)) * modEd.at (eb + i * 3);
             float f = f0 * r;
             float g = 0.0f;
             float c1 = 0.0f;
@@ -22183,9 +22222,9 @@ processor Eisenpuls_Synth
             if (f < sr * 0.45f)
             {
                 float w   = 6.2831853f * f / sr;
-                float t60 = max (dec * float (pow (r, -damp)), 0.004f);
+                float t60 = max (dec * modEd.at (eb + i * 3 + 2) * float (pow (r, -damp)), 0.004f);
                 float rr  = float (exp (-6.9078f / (t60 * sr)));
-                float am  = abs (float (sin (3.14159265f * hit * float (i + 1)))) / float (pow (float (i + 1), aex));
+                float am  = abs (float (sin (3.14159265f * hit * float (i + 1)))) / float (pow (float (i + 1), aex)) * modEd.at (eb + i * 3 + 1);
                 c1  = 2.0f * rr * float (cos (w));
                 c2  = rr * rr;
                 g   = am;
@@ -22205,7 +22244,7 @@ processor Eisenpuls_Synth
 
             if (g != 0.0f)
             {
-                float f = f0 * phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i));
+                float f = f0 * phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i)) * modEd.at (eb + i * 3);
                 voices.at (vi).phs.at (cb + 32 + i) = g * nrm * float (sin (6.2831853f * f / sr));
             }
         }
@@ -22256,7 +22295,7 @@ processor Eisenpuls_Synth
             float mB  = clamp (phq (o, pb, 10), 0.0f, 1.0f);
             float sig = phq (o, pb, 1) * 1.1f + phq (o, pb, 2) * 0.0013f + phq (o, pb, 3) * 3.7f + phq (o, pb, 4) * 0.77f + mA * 5.3f + hA * 7.1f
                       + phq (o, pb, 7) * 11.3f + phq (o, pb, 8) * 13.1f + phq (o, pb, 9) * 0.61f + mB * 17.9f + hB * 19.3f
-                      + phq (o, pb, 12) * 23.9f + phq (o, pb, 13) * 0.29f;
+                      + phq (o, pb, 12) * 23.9f + phq (o, pb, 13) * 0.29f + modEdVer.at (o) * 0.0731f;
 
             if (voices.at (vi).phs.at (b + 165) != sig || abs (voices.at (vi).phs.at (b + 166) - f0) > f0 * 0.0004f)
             {
@@ -22362,7 +22401,7 @@ processor Eisenpuls_Synth
         voices.at (vi).phs.at (b + 113) = -1.0f;
     }
 
-    void resCoefs (int vi, int cb, float f0, int model, float dec, float mat, float hit, float inh)
+    void resCoefs (int vi, int cb, float f0, int model, float dec, float mat, float hit, float inh, int eb)
     {
         float sr    = float (processor.frequency);
         float damp  = 1.6f * (1.0f - mat);
@@ -22371,7 +22410,7 @@ processor Eisenpuls_Synth
 
         for (int i = 0; i < 16; ++i)
         {
-            float r  = phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i));
+            float r  = phyRat.at (model * 16 + i) * (1.0f + inh * 0.004f * float (i * i)) * modEd.at (eb + i * 3);
             float f  = f0 * r;
             float g  = 0.0f;
             float c1 = 0.0f;
@@ -22380,9 +22419,9 @@ processor Eisenpuls_Synth
             if (f < sr * 0.45f)
             {
                 float w   = 6.2831853f * f / sr;
-                float t60 = max (dec * float (pow (r, -damp)), 0.004f);
+                float t60 = max (dec * modEd.at (eb + i * 3 + 2) * float (pow (r, -damp)), 0.004f);
                 float rr  = float (exp (-6.9078f / (t60 * sr)));
-                float am  = abs (float (sin (3.14159265f * hit * float (i + 1)))) / float (pow (float (i + 1), aex));
+                float am  = abs (float (sin (3.14159265f * hit * float (i + 1)))) / float (pow (float (i + 1), aex)) * modEd.at (eb + i * 3 + 1);
                 c1 = 2.0f * rr * float (cos (w));
                 c2 = rr * rr;
                 // peak gain of the two-pole section at its own frequency is 1 / ((1 - rr) * |1 - rr e^(-2jw)|)
@@ -22416,13 +22455,13 @@ processor Eisenpuls_Synth
             voices.at (vi).phs.at (b + 112) = 64.0f;
             int   mdl = clamp (int (op.at (ob + 57) + 0.5f), 0, 8);
             float fr  = f0 * float (pow (2.0f, op.at (ob + 62) / 12.0f));
-            float sig = float (mdl) * 3.7f + op.at (ob + 58) * 0.77f + op.at (ob + 59) * 5.3f + op.at (ob + 60) * 7.1f + op.at (ob + 61) * 11.3f;
+            float sig = float (mdl) * 3.7f + op.at (ob + 58) * 0.77f + op.at (ob + 59) * 5.3f + op.at (ob + 60) * 7.1f + op.at (ob + 61) * 11.3f + modEdVer.at (o) * 0.0731f;
 
             if (voices.at (vi).phs.at (b + 113) != sig || abs (voices.at (vi).phs.at (b + 114) - fr) > fr * 0.0004f)
             {
                 voices.at (vi).phs.at (b + 113) = sig;
                 voices.at (vi).phs.at (b + 114) = fr;
-                resCoefs (vi, b + 64, fr, mdl, op.at (ob + 58), op.at (ob + 59), op.at (ob + 60), op.at (ob + 61));
+                resCoefs (vi, b + 64, fr, mdl, op.at (ob + 58), op.at (ob + 59), op.at (ob + 60), op.at (ob + 61), (o * 3 + 2) * 48);
             }
         }
         else
