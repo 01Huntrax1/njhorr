@@ -3,6 +3,7 @@
 #include "../NjoPages.h"
 #include "../NjoPhys.h"
 #include "OscDisplays.h"
+#include "Editors.h"
 #include <array>
 
 namespace njo
@@ -146,8 +147,16 @@ namespace njo
     {
         Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc, int pageMode)
             : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), rdisplay (c, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
-              modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER")
+              modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER"), editBtn ("EDIT")
         {
+            editBtn.onClick = [this] { openEditor(); };
+            owner.addAndMakeVisible (editBtn);
+            if (pageMode == 1 || pageMode == 2) tedit = std::make_unique<TableEditor> (c, m, osc, pageMode == 1);
+            if (pageMode == 0 || pageMode == 3) medit = std::make_unique<ModeEditor> (c, m, osc);
+            for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get() })
+                if (e) owner.addChildComponent (e);
+            if (tedit) tedit->onClose = [this] { layoutChildren(); };
+            if (medit) medit->onClose = [this] { layoutChildren(); };
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
@@ -221,6 +230,12 @@ namespace njo
         ~Impl() override { mem.removeChangeListener (this); ctx.removeListener (this); }
 
         ParamWidget* W (const char* key) { auto it = widgets.find (key); return it == widgets.end() ? nullptr : it->second.get(); }
+        void openEditor()
+        {
+            if (tedit) tedit->open();
+            else if (medit) { medit->open (mode == 3 ? 2 : 0); }
+            layoutChildren();
+        }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
         int srcType() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
@@ -363,7 +378,7 @@ namespace njo
             for (auto& kv : widgets) kv.second->setVisible (false);
             for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &rdisplay, (juce::Component*) &tdisplay,
                                         (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
-                                        (juce::Component*) &modeA, (juce::Component*) &modeB })
+                                        (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
@@ -545,6 +560,16 @@ namespace njo
                 const int cx0 = cardFlt.getX() + (mode == 2 ? 232 : 200);
                 for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
             }
+            // edit buttons: the table editor (filter / distortion pages), the resonator editor (Physical source, resonator page)
+            {
+                const bool tbl = (mode == 1 || mode == 2);
+                const bool res = (mode == 3) || (mode == 0 && type == 3);
+                if (tbl) { editBtn.setBounds (cardOut.getRight() - 12 - 84, 6, 84, 18); editBtn.setVisible (true); }
+                else if (res) { auto& cc = mode == 3 ? cardFlt : cardSrc; editBtn.setBounds (cc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
+                for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get() })
+                    if (e) { e->setBounds (owner.getLocalBounds()); }
+                if ((tedit && tedit->isVisible()) || (medit && medit->isVisible())) editBtn.setVisible (false);
+            }
             modeA.setOn (! (mode == 1 ? juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30 : juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7));
             modeB.setOn (! modeA.on);
         }
@@ -640,7 +665,8 @@ if (! wf)
         OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
         ResoDisplay rdisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault;
-        PushButton modeA, modeB; std::array<std::unique_ptr<PushButton>, OSC_N> chips;
+        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit;
+         std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
     };
 

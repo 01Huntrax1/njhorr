@@ -193,3 +193,10 @@ The Alpha Juno source now has the same **unison** as the wavetable source (Voice
 * **Drift**: slow random pitch wander per unison voice (a new target every 2048 samples, up to about 12 cents). On the Juno source it adds to the DCO's own analog Drift, which is now independent per voice.
 * **Phase Spread**: random start phase per unison voice (voice 1 keeps the Start Phase), so stacked voices do not all start in phase and cancel / add as one.
 CPU: the Juno source costs about as much per voice as a wavetable voice; 7 unison voices on all six slots with a chord is the worst case (about 2x the time of single voices in the offline host). Code: `tools/osc/build_uni.py`, `tools/phys/build_juno.py`.
+
+## Table and resonator editors
+
+Three graphical editors open over the OSC pages (native editor only; the JS fallback UI has none):
+
+- **Wavefilter** and **Wavedistortion** (FILTER / DIST page, EDIT button on the table card): draw the frame with the mouse (freehand, linearly interpolated), previous/next frames are shown faint, mouse wheel changes frame. Tools: add (duplicate), delete, morph first to last, smooth, invert, flip, normalize, random and presets (low/high/band pass, notch, comb, formant; linear, soft, hard, fold, asym, stairs). Without a loaded table the 16 built-in frames are copied so you can edit them. Edits go through the sound memory (`tblLoad`), so they persist in the plugin state like a loaded table.
+- **Resonator editor** (Physical source: EDIT on the source card, tabs Physical A / B; RESO page: EDIT for the resonator stage): frequency (x0.5..x2), gain (0..2) and decay (x0.1..x10) multipliers of each of the 16 modes, with a spectrum view and Hz labels. Presets: odd / even modes, stretch, squeeze, decay tilt, randomise, reset. Edits are sent through `modLoad` (`ModeEdit` sound-memory kind, 48 multipliers per slot and set) and persist; a fully neutral edit clears the slot.

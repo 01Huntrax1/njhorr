@@ -15,10 +15,12 @@ namespace njo
         bool isTable (SoundMemory::Kind k) { return k == SoundMemory::FilterTable || k == SoundMemory::ShaperTable; }
         juce::String keyFor (SoundMemory::Kind k, int o)
         {
-            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh", ".ir" };
+            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh", ".ir", ".me" };
             return "njo.mem.osc" + juce::String (o) + ext[(int) k];
         }
-        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::ModeEdit ? "modLoad" : k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        constexpr int kMaxIdx = 18;                  // slots per kind: 6 oscillators, 3 FX racks, 18 resonator mode sets (slot * 3 + set)
+        constexpr float kModeScale = 8.0f;           // mode edit multipliers run 0..8, stored as pcm16 of value / 8
         int bankFor (SoundMemory::Kind k, int o) { return k == SoundMemory::ShaperTable ? OSC_N + o : o; }
 
         // a wavetable file cut into frames (4096 / 2048 samples; shorter files are one frame), every frame reduced to 512 points
@@ -42,13 +44,13 @@ namespace njo
             return out;
         }
 
-        juce::var encodeMem (const SoundMemory::Slot& s)
+        juce::var encodeMem (const SoundMemory::Slot& s, float scale = 1.0f)
         {
             juce::MemoryBlock mb (s.data.size() * 2);
             auto* p = (juce::uint8*) mb.getData();
             for (size_t i = 0; i < s.data.size(); ++i)
             {
-                int v = juce::roundToInt (juce::jlimit (-1.0f, 1.0f, s.data[i]) * 32767.0f);
+                int v = juce::roundToInt (juce::jlimit (-1.0f, 1.0f, s.data[i] / scale) * 32767.0f);
                 p[i * 2] = (juce::uint8) (v & 255); p[i * 2 + 1] = (juce::uint8) ((v >> 8) & 255);
             }
             auto* o = new juce::DynamicObject();
@@ -59,7 +61,7 @@ namespace njo
             return juce::var (o);
         }
 
-        bool decodeMem (const juce::var& v, const juce::String& fallbackName, SoundMemory::Slot& out)
+        bool decodeMem (const juce::var& v, const juce::String& fallbackName, SoundMemory::Slot& out, float scale = 1.0f)
         {
             if (! v.isObject()) return false;
             auto pcm = v.getProperty ("pcm16", {}).toString();
@@ -75,7 +77,7 @@ namespace njo
             {
                 int s = p[i * 2] | (p[i * 2 + 1] << 8);
                 if (s & 0x8000) s -= 0x10000;
-                out.data[(size_t) i] = (float) s / 32767.0f;
+                out.data[(size_t) i] = (float) s / 32767.0f * scale;
             }
             auto nm = v.getProperty ("name", {}).toString();
             out.name = nm.isNotEmpty() ? nm : fallbackName;
@@ -262,8 +264,8 @@ namespace njo
         ~Impl() override { stopTimer(); }
 
         SoundMemory& owner; Backend& be;
-        std::unique_ptr<Slot> slots[5][OSC_N];      // for the impulse responses the index is the FX rack (0..2)
-        unsigned long long dspSig[5][OSC_N] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
+        std::unique_ptr<Slot> slots[6][kMaxIdx];      // for the impulse responses the index is the FX rack (0..2)
+        unsigned long long dspSig[6][kMaxIdx] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
         unsigned long long dspGen = 0;
         bool streaming (Kind k, int o) const { for (auto& s : streams) if (s.kind == k && s.osc == o) return true; return false; }
         std::vector<Stream> streams;
@@ -315,7 +317,7 @@ namespace njo
         void persist (Kind k, int o)
         {
             auto& sl = slots[k][o];
-            be.setStored (keyFor (k, o), sl ? encodeMem (*sl) : juce::var());
+            be.setStored (keyFor (k, o), sl ? encodeMem (*sl, k == ModeEdit ? kModeScale : 1.0f) : juce::var());
         }
     };
 
@@ -324,11 +326,11 @@ namespace njo
     SoundMemory::SoundMemory (Backend& b) : impl (new Impl (*this, b))
     {
         // the saved copies are available to the displays at once; restore() streams what the DSP is missing
-        for (int k = 0; k < 5; ++k)
-            for (int o = 0; o < OSC_N; ++o)
+        for (int k = 0; k < 6; ++k)
+            for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                if (decodeMem (b.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
+                if (decodeMem (b.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s, k == ModeEdit ? kModeScale : 1.0f)) impl->slots[k][o] = std::move (s);
             }
     }
     SoundMemory::SoundMemory (Ctx& c) : SoundMemory (c.be) { onStatus = [&c] (const juce::String& t) { c.status (t); }; }
@@ -336,15 +338,15 @@ namespace njo
 
     const SoundMemory::Slot* SoundMemory::get (Kind k, int o) const
     {
-        if (o < 0 || o >= OSC_N) return nullptr;
+        if (o < 0 || o >= kMaxIdx) return nullptr;
         return impl->slots[k][o].get();
     }
 
     void SoundMemory::set (Kind k, int o, const juce::String& name, const juce::String& libId, std::vector<float> data)
     {
-        if (o < 0 || o >= OSC_N) return;
+        if (o < 0 || o >= kMaxIdx) return;
         if (data.empty()) { clear (k, o); return; }
-        const int cap = k == ImpulseResponse ? 96000 : isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
+        const int cap = k == ModeEdit ? 48 : k == ImpulseResponse ? 96000 : isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
         if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
@@ -356,8 +358,8 @@ namespace njo
 
     void SoundMemory::relabel (const juce::String& oldPath, const juce::String& newPath)
     {
-        for (int k = 0; k < 5; ++k)
-            for (int o = 0; o < OSC_N; ++o)
+        for (int k = 0; k < 6; ++k)
+            for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto& s = impl->slots[k][o];
                 if (! s || s->libId.isEmpty()) continue;
@@ -387,7 +389,7 @@ namespace njo
 
     void SoundMemory::clear (Kind k, int o)
     {
-        if (o < 0 || o >= OSC_N) return;
+        if (o < 0 || o >= kMaxIdx) return;
         impl->cancel (k, o);
         impl->slots[k][o].reset();
         auto* ev = new juce::DynamicObject();
@@ -406,8 +408,8 @@ namespace njo
         auto gen = impl->be.dspGeneration();
         if (gen != impl->dspGen) { std::memset (impl->dspSig, 0, sizeof (impl->dspSig)); impl->dspGen = gen; }
         int n = 0;
-        for (int k = 0; k < 5; ++k)
-            for (int o = 0; o < OSC_N; ++o)
+        for (int k = 0; k < 6; ++k)
+            for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto& sl = impl->slots[k][o];
                 if (impl->streaming ((Kind) k, o)) continue;
@@ -429,11 +431,11 @@ namespace njo
     void SoundMemory::reloadFromStored()
     {
         bool changed = false;
-        for (int k = 0; k < 5; ++k)
-            for (int o = 0; o < OSC_N; ++o)
+        for (int k = 0; k < 6; ++k)
+            for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                bool has = decodeMem (impl->be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s);
+                bool has = decodeMem (impl->be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s, k == ModeEdit ? kModeScale : 1.0f);
                 auto& cur = impl->slots[k][o];
                 if (! has) { if (cur) { impl->cancel ((Kind) k, o); cur.reset(); changed = true; } continue; }
                 if (cur && cur->name == s->name && cur->libId == s->libId && cur->data.size() == s->data.size() && Impl::sigOf (*cur) == Impl::sigOf (*s)) continue;

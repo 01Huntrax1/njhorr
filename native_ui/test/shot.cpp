@@ -1,4 +1,5 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
+#include "../pages/Editors.h"
 #include "../NjoPhys.h"
 #include "../NjoEditor.h"
 #include "../NjoMock.h"
@@ -11,6 +12,13 @@ static void save (juce::Component& c, const juce::File& f, float scale)
     f.deleteFile();
     juce::FileOutputStream out (f);
     if (out.openedOk()) png.writeImageToStream (img, out);
+}
+
+template <class T> static T* findComp (juce::Component& c, const char* name)
+{
+    if (c.getName() == name && c.getParentComponent() && c.getParentComponent()->isVisible()) if (auto* t = dynamic_cast<T*> (&c)) return t;
+    for (auto* ch : c.getChildren()) if (auto* r = findComp<T> (*ch, name)) return r;
+    return nullptr;
 }
 
 int main (int argc, char** argv)
@@ -52,6 +60,20 @@ int main (int argc, char** argv)
         cx.set (njo::phys::phyId (0, njo::phys::key ("jpwm")), 0.4f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsub")), 0.5f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsaw")), 0.8f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_juno.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
+    }
+    {
+        // the editors (opened by hand: the buttons need a mouse)
+        auto& cx = ed.context();
+        cx.set (njo::oscId (0, njo::oscKey ("ftype")), 30.0f);
+        ed.setSynthPage (9); pump();
+        if (auto* t = findComp<njo::TableEditor> (ed, "tableEditor")) { t->open(); pump(); save (ed, dir.getChildFile ("edit_wf.png"), scale); t->setVisible (false); }
+        cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f);
+        ed.setSynthPage (15); pump();
+        if (auto* t = findComp<njo::TableEditor> (ed, "tableEditor")) { t->open(); pump(); save (ed, dir.getChildFile ("edit_wd.png"), scale); t->setVisible (false); }
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 3.0f);
+        ed.setSynthPage (0); pump();
+        if (auto* m = findComp<njo::ModeEditor> (ed, "modeEditor")) { m->open (1); pump(); save (ed, dir.getChildFile ("edit_modes.png"), scale); m->setVisible (false); }
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f); cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f); cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
     }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
     {
