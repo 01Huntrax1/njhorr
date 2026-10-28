@@ -1480,28 +1480,30 @@ const fxDb = (lo, hi) => n => { const v = lo + n * (hi - lo); return (v > 0 ? "+
 // [label, formatter, default (normalised)]
 const FX_TYPES = [
     { n: "None", mix: 1, modes: [], p: [] },
-    { n: "Distortion", mix: 1, modes: ["Soft", "Tube", "Hard", "Fold", "Sine", "Crunch"],
-      p: [["Drive", fxPct, 0.4], ["Tone", fxHz(500, 20000), 1], ["Output", n => (n * 2).toFixed(2) + "x", 0.5]] },
-    { n: "Bit Crush", mix: 1, modes: [],
-      p: [["Bits", n => (16 - 12 * n).toFixed(1) + " bit", 0.5], ["Rate", n => "1/" + (1 + Math.round(n * 31)), 0.1]] },
-    { n: "Delay", mix: 0.35, modes: ["Digital", "Tape", "Dual"],
-      p: [["Time", fxMs(10, 1000), fxExpN(375, 10, 1000)], ["Feedback", fxPctOf(0.95), 0.37], ["Damp", fxHz(500, 18000), 1], ["Ping-Pong", fxPct, 1]] },
+    { n: "Distortion", mix: 1, modes: ["Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Rectify", "Fuzz", "Tanh"],
+      p: [["Drive", fxPct, 0.4], ["Tone", fxHz(500, 20000), 1], ["Output", n => (n * 2).toFixed(2) + "x", 0.5], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Low Cut", fxHz(10, 800), 0], ["Presence", fxPct, 0]] },
+    { n: "Bit Crush", mix: 1, modes: ["Round", "Mu-law", "Floor"],
+      p: [["Bits", n => (16 - 12 * n).toFixed(1) + " bit", 0.5], ["Rate", n => "1/" + (1 + Math.round(n * 31)), 0.1], ["Dither", fxPct, 0], ["Jitter", fxPct, 0]] },
+    { n: "Delay", mix: 0.35, modes: ["Digital", "Tape", "Dual", "Ducking"],
+      p: [["Time", fxMs(10, 1000), fxExpN(375, 10, 1000)], ["Feedback", fxPctOf(0.95), 0.37], ["Damp", fxHz(500, 18000), 1], ["Ping-Pong", fxPct, 1], ["Mod", fxPct, 0], ["Low Cut", fxHz(20, 1000), 0]] },
     { n: "Chorus", mix: 0.5, modes: ["Classic", "Dimension", "Vibrato"],
-      p: [["Rate", fxHz(0.05, 5), fxExpN(0.8, 0.05, 5)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0]] },
-    { n: "Flanger", mix: 0.5, modes: [],
-      p: [["Rate", fxHz(0.05, 5), fxExpN(0.3, 0.05, 5)], ["Depth", fxPct, 0.6], ["Feedback", fxPctOf(0.95), 0.53]] },
+      p: [["Rate", fxHz(0.05, 5), fxExpN(0.8, 0.05, 5)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0], ["Width", fxPctOf(2), 0.5]] },
+    { n: "Flanger", mix: 0.5, modes: ["Positive", "Negative"],
+      p: [["Rate", fxHz(0.05, 5), fxExpN(0.3, 0.05, 5)], ["Depth", fxPct, 0.6], ["Feedback", fxPctOf(0.95), 0.53], ["Width", fxPctOf(2), 0.5]] },
     { n: "Phaser", mix: 0.5, modes: ["2 Stages", "4 Stages", "6 Stages", "8 Stages"],
-      p: [["Rate", fxHz(0.05, 8), fxExpN(0.4, 0.05, 8)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0.55]] },
+      p: [["Rate", fxHz(0.05, 8), fxExpN(0.4, 0.05, 8)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0.55], ["Width", fxPctOf(2), 0.5]] },
     { n: "Tremolo", mix: 1, modes: ["Sin", "Tri", "Sqr", "Saw Dn", "Saw Up"],
       p: [["Rate", fxHz(0.1, 20), fxExpN(5, 0.1, 20)], ["Depth", fxPct, 0.7], ["Stereo", fxPct, 0]] },
     { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral"],
-      p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1]] },
+      p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1], ["Low Cut", fxHz(20, 800), 0], ["High Cut", fxHz(1500, 20000), 1]] },
     { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
       p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0]] },
     { n: "EQ", mix: 1, modes: [],
-      p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5]] },
+      p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5], ["High Freq", fxHz(4000, 16000), 0.5]] },
     { n: "Compressor", mix: 1, modes: ["Peak", "RMS"],
-      p: [["Thresh", fxLin(-60, 0, 1, "dB"), 0.6], ["Ratio", n => (1 + 19 * n * n).toFixed(1) + ":1", 0.3], ["Attack", fxMs(0.1, 100), 0.4], ["Release", fxMs(10, 1000), 0.4], ["Makeup", fxLin(0, 24, 1, "dB"), 0.2]] }
+      p: [["Thresh", fxLin(-60, 0, 1, "dB"), 0.6], ["Ratio", n => (1 + 19 * n * n).toFixed(1) + ":1", 0.3], ["Attack", fxMs(0.1, 100), 0.4], ["Release", fxMs(10, 1000), 0.4], ["Makeup", fxLin(0, 24, 1, "dB"), 0.2], ["Knee", fxLin(0, 12, 1, "dB"), 0]] },
+    { n: "Convolution", mix: 0.3, modes: ["Room", "Hall", "Plate", "Cathedral", "Chamber", "Reverse", "Gated", "Ambience", "User IR"],
+      p: [["Size", fxPct, 0.5], ["Decay", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 200, 0, "ms"), 0], ["Width", fxPctOf(2), 0.5], ["Tone", fxLin(-100, 100, 0, "%"), 0.5]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
@@ -1687,7 +1689,7 @@ const SPECS = (() => {
     FX_RACKS.forEach(rack => {
         for (let sl = 0; sl < 10; sl++) {
             const b = rack.id + sl * 10, n = rack.name + " FX " + (sl + 1);
-            L.push([b,     n + " Type", 0, 11, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b,     n + " Type", 0, 12, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
             L.push([b + 3, n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);

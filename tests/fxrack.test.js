@@ -50,9 +50,9 @@ const ctl = (v, n) => v._controls.get("param" + n);
     check("delay default time sent (375 ms)", Math.abs(last(pcA, "param565") - Math.log(37.5) / Math.log(100)) < 1e-3);
     check("row no longer empty", !A.querySelector('.fxrow[data-g="2"]').classList.contains("empty"));
     const lbls = [...A.querySelectorAll('.fxrow[data-g="2"] .fxps .lbl')].map(e => e.textContent);
-    check("labels follow the type", JSON.stringify(lbls) === JSON.stringify(["Time", "Feedback", "Damp", "Ping-Pong", "", ""]), JSON.stringify(lbls));
-    check("unused knobs are hidden", A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 2);
-    check("mode list follows the type", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 3);
+    check("labels follow the type", JSON.stringify(lbls) === JSON.stringify(["Time", "Feedback", "Damp", "Ping-Pong", "Mod", "Low Cut"]), JSON.stringify(lbls));
+    check("unused knobs are hidden", A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 0);
+    check("mode list follows the type", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 4);
     check("value text uses real units", /ms$/.test(A.querySelector('.fxrow[data-g="2"] .n565 .val').textContent), A.querySelector('.fxrow[data-g="2"] .n565 .val').textContent);
 
     // ---- the other instance is untouched (shared formatting state must not leak)
@@ -66,7 +66,7 @@ const ctl = (v, n) => v._controls.get("param" + n);
     ctl(A, 561).setValue(7, true);                       // Tremolo
     check("mode reset on type change", ctl(A, 564).value === 0);
     check("tremolo mix default 1", Math.abs(ctl(A, 563).value - 1) < 1e-6);
-    check("bit-crush has two knobs", (ctl(A, 561).setValue(2, true), A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 4));
+    check("bit-crush has four knobs", (ctl(A, 561).setValue(2, true), A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 2));
 
     // ---- the Filter effect offers all 30 filter types of the Filter page
     ctl(A, 561).setValue(9, true);

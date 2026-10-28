@@ -48,7 +48,7 @@ namespace njo
     class FxPage : public juce::Component
     {
     public:
-        explicit FxPage (Ctx&);
+        FxPage (Ctx&, SoundMemory&);
         ~FxPage() override;
         void paint (juce::Graphics&) override;
         void resized() override;

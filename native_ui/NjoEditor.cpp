@@ -51,7 +51,7 @@ namespace njo
     };
 
     EditorContent::EditorContent (Backend& be, SoundMemory* sharedMemory)
-        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);

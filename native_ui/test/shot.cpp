@@ -70,9 +70,9 @@ int main (int argc, char** argv)
                 for (size_t k = 0; k < t.params.size(); ++k) cx.set (b + 4 + (int) k, t.params[k].def);
             }
         };
-        for (int t = 1; t <= 11; ++t)
+        for (int t = 1; t <= 12; ++t)
         {
-            setFx (0, t); pump();
+            setFx (0, t); if (t == 12) cx.set (base + 3, 8.0f); pump();
             save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);
         }
         setFx (0, 9); setFx (1, 3); setFx (2, 8); setFx (3, 11); pump();

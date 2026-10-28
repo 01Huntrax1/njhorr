@@ -15,10 +15,10 @@ namespace njo
         bool isTable (SoundMemory::Kind k) { return k == SoundMemory::FilterTable || k == SoundMemory::ShaperTable; }
         juce::String keyFor (SoundMemory::Kind k, int o)
         {
-            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh" };
+            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh", ".ir" };
             return "njo.mem.osc" + juce::String (o) + ext[(int) k];
         }
-        const char* endpointFor (SoundMemory::Kind k) { return isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
         int bankFor (SoundMemory::Kind k, int o) { return k == SoundMemory::ShaperTable ? OSC_N + o : o; }
 
         // a wavetable file cut into frames (4096 / 2048 samples; shorter files are one frame), every frame reduced to 512 points
@@ -262,8 +262,8 @@ namespace njo
         ~Impl() override { stopTimer(); }
 
         SoundMemory& owner; Backend& be;
-        std::unique_ptr<Slot> slots[4][OSC_N];
-        unsigned long long dspSig[4][OSC_N] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
+        std::unique_ptr<Slot> slots[5][OSC_N];      // for the impulse responses the index is the FX rack (0..2)
+        unsigned long long dspSig[5][OSC_N] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
         unsigned long long dspGen = 0;
         bool streaming (Kind k, int o) const { for (auto& s : streams) if (s.kind == k && s.osc == o) return true; return false; }
         std::vector<Stream> streams;
@@ -324,11 +324,11 @@ namespace njo
     SoundMemory::SoundMemory (Backend& b) : impl (new Impl (*this, b))
     {
         // the saved copies are available to the displays at once; restore() streams what the DSP is missing
-        for (int k = 0; k < 4; ++k)
+        for (int k = 0; k < 5; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                if (decodeMem (b.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
+                if (decodeMem (b.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s)) impl->slots[k][o] = std::move (s);
             }
     }
     SoundMemory::SoundMemory (Ctx& c) : SoundMemory (c.be) { onStatus = [&c] (const juce::String& t) { c.status (t); }; }
@@ -344,7 +344,7 @@ namespace njo
     {
         if (o < 0 || o >= OSC_N) return;
         if (data.empty()) { clear (k, o); return; }
-        const int cap = isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
+        const int cap = k == ImpulseResponse ? 96000 : isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
         if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
@@ -356,7 +356,7 @@ namespace njo
 
     void SoundMemory::relabel (const juce::String& oldPath, const juce::String& newPath)
     {
-        for (int k = 0; k < 4; ++k)
+        for (int k = 0; k < 5; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto& s = impl->slots[k][o];
@@ -370,7 +370,7 @@ namespace njo
 
     void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done)
     {
-        auto dec = decodeAny (f, k != Sample);
+        auto dec = decodeAny (f, k == Wavetable || isTable (k));
         if (dec.ok && isTable (k)) dec.mono = tableFromMono (dec.mono);
         if (! dec.ok)
         {
@@ -379,7 +379,7 @@ namespace njo
             return;
         }
         auto name = (dec.name.isNotEmpty() ? dec.name : f.getFileNameWithoutExtension()).substring (0, 14).toUpperCase();
-        if (name.isEmpty()) name = k == Sample ? "SAMPLE" : "TABLE";
+        if (name.isEmpty()) name = k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE";
         set (k, o, name, {}, std::move (dec.mono));
         status ("LOADED " + name);
         if (done) done (true, "LOADED " + name);
@@ -396,7 +396,7 @@ namespace njo
         impl->be.sendEvent (endpointFor (k), juce::var (ev));
         impl->persist (k, o);
         impl->dspSig[k][o] = 0;
-        if (! isTable (k)) status ("OSC " + juce::String (o + 1) + " CLEARED");
+        if (k == ImpulseResponse) status ("IR CLEARED"); else if (! isTable (k)) status ("OSC " + juce::String (o + 1) + " CLEARED");
         sendChangeMessage();
     }
 
@@ -406,7 +406,7 @@ namespace njo
         auto gen = impl->be.dspGeneration();
         if (gen != impl->dspGen) { std::memset (impl->dspSig, 0, sizeof (impl->dspSig)); impl->dspGen = gen; }
         int n = 0;
-        for (int k = 0; k < 4; ++k)
+        for (int k = 0; k < 5; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto& sl = impl->slots[k][o];
@@ -429,11 +429,11 @@ namespace njo
     void SoundMemory::reloadFromStored()
     {
         bool changed = false;
-        for (int k = 0; k < 4; ++k)
+        for (int k = 0; k < 5; ++k)
             for (int o = 0; o < OSC_N; ++o)
             {
                 auto s = std::make_unique<Slot>();
-                bool has = decodeMem (impl->be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : "TABLE", *s);
+                bool has = decodeMem (impl->be.getStored (keyFor ((Kind) k, o)), k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : "TABLE", *s);
                 auto& cur = impl->slots[k][o];
                 if (! has) { if (cur) { impl->cancel ((Kind) k, o); cur.reset(); changed = true; } continue; }
                 if (cur && cur->name == s->name && cur->libId == s->libId && cur->data.size() == s->data.size() && Impl::sigOf (*cur) == Impl::sigOf (*s)) continue;

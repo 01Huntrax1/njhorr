@@ -17,8 +17,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030 };
-            return juce::Colour (c[juce::jlimit (0, 11, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0 };
+            return juce::Colour (c[juce::jlimit (0, 12, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -249,8 +249,11 @@ namespace njo
                     const double drive = 1.0 + 11.0 * P (0), outg = 2.0 * P (2);
                     auto shape = [&] (double x)
                     {
-                        switch (juce::jlimit (0, 5, mode))
+                        switch (juce::jlimit (0, 8, mode))
                         {
+                            case 6: return x > 0 ? x / (1.0 + x) * 1.4 : 0.0;
+                            case 7: { double g3 = juce::jlimit (-1.0, 1.0, x * 3.0); return g3 * (0.6 + 0.4 * std::abs (g3)); }
+                            case 8: return std::tanh (x);
                             case 0: return std::tanh (x);
                             case 1: return x >= 0 ? 1.0 - std::exp (-x) : -(1.0 - std::exp (x * 0.7)) * 0.85;
                             case 2: return juce::jlimit (-1.0, 1.0, x);
@@ -259,7 +262,7 @@ namespace njo
                             default: return std::tanh (x * 2.0) * 0.7 + std::sin (x * 3.0) * 0.12;
                         }
                     };
-                    auto p = curve ([&] (double t) { double x = (t * 2 - 1); double y = shape (x * drive) * outg; return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, y); });
+                    auto p = curve ([&] (double t) { double x = (t * 2 - 1); double y = shape (x * drive + (P (3) - 0.5) * 1.2 * drive * 0.5) * outg; return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, y); });
                     g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1)); 
                     stroke (p); label ("INPUT -> OUTPUT");
@@ -333,10 +336,29 @@ namespace njo
                     g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (0), Y (0.95), 2.0f, (float) (0.9 * H));
                     label (juce::String (juce::roundToInt (P (2) * 100)) + " ms pre-delay");
                 }
+                else if (ty == 12)   // Convolution reverb: the impulse response envelope of the selected mode
+                {
+                    static const double t60Base[] = { 0.15, 0.5, 0.4, 1.2, 0.3, 0.4, 0.2, 0.08, 0.5 }, t60Size[] = { 0.85, 1.3, 1.3, 1.5, 0.9, 1.1, 0.5, 0.25, 1.0 };
+                    const int m = juce::jlimit (0, 8, mode);
+                    const double t60 = (t60Base[m] + t60Size[m] * P (0)) * (0.35 + 1.3 * P (1)), len = juce::jlimit (0.05, 1.5, t60 * 1.15), pre = P (3) * 0.2;
+                    const double span = 1.6, dmp = P (2);
+                    juce::Random rng (11);
+                    for (int i = 0; i < 240; ++i)
+                    {
+                        double t = (double) i / 240 * span - pre * 0.0, tt = t - pre; if (tt < 0 || tt > len) continue;
+                        double e = std::exp (-6.9 * tt / t60);
+                        if (m == 5) e = std::exp (-6.9 * (len - tt) / t60);
+                        else if (m == 6) e = tt < len - 0.02 ? 1.0 : 0.0;
+                        e *= (0.65 + 0.35 * rng.nextDouble()) * (1.0 - 0.3 * dmp * tt / len);
+                        g.setColour (col.withAlpha (0.25f + 0.6f * (float) e)); g.fillRect (X (t / span), Y (0.04 + 0.88 * e), 2.0f, (float) (0.88 * e * H));
+                    }
+                    if (m != 5) { g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (pre / span), Y (0.95), 2.0f, (float) (0.9 * H)); }
+                    label (juce::String (t60, 2) + " s decay   " + juce::String (juce::roundToInt (len * 1000)) + " ms IR");
+                }
                 else if (ty == 11)   // Compressor: transfer curve (input dB -> output dB, -60..0)
                 {
                     const double th = -60.0 + 60.0 * P (0), ratio = 1.0 + 19.0 * P (1) * P (1), mk = 24.0 * P (4);
-                    auto p = curve ([&] (double t) { double in = -60.0 + 60.0 * t, out = in <= th ? in : th + (in - th) / ratio; return juce::jlimit (0.0, 1.0, (out + mk + 60.0) / 60.0); });
+                    auto p = curve ([&] (double t) { double in = -60.0 + 60.0 * t, kw = 12.0 * P (5), d = in - th, out = d * 2.0 < -kw ? in : (d * 2.0 > kw ? th + d / ratio : in + (1.0 / ratio - 1.0) * (d + kw * 0.5) * (d + kw * 0.5) / (2.0 * juce::jmax (kw, 0.001))); return juce::jlimit (0.0, 1.0, (out + mk + 60.0) / 60.0); });
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
                     g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X ((th + 60.0) / 60.0), r.getY(), r.getBottom());
                     stroke (p); label ("THRESH " + juce::String (th, 1) + " dB   " + juce::String (ratio, 1) + ":1");
@@ -345,7 +367,7 @@ namespace njo
         };
 
         // ====================================================================================================================
-        Impl (FxPage& o, Ctx& c) : owner (o), ctx (c), list (*this), chooser (*this), display (*this)
+        Impl (FxPage& o, Ctx& c, SoundMemory& m) : owner (o), ctx (c), mem (m), list (*this), chooser (*this), display (*this)
         {
             for (int g = 0; g < 30; ++g)
             {
@@ -379,6 +401,18 @@ namespace njo
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
             for (int rk = 0; rk < 3; ++rk) { sel[rk] = -1; }
+            loadIr.text = "LOAD IR"; clearIr.text = "CLEAR";
+            loadIr.click = [this]
+            {
+                chooser2 = std::make_shared<juce::FileChooser> ("Load an impulse response", juce::File(), SoundMemory::fileWildcard());
+                auto self = juce::Component::SafePointer<FxPage> (&owner);
+                int rk = current;
+                chooser2->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
+                                       [self, rk] (const juce::FileChooser& fc)
+                                       { auto f = fc.getResult(); if (self != nullptr && f.existsAsFile()) { self->impl->mem.load (SoundMemory::ImpulseResponse, rk, f, {}); self->repaint(); } });
+            };
+            clearIr.click = [this] { mem.clear (SoundMemory::ImpulseResponse, current); owner.repaint(); };
+            owner.addChildComponent (loadIr); owner.addChildComponent (clearIr);
             ctx.addListener (this);
             applyOrders();
             for (int rk = 0; rk < 3; ++rk) autoSelect (rk);
@@ -488,6 +522,7 @@ namespace njo
             auto loc = fxLocate (num);
             if (! loc.valid) return;
             if (loc.ord >= 0) { applyOrder (loc.rk); return; }
+            if (loc.off == 3 && loc.rk == current) { layoutCentre(); owner.repaint(); }
             if (loc.off == 0)
             {
                 refreshSlot (loc.g);
@@ -509,6 +544,7 @@ namespace njo
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
             chooser.setVisible (! effectPage); display.setVisible (effectPage); removeBtn.setVisible (effectPage);
+            loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
             if (! effectPage) return;
@@ -522,6 +558,15 @@ namespace njo
             head.removeFromRight (8);
             titleRect = head.removeFromLeft (220);
             if (t.modes.size() > 0) { modeS[g]->setBounds (head.removeFromLeft (150).reduced (0, 2)); modeS[g]->setVisible (true); }
+            if (ty == 12 && juce::roundToInt (ctx.get (slotBase (g) + 3)) == 8)
+            {
+                head.removeFromLeft (10);
+                loadIr.setBounds (head.removeFromLeft (84).reduced (0, 4)); loadIr.setVisible (true);
+                head.removeFromLeft (6);
+                clearIr.setBounds (head.removeFromLeft (64).reduced (0, 4)); clearIr.setVisible (true);
+                head.removeFromLeft (8);
+                irRect = head;
+            }
             auto knobs = c.removeFromBottom (84);
             c.removeFromBottom (6);
             display.setBounds (c);
@@ -532,7 +577,8 @@ namespace njo
             for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
         }
 
-        FxPage& owner; Ctx& ctx;
+        FxPage& owner; Ctx& ctx; SoundMemory& mem;
+        FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
         std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], pK[30][6];
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
@@ -540,7 +586,7 @@ namespace njo
         int current = 0, sel[3] = { -1, -1, -1 }, pos[30] = {}; bool adding = false;
     };
 
-    FxPage::FxPage (Ctx& c) : impl (new Impl (*this, c)) {}
+    FxPage::FxPage (Ctx& c, SoundMemory& m) : impl (new Impl (*this, c, m)) {}
     FxPage::~FxPage() = default;
 
     void FxPage::resized()
@@ -588,6 +634,12 @@ namespace njo
             g.setColour (fxColour (ty)); g.fillRect (impl->titleRect.getX(), impl->titleRect.getY() + 6, 4, impl->titleRect.getHeight() - 12);
             g.setColour (ink); g.setFont (impact (19.0f));
             g.drawText (fxTypes()[(size_t) ty].name.toUpperCase(), impl->titleRect.withTrimmedLeft (14), juce::Justification::centredLeft, true);
+            if (! impl->irRect.isEmpty())
+            {
+                auto* s = impl->mem.get (SoundMemory::ImpulseResponse, impl->current);
+                g.setColour (s ? ink : dim); g.setFont (font (9.5f, true));
+                g.drawText (s ? s->name : juce::String ("NO FILE LOADED"), impl->irRect, juce::Justification::centredLeft, true);
+            }
         }
     }
 }
