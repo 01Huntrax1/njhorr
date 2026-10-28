@@ -10,7 +10,7 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
     // approximations (the exact Alpha Juno shapes are not documented): Pulse 1 variable width, 2 = 25 %, 3 = 12.5 %; Saw 1 ramp, 2 PWM saw (ramp over the
     // pulse width, then low), 3 saw + saw an octave up, 4 saw + third harmonic saw, 5 soft saw; Sub 1 square -1 oct, 2 pulse 25 % -1 oct, 3 square -2 oct,
     // 4 pulse 25 % -2 oct, 5 squares -1 and -2 oct, 6 triangle -1 oct. Edges are band-limited with PolyBLEP. Parameters: phyP slot * 32 + 16 .. 30.
-    // state: Voice.wtUPh slot * 7 (phase), slot * 7 + 1 (LFO phase); Voice.phs slot * 176 + 0 drift counter, 1 drift target, 2 drift value, 3 noise low-pass, 4 sub counter (0..3)
+    // state: see junoStep (Voice.wtUPh phases per unison voice, Voice.phs 1842.. for the LFO phase, noise low-pass and sub counters)
     float junoBlep (float t, float dt)
     {
         if (t < dt)
@@ -41,38 +41,26 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
         return 2.0f * q - 1.0f - junoBlep (q, dt);
     }
 
-    float junoStep (int vi, int o, float freq, float pm)
+    // Unison: the voices of Unison Voices / Detune / Blend / Width / Curve (same parameters as the wavetable source) each run a complete DCO; the LFO, the pulse
+    // width and the noise are shared. Every voice has its own analog drift (Voice.phs, see uniDriftRaw). Returns the stereo sum.
+    // state: Voice.wtUPh slot * 7 + j (phase), Voice.phs 1842 + slot (LFO phase), 1848 + slot (noise low-pass), 1854 + slot * 7 + j (sub counter 0..3)
+    float<2> junoStep (int vi, int o, float freq, float pm)
     {
         float sr = float (processor.frequency);
         int   pb = o * 32;
-        int   sb = o * 176;
         int   ui = o * 7;
-
-        // drift: a new random target every 2048 samples, followed slowly
-        float cnt = voices.at (vi).phs.at (sb);
-
-        if (cnt <= 0.0f)
-        {
-            cnt = 2048.0f;
-            voices.at (vi).phs.at (sb + 1) = nextNoise();
-        }
-
-        voices.at (vi).phs.at (sb) = cnt - 1.0f;
-        float dr = voices.at (vi).phs.at (sb + 2);
-        dr += 0.0006f * (voices.at (vi).phs.at (sb + 1) - dr);
-        voices.at (vi).phs.at (sb + 2) = dr;
+        int   n  = uniCnt.at (o);
 
         // the LFO (triangle) drives the pulse width and the vibrato
-        float64 lph = voices.at (vi).wtUPh.at (ui + 1);
+        float64 lph = float64 (voices.at (vi).phs.at (1842 + o));
         lph += float64 (phq (o, pb, 20)) * processor.period;
         if (lph >= 1.0) lph -= 1.0;
-        voices.at (vi).wtUPh.at (ui + 1) = lph;
+        voices.at (vi).phs.at (1842 + o) = float (lph);
         float tri = float (lph < 0.5 ? lph * 4.0 - 1.0 : 3.0 - lph * 4.0);
 
         int   rg = clamp (int (phq (o, pb, 23) + 0.5f), 0, 2);
-        float f  = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phq (o, pb, 24) * dr * 0.0046f + phq (o, pb, 30) * 0.0293f * tri);
-        f = clamp (f, 1.0f, sr * 0.45f);
-        float dt = f * float (processor.period);
+        float fb = freq * (rg == 0 ? 0.5f : (rg == 2 ? 2.0f : 1.0f)) * (1.0f + phq (o, pb, 30) * 0.0293f * tri);
+        float dA = phq (o, pb, 24) * 0.0046f + opv (o, 28) * 0.007f;
 
         // pulse width: manual, LFO or amp envelope
         int   src = clamp (int (phq (o, pb, 29) + 0.5f), 0, 2);
@@ -80,105 +68,119 @@ DSP = r'''    // ---------------- Roland Alpha Juno style DCO (tools/phys/build_
         float mod = src == 0 ? tri : (src == 1 ? voices.at (vi).env * 2.0f - 1.0f : 0.0f);
         float w   = clamp (phq (o, pb, 18) + dep * 0.45f * mod, 0.05f, 0.95f);
 
-        float64 ph = voices.at (vi).wtUPh.at (ui);
-        float   rp = float (ph);
+        float sawL = phq (o, pb, 16);
+        float pulL = phq (o, pb, 17);
+        float sl   = clamp (phq (o, pb, 21), 0.0f, 1.0f);
+        int   stp  = clamp (int (phq (o, pb, 27) + 0.5f), 0, 4);
+        int   ptp  = clamp (int (phq (o, pb, 26) + 0.5f), 0, 2);
+        int   btp  = clamp (int (phq (o, pb, 28) + 0.5f), 0, 5);
+        float cv   = phq (o, pb, 25) * 4.0f;
+        float sumL = 0.0f;
+        float sumR = 0.0f;
 
-        if (pm != 0.0f)
+        for (int j = 0; j < n; ++j)
         {
-            rp = rp + pm;
-            rp = rp - float (floor (rp));
+            float dr = uniDriftRaw (vi, o, j, dA > 0.0f);
+            float f  = clamp (fb * uniRatio.at (ui + j) * (1.0f + dA * dr), 1.0f, sr * 0.45f);
+            float dt = f * float (processor.period);
+
+            float64 ph = voices.at (vi).wtUPh.at (ui + j);
+            float   rp = float (ph);
+
+            if (pm != 0.0f)
+            {
+                rp = rp + pm;
+                rp = rp - float (floor (rp));
+            }
+
+            // saw wave
+            float saw = 0.0f;
+
+            if (sawL > 0.0f)
+            {
+                if (stp == 0 || stp == 4)
+                {
+                    float y = 2.0f * rp - 1.0f;
+
+                    if (cv > 0.01f)
+                        y = 2.0f * (float (exp (cv * rp)) - 1.0f) / (float (exp (cv)) - 1.0f) - 1.0f;
+
+                    saw = y - junoBlep (rp, dt);
+
+                    if (stp == 4)
+                        saw = float (tanh (1.7f * saw)) * 1.12f;
+                }
+                else if (stp == 1)
+                {
+                    // PWM saw: the ramp runs over the pulse width and drops to the bottom, DC removed
+                    float q  = rp < w ? rp / w : 1.0f;
+                    float wp = rp - w;
+                    if (wp < 0.0f) wp += 1.0f;
+                    saw = (rp < w ? 2.0f * q - 1.0f : -1.0f) - 2.0f * junoBlep (wp, dt) * 0.5f + (1.0f - w) - 0.0f;
+                    saw = saw * 0.9f;
+                }
+                else if (stp == 2)
+                {
+                    float q2 = rp * 2.0f;
+                    q2 = q2 - float (floor (q2));
+                    saw = 0.75f * junoRamp (rp, dt) + 0.25f * junoRamp (q2, dt * 2.0f);
+                }
+                else
+                {
+                    float q3 = rp * 3.0f;
+                    q3 = q3 - float (floor (q3));
+                    saw = 0.7f * junoRamp (rp, dt) + 0.3f * junoRamp (q3, dt * 3.0f);
+                }
+            }
+
+            // pulse wave
+            float pul = 0.0f;
+
+            if (pulL > 0.0f)
+                pul = junoPulse (rp, ptp == 0 ? w : (ptp == 1 ? 0.25f : 0.125f), dt);
+
+            // sub oscillator
+            float s4  = voices.at (vi).phs.at (1854 + ui + j);
+            float sub = 0.0f;
+
+            if (sl > 0.0f)
+            {
+                float st = s4 - 2.0f * float (floor (s4 * 0.5f));
+                float q2 = (rp + st) * 0.5f;
+                float q4 = (rp + s4) * 0.25f;
+
+                if (btp == 0)      sub = junoPulse (q2, 0.5f, dt * 0.5f);
+                else if (btp == 1) sub = junoPulse (q2, 0.25f, dt * 0.5f);
+                else if (btp == 2) sub = junoPulse (q4, 0.5f, dt * 0.25f);
+                else if (btp == 3) sub = junoPulse (q4, 0.25f, dt * 0.25f);
+                else if (btp == 4) sub = 0.5f * (junoPulse (q2, 0.5f, dt * 0.5f) + junoPulse (q4, 0.5f, dt * 0.25f));
+                else               sub = q2 < 0.5f ? 4.0f * q2 - 1.0f : 3.0f - 4.0f * q2;
+            }
+
+            ph += float64 (f) * processor.period;
+
+            if (ph >= 1.0)
+            {
+                ph -= 1.0;
+                s4 += 1.0f;
+                if (s4 > 3.5f) s4 = 0.0f;
+                voices.at (vi).phs.at (1854 + ui + j) = s4;
+            }
+
+            voices.at (vi).wtUPh.at (ui + j) = ph;
+
+            float v = (saw * sawL + pul * pulL + sub * sl) * 0.5f;
+            sumL += v * uniGL.at (ui + j);
+            sumR += v * uniGR.at (ui + j);
         }
 
-        // saw wave
-        float saw = 0.0f;
-
-        if (phq (o, pb, 16) > 0.0f)
-        {
-            int stp = clamp (int (phq (o, pb, 27) + 0.5f), 0, 4);
-            float cv = phq (o, pb, 25) * 4.0f;
-
-            if (stp == 0 || stp == 4)
-            {
-                float y = 2.0f * rp - 1.0f;
-
-                if (cv > 0.01f)
-                    y = 2.0f * (float (exp (cv * rp)) - 1.0f) / (float (exp (cv)) - 1.0f) - 1.0f;
-
-                saw = y - junoBlep (rp, dt);
-
-                if (stp == 4)
-                    saw = float (tanh (1.7f * saw)) * 1.12f;
-            }
-            else if (stp == 1)
-            {
-                // PWM saw: the ramp runs over the pulse width and drops to the bottom, DC removed
-                float q  = rp < w ? rp / w : 1.0f;
-                float wp = rp - w;
-                if (wp < 0.0f) wp += 1.0f;
-                saw = (rp < w ? 2.0f * q - 1.0f : -1.0f) - 2.0f * junoBlep (wp, dt) * 0.5f + (1.0f - w) - 0.0f;
-                saw = saw * 0.9f;
-            }
-            else if (stp == 2)
-            {
-                float q2 = rp * 2.0f;
-                q2 = q2 - float (floor (q2));
-                saw = 0.75f * junoRamp (rp, dt) + 0.25f * junoRamp (q2, dt * 2.0f);
-            }
-            else
-            {
-                float q3 = rp * 3.0f;
-                q3 = q3 - float (floor (q3));
-                saw = 0.7f * junoRamp (rp, dt) + 0.3f * junoRamp (q3, dt * 3.0f);
-            }
-        }
-
-        // pulse wave
-        float pul = 0.0f;
-
-        if (phq (o, pb, 17) > 0.0f)
-        {
-            int ptp = clamp (int (phq (o, pb, 26) + 0.5f), 0, 2);
-            pul = junoPulse (rp, ptp == 0 ? w : (ptp == 1 ? 0.25f : 0.125f), dt);
-        }
-
-        // sub oscillator
-        float s4  = voices.at (vi).phs.at (sb + 4);
-        float sub = 0.0f;
-        float sl  = clamp (phq (o, pb, 21), 0.0f, 1.0f);
-
-        if (sl > 0.0f)
-        {
-            int   btp = clamp (int (phq (o, pb, 28) + 0.5f), 0, 5);
-            float st  = s4 - 2.0f * float (floor (s4 * 0.5f));
-            float q2  = (rp + st) * 0.5f;
-            float q4  = (rp + s4) * 0.25f;
-
-            if (btp == 0)      sub = junoPulse (q2, 0.5f, dt * 0.5f);
-            else if (btp == 1) sub = junoPulse (q2, 0.25f, dt * 0.5f);
-            else if (btp == 2) sub = junoPulse (q4, 0.5f, dt * 0.25f);
-            else if (btp == 3) sub = junoPulse (q4, 0.25f, dt * 0.25f);
-            else if (btp == 4) sub = 0.5f * (junoPulse (q2, 0.5f, dt * 0.5f) + junoPulse (q4, 0.5f, dt * 0.25f));
-            else               sub = q2 < 0.5f ? 4.0f * q2 - 1.0f : 3.0f - 4.0f * q2;
-        }
-
-        // noise (slightly dark)
-        float ln = voices.at (vi).phs.at (sb + 3);
+        // noise (slightly dark), shared by the voices and centred
+        float ln = voices.at (vi).phs.at (1848 + o);
         ln += 0.6f * (nextNoise() - ln);
-        voices.at (vi).phs.at (sb + 3) = ln;
+        voices.at (vi).phs.at (1848 + o) = ln;
+        float nz = ln * phq (o, pb, 22) * 0.5f;
 
-        ph += float64 (f) * processor.period;
-
-        if (ph >= 1.0)
-        {
-            ph -= 1.0;
-            s4 += 1.0f;
-            if (s4 > 3.5f) s4 = 0.0f;
-            voices.at (vi).phs.at (sb + 4) = s4;
-        }
-
-        voices.at (vi).wtUPh.at (ui) = ph;
-
-        return (saw * phq (o, pb, 16) + pul * phq (o, pb, 17) + sub * sl + ln * phq (o, pb, 22)) * 0.5f;
+        return float<2> (sumL + nz, sumR + nz);
     }
 
 '''
@@ -191,6 +193,6 @@ s = s.replace("junoStep (i, o, freq, pm, vmod.at (dB + 3), vmod.at (dB + 4), vmo
 if "junoStep (i, o, freq" not in s:
     old = "                    else if (ty == 3)\n                    {\n                        sL = phyStep ("
     assert old in s
-    s = s.replace(old, "                    else if (ty == 4)\n                    {\n                        sL = junoStep (i, o, freq, pm);\n                        sR = sL;\n                    }\n" + old, 1)
+    s = s.replace(old, "                    else if (ty == 4)\n                    {\n                        float<2> jw = junoStep (i, o, freq, pm);\n                        sL = jw[0];\n                        sR = jw[1];\n                        stereo = true;\n                    }\n" + old, 1)
 open(PATCH, "w").write(s)
 print("ok")

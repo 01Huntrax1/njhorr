@@ -612,7 +612,7 @@ const AudioDecode = (() => {
 })();
 /*AUDIODEC-END*/
 const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560;
-const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45, "rson": 56, "rsmod": 57, "rsdec": 58, "rsmat": 59, "rshit": 60, "rsinh": 61, "rstune": 62, "rsmix": 63};
+const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "udrift": 28, "uphase": 29, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "pleng": 24, "pharm": 25, "ptimb": 26, "pmorph": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45, "rson": 56, "rsmod": 57, "rsdec": 58, "rsmat": 59, "rshit": 60, "rsinh": 61, "rstune": 62, "rsmix": 63};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
 const pmId = (s, d) => PM_BASE + 6 * s + d;
@@ -654,6 +654,8 @@ const OSC_SPEC_ROWS = [
     [1015, "OSC 1 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1016, "OSC 1 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1017, "OSC 1 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1028, "OSC 1 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1029, "OSC 1 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1018, "OSC 1 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1019, "OSC 1 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1020, "OSC 1 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -716,6 +718,8 @@ const OSC_SPEC_ROWS = [
     [1079, "OSC 2 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1080, "OSC 2 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1081, "OSC 2 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1092, "OSC 2 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1093, "OSC 2 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1082, "OSC 2 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1083, "OSC 2 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1084, "OSC 2 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -778,6 +782,8 @@ const OSC_SPEC_ROWS = [
     [1143, "OSC 3 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1144, "OSC 3 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1145, "OSC 3 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1156, "OSC 3 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1157, "OSC 3 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1146, "OSC 3 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1147, "OSC 3 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1148, "OSC 3 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -840,6 +846,8 @@ const OSC_SPEC_ROWS = [
     [1207, "OSC 4 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1208, "OSC 4 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1209, "OSC 4 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1220, "OSC 4 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1221, "OSC 4 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1210, "OSC 4 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1211, "OSC 4 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1212, "OSC 4 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -902,6 +910,8 @@ const OSC_SPEC_ROWS = [
     [1271, "OSC 5 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1272, "OSC 5 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1273, "OSC 5 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1284, "OSC 5 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1285, "OSC 5 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1274, "OSC 5 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1275, "OSC 5 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1276, "OSC 5 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -964,6 +974,8 @@ const OSC_SPEC_ROWS = [
     [1335, "OSC 6 Unison Blend", 0, 1, 1, "", "sld", null, 1, "Blend", null],
     [1336, "OSC 6 Unison Width", 0, 1, 0.75, "", "sld", null, 1, "Width", null],
     [1337, "OSC 6 Unison Style", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"], 1, "Detune Curve", null],
+    [1348, "OSC 6 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
+    [1349, "OSC 6 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
     [1338, "OSC 6 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1339, "OSC 6 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
     [1340, "OSC 6 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
@@ -2870,7 +2882,7 @@ class EisenpulsPatchView extends HTMLElement {
           </section>`;
         const tune = `<section class="card o-tune"><h2>Tune</h2>
             <div class="cgrid o-g2">${["oct", "semi", "fine", "track", "freq"].map(c).join("")}${sh("0,1", ["phase", "rphase"].map(c).join(""), "o-sub o-g2")}</div>
-            ${sh("0", "<div class=\"o-uh\">Unison</div>" + ["uvox", "udet", "ublend", "uwid", "ustyle"].map(c).join(""), "cgrid o-g2 o-uni")}
+            ${sh("0,4", "<div class=\"o-uh\">Unison</div>" + ["uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle"].map(c).join(""), "cgrid o-g2 o-uni")}
           </section>`;
         const out = `<section class="card o-out"><h2>Output</h2>
             <div class="cgrid o-g2">${["level", "pan"].map(c).join("")}</div>

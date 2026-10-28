@@ -531,5 +531,31 @@ for t in range(6):
     a = render(SAW + DST + RES + [RS("fon", 1), RS("fcut", 800), RS("dpos", t), RS("rsdec", 20)], note=33 + 20 * (t % 3), hold=0.3, tail=0.05, tag="rsord%d" % t)
     if not np.isfinite(a).all() or np.abs(a).max() > 6: ok = False
 check("All six pre-matrix orders stay finite and bounded", ok)
+
+# ---------------------------------------------------------------- Alpha Juno unison and the Unison Drift / Phase parameters
+JS = only(saw=1.0, pulse=0.0)
+u1 = render(JS + [P(0, "uvox", 1)], hold=0.8, tail=0.05, tag="ju_u1")
+check("Juno: one unison voice is centred", float(np.corrcoef(seg(u1)[:, 0], seg(u1)[:, 1])[0, 1]) > 0.999 and rms(seg(u1)) > 0.02)
+u5 = render(JS + [P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], hold=0.8, tail=0.05, tag="ju_u5")
+check("Juno: unison widens the stereo image", float(np.corrcoef(seg(u5)[:, 0], seg(u5)[:, 1])[0, 1]) < 0.95)
+check("Juno: unison keeps the level of a single voice (within 3 dB)", abs(20 * np.log10(rms(seg(u5)) / rms(seg(u1)))) < 3.0, "%.2f dB" % (20 * np.log10(rms(seg(u5)) / rms(seg(u1)))))
+f1 = band(seg(u1)[:, 0], 100, 400); f5 = band(seg(u5)[:, 0], 100, 400)
+sp1 = peak_freq(seg(u1)[:, 0]); sp5 = peak_freq(seg(u5)[:, 0])
+check("Juno: unison voices are detuned around the pitch", abs(sp5 - sp1) < 8 and not np.allclose(u1[:, 0], u5[:, 0], atol=1e-3))
+a_d0 = render(JS + [P(0, "uvox", 3), P(0, "udet", 0.2), P(0, "udrift", 0)], hold=0.8, tail=0.05, tag="ju_d0")
+a_d1 = render(JS + [P(0, "uvox", 3), P(0, "udet", 0.2), P(0, "udrift", 1)], hold=0.8, tail=0.05, tag="ju_d1")
+check("Juno: Unison Drift changes the sound and stays bounded", not np.allclose(a_d0, a_d1, atol=1e-3) and np.isfinite(a_d1).all() and np.abs(a_d1).max() < 4)
+w_d0 = render(["wt 0 saw", FOFF(0), P(0, "uvox", 3), P(0, "udet", 0.2), P(0, "udrift", 0)], tag="wt_d0")
+w_d1 = render(["wt 0 saw", FOFF(0), P(0, "uvox", 3), P(0, "udet", 0.2), P(0, "udrift", 1)], tag="wt_d1")
+check("Wavetable: Unison Drift changes the sound and stays bounded", not np.allclose(w_d0, w_d1, atol=1e-3) and np.isfinite(w_d1).all() and np.abs(w_d1).max() < 4)
+p0 = render(["wt 0 saw", FOFF(0), P(0, "uvox", 4), P(0, "udet", 0.0), P(0, "uphase", 0)], tag="wt_p0")
+p1 = render(["wt 0 saw", FOFF(0), P(0, "uvox", 4), P(0, "udet", 0.0), P(0, "uphase", 1)], tag="wt_p1")
+check("Unison Phase: voices at the same pitch add up fully without it, partly cancel with it", rms(seg(p0)) > 1.15 * rms(seg(p1)), "%.4f vs %.4f" % (rms(seg(p0)), rms(seg(p1))))
+ok = True
+for t in range(4):
+    a = render(JUNO + [JU("jsaw", 1), JU("jpulse", 1), JU("jsub", 1), JU("jnoise", 1), JU("jdrift", 1), JU("jstype", t), JU("jbtype", t + 1), P(0, "uvox", 7), P(0, "udet", 1.0), P(0, "udrift", 1), P(0, "uphase", 1), P(0, "ustyle", t), P(0, "level", 1)],
+               note=(24, 60, 96, 120)[t], hold=0.3, tail=0.05, tag="juuni%d" % t)
+    if not np.isfinite(a).all() or np.abs(a).max() > 6: ok = False
+check("Juno unison stays finite and bounded at extreme settings", ok)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

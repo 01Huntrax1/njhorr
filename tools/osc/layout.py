@@ -39,6 +39,8 @@ PARAMS = [
  (15, "ublend", "Unison Blend",  "Blend",     0, 1, 1, "", "sld", None),
  (16, "uwid",   "Unison Width",  "Width",     0, 1, 0.75, "", "sld", None),
  (17, "ustyle", "Unison Style",  "Detune Curve", 0, 3, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd"]),
+ (28, "udrift", "Unison Drift",  "Drift",     0, 1, 0, "", "sld", None),    # slow random pitch wander per unison voice (up to about 12 cents)
+ (29, "uphase", "Unison Phase",  "Phase Spread", 0, 1, 0, "", "sld", None), # random start phase per unison voice
  (18, "w1m",    "Warp 1 Mode",   "Warp 1",    0, 8, 0, "", "sel", None),   # labels in UI (WARP_MODES)
  (19, "w1a",    "Warp 1 Amount", "Warp 1 Amt",0, 1, 0.5, "", "sld", None),
  (20, "w2m",    "Warp 2 Mode",   "Warp 2",    0, 8, 0, "", "sel", None),

@@ -149,7 +149,7 @@ namespace njo
               modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER")
         {
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
-                              "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "ustyle",
+                              "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
                               "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
             {
@@ -458,12 +458,13 @@ namespace njo
                 knob ("freq", cr, (wt || ph) ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
                 put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (pl || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (pl || ph));
 
-                showUnison = wt;
-                put ("uvox", lx, 283, 72, 17, c, wt);   strip ("uvox", lx, 272, 72, c, true, wt);
-                knob ("udet", cr, 256, c, wt);
-                knob ("ublend", cl, 319, c, wt);
-                knob ("uwid", cr, 319, c, wt);
-                put ("ustyle", lx, 387, w - 24, 31, c, wt);
+                const bool uni = wt || type == 4;      // the wavetable and the Alpha Juno source share the unison section
+                showUnison = uni;
+                const int u0 = 12 + (w - 24) / 6, u1 = 12 + (w - 24) / 2, u2 = 12 + (w - 24) * 5 / 6;
+                knob ("udet", u0, 256, c, uni);  knob ("ublend", u1, 256, c, uni);  knob ("uwid", u2, 256, c, uni);
+                knob ("udrift", u0, 316, c, uni);  knob ("uphase", u1, 316, c, uni);
+                put ("uvox", u2 - 36, 343, 72, 17, c, uni);   strip ("uvox", u2 - 36, 331, 72, c, true, uni);
+                put ("ustyle", lx, 387, w - 24, 31, c, uni);
             }
             // ---- output (oscillator page) ----
             if (mode == 0)

@@ -187,3 +187,9 @@ More algorithms and parameters (`tools/fx/build_fx2.py`; all effects keep their 
 * Reverb: wet Low Cut and High Cut. EQ: High Freq (4-16 kHz). Compressor: soft Knee (0-12 dB).
 
 Tests: `python3 tools/fx/test_fx.py --host <dsp_host built from cmaj generate --target=cpp>` (the host got an `ir` command).
+
+## Unison on the Alpha Juno source, Unison Drift and Phase Spread
+The Alpha Juno source now has the same **unison** as the wavetable source (Voices 1-7, Detune, Blend, Width, Detune Curve; shared parameters, so presets and modulation work the same way). Every unison voice is a complete DCO (saw + pulse + sub, band-limited); the LFO, pulse width and noise are shared. Level is kept equal to a single voice. Two new unison parameters on both sources (OSC page, Tune card):
+* **Drift**: slow random pitch wander per unison voice (a new target every 2048 samples, up to about 12 cents). On the Juno source it adds to the DCO's own analog Drift, which is now independent per voice.
+* **Phase Spread**: random start phase per unison voice (voice 1 keeps the Start Phase), so stacked voices do not all start in phase and cancel / add as one.
+CPU: the Juno source costs about as much per voice as a wavetable voice; 7 unison voices on all six slots with a chord is the worst case (about 2x the time of single voices in the offline host). Code: `tools/osc/build_uni.py`, `tools/phys/build_juno.py`.
