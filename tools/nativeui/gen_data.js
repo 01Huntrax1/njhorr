@@ -15,7 +15,7 @@ src = src.replace(/class EisenpulsPatchView extends HTMLElement/, "class Eisenpu
 const ctx = { console, Math, window: {}, document: { createElement: () => ({}) }, customElements: { define() {} }, HTMLElement: class {}, navigator: {}, localStorage: {}, requestAnimationFrame: () => 0 };
 ctx.__t = (meta, fn) => { fn.meta = meta; return fn; };
 vm.createContext(ctx);
-vm.runInContext(src + "\n;globalThis.__X = { SPECS, FX_TYPES, FX_RACKS, FILTER_TYPES, FILTER_GROUPS, SYNC_DIVS, MOD_WAVES, MOD_SRC, MOD_SRC_GROUPS, MOD_DST, MOD_DST_GROUPS, MOD_TARGET, PLAITS_ENGINES, PLAITS_GROUPS, PLAITS_PARAMS, DIST_TYPES, OSC_OUTS, UNI_STYLES, WARP_MODES, LFO_PRESETS, LFO_MODES, OSC_K, OSC_SRC_TYPES, NOTE_NAMES };", ctx, { filename: "index.js" });
+vm.runInContext(src + "\n;globalThis.__X = { SPECS, FX_TYPES, FX_GATE_PATTERNS, FX_RACKS, FILTER_TYPES, FILTER_GROUPS, SYNC_DIVS, MOD_WAVES, MOD_SRC, MOD_SRC_GROUPS, MOD_DST, MOD_DST_GROUPS, MOD_TARGET, PLAITS_ENGINES, PLAITS_GROUPS, PLAITS_PARAMS, DIST_TYPES, OSC_OUTS, UNI_STYLES, WARP_MODES, LFO_PRESETS, LFO_MODES, OSC_K, OSC_SRC_TYPES, NOTE_NAMES };", ctx, { filename: "index.js" });
 const X = ctx.__X;
 const q = s => JSON.stringify(String(s)).replace(/\\u([0-9a-f]{4})/g, (m, h) => "\\u" + h);   // C++ accepts \uXXXX in narrow literals as UTF-8
 const cstr = s => "juce::CharPointer_UTF8 (" + q(s).replace(/\\u([0-9a-f]{4})/g, (m, h) => utf8esc(parseInt(h, 16))) + ")";
@@ -50,11 +50,12 @@ grpTable("filterGroups", X.FILTER_GROUPS); grpTable("modSrcGroups", X.MOD_SRC_GR
 o.push("const std::vector<juce::StringArray>& plaitsParams()\n{\n    static const std::vector<juce::StringArray> v = {\n" + X.PLAITS_PARAMS.map(p => "        " + arr(p) + ",").join("\n") + "\n    };\n    return v;\n}");
 o.push("const std::map<int, std::pair<int, float>>& modTarget()\n{\n    static const std::map<int, std::pair<int, float>> v = {\n" + Object.entries(X.MOD_TARGET).map(([k, v]) => "        { " + k + ", { " + v[0] + ", " + fl(v[1]) + " } },").join("\n") + "\n    };\n    return v;\n}");
 // fx types
-const fk = f => { const m = f.meta; if (!m) { const t = f.toString(); const known = [["(n * 2).toFixed(2)", "out2x"], ["16 - 12 * n", "bits"], ["1 + Math.round(n * 31)", "rate"], ["Math.round(n * 100) + \" ms\"", "predly"], ["\"Q \"", "midq"], ["1 + 19 * n * n", "ratio"]]; for (const [k, v] of known) if (t.includes(k)) return "{ \"" + v + "\", 0, 0, 0, \"\" }"; throw new Error("unknown formatter " + t); }
+const fk = f => { const m = f.meta; if (!m) { const t = f.toString(); const known = [["(n * 2).toFixed(2)", "out2x"], ["16 - 12 * n", "bits"], ["1 + Math.round(n * 31)", "rate"], ["Math.round(n * 100) + \" ms\"", "predly"], ["\"Q \"", "midq"], ["1 + 19 * n * n", "ratio"], ["FX_GATE_PATTERNS", "pat"]]; for (const [k, v] of known) if (t.includes(k)) return "{ \"" + v + "\", 0, 0, 0, \"\" }"; throw new Error("unknown formatter " + t); }
     return "{ \"" + m[0] + "\", " + num(m[1] === undefined ? 0 : m[1]) + ", " + num(m[2] === undefined ? 0 : m[2]) + ", " + (m[3] === undefined ? 0 : m[3]) + ", " + S(m[4] || "") + " }"; };
 o.push("const std::vector<FxType>& fxTypes()\n{\n    static const std::vector<FxType> v = {");
 X.FX_TYPES.forEach(t => o.push("        { " + [S(t.n), fl(t.mix), arr(t.modes), grp(t.groups), "{ " + t.p.map(p => "{ " + S(p[0]) + ", " + fk(p[1]) + ", " + fl(p[2]) + " }").join(", ") + " }"].join(", ") + " },"));
 o.push("    };\n    return v;\n}");
+o.push("const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns()\n{\n    static const std::vector<std::pair<juce::String, juce::String>> v = {\n" + X.FX_GATE_PATTERNS.map(p => "        { " + S(p[0]) + ", " + S(p[1]) + " },").join("\n") + "\n    };\n    return v;\n}");
 o.push("const std::vector<FxRack>& fxRacks()\n{\n    static const std::vector<FxRack> v = { " + X.FX_RACKS.map(r => "{ " + S(r.name) + ", " + r.id + ", " + r.ord + " }").join(", ") + " };\n    return v;\n}");
 // lfo presets
 const ptsC = p => "{ " + p.map(q => "{ " + fl(q.x) + ", " + fl(q.y) + ", " + fl(q.c) + " }").join(", ") + " }";

@@ -1489,30 +1489,40 @@ const fxMs = (lo, hi) => n => { const v = fxExp(lo, hi)(n); return v >= 1000 ? (
 const fxPct = n => Math.round(n * 100) + "%";
 const fxPctOf = max => n => Math.round(n * max * 100) + "%";
 const fxDb = (lo, hi) => n => { const v = lo + n * (hi - lo); return (v > 0 ? "+" : "") + v.toFixed(1) + " dB"; };
+// trance gate patterns: 16 steps, '#' open, '+' 45 %, '.' closed (the DSP table is generated from the same list by tools/fx/build_fx3.py)
+const FX_GATE_PATTERNS = [
+    ["Eighths", "#.#.#.#.#.#.#.#."], ["Quarters", "#...#...#...#..."], ["Off-beat", "..#...#...#...#."], ["Accented 16ths", "#+#+#+#+#+#+#+#+"],
+    ["3-3-2", "#..#..#.#..#..#."], ["Dotted", "#..#..#...#..#.."], ["Rolling", "#.##.#.##.##.#.#"], ["Syncopated", "#..#.#..#..#.#.."],
+    ["Stutter", "####............"], ["Half time", "#.......#......."], ["Gallop", "#.###.#.###.#.##"], ["Trance", "#.##.##.#.##.##."],
+    ["Double", "##..##..##..##.."], ["Ghost notes", "#+.+#+.+#+.+#+.+"], ["Build", "#...#...#.#.####"], ["Break", "#.#.#.#.##..##.."],
+    ["Pulse", "#...#...#...#.#."], ["Skip", "#.#...#.#.#...#."], ["Rapid", "####.###.###.###"], ["Sparse", "#.....#...#....."],
+    ["Pump", "#.+.#.+.#.+.#.+."], ["Bounce", "#.#..#.#.#..#.#."], ["Triplet feel", "#..#..#..#..#..#"], ["Full", "################"]
+];
+const fxPat = n => FX_GATE_PATTERNS[Math.max(0, Math.min(23, Math.floor(n * 24)))][0];
 // [label, formatter, default (normalised)]
 const FX_TYPES = [
     { n: "None", mix: 1, modes: [], p: [] },
-    { n: "Distortion", mix: 1, modes: ["Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Rectify", "Fuzz", "Tanh"],
+    { n: "Distortion", mix: 1, modes: ["Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Rectify", "Fuzz", "Tanh", "Diode", "Chebyshev", "Tape", "Gated"],
       p: [["Drive", fxPct, 0.4], ["Tone", fxHz(500, 20000), 1], ["Output", n => (n * 2).toFixed(2) + "x", 0.5], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Low Cut", fxHz(10, 800), 0], ["Presence", fxPct, 0]] },
-    { n: "Bit Crush", mix: 1, modes: ["Round", "Mu-law", "Floor"],
+    { n: "Bit Crush", mix: 1, modes: ["Round", "Mu-law", "Floor", "Bits Only", "Rate Only", "Noise Shaped"],
       p: [["Bits", n => (16 - 12 * n).toFixed(1) + " bit", 0.5], ["Rate", n => "1/" + (1 + Math.round(n * 31)), 0.1], ["Dither", fxPct, 0], ["Jitter", fxPct, 0]] },
-    { n: "Delay", mix: 0.35, modes: ["Digital", "Tape", "Dual", "Ducking"],
+    { n: "Delay", mix: 0.35, modes: ["Digital", "Tape", "Dual", "Ducking", "Reverse", "Multi-tap"],
       p: [["Time", fxMs(10, 1000), fxExpN(375, 10, 1000)], ["Feedback", fxPctOf(0.95), 0.37], ["Damp", fxHz(500, 18000), 1], ["Ping-Pong", fxPct, 1], ["Mod", fxPct, 0], ["Low Cut", fxHz(20, 1000), 0]] },
-    { n: "Chorus", mix: 0.5, modes: ["Classic", "Dimension", "Vibrato"],
+    { n: "Chorus", mix: 0.5, modes: ["Classic", "Dimension", "Vibrato", "Ensemble", "Wide"],
       p: [["Rate", fxHz(0.05, 5), fxExpN(0.8, 0.05, 5)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0], ["Width", fxPctOf(2), 0.5]] },
-    { n: "Flanger", mix: 0.5, modes: ["Positive", "Negative"],
+    { n: "Flanger", mix: 0.5, modes: ["Positive", "Negative", "Through-Zero", "Stereo"],
       p: [["Rate", fxHz(0.05, 5), fxExpN(0.3, 0.05, 5)], ["Depth", fxPct, 0.6], ["Feedback", fxPctOf(0.95), 0.53], ["Width", fxPctOf(2), 0.5]] },
-    { n: "Phaser", mix: 0.5, modes: ["2 Stages", "4 Stages", "6 Stages", "8 Stages"],
+    { n: "Phaser", mix: 0.5, modes: ["2 Stages", "4 Stages", "6 Stages", "8 Stages", "10 Stages", "12 Stages", "Inverted 4", "Inverted 8"],
       p: [["Rate", fxHz(0.05, 8), fxExpN(0.4, 0.05, 8)], ["Depth", fxPct, 0.5], ["Feedback", fxPctOf(0.9), 0.55], ["Width", fxPctOf(2), 0.5]] },
-    { n: "Tremolo", mix: 1, modes: ["Sin", "Tri", "Sqr", "Saw Dn", "Saw Up"],
-      p: [["Rate", fxHz(0.1, 20), fxExpN(5, 0.1, 20)], ["Depth", fxPct, 0.7], ["Stereo", fxPct, 0]] },
-    { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral"],
+    { n: "Tremolo", mix: 1, modes: ["Sin", "Tri", "Sqr", "Saw Dn", "Saw Up", "Trance Gate", "Auto-Pan", "Random S&H", "Smooth Random"],
+      p: [["Rate", fxHz(0.1, 20), fxExpN(5, 0.1, 20)], ["Depth", fxPct, 0.7], ["Stereo", fxPct, 0], ["Pattern", fxPat, 1.5 / 24], ["Smooth", fxMs(0.3, 40), 0.3], ["Swing", fxPctOf(0.5), 0]] },
+    { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral", "Chamber", "Ambience", "Dark", "Bright", "Infinite"],
       p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1], ["Low Cut", fxHz(20, 800), 0], ["High Cut", fxHz(1500, 20000), 1]] },
     { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
       p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0]] },
-    { n: "EQ", mix: 1, modes: [],
+    { n: "EQ", mix: 1, modes: ["Classic", "Tilt", "Loudness", "Presence"],
       p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5], ["High Freq", fxHz(4000, 16000), 0.5]] },
-    { n: "Compressor", mix: 1, modes: ["Peak", "RMS"],
+    { n: "Compressor", mix: 1, modes: ["Peak", "RMS", "Limiter", "Expander", "Gate"],
       p: [["Thresh", fxLin(-60, 0, 1, "dB"), 0.6], ["Ratio", n => (1 + 19 * n * n).toFixed(1) + ":1", 0.3], ["Attack", fxMs(0.1, 100), 0.4], ["Release", fxMs(10, 1000), 0.4], ["Makeup", fxLin(0, 24, 1, "dB"), 0.2], ["Knee", fxLin(0, 12, 1, "dB"), 0]] },
     { n: "Convolution", mix: 0.3, modes: ["Room", "Hall", "Plate", "Cathedral", "Chamber", "Reverse", "Gated", "Ambience", "User IR"],
       p: [["Size", fxPct, 0.5], ["Decay", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 200, 0, "ms"), 0], ["Width", fxPctOf(2), 0.5], ["Tone", fxLin(-100, 100, 0, "%"), 0.5]] }
@@ -1709,6 +1719,8 @@ const SPECS = (() => {
         }
         for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);
     });
+    // tempo sync of the effect slots: 0 = free, 1.. = the division (the Rate / Time knob is ignored while it is on)
+    FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) L.push([940 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]); });
     L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
     L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);
     OSC_SPEC_ROWS.forEach(r => L.push(r));
@@ -3090,6 +3102,7 @@ class EisenpulsPatchView extends HTMLElement {
         const b = FX_RACKS[rk].id + sl * 10;
         row.classList.toggle("empty", this._fxTypes[g] === 0);
         row.classList.toggle("nomode", t.modes.length === 0);
+        row.classList.toggle("nosync", ![3, 4, 5, 6, 7].includes(this._fxTypes[g]));      // delay time, chorus / flanger / phaser / tremolo rate
         const on = this.fxCtl(b + 1);
         row.classList.toggle("off", !!on && on.value < 0.5);
         const mc = this.fxCtl(b + 3);
@@ -3291,6 +3304,7 @@ class EisenpulsPatchView extends HTMLElement {
                     + `<div class="fxon">${this.controlHTML(b + 1)}</div>`
                     + `<div class="fxty">${this.controlHTML(b)}</div>`
                     + `<div class="fxmd">${this.controlHTML(b + 3)}</div>`
+                    + `<div class="fxsy">${this.controlHTML(940 + rk * 10 + sl)}</div>`
                     + `<div class="fxmx">${this.controlHTML(b + 2, true)}</div>`
                     + `<div class="fxps">${ks}</div></div>`;
             }
@@ -4175,7 +4189,7 @@ class EisenpulsPatchView extends HTMLElement {
   .fxhint { font-size: calc(var(--u) * 8); letter-spacing: 0.12em; color: var(--dim); font-weight: 700; font-family: "Bahnschrift", "Arial Narrow", sans-serif; }
   .fxlist { flex: 1; min-height: 0; flex-direction: column; gap: calc(var(--u) * 2); }
   .fxrow { flex: 1 1 0; min-height: 0; display: grid; align-items: center; column-gap: calc(var(--u) * 8); padding: 0 calc(var(--u) * 6);
-           grid-template-columns: calc(var(--u) * 34) calc(var(--u) * 18) calc(var(--u) * 34) calc(var(--u) * 112) calc(var(--u) * 92) calc(var(--u) * 74) minmax(0, 1fr);
+           grid-template-columns: calc(var(--u) * 34) calc(var(--u) * 18) calc(var(--u) * 34) calc(var(--u) * 112) calc(var(--u) * 70) calc(var(--u) * 92) calc(var(--u) * 74) minmax(0, 1fr);
            background: rgba(0,0,0,0.34); border: 1px solid transparent; border-radius: calc(var(--u) * 4) 1px calc(var(--u) * 4) 1px; position: relative; }
   .fxrow:not(.empty) { background: rgba(255,59,48,0.07); border-color: #5b1a16; }
   .fxrow.off { opacity: 0.45; }
@@ -4187,11 +4201,11 @@ class EisenpulsPatchView extends HTMLElement {
   .fxgrip { cursor: grab; text-align: center; font-size: calc(var(--u) * 16); line-height: 1; color: var(--dim); touch-action: none; }
   .fxgrip:hover { color: var(--yel); }
   .fxrow.dragging .fxgrip { cursor: grabbing; color: var(--org); }
-  .fxon .control .row, .fxty .control .row, .fxmd .control .row { display: none; }
+  .fxon .control .row, .fxty .control .row, .fxmd .control .row, .fxsy .control .row { display: none; }
   .fxon .grp { display: flex; }
   .fxon .grp button { padding: calc(var(--u) * 5) calc(var(--u) * 3); font-size: calc(var(--u) * 8); }
-  .fxty select, .fxmd select { width: 100%; }
-  .fxrow.empty .fxmd, .fxrow.nomode .fxmd { visibility: hidden; }
+  .fxty select, .fxmd select, .fxsy select { width: 100%; }
+  .fxrow.empty .fxmd, .fxrow.nomode .fxmd, .fxrow.empty .fxsy, .fxrow.nosync .fxsy { visibility: hidden; }
   .fxrow.empty .fxon, .fxrow.empty .fxmx, .fxrow.empty .fxps { visibility: hidden; }
   .fxps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: calc(var(--u) * 6); min-width: 0; }
   .fxps .control.knb, .fxmx .control.knb { flex-direction: row; justify-content: flex-start; gap: calc(var(--u) * 4); width: auto; min-width: 0; }

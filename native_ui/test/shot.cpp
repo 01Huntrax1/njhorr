@@ -99,6 +99,13 @@ int main (int argc, char** argv)
         }
         setFx (0, 9); setFx (1, 3); setFx (2, 8); setFx (3, 11); pump();
         save (ed, dir.getChildFile ("fx.png"), scale);
+        // tempo sync and the trance gate
+        setFx (0, 7); cx.set (base + 3, 5.0f); cx.set (base + 4, 0.5f); cx.set (base + 5, 1.0f); cx.set (base + 6, 0.3f); cx.set (base + 7, 10.5f / 24.0f); cx.set (njo::fxSyncId (0), 4.0f); pump();
+        save (ed, dir.getChildFile ("fx_gate.png"), scale);
+        cx.set (base + 3, 7.0f); pump(); save (ed, dir.getChildFile ("fx_trem_rnd.png"), scale);
+        setFx (0, 3); cx.set (base + 3, 4.0f); cx.set (njo::fxSyncId (0), 12.0f); pump(); save (ed, dir.getChildFile ("fx_delay_sync.png"), scale);
+        setFx (0, 10); cx.set (base + 3, 1.0f); pump(); save (ed, dir.getChildFile ("fx_eq_tilt.png"), scale);
+        cx.set (njo::fxSyncId (0), 0.0f);
         for (int sl = 0; sl < 4; ++sl) setFx (sl, 0);
         pump();
     }

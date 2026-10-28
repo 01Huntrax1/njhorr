@@ -198,6 +198,8 @@ namespace njo
                 auto fill = [&] (juce::Path p, double baseV) { p.lineTo (X (1), Y (baseV)); p.lineTo (X (0), Y (baseV)); p.closeSubPath(); g.setColour (col.withAlpha (0.14f)); g.fillPath (p); };
                 auto label = [&] (const juce::String& t, juce::Justification j = juce::Justification::topLeft) { g.setColour (dim); g.setFont (font (9.0f, true)); g.drawText (t, r.toNearestInt().reduced (4, 2), j, false); };
                 const double pi = juce::MathConstants<double>::pi;
+                const int syncIdx = juce::roundToInt (im.ctx.get (fxSyncId (gi)));
+                const juce::String syncName = (syncIdx > 0 && findSpec (fxSyncId (gi)) != nullptr && syncIdx < findSpec (fxSyncId (gi))->labels.size()) ? findSpec (fxSyncId (gi))->labels[syncIdx] : juce::String();
 
                 auto freqAxis = [&]
                 {
@@ -232,7 +234,10 @@ namespace njo
                 }
                 else if (ty == 10)   // EQ: sum of low shelf, peak, high shelf
                 {
-                    const double gL = -12 + 24 * P (0), gM = -12 + 24 * P (1), fM = 200.0 * std::pow (25.0, P (2)), gH = -12 + 24 * P (3), q = 0.3 * std::pow (4.0 / 0.3, P (4));
+                    double gL = -12 + 24 * P (0), gM = -12 + 24 * P (1), fM = 200.0 * std::pow (25.0, P (2)), gH = -12 + 24 * P (3), q = 0.3 * std::pow (4.0 / 0.3, P (4));
+                    if (mode == 1) { const double tl = -12 + 24 * P (0); gL = -tl * 0.5; gH = tl * 0.5; }                       // tilt
+                    else if (mode == 2) { gL = P (0) * 14.0; gM -= gL * 0.25; gH = gL * 0.7 + (P (3) - 0.5) * 24; }              // loudness
+                    else if (mode == 3) { fM = 900.0 * std::pow (7.78, P (2)); q = 0.5 * std::pow (12.0, P (4)); }              // presence
                     auto db = [&] (double f)
                     {
                         double lo = gL / (1.0 + std::pow (f / 200.0, 2.0)), hi = gH / (1.0 + std::pow (4000.0 / f, 2.0));
@@ -249,8 +254,12 @@ namespace njo
                     const double drive = 1.0 + 11.0 * P (0), outg = 2.0 * P (2);
                     auto shape = [&] (double x)
                     {
-                        switch (juce::jlimit (0, 8, mode))
+                        switch (juce::jlimit (0, 12, mode))
                         {
+                            case 9: return x >= 0 ? std::tanh (x * 1.2) : std::tanh (x * 0.45) * 2.1;
+                            case 10: { double xs = juce::jlimit (-1.0, 1.0, x * 0.6), x2 = xs * xs; return xs * 0.5 + (4 * x2 * xs - 3 * xs) * 0.3 + (16 * x2 * x2 * xs - 20 * x2 * xs + 5 * xs) * 0.2; }
+                            case 11: { double xc = juce::jlimit (-3.0, 3.0, x); return xc * (27.0 + xc * xc) / (27.0 + 9.0 * xc * xc); }
+                            case 12: { double xa = std::abs (x); return xa < 0.15 ? 0.0 : juce::jlimit (-1.0, 1.0, x * 1.5) * (xa < 0.3 ? (xa - 0.15) / 0.15 : 1.0); }
                             case 6: return x > 0 ? x / (1.0 + x) * 1.4 : 0.0;
                             case 7: { double g3 = juce::jlimit (-1.0, 1.0, x * 3.0); return g3 * (0.6 + 0.4 * std::abs (g3)); }
                             case 8: return std::tanh (x);
@@ -286,7 +295,7 @@ namespace njo
                     g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (0) - 2, Y (0.95), 4.0f, (float) (0.45 * H));
                     for (int k = 1; k <= taps; ++k) bar (ms * k, std::pow (fb, k - 1) * (0.2 + 0.8 * (mix)), ! pp || (k % 2 == 1));
                     g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
-                    label (juce::String (juce::roundToInt (ms)) + " ms" + (pp ? "   PING-PONG" : ""));
+                    label ((syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (juce::roundToInt (ms)) + " ms") + (pp ? "   PING-PONG" : ""));
                 }
                 else if (ty == 4 || ty == 5 || ty == 6)   // Chorus / Flanger / Phaser: modulation
                 {
@@ -301,11 +310,50 @@ namespace njo
                         g.setColour (col.withAlpha (0.45f));
                         for (int n = 0; n < notches; ++n) { double c = (n + 0.5) / notches * (0.6 + 0.3 * lfo (0.25)); g.fillRect (X (c) - 1.0f, r.getY() + 6, 2.0f, H - 12); }
                     }
-                    stroke (p); label (juce::String (rate, 2) + " Hz  (shape only)");
+                    stroke (p); label ((syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (rate, 2) + " Hz") + "  (shape only)");
                 }
                 else if (ty == 7)   // Tremolo
                 {
                     const double rate = 0.1 * std::pow (200.0, P (0)), depth = P (1);
+                    if (mode == 5)
+                    {
+                        // trance gate: the 16 steps of the pattern (left channel solid, the shifted right channel as an outline)
+                        auto& pt = fxGatePatterns(); const int pi2 = juce::jlimit (0, (int) pt.size() - 1, (int) (P (3) * (double) pt.size()));
+                        const double sw = P (5) * 0.5, sm = P (4);
+                        const float sw16 = W / 16.0f;
+                        auto step = [&] (int k) { auto c = pt[(size_t) pi2].second[k]; return c == '#' ? 1.0 : (c == '+' ? 0.45 : 0.0); };
+                        for (int k = 0; k < 16; ++k)
+                        {
+                            const double lvl = 1.0 - depth * (1.0 - step (k));
+                            const float x0 = r.getX() + sw16 * (float) k + ((k & 1) ? (float) sw * sw16 : 0.0f), wd = sw16 - ((k & 1) ? (float) sw * sw16 : 0.0f) + ((k & 1) == 0 ? (float) sw * sw16 : 0.0f);
+                            g.setColour (col.withAlpha (0.18f + 0.6f * (float) step (k)));
+                            g.fillRect (x0 + 1.5f, Y (0.08 + 0.84 * lvl), juce::jmax (2.0f, wd - 3.0f), (float) (0.84 * lvl * H));
+                            if (P (2) > 0.01) { const int ks = (k + (int) std::lround (8.0 * P (2))) % 16; const double lr = 1.0 - depth * (1.0 - step (ks)); g.setColour (ink.withAlpha (0.55f)); g.drawRect (x0 + 1.5f, Y (0.08 + 0.84 * lr), juce::jmax (2.0f, wd - 3.0f), (float) (0.84 * lr * H), 1.0f); }
+                        }
+                        g.setColour (juce::Colours::white.withAlpha (0.12f));
+                        for (int k = 0; k < 16; k += 4) g.drawVerticalLine ((int) (r.getX() + sw16 * (float) k), r.getY(), r.getBottom());
+                        label (pt[(size_t) pi2].first + "   " + (syncName.isNotEmpty() ? syncName + " per pattern (tempo sync)" : juce::String (rate, 1) + " Hz per pattern") + (sm > 0.7 ? "   soft edges" : ""));
+                    }
+                    else if (mode == 6)
+                    {
+                        const double cycles = juce::jlimit (1.0, 4.0, rate * 0.6);
+                        auto pl = curve ([&] (double t) { double pp = 0.5 + 0.5 * depth * std::sin (2 * pi * t * cycles); return 0.08 + 0.84 * std::cos (pp * pi * 0.5) * 1.4142 * 0.7071; }, 480);
+                        auto pr = curve ([&] (double t) { double pp = 0.5 + 0.5 * depth * std::sin (2 * pi * t * cycles); return 0.08 + 0.84 * std::sin (pp * pi * 0.5) * 1.4142 * 0.7071; }, 480);
+                        stroke (pl); stroke (pr, 0.5f); label ((syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (rate, 1) + " Hz") + "   L / R");
+                    }
+                    else if (mode == 7 || mode == 8)
+                    {
+                        const int n = 8; juce::Random rng (3); double v[n + 1]; for (double& x : v) x = rng.nextDouble();
+                        auto p = curve ([&] (double t)
+                        {
+                            const int i = juce::jmin (n - 1, (int) (t * n)); const double f = t * n - i;
+                            const double lv = mode == 7 ? v[i] : v[i] + (v[i + 1] - v[i]) * f * f * (3 - 2 * f);
+                            return 0.08 + 0.84 * (1.0 - depth * lv);
+                        }, 480);
+                        fill (p, 0.0); stroke (p); label ((syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (rate, 1) + " Hz") + (mode == 7 ? "   SAMPLE & HOLD" : "   SMOOTH RANDOM"));
+                    }
+                    else
+                    {
                     auto wav = [&] (double ph)
                     {
                         ph -= std::floor (ph);
@@ -320,7 +368,8 @@ namespace njo
                     };
                     const double cycles = juce::jlimit (1.0, 8.0, rate * 0.6);
                     auto p = curve ([&] (double t) { return 0.08 + 0.84 * (1.0 - depth * (1.0 - wav (t * cycles))); }, 480);
-                    fill (p, 0.0); stroke (p); label (juce::String (rate, 1) + " Hz");
+                    fill (p, 0.0); stroke (p); label (syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (rate, 1) + " Hz");
+                    }
                 }
                 else if (ty == 8)   // Reverb: decay
                 {
@@ -375,8 +424,9 @@ namespace njo
                 onT[g] = std::make_unique<OnToggle> (ctx, b + 1);
                 mixK[g] = makeWidget (ctx, b + 2, true);
                 modeS[g] = makeWidget (ctx, b + 3, false);
+                syncS[g] = makeWidget (ctx, fxSyncId (g), false);
                 for (int k = 0; k < 6; ++k) pK[g][k] = makeWidget (ctx, b + 4 + k, true);
-                for (auto* w : { (ParamWidget*) onT[g].get(), mixK[g].get(), modeS[g].get() }) owner.addChildComponent (w);
+                for (auto* w : { (ParamWidget*) onT[g].get(), mixK[g].get(), modeS[g].get(), syncS[g].get() }) owner.addChildComponent (w);
                 for (auto& w : pK[g]) owner.addChildComponent (*w);
                 auto drop = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
                 mixK[g]->onModDropped = drop; for (auto& w : pK[g]) w->onModDropped = drop;
@@ -519,6 +569,7 @@ namespace njo
 
         void paramChanged (int num, float) override
         {
+            if (num >= 940 && num < 970) { layoutCentre(); owner.repaint(); return; }
             auto loc = fxLocate (num);
             if (! loc.valid) return;
             if (loc.ord >= 0) { applyOrder (loc.rk); return; }
@@ -538,7 +589,7 @@ namespace njo
         {
             for (int g = 0; g < 30; ++g)
             {
-                onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false);
+                onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false); syncS[g]->setVisible (false);
                 for (auto& w : pK[g]) w->setVisible (false);
             }
             int sl = sel[current];
@@ -557,7 +608,14 @@ namespace njo
             onT[g]->setBounds (head.removeFromRight (96).reduced (0, 3)); onT[g]->setVisible (true);
             head.removeFromRight (8);
             titleRect = head.removeFromLeft (220);
+            syncRect = {};
             if (t.modes.size() > 0) { modeS[g]->setBounds (head.removeFromLeft (150).reduced (0, 2)); modeS[g]->setVisible (true); }
+            if (ty >= 3 && ty <= 7)
+            {
+                head.removeFromLeft (8);
+                syncRect = head.removeFromLeft (100);
+                syncS[g]->setBounds (syncRect.withTrimmedLeft (34).reduced (0, 2)); syncS[g]->setVisible (true);
+            }
             if (ty == 12 && juce::roundToInt (ctx.get (slotBase (g) + 3)) == 8)
             {
                 head.removeFromLeft (10);
@@ -575,12 +633,23 @@ namespace njo
             auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
             put (*mixK[g], 0);
             for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
+            // controls that do nothing right now are dimmed: the rate / time follows the sync division, the gate knobs only matter for their modes
+            const int md = juce::roundToInt (ctx.get (slotBase (g) + 3)), sy = juce::roundToInt (ctx.get (fxSyncId (g)));
+            for (int k = 0; k < 6; ++k) pK[g][k]->setAlpha (1.0f);
+            if (sy > 0 && ty >= 3 && ty <= 7) pK[g][0]->setAlpha (0.35f);
+            if (ty == 7)
+            {
+                pK[g][2]->setAlpha (md == 6 || md == 8 ? 0.35f : 1.0f);
+                pK[g][3]->setAlpha (md == 5 ? 1.0f : 0.35f);
+                pK[g][4]->setAlpha (md == 5 || md == 7 ? 1.0f : 0.35f);
+                pK[g][5]->setAlpha (md == 5 ? 1.0f : 0.35f);
+            }
         }
 
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
-        std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], pK[30][6];
+        std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], syncS[30], pK[30][6]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
         juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
         int current = 0, sel[3] = { -1, -1, -1 }, pos[30] = {}; bool adding = false;
@@ -634,6 +703,11 @@ namespace njo
             g.setColour (fxColour (ty)); g.fillRect (impl->titleRect.getX(), impl->titleRect.getY() + 6, 4, impl->titleRect.getHeight() - 12);
             g.setColour (ink); g.setFont (impact (19.0f));
             g.drawText (fxTypes()[(size_t) ty].name.toUpperCase(), impl->titleRect.withTrimmedLeft (14), juce::Justification::centredLeft, true);
+            if (! impl->syncRect.isEmpty())
+            {
+                g.setColour (dim); g.setFont (font (8.0f, true).withExtraKerningFactor (0.15f));
+                g.drawText ("SYNC", impl->syncRect.withWidth (34), juce::Justification::centredLeft);
+            }
             if (! impl->irRect.isEmpty())
             {
                 auto* s = impl->mem.get (SoundMemory::ImpulseResponse, impl->current);

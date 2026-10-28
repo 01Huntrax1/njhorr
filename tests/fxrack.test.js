@@ -52,7 +52,7 @@ const ctl = (v, n) => v._controls.get("param" + n);
     const lbls = [...A.querySelectorAll('.fxrow[data-g="2"] .fxps .lbl')].map(e => e.textContent);
     check("labels follow the type", JSON.stringify(lbls) === JSON.stringify(["Time", "Feedback", "Damp", "Ping-Pong", "Mod", "Low Cut"]), JSON.stringify(lbls));
     check("unused knobs are hidden", A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 0);
-    check("mode list follows the type", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 4);
+    check("mode list follows the type", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 6);
     check("value text uses real units", /ms$/.test(A.querySelector('.fxrow[data-g="2"] .n565 .val').textContent), A.querySelector('.fxrow[data-g="2"] .n565 .val').textContent);
 
     // ---- the other instance is untouched (shared formatting state must not leak)
@@ -66,6 +66,12 @@ const ctl = (v, n) => v._controls.get("param" + n);
     ctl(A, 561).setValue(7, true);                       // Tremolo
     check("mode reset on type change", ctl(A, 564).value === 0);
     check("tremolo mix default 1", Math.abs(ctl(A, 563).value - 1) < 1e-6);
+    // ---- tempo sync (ids 940..969) and the trance gate of the tremolo
+    check("tremolo knobs: Rate Depth Stereo Pattern Smooth Swing", [...A.querySelectorAll('.fxrow[data-g="2"] .fxps .lbl')].map(e => e.textContent).join() === "Rate,Depth,Stereo,Pattern,Smooth,Swing");
+    check("sync list: Off + 18 divisions", A.querySelector('.fxrow[data-g="2"] .fxsy select').options.length === 19);
+    ctl(A, 942).setValue(9, true);
+    check("sync division sent to the DSP", last(pcA, "param942") === 9);
+    check("tremolo lists the trance gate mode", A.querySelector('.fxrow[data-g="2"] .fxmd select').options[5].textContent === "Trance Gate");
     check("bit-crush has four knobs", (ctl(A, 561).setValue(2, true), A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 2));
 
     // ---- the Filter effect offers all 30 filter types of the Filter page

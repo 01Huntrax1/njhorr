@@ -55,6 +55,7 @@ namespace njo
         if (k == "out2x") return juce::String (n * 2, 2) + "x";
         if (k == "bits")  return juce::String (16 - 12 * n, 1) + " bit";
         if (k == "rate")  return "1/" + juce::String (1 + juce::roundToInt (n * 31));
+        if (k == "pat")   { auto& pt = fxGatePatterns(); return pt[(size_t) juce::jlimit (0, (int) pt.size() - 1, (int) (n * (double) pt.size()))].first; }
         if (k == "predly")return juce::String (juce::roundToInt (n * 100)) + " ms";
         if (k == "midq")  return "Q " + juce::String (0.3 * std::pow (4.0 / 0.3, n), 2);
         if (k == "ratio") return juce::String (1 + 19 * n * n, 1) + ":1";

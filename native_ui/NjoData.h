@@ -62,6 +62,8 @@ namespace njo
     struct FxRack  { juce::String name; int id, ord; };
     const std::vector<FxType>& fxTypes();
     const std::vector<FxRack>& fxRacks();
+    const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns();   // trance gate patterns: name, 16 steps (# open, + 45 %, . closed)
+    inline int fxSyncId (int g) { return 940 + g; }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
     struct FxLoc { int rk = 0, sl = 0, off = 0, g = 0, ord = -1; bool valid = false; };   // ord >= 0: a processing order parameter
     FxLoc fxLocate (int num);
     juce::String fxFormatParam (const FxParam::Fmt&, double n);
