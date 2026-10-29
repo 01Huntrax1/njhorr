@@ -269,5 +269,26 @@ many = [c for i in range(24) for c in band(i, 1, [0, 1, 2, 4, 6, 7, 8, 9, 10, 11
 w = render(many + EQSEND + fx(0, 13, 0, 1.0), tag="many")
 check("EQ with 24 bands of all kinds stays finite and bounded", np.isfinite(w).all() and np.abs(w).max() < 20.0, "peak %.2f" % np.abs(w).max())
 
+# FX-REV: reverb engines (Zita-rev1 FDN: Hall Room Cathedral Chamber Dark Bright Infinite, Dattorro plate: Plate Ambience)
+RVN = ["Hall", "Room", "Plate", "Cathedral", "Chamber", "Ambience", "Dark", "Bright", "Infinite"]
+rv_tail = {}
+for m, nm in enumerate(RVN):
+    a = render(fx(0, 8, m, 1.0, (0.7, 0.5, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=3.0, tag="rv%d" % m)
+    check("reverb %s finite and bounded" % nm, np.isfinite(a).all() and np.abs(a).max() < 4.0, "peak %.2f" % np.abs(a).max())
+    rv_tail[m] = [rms(a[T0 + int(t * RATE):T0 + int((t + 0.3) * RATE)]) for t in (0.1, 0.9, 2.2)]
+    check("reverb %s has a tail after note-off" % nm, rv_tail[m][0] > 2e-3, "%.5f" % rv_tail[m][0])
+    if m != 8:
+        check("reverb %s decays" % nm, rv_tail[m][2] < 0.7 * rv_tail[m][0], "%.5f -> %.5f" % (rv_tail[m][0], rv_tail[m][2]))
+check("reverb Infinite does not decay", rv_tail[8][2] > 0.7 * rv_tail[8][0], "%.5f -> %.5f" % (rv_tail[8][0], rv_tail[8][2]))
+check("reverb Room decays faster than Cathedral", rv_tail[1][1] < 0.3 * rv_tail[3][1], "%.5f vs %.5f" % (rv_tail[1][1], rv_tail[3][1]))
+sh = render(fx(0, 8, 0, 1.0, (0.1, 0.5, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=2.0, tag="rvs"); lg = render(fx(0, 8, 0, 1.0, (0.95, 0.5, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=2.0, tag="rvl")
+check("reverb Size lengthens the Hall tail", rms(lg[T0 + int(1.0 * RATE):T0 + int(1.2 * RATE)]) > 3 * rms(sh[T0 + int(1.0 * RATE):T0 + int(1.2 * RATE)]))
+dk = render(fx(0, 8, 0, 1.0, (0.7, 0.95, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=1.0, tag="rvd", note=108); br = render(fx(0, 8, 0, 1.0, (0.7, 0.05, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=1.0, tag="rvb", note=108)
+check("reverb Damp shortens the tail of a high note", rms(dk[T0 + int(0.4 * RATE):T0 + int(0.9 * RATE)]) < 0.5 * rms(br[T0 + int(0.4 * RATE):T0 + int(0.9 * RATE)]), "%.5f vs %.5f" % (rms(dk[T0 + int(0.4 * RATE):T0 + int(0.9 * RATE)]), rms(br[T0 + int(0.4 * RATE):T0 + int(0.9 * RATE)])))
+st = render(fx(0, 8, 2, 1.0, (0.7, 0.5, 0.0, 1.0, 0.0, 1.0)), hold=0.3, tail=1.0, tag="rvst"); seg = st[T0 + int(0.2 * RATE):T0 + int(0.6 * RATE)]
+check("plate and hall tails are stereo", np.abs(seg[:, 0] - seg[:, 1]).max() > 1e-3)
+w0 = render(fx(0, 8, 0, 1.0, (0.7, 0.5, 0.0, 0.0, 0.0, 1.0)), hold=0.3, tail=1.0, tag="rvw"); seg = w0[T0 + int(0.2 * RATE):T0 + int(0.6 * RATE)]
+check("reverb Width 0 collapses the tail to mono", np.abs(seg[:, 0] - seg[:, 1]).max() < 1e-4)
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

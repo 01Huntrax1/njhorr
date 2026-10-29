@@ -222,3 +222,12 @@ Editor (native UI only): curve display with draggable nodes (frequency / gain, v
 The bands are stored in the sound memory (kind EqBands) and streamed to the DSP with the `eqLoad` event, so they persist with the plugin state like samples do.
 Limitations: the bands are not automatable and are not mod destinations (only the slot controls are); the JS fallback UI has no band editor.
 Generator: `tools/fx/build_eq.py`; tests: `tools/fx/test_fx.py` (PEQ section).
+
+## Reverb engines (FX type 8)
+
+The Schroeder comb reverb was replaced by two engines from the open literature (tools/fx/build_reverb.py). The slot parameters and ids are unchanged (Size, Damp, PreDly, Width, Low Cut, High Cut).
+
+- **Zita-rev1** (Fons Adriaensen, GPL; ported from the GPLv3 Cmajor ZitaReverb example): 8x8 feedback delay network with allpass feedback, Hadamard mixing, a low / mid RT60 split (200 Hz crossover) and high-frequency damping. Modes Hall, Room, Cathedral, Chamber, Dark, Bright and Infinite. Size sets the RT60 (e.g. Hall 0.6-8 s, Cathedral 2-16 s), Damp the high-frequency damping, each mode its own delay scale.
+- **Dattorro plate** (J. Dattorro, "Effect Design Part 1", JAES 1997): input diffusion and a figure-eight tank with modulated allpasses. Modes Plate and Ambience.
+- Size / Damp / pre-delay / width and the wet low / high cut work in every mode. Changing the mode keeps the slot's memory (the old tail of the other engine fades out as noise).
+- Tests: `tools/fx/test_fx.py` (FX-REV section).
