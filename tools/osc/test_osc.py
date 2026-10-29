@@ -577,5 +577,43 @@ r1 = render(["wt 0 saw", "moded 2 4 2 3 1"] + SAWR + [RS("rson", 1), RS("rsdec",
 check("mode edit: the Resonator stage (set 2) follows the edit, set 0 does not touch it", not np.allclose(r0, r1, atol=1e-3))
 r2 = render(["wt 0 saw", "moded 0 4 2 3 1"] + SAWR + [RS("rson", 1), RS("rsdec", 1.0), RS("rsmix", 1.0)], note=57, hold=0.5, tail=0.1, tag="mr2")
 check("mode edit: edits of Physical A leave the Resonator stage alone", np.allclose(r0, r2, atol=1e-5))
+
+# ---------------------------------------------------------------- Kick source (tools/kick/build_kick.py)
+def KP(o, key, v): return (L.kick_id(o, [q[0] for q in L.KICK if q[1] == key][0]), v)
+KBASE = [P(0, "type", 5), P(0, "level", 1.0), FOFF(0)]
+def kick(o_kw=None, note=36, tag="k", hold=1.0, tail=0.4, **kw):
+    return render(KBASE + [KP(0, k, v) for k, v in kw.items()], note=note, hold=hold, tail=tail, tag=tag)[:, 0]
+kd = [kick(kmode=m, tag="km%d" % m) for m in range(4)]
+for m, nm in enumerate(L.KICK_MODES):
+    check("kick %s finite, audible and bounded" % nm, np.isfinite(kd[m]).all() and 0.05 < np.abs(kd[m]).max() < 2.0, "peak %.3f" % np.abs(kd[m]).max())
+    f_early = peak_freq(kd[m][int(0.06 * RATE):int(0.11 * RATE)]); f_late = peak_freq(kd[m][int(0.3 * RATE):int(0.55 * RATE)])
+    check("kick %s: the pitch falls to the played note (65.4 Hz)" % nm, f_early > f_late * 1.2 and abs(f_late - 65.4) < 6.0, "%.1f -> %.1f Hz" % (f_early, f_late))
+check("kick modes differ", all(not np.allclose(kd[0], kd[m], atol=1e-3) for m in (1, 2, 3)))
+f0 = peak_freq(kick(ksweep=0.0, tag="ks0")[int(0.06 * RATE):int(0.4 * RATE)])
+check("kick Sweep 0: no pitch fall", abs(f0 - 65.4) < 4.0, "%.1f Hz" % f0)
+ld = kick(kdec=2000, tag="kdl"); sd = kick(kdec=80, tag="kds")
+check("kick Decay shortens / lengthens the body", rms(ld[int(0.4 * RATE):int(0.5 * RATE)]) > 10 * rms(sd[int(0.4 * RATE):int(0.5 * RATE)]) + 1e-5, "%.4f vs %.4f" % (rms(ld[int(0.4 * RATE):int(0.5 * RATE)]), rms(sd[int(0.4 * RATE):int(0.5 * RATE)])))
+c0 = kick(kclick=0.0, kdec=20, tag="kc0"); c1 = kick(kclick=1.0, kcltone=1.0, kdec=20, tag="kc1")
+check("kick Click adds high frequencies at the start", band(c1[int(0.05 * RATE):int(0.07 * RATE)], 3000, 12000) > 3 * band(c0[int(0.05 * RATE):int(0.07 * RATE)], 3000, 12000) + 1e-6)
+d0 = kick(kdrive=0.0, tag="kd0"); d1 = kick(kdrive=1.0, kdtype=0, tag="kd1")
+check("kick Drive adds harmonics", band(d1[int(0.1 * RATE):int(0.5 * RATE)], 150, 1500) > 1.5 * band(d0[int(0.1 * RATE):int(0.5 * RATE)], 150, 1500))
+check("kick Drive curves differ", all(not np.allclose(d1, kick(kdrive=1.0, kdtype=c, tag="kdc%d" % c), atol=1e-3) for c in range(1, 6)))
+sb0 = kick(ksub=0.0, kdec=600, tag="kb0"); sb1 = kick(ksub=1.0, kdec=600, tag="kb1")
+check("kick Sub adds energy an octave below the note", band(sb1[int(0.3 * RATE):int(0.8 * RATE)], 25, 40) > 2 * band(sb0[int(0.3 * RATE):int(0.8 * RATE)], 25, 40))
+nz0 = kick(knoise=0.0, tag="kn0"); nz1 = kick(knoise=1.0, tag="kn1")
+check("kick Noise adds high-frequency tail", band(nz1[int(0.1 * RATE):int(0.4 * RATE)], 4000, 16000) > 3 * band(nz0[int(0.1 * RATE):int(0.4 * RATE)], 4000, 16000))
+t0 = kick(ktune=0, tag="kt0"); t1 = kick(ktune=12, ksweep=0.0, tag="kt1")
+check("kick Tune +12 st raises the body an octave", abs(peak_freq(t1[int(0.1 * RATE):int(0.4 * RATE)]) - 130.8) < 8.0)
+# retrigger: every note restarts the envelope
+rt = render(KBASE + ["wt 0 sine"], note=36, hold=0.3, tail=0.1, tag="krt")
+# mod destination: Kick Decay (j = 4, logarithmic) of OSC 1 from a constant LFO
+k0 = kick(kdec=100, tag="kmd0"); k1 = render(KBASE + [KP(0, "kdec", 100)] + MM(0, 1, L.kickdst(0, 4), 0.5) + CONST1, note=36, hold=1.0, tail=0.4, tag="kmd1")[:, 0]
+check("Mod destination 'Kick Decay' of OSC 1 lengthens the kick", rms(k1[int(0.15 * RATE):int(0.3 * RATE)]) > 3 * rms(k0[int(0.15 * RATE):int(0.3 * RATE)]) + 1e-5, "%.4f vs %.4f" % (rms(k1[int(0.15 * RATE):int(0.3 * RATE)]), rms(k0[int(0.15 * RATE):int(0.3 * RATE)])))
+k2 = render(KBASE + [KP(0, "kdec", 100)] + MM(0, 1, L.kickdst(1, 4), 0.5) + CONST1, note=36, hold=1.0, tail=0.4, tag="kmd2")[:, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 kick alone", np.allclose(k0, k2, atol=1e-4))
+# two kicks at once (different slots) and polyphony stay finite
+two = render(KBASE + [P(1, "type", 5), P(1, "level", 1.0), FOFF(1), KP(1, "kmode", 3)], note=36, hold=0.5, tail=0.3, tag="k2")
+check("two kick slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 4.0)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

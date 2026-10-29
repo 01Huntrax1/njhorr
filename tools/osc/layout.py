@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno"]
+SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno", "Kick"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
 # order of the three pre-matrix stages (F = filter, D = distortion, R = resonator); index = stage order table row in the DSP
@@ -21,7 +21,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 4, 0, "", "btn", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 5, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -159,4 +159,30 @@ def mod_slot_base(s): return 307 + 3 * s if s < 10 else (472 + 3 * (s - 10) if s
 # destinations 258..443: Physical / Alpha Juno parameter j (0..30) of slot o  ->  258 + 31 * o + j
 PHY_DST_BASE = 258
 def phydst(o, j): return PHY_DST_BASE + 31 * o + j
-N_DST_TOTAL = PHY_DST_BASE + 31 * OSC_COUNT   # 444
+# Kick source (tools/kick/build_kick.py): parameter j (0..15) of slot o has the id KICK_BASE + 16 * o + j and the mod destination 444 + 16 * o + j
+KICK_BASE = 1900
+KICK_STRIDE = 16
+KICK_MODES = ["Classic", "808", "Punch", "Hardstyle"]
+KICK_CURVES = ["Hard Clip", "Tanh", "Atan", "Log", "Exp", "Poly"]
+KICK = [
+ (0,  "kmode",   "Kick Mode",          "Mode",        0, 3, 0, "", "sel", KICK_MODES),
+ (1,  "ksweep",  "Kick Pitch Sweep",   "Sweep",       0, 6, 2.5, "oct", "sld", None),
+ (2,  "kstime",  "Kick Sweep Time",    "Sweep Time",  5, 1000, 60, "ms", "sld", None),
+ (3,  "kscurve", "Kick Sweep Curve",   "Curve",       0, 1, 0.5, "", "sld", None),
+ (4,  "kdec",    "Kick Decay",         "Decay",       20, 3000, 450, "ms", "sld", None),
+ (5,  "ktone",   "Kick Tone",          "Tone",        0, 1, 0.3, "", "sld", None),
+ (6,  "kclick",  "Kick Click Level",   "Click",       0, 1, 0.35, "", "sld", None),
+ (7,  "kcltone", "Kick Click Tone",    "Click Tone",  0, 1, 0.5, "", "sld", None),
+ (8,  "knoise",  "Kick Noise Level",   "Noise",       0, 1, 0.0, "", "sld", None),
+ (9,  "kdrive",  "Kick Drive",         "Drive",       0, 1, 0.2, "", "sld", None),
+ (10, "kdtype",  "Kick Drive Curve",   "Curve",       0, 5, 1, "", "sel", KICK_CURVES),
+ (11, "ksub",    "Kick Sub Level",     "Sub",         0, 1, 0.0, "", "sld", None),
+ (12, "kpunch",  "Kick Punch",         "Punch",       0, 1, 0.3, "", "sld", None),
+ (13, "ktune",   "Kick Tune",          "Tune",       -24, 24, 0, "st", "sld", None),
+ (14, "kcldec",  "Kick Click Decay",   "Click Decay", 1, 40, 6, "ms", "sld", None),
+ (15, "kchar",   "Kick Character",     "Character",   0, 1, 0.5, "", "sld", None),
+]
+def kick_id(o, j): return KICK_BASE + KICK_STRIDE * o + j
+KICK_DST_BASE = PHY_DST_BASE + 31 * OSC_COUNT   # 444
+def kickdst(o, j): return KICK_DST_BASE + KICK_STRIDE * o + j
+N_DST_TOTAL = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540

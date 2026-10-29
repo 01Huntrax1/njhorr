@@ -231,3 +231,13 @@ The Schroeder comb reverb was replaced by two engines from the open literature (
 - **Dattorro plate** (J. Dattorro, "Effect Design Part 1", JAES 1997): input diffusion and a figure-eight tank with modulated allpasses. Modes Plate and Ambience.
 - Size / Damp / pre-delay / width and the wet low / high cut work in every mode. Changing the mode keeps the slot's memory (the old tail of the other engine fades out as noise).
 - Tests: `tools/fx/test_fx.py` (FX-REV section).
+
+## Kick source and the Source dropdown
+
+Source type 5, **Kick**, is a kick drum voice in the spirit of the open-source kick synths Geonkick (GPL-3), Kickmess / LMMS Kicker and ChowKick: sine body with a pitch sweep, click, noise tail, sub oscillator and a drive stage. The algorithms are written from scratch for this synth (no code copied); the designs are the references. The Source selector of every oscillator is now a dropdown (Wavetable, Sampler, Plaits, Physical, Alpha Juno, Kick).
+
+- **Pitch** falls from the played note times 2^Sweep (0-6 octaves) down to the played note, so the kick is tuned by the key. Sweep Time / Curve shape the fall, Tune adds +-24 semitones.
+- **Modes:** Classic (sine with feedback tone), 808 (the pitch follows the decaying body like a resonant circuit, saturated, pulse excited), Punch (two stage pitch fall, second harmonic), Hardstyle (long fall, hard clipped).
+- **Body:** Decay (20 ms - 3 s), Tone, Character (mode specific), Punch (transient boost), Sub (octave below).
+- **Click:** Click level, Click Tone and Click Decay; **Noise** tail; **Drive** with 6 curves (Hard Clip, Tanh, Atan, Log, Exp, Poly).
+- Ids: `KICK_BASE` 1900 + 16 * slot + j; every parameter is a mod destination (444..539). Generator `tools/kick/build_kick.py` (DSP) and `tools/kick/apply_kick_ui.py` (JS UI); tests in `tools/osc/test_osc.py`.

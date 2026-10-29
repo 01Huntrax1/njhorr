@@ -1,5 +1,6 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
 #include "../NjoEq.h"
+#include "../NjoKick.h"
 #include "../pages/Editors.h"
 #include "../NjoPhys.h"
 #include "../NjoEditor.h"
@@ -60,6 +61,9 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("type")), 4.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jpulse")), 0.7f); cx.set (njo::phys::phyId (0, njo::phys::key ("jwidth")), 0.3f);
         cx.set (njo::phys::phyId (0, njo::phys::key ("jpwm")), 0.4f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsub")), 0.5f); cx.set (njo::phys::phyId (0, njo::phys::key ("jsaw")), 0.8f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jstype")), 1.0f); cx.set (njo::phys::phyId (0, njo::phys::key ("jbtype")), 3.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_juno.png"), scale);
+        // Kick source
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 5.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kmode")), 1.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kdrive")), 0.5f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_kick.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

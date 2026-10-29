@@ -2,6 +2,7 @@
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
 #include "../NjoPages.h"
 #include "../NjoPhys.h"
+#include "../NjoKick.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -163,9 +164,16 @@ namespace njo
                               "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
             {
                 std::unique_ptr<ParamWidget> w;
-                if (juce::String (key) == "type") w = std::make_unique<ButtonsWidget> (ctx, oscId (o, oscKey (key)), 5);   // all five sources in one row
-                else if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
+                if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
                 else w = makeWidget (ctx, oscId (o, oscKey (key)), juce::String (key) != "wdpos");
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
+            // Kick source: its own id block (KICK_BASE + 16 * osc + j)
+            for (auto key : kickKeys)
+            {
+                auto w = makeWidget (ctx, kick::kickId (o, kick::key (key)), true);
                 w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
@@ -179,7 +187,6 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
-            if (auto* t = dynamic_cast<ButtonsWidget*> (W ("type"))) t->setShowLabel (false);
             for (auto key : { "track", "rphase" }) if (auto* b = dynamic_cast<ButtonsWidget*> (W (key))) b->setShowLabel (false);
 
             owner.addAndMakeVisible (display);
@@ -237,7 +244,8 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 5, juce::roundToInt (ctx.get (pnum ("type")))); }
+        static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
         SoundMemory::Kind kind() const { return srcType() == 1 ? SoundMemory::Sample : SoundMemory::Wavetable; }
@@ -382,7 +390,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3 || type == 4;
+            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3 || type == 4 || type == 5;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -393,8 +401,8 @@ namespace njo
             if (mode == 0)
             {
                 auto c = cardSrc; int w = c.getWidth();
-                put ("type", 13, 24, w - 26, 19, c);
-                display.setBounds (c.getX() + 13, c.getY() + 49, w - 26, 86);
+                put ("type", 13, 24, w - 26, 36, c);
+                display.setBounds (c.getX() + 13, c.getY() + 64, w - 26, 71);
                 display.setVisible (true);
                 dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - 56, 26);
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
@@ -436,6 +444,23 @@ namespace njo
                     for (int i = 0; i < 3; ++i) knob (kp[i], 13 + juce::roundToInt (fw6 * (2 * i + 1) / 12), 352, c);
                     put ("jpwms", 13 + juce::roundToInt (fw6 * 0.52f), 354, juce::roundToInt (fw6 * 0.48f), 31, c);
                     put ("jrange", 13 + juce::roundToInt (fw6 * 0.52f), 396, juce::roundToInt (fw6 * 0.48f), 31, c);
+                }
+                // Kick: body, click / noise / sub, drive
+                if (type == 5)
+                {
+                    const int cw2 = (w - 26 - 8) / 2, xb = 13 + cw2 + 8;
+                    put ("kmode", 13, 152, cw2, 36, c);  put ("kdtype", xb, 152, cw2, 36, c);
+                    const float fwk = (float) (w - 26);
+                    const char* r1[4] = { "ksweep", "kstime", "kscurve", "kdec" };
+                    const char* r2[4] = { "ktone", "kchar", "ktune", "kpunch" };
+                    const char* r3[4] = { "kclick", "kcltone", "kcldec", "knoise" };
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        const int cx = 13 + juce::roundToInt (fwk * (2 * i + 1) / 8);
+                        knob (r1[i], cx, 192, c); knob (r2[i], cx, 248, c); knob (r3[i], cx, 304, c);
+                    }
+                    knob ("ksub", 13 + juce::roundToInt (fwk * 1 / 8), 360, c);
+                    knob ("kdrive", 13 + juce::roundToInt (fwk * 3 / 8), 360, c);
                 }
                 // physical: resonators A and B side by side, exciter and balance below
                 if (type == 3)

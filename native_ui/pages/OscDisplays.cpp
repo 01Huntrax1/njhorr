@@ -1,5 +1,6 @@
 #include "OscDisplays.h"
 #include "../NjoPhys.h"
+#include "../NjoKick.h"
 #include <cmath>
 
 namespace njo
@@ -183,6 +184,7 @@ namespace njo
     void OscDisplay::paramChanged (int num, float)
     {
         if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { repaint(); return; }
+        if (num >= kick::KICK_BASE + kick::KICK_STRIDE * o && num < kick::KICK_BASE + kick::KICK_STRIDE * (o + 1)) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "pleng", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -211,7 +213,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 4, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 5, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -307,6 +309,33 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 5)
+            {
+                // the body of the kick: pitch fall and decay over 250 ms at a 60 Hz note, the envelope as an outline
+                auto V = [&] (const char* key) { return ctx.get (kick::kickId (o, kick::key (key))); };
+                const float sw = V ("ksweep"), tp = juce::jmax (0.0005f, V ("kstime") * 0.001f / (1.0f + 3.0f * V ("kscurve"))), dec = V ("kdec") * 0.001f, pun = V ("kpunch");
+                const int md = juce::jlimit (0, 3, juce::roundToInt (V ("kmode")));
+                juce::Path p, env;
+                double ph = 0.0; const int Wp = (int) W; const float T = 0.25f;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const float t = (float) x / W * T;
+                    const float oc = md == 1 ? sw * (0.6f * std::exp (-t / tp) + 0.4f * std::exp (-9.2f * t / dec))
+                                   : md == 2 ? sw * (0.7f * std::exp (-t / tp) + 0.3f * std::exp (-t / (tp * 6.0f)))
+                                   : md == 3 ? sw * std::exp (-t / (tp * 3.0f)) : sw * std::exp (-t / tp);
+                    ph += 60.0 * std::pow (2.0, (double) oc) * (double) T / W;
+                    const float a = std::exp (-t * 4.6f / dec) * (1.0f + pun * 3.0f * std::exp (-t / 0.006f));
+                    float y = (float) std::sin (6.2831853 * ph) * a * 0.6f;
+                    if (md == 3) y = juce::jlimit (-1.0f, 1.0f, y * (1.0f + 6.0f * V ("kchar"))) * 0.8f;
+                    const float py = H / 2 - juce::jlimit (-1.2f, 1.2f, y) * (H / 2 - 4);
+                    const float ey = H / 2 - juce::jlimit (-1.2f, 1.2f, a * 0.6f) * (H / 2 - 4);
+                    if (x == 0) { p.startNewSubPath ((float) x, py); env.startNewSubPath ((float) x, ey); } else { p.lineTo ((float) x, py); env.lineTo ((float) x, ey); }
+                }
+                g.setColour (juce::Colour (0xffffa040).withAlpha (0.4f)); g.strokePath (env, juce::PathStrokeType (1.2f));
+                g.setColour (juce::Colour (0xffff3b30)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                static const char* const kn[4] = { "CLASSIC", "808", "PUNCH", "HARDSTYLE" };
+                info = juce::String ("KICK / ") + kn[md] + " / SWEEP " + juce::String (sw, 1) + " OCT / DECAY " + juce::String (juce::roundToInt (dec * 1000.0f)) + " MS";
             }
             else if (type == 4)
             {
