@@ -8,7 +8,7 @@ namespace njo
     class SoundMemory : public juce::ChangeBroadcaster
     {
     public:
-        enum Kind { Wavetable = 0, Sample = 1, FilterTable = 2, ShaperTable = 3, ImpulseResponse = 4, ModeEdit = 5 };   // ModeEdit: index = slot * 3 + set (Physical A / B / Resonator stage), 48 multipliers (16 modes x frequency, gain, decay)
+        enum Kind { Wavetable = 0, Sample = 1, FilterTable = 2, ShaperTable = 3, ImpulseResponse = 4, ModeEdit = 5, EqBands = 6 };   // EqBands: index = global FX slot 0..29, 240 values (24 bands x 10, see NjoEq.h)   // ModeEdit: index = slot * 3 + set (Physical A / B / Resonator stage), 48 multipliers (16 modes x frequency, gain, decay)
         //   // impulse response: the index is the FX rack (0..2), up to 96000 samples (2 s) for the convolution reverb's User IR mode
         //   // the two tables: Wavefilter / Wavedistortion (512 points per frame, 64 frames max)
         struct Slot { juce::String name; juce::String libId; std::vector<float> data; mutable unsigned long long sig = 0; };

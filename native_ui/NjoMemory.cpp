@@ -15,11 +15,11 @@ namespace njo
         bool isTable (SoundMemory::Kind k) { return k == SoundMemory::FilterTable || k == SoundMemory::ShaperTable; }
         juce::String keyFor (SoundMemory::Kind k, int o)
         {
-            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh", ".ir", ".me" };
+            static const char* ext[] = { ".wt", ".sm", ".ft", ".sh", ".ir", ".me", ".eq" };
             return "njo.mem.osc" + juce::String (o) + ext[(int) k];
         }
-        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::ModeEdit ? "modLoad" : k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
-        constexpr int kMaxIdx = 18;                  // slots per kind: 6 oscillators, 3 FX racks, 18 resonator mode sets (slot * 3 + set)
+        const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::EqBands ? "eqLoad" : k == SoundMemory::ModeEdit ? "modLoad" : k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
+        constexpr int kMaxIdx = 30;                  // slots per kind: 6 oscillators, 3 FX racks, 18 resonator mode sets (slot * 3 + set), 30 FX slots (Parametric EQ bands)
         constexpr float kModeScale = 8.0f;           // mode edit multipliers run 0..8, stored as pcm16 of value / 8
         int bankFor (SoundMemory::Kind k, int o) { return k == SoundMemory::ShaperTable ? OSC_N + o : o; }
 
@@ -264,8 +264,8 @@ namespace njo
         ~Impl() override { stopTimer(); }
 
         SoundMemory& owner; Backend& be;
-        std::unique_ptr<Slot> slots[6][kMaxIdx];      // for the impulse responses the index is the FX rack (0..2)
-        unsigned long long dspSig[6][kMaxIdx] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
+        std::unique_ptr<Slot> slots[7][kMaxIdx];      // for the impulse responses the index is the FX rack (0..2)
+        unsigned long long dspSig[7][kMaxIdx] = {};     // content signature of what the DSP bank holds (0 = nothing / unknown); outlives the editor window
         unsigned long long dspGen = 0;
         bool streaming (Kind k, int o) const { for (auto& s : streams) if (s.kind == k && s.osc == o) return true; return false; }
         std::vector<Stream> streams;
@@ -326,7 +326,7 @@ namespace njo
     SoundMemory::SoundMemory (Backend& b) : impl (new Impl (*this, b))
     {
         // the saved copies are available to the displays at once; restore() streams what the DSP is missing
-        for (int k = 0; k < 6; ++k)
+        for (int k = 0; k < 7; ++k)
             for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto s = std::make_unique<Slot>();
@@ -346,7 +346,7 @@ namespace njo
     {
         if (o < 0 || o >= kMaxIdx) return;
         if (data.empty()) { clear (k, o); return; }
-        const int cap = k == ModeEdit ? 48 : k == ImpulseResponse ? 96000 : isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
+        const int cap = k == EqBands ? 240 : k == ModeEdit ? 48 : k == ImpulseResponse ? 96000 : isTable (k) ? kTblMaxFr * kTblFl : k == Wavetable ? MAX_WT : MAX_SMP;
         if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
@@ -358,7 +358,7 @@ namespace njo
 
     void SoundMemory::relabel (const juce::String& oldPath, const juce::String& newPath)
     {
-        for (int k = 0; k < 6; ++k)
+        for (int k = 0; k < 7; ++k)
             for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto& s = impl->slots[k][o];
@@ -398,7 +398,7 @@ namespace njo
         impl->be.sendEvent (endpointFor (k), juce::var (ev));
         impl->persist (k, o);
         impl->dspSig[k][o] = 0;
-        if (k == ImpulseResponse) status ("IR CLEARED"); else if (! isTable (k)) status ("OSC " + juce::String (o + 1) + " CLEARED");
+        if (k == ImpulseResponse) status ("IR CLEARED"); else if (! isTable (k) && k != ModeEdit && k != EqBands) status ("OSC " + juce::String (o + 1) + " CLEARED");
         sendChangeMessage();
     }
 
@@ -408,7 +408,7 @@ namespace njo
         auto gen = impl->be.dspGeneration();
         if (gen != impl->dspGen) { std::memset (impl->dspSig, 0, sizeof (impl->dspSig)); impl->dspGen = gen; }
         int n = 0;
-        for (int k = 0; k < 6; ++k)
+        for (int k = 0; k < 7; ++k)
             for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto& sl = impl->slots[k][o];
@@ -431,7 +431,7 @@ namespace njo
     void SoundMemory::reloadFromStored()
     {
         bool changed = false;
-        for (int k = 0; k < 6; ++k)
+        for (int k = 0; k < 7; ++k)
             for (int o = 0; o < kMaxIdx; ++o)
             {
                 auto s = std::make_unique<Slot>();

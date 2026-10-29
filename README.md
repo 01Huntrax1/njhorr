@@ -208,3 +208,17 @@ Three graphical editors open over the OSC pages (native editor only; the JS fall
 - New modes: Distortion (Diode, Chebyshev, Tape, Gated), Bit Crush (Bits Only, Rate Only, Noise Shaped), Delay (Reverse, Multi-tap), Chorus (Ensemble, Wide), Flanger (Through-Zero, Stereo), Phaser (10 / 12 stages, Inverted 4 / 8), Reverb (Chamber, Ambience, Dark, Bright, Infinite), EQ (Tilt, Loudness, Presence), Compressor (Limiter, Expander, Gate).
 - The effect Type parameters now range 0..12 (Convolution was clamped to Compressor by the host before).
 - Generator: `tools/fx/build_fx3.py` (marker `// FX-SYNC`, run after `build_fx2.py`); tests in `tools/fx/test_fx.py`.
+
+## Parametric EQ (FX type 13)
+
+A new effect type "Parametric EQ" next to the old 3-band EQ (which is unchanged). Up to **24 bands** per slot, each with its own type:
+Bell, Low/High Shelf, Low Cut 12/24/48, High Cut 12/24/48, Band Pass, Notch, Tilt, All-Pass, **Comb Feed-forward** and **Comb Feedback**.
+Bell, Band Pass and Notch bands can add **harmonics** (1-16 extra bands at 2f, 3f ... with a falloff per step; all, odd or even harmonics), like the harmonic bands of MEqualizer.
+Each band can work on Stereo, Left, Right, Mid or Side. Up to 64 biquad sections run per slot; combs use a per-band delay line.
+
+Slot controls: Output (+-18 dB), Gain Scale (0-200 % of all band gains), Freq Shift (+-1 octave), Q Scale (x0.25-x4), Mix.
+
+Editor (native UI only): curve display with draggable nodes (frequency / gain, vertical drag sets Q for cut filters), wheel = Q, shift+wheel = harmonics, double-click adds / deletes, right-click menus, band chips, presets.
+The bands are stored in the sound memory (kind EqBands) and streamed to the DSP with the `eqLoad` event, so they persist with the plugin state like samples do.
+Limitations: the bands are not automatable and are not mod destinations (only the slot controls are); the JS fallback UI has no band editor.
+Generator: `tools/fx/build_eq.py`; tests: `tools/fx/test_fx.py` (PEQ section).

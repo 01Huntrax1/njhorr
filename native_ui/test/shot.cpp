@@ -1,4 +1,5 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
+#include "../NjoEq.h"
 #include "../pages/Editors.h"
 #include "../NjoPhys.h"
 #include "../NjoEditor.h"
@@ -106,6 +107,14 @@ int main (int argc, char** argv)
         setFx (0, 3); cx.set (base + 3, 4.0f); cx.set (njo::fxSyncId (0), 12.0f); pump(); save (ed, dir.getChildFile ("fx_delay_sync.png"), scale);
         setFx (0, 10); cx.set (base + 3, 1.0f); pump(); save (ed, dir.getChildFile ("fx_eq_tilt.png"), scale);
         cx.set (njo::fxSyncId (0), 0.0f);
+        {   // parametric EQ with a handful of bands, incl. a harmonic bell and a comb
+            using B = njo::eq::Band;
+            njo::eq::Bands bs {};
+            auto put = [&] (int i, int type, float hz, float db, float q, int harm = 0, int hset = 0, int ch = 0) { B b; b.used = true; b.on = true; b.type = type; b.hz = hz; b.db = db; b.q = q; b.harm = harm; b.hset = hset; b.ch = ch; bs[(size_t) i] = b; };
+            put (0, 4, 80, 0, 0.7071f); put (1, 0, 110, 6, 3.0f, 6); put (2, 0, 420, -4, 1.4f); put (3, 0, 3200, 3, 0.9f, 0, 0, 3); put (4, 2, 10000, 4, 0.7f); put (5, 11, 220, 3, 1.0f);
+            ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "EQ", {}, njo::eq::encode (bs));
+            setFx (0, 13); pump(); save (ed, dir.getChildFile ("fx_peq.png"), scale);
+        }
         for (int sl = 0; sl < 4; ++sl) setFx (sl, 0);
         pump();
     }

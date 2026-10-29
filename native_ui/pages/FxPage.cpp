@@ -3,6 +3,7 @@
 // Below: the output section. Parameters and the processing order are unchanged (patch/index.js FX rack).
 #include "../NjoPages.h"
 #include "OscDisplays.h"
+#include "EqEditor.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -17,8 +18,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0 };
-            return juce::Colour (c[juce::jlimit (0, 12, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0 };
+            return juce::Colour (c[juce::jlimit (0, 13, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -447,6 +448,7 @@ namespace njo
                 owner.addAndMakeVisible (*w); outs.add (w.release());
             }
             owner.addAndMakeVisible (list); owner.addChildComponent (chooser); owner.addChildComponent (display);
+            eqEd = std::make_unique<EqEditor> (ctx, mem); owner.addChildComponent (*eqEd);
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); list.repaint(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
@@ -594,7 +596,7 @@ namespace njo
             }
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
-            chooser.setVisible (! effectPage); display.setVisible (effectPage); removeBtn.setVisible (effectPage);
+            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); removeBtn.setVisible (effectPage);
             loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
@@ -625,6 +627,12 @@ namespace njo
                 head.removeFromLeft (8);
                 irRect = head;
             }
+            if (ty == 13)
+            {
+                eqEd->setBounds (c); eqEd->setSlot (g, slotBase (g)); eqEd->setVisible (true);
+                return;
+            }
+            display.setVisible (true);
             auto knobs = c.removeFromBottom (84);
             c.removeFromBottom (6);
             display.setBounds (c);
@@ -647,6 +655,7 @@ namespace njo
         }
 
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
+        std::unique_ptr<EqEditor> eqEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
         std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], syncS[30], pK[30][6]; juce::Rectangle<int> syncRect;
