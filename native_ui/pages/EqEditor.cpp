@@ -309,8 +309,10 @@ namespace njo
         {
             const bool v = valid();
             typeBtn.text = v ? eq::typeName (b().type) : "-";
-            hsetBtn.text = v ? (const char* const[]) { "ALL", "ODD", "EVEN" }[b().hset] : "-";
-            chBtn.text = v ? (const char* const[]) { "STEREO", "LEFT", "RIGHT", "MID", "SIDE" }[b().ch] : "-";
+            static const char* const hsetNames[] = { "ALL", "ODD", "EVEN" };
+            static const char* const chNames[] = { "STEREO", "LEFT", "RIGHT", "MID", "SIDE" };
+            hsetBtn.text = v ? hsetNames[juce::jlimit (0, 2, b().hset)] : "-";
+            chBtn.text = v ? chNames[juce::jlimit (0, 4, b().ch)] : "-";
             onBtn.on = v && b().on;
             const bool gain = v && eq::hasGain (b().type), harm = v && eq::hasHarmonics (b().type);
             fGain.setAlpha (gain ? 1.0f : 0.35f); fHarm.setAlpha (harm ? 1.0f : 0.35f); fFall.setAlpha (harm ? 1.0f : 0.35f); hsetBtn.setAlpha (harm ? 1.0f : 0.35f);
