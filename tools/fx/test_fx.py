@@ -290,5 +290,54 @@ check("plate and hall tails are stereo", np.abs(seg[:, 0] - seg[:, 1]).max() > 1
 w0 = render(fx(0, 8, 0, 1.0, (0.7, 0.5, 0.0, 0.0, 0.0, 1.0)), hold=0.3, tail=1.0, tag="rvw"); seg = w0[T0 + int(0.2 * RATE):T0 + int(0.6 * RATE)]
 check("reverb Width 0 collapses the tail to mono", np.abs(seg[:, 0] - seg[:, 1]).max() < 1e-4)
 
+# FX-SAT: Saturator (type 14) and Waveshaper (type 15)
+SATN = ["Tube", "Tape", "Transformer", "Diode", "Fuzz", "Soft Clip", "Hard Clip", "Rectifier", "Sine Fold", "Rational", "Exciter", "Arctan"]
+for m, nm in enumerate(SATN):
+    a = render(fx(0, 14, m, 1.0, (0.7, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="sat%d" % m)
+    check("saturator %s finite and bounded" % nm, np.isfinite(a).all() and np.abs(a).max() < 4.0, "peak %.2f" % np.abs(a).max())
+    check("saturator %s produces sound" % nm, rms(a[int(0.7 * RATE):T0]) > 0.01, "%.4f" % rms(a[int(0.7 * RATE):T0]))
+    if m != 10: check("saturator %s adds harmonics" % nm, thd(a) > thd(dry) + 0.02, "%.3f vs %.3f" % (thd(a), thd(dry)))
+    else:
+        ex = render(fx(0, 14, 10, 1.0, (0.7, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="satx", note=96)
+        check("saturator Exciter adds harmonics to a bright note", thd(ex) > thd(render([], tag="dry96", note=96)) + 0.005)
+sl = render(fx(0, 14, 0, 1.0, (0.1, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="satlo"); sh = render(fx(0, 14, 0, 1.0, (0.9, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="sathi")
+check("saturator Drive adds more harmonics", thd(sh) > thd(sl) + 0.03, "%.3f vs %.3f" % (thd(sh), thd(sl)))
+sb0 = render(fx(0, 14, 0, 1.0, (0.6, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="satb0"); sb1 = render(fx(0, 14, 0, 1.0, (0.6, 0.5, 0.9, 0.5, 0.0, 0.0)), tag="satb1")
+check("saturator Bias changes the spectrum", abs(thd(sb0) - thd(sb1)) > 0.01)
+sd = render(fx(0, 14, 0, 1.0, (0.6, 0.5, 0.95, 0.5, 0.0, 0.0)), tag="satdc")
+check("saturator DC blocked with Bias", abs(float(sd[int(0.7 * RATE):T0, 0].mean())) < 0.03)
+sg0 = render(fx(0, 14, 0, 1.0, (0.6, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="satg0"); sg1 = render(fx(0, 14, 0, 1.0, (0.6, 0.5, 0.5, 0.9, 0.0, 0.0)), tag="satg1")
+check("saturator Output raises the level", rms(sg1[int(0.7 * RATE):T0]) > 1.5 * rms(sg0[int(0.7 * RATE):T0]))
+st0 = render(fx(0, 14, 0, 1.0, (0.6, 0.1, 0.5, 0.5, 0.0, 0.0)), tag="satt0", note=100); st1 = render(fx(0, 14, 0, 1.0, (0.6, 0.9, 0.5, 0.5, 0.0, 0.0)), tag="satt1", note=100)
+check("saturator Tone: dark vs bright", rms(st1[int(0.7 * RATE):T0]) > 1.2 * rms(st0[int(0.7 * RATE):T0]), "%.4f vs %.4f" % (rms(st1[int(0.7 * RATE):T0]), rms(st0[int(0.7 * RATE):T0])))
+s_a = render(fx(0, 14, 5, 1.0, (0.7, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="sat_nosag"); s_b = render(fx(0, 14, 5, 1.0, (0.7, 0.5, 0.5, 0.5, 0.0, 1.0)), tag="sat_sag")
+check("saturator Sag changes the sound", not np.allclose(s_a, s_b, atol=1e-3))
+# aliasing: a hard-clipped 3.1 kHz sine keeps its energy on the harmonics, not between them (ADAA)
+hc = render(fx(0, 14, 6, 1.0, (0.9, 0.5, 0.5, 0.5, 0.0, 0.0)), tag="alias", note=98)
+seg = hc[int(0.7 * RATE):int(0.85 * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))); fr = np.fft.rfftfreq(len(seg), 1.0 / RATE)
+f1 = note_hz(98); harm = np.zeros(len(X), bool)
+for k in range(1, int(RATE / 2 / f1) + 1): harm |= np.abs(fr - k * f1) < 60
+check("saturator ADAA keeps most energy on the harmonics", float((X[harm] ** 2).sum() / (X ** 2).sum()) > 0.9, "%.3f" % float((X[harm] ** 2).sum() / (X ** 2).sum()))
+
+# Waveshaper
+def ws(nodes, mode=0, p=(0.0, 0.5, 0.5, 1.0, 0.0, 0.0)):
+    c = ["wscount 0 %d" % len(nodes)] + ["wsnode 0 %d %s %s %s" % (i, x, y, cu) for i, (x, y, cu) in enumerate(nodes)] + ["eqsend 0"]
+    return c + fx(0, 15, mode, 1.0, p)
+ident = render(ws([(-1, -1, 0), (1, 1, 0)]), tag="wsid")
+check("waveshaper identity curve is transparent", abs(rms(ident[int(0.7 * RATE):T0]) / rms(dry[int(0.7 * RATE):T0]) - 1.0) < 0.1, "%.3f" % (rms(ident[int(0.7 * RATE):T0]) / rms(dry[int(0.7 * RATE):T0])))
+clip = render(ws([(-1, -0.3, 0), (-0.3, -0.3, 0), (0.3, 0.3, 0), (1, 0.3, 0)], 0, (0.5, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wscl")
+check("waveshaper clipping curve adds harmonics and bounds the level", thd(clip) > thd(dry) + 0.05 and np.abs(clip).max() < 0.5, "%.3f peak %.2f" % (thd(clip), np.abs(clip).max()))
+nocurve = render(fx(0, 15, 0, 1.0, (0.0, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsnone")
+check("waveshaper without nodes passes the signal (identity)", abs(rms(nocurve[int(0.7 * RATE):T0]) / rms(dry[int(0.7 * RATE):T0]) - 1.0) < 0.1)
+fold = render(ws([(-1, 1, 0), (-0.5, -1, 0), (0, 1, 0), (0.5, -1, 0), (1, 1, 0)], 0, (0.3, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsfold")
+check("waveshaper folding curve stays finite", np.isfinite(fold).all() and np.abs(fold).max() < 2.0)
+rect = render(ws([(-1, -1, 0), (1, 1, 0)], 2, (0.0, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsrect")
+seg = rect[int(0.7 * RATE):int(0.85 * RATE), 0].astype(np.float64); f_r = np.fft.rfftfreq(len(seg), 1.0 / RATE); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg))))
+check("waveshaper Rectified mode doubles the frequency", abs(f_r[int(np.argmax(X))] - 2 * 440.0) < 30, "%.0f Hz" % f_r[int(np.argmax(X))])
+mir = render(ws([(0, 0, 0), (0.2, 0.8, 0), (1, 1, 0)], 1, (0.0, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsmir")
+check("waveshaper Mirror mode is odd symmetric (no even harmonics)", float(abs(mir[int(0.7 * RATE):T0, 0].mean())) < 0.02 and thd(mir) > thd(dry) + 0.02)
+cv0 = render(ws([(-1, -1, 0), (1, 1, 0)], 0, (0.5, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsc0"); cv1 = render(ws([(-1, -1, 0.9), (1, 1, 0.9)], 0, (0.5, 0.5, 0.5, 1.0, 0.0, 0.0)), tag="wsc1")
+check("waveshaper segment curvature changes the sound", not np.allclose(cv0, cv1, atol=1e-3))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

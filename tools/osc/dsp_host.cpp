@@ -13,6 +13,7 @@
 //                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
 //                 moded <bank 0-17> reset | <mode 0-15> <freq> <gain> <decay>   resonator mode edits of slot*3+set (0 = Physical A, 1 = B, 2 = Resonator stage)
 //                 eqband <slot 0-29> <band 0-23> <on> <type 0-14> <Hz> <dB> <Q> [harmonics falloff(0-1) set(0 all,1 odd,2 even) channel(0 st,1 L,2 R,3 M,4 S)]   set a band of a Parametric EQ slot
+//                 wscount <slot> <n> / wsnode <slot> <idx> <x> <y> <curve>   Waveshaper nodes (values -1..1, stored like EQ bands; send with eqsend)
 //                 eqsend <slot>  /  eqclear <slot>   send the bands of the slot to the DSP / remove them all
 //                 on <note> <velocity 0-127>
 //                 off <note>
@@ -255,6 +256,8 @@ int main (int argc, char** argv)
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }
         else if (cmd == "eqband") { int sl, ix, on, ty, hm = 0, hs = 0, ch = 0; float hz, db, q, hf = 0.5f; ls >> sl >> ix >> on >> ty >> hz >> db >> q >> hm >> hf >> hs >> ch; h.eqBand (sl, ix, on, ty, hz, db, q, hm, hf, hs, ch); }
+        else if (cmd == "wsnode") { int sl, ix; float x, y, c; ls >> sl >> ix >> x >> y >> c; auto& v = h.eqData[sl]; if (v.empty()) v.assign (240, 0.0f); v[(size_t) (1 + 3 * ix)] = x; v[(size_t) (2 + 3 * ix)] = y; v[(size_t) (3 + 3 * ix)] = c; }
+        else if (cmd == "wscount") { int sl, n; ls >> sl >> n; auto& v = h.eqData[sl]; if (v.empty()) v.assign (240, 0.0f); v[0] = n / 16.0f; }
         else if (cmd == "eqsend") { int sl; ls >> sl; h.eqSend (sl, false); }
         else if (cmd == "eqclear") { int sl; ls >> sl; h.eqSend (sl, true); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
