@@ -1627,7 +1627,12 @@ const FX_TYPES = [
       p: [["Size", fxPct, 0.5], ["Decay", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 200, 0, "ms"), 0], ["Width", fxPctOf(2), 0.5], ["Tone", fxLin(-100, 100, 0, "%"), 0.5]] },
     // bands live in the sound memory (native editor); these are the slot-wide controls
     { n: "Parametric EQ", mix: 1, modes: [],
-      p: [["Output", fxDb(-18, 18), 0.5], ["Gain Scale", fxPctOf(2), 0.5], ["Freq Shift", fxLin(-1, 1, 2, "oct"), 0.5], ["Q Scale", n => "x" + (0.25 * Math.pow(16, n)).toFixed(2), 0.5]] }
+      p: [["Output", fxDb(-18, 18), 0.5], ["Gain Scale", fxPctOf(2), 0.5], ["Freq Shift", fxLin(-1, 1, 2, "oct"), 0.5], ["Q Scale", n => "x" + (0.25 * Math.pow(16, n)).toFixed(2), 0.5]] },
+    { n: "Saturator", mix: 1, modes: ["Tube", "Tape", "Transformer", "Diode", "Fuzz", "Soft Clip", "Hard Clip", "Rectifier", "Sine Fold", "Rational", "Exciter", "Arctan"],
+      p: [["Drive", fxLin(0, 36, 1, "dB"), 0.3], ["Tone", fxLin(-100, 100, 0, "%"), 0.5], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Low Cut", fxHz(10, 800), 0], ["Sag", fxPct, 0]] },
+    // transfer-curve nodes live in the sound memory (native editor)
+    { n: "Waveshaper", mix: 1, modes: ["Curve", "Mirror", "Rectified"],
+      p: [["Drive", fxLin(0, 30, 1, "dB"), 0.3], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Tone", fxHz(500, 20000), 1], ["Low Cut", fxHz(10, 800), 0]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
@@ -1813,7 +1818,7 @@ const SPECS = (() => {
     FX_RACKS.forEach(rack => {
         for (let sl = 0; sl < 10; sl++) {
             const b = rack.id + sl * 10, n = rack.name + " FX " + (sl + 1);
-            L.push([b,     n + " Type", 0, 13, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b,     n + " Type", 0, 15, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
             L.push([b + 3, n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);

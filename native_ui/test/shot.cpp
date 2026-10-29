@@ -1,5 +1,6 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
 #include "../NjoEq.h"
+#include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
 #include "../NjoPhys.h"
@@ -119,6 +120,12 @@ int main (int argc, char** argv)
             ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "EQ", {}, njo::eq::encode (bs));
             setFx (0, 13); pump(); save (ed, dir.getChildFile ("fx_peq.png"), scale);
         }
+        setFx (0, 14); cx.set (base + 3, 0.0f); cx.set (base + 4, 0.55f); pump(); save (ed, dir.getChildFile ("fx_sat_tube.png"), scale);
+        cx.set (base + 3, 8.0f); pump(); save (ed, dir.getChildFile ("fx_sat_fold.png"), scale);
+        ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "WS", {}, njo::shaper::encode (njo::shaper::preset (5)));
+        setFx (0, 15); pump(); save (ed, dir.getChildFile ("fx_shaper.png"), scale);
+        ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "WS", {}, njo::shaper::encode (njo::shaper::preset (3)));
+        cx.set (base + 3, 1.0f); pump(); save (ed, dir.getChildFile ("fx_shaper_mirror.png"), scale);
         for (int sl = 0; sl < 4; ++sl) setFx (sl, 0);
         pump();
     }

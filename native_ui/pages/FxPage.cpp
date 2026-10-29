@@ -4,6 +4,7 @@
 #include "../NjoPages.h"
 #include "OscDisplays.h"
 #include "EqEditor.h"
+#include "ShaperEditor.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -18,8 +19,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0 };
-            return juce::Colour (c[juce::jlimit (0, 13, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050 };
+            return juce::Colour (c[juce::jlimit (0, 15, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -277,6 +278,33 @@ namespace njo
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1)); 
                     stroke (p); label ("INPUT -> OUTPUT");
                 }
+                else if (ty == 14)   // Saturator: transfer curve of the model
+                {
+                    const double drive = std::pow (10.0, P (0) * 36.0 / 20.0), bias = (P (2) - 0.5);
+                    auto shape = [&] (double u)
+                    {
+                        switch (juce::jlimit (0, 11, mode))
+                        {
+                            case 0: return u >= 0 ? std::tanh (u) : std::tanh (u * 0.75) / 0.75;
+                            case 1: return 1.05 * std::tanh (0.9 * u);
+                            case 2: return std::tanh (u * 1.2);
+                            case 3: return std::asinh (u * 2.0) / 1.5;
+                            case 4: return juce::jlimit (-0.6, 1.0, 4.0 * u);
+                            case 5: { double c = juce::jlimit (-1.0, 1.0, u); return 1.5 * (c - c * c * c / 3.0); }
+                            case 6: return juce::jlimit (-1.0, 1.0, u);
+                            case 7: return std::abs (u);
+                            case 8: return std::sin (2.0 * u);
+                            case 9: return u / (1.0 + std::abs (u));
+                            case 10: return u + 0.5 * std::tanh (3.0 * u);
+                            default: return std::atan (u * 1.5708) / 1.5708 * 1.3;
+                        }
+                    };
+                    const double ref = std::max (0.05, std::abs (shape (0.5 * drive)));
+                    auto p = curve ([&] (double t) { double x = t * 2 - 1; double y = (shape (x * drive + bias * drive) - shape (bias * drive)) * (0.5 / ref); return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, y); });
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
+                    stroke (p); label ("INPUT -> OUTPUT   " + juce::String (36.0 * P (0), 1) + " dB DRIVE");
+                }
                 else if (ty == 2)   // Bit crusher: staircase of a sine
                 {
                     const double bits = 16.0 - 12.0 * P (0); const int hold = 1 + juce::roundToInt (P (1) * 31);
@@ -449,6 +477,7 @@ namespace njo
             }
             owner.addAndMakeVisible (list); owner.addChildComponent (chooser); owner.addChildComponent (display);
             eqEd = std::make_unique<EqEditor> (ctx, mem); owner.addChildComponent (*eqEd);
+            shEd = std::make_unique<ShaperEditor> (ctx, mem); owner.addChildComponent (*shEd);
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); list.repaint(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
@@ -596,7 +625,7 @@ namespace njo
             }
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
-            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); removeBtn.setVisible (effectPage);
+            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage);
             loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
@@ -632,10 +661,10 @@ namespace njo
                 eqEd->setBounds (c); eqEd->setSlot (g, slotBase (g)); eqEd->setVisible (true);
                 return;
             }
-            display.setVisible (true);
             auto knobs = c.removeFromBottom (84);
             c.removeFromBottom (6);
-            display.setBounds (c);
+            if (ty == 15) { shEd->setBounds (c); shEd->setSlot (g, slotBase (g)); shEd->setVisible (true); }
+            else { display.setVisible (true); display.setBounds (c); }
             int n = 1 + (int) t.params.size(), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
             int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
             auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
@@ -655,7 +684,7 @@ namespace njo
         }
 
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
-        std::unique_ptr<EqEditor> eqEd;
+        std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
         std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], syncS[30], pK[30][6]; juce::Rectangle<int> syncRect;

@@ -223,6 +223,14 @@ The bands are stored in the sound memory (kind EqBands) and streamed to the DSP 
 Limitations: the bands are not automatable and are not mod destinations (only the slot controls are); the JS fallback UI has no band editor.
 Generator: `tools/fx/build_eq.py`; tests: `tools/fx/test_fx.py` (PEQ section).
 
+## Saturator and Waveshaper (FX types 14, 15)
+
+**Saturator** has 12 models (Tube, Tape, Transformer, Diode, Fuzz, Soft Clip, Hard Clip, Rectifier, Sine Fold, Rational, Exciter, Arctan) and the controls Drive (0..36 dB), Tone (tilt), Bias, Output, Low Cut and Sag. The output level is compensated automatically, so Drive changes the character rather than the loudness, and a DC blocker follows the non-linearity.
+
+**Waveshaper** applies a transfer curve you draw: up to 16 nodes with a curvature per segment (double-click adds / removes a node, drag the diamonds for the curvature, right-click for presets). Modes: Curve (full -1..1 range), Mirror (the right half is mirrored, odd symmetry) and Rectified (input folded to its absolute value, which doubles the frequency). Fewer than two nodes is a straight line. The nodes are stored in the sound memory like the EQ bands (so they are saved with the preset), are not automatable and not modulation targets.
+
+Both use first-order antiderivative anti-aliasing (ADAA) instead of oversampling, which removes most of the aliasing at low CPU cost; very high drive on hard edges can still alias a little. There is no multiband mode. The JS fallback UI has the knobs but no node editor.
+
 ## Reverb engines (FX type 8)
 
 The Schroeder comb reverb was replaced by two engines from the open literature (tools/fx/build_reverb.py). The slot parameters and ids are unchanged (Size, Damp, PreDly, Width, Low Cut, High Cut).
