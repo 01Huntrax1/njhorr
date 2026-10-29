@@ -12,6 +12,8 @@
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
 //                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
 //                 moded <bank 0-17> reset | <mode 0-15> <freq> <gain> <decay>   resonator mode edits of slot*3+set (0 = Physical A, 1 = B, 2 = Resonator stage)
+//                 eqband <slot 0-29> <band 0-23> <on> <type 0-14> <Hz> <dB> <Q> [harmonics falloff(0-1) set(0 all,1 odd,2 even) channel(0 st,1 L,2 R,3 M,4 S)]   set a band of a Parametric EQ slot
+//                 eqsend <slot>  /  eqclear <slot>   send the bands of the slot to the DSP / remove them all
 //                 on <note> <velocity 0-127>
 //                 off <note>
 //                 run <seconds>             render, appending interleaved stereo float32 to the output file
@@ -184,6 +186,27 @@ struct Host
         }
     }
 
+    std::vector<float> eqData[30];
+    void eqBand (int slot, int idx, int on, int type, float hz, float db, float q, int harm, float fall, int set, int ch)
+    {
+        auto& v = eqData[slot];
+        if (v.empty()) v.assign (240, 0.0f);
+        float* b = &v[(size_t) idx * 10];
+        b[0] = (float) on; b[1] = type / 16.0f; b[2] = std::log2 (hz / 20.0f) / std::log2 (1000.0f); b[3] = db / 24.0f;
+        b[4] = std::log2 (q / 0.1f) / std::log2 (300.0f); b[5] = harm / 16.0f; b[6] = fall; b[7] = set / 4.0f; b[8] = ch / 4.0f; b[9] = 0;
+    }
+    void eqSend (int slot, bool clear)
+    {
+        auto& v = eqData[slot];
+        if (v.empty()) v.assign (240, 0.0f);
+        if (clear) std::fill (v.begin(), v.end(), 0.0f);
+        Eisenpuls_Synth::_Eisenpuls_Synth_BankChunk c {};
+        c.bank = slot; c.offset = 0; c.count = 240; c.total = clear ? 0 : 240;
+        for (int i = 0; i < 240; ++i) c.data[i] = v[(size_t) i];
+        dsp.addEvent_eqLoad (c);
+        ++queued;
+        flushIfNeeded();
+    }
     std::vector<float> modEdit[18];
     void modEd (int bank, bool reset, int mode, float f, float g, float d)
     {
@@ -231,6 +254,9 @@ int main (int argc, char** argv)
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }
+        else if (cmd == "eqband") { int sl, ix, on, ty, hm = 0, hs = 0, ch = 0; float hz, db, q, hf = 0.5f; ls >> sl >> ix >> on >> ty >> hz >> db >> q >> hm >> hf >> hs >> ch; h.eqBand (sl, ix, on, ty, hz, db, q, hm, hf, hs, ch); }
+        else if (cmd == "eqsend") { int sl; ls >> sl; h.eqSend (sl, false); }
+        else if (cmd == "eqclear") { int sl; ls >> sl; h.eqSend (sl, true); }
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }
         else if (cmd == "run") { double s; ls >> s; h.render ((int) (s * kRate)); h.queued = 0; }
