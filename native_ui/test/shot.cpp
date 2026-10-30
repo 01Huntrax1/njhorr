@@ -1,5 +1,6 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
 #include "../NjoEq.h"
+#include "../NjoPlx.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -65,6 +66,9 @@ int main (int argc, char** argv)
         // Kick source
         cx.set (njo::oscId (0, njo::oscKey ("type")), 5.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kmode")), 1.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kdrive")), 0.5f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_kick.png"), scale);
+        // Plaits source with the extras
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("pleng")), 9.0f); cx.set (njo::plx::plxId (0, njo::plx::key ("xlpg")), 0.6f); cx.set (njo::plx::plxId (0, njo::plx::key ("xetimb")), 0.5f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_plaits.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

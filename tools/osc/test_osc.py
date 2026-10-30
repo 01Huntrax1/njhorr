@@ -622,5 +622,42 @@ check("Mod destination of OSC 2 leaves the OSC 1 kick alone", np.allclose(k0, k2
 two = render(KBASE + [P(1, "type", 5), P(1, "level", 1.0), FOFF(1), KP(1, "kmode", 3)], note=36, hold=0.5, tail=0.3, tag="k2")
 check("two kick slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 4.0)
 
+# ---------------------------------------------------------------- Plaits extras (ids PLX_BASE + 16 * slot + j, mod destinations 540 + ...)
+def XP(o, key, v): return (L.plx_id(o, [q[0] for q in L.PLX if q[1] == key][0]), v)
+PBASE = [P(0, "type", 2), P(0, "level", 1.0), FOFF(0)]
+def plx(eng, extra=(), note=57, tag="px", hold=1.0, tail=0.3):
+    return render(PBASE + [P(0, "pleng", eng)] + list(extra), note=note, hold=hold, tail=tail, tag=tag)[:, 0]
+def win(x, t0, t1): return x[int(t0 * RATE):int(t1 * RATE)]
+base = plx(9, tag="px0")
+check("Plaits baseline is finite and sounds", np.isfinite(base).all() and rms(win(base, 0.3, 0.8)) > 0.01)
+# accent: the bass drum engine (21) is louder with a high accent
+a0 = plx(21, [XP(0, "xacc", 0.1)], note=36, tag="pxa0"); a1 = plx(21, [XP(0, "xacc", 1.0)], note=36, tag="pxa1")
+check("Plaits Accent changes the bass drum level", abs(rms(win(a1, 0.06, 0.4)) / max(rms(win(a0, 0.06, 0.4)), 1e-9) - 1.0) > 0.1, "%.4f %.4f" % (rms(win(a0, 0.06, 0.4)), rms(win(a1, 0.06, 0.4))))
+# aux mix: virtual analog (8) has an aux output
+x0 = plx(8, [XP(0, "xaux", 0.0)], tag="pxx0"); x1 = plx(8, [XP(0, "xaux", 1.0)], tag="pxx1")
+check("Plaits Aux Mix adds the aux output", rms(win(x1, 0.3, 0.8) - win(x0, 0.3, 0.8)) > 0.05 * rms(win(x0, 0.3, 0.8)), "%.4f" % rms(win(x1, 0.3, 0.8) - win(x0, 0.3, 0.8)))
+# envelope to timbre (waveshaper fold): brighter at the start than the end
+def bright(x, t0, t1): return band(win(x, t0, t1), 2500, 12000) / max(band(win(x, t0, t1), 100, 2500), 1e-9)
+e0 = plx(9, [XP(0, "xetimb", 0.0)], tag="pxe0"); e1 = plx(9, [XP(0, "xetimb", 1.0), XP(0, "xedec", 150)], tag="pxe1")
+check("Plaits Env > Timbre sweeps the timbre over the note", abs(bright(e1, 0.06, 0.2) / bright(e1, 0.7, 1.0) - 1) > 0.15 and abs(bright(e0, 0.06, 0.2) / bright(e0, 0.7, 1.0) - 1) < 0.3, "%.3f %.3f / %.3f %.3f" % (bright(e1, 0.06, 0.2), bright(e1, 0.7, 1.0), bright(e0, 0.06, 0.2), bright(e0, 0.7, 1.0)))
+# pitch envelope: starts higher
+pe = plx(9, [XP(0, "xpenv", 24), XP(0, "xedec", 150)], tag="pxp")
+check("Plaits Pitch Env starts above the note", peak_freq(win(pe, 0.06, 0.12)) > 1.3 * peak_freq(win(pe, 0.8, 1.0)), "%.1f %.1f" % (peak_freq(win(pe, 0.06, 0.12)), peak_freq(win(pe, 0.8, 1.0))))
+# low-pass gate closes the sound
+l0 = plx(9, tag="pxl0"); l1 = plx(9, [XP(0, "xlpg", 1.0), XP(0, "xlpgdec", 400)], tag="pxl1")
+check("Plaits LPG closes after the attack", rms(win(l1, 0.9, 1.2)) < 0.1 * rms(win(l0, 0.9, 1.2)) and rms(win(l1, 0.06, 0.1)) > 0.3 * rms(win(l0, 0.06, 0.1)), "%.4f %.4f" % (rms(win(l1, 0.06, 0.1)), rms(win(l0, 0.06, 0.1))))
+# drive, bits, rate
+d1 = plx(9, [XP(0, "xdrive", 1.0)], tag="pxd")
+check("Plaits Drive adds harmonics and stays bounded", band(win(d1, 0.3, 0.8), 2500, 12000) > 1.05 * band(win(base, 0.3, 0.8), 2500, 12000) and np.abs(d1).max() < 4.0)
+b1 = plx(9, [XP(0, "xbits", 3)], tag="pxb")
+check("Plaits Bits 3 changes the waveform", rms(win(b1, 0.3, 0.8) - win(base, 0.3, 0.8)) > 0.05 * rms(win(base, 0.3, 0.8)))
+r1 = plx(9, [XP(0, "xrate", 1.0)], tag="pxr")
+check("Plaits Rate reduction adds aliasing", rms(win(r1, 0.3, 0.8) - win(base, 0.3, 0.8)) > 0.05 * rms(win(base, 0.3, 0.8)) and np.isfinite(r1).all())
+# mod destination of the LPG amount (j = 8) from a constant LFO closes the sound, other slot leaves it alone
+m1 = render(PBASE + [P(0, "pleng", 9), XP(0, "xlpg", 0.5), XP(0, "xlpgdec", 60)] + MM(0, 1, L.plxdst(0, 8), 1.0) + CONST1, note=57, hold=1.0, tail=0.3, tag="pxm1")[:, 0]
+check("Mod destination 'Plaits LPG Amount' of OSC 1 closes the gate", rms(win(m1, 0.6, 0.9)) < 0.3 * rms(win(base, 0.6, 0.9)), "%.4f %.4f" % (rms(win(m1, 0.6, 0.9)), rms(win(base, 0.6, 0.9))))
+m2 = render(PBASE + [P(0, "pleng", 9), XP(0, "xlpgdec", 60)] + MM(0, 1, L.plxdst(1, 8), 0.5) + CONST1, note=57, hold=1.0, tail=0.3, tag="pxm2")[:, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 Plaits alone", np.allclose(m2, base, atol=1e-4))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

@@ -223,6 +223,16 @@ The bands are stored in the sound memory (kind EqBands) and streamed to the DSP 
 Limitations: the bands are not automatable and are not mod destinations (only the slot controls are); the JS fallback UI has no band editor.
 Generator: `tools/fx/build_eq.py`; tests: `tools/fx/test_fx.py` (PEQ section).
 
+## Plaits extras
+
+Every oscillator set to Plaits has 16 more parameters next to the engine's three macro knobs (ids 2100 + 16 x oscillator + j, mod destinations 540..635, all of them can be modulated):
+
+- **Accent** (the engine's accent input: drums, speech, strings), **Aux Mix** (adds the engine's aux output).
+- **Env Decay** and a decaying note envelope that modulates Harmonics, Timbre and Morph (**Env > Harm / Timbre / Morph**, bipolar) and the pitch (**Pitch Env**, +-24 st).
+- **Vel > Timbre / Morph** and **Key > Timbre**.
+- **LPG** (amount), **LPG Decay** and **LPG Colour**: a low-pass gate (low-pass plus VCA that follow a decaying envelope from every note start, Colour moves it from VCA-like to filter-like). With LPG at 100 % the note is closed after the decay even if the key is held.
+- **Drive**, **Bits** and **Rate** (bit depth and sample-rate reduction) after the engine.
+
 ## Wavetable aliasing switch
 
 Each oscillator has an **Aliasing** switch on the Wavetable source page (parameter ids 2000 + oscillator). Off (default) reads band-limited mip levels, so notes stay clean up to the top of the keyboard. On reads the full 2048-sample level for every note, so the harmonics above Nyquist fold back: the gritty, digital sound of simple wavetable synths. It applies to the whole slot including unison voices; it is not a modulation target.

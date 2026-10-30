@@ -3,6 +3,7 @@
 #include "../NjoPages.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
+#include "../NjoPlx.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -176,6 +177,14 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets["walias"] = std::move (w);
             }
+            // Plaits extras: their own id block (PLX_BASE + 16 * osc + j)
+            for (auto key : plxKeys)
+            {
+                auto w = makeWidget (ctx, plx::plxId (o, plx::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             // Kick source: its own id block (KICK_BASE + 16 * osc + j)
             for (auto key : kickKeys)
             {
@@ -251,6 +260,7 @@ namespace njo
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
         int srcType() const { return juce::jlimit (0, 5, juce::roundToInt (ctx.get (pnum ("type")))); }
+        static constexpr const char* plxKeys[] = { "xacc", "xaux", "xedec", "xeharm", "xetimb", "xemorph", "xvtimb", "xvmorph", "xlpg", "xlpgdec", "xlpgcol", "xdrive", "xbits", "xrate", "xpenv", "xkey" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
@@ -427,11 +437,15 @@ namespace njo
                 knob ("sstart", 179, 222, c, sm);
                 put ("sloop", 13, 337, w - 26, 32, c, sm);
 
-                put ("pleng", 13, 203, w - 26, 36, c, pl); strip ("pleng", 13, 203, w - 26, c, false, pl);
-                const float fw = (float) (w - 26);
-                knob ("pharm", 13 + juce::roundToInt (fw / 6), 302, c, pl);
-                knob ("ptimb", 13 + juce::roundToInt (fw / 2), 302, c, pl);
-                knob ("pmorph", 13 + juce::roundToInt (fw * 5 / 6), 302, c, pl);
+                put ("pleng", 13, 146, w - 26, 36, c, pl); strip ("pleng", 13, 146, w - 26, c, false, pl);
+                {   // the engine's three macro knobs and the extras, five knobs per row
+                    const float fw = (float) (w - 26);
+                    const char* rows[4][5] = { { "pharm", "ptimb", "pmorph", "xacc", "xaux" }, { "xedec", "xeharm", "xetimb", "xemorph", "xpenv" },
+                                               { "xvtimb", "xvmorph", "xkey", "xlpg", "xlpgdec" }, { "xlpgcol", "xdrive", "xbits", "xrate", nullptr } };
+                    for (int r = 0; r < 4; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 56 * r, c, pl);
+                }
 
                 // Alpha Juno: wave selectors with their levels, noise / character, pulse width
                 if (type == 4)

@@ -185,4 +185,28 @@ KICK = [
 def kick_id(o, j): return KICK_BASE + KICK_STRIDE * o + j
 KICK_DST_BASE = PHY_DST_BASE + 31 * OSC_COUNT   # 444
 def kickdst(o, j): return KICK_DST_BASE + KICK_STRIDE * o + j
-N_DST_TOTAL = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540
+# Plaits extras (tools/osc/build_plx.py): parameter j (0..15) of slot o has the id PLX_BASE + 16 * o + j and the mod destination 540 + 16 * o + j
+PLX_BASE = 2100
+PLX_STRIDE = 16
+PLX = [
+ (0,  "xacc",    "Plaits Accent",          "Accent",      0, 1, 0.8, "", "sld", None),
+ (1,  "xaux",    "Plaits Aux Mix",         "Aux Mix",     0, 1, 0.0, "", "sld", None),
+ (2,  "xedec",   "Plaits Env Decay",       "Env Decay",   20, 5000, 400, "ms", "sld", None),
+ (3,  "xeharm",  "Plaits Env to Harmonics","Env > Harm", -1, 1, 0.0, "", "sld", None),
+ (4,  "xetimb",  "Plaits Env to Timbre",   "Env > Timbre", -1, 1, 0.0, "", "sld", None),
+ (5,  "xemorph", "Plaits Env to Morph",    "Env > Morph", -1, 1, 0.0, "", "sld", None),
+ (6,  "xvtimb",  "Plaits Velocity to Timbre", "Vel > Timbre", -1, 1, 0.0, "", "sld", None),
+ (7,  "xvmorph", "Plaits Velocity to Morph",  "Vel > Morph",  -1, 1, 0.0, "", "sld", None),
+ (8,  "xlpg",    "Plaits LPG Amount",      "LPG",         0, 1, 0.0, "", "sld", None),
+ (9,  "xlpgdec", "Plaits LPG Decay",       "LPG Decay",   20, 3000, 300, "ms", "sld", None),
+ (10, "xlpgcol", "Plaits LPG Colour",      "LPG Colour",  0, 1, 0.5, "", "sld", None),
+ (11, "xdrive",  "Plaits Drive",           "Drive",       0, 1, 0.0, "", "sld", None),
+ (12, "xbits",   "Plaits Bit Depth",       "Bits",        2, 16, 16, "", "sld", None),
+ (13, "xrate",   "Plaits Rate Reduction",  "Rate",        0, 1, 0.0, "", "sld", None),
+ (14, "xpenv",   "Plaits Pitch Env",       "Pitch Env",  -24, 24, 0.0, "st", "sld", None),
+ (15, "xkey",    "Plaits Key to Timbre",   "Key > Timbre", -1, 1, 0.0, "", "sld", None),
+]
+def plx_id(o, j): return PLX_BASE + PLX_STRIDE * o + j
+PLX_DST_BASE = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540
+def plxdst(o, j): return PLX_DST_BASE + PLX_STRIDE * o + j
+N_DST_TOTAL = PLX_DST_BASE + PLX_STRIDE * OSC_COUNT   # 636
