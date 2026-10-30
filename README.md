@@ -223,6 +223,10 @@ The bands are stored in the sound memory (kind EqBands) and streamed to the DSP 
 Limitations: the bands are not automatable and are not mod destinations (only the slot controls are); the JS fallback UI has no band editor.
 Generator: `tools/fx/build_eq.py`; tests: `tools/fx/test_fx.py` (PEQ section).
 
+## Wavetable aliasing switch
+
+Each oscillator has an **Aliasing** switch on the Wavetable source page (parameter ids 2000 + oscillator). Off (default) reads band-limited mip levels, so notes stay clean up to the top of the keyboard. On reads the full 2048-sample level for every note, so the harmonics above Nyquist fold back: the gritty, digital sound of simple wavetable synths. It applies to the whole slot including unison voices; it is not a modulation target.
+
 ## Saturator and Waveshaper (FX types 14, 15)
 
 **Saturator** has 12 models (Tube, Tape, Transformer, Diode, Fuzz, Soft Clip, Hard Clip, Rectifier, Sine Fold, Rational, Exciter, Arctan) and the controls Drive (0..36 dB), Tone (tilt), Bias, Output, Low Cut and Sag. The output level is compensated automatically, so Drive changes the character rather than the loudness, and a DC blocker follows the non-linearity.

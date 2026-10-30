@@ -170,6 +170,12 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Wavetable Aliasing switch: ids 2000 + osc
+            {
+                auto w = makeWidget (ctx, 2000 + o, true);
+                owner.addAndMakeVisible (*w);
+                widgets["walias"] = std::move (w);
+            }
             // Kick source: its own id block (KICK_BASE + 16 * osc + j)
             for (auto key : kickKeys)
             {
@@ -411,6 +417,7 @@ namespace njo
                 const int colW = (w - 26 - 7) / 2, x2 = 13 + colW + 7;
                 put ("wpos", 13 + colW / 2 - 35, 190, 70, 54, c, wt);
                 put ("wsize", x2, 202, colW, 36, c, wt);   strip ("wsize", x2, 202, colW, c, false, wt);
+                put ("walias", x2, 241, colW, 33, c, wt);
                 put ("w1m", 13, 279, colW, 36, c, wt);     strip ("w1m", 13, 279, colW, c, false, wt);
                 knob ("w1a", x2 + colW / 2, 269, c, wt);
                 put ("w2m", 13, 358, colW, 36, c, wt);     strip ("w2m", 13, 358, colW, c, false, wt);

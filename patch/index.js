@@ -1484,7 +1484,13 @@ const OSC_SPEC_ROWS = [
     [1992, "OSC 6 Kick Punch", 0, 1, 0.3, "", "sld", null, 1, "Punch", null],
     [1993, "OSC 6 Kick Tune", -24, 24, 0, "st", "sld", null, 1, "Tune", null],
     [1994, "OSC 6 Kick Click Decay", 1, 40, 6, "ms", "sld", null, 1, "Click Decay", null],
-    [1995, "OSC 6 Kick Character", 0, 1, 0.5, "", "sld", null, 1, "Character", null]
+    [1995, "OSC 6 Kick Character", 0, 1, 0.5, "", "sld", null, 1, "Character", null],
+    [2000, "OSC 1 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null],
+    [2001, "OSC 2 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null],
+    [2002, "OSC 3 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null],
+    [2003, "OSC 4 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null],
+    [2004, "OSC 5 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null],
+    [2005, "OSC 6 WT Aliasing", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Aliasing", null]
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -3004,7 +3010,7 @@ class EisenpulsPatchView extends HTMLElement {
             <canvas class="osc-canvas" data-o="${o}" width="640" height="190"></canvas>
             <div class="osc-info" data-o="${o}">--</div>
             <div class="o-mem" data-o="${o}" data-show="0,1"><div class="dz dz-osc" data-o="${o}"><span class="dz-txt"></span><span class="dz-clr" title="Clear this memory">&times;</span></div><button type="button" class="pb dz-lib" data-o="${o}" data-slot="wt${o}" title="Open the sound vault">VAULT</button></div>
-            ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join(""), "cgrid o-g2")}
+            ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join("") + this.controlHTML(2000 + o, true), "cgrid o-g2")}
             ${sh("1", ["root", "sstart", "sloop"].map(c).join(""), "cgrid o-g3")}
             ${sh("2", ["pleng", "pharm", "ptimb", "pmorph"].map(c).join(""), "cgrid o-g3 o-pl")}
             ${sh("4", `<div class="o-uh">Waves</div>` + ["jstype", "jptype", "jbtype", "jsaw", "jpulse", "jsub"].map(p).join("") + `<div class="o-uh">Pulse width</div>` + ["jwidth", "jpwm", "jpwmr", "jpwms", "jrange"].map(p).join("")

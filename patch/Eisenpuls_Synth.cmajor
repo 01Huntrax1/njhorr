@@ -1723,6 +1723,14 @@ processor Eisenpuls_Synth
     input event float param1994 [[ name: "OSC 6 Kick Click Decay", min: 1.0, max: 40.0, init: 6.0 ]];
     input event float param1995 [[ name: "OSC 6 Kick Character", min: 0.0, max: 1.0, init: 0.5 ]];
     // KICK-DECL-END
+    // ALIAS-DECL-BEGIN
+    input event float param2000 [[ name: "OSC 1 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2001 [[ name: "OSC 2 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2002 [[ name: "OSC 3 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2003 [[ name: "OSC 4 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2004 [[ name: "OSC 5 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2005 [[ name: "OSC 6 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    // ALIAS-DECL-END
     input event float param1600 [[ name: "Freq Mod 1 Rate (ms)", min: 5.0, max: 10000.0, init: 300.0 ]];
     input event float param1601 [[ name: "Freq Mod 1 Transpose (semitones)", min: -48.0, max: 48.0, init: 0.0 ]];
     input event float param1602 [[ name: "Freq Mod 1 Retrig", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
@@ -4127,6 +4135,14 @@ processor Eisenpuls_Synth
     event param1994 (float v) { kickSet (5, 14, v); }
     event param1995 (float v) { kickSet (5, 15, v); }
     // KICK-HAND-END
+    // ALIAS-HAND-BEGIN
+    event param2000 (float v) { wtAlias.at (0) = v; }
+    event param2001 (float v) { wtAlias.at (1) = v; }
+    event param2002 (float v) { wtAlias.at (2) = v; }
+    event param2003 (float v) { wtAlias.at (3) = v; }
+    event param2004 (float v) { wtAlias.at (4) = v; }
+    event param2005 (float v) { wtAlias.at (5) = v; }
+    // ALIAS-HAND-END
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -9026,6 +9042,10 @@ processor Eisenpuls_Synth
         }
     }
 
+    // ALIAS-DSP-BEGIN
+    float[6] wtAlias;     // Wavetable Aliasing switch per slot (ids 2000 + slot)
+
+    // ALIAS-DSP-END
     // mip level for a note frequency (Hz): the level whose content (up to 40% of its length in harmonics) stays below Nyquist
     int wtLevel (float f)
     {
@@ -9099,6 +9119,10 @@ processor Eisenpuls_Synth
             if (lvLo == lvHi)
                 lvlAll = lvLo;
         }
+
+        // Aliasing switch: no band-limiting, always the full level
+        if (wtAlias.at (o) > 0.5f)
+            lvlAll = 0;
 
         float udr = clamp (opv (o, 28), 0.0f, 1.0f) * 0.007f;
 

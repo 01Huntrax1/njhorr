@@ -227,6 +227,13 @@ for note, name in ((84, "C6"), (96, "C7"), (105, "A7")):
     a = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), FOFF(0)], note=note, tag="alias%d" % note)
     r = alias_ratio(a, f0)
     check("band-limited saw at %s has no aliasing" % name, r < 0.03, "residual %.4f" % r)
+for note in (84, 96):
+    f0 = 440.0 * 2 ** ((note - 69) / 12.0)
+    on = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), (2000, 1.0), FOFF(0)], note=note, tag="aliason%d" % note)
+    ron = alias_ratio(on, f0)
+    check("Aliasing switch on lets the saw alias at note %d" % note, ron > 0.1 and np.isfinite(on).all(), "residual %.4f" % ron)
+off1 = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), (2001, 1.0), FOFF(0)], note=96, tag="aliasoth")
+check("Aliasing switch of OSC 2 leaves OSC 1 band-limited", alias_ratio(off1, 440.0 * 2 ** (27 / 12.0)) < 0.03)
 lo = render(["wt 0 saw2k", P(0, "level", 0.8), P(0, "wsize", 3), FOFF(0)], note=36, tag="wtlow")
 check("low note keeps the full saw harmonics", band(seg(lo)[:, 0], 3000, 12000) > 0.15 * band(seg(lo)[:, 0], 60, 3000) * 0.1)
 a0 = render(["wt 0 big", P(0, "level", 0.8), P(0, "wsize", 3), P(0, "wpos", 0), FOFF(0)], tag="big0")

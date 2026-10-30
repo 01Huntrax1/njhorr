@@ -2171,6 +2171,12 @@ const std::vector<Spec>& allSpecs()
         { 1993, NJ_S("OSC 6 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
         { 1994, NJ_S("OSC 6 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
         { 1995, NJ_S("OSC 6 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        { 2000, NJ_S("OSC 1 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        { 2001, NJ_S("OSC 2 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        { 2002, NJ_S("OSC 3 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        { 2003, NJ_S("OSC 4 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        { 2004, NJ_S("OSC 5 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        { 2005, NJ_S("OSC 6 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
     };
     return v;
 }
