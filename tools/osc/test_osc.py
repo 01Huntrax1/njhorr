@@ -657,5 +657,64 @@ check("Mod destination 'Terrain Orbit Radius X / Y' of OSC 1 opens the orbit", r
 m2 = render(TBASE + [P(0, "tterr", 7)] + MM(0, 1, L.terdst(1, 2), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="txm2x")[:, 0]
 check("Mod destination of OSC 2 leaves the OSC 1 terrain alone", np.allclose(tw(m2), tw(tb), atol=1e-4))
 
+# ---------------------------------------------------------------- Waveguide source (type 6): ids WG_BASE + 16 * slot + j, mod destinations 636 + ...
+def WP(o, key, v):
+    for q in L.WG:
+        if q[1] == key: return (L.wg_id(o, q[0]), v)
+    return P(o, key, v)
+WBASE = [P(0, "type", 6), P(0, "level", 0.8), FOFF(0)]
+def wg(model, extra=(), note=57, tag="wgx", hold=0.8, tail=0.2, vel=100):
+    return render(WBASE + [WP(0, "wmodel", model)] + [WP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:, 0]
+def peak_near(x, f0, tol=0.06):
+    f, X = spec(x); m = (f > f0 * (1 - tol)) & (f < f0 * (1 + tol)); X = np.where(m, X, 0); i = int(np.argmax(X))
+    a, b, c = np.log(X[i - 1] + 1e-12), np.log(X[i] + 1e-12), np.log(X[i + 1] + 1e-12); return f[i] + 0.5 * (a - c) / (a - 2 * b + c) * (f[1] - f[0])
+def hfrac(x, f0=3000):
+    f, X = spec(x); return float(np.sqrt(np.sum(X[f > f0] ** 2)) / (np.sqrt(np.sum(X ** 2)) + 1e-12))
+for m, name in enumerate(L.WG_MODELS):
+    a = wg(m, tag="wg%d" % m)
+    check("Waveguide %s sounds and stays finite" % name, np.isfinite(a).all() and rms(win(a, 0.1, 0.4)) > 5e-3 and np.abs(a).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(a, 0.1, 0.4)), np.abs(a).max()))
+    errs = []
+    for note in (45, 57, 69):
+        f0 = 440 * 2 ** ((note - 69) / 12); x = wg(m, note=note, tag="wgp%d" % m)
+        errs.append(1200 * math.log2(peak_near(win(x, 0.3, 0.7) if m < 3 else win(x, 0.03, 0.3), f0) / f0))
+    check("Waveguide %s follows the keyboard (A2, A3, A4 within 12 cents)" % name, max(abs(e) for e in errs) < 12, "%s cents" % ["%.1f" % e for e in errs])
+bad = 0
+for m in range(5):
+    for note, vel, ex in ((24, 1, [("wexc", 1.0), ("wnoise", 1.0), ("wnl", 1.0), ("wstretch", 1.0), ("wsnare", 1.0), ("wdrive", 1.0), ("wglide", 1.0)]), (108, 127, [("wexc", 0.0), ("wtone", 0.0), ("wdecay", 1.0)]), (60, 127, [("wbody", 1.0), ("wexc", 1.0), ("wdecay", 1.0)])):
+        x = wg(m, ex, note=note, vel=vel, tag="wgs", hold=0.5, tail=0.3)
+        if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("Waveguide: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+k0 = wg(0, tag="wk0")
+check("Karplus-Strong: Tone changes the brightness", hfrac(win(wg(0, [("wtone", 0.0)], tag="wk1"), 0.05, 0.3)) < 0.5 * hfrac(win(wg(0, [("wtone", 1.0)], tag="wk2"), 0.05, 0.3)))
+check("Karplus-Strong: Noise adds high frequencies", hfrac(win(wg(0, [("wnoise", 1.0)], tag="wk3"), 0.05, 0.3)) > 2 * hfrac(win(k0, 0.05, 0.3)))
+check("Karplus-Strong: Decay lengthens the note", rms(win(wg(0, [("wdecay", 0.9)], tag="wk4"), 0.5, 0.8)) > 5 * rms(win(k0, 0.5, 0.8)))
+st = wg(0, [("wstretch", 1.0)], tag="wk5")
+check("Karplus-Strong: Stretch sharpens the partials but keeps the pitch", abs(1200 * math.log2(peak_near(win(st, 0.05, 0.4), 220) / 220)) < 8 and 1200 * math.log2(peak_near(win(st, 0.05, 0.4), 442, 0.05) / 440) > 5)
+gl = wg(0, [("wglide", 1.0)], tag="wk6")
+check("Karplus-Strong: Tension raises the pitch at the start", peak_near(win(gl, 0.03, 0.12), 220, 0.12) > 1.04 * peak_near(win(gl, 0.5, 0.8), 220, 0.12))
+check("Karplus-Strong: velocity scales the loudness", rms(win(wg(0, vel=127, tag="wk7"), 0.05, 0.3)) > 1.8 * rms(win(wg(0, vel=20, tag="wk8"), 0.05, 0.3)))
+check("Karplus-Strong: Saturation, Body and Drive change the sound", all(rms(win(wg(0, [(k, 1.0)], tag="wk9"), 0.05, 0.3) - win(k0, 0.05, 0.3)) > 0.05 * rms(win(k0, 0.05, 0.3)) for k in ("wnl", "wbody", "wdrive")))
+b0 = wg(1, tag="wb0")
+check("Bowed String: bow pressure and position change the sound", rms(win(wg(1, [("wexc", 1.0)], tag="wb1") - b0, 0.3, 0.7)) > 0.1 * rms(win(b0, 0.3, 0.7)) and rms(win(wg(1, [("wpos", 1.0)], tag="wb2") - b0, 0.3, 0.7)) > 0.1 * rms(win(b0, 0.3, 0.7)))
+check("Bowed String: a slow Attack delays the start", rms(win(wg(1, [("watk", 1.0)], tag="wb3"), 0.05, 0.15)) < 0.2 * rms(win(wg(1, [("watk", 0.0)], tag="wb4"), 0.05, 0.15)))
+c_ok = [rms(win(wg(2, [("wexc", v)], tag="wc%d" % int(v * 10)), 0.3, 0.7)) > 0.02 for v in (0.0, 0.5, 1.0)] + [rms(win(wg(2, [("wpos", v)], tag="wd%d" % int(v * 10)), 0.3, 0.7)) > 0.02 for v in (0.0, 1.0)]
+check("Clarinet: sounds over the whole Breath and Reed Stiffness range", all(c_ok), str(c_ok))
+bd = wg(3, tag="wn0"); pk0 = peak_near(win(bd, 0.02, 0.3), 2.756 * 220, 0.1); pk1 = peak_near(win(wg(3, [("wstretch", 1.0)], tag="wn1"), 0.02, 0.3), 2.0 * 220, 0.1)
+check("Banded Waveguide: Mode Ratios move the bands (bar 2.756, harmonic 2.0)", abs(pk0 / 220 - 2.756) < 0.05 and abs(pk1 / 220 - 2.0) < 0.05, "%.3f %.3f" % (pk0 / 220, pk1 / 220))
+check("Banded Waveguide: hardness, position and decay change the sound", all(rms(win(wg(3, [(k, v)], tag="wn2") - bd, 0.02, 0.4)) > 0.1 * rms(win(bd, 0.02, 0.4)) for k, v in (("wexc", 1.0), ("wpos", 1.0), ("wdecay", 0.2))))
+d0 = wg(4, tag="wr0")
+check("Drum: Snare adds a noise layer", hfrac(win(wg(4, [("wsnare", 1.0)], tag="wr1"), 0.02, 0.3)) > 100 * hfrac(win(d0, 0.02, 0.3)) + 0.3)
+check("Drum: strike position and hardness change the sound", rms(win(wg(4, [("wpos", 1.0)], tag="wr2") - d0, 0.02, 0.3)) > 0.2 * rms(win(d0, 0.02, 0.3)) and rms(win(wg(4, [("wexc", 1.0)], tag="wr3") - d0, 0.02, 0.3)) > 0.1 * rms(win(d0, 0.02, 0.3)))
+dt = wg(4, [("wglide", 1.0)], tag="wr4", hold=1.0)
+check("Drum: Tension raises the pitch after the strike and lets it fall back", peak_near(win(dt, 0.08, 0.16), 220, 0.6) > 1.25 * 220 and peak_near(win(dt, 0.55, 0.8), 220, 0.6) < 1.1 * peak_near(win(dt, 0.08, 0.16), 220, 0.6) and peak_near(win(dt, 0.55, 0.8), 220, 0.6) < 240)
+# mod destination 'OSC 1 Waveguide Decay' (j = 1): a constant LFO opens the decay of OSC 1; OSC 2's destination leaves OSC 1 alone
+mm = render(WBASE + [WP(0, "wmodel", 0), WP(0, "wdecay", 0.2)] + MM(0, 1, L.wgdst(0, 1), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="wgm1")[:, 0]
+ref = wg(0, [("wdecay", 0.2)], tag="wgm0")
+check("Mod destination 'Waveguide Decay' of OSC 1 lengthens the note", rms(win(mm, 0.5, 0.8)) > 5 * max(rms(win(ref, 0.5, 0.8)), 1e-6), "%.4f %.4f" % (rms(win(mm, 0.5, 0.8)), rms(win(ref, 0.5, 0.8))))
+mo = render(WBASE + [WP(0, "wmodel", 0), WP(0, "wdecay", 0.2)] + MM(0, 1, L.wgdst(1, 1), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="wgm2")[:, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 waveguide alone", np.allclose(win(mo, 0.1, 0.8), win(ref, 0.1, 0.8), atol=1e-4))
+two = render(WBASE + [WP(0, "wmodel", 3), P(1, "type", 6), P(1, "level", 0.8), FOFF(1), WP(1, "wmodel", 4)], note=57, hold=0.5, tail=0.3, tag="wg2")
+check("two Waveguide slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

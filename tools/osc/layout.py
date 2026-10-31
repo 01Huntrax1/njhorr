@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 5, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 6, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -210,4 +210,37 @@ TER = [
 def ter_id(o, j): return TER_BASE + TER_STRIDE * o + j
 TER_DST_BASE = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540
 def terdst(o, j): return TER_DST_BASE + TER_STRIDE * o + j
-N_DST_TOTAL = TER_DST_BASE + TER_STRIDE * OSC_COUNT   # 636
+# Waveguide source (tools/osc/build_wg.py): parameter j (0..15) of slot o has the id WG_BASE + 16 * o + j and the mod destination 636 + 16 * o + j
+WG_BASE = 2200
+WG_STRIDE = 16
+WG_MODELS = ["Karplus-Strong", "Bowed String", "Clarinet", "Banded Waveguide", "Drum"]
+WG = [
+ (0,  "wmodel",   "Waveguide Model",       "Model",       0, 4, 0, "", "sel", WG_MODELS),
+ (1,  "wdecay",   "Waveguide Decay",       "Decay",       0, 1, 0.5, "", "sld", None),    # 0.05 .. 20 s (exponential)
+ (2,  "wtone",    "Waveguide Tone",        "Tone",        0, 1, 0.6, "", "sld", None),    # brightness of the loop damping
+ (3,  "wexc",     "Waveguide Excite",      "Excite",      0, 1, 0.6, "", "sld", None),    # pluck / mallet hardness, bow pressure, breath pressure
+ (4,  "wpos",     "Waveguide Position",    "Position",    0, 1, 0.3, "", "sld", None),    # pluck / strike / bow position, reed stiffness
+ (5,  "wnoise",   "Waveguide Noise",       "Noise",       0, 1, 0.2, "", "sld", None),
+ (6,  "wnl",      "Waveguide Nonlinear",   "Nonlinear",   0, 1, 0.0, "", "sld", None),    # saturation / bow offset / reed offset
+ (7,  "wstretch", "Waveguide Stretch",     "Stretch",     0, 1, 0.0, "", "sld", None),    # string stiffness / mode ratios / membrane stiffness
+ (8,  "watk",     "Waveguide Attack",      "Attack",      0, 1, 0.2, "", "sld", None),    # bow / breath attack 5 ms .. 1 s
+ (9,  "wsnare",   "Waveguide Snare",       "Snare",       0, 1, 0.0, "", "sld", None),
+ (10, "wbody",    "Waveguide Body",        "Body",        0, 1, 0.0, "", "sld", None),
+ (11, "wbodyf",   "Waveguide Body Tune",   "Body Tune",   0, 1, 0.4, "", "sld", None),
+ (12, "wvel",     "Waveguide Velocity",    "Vel > Excite", 0, 1, 0.5, "", "sld", None),
+ (13, "wdrive",   "Waveguide Drive",       "Drive",       0, 1, 0.0, "", "sld", None),
+ (14, "wglide",   "Waveguide Tension",     "Tension",     0, 1, 0.0, "", "sld", None),    # pitch rises with the vibration energy (tension modulation)
+ (15, "wktrack",  "Waveguide Key Decay",   "Key Decay",   0, 1, 0.3, "", "sld", None),    # higher notes decay faster
+]
+# labels of parameters 1..15 per model ("" = not used by the model)
+WG_LABELS = [
+ ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"],
+ ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"],
+ ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"],
+ ["Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay"],
+ ["Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay"],
+]
+def wg_id(o, j): return WG_BASE + WG_STRIDE * o + j
+WG_DST_BASE = TER_DST_BASE + TER_STRIDE * OSC_COUNT   # 636
+def wgdst(o, j): return WG_DST_BASE + WG_STRIDE * o + j
+N_DST_TOTAL = WG_DST_BASE + WG_STRIDE * OSC_COUNT   # 732

@@ -2,6 +2,7 @@
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
 #include "../NjoTer.h"
+#include "../NjoWg.h"
 #include <cmath>
 
 namespace njo
@@ -187,6 +188,7 @@ namespace njo
         if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= kick::KICK_BASE + kick::KICK_STRIDE * o && num < kick::KICK_BASE + kick::KICK_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
+        if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -215,7 +217,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 5, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 6, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -311,6 +313,32 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 6)
+            {
+                // Waveguide: the sound's envelope (decay or bow / breath attack) over its first seconds, a 110 Hz sketch of the model
+                auto V = [&] (const char* key) { return ctx.get (wg::wgId (o, wg::key (key))); };
+                const int md = juce::jlimit (0, 4, juce::roundToInt (V ("wmodel")));
+                const float t60 = 0.05f * std::pow (400.0f, V ("wdecay")), T = juce::jlimit (0.3f, 2.5f, t60 * 1.2f);
+                const bool sustained = md == 1 || md == 2;
+                const float atk = 0.005f * std::pow (200.0f, V ("watk"));
+                juce::Path p, env;
+                double ph = 0.0; const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const float t = (float) x / W * T;
+                    const float a = sustained ? 1.0f - std::exp (-t / atk) : std::exp (-t * 6.9f / t60);
+                    ph += 110.0 * (1.0 + (md == 4 ? 0.5 * V ("wglide") * a : 0.0)) * (double) T / W;
+                    const float y = (float) std::sin (6.2831853 * ph) * a * 0.7f;
+                    const float py = H / 2 - y * (H / 2 - 4), ey = H / 2 - a * 0.7f * (H / 2 - 4);
+                    if (x == 0) { p.startNewSubPath ((float) x, py); env.startNewSubPath ((float) x, ey); } else { p.lineTo ((float) x, py); env.lineTo ((float) x, ey); }
+                }
+                g.setColour (juce::Colour (0xffff3b30).withAlpha (0.35f));
+                g.strokePath (env, juce::PathStrokeType (1.0f));
+                g.setColour (juce::Colour (0xffff3b30));
+                g.strokePath (p, juce::PathStrokeType (1.5f));
+                static const char* names[] = { "KARPLUS-STRONG", "BOWED STRING", "CLARINET", "BANDED WAVEGUIDE", "DRUM" };
+                info = juce::String ("WAVEGUIDE / ") + names[md] + " / T60 " + juce::String (t60, 2) + " S";
             }
             else if (type == 5)
             {

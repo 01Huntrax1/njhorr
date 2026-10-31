@@ -4,6 +4,7 @@
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
 #include "../NjoTer.h"
+#include "../NjoWg.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -185,6 +186,14 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Waveguide source: its own id block (WG_BASE + 16 * osc + j)
+            for (auto key : wgKeys)
+            {
+                auto w = makeWidget (ctx, wg::wgId (o, wg::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             // Kick source: its own id block (KICK_BASE + 16 * osc + j)
             for (auto key : kickKeys)
             {
@@ -259,8 +268,9 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 5, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 6, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
+        static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
@@ -355,9 +365,27 @@ namespace njo
             ctx.begin (n); ctx.set (n, (float) target); ctx.end (n);
         }
 
+        // Waveguide: each model names (and uses) its own parameters
+        void updateWgLabels()
+        {
+            const int model = juce::jlimit (0, 4, juce::roundToInt (ctx.get (wg::wgId (o, wg::key ("wmodel")))));
+            for (auto key : wgKeys)
+            {
+                const int j = wg::key (key);
+                if (j < 1) continue;
+                auto* w = W (key);
+                if (w == nullptr) continue;
+                const juce::String lbl (wg::label (model, j));
+                w->setLabelOverride (lbl);
+                w->setAlpha (lbl.isEmpty() ? 0.3f : 1.0f);
+                w->setEnabled (lbl.isNotEmpty());
+            }
+        }
+
         // ---- parameter changes ----
         void paramChanged (int num, float) override
         {
+            if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { updateWgLabels(); owner.repaint(); return; }
             if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
             int k = num - oscId (o, 0);
             if (k < 0 || k >= OSC_STRIDE) return;
@@ -394,7 +422,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5;
+            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6, wgf = type == 6;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -435,6 +463,17 @@ namespace njo
                     for (int r = 0; r < 4; ++r)
                         for (int i = 0; i < 5; ++i)
                             if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 56 * r, c, tr);
+                }
+
+                {   // Waveguide: the model selector, then three rows of knobs; labels follow the model, unused knobs are dimmed
+                    put ("wmodel", 13, 146, w - 26, 36, c, wgf);  strip ("wmodel", 13, 146, w - 26, c, false, wgf);
+                    const float fw = (float) (w - 26);
+                    const char* rows[3][5] = { { "wdecay", "wtone", "wexc", "wpos", "wnoise" }, { "wnl", "wstretch", "watk", "wsnare", "wvel" },
+                                               { "wbody", "wbodyf", "wdrive", "wglide", "wktrack" } };
+                    for (int r = 0; r < 3; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 62 * r, c, wgf);
+                    if (wgf) updateWgLabels();
                 }
 
                 // Alpha Juno: wave selectors with their levels, noise / character, pulse width
