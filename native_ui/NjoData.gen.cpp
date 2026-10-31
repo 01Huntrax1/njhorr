@@ -2,2338 +2,3446 @@
 #include "NjoData.h"
 #define NJ_S(x) juce::String (juce::CharPointer_UTF8 (x))
 namespace njo {
+static void allSpecs_0 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 2, NJ_S("Voice"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Poly"), NJ_S("Mono") }, 1, NJ_S(""), {  } },
+        Spec { 3, NJ_S("Glide"), 0.0, 1000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 18, NJ_S("Attack"), 0.0, 2000.0, 2.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 19, NJ_S("Decay"), 10.0, 4000.0, 500.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 20, NJ_S("Sustain"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 21, NJ_S("Release"), 5.0, 4000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 22, NJ_S("Velocity"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 28, NJ_S("Synth Drive"), 0.0, 1.0, 0.1, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 29, NJ_S("Synth Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 36, NJ_S("Master"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 45, NJ_S("Pitch EG"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 46, NJ_S("P.EG Decay"), 10.0, 2000.0, 150.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 63, NJ_S("Master Tune"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 175, NJ_S("Stereo Width"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 189, NJ_S("Tone"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 190, NJ_S("Out Gain"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 247, NJ_S("LFO 1 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 882, NJ_S("LFO 1 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 883, NJ_S("LFO 1 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 884, NJ_S("LFO 1 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 885, NJ_S("LFO 1 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 886, NJ_S("LFO 1 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 248, NJ_S("LFO 1 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 249, NJ_S("LFO 2 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 887, NJ_S("LFO 2 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 888, NJ_S("LFO 2 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 889, NJ_S("LFO 2 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 890, NJ_S("LFO 2 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 891, NJ_S("LFO 2 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 250, NJ_S("LFO 2 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 251, NJ_S("LFO 3 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 892, NJ_S("LFO 3 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 893, NJ_S("LFO 3 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 894, NJ_S("LFO 3 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 895, NJ_S("LFO 3 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 896, NJ_S("LFO 3 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 252, NJ_S("LFO 3 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 253, NJ_S("LFO 4 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 897, NJ_S("LFO 4 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 898, NJ_S("LFO 4 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+    });
+}
+static void allSpecs_1 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 899, NJ_S("LFO 4 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 900, NJ_S("LFO 4 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 901, NJ_S("LFO 4 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 254, NJ_S("LFO 4 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 255, NJ_S("LFO 5 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 902, NJ_S("LFO 5 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 903, NJ_S("LFO 5 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 904, NJ_S("LFO 5 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 905, NJ_S("LFO 5 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 906, NJ_S("LFO 5 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 256, NJ_S("LFO 5 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 257, NJ_S("LFO 6 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 907, NJ_S("LFO 6 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 908, NJ_S("LFO 6 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 909, NJ_S("LFO 6 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 910, NJ_S("LFO 6 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 911, NJ_S("LFO 6 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 258, NJ_S("LFO 6 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 259, NJ_S("LFO 7 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 912, NJ_S("LFO 7 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 913, NJ_S("LFO 7 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 914, NJ_S("LFO 7 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 915, NJ_S("LFO 7 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 916, NJ_S("LFO 7 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 260, NJ_S("LFO 7 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 261, NJ_S("LFO 8 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 917, NJ_S("LFO 8 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 918, NJ_S("LFO 8 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 919, NJ_S("LFO 8 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 920, NJ_S("LFO 8 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 921, NJ_S("LFO 8 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 262, NJ_S("LFO 8 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 263, NJ_S("LFO 9 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+        Spec { 922, NJ_S("LFO 9 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 923, NJ_S("LFO 9 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 924, NJ_S("LFO 9 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 925, NJ_S("LFO 9 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 926, NJ_S("LFO 9 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 264, NJ_S("LFO 9 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 265, NJ_S("LFO 10 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_2 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 927, NJ_S("LFO 10 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
+        Spec { 928, NJ_S("LFO 10 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
+        Spec { 929, NJ_S("LFO 10 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
+        Spec { 930, NJ_S("LFO 10 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 931, NJ_S("LFO 10 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 266, NJ_S("LFO 10 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 267, NJ_S("Env 1 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 268, NJ_S("Env 1 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 269, NJ_S("Env 1 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 270, NJ_S("Env 1 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 271, NJ_S("Env 2 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 272, NJ_S("Env 2 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 273, NJ_S("Env 2 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 274, NJ_S("Env 2 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 275, NJ_S("Env 3 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 276, NJ_S("Env 3 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 277, NJ_S("Env 3 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 278, NJ_S("Env 3 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 279, NJ_S("Env 4 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 280, NJ_S("Env 4 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 281, NJ_S("Env 4 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 282, NJ_S("Env 4 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 283, NJ_S("Env 5 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 284, NJ_S("Env 5 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 285, NJ_S("Env 5 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 286, NJ_S("Env 5 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 287, NJ_S("Env 6 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 288, NJ_S("Env 6 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 289, NJ_S("Env 6 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 290, NJ_S("Env 6 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 291, NJ_S("Env 7 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 292, NJ_S("Env 7 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 293, NJ_S("Env 7 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 294, NJ_S("Env 7 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 295, NJ_S("Env 8 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 296, NJ_S("Env 8 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 297, NJ_S("Env 8 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 298, NJ_S("Env 8 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 299, NJ_S("Env 9 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 300, NJ_S("Env 9 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_3 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 301, NJ_S("Env 9 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 302, NJ_S("Env 9 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 303, NJ_S("Env 10 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 304, NJ_S("Env 10 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 305, NJ_S("Env 10 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 306, NJ_S("Env 10 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1600, NJ_S("Freq 1 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1601, NJ_S("Freq 1 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1602, NJ_S("Freq 1 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1603, NJ_S("Freq 1 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1604, NJ_S("Freq 2 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1605, NJ_S("Freq 2 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1606, NJ_S("Freq 2 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1607, NJ_S("Freq 2 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1608, NJ_S("Freq 3 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1609, NJ_S("Freq 3 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1610, NJ_S("Freq 3 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1611, NJ_S("Freq 3 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1612, NJ_S("Freq 4 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1613, NJ_S("Freq 4 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1614, NJ_S("Freq 4 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1615, NJ_S("Freq 4 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1616, NJ_S("Freq 5 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1617, NJ_S("Freq 5 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1618, NJ_S("Freq 5 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1619, NJ_S("Freq 5 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1620, NJ_S("Freq 6 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1621, NJ_S("Freq 6 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1622, NJ_S("Freq 6 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1623, NJ_S("Freq 6 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1624, NJ_S("Freq 7 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1625, NJ_S("Freq 7 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1626, NJ_S("Freq 7 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1627, NJ_S("Freq 7 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1628, NJ_S("Freq 8 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1629, NJ_S("Freq 8 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1630, NJ_S("Freq 8 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1631, NJ_S("Freq 8 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1632, NJ_S("Freq 9 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1633, NJ_S("Freq 9 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_4 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1634, NJ_S("Freq 9 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1635, NJ_S("Freq 9 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1636, NJ_S("Freq 10 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1637, NJ_S("Freq 10 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 1638, NJ_S("Freq 10 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 1639, NJ_S("Freq 10 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
+        Spec { 307, NJ_S("Slot 1 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 308, NJ_S("Slot 1 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 309, NJ_S("Slot 1 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 310, NJ_S("Slot 2 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 311, NJ_S("Slot 2 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 312, NJ_S("Slot 2 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 313, NJ_S("Slot 3 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 314, NJ_S("Slot 3 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 315, NJ_S("Slot 3 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 316, NJ_S("Slot 4 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 317, NJ_S("Slot 4 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 318, NJ_S("Slot 4 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 319, NJ_S("Slot 5 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 320, NJ_S("Slot 5 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 321, NJ_S("Slot 5 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 322, NJ_S("Slot 6 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 323, NJ_S("Slot 6 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 324, NJ_S("Slot 6 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 325, NJ_S("Slot 7 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 326, NJ_S("Slot 7 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 327, NJ_S("Slot 7 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 328, NJ_S("Slot 8 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 329, NJ_S("Slot 8 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 330, NJ_S("Slot 8 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 331, NJ_S("Slot 9 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 332, NJ_S("Slot 9 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 333, NJ_S("Slot 9 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 334, NJ_S("Slot 10 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 335, NJ_S("Slot 10 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 336, NJ_S("Slot 10 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 472, NJ_S("Slot 11 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 473, NJ_S("Slot 11 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 474, NJ_S("Slot 11 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 475, NJ_S("Slot 12 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_5 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 476, NJ_S("Slot 12 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 477, NJ_S("Slot 12 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 478, NJ_S("Slot 13 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 479, NJ_S("Slot 13 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 480, NJ_S("Slot 13 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 481, NJ_S("Slot 14 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 482, NJ_S("Slot 14 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 483, NJ_S("Slot 14 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 484, NJ_S("Slot 15 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 485, NJ_S("Slot 15 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 486, NJ_S("Slot 15 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 487, NJ_S("Slot 16 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 488, NJ_S("Slot 16 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 489, NJ_S("Slot 16 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 490, NJ_S("Slot 17 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 491, NJ_S("Slot 17 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 492, NJ_S("Slot 17 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 493, NJ_S("Slot 18 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 494, NJ_S("Slot 18 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 495, NJ_S("Slot 18 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 496, NJ_S("Slot 19 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 497, NJ_S("Slot 19 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 498, NJ_S("Slot 19 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 499, NJ_S("Slot 20 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 500, NJ_S("Slot 20 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 501, NJ_S("Slot 20 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4000, NJ_S("Slot 21 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4001, NJ_S("Slot 21 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4002, NJ_S("Slot 21 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4003, NJ_S("Slot 22 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4004, NJ_S("Slot 22 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4005, NJ_S("Slot 22 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4006, NJ_S("Slot 23 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4007, NJ_S("Slot 23 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4008, NJ_S("Slot 23 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4009, NJ_S("Slot 24 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4010, NJ_S("Slot 24 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4011, NJ_S("Slot 24 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4012, NJ_S("Slot 25 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4013, NJ_S("Slot 25 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_6 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4014, NJ_S("Slot 25 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4015, NJ_S("Slot 26 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4016, NJ_S("Slot 26 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4017, NJ_S("Slot 26 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4018, NJ_S("Slot 27 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4019, NJ_S("Slot 27 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4020, NJ_S("Slot 27 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4021, NJ_S("Slot 28 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4022, NJ_S("Slot 28 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4023, NJ_S("Slot 28 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4024, NJ_S("Slot 29 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4025, NJ_S("Slot 29 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4026, NJ_S("Slot 29 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4027, NJ_S("Slot 30 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4028, NJ_S("Slot 30 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4029, NJ_S("Slot 30 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4030, NJ_S("Slot 31 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4031, NJ_S("Slot 31 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4032, NJ_S("Slot 31 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4033, NJ_S("Slot 32 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4034, NJ_S("Slot 32 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4035, NJ_S("Slot 32 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4036, NJ_S("Slot 33 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4037, NJ_S("Slot 33 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4038, NJ_S("Slot 33 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4039, NJ_S("Slot 34 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4040, NJ_S("Slot 34 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4041, NJ_S("Slot 34 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4042, NJ_S("Slot 35 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4043, NJ_S("Slot 35 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4044, NJ_S("Slot 35 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4045, NJ_S("Slot 36 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4046, NJ_S("Slot 36 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4047, NJ_S("Slot 36 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4048, NJ_S("Slot 37 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4049, NJ_S("Slot 37 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4050, NJ_S("Slot 37 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4051, NJ_S("Slot 38 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4052, NJ_S("Slot 38 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4053, NJ_S("Slot 38 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_7 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4054, NJ_S("Slot 39 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4055, NJ_S("Slot 39 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4056, NJ_S("Slot 39 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4057, NJ_S("Slot 40 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4058, NJ_S("Slot 40 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4059, NJ_S("Slot 40 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4060, NJ_S("Slot 41 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4061, NJ_S("Slot 41 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4062, NJ_S("Slot 41 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4063, NJ_S("Slot 42 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4064, NJ_S("Slot 42 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4065, NJ_S("Slot 42 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4066, NJ_S("Slot 43 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4067, NJ_S("Slot 43 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4068, NJ_S("Slot 43 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4069, NJ_S("Slot 44 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4070, NJ_S("Slot 44 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4071, NJ_S("Slot 44 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4072, NJ_S("Slot 45 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4073, NJ_S("Slot 45 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4074, NJ_S("Slot 45 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4075, NJ_S("Slot 46 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4076, NJ_S("Slot 46 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4077, NJ_S("Slot 46 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4078, NJ_S("Slot 47 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4079, NJ_S("Slot 47 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4080, NJ_S("Slot 47 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4081, NJ_S("Slot 48 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4082, NJ_S("Slot 48 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4083, NJ_S("Slot 48 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4084, NJ_S("Slot 49 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4085, NJ_S("Slot 49 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4086, NJ_S("Slot 49 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4087, NJ_S("Slot 50 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4088, NJ_S("Slot 50 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4089, NJ_S("Slot 50 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4090, NJ_S("Slot 51 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4091, NJ_S("Slot 51 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4092, NJ_S("Slot 51 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4093, NJ_S("Slot 52 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_8 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4094, NJ_S("Slot 52 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4095, NJ_S("Slot 52 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4096, NJ_S("Slot 53 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4097, NJ_S("Slot 53 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4098, NJ_S("Slot 53 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4099, NJ_S("Slot 54 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4100, NJ_S("Slot 54 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4101, NJ_S("Slot 54 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4102, NJ_S("Slot 55 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4103, NJ_S("Slot 55 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4104, NJ_S("Slot 55 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4105, NJ_S("Slot 56 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4106, NJ_S("Slot 56 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4107, NJ_S("Slot 56 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4108, NJ_S("Slot 57 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4109, NJ_S("Slot 57 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4110, NJ_S("Slot 57 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4111, NJ_S("Slot 58 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4112, NJ_S("Slot 58 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4113, NJ_S("Slot 58 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4114, NJ_S("Slot 59 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4115, NJ_S("Slot 59 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4116, NJ_S("Slot 59 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4117, NJ_S("Slot 60 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4118, NJ_S("Slot 60 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4119, NJ_S("Slot 60 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4120, NJ_S("Slot 61 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4121, NJ_S("Slot 61 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4122, NJ_S("Slot 61 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4123, NJ_S("Slot 62 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4124, NJ_S("Slot 62 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4125, NJ_S("Slot 62 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4126, NJ_S("Slot 63 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4127, NJ_S("Slot 63 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4128, NJ_S("Slot 63 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4129, NJ_S("Slot 64 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4130, NJ_S("Slot 64 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4131, NJ_S("Slot 64 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4132, NJ_S("Slot 65 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4133, NJ_S("Slot 65 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_9 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4134, NJ_S("Slot 65 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4135, NJ_S("Slot 66 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4136, NJ_S("Slot 66 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4137, NJ_S("Slot 66 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4138, NJ_S("Slot 67 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4139, NJ_S("Slot 67 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4140, NJ_S("Slot 67 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4141, NJ_S("Slot 68 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4142, NJ_S("Slot 68 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4143, NJ_S("Slot 68 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4144, NJ_S("Slot 69 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4145, NJ_S("Slot 69 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4146, NJ_S("Slot 69 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4147, NJ_S("Slot 70 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4148, NJ_S("Slot 70 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4149, NJ_S("Slot 70 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4150, NJ_S("Slot 71 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4151, NJ_S("Slot 71 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4152, NJ_S("Slot 71 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4153, NJ_S("Slot 72 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4154, NJ_S("Slot 72 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4155, NJ_S("Slot 72 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4156, NJ_S("Slot 73 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4157, NJ_S("Slot 73 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4158, NJ_S("Slot 73 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4159, NJ_S("Slot 74 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4160, NJ_S("Slot 74 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4161, NJ_S("Slot 74 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4162, NJ_S("Slot 75 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4163, NJ_S("Slot 75 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4164, NJ_S("Slot 75 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4165, NJ_S("Slot 76 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4166, NJ_S("Slot 76 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4167, NJ_S("Slot 76 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4168, NJ_S("Slot 77 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4169, NJ_S("Slot 77 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4170, NJ_S("Slot 77 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4171, NJ_S("Slot 78 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4172, NJ_S("Slot 78 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4173, NJ_S("Slot 78 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_10 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4174, NJ_S("Slot 79 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4175, NJ_S("Slot 79 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4176, NJ_S("Slot 79 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4177, NJ_S("Slot 80 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4178, NJ_S("Slot 80 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4179, NJ_S("Slot 80 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4180, NJ_S("Slot 81 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4181, NJ_S("Slot 81 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4182, NJ_S("Slot 81 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4183, NJ_S("Slot 82 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4184, NJ_S("Slot 82 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4185, NJ_S("Slot 82 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4186, NJ_S("Slot 83 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4187, NJ_S("Slot 83 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4188, NJ_S("Slot 83 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4189, NJ_S("Slot 84 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4190, NJ_S("Slot 84 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4191, NJ_S("Slot 84 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4192, NJ_S("Slot 85 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4193, NJ_S("Slot 85 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4194, NJ_S("Slot 85 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4195, NJ_S("Slot 86 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4196, NJ_S("Slot 86 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4197, NJ_S("Slot 86 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4198, NJ_S("Slot 87 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4199, NJ_S("Slot 87 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4200, NJ_S("Slot 87 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4201, NJ_S("Slot 88 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4202, NJ_S("Slot 88 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4203, NJ_S("Slot 88 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4204, NJ_S("Slot 89 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4205, NJ_S("Slot 89 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4206, NJ_S("Slot 89 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4207, NJ_S("Slot 90 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4208, NJ_S("Slot 90 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4209, NJ_S("Slot 90 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4210, NJ_S("Slot 91 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4211, NJ_S("Slot 91 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4212, NJ_S("Slot 91 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4213, NJ_S("Slot 92 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_11 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4214, NJ_S("Slot 92 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4215, NJ_S("Slot 92 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4216, NJ_S("Slot 93 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4217, NJ_S("Slot 93 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4218, NJ_S("Slot 93 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4219, NJ_S("Slot 94 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4220, NJ_S("Slot 94 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4221, NJ_S("Slot 94 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4222, NJ_S("Slot 95 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4223, NJ_S("Slot 95 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4224, NJ_S("Slot 95 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4225, NJ_S("Slot 96 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4226, NJ_S("Slot 96 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4227, NJ_S("Slot 96 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4228, NJ_S("Slot 97 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4229, NJ_S("Slot 97 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4230, NJ_S("Slot 97 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4231, NJ_S("Slot 98 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4232, NJ_S("Slot 98 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4233, NJ_S("Slot 98 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4234, NJ_S("Slot 99 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4235, NJ_S("Slot 99 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4236, NJ_S("Slot 99 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4237, NJ_S("Slot 100 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4238, NJ_S("Slot 100 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4239, NJ_S("Slot 100 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4240, NJ_S("Slot 101 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4241, NJ_S("Slot 101 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4242, NJ_S("Slot 101 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4243, NJ_S("Slot 102 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4244, NJ_S("Slot 102 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4245, NJ_S("Slot 102 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4246, NJ_S("Slot 103 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4247, NJ_S("Slot 103 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4248, NJ_S("Slot 103 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4249, NJ_S("Slot 104 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4250, NJ_S("Slot 104 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4251, NJ_S("Slot 104 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4252, NJ_S("Slot 105 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4253, NJ_S("Slot 105 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_12 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4254, NJ_S("Slot 105 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4255, NJ_S("Slot 106 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4256, NJ_S("Slot 106 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4257, NJ_S("Slot 106 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4258, NJ_S("Slot 107 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4259, NJ_S("Slot 107 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4260, NJ_S("Slot 107 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4261, NJ_S("Slot 108 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4262, NJ_S("Slot 108 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4263, NJ_S("Slot 108 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4264, NJ_S("Slot 109 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4265, NJ_S("Slot 109 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4266, NJ_S("Slot 109 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4267, NJ_S("Slot 110 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4268, NJ_S("Slot 110 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4269, NJ_S("Slot 110 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4270, NJ_S("Slot 111 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4271, NJ_S("Slot 111 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4272, NJ_S("Slot 111 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4273, NJ_S("Slot 112 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4274, NJ_S("Slot 112 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4275, NJ_S("Slot 112 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4276, NJ_S("Slot 113 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4277, NJ_S("Slot 113 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4278, NJ_S("Slot 113 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4279, NJ_S("Slot 114 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4280, NJ_S("Slot 114 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4281, NJ_S("Slot 114 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4282, NJ_S("Slot 115 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4283, NJ_S("Slot 115 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4284, NJ_S("Slot 115 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4285, NJ_S("Slot 116 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4286, NJ_S("Slot 116 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4287, NJ_S("Slot 116 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4288, NJ_S("Slot 117 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4289, NJ_S("Slot 117 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4290, NJ_S("Slot 117 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4291, NJ_S("Slot 118 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4292, NJ_S("Slot 118 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4293, NJ_S("Slot 118 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_13 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4294, NJ_S("Slot 119 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4295, NJ_S("Slot 119 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4296, NJ_S("Slot 119 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4297, NJ_S("Slot 120 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4298, NJ_S("Slot 120 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4299, NJ_S("Slot 120 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4300, NJ_S("Slot 121 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4301, NJ_S("Slot 121 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4302, NJ_S("Slot 121 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4303, NJ_S("Slot 122 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4304, NJ_S("Slot 122 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4305, NJ_S("Slot 122 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4306, NJ_S("Slot 123 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4307, NJ_S("Slot 123 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4308, NJ_S("Slot 123 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4309, NJ_S("Slot 124 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4310, NJ_S("Slot 124 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4311, NJ_S("Slot 124 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4312, NJ_S("Slot 125 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4313, NJ_S("Slot 125 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4314, NJ_S("Slot 125 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4315, NJ_S("Slot 126 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4316, NJ_S("Slot 126 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4317, NJ_S("Slot 126 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4318, NJ_S("Slot 127 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4319, NJ_S("Slot 127 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4320, NJ_S("Slot 127 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4321, NJ_S("Slot 128 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4322, NJ_S("Slot 128 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4323, NJ_S("Slot 128 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4324, NJ_S("Slot 129 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4325, NJ_S("Slot 129 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4326, NJ_S("Slot 129 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4327, NJ_S("Slot 130 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4328, NJ_S("Slot 130 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4329, NJ_S("Slot 130 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4330, NJ_S("Slot 131 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4331, NJ_S("Slot 131 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4332, NJ_S("Slot 131 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4333, NJ_S("Slot 132 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_14 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4334, NJ_S("Slot 132 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4335, NJ_S("Slot 132 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4336, NJ_S("Slot 133 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4337, NJ_S("Slot 133 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4338, NJ_S("Slot 133 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4339, NJ_S("Slot 134 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4340, NJ_S("Slot 134 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4341, NJ_S("Slot 134 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4342, NJ_S("Slot 135 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4343, NJ_S("Slot 135 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4344, NJ_S("Slot 135 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4345, NJ_S("Slot 136 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4346, NJ_S("Slot 136 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4347, NJ_S("Slot 136 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4348, NJ_S("Slot 137 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4349, NJ_S("Slot 137 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4350, NJ_S("Slot 137 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4351, NJ_S("Slot 138 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4352, NJ_S("Slot 138 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4353, NJ_S("Slot 138 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4354, NJ_S("Slot 139 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4355, NJ_S("Slot 139 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4356, NJ_S("Slot 139 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4357, NJ_S("Slot 140 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4358, NJ_S("Slot 140 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4359, NJ_S("Slot 140 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4360, NJ_S("Slot 141 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4361, NJ_S("Slot 141 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4362, NJ_S("Slot 141 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4363, NJ_S("Slot 142 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4364, NJ_S("Slot 142 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4365, NJ_S("Slot 142 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4366, NJ_S("Slot 143 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4367, NJ_S("Slot 143 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4368, NJ_S("Slot 143 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4369, NJ_S("Slot 144 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4370, NJ_S("Slot 144 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4371, NJ_S("Slot 144 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4372, NJ_S("Slot 145 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4373, NJ_S("Slot 145 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_15 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4374, NJ_S("Slot 145 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4375, NJ_S("Slot 146 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4376, NJ_S("Slot 146 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4377, NJ_S("Slot 146 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4378, NJ_S("Slot 147 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4379, NJ_S("Slot 147 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4380, NJ_S("Slot 147 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4381, NJ_S("Slot 148 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4382, NJ_S("Slot 148 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4383, NJ_S("Slot 148 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4384, NJ_S("Slot 149 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4385, NJ_S("Slot 149 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4386, NJ_S("Slot 149 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4387, NJ_S("Slot 150 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4388, NJ_S("Slot 150 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4389, NJ_S("Slot 150 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4390, NJ_S("Slot 151 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4391, NJ_S("Slot 151 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4392, NJ_S("Slot 151 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4393, NJ_S("Slot 152 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4394, NJ_S("Slot 152 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4395, NJ_S("Slot 152 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4396, NJ_S("Slot 153 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4397, NJ_S("Slot 153 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4398, NJ_S("Slot 153 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4399, NJ_S("Slot 154 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4400, NJ_S("Slot 154 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4401, NJ_S("Slot 154 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4402, NJ_S("Slot 155 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4403, NJ_S("Slot 155 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4404, NJ_S("Slot 155 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4405, NJ_S("Slot 156 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4406, NJ_S("Slot 156 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4407, NJ_S("Slot 156 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4408, NJ_S("Slot 157 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4409, NJ_S("Slot 157 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4410, NJ_S("Slot 157 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4411, NJ_S("Slot 158 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4412, NJ_S("Slot 158 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4413, NJ_S("Slot 158 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_16 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4414, NJ_S("Slot 159 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4415, NJ_S("Slot 159 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4416, NJ_S("Slot 159 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4417, NJ_S("Slot 160 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4418, NJ_S("Slot 160 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4419, NJ_S("Slot 160 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4420, NJ_S("Slot 161 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4421, NJ_S("Slot 161 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4422, NJ_S("Slot 161 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4423, NJ_S("Slot 162 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4424, NJ_S("Slot 162 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4425, NJ_S("Slot 162 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4426, NJ_S("Slot 163 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4427, NJ_S("Slot 163 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4428, NJ_S("Slot 163 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4429, NJ_S("Slot 164 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4430, NJ_S("Slot 164 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4431, NJ_S("Slot 164 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4432, NJ_S("Slot 165 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4433, NJ_S("Slot 165 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4434, NJ_S("Slot 165 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4435, NJ_S("Slot 166 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4436, NJ_S("Slot 166 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4437, NJ_S("Slot 166 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4438, NJ_S("Slot 167 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4439, NJ_S("Slot 167 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4440, NJ_S("Slot 167 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4441, NJ_S("Slot 168 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4442, NJ_S("Slot 168 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4443, NJ_S("Slot 168 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4444, NJ_S("Slot 169 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4445, NJ_S("Slot 169 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4446, NJ_S("Slot 169 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4447, NJ_S("Slot 170 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4448, NJ_S("Slot 170 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4449, NJ_S("Slot 170 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4450, NJ_S("Slot 171 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4451, NJ_S("Slot 171 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4452, NJ_S("Slot 171 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4453, NJ_S("Slot 172 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_17 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4454, NJ_S("Slot 172 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4455, NJ_S("Slot 172 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4456, NJ_S("Slot 173 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4457, NJ_S("Slot 173 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4458, NJ_S("Slot 173 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4459, NJ_S("Slot 174 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4460, NJ_S("Slot 174 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4461, NJ_S("Slot 174 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4462, NJ_S("Slot 175 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4463, NJ_S("Slot 175 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4464, NJ_S("Slot 175 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4465, NJ_S("Slot 176 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4466, NJ_S("Slot 176 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4467, NJ_S("Slot 176 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4468, NJ_S("Slot 177 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4469, NJ_S("Slot 177 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4470, NJ_S("Slot 177 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4471, NJ_S("Slot 178 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4472, NJ_S("Slot 178 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4473, NJ_S("Slot 178 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4474, NJ_S("Slot 179 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4475, NJ_S("Slot 179 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4476, NJ_S("Slot 179 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4477, NJ_S("Slot 180 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4478, NJ_S("Slot 180 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4479, NJ_S("Slot 180 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4480, NJ_S("Slot 181 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4481, NJ_S("Slot 181 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4482, NJ_S("Slot 181 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4483, NJ_S("Slot 182 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4484, NJ_S("Slot 182 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4485, NJ_S("Slot 182 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4486, NJ_S("Slot 183 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4487, NJ_S("Slot 183 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4488, NJ_S("Slot 183 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4489, NJ_S("Slot 184 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4490, NJ_S("Slot 184 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4491, NJ_S("Slot 184 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4492, NJ_S("Slot 185 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4493, NJ_S("Slot 185 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_18 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4494, NJ_S("Slot 185 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4495, NJ_S("Slot 186 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4496, NJ_S("Slot 186 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4497, NJ_S("Slot 186 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4498, NJ_S("Slot 187 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4499, NJ_S("Slot 187 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4500, NJ_S("Slot 187 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4501, NJ_S("Slot 188 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4502, NJ_S("Slot 188 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4503, NJ_S("Slot 188 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4504, NJ_S("Slot 189 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4505, NJ_S("Slot 189 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4506, NJ_S("Slot 189 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4507, NJ_S("Slot 190 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4508, NJ_S("Slot 190 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4509, NJ_S("Slot 190 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4510, NJ_S("Slot 191 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4511, NJ_S("Slot 191 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4512, NJ_S("Slot 191 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4513, NJ_S("Slot 192 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4514, NJ_S("Slot 192 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4515, NJ_S("Slot 192 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4516, NJ_S("Slot 193 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4517, NJ_S("Slot 193 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4518, NJ_S("Slot 193 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4519, NJ_S("Slot 194 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4520, NJ_S("Slot 194 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4521, NJ_S("Slot 194 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4522, NJ_S("Slot 195 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4523, NJ_S("Slot 195 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4524, NJ_S("Slot 195 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4525, NJ_S("Slot 196 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4526, NJ_S("Slot 196 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4527, NJ_S("Slot 196 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4528, NJ_S("Slot 197 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4529, NJ_S("Slot 197 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4530, NJ_S("Slot 197 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4531, NJ_S("Slot 198 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4532, NJ_S("Slot 198 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4533, NJ_S("Slot 198 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_19 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4534, NJ_S("Slot 199 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4535, NJ_S("Slot 199 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4536, NJ_S("Slot 199 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4537, NJ_S("Slot 200 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4538, NJ_S("Slot 200 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4539, NJ_S("Slot 200 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4540, NJ_S("Slot 201 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4541, NJ_S("Slot 201 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4542, NJ_S("Slot 201 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4543, NJ_S("Slot 202 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4544, NJ_S("Slot 202 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4545, NJ_S("Slot 202 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4546, NJ_S("Slot 203 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4547, NJ_S("Slot 203 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4548, NJ_S("Slot 203 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4549, NJ_S("Slot 204 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4550, NJ_S("Slot 204 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4551, NJ_S("Slot 204 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4552, NJ_S("Slot 205 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4553, NJ_S("Slot 205 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4554, NJ_S("Slot 205 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4555, NJ_S("Slot 206 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4556, NJ_S("Slot 206 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4557, NJ_S("Slot 206 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4558, NJ_S("Slot 207 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4559, NJ_S("Slot 207 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4560, NJ_S("Slot 207 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4561, NJ_S("Slot 208 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4562, NJ_S("Slot 208 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4563, NJ_S("Slot 208 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4564, NJ_S("Slot 209 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4565, NJ_S("Slot 209 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4566, NJ_S("Slot 209 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4567, NJ_S("Slot 210 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4568, NJ_S("Slot 210 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4569, NJ_S("Slot 210 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4570, NJ_S("Slot 211 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4571, NJ_S("Slot 211 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4572, NJ_S("Slot 211 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4573, NJ_S("Slot 212 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_20 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4574, NJ_S("Slot 212 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4575, NJ_S("Slot 212 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4576, NJ_S("Slot 213 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4577, NJ_S("Slot 213 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4578, NJ_S("Slot 213 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4579, NJ_S("Slot 214 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4580, NJ_S("Slot 214 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4581, NJ_S("Slot 214 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4582, NJ_S("Slot 215 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4583, NJ_S("Slot 215 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4584, NJ_S("Slot 215 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4585, NJ_S("Slot 216 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4586, NJ_S("Slot 216 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4587, NJ_S("Slot 216 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4588, NJ_S("Slot 217 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4589, NJ_S("Slot 217 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4590, NJ_S("Slot 217 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4591, NJ_S("Slot 218 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4592, NJ_S("Slot 218 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4593, NJ_S("Slot 218 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4594, NJ_S("Slot 219 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4595, NJ_S("Slot 219 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4596, NJ_S("Slot 219 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4597, NJ_S("Slot 220 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4598, NJ_S("Slot 220 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4599, NJ_S("Slot 220 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4600, NJ_S("Slot 221 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4601, NJ_S("Slot 221 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4602, NJ_S("Slot 221 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4603, NJ_S("Slot 222 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4604, NJ_S("Slot 222 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4605, NJ_S("Slot 222 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4606, NJ_S("Slot 223 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4607, NJ_S("Slot 223 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4608, NJ_S("Slot 223 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4609, NJ_S("Slot 224 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4610, NJ_S("Slot 224 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4611, NJ_S("Slot 224 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4612, NJ_S("Slot 225 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4613, NJ_S("Slot 225 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+    });
+}
+static void allSpecs_21 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4614, NJ_S("Slot 225 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4615, NJ_S("Slot 226 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4616, NJ_S("Slot 226 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4617, NJ_S("Slot 226 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4618, NJ_S("Slot 227 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4619, NJ_S("Slot 227 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4620, NJ_S("Slot 227 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4621, NJ_S("Slot 228 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4622, NJ_S("Slot 228 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4623, NJ_S("Slot 228 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4624, NJ_S("Slot 229 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4625, NJ_S("Slot 229 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4626, NJ_S("Slot 229 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4627, NJ_S("Slot 230 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4628, NJ_S("Slot 230 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4629, NJ_S("Slot 230 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4630, NJ_S("Slot 231 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4631, NJ_S("Slot 231 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4632, NJ_S("Slot 231 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4633, NJ_S("Slot 232 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4634, NJ_S("Slot 232 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4635, NJ_S("Slot 232 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4636, NJ_S("Slot 233 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4637, NJ_S("Slot 233 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4638, NJ_S("Slot 233 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4639, NJ_S("Slot 234 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4640, NJ_S("Slot 234 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4641, NJ_S("Slot 234 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4642, NJ_S("Slot 235 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4643, NJ_S("Slot 235 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4644, NJ_S("Slot 235 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4645, NJ_S("Slot 236 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4646, NJ_S("Slot 236 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4647, NJ_S("Slot 236 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4648, NJ_S("Slot 237 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4649, NJ_S("Slot 237 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4650, NJ_S("Slot 237 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4651, NJ_S("Slot 238 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4652, NJ_S("Slot 238 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4653, NJ_S("Slot 238 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+    });
+}
+static void allSpecs_22 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4654, NJ_S("Slot 239 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4655, NJ_S("Slot 239 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4656, NJ_S("Slot 239 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4657, NJ_S("Slot 240 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4658, NJ_S("Slot 240 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4659, NJ_S("Slot 240 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4660, NJ_S("Slot 241 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4661, NJ_S("Slot 241 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4662, NJ_S("Slot 241 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4663, NJ_S("Slot 242 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4664, NJ_S("Slot 242 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4665, NJ_S("Slot 242 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4666, NJ_S("Slot 243 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4667, NJ_S("Slot 243 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4668, NJ_S("Slot 243 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4669, NJ_S("Slot 244 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4670, NJ_S("Slot 244 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4671, NJ_S("Slot 244 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4672, NJ_S("Slot 245 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4673, NJ_S("Slot 245 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4674, NJ_S("Slot 245 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4675, NJ_S("Slot 246 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4676, NJ_S("Slot 246 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4677, NJ_S("Slot 246 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4678, NJ_S("Slot 247 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4679, NJ_S("Slot 247 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4680, NJ_S("Slot 247 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4681, NJ_S("Slot 248 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4682, NJ_S("Slot 248 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4683, NJ_S("Slot 248 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4684, NJ_S("Slot 249 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4685, NJ_S("Slot 249 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4686, NJ_S("Slot 249 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4687, NJ_S("Slot 250 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4688, NJ_S("Slot 250 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4689, NJ_S("Slot 250 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4690, NJ_S("Slot 251 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4691, NJ_S("Slot 251 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4692, NJ_S("Slot 251 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4693, NJ_S("Slot 252 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+    });
+}
+static void allSpecs_23 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 4694, NJ_S("Slot 252 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4695, NJ_S("Slot 252 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4696, NJ_S("Slot 253 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4697, NJ_S("Slot 253 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4698, NJ_S("Slot 253 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4699, NJ_S("Slot 254 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4700, NJ_S("Slot 254 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4701, NJ_S("Slot 254 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4702, NJ_S("Slot 255 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4703, NJ_S("Slot 255 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4704, NJ_S("Slot 255 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 4705, NJ_S("Slot 256 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4706, NJ_S("Slot 256 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4707, NJ_S("Slot 256 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
+        Spec { 502, NJ_S("LFO 1 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 503, NJ_S("LFO 1 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 504, NJ_S("LFO 2 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 505, NJ_S("LFO 2 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 506, NJ_S("LFO 3 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 507, NJ_S("LFO 3 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 508, NJ_S("LFO 4 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 509, NJ_S("LFO 4 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 510, NJ_S("LFO 5 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 511, NJ_S("LFO 5 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 512, NJ_S("LFO 6 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 513, NJ_S("LFO 6 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 514, NJ_S("LFO 7 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 515, NJ_S("LFO 7 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 516, NJ_S("LFO 8 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 517, NJ_S("LFO 8 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 518, NJ_S("LFO 9 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 519, NJ_S("LFO 9 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 520, NJ_S("LFO 10 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 521, NJ_S("LFO 10 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 221, NJ_S("DC Block"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("DC Block"), {  } },
+        Spec { 222, NJ_S("DC Block Freq"), 5.0, 200.0, 20.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("DC Freq"), {  } },
+        Spec { 522, NJ_S("Sync BPM"), 0.0, 300.0, 0.0, NJ_S("BPM"), NJ_S("sld"), {  }, 1, NJ_S("Sync Tempo"), {  } },
+        Spec { 536, NJ_S("Drive Algorithm"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch") }, 1, NJ_S("Algorithm"), {  } },
+        Spec { 541, NJ_S("Main FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 542, NJ_S("Main FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_24 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 543, NJ_S("Main FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 544, NJ_S("Main FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 545, NJ_S("Main FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 546, NJ_S("Main FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 547, NJ_S("Main FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 548, NJ_S("Main FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 549, NJ_S("Main FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 550, NJ_S("Main FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 551, NJ_S("Main FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 552, NJ_S("Main FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 553, NJ_S("Main FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 554, NJ_S("Main FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 555, NJ_S("Main FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 556, NJ_S("Main FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 557, NJ_S("Main FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 558, NJ_S("Main FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 559, NJ_S("Main FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 560, NJ_S("Main FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 561, NJ_S("Main FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 562, NJ_S("Main FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 563, NJ_S("Main FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 564, NJ_S("Main FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 565, NJ_S("Main FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 566, NJ_S("Main FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 567, NJ_S("Main FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 568, NJ_S("Main FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 569, NJ_S("Main FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 570, NJ_S("Main FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 571, NJ_S("Main FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 572, NJ_S("Main FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 573, NJ_S("Main FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 574, NJ_S("Main FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 575, NJ_S("Main FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 576, NJ_S("Main FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 577, NJ_S("Main FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 578, NJ_S("Main FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 579, NJ_S("Main FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 580, NJ_S("Main FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 581, NJ_S("Main FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 582, NJ_S("Main FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_25 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 583, NJ_S("Main FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 584, NJ_S("Main FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 585, NJ_S("Main FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 586, NJ_S("Main FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 587, NJ_S("Main FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 588, NJ_S("Main FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 589, NJ_S("Main FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 590, NJ_S("Main FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 591, NJ_S("Main FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 592, NJ_S("Main FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 593, NJ_S("Main FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 594, NJ_S("Main FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 595, NJ_S("Main FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 596, NJ_S("Main FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 597, NJ_S("Main FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 598, NJ_S("Main FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 599, NJ_S("Main FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 600, NJ_S("Main FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 601, NJ_S("Main FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 602, NJ_S("Main FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 603, NJ_S("Main FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 604, NJ_S("Main FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 605, NJ_S("Main FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 606, NJ_S("Main FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 607, NJ_S("Main FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 608, NJ_S("Main FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 609, NJ_S("Main FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 610, NJ_S("Main FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 611, NJ_S("Main FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 612, NJ_S("Main FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 613, NJ_S("Main FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 614, NJ_S("Main FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 615, NJ_S("Main FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 616, NJ_S("Main FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 617, NJ_S("Main FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 618, NJ_S("Main FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 619, NJ_S("Main FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 620, NJ_S("Main FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 621, NJ_S("Main FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 622, NJ_S("Main FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_26 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 623, NJ_S("Main FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 624, NJ_S("Main FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 625, NJ_S("Main FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 626, NJ_S("Main FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 627, NJ_S("Main FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 628, NJ_S("Main FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 629, NJ_S("Main FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 630, NJ_S("Main FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 631, NJ_S("Main FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 632, NJ_S("Main FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 633, NJ_S("Main FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 634, NJ_S("Main FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 635, NJ_S("Main FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 636, NJ_S("Main FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 637, NJ_S("Main FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 638, NJ_S("Main FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 639, NJ_S("Main FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 640, NJ_S("Main FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 641, NJ_S("Main FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 642, NJ_S("Main FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 643, NJ_S("Main FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 644, NJ_S("Main FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 645, NJ_S("Main FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 646, NJ_S("Main FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 647, NJ_S("Main FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 648, NJ_S("Main FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 649, NJ_S("Main FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 650, NJ_S("Main FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 651, NJ_S("Bus 1 FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 652, NJ_S("Bus 1 FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 653, NJ_S("Bus 1 FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 654, NJ_S("Bus 1 FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 655, NJ_S("Bus 1 FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 656, NJ_S("Bus 1 FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 657, NJ_S("Bus 1 FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 658, NJ_S("Bus 1 FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 659, NJ_S("Bus 1 FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 660, NJ_S("Bus 1 FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 661, NJ_S("Bus 1 FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 662, NJ_S("Bus 1 FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_27 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 663, NJ_S("Bus 1 FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 664, NJ_S("Bus 1 FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 665, NJ_S("Bus 1 FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 666, NJ_S("Bus 1 FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 667, NJ_S("Bus 1 FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 668, NJ_S("Bus 1 FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 669, NJ_S("Bus 1 FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 670, NJ_S("Bus 1 FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 671, NJ_S("Bus 1 FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 672, NJ_S("Bus 1 FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 673, NJ_S("Bus 1 FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 674, NJ_S("Bus 1 FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 675, NJ_S("Bus 1 FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 676, NJ_S("Bus 1 FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 677, NJ_S("Bus 1 FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 678, NJ_S("Bus 1 FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 679, NJ_S("Bus 1 FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 680, NJ_S("Bus 1 FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 681, NJ_S("Bus 1 FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 682, NJ_S("Bus 1 FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 683, NJ_S("Bus 1 FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 684, NJ_S("Bus 1 FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 685, NJ_S("Bus 1 FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 686, NJ_S("Bus 1 FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 687, NJ_S("Bus 1 FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 688, NJ_S("Bus 1 FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 689, NJ_S("Bus 1 FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 690, NJ_S("Bus 1 FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 691, NJ_S("Bus 1 FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 692, NJ_S("Bus 1 FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 693, NJ_S("Bus 1 FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 694, NJ_S("Bus 1 FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 695, NJ_S("Bus 1 FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 696, NJ_S("Bus 1 FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 697, NJ_S("Bus 1 FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 698, NJ_S("Bus 1 FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 699, NJ_S("Bus 1 FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 700, NJ_S("Bus 1 FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 701, NJ_S("Bus 1 FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 702, NJ_S("Bus 1 FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_28 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 703, NJ_S("Bus 1 FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 704, NJ_S("Bus 1 FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 705, NJ_S("Bus 1 FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 706, NJ_S("Bus 1 FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 707, NJ_S("Bus 1 FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 708, NJ_S("Bus 1 FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 709, NJ_S("Bus 1 FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 710, NJ_S("Bus 1 FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 711, NJ_S("Bus 1 FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 712, NJ_S("Bus 1 FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 713, NJ_S("Bus 1 FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 714, NJ_S("Bus 1 FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 715, NJ_S("Bus 1 FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 716, NJ_S("Bus 1 FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 717, NJ_S("Bus 1 FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 718, NJ_S("Bus 1 FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 719, NJ_S("Bus 1 FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 720, NJ_S("Bus 1 FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 721, NJ_S("Bus 1 FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 722, NJ_S("Bus 1 FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 723, NJ_S("Bus 1 FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 724, NJ_S("Bus 1 FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 725, NJ_S("Bus 1 FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 726, NJ_S("Bus 1 FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 727, NJ_S("Bus 1 FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 728, NJ_S("Bus 1 FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 729, NJ_S("Bus 1 FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 730, NJ_S("Bus 1 FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 731, NJ_S("Bus 1 FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 732, NJ_S("Bus 1 FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 733, NJ_S("Bus 1 FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 734, NJ_S("Bus 1 FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 735, NJ_S("Bus 1 FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 736, NJ_S("Bus 1 FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 737, NJ_S("Bus 1 FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 738, NJ_S("Bus 1 FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 739, NJ_S("Bus 1 FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 740, NJ_S("Bus 1 FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 741, NJ_S("Bus 1 FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 742, NJ_S("Bus 1 FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_29 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 743, NJ_S("Bus 1 FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 744, NJ_S("Bus 1 FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 745, NJ_S("Bus 1 FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 746, NJ_S("Bus 1 FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 747, NJ_S("Bus 1 FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 748, NJ_S("Bus 1 FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 749, NJ_S("Bus 1 FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 750, NJ_S("Bus 1 FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 751, NJ_S("Bus 1 FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 752, NJ_S("Bus 1 FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 753, NJ_S("Bus 1 FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 754, NJ_S("Bus 1 FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 755, NJ_S("Bus 1 FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 756, NJ_S("Bus 1 FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 757, NJ_S("Bus 1 FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 758, NJ_S("Bus 1 FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 759, NJ_S("Bus 1 FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 760, NJ_S("Bus 1 FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 761, NJ_S("Bus 2 FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 762, NJ_S("Bus 2 FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 763, NJ_S("Bus 2 FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 764, NJ_S("Bus 2 FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 765, NJ_S("Bus 2 FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 766, NJ_S("Bus 2 FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 767, NJ_S("Bus 2 FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 768, NJ_S("Bus 2 FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 769, NJ_S("Bus 2 FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 770, NJ_S("Bus 2 FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 771, NJ_S("Bus 2 FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 772, NJ_S("Bus 2 FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 773, NJ_S("Bus 2 FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 774, NJ_S("Bus 2 FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 775, NJ_S("Bus 2 FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 776, NJ_S("Bus 2 FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 777, NJ_S("Bus 2 FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 778, NJ_S("Bus 2 FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 779, NJ_S("Bus 2 FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 780, NJ_S("Bus 2 FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 781, NJ_S("Bus 2 FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 782, NJ_S("Bus 2 FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_30 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 783, NJ_S("Bus 2 FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 784, NJ_S("Bus 2 FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 785, NJ_S("Bus 2 FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 786, NJ_S("Bus 2 FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 787, NJ_S("Bus 2 FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 788, NJ_S("Bus 2 FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 789, NJ_S("Bus 2 FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 790, NJ_S("Bus 2 FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 791, NJ_S("Bus 2 FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 792, NJ_S("Bus 2 FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 793, NJ_S("Bus 2 FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 794, NJ_S("Bus 2 FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 795, NJ_S("Bus 2 FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 796, NJ_S("Bus 2 FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 797, NJ_S("Bus 2 FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 798, NJ_S("Bus 2 FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 799, NJ_S("Bus 2 FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 800, NJ_S("Bus 2 FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 801, NJ_S("Bus 2 FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 802, NJ_S("Bus 2 FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 803, NJ_S("Bus 2 FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 804, NJ_S("Bus 2 FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 805, NJ_S("Bus 2 FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 806, NJ_S("Bus 2 FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 807, NJ_S("Bus 2 FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 808, NJ_S("Bus 2 FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 809, NJ_S("Bus 2 FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 810, NJ_S("Bus 2 FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 811, NJ_S("Bus 2 FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 812, NJ_S("Bus 2 FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 813, NJ_S("Bus 2 FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 814, NJ_S("Bus 2 FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 815, NJ_S("Bus 2 FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 816, NJ_S("Bus 2 FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 817, NJ_S("Bus 2 FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 818, NJ_S("Bus 2 FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 819, NJ_S("Bus 2 FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 820, NJ_S("Bus 2 FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 821, NJ_S("Bus 2 FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 822, NJ_S("Bus 2 FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+    });
+}
+static void allSpecs_31 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 823, NJ_S("Bus 2 FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 824, NJ_S("Bus 2 FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 825, NJ_S("Bus 2 FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 826, NJ_S("Bus 2 FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 827, NJ_S("Bus 2 FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 828, NJ_S("Bus 2 FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 829, NJ_S("Bus 2 FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 830, NJ_S("Bus 2 FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 831, NJ_S("Bus 2 FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 832, NJ_S("Bus 2 FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 833, NJ_S("Bus 2 FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 834, NJ_S("Bus 2 FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 835, NJ_S("Bus 2 FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 836, NJ_S("Bus 2 FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 837, NJ_S("Bus 2 FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 838, NJ_S("Bus 2 FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 839, NJ_S("Bus 2 FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 840, NJ_S("Bus 2 FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 841, NJ_S("Bus 2 FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 842, NJ_S("Bus 2 FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 843, NJ_S("Bus 2 FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 844, NJ_S("Bus 2 FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 845, NJ_S("Bus 2 FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 846, NJ_S("Bus 2 FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 847, NJ_S("Bus 2 FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 848, NJ_S("Bus 2 FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 849, NJ_S("Bus 2 FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 850, NJ_S("Bus 2 FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 851, NJ_S("Bus 2 FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
+        Spec { 852, NJ_S("Bus 2 FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 853, NJ_S("Bus 2 FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 854, NJ_S("Bus 2 FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
+        Spec { 855, NJ_S("Bus 2 FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
+        Spec { 856, NJ_S("Bus 2 FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
+        Spec { 857, NJ_S("Bus 2 FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
+        Spec { 858, NJ_S("Bus 2 FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
+        Spec { 859, NJ_S("Bus 2 FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
+        Spec { 860, NJ_S("Bus 2 FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
+        Spec { 861, NJ_S("Bus 2 FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 862, NJ_S("Bus 2 FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+    });
+}
+static void allSpecs_32 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 863, NJ_S("Bus 2 FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 864, NJ_S("Bus 2 FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 865, NJ_S("Bus 2 FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 866, NJ_S("Bus 2 FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 867, NJ_S("Bus 2 FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 868, NJ_S("Bus 2 FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 869, NJ_S("Bus 2 FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 870, NJ_S("Bus 2 FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
+        Spec { 940, NJ_S("Main FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 941, NJ_S("Main FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 942, NJ_S("Main FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 943, NJ_S("Main FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 944, NJ_S("Main FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 945, NJ_S("Main FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 946, NJ_S("Main FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 947, NJ_S("Main FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 948, NJ_S("Main FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 949, NJ_S("Main FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 950, NJ_S("Bus 1 FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 951, NJ_S("Bus 1 FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 952, NJ_S("Bus 1 FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 953, NJ_S("Bus 1 FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 954, NJ_S("Bus 1 FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 955, NJ_S("Bus 1 FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 956, NJ_S("Bus 1 FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 957, NJ_S("Bus 1 FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 958, NJ_S("Bus 1 FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 959, NJ_S("Bus 1 FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 960, NJ_S("Bus 2 FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 961, NJ_S("Bus 2 FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 962, NJ_S("Bus 2 FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 963, NJ_S("Bus 2 FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 964, NJ_S("Bus 2 FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 965, NJ_S("Bus 2 FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 966, NJ_S("Bus 2 FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 967, NJ_S("Bus 2 FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 968, NJ_S("Bus 2 FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 969, NJ_S("Bus 2 FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
+        Spec { 880, NJ_S("Bus 1 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 1"), {  } },
+        Spec { 881, NJ_S("Bus 2 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 2"), {  } },
+    });
+}
+static void allSpecs_33 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1000, NJ_S("OSC 1 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1001, NJ_S("OSC 1 Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1002, NJ_S("OSC 1 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1003, NJ_S("OSC 1 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1004, NJ_S("OSC 1 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1005, NJ_S("OSC 1 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1006, NJ_S("OSC 1 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1007, NJ_S("OSC 1 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1008, NJ_S("OSC 1 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1009, NJ_S("OSC 1 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1010, NJ_S("OSC 1 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1011, NJ_S("OSC 1 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1012, NJ_S("OSC 1 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1013, NJ_S("OSC 1 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1014, NJ_S("OSC 1 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1015, NJ_S("OSC 1 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+        Spec { 1016, NJ_S("OSC 1 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1017, NJ_S("OSC 1 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1028, NJ_S("OSC 1 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1029, NJ_S("OSC 1 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1018, NJ_S("OSC 1 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1019, NJ_S("OSC 1 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1020, NJ_S("OSC 1 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1021, NJ_S("OSC 1 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+        Spec { 1022, NJ_S("OSC 1 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1023, NJ_S("OSC 1 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1024, NJ_S("OSC 1 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1025, NJ_S("OSC 1 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1026, NJ_S("OSC 1 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1027, NJ_S("OSC 1 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1030, NJ_S("OSC 1 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1031, NJ_S("OSC 1 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+        Spec { 1032, NJ_S("OSC 1 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1033, NJ_S("OSC 1 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1034, NJ_S("OSC 1 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1035, NJ_S("OSC 1 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1036, NJ_S("OSC 1 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1037, NJ_S("OSC 1 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1038, NJ_S("OSC 1 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1039, NJ_S("OSC 1 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+    });
+}
+static void allSpecs_34 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1040, NJ_S("OSC 1 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1041, NJ_S("OSC 1 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1042, NJ_S("OSC 1 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1043, NJ_S("OSC 1 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1044, NJ_S("OSC 1 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1048, NJ_S("OSC 1 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1046, NJ_S("OSC 1 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1047, NJ_S("OSC 1 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1049, NJ_S("OSC 1 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1050, NJ_S("OSC 1 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1051, NJ_S("OSC 1 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1052, NJ_S("OSC 1 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1053, NJ_S("OSC 1 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1054, NJ_S("OSC 1 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1055, NJ_S("OSC 1 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1045, NJ_S("OSC 1 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+        Spec { 1056, NJ_S("OSC 1 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1057, NJ_S("OSC 1 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1058, NJ_S("OSC 1 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1059, NJ_S("OSC 1 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1060, NJ_S("OSC 1 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1061, NJ_S("OSC 1 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1062, NJ_S("OSC 1 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1063, NJ_S("OSC 1 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1064, NJ_S("OSC 2 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1065, NJ_S("OSC 2 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1066, NJ_S("OSC 2 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1067, NJ_S("OSC 2 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1068, NJ_S("OSC 2 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1069, NJ_S("OSC 2 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1070, NJ_S("OSC 2 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1071, NJ_S("OSC 2 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1072, NJ_S("OSC 2 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1073, NJ_S("OSC 2 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1074, NJ_S("OSC 2 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1075, NJ_S("OSC 2 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1076, NJ_S("OSC 2 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1077, NJ_S("OSC 2 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1078, NJ_S("OSC 2 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1079, NJ_S("OSC 2 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+    });
+}
+static void allSpecs_35 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1080, NJ_S("OSC 2 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1081, NJ_S("OSC 2 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1092, NJ_S("OSC 2 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1093, NJ_S("OSC 2 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1082, NJ_S("OSC 2 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1083, NJ_S("OSC 2 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1084, NJ_S("OSC 2 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1085, NJ_S("OSC 2 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+        Spec { 1086, NJ_S("OSC 2 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1087, NJ_S("OSC 2 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1088, NJ_S("OSC 2 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1089, NJ_S("OSC 2 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1090, NJ_S("OSC 2 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1091, NJ_S("OSC 2 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1094, NJ_S("OSC 2 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1095, NJ_S("OSC 2 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+        Spec { 1096, NJ_S("OSC 2 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1097, NJ_S("OSC 2 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1098, NJ_S("OSC 2 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1099, NJ_S("OSC 2 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1100, NJ_S("OSC 2 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1101, NJ_S("OSC 2 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1102, NJ_S("OSC 2 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1103, NJ_S("OSC 2 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1104, NJ_S("OSC 2 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1105, NJ_S("OSC 2 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1106, NJ_S("OSC 2 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1107, NJ_S("OSC 2 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1108, NJ_S("OSC 2 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1112, NJ_S("OSC 2 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1110, NJ_S("OSC 2 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1111, NJ_S("OSC 2 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1113, NJ_S("OSC 2 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1114, NJ_S("OSC 2 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1115, NJ_S("OSC 2 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1116, NJ_S("OSC 2 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1117, NJ_S("OSC 2 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1118, NJ_S("OSC 2 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1119, NJ_S("OSC 2 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1109, NJ_S("OSC 2 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+    });
+}
+static void allSpecs_36 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1120, NJ_S("OSC 2 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1121, NJ_S("OSC 2 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1122, NJ_S("OSC 2 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1123, NJ_S("OSC 2 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1124, NJ_S("OSC 2 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1125, NJ_S("OSC 2 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1126, NJ_S("OSC 2 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1127, NJ_S("OSC 2 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1128, NJ_S("OSC 3 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1129, NJ_S("OSC 3 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1130, NJ_S("OSC 3 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1131, NJ_S("OSC 3 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1132, NJ_S("OSC 3 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1133, NJ_S("OSC 3 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1134, NJ_S("OSC 3 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1135, NJ_S("OSC 3 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1136, NJ_S("OSC 3 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1137, NJ_S("OSC 3 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1138, NJ_S("OSC 3 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1139, NJ_S("OSC 3 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1140, NJ_S("OSC 3 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1141, NJ_S("OSC 3 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1142, NJ_S("OSC 3 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1143, NJ_S("OSC 3 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+        Spec { 1144, NJ_S("OSC 3 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1145, NJ_S("OSC 3 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1156, NJ_S("OSC 3 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1157, NJ_S("OSC 3 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1146, NJ_S("OSC 3 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1147, NJ_S("OSC 3 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1148, NJ_S("OSC 3 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1149, NJ_S("OSC 3 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+        Spec { 1150, NJ_S("OSC 3 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1151, NJ_S("OSC 3 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1152, NJ_S("OSC 3 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1153, NJ_S("OSC 3 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1154, NJ_S("OSC 3 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1155, NJ_S("OSC 3 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1158, NJ_S("OSC 3 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1159, NJ_S("OSC 3 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+    });
+}
+static void allSpecs_37 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1160, NJ_S("OSC 3 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1161, NJ_S("OSC 3 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1162, NJ_S("OSC 3 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1163, NJ_S("OSC 3 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1164, NJ_S("OSC 3 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1165, NJ_S("OSC 3 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1166, NJ_S("OSC 3 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1167, NJ_S("OSC 3 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1168, NJ_S("OSC 3 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1169, NJ_S("OSC 3 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1170, NJ_S("OSC 3 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1171, NJ_S("OSC 3 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1172, NJ_S("OSC 3 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1176, NJ_S("OSC 3 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1174, NJ_S("OSC 3 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1175, NJ_S("OSC 3 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1177, NJ_S("OSC 3 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1178, NJ_S("OSC 3 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1179, NJ_S("OSC 3 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1180, NJ_S("OSC 3 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1181, NJ_S("OSC 3 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1182, NJ_S("OSC 3 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1183, NJ_S("OSC 3 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1173, NJ_S("OSC 3 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+        Spec { 1184, NJ_S("OSC 3 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1185, NJ_S("OSC 3 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1186, NJ_S("OSC 3 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1187, NJ_S("OSC 3 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1188, NJ_S("OSC 3 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1189, NJ_S("OSC 3 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1190, NJ_S("OSC 3 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1191, NJ_S("OSC 3 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1192, NJ_S("OSC 4 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1193, NJ_S("OSC 4 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1194, NJ_S("OSC 4 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1195, NJ_S("OSC 4 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1196, NJ_S("OSC 4 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1197, NJ_S("OSC 4 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1198, NJ_S("OSC 4 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1199, NJ_S("OSC 4 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+    });
+}
+static void allSpecs_38 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1200, NJ_S("OSC 4 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1201, NJ_S("OSC 4 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1202, NJ_S("OSC 4 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1203, NJ_S("OSC 4 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1204, NJ_S("OSC 4 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1205, NJ_S("OSC 4 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1206, NJ_S("OSC 4 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1207, NJ_S("OSC 4 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+        Spec { 1208, NJ_S("OSC 4 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1209, NJ_S("OSC 4 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1220, NJ_S("OSC 4 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1221, NJ_S("OSC 4 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1210, NJ_S("OSC 4 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1211, NJ_S("OSC 4 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1212, NJ_S("OSC 4 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1213, NJ_S("OSC 4 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+        Spec { 1214, NJ_S("OSC 4 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1215, NJ_S("OSC 4 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1216, NJ_S("OSC 4 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1217, NJ_S("OSC 4 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1218, NJ_S("OSC 4 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1219, NJ_S("OSC 4 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1222, NJ_S("OSC 4 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1223, NJ_S("OSC 4 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+        Spec { 1224, NJ_S("OSC 4 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1225, NJ_S("OSC 4 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1226, NJ_S("OSC 4 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1227, NJ_S("OSC 4 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1228, NJ_S("OSC 4 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1229, NJ_S("OSC 4 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1230, NJ_S("OSC 4 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1231, NJ_S("OSC 4 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1232, NJ_S("OSC 4 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1233, NJ_S("OSC 4 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1234, NJ_S("OSC 4 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1235, NJ_S("OSC 4 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1236, NJ_S("OSC 4 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1240, NJ_S("OSC 4 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1238, NJ_S("OSC 4 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1239, NJ_S("OSC 4 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+    });
+}
+static void allSpecs_39 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1241, NJ_S("OSC 4 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1242, NJ_S("OSC 4 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1243, NJ_S("OSC 4 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1244, NJ_S("OSC 4 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1245, NJ_S("OSC 4 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1246, NJ_S("OSC 4 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1247, NJ_S("OSC 4 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1237, NJ_S("OSC 4 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+        Spec { 1248, NJ_S("OSC 4 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1249, NJ_S("OSC 4 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1250, NJ_S("OSC 4 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1251, NJ_S("OSC 4 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1252, NJ_S("OSC 4 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1253, NJ_S("OSC 4 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1254, NJ_S("OSC 4 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1255, NJ_S("OSC 4 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1256, NJ_S("OSC 5 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1257, NJ_S("OSC 5 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1258, NJ_S("OSC 5 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1259, NJ_S("OSC 5 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1260, NJ_S("OSC 5 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1261, NJ_S("OSC 5 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1262, NJ_S("OSC 5 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1263, NJ_S("OSC 5 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1264, NJ_S("OSC 5 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1265, NJ_S("OSC 5 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1266, NJ_S("OSC 5 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1267, NJ_S("OSC 5 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1268, NJ_S("OSC 5 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1269, NJ_S("OSC 5 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1270, NJ_S("OSC 5 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1271, NJ_S("OSC 5 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+        Spec { 1272, NJ_S("OSC 5 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1273, NJ_S("OSC 5 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1284, NJ_S("OSC 5 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1285, NJ_S("OSC 5 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1274, NJ_S("OSC 5 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1275, NJ_S("OSC 5 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1276, NJ_S("OSC 5 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1277, NJ_S("OSC 5 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+    });
+}
+static void allSpecs_40 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1278, NJ_S("OSC 5 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1279, NJ_S("OSC 5 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1280, NJ_S("OSC 5 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1281, NJ_S("OSC 5 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1282, NJ_S("OSC 5 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1283, NJ_S("OSC 5 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1286, NJ_S("OSC 5 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1287, NJ_S("OSC 5 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+        Spec { 1288, NJ_S("OSC 5 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1289, NJ_S("OSC 5 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1290, NJ_S("OSC 5 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1291, NJ_S("OSC 5 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1292, NJ_S("OSC 5 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1293, NJ_S("OSC 5 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1294, NJ_S("OSC 5 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1295, NJ_S("OSC 5 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1296, NJ_S("OSC 5 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1297, NJ_S("OSC 5 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1298, NJ_S("OSC 5 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1299, NJ_S("OSC 5 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1300, NJ_S("OSC 5 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1304, NJ_S("OSC 5 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1302, NJ_S("OSC 5 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1303, NJ_S("OSC 5 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1305, NJ_S("OSC 5 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1306, NJ_S("OSC 5 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1307, NJ_S("OSC 5 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1308, NJ_S("OSC 5 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1309, NJ_S("OSC 5 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1310, NJ_S("OSC 5 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1311, NJ_S("OSC 5 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1301, NJ_S("OSC 5 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+        Spec { 1312, NJ_S("OSC 5 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1313, NJ_S("OSC 5 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1314, NJ_S("OSC 5 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1315, NJ_S("OSC 5 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1316, NJ_S("OSC 5 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1317, NJ_S("OSC 5 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1318, NJ_S("OSC 5 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1319, NJ_S("OSC 5 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+    });
+}
+static void allSpecs_41 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1320, NJ_S("OSC 6 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
+        Spec { 1321, NJ_S("OSC 6 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
+        Spec { 1322, NJ_S("OSC 6 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
+        Spec { 1323, NJ_S("OSC 6 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
+        Spec { 1324, NJ_S("OSC 6 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
+        Spec { 1325, NJ_S("OSC 6 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
+        Spec { 1326, NJ_S("OSC 6 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
+        Spec { 1327, NJ_S("OSC 6 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1328, NJ_S("OSC 6 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 1329, NJ_S("OSC 6 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
+        Spec { 1330, NJ_S("OSC 6 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1331, NJ_S("OSC 6 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
+        Spec { 1332, NJ_S("OSC 6 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
+        Spec { 1333, NJ_S("OSC 6 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
+        Spec { 1334, NJ_S("OSC 6 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
+        Spec { 1335, NJ_S("OSC 6 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
+        Spec { 1336, NJ_S("OSC 6 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1337, NJ_S("OSC 6 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
+        Spec { 1348, NJ_S("OSC 6 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1349, NJ_S("OSC 6 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
+        Spec { 1338, NJ_S("OSC 6 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
+        Spec { 1339, NJ_S("OSC 6 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
+        Spec { 1340, NJ_S("OSC 6 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
+        Spec { 1341, NJ_S("OSC 6 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
+        Spec { 1342, NJ_S("OSC 6 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
+        Spec { 1343, NJ_S("OSC 6 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
+        Spec { 1344, NJ_S("OSC 6 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
+        Spec { 1345, NJ_S("OSC 6 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
+        Spec { 1346, NJ_S("OSC 6 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1347, NJ_S("OSC 6 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
+        Spec { 1350, NJ_S("OSC 6 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
+        Spec { 1351, NJ_S("OSC 6 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
+        Spec { 1352, NJ_S("OSC 6 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
+        Spec { 1353, NJ_S("OSC 6 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
+        Spec { 1354, NJ_S("OSC 6 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1355, NJ_S("OSC 6 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
+        Spec { 1356, NJ_S("OSC 6 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
+        Spec { 1357, NJ_S("OSC 6 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
+        Spec { 1358, NJ_S("OSC 6 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
+        Spec { 1359, NJ_S("OSC 6 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+    });
+}
+static void allSpecs_42 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1360, NJ_S("OSC 6 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
+        Spec { 1361, NJ_S("OSC 6 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
+        Spec { 1362, NJ_S("OSC 6 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
+        Spec { 1363, NJ_S("OSC 6 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1364, NJ_S("OSC 6 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1368, NJ_S("OSC 6 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
+        Spec { 1366, NJ_S("OSC 6 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1367, NJ_S("OSC 6 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
+        Spec { 1369, NJ_S("OSC 6 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1370, NJ_S("OSC 6 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
+        Spec { 1371, NJ_S("OSC 6 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
+        Spec { 1372, NJ_S("OSC 6 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
+        Spec { 1373, NJ_S("OSC 6 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
+        Spec { 1374, NJ_S("OSC 6 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
+        Spec { 1375, NJ_S("OSC 6 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
+        Spec { 1365, NJ_S("OSC 6 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
+        Spec { 1376, NJ_S("OSC 6 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
+        Spec { 1377, NJ_S("OSC 6 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1378, NJ_S("OSC 6 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1379, NJ_S("OSC 6 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1380, NJ_S("OSC 6 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
+        Spec { 1381, NJ_S("OSC 6 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1382, NJ_S("OSC 6 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1383, NJ_S("OSC 6 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
+        Spec { 1400, NJ_S("FM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
+        Spec { 1440, NJ_S("PM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
+        Spec { 1480, NJ_S("PD 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
+        Spec { 1520, NJ_S("RM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
+        Spec { 1560, NJ_S("AM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
+        Spec { 1401, NJ_S("FM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
+        Spec { 1441, NJ_S("PM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
+        Spec { 1481, NJ_S("PD 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
+        Spec { 1521, NJ_S("RM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
+        Spec { 1561, NJ_S("AM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
+        Spec { 1402, NJ_S("FM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
+        Spec { 1442, NJ_S("PM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
+        Spec { 1482, NJ_S("PD 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
+        Spec { 1522, NJ_S("RM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
+        Spec { 1562, NJ_S("AM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
+        Spec { 1403, NJ_S("FM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
+    });
+}
+static void allSpecs_43 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1443, NJ_S("PM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
+        Spec { 1483, NJ_S("PD 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
+        Spec { 1523, NJ_S("RM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
+        Spec { 1563, NJ_S("AM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
+        Spec { 1404, NJ_S("FM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
+        Spec { 1444, NJ_S("PM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
+        Spec { 1484, NJ_S("PD 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
+        Spec { 1524, NJ_S("RM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
+        Spec { 1564, NJ_S("AM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
+        Spec { 1405, NJ_S("FM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
+        Spec { 1445, NJ_S("PM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
+        Spec { 1485, NJ_S("PD 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
+        Spec { 1525, NJ_S("RM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
+        Spec { 1565, NJ_S("AM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
+        Spec { 1406, NJ_S("FM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
+        Spec { 1446, NJ_S("PM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
+        Spec { 1486, NJ_S("PD 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
+        Spec { 1526, NJ_S("RM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
+        Spec { 1566, NJ_S("AM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
+        Spec { 1407, NJ_S("FM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
+        Spec { 1447, NJ_S("PM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
+        Spec { 1487, NJ_S("PD 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
+        Spec { 1527, NJ_S("RM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
+        Spec { 1567, NJ_S("AM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
+        Spec { 1408, NJ_S("FM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
+        Spec { 1448, NJ_S("PM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
+        Spec { 1488, NJ_S("PD 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
+        Spec { 1528, NJ_S("RM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
+        Spec { 1568, NJ_S("AM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
+        Spec { 1409, NJ_S("FM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
+        Spec { 1449, NJ_S("PM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
+        Spec { 1489, NJ_S("PD 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
+        Spec { 1529, NJ_S("RM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
+        Spec { 1569, NJ_S("AM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
+        Spec { 1410, NJ_S("FM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
+        Spec { 1450, NJ_S("PM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
+        Spec { 1490, NJ_S("PD 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
+        Spec { 1530, NJ_S("RM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
+        Spec { 1570, NJ_S("AM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
+        Spec { 1411, NJ_S("FM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
+    });
+}
+static void allSpecs_44 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1451, NJ_S("PM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
+        Spec { 1491, NJ_S("PD 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
+        Spec { 1531, NJ_S("RM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
+        Spec { 1571, NJ_S("AM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
+        Spec { 1412, NJ_S("FM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
+        Spec { 1452, NJ_S("PM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
+        Spec { 1492, NJ_S("PD 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
+        Spec { 1532, NJ_S("RM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
+        Spec { 1572, NJ_S("AM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
+        Spec { 1413, NJ_S("FM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
+        Spec { 1453, NJ_S("PM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
+        Spec { 1493, NJ_S("PD 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
+        Spec { 1533, NJ_S("RM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
+        Spec { 1573, NJ_S("AM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
+        Spec { 1414, NJ_S("FM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
+        Spec { 1454, NJ_S("PM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
+        Spec { 1494, NJ_S("PD 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
+        Spec { 1534, NJ_S("RM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
+        Spec { 1574, NJ_S("AM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
+        Spec { 1415, NJ_S("FM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
+        Spec { 1455, NJ_S("PM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
+        Spec { 1495, NJ_S("PD 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
+        Spec { 1535, NJ_S("RM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
+        Spec { 1575, NJ_S("AM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
+        Spec { 1416, NJ_S("FM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
+        Spec { 1456, NJ_S("PM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
+        Spec { 1496, NJ_S("PD 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
+        Spec { 1536, NJ_S("RM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
+        Spec { 1576, NJ_S("AM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
+        Spec { 1417, NJ_S("FM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
+        Spec { 1457, NJ_S("PM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
+        Spec { 1497, NJ_S("PD 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
+        Spec { 1537, NJ_S("RM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
+        Spec { 1577, NJ_S("AM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
+        Spec { 1418, NJ_S("FM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
+        Spec { 1458, NJ_S("PM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
+        Spec { 1498, NJ_S("PD 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
+        Spec { 1538, NJ_S("RM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
+        Spec { 1578, NJ_S("AM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
+        Spec { 1419, NJ_S("FM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
+    });
+}
+static void allSpecs_45 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1459, NJ_S("PM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
+        Spec { 1499, NJ_S("PD 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
+        Spec { 1539, NJ_S("RM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
+        Spec { 1579, NJ_S("AM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
+        Spec { 1420, NJ_S("FM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
+        Spec { 1460, NJ_S("PM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
+        Spec { 1500, NJ_S("PD 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
+        Spec { 1540, NJ_S("RM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
+        Spec { 1580, NJ_S("AM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
+        Spec { 1421, NJ_S("FM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
+        Spec { 1461, NJ_S("PM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
+        Spec { 1501, NJ_S("PD 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
+        Spec { 1541, NJ_S("RM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
+        Spec { 1581, NJ_S("AM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
+        Spec { 1422, NJ_S("FM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
+        Spec { 1462, NJ_S("PM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
+        Spec { 1502, NJ_S("PD 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
+        Spec { 1542, NJ_S("RM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
+        Spec { 1582, NJ_S("AM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
+        Spec { 1423, NJ_S("FM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
+        Spec { 1463, NJ_S("PM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
+        Spec { 1503, NJ_S("PD 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
+        Spec { 1543, NJ_S("RM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
+        Spec { 1583, NJ_S("AM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
+        Spec { 1424, NJ_S("FM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
+        Spec { 1464, NJ_S("PM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
+        Spec { 1504, NJ_S("PD 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
+        Spec { 1544, NJ_S("RM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
+        Spec { 1584, NJ_S("AM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
+        Spec { 1425, NJ_S("FM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
+        Spec { 1465, NJ_S("PM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
+        Spec { 1505, NJ_S("PD 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
+        Spec { 1545, NJ_S("RM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
+        Spec { 1585, NJ_S("AM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
+        Spec { 1426, NJ_S("FM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
+        Spec { 1466, NJ_S("PM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
+        Spec { 1506, NJ_S("PD 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
+        Spec { 1546, NJ_S("RM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
+        Spec { 1586, NJ_S("AM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
+        Spec { 1427, NJ_S("FM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
+    });
+}
+static void allSpecs_46 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1467, NJ_S("PM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
+        Spec { 1507, NJ_S("PD 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
+        Spec { 1547, NJ_S("RM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
+        Spec { 1587, NJ_S("AM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
+        Spec { 1428, NJ_S("FM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
+        Spec { 1468, NJ_S("PM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
+        Spec { 1508, NJ_S("PD 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
+        Spec { 1548, NJ_S("RM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
+        Spec { 1588, NJ_S("AM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
+        Spec { 1429, NJ_S("FM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
+        Spec { 1469, NJ_S("PM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
+        Spec { 1509, NJ_S("PD 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
+        Spec { 1549, NJ_S("RM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
+        Spec { 1589, NJ_S("AM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
+        Spec { 1430, NJ_S("FM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
+        Spec { 1470, NJ_S("PM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
+        Spec { 1510, NJ_S("PD 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
+        Spec { 1550, NJ_S("RM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
+        Spec { 1590, NJ_S("AM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
+        Spec { 1431, NJ_S("FM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
+        Spec { 1471, NJ_S("PM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
+        Spec { 1511, NJ_S("PD 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
+        Spec { 1551, NJ_S("RM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
+        Spec { 1591, NJ_S("AM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
+        Spec { 1432, NJ_S("FM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
+        Spec { 1472, NJ_S("PM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
+        Spec { 1512, NJ_S("PD 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
+        Spec { 1552, NJ_S("RM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
+        Spec { 1592, NJ_S("AM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
+        Spec { 1433, NJ_S("FM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
+        Spec { 1473, NJ_S("PM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
+        Spec { 1513, NJ_S("PD 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
+        Spec { 1553, NJ_S("RM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
+        Spec { 1593, NJ_S("AM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
+        Spec { 1434, NJ_S("FM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
+        Spec { 1474, NJ_S("PM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
+        Spec { 1514, NJ_S("PD 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
+        Spec { 1554, NJ_S("RM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
+        Spec { 1594, NJ_S("AM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
+        Spec { 1435, NJ_S("FM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
+    });
+}
+static void allSpecs_47 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1475, NJ_S("PM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
+        Spec { 1515, NJ_S("PD 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
+        Spec { 1555, NJ_S("RM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
+        Spec { 1595, NJ_S("AM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
+        Spec { 1700, NJ_S("OSC 1 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1701, NJ_S("OSC 1 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1702, NJ_S("OSC 1 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1703, NJ_S("OSC 1 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1704, NJ_S("OSC 1 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1705, NJ_S("OSC 1 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1706, NJ_S("OSC 1 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1707, NJ_S("OSC 1 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1708, NJ_S("OSC 1 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1709, NJ_S("OSC 1 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1710, NJ_S("OSC 1 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1711, NJ_S("OSC 1 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1712, NJ_S("OSC 1 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1713, NJ_S("OSC 1 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1714, NJ_S("OSC 1 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1715, NJ_S("OSC 1 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1732, NJ_S("OSC 2 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1733, NJ_S("OSC 2 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1734, NJ_S("OSC 2 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1735, NJ_S("OSC 2 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1736, NJ_S("OSC 2 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1737, NJ_S("OSC 2 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1738, NJ_S("OSC 2 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1739, NJ_S("OSC 2 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1740, NJ_S("OSC 2 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1741, NJ_S("OSC 2 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1742, NJ_S("OSC 2 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1743, NJ_S("OSC 2 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1744, NJ_S("OSC 2 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1745, NJ_S("OSC 2 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1746, NJ_S("OSC 2 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1747, NJ_S("OSC 2 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1764, NJ_S("OSC 3 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1765, NJ_S("OSC 3 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1766, NJ_S("OSC 3 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1767, NJ_S("OSC 3 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+    });
+}
+static void allSpecs_48 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1768, NJ_S("OSC 3 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1769, NJ_S("OSC 3 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1770, NJ_S("OSC 3 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1771, NJ_S("OSC 3 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1772, NJ_S("OSC 3 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1773, NJ_S("OSC 3 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1774, NJ_S("OSC 3 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1775, NJ_S("OSC 3 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1776, NJ_S("OSC 3 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1777, NJ_S("OSC 3 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1778, NJ_S("OSC 3 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1779, NJ_S("OSC 3 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1796, NJ_S("OSC 4 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1797, NJ_S("OSC 4 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1798, NJ_S("OSC 4 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1799, NJ_S("OSC 4 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1800, NJ_S("OSC 4 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1801, NJ_S("OSC 4 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1802, NJ_S("OSC 4 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1803, NJ_S("OSC 4 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1804, NJ_S("OSC 4 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1805, NJ_S("OSC 4 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1806, NJ_S("OSC 4 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1807, NJ_S("OSC 4 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1808, NJ_S("OSC 4 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1809, NJ_S("OSC 4 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1810, NJ_S("OSC 4 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1811, NJ_S("OSC 4 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1828, NJ_S("OSC 5 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1829, NJ_S("OSC 5 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1830, NJ_S("OSC 5 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1831, NJ_S("OSC 5 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1832, NJ_S("OSC 5 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1833, NJ_S("OSC 5 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1834, NJ_S("OSC 5 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1835, NJ_S("OSC 5 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1836, NJ_S("OSC 5 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1837, NJ_S("OSC 5 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1838, NJ_S("OSC 5 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1839, NJ_S("OSC 5 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+    });
+}
+static void allSpecs_49 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1840, NJ_S("OSC 5 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1841, NJ_S("OSC 5 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1842, NJ_S("OSC 5 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1843, NJ_S("OSC 5 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1860, NJ_S("OSC 6 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1861, NJ_S("OSC 6 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
+        Spec { 1862, NJ_S("OSC 6 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
+        Spec { 1863, NJ_S("OSC 6 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1864, NJ_S("OSC 6 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1865, NJ_S("OSC 6 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1866, NJ_S("OSC 6 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1867, NJ_S("OSC 6 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1868, NJ_S("OSC 6 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
+        Spec { 1869, NJ_S("OSC 6 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1870, NJ_S("OSC 6 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
+        Spec { 1871, NJ_S("OSC 6 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
+        Spec { 1872, NJ_S("OSC 6 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
+        Spec { 1873, NJ_S("OSC 6 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1874, NJ_S("OSC 6 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
+        Spec { 1875, NJ_S("OSC 6 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
+        Spec { 1716, NJ_S("OSC 1 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1717, NJ_S("OSC 1 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1718, NJ_S("OSC 1 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1719, NJ_S("OSC 1 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1720, NJ_S("OSC 1 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1721, NJ_S("OSC 1 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1722, NJ_S("OSC 1 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1723, NJ_S("OSC 1 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1724, NJ_S("OSC 1 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1725, NJ_S("OSC 1 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1748, NJ_S("OSC 2 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1749, NJ_S("OSC 2 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1750, NJ_S("OSC 2 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1751, NJ_S("OSC 2 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1752, NJ_S("OSC 2 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1753, NJ_S("OSC 2 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1754, NJ_S("OSC 2 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1755, NJ_S("OSC 2 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1756, NJ_S("OSC 2 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1757, NJ_S("OSC 2 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+    });
+}
+static void allSpecs_50 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1780, NJ_S("OSC 3 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1781, NJ_S("OSC 3 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1782, NJ_S("OSC 3 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1783, NJ_S("OSC 3 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1784, NJ_S("OSC 3 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1785, NJ_S("OSC 3 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1786, NJ_S("OSC 3 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1787, NJ_S("OSC 3 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1788, NJ_S("OSC 3 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1789, NJ_S("OSC 3 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1812, NJ_S("OSC 4 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1813, NJ_S("OSC 4 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1814, NJ_S("OSC 4 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1815, NJ_S("OSC 4 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1816, NJ_S("OSC 4 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1817, NJ_S("OSC 4 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1818, NJ_S("OSC 4 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1819, NJ_S("OSC 4 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1820, NJ_S("OSC 4 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1821, NJ_S("OSC 4 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1844, NJ_S("OSC 5 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1845, NJ_S("OSC 5 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1846, NJ_S("OSC 5 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1847, NJ_S("OSC 5 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1848, NJ_S("OSC 5 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1849, NJ_S("OSC 5 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1850, NJ_S("OSC 5 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1851, NJ_S("OSC 5 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1852, NJ_S("OSC 5 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1853, NJ_S("OSC 5 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1876, NJ_S("OSC 6 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
+        Spec { 1877, NJ_S("OSC 6 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
+        Spec { 1878, NJ_S("OSC 6 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
+        Spec { 1879, NJ_S("OSC 6 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
+        Spec { 1880, NJ_S("OSC 6 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
+        Spec { 1881, NJ_S("OSC 6 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1882, NJ_S("OSC 6 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1883, NJ_S("OSC 6 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
+        Spec { 1884, NJ_S("OSC 6 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
+        Spec { 1885, NJ_S("OSC 6 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+    });
+}
+static void allSpecs_51 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1726, NJ_S("OSC 1 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1727, NJ_S("OSC 1 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1728, NJ_S("OSC 1 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1729, NJ_S("OSC 1 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1730, NJ_S("OSC 1 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1758, NJ_S("OSC 2 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1759, NJ_S("OSC 2 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1760, NJ_S("OSC 2 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1761, NJ_S("OSC 2 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1762, NJ_S("OSC 2 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1790, NJ_S("OSC 3 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1791, NJ_S("OSC 3 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1792, NJ_S("OSC 3 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1793, NJ_S("OSC 3 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1794, NJ_S("OSC 3 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1822, NJ_S("OSC 4 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1823, NJ_S("OSC 4 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1824, NJ_S("OSC 4 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1825, NJ_S("OSC 4 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1826, NJ_S("OSC 4 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1854, NJ_S("OSC 5 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1855, NJ_S("OSC 5 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1856, NJ_S("OSC 5 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1857, NJ_S("OSC 5 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1858, NJ_S("OSC 5 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1886, NJ_S("OSC 6 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
+        Spec { 1887, NJ_S("OSC 6 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
+        Spec { 1888, NJ_S("OSC 6 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
+        Spec { 1889, NJ_S("OSC 6 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
+        Spec { 1890, NJ_S("OSC 6 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
+        Spec { 1900, NJ_S("OSC 1 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1901, NJ_S("OSC 1 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+        Spec { 1902, NJ_S("OSC 1 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1903, NJ_S("OSC 1 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1904, NJ_S("OSC 1 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1905, NJ_S("OSC 1 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1906, NJ_S("OSC 1 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1907, NJ_S("OSC 1 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1908, NJ_S("OSC 1 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1909, NJ_S("OSC 1 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+    });
+}
+static void allSpecs_52 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1910, NJ_S("OSC 1 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1911, NJ_S("OSC 1 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1912, NJ_S("OSC 1 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1913, NJ_S("OSC 1 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1914, NJ_S("OSC 1 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1915, NJ_S("OSC 1 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 1916, NJ_S("OSC 2 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1917, NJ_S("OSC 2 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+        Spec { 1918, NJ_S("OSC 2 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1919, NJ_S("OSC 2 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1920, NJ_S("OSC 2 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1921, NJ_S("OSC 2 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1922, NJ_S("OSC 2 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1923, NJ_S("OSC 2 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1924, NJ_S("OSC 2 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1925, NJ_S("OSC 2 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1926, NJ_S("OSC 2 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1927, NJ_S("OSC 2 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1928, NJ_S("OSC 2 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1929, NJ_S("OSC 2 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1930, NJ_S("OSC 2 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1931, NJ_S("OSC 2 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 1932, NJ_S("OSC 3 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1933, NJ_S("OSC 3 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+        Spec { 1934, NJ_S("OSC 3 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1935, NJ_S("OSC 3 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1936, NJ_S("OSC 3 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1937, NJ_S("OSC 3 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1938, NJ_S("OSC 3 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1939, NJ_S("OSC 3 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1940, NJ_S("OSC 3 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1941, NJ_S("OSC 3 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1942, NJ_S("OSC 3 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1943, NJ_S("OSC 3 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1944, NJ_S("OSC 3 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1945, NJ_S("OSC 3 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1946, NJ_S("OSC 3 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1947, NJ_S("OSC 3 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 1948, NJ_S("OSC 4 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1949, NJ_S("OSC 4 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+    });
+}
+static void allSpecs_53 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1950, NJ_S("OSC 4 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1951, NJ_S("OSC 4 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1952, NJ_S("OSC 4 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1953, NJ_S("OSC 4 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1954, NJ_S("OSC 4 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1955, NJ_S("OSC 4 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1956, NJ_S("OSC 4 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1957, NJ_S("OSC 4 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1958, NJ_S("OSC 4 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1959, NJ_S("OSC 4 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1960, NJ_S("OSC 4 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1961, NJ_S("OSC 4 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1962, NJ_S("OSC 4 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1963, NJ_S("OSC 4 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 1964, NJ_S("OSC 5 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1965, NJ_S("OSC 5 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+        Spec { 1966, NJ_S("OSC 5 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1967, NJ_S("OSC 5 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1968, NJ_S("OSC 5 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1969, NJ_S("OSC 5 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1970, NJ_S("OSC 5 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1971, NJ_S("OSC 5 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1972, NJ_S("OSC 5 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1973, NJ_S("OSC 5 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 1974, NJ_S("OSC 5 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1975, NJ_S("OSC 5 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1976, NJ_S("OSC 5 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1977, NJ_S("OSC 5 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1978, NJ_S("OSC 5 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1979, NJ_S("OSC 5 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 1980, NJ_S("OSC 6 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
+        Spec { 1981, NJ_S("OSC 6 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
+        Spec { 1982, NJ_S("OSC 6 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
+        Spec { 1983, NJ_S("OSC 6 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
+        Spec { 1984, NJ_S("OSC 6 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
+        Spec { 1985, NJ_S("OSC 6 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
+        Spec { 1986, NJ_S("OSC 6 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
+        Spec { 1987, NJ_S("OSC 6 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
+        Spec { 1988, NJ_S("OSC 6 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
+        Spec { 1989, NJ_S("OSC 6 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+    });
+}
+static void allSpecs_54 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 1990, NJ_S("OSC 6 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
+        Spec { 1991, NJ_S("OSC 6 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
+        Spec { 1992, NJ_S("OSC 6 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
+        Spec { 1993, NJ_S("OSC 6 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
+        Spec { 1994, NJ_S("OSC 6 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
+        Spec { 1995, NJ_S("OSC 6 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
+        Spec { 2000, NJ_S("OSC 1 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2001, NJ_S("OSC 2 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2002, NJ_S("OSC 3 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2003, NJ_S("OSC 4 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2004, NJ_S("OSC 5 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2005, NJ_S("OSC 6 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
+        Spec { 2100, NJ_S("OSC 1 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2101, NJ_S("OSC 1 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2102, NJ_S("OSC 1 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2103, NJ_S("OSC 1 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+        Spec { 2104, NJ_S("OSC 1 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2105, NJ_S("OSC 1 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2106, NJ_S("OSC 1 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2107, NJ_S("OSC 1 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2108, NJ_S("OSC 1 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2109, NJ_S("OSC 1 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2110, NJ_S("OSC 1 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2111, NJ_S("OSC 1 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+        Spec { 2112, NJ_S("OSC 1 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2113, NJ_S("OSC 1 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2114, NJ_S("OSC 1 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2115, NJ_S("OSC 1 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+        Spec { 2116, NJ_S("OSC 2 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2117, NJ_S("OSC 2 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2118, NJ_S("OSC 2 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2119, NJ_S("OSC 2 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+        Spec { 2120, NJ_S("OSC 2 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2121, NJ_S("OSC 2 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2122, NJ_S("OSC 2 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2123, NJ_S("OSC 2 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2124, NJ_S("OSC 2 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2125, NJ_S("OSC 2 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2126, NJ_S("OSC 2 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2127, NJ_S("OSC 2 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+    });
+}
+static void allSpecs_55 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 2128, NJ_S("OSC 2 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2129, NJ_S("OSC 2 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2130, NJ_S("OSC 2 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2131, NJ_S("OSC 2 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+        Spec { 2132, NJ_S("OSC 3 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2133, NJ_S("OSC 3 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2134, NJ_S("OSC 3 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2135, NJ_S("OSC 3 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+        Spec { 2136, NJ_S("OSC 3 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2137, NJ_S("OSC 3 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2138, NJ_S("OSC 3 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2139, NJ_S("OSC 3 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2140, NJ_S("OSC 3 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2141, NJ_S("OSC 3 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2142, NJ_S("OSC 3 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2143, NJ_S("OSC 3 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+        Spec { 2144, NJ_S("OSC 3 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2145, NJ_S("OSC 3 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2146, NJ_S("OSC 3 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2147, NJ_S("OSC 3 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+        Spec { 2148, NJ_S("OSC 4 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2149, NJ_S("OSC 4 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2150, NJ_S("OSC 4 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2151, NJ_S("OSC 4 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+        Spec { 2152, NJ_S("OSC 4 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2153, NJ_S("OSC 4 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2154, NJ_S("OSC 4 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2155, NJ_S("OSC 4 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2156, NJ_S("OSC 4 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2157, NJ_S("OSC 4 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2158, NJ_S("OSC 4 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2159, NJ_S("OSC 4 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+        Spec { 2160, NJ_S("OSC 4 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2161, NJ_S("OSC 4 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2162, NJ_S("OSC 4 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2163, NJ_S("OSC 4 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+        Spec { 2164, NJ_S("OSC 5 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2165, NJ_S("OSC 5 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2166, NJ_S("OSC 5 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2167, NJ_S("OSC 5 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+    });
+}
+static void allSpecs_56 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 2168, NJ_S("OSC 5 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2169, NJ_S("OSC 5 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2170, NJ_S("OSC 5 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2171, NJ_S("OSC 5 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2172, NJ_S("OSC 5 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2173, NJ_S("OSC 5 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2174, NJ_S("OSC 5 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2175, NJ_S("OSC 5 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+        Spec { 2176, NJ_S("OSC 5 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2177, NJ_S("OSC 5 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2178, NJ_S("OSC 5 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2179, NJ_S("OSC 5 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+        Spec { 2180, NJ_S("OSC 6 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
+        Spec { 2181, NJ_S("OSC 6 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
+        Spec { 2182, NJ_S("OSC 6 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
+        Spec { 2183, NJ_S("OSC 6 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
+        Spec { 2184, NJ_S("OSC 6 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
+        Spec { 2185, NJ_S("OSC 6 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
+        Spec { 2186, NJ_S("OSC 6 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
+        Spec { 2187, NJ_S("OSC 6 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
+        Spec { 2188, NJ_S("OSC 6 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
+        Spec { 2189, NJ_S("OSC 6 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
+        Spec { 2190, NJ_S("OSC 6 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
+        Spec { 2191, NJ_S("OSC 6 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
+        Spec { 2192, NJ_S("OSC 6 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
+        Spec { 2193, NJ_S("OSC 6 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
+        Spec { 2194, NJ_S("OSC 6 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
+        Spec { 2195, NJ_S("OSC 6 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
+    });
+}
 const std::vector<Spec>& allSpecs()
 {
-    static const std::vector<Spec> v = {
-        { 2, NJ_S("Voice"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Poly"), NJ_S("Mono") }, 1, NJ_S(""), {  } },
-        { 3, NJ_S("Glide"), 0.0, 1000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 18, NJ_S("Attack"), 0.0, 2000.0, 2.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 19, NJ_S("Decay"), 10.0, 4000.0, 500.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 20, NJ_S("Sustain"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 21, NJ_S("Release"), 5.0, 4000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 22, NJ_S("Velocity"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 28, NJ_S("Synth Drive"), 0.0, 1.0, 0.1, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 29, NJ_S("Synth Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 36, NJ_S("Master"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 45, NJ_S("Pitch EG"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 46, NJ_S("P.EG Decay"), 10.0, 2000.0, 150.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 63, NJ_S("Master Tune"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 175, NJ_S("Stereo Width"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 189, NJ_S("Tone"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 190, NJ_S("Out Gain"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 247, NJ_S("LFO 1 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 882, NJ_S("LFO 1 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 883, NJ_S("LFO 1 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 884, NJ_S("LFO 1 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 885, NJ_S("LFO 1 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 886, NJ_S("LFO 1 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 248, NJ_S("LFO 1 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 249, NJ_S("LFO 2 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 887, NJ_S("LFO 2 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 888, NJ_S("LFO 2 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 889, NJ_S("LFO 2 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 890, NJ_S("LFO 2 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 891, NJ_S("LFO 2 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 250, NJ_S("LFO 2 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 251, NJ_S("LFO 3 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 892, NJ_S("LFO 3 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 893, NJ_S("LFO 3 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 894, NJ_S("LFO 3 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 895, NJ_S("LFO 3 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 896, NJ_S("LFO 3 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 252, NJ_S("LFO 3 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 253, NJ_S("LFO 4 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 897, NJ_S("LFO 4 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 898, NJ_S("LFO 4 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 899, NJ_S("LFO 4 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 900, NJ_S("LFO 4 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 901, NJ_S("LFO 4 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 254, NJ_S("LFO 4 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 255, NJ_S("LFO 5 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 902, NJ_S("LFO 5 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 903, NJ_S("LFO 5 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 904, NJ_S("LFO 5 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 905, NJ_S("LFO 5 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 906, NJ_S("LFO 5 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 256, NJ_S("LFO 5 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 257, NJ_S("LFO 6 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 907, NJ_S("LFO 6 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 908, NJ_S("LFO 6 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 909, NJ_S("LFO 6 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 910, NJ_S("LFO 6 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 911, NJ_S("LFO 6 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 258, NJ_S("LFO 6 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 259, NJ_S("LFO 7 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 912, NJ_S("LFO 7 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 913, NJ_S("LFO 7 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 914, NJ_S("LFO 7 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 915, NJ_S("LFO 7 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 916, NJ_S("LFO 7 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 260, NJ_S("LFO 7 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 261, NJ_S("LFO 8 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 917, NJ_S("LFO 8 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 918, NJ_S("LFO 8 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 919, NJ_S("LFO 8 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 920, NJ_S("LFO 8 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 921, NJ_S("LFO 8 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 262, NJ_S("LFO 8 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 263, NJ_S("LFO 9 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 922, NJ_S("LFO 9 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 923, NJ_S("LFO 9 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 924, NJ_S("LFO 9 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 925, NJ_S("LFO 9 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 926, NJ_S("LFO 9 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 264, NJ_S("LFO 9 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 265, NJ_S("LFO 10 Wave"), 0.0, 6.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") }, 1, NJ_S(""), {  } },
-        { 927, NJ_S("LFO 10 Mode"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") }, 1, NJ_S("Mode"), {  } },
-        { 928, NJ_S("LFO 10 Delay"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Delay"), {  } },
-        { 929, NJ_S("LFO 10 Rise"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Rise"), {  } },
-        { 930, NJ_S("LFO 10 Smooth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 931, NJ_S("LFO 10 Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 266, NJ_S("LFO 10 Rate"), 0.01, 50.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 267, NJ_S("Env 1 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 268, NJ_S("Env 1 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 269, NJ_S("Env 1 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 270, NJ_S("Env 1 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 271, NJ_S("Env 2 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 272, NJ_S("Env 2 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 273, NJ_S("Env 2 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 274, NJ_S("Env 2 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 275, NJ_S("Env 3 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 276, NJ_S("Env 3 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 277, NJ_S("Env 3 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 278, NJ_S("Env 3 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 279, NJ_S("Env 4 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 280, NJ_S("Env 4 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 281, NJ_S("Env 4 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 282, NJ_S("Env 4 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 283, NJ_S("Env 5 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 284, NJ_S("Env 5 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 285, NJ_S("Env 5 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 286, NJ_S("Env 5 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 287, NJ_S("Env 6 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 288, NJ_S("Env 6 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 289, NJ_S("Env 6 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 290, NJ_S("Env 6 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 291, NJ_S("Env 7 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 292, NJ_S("Env 7 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 293, NJ_S("Env 7 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 294, NJ_S("Env 7 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 295, NJ_S("Env 8 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 296, NJ_S("Env 8 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 297, NJ_S("Env 8 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 298, NJ_S("Env 8 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 299, NJ_S("Env 9 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 300, NJ_S("Env 9 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 301, NJ_S("Env 9 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 302, NJ_S("Env 9 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 303, NJ_S("Env 10 Attack"), 0.0, 5000.0, 10.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 304, NJ_S("Env 10 Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 305, NJ_S("Env 10 Sustain"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 306, NJ_S("Env 10 Release"), 5.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1600, NJ_S("Freq 1 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1601, NJ_S("Freq 1 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1602, NJ_S("Freq 1 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1603, NJ_S("Freq 1 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1604, NJ_S("Freq 2 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1605, NJ_S("Freq 2 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1606, NJ_S("Freq 2 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1607, NJ_S("Freq 2 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1608, NJ_S("Freq 3 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1609, NJ_S("Freq 3 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1610, NJ_S("Freq 3 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1611, NJ_S("Freq 3 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1612, NJ_S("Freq 4 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1613, NJ_S("Freq 4 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1614, NJ_S("Freq 4 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1615, NJ_S("Freq 4 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1616, NJ_S("Freq 5 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1617, NJ_S("Freq 5 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1618, NJ_S("Freq 5 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1619, NJ_S("Freq 5 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1620, NJ_S("Freq 6 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1621, NJ_S("Freq 6 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1622, NJ_S("Freq 6 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1623, NJ_S("Freq 6 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1624, NJ_S("Freq 7 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1625, NJ_S("Freq 7 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1626, NJ_S("Freq 7 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1627, NJ_S("Freq 7 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1628, NJ_S("Freq 8 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1629, NJ_S("Freq 8 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1630, NJ_S("Freq 8 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1631, NJ_S("Freq 8 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1632, NJ_S("Freq 9 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1633, NJ_S("Freq 9 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1634, NJ_S("Freq 9 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1635, NJ_S("Freq 9 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1636, NJ_S("Freq 10 Rate"), 5.0, 10000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1637, NJ_S("Freq 10 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 1638, NJ_S("Freq 10 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 1639, NJ_S("Freq 10 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        { 307, NJ_S("Slot 1 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 308, NJ_S("Slot 1 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 309, NJ_S("Slot 1 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 310, NJ_S("Slot 2 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 311, NJ_S("Slot 2 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 312, NJ_S("Slot 2 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 313, NJ_S("Slot 3 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 314, NJ_S("Slot 3 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 315, NJ_S("Slot 3 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 316, NJ_S("Slot 4 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 317, NJ_S("Slot 4 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 318, NJ_S("Slot 4 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 319, NJ_S("Slot 5 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 320, NJ_S("Slot 5 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 321, NJ_S("Slot 5 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 322, NJ_S("Slot 6 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 323, NJ_S("Slot 6 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 324, NJ_S("Slot 6 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 325, NJ_S("Slot 7 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 326, NJ_S("Slot 7 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 327, NJ_S("Slot 7 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 328, NJ_S("Slot 8 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 329, NJ_S("Slot 8 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 330, NJ_S("Slot 8 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 331, NJ_S("Slot 9 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 332, NJ_S("Slot 9 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 333, NJ_S("Slot 9 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 334, NJ_S("Slot 10 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 335, NJ_S("Slot 10 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 336, NJ_S("Slot 10 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 472, NJ_S("Slot 11 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 473, NJ_S("Slot 11 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 474, NJ_S("Slot 11 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 475, NJ_S("Slot 12 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 476, NJ_S("Slot 12 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 477, NJ_S("Slot 12 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 478, NJ_S("Slot 13 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 479, NJ_S("Slot 13 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 480, NJ_S("Slot 13 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 481, NJ_S("Slot 14 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 482, NJ_S("Slot 14 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 483, NJ_S("Slot 14 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 484, NJ_S("Slot 15 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 485, NJ_S("Slot 15 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 486, NJ_S("Slot 15 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 487, NJ_S("Slot 16 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 488, NJ_S("Slot 16 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 489, NJ_S("Slot 16 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 490, NJ_S("Slot 17 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 491, NJ_S("Slot 17 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 492, NJ_S("Slot 17 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 493, NJ_S("Slot 18 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 494, NJ_S("Slot 18 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 495, NJ_S("Slot 18 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 496, NJ_S("Slot 19 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 497, NJ_S("Slot 19 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 498, NJ_S("Slot 19 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 499, NJ_S("Slot 20 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 500, NJ_S("Slot 20 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 501, NJ_S("Slot 20 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4000, NJ_S("Slot 21 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4001, NJ_S("Slot 21 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4002, NJ_S("Slot 21 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4003, NJ_S("Slot 22 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4004, NJ_S("Slot 22 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4005, NJ_S("Slot 22 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4006, NJ_S("Slot 23 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4007, NJ_S("Slot 23 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4008, NJ_S("Slot 23 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4009, NJ_S("Slot 24 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4010, NJ_S("Slot 24 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4011, NJ_S("Slot 24 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4012, NJ_S("Slot 25 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4013, NJ_S("Slot 25 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4014, NJ_S("Slot 25 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4015, NJ_S("Slot 26 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4016, NJ_S("Slot 26 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4017, NJ_S("Slot 26 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4018, NJ_S("Slot 27 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4019, NJ_S("Slot 27 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4020, NJ_S("Slot 27 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4021, NJ_S("Slot 28 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4022, NJ_S("Slot 28 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4023, NJ_S("Slot 28 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4024, NJ_S("Slot 29 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4025, NJ_S("Slot 29 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4026, NJ_S("Slot 29 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4027, NJ_S("Slot 30 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4028, NJ_S("Slot 30 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4029, NJ_S("Slot 30 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4030, NJ_S("Slot 31 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4031, NJ_S("Slot 31 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4032, NJ_S("Slot 31 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4033, NJ_S("Slot 32 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4034, NJ_S("Slot 32 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4035, NJ_S("Slot 32 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4036, NJ_S("Slot 33 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4037, NJ_S("Slot 33 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4038, NJ_S("Slot 33 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4039, NJ_S("Slot 34 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4040, NJ_S("Slot 34 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4041, NJ_S("Slot 34 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4042, NJ_S("Slot 35 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4043, NJ_S("Slot 35 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4044, NJ_S("Slot 35 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4045, NJ_S("Slot 36 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4046, NJ_S("Slot 36 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4047, NJ_S("Slot 36 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4048, NJ_S("Slot 37 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4049, NJ_S("Slot 37 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4050, NJ_S("Slot 37 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4051, NJ_S("Slot 38 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4052, NJ_S("Slot 38 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4053, NJ_S("Slot 38 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4054, NJ_S("Slot 39 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4055, NJ_S("Slot 39 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4056, NJ_S("Slot 39 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4057, NJ_S("Slot 40 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4058, NJ_S("Slot 40 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4059, NJ_S("Slot 40 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4060, NJ_S("Slot 41 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4061, NJ_S("Slot 41 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4062, NJ_S("Slot 41 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4063, NJ_S("Slot 42 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4064, NJ_S("Slot 42 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4065, NJ_S("Slot 42 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4066, NJ_S("Slot 43 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4067, NJ_S("Slot 43 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4068, NJ_S("Slot 43 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4069, NJ_S("Slot 44 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4070, NJ_S("Slot 44 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4071, NJ_S("Slot 44 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4072, NJ_S("Slot 45 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4073, NJ_S("Slot 45 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4074, NJ_S("Slot 45 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4075, NJ_S("Slot 46 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4076, NJ_S("Slot 46 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4077, NJ_S("Slot 46 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4078, NJ_S("Slot 47 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4079, NJ_S("Slot 47 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4080, NJ_S("Slot 47 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4081, NJ_S("Slot 48 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4082, NJ_S("Slot 48 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4083, NJ_S("Slot 48 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4084, NJ_S("Slot 49 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4085, NJ_S("Slot 49 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4086, NJ_S("Slot 49 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4087, NJ_S("Slot 50 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4088, NJ_S("Slot 50 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4089, NJ_S("Slot 50 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4090, NJ_S("Slot 51 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4091, NJ_S("Slot 51 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4092, NJ_S("Slot 51 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4093, NJ_S("Slot 52 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4094, NJ_S("Slot 52 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4095, NJ_S("Slot 52 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4096, NJ_S("Slot 53 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4097, NJ_S("Slot 53 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4098, NJ_S("Slot 53 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4099, NJ_S("Slot 54 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4100, NJ_S("Slot 54 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4101, NJ_S("Slot 54 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4102, NJ_S("Slot 55 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4103, NJ_S("Slot 55 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4104, NJ_S("Slot 55 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4105, NJ_S("Slot 56 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4106, NJ_S("Slot 56 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4107, NJ_S("Slot 56 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4108, NJ_S("Slot 57 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4109, NJ_S("Slot 57 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4110, NJ_S("Slot 57 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4111, NJ_S("Slot 58 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4112, NJ_S("Slot 58 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4113, NJ_S("Slot 58 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4114, NJ_S("Slot 59 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4115, NJ_S("Slot 59 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4116, NJ_S("Slot 59 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4117, NJ_S("Slot 60 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4118, NJ_S("Slot 60 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4119, NJ_S("Slot 60 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4120, NJ_S("Slot 61 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4121, NJ_S("Slot 61 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4122, NJ_S("Slot 61 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4123, NJ_S("Slot 62 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4124, NJ_S("Slot 62 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4125, NJ_S("Slot 62 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4126, NJ_S("Slot 63 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4127, NJ_S("Slot 63 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4128, NJ_S("Slot 63 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4129, NJ_S("Slot 64 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4130, NJ_S("Slot 64 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4131, NJ_S("Slot 64 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4132, NJ_S("Slot 65 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4133, NJ_S("Slot 65 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4134, NJ_S("Slot 65 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4135, NJ_S("Slot 66 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4136, NJ_S("Slot 66 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4137, NJ_S("Slot 66 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4138, NJ_S("Slot 67 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4139, NJ_S("Slot 67 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4140, NJ_S("Slot 67 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4141, NJ_S("Slot 68 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4142, NJ_S("Slot 68 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4143, NJ_S("Slot 68 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4144, NJ_S("Slot 69 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4145, NJ_S("Slot 69 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4146, NJ_S("Slot 69 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4147, NJ_S("Slot 70 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4148, NJ_S("Slot 70 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4149, NJ_S("Slot 70 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4150, NJ_S("Slot 71 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4151, NJ_S("Slot 71 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4152, NJ_S("Slot 71 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4153, NJ_S("Slot 72 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4154, NJ_S("Slot 72 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4155, NJ_S("Slot 72 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4156, NJ_S("Slot 73 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4157, NJ_S("Slot 73 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4158, NJ_S("Slot 73 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4159, NJ_S("Slot 74 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4160, NJ_S("Slot 74 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4161, NJ_S("Slot 74 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4162, NJ_S("Slot 75 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4163, NJ_S("Slot 75 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4164, NJ_S("Slot 75 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4165, NJ_S("Slot 76 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4166, NJ_S("Slot 76 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4167, NJ_S("Slot 76 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4168, NJ_S("Slot 77 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4169, NJ_S("Slot 77 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4170, NJ_S("Slot 77 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4171, NJ_S("Slot 78 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4172, NJ_S("Slot 78 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4173, NJ_S("Slot 78 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4174, NJ_S("Slot 79 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4175, NJ_S("Slot 79 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4176, NJ_S("Slot 79 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4177, NJ_S("Slot 80 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4178, NJ_S("Slot 80 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4179, NJ_S("Slot 80 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4180, NJ_S("Slot 81 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4181, NJ_S("Slot 81 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4182, NJ_S("Slot 81 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4183, NJ_S("Slot 82 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4184, NJ_S("Slot 82 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4185, NJ_S("Slot 82 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4186, NJ_S("Slot 83 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4187, NJ_S("Slot 83 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4188, NJ_S("Slot 83 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4189, NJ_S("Slot 84 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4190, NJ_S("Slot 84 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4191, NJ_S("Slot 84 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4192, NJ_S("Slot 85 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4193, NJ_S("Slot 85 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4194, NJ_S("Slot 85 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4195, NJ_S("Slot 86 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4196, NJ_S("Slot 86 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4197, NJ_S("Slot 86 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4198, NJ_S("Slot 87 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4199, NJ_S("Slot 87 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4200, NJ_S("Slot 87 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4201, NJ_S("Slot 88 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4202, NJ_S("Slot 88 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4203, NJ_S("Slot 88 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4204, NJ_S("Slot 89 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4205, NJ_S("Slot 89 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4206, NJ_S("Slot 89 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4207, NJ_S("Slot 90 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4208, NJ_S("Slot 90 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4209, NJ_S("Slot 90 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4210, NJ_S("Slot 91 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4211, NJ_S("Slot 91 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4212, NJ_S("Slot 91 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4213, NJ_S("Slot 92 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4214, NJ_S("Slot 92 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4215, NJ_S("Slot 92 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4216, NJ_S("Slot 93 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4217, NJ_S("Slot 93 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4218, NJ_S("Slot 93 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4219, NJ_S("Slot 94 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4220, NJ_S("Slot 94 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4221, NJ_S("Slot 94 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4222, NJ_S("Slot 95 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4223, NJ_S("Slot 95 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4224, NJ_S("Slot 95 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4225, NJ_S("Slot 96 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4226, NJ_S("Slot 96 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4227, NJ_S("Slot 96 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4228, NJ_S("Slot 97 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4229, NJ_S("Slot 97 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4230, NJ_S("Slot 97 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4231, NJ_S("Slot 98 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4232, NJ_S("Slot 98 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4233, NJ_S("Slot 98 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4234, NJ_S("Slot 99 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4235, NJ_S("Slot 99 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4236, NJ_S("Slot 99 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4237, NJ_S("Slot 100 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4238, NJ_S("Slot 100 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4239, NJ_S("Slot 100 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4240, NJ_S("Slot 101 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4241, NJ_S("Slot 101 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4242, NJ_S("Slot 101 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4243, NJ_S("Slot 102 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4244, NJ_S("Slot 102 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4245, NJ_S("Slot 102 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4246, NJ_S("Slot 103 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4247, NJ_S("Slot 103 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4248, NJ_S("Slot 103 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4249, NJ_S("Slot 104 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4250, NJ_S("Slot 104 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4251, NJ_S("Slot 104 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4252, NJ_S("Slot 105 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4253, NJ_S("Slot 105 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4254, NJ_S("Slot 105 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4255, NJ_S("Slot 106 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4256, NJ_S("Slot 106 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4257, NJ_S("Slot 106 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4258, NJ_S("Slot 107 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4259, NJ_S("Slot 107 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4260, NJ_S("Slot 107 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4261, NJ_S("Slot 108 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4262, NJ_S("Slot 108 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4263, NJ_S("Slot 108 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4264, NJ_S("Slot 109 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4265, NJ_S("Slot 109 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4266, NJ_S("Slot 109 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4267, NJ_S("Slot 110 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4268, NJ_S("Slot 110 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4269, NJ_S("Slot 110 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4270, NJ_S("Slot 111 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4271, NJ_S("Slot 111 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4272, NJ_S("Slot 111 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4273, NJ_S("Slot 112 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4274, NJ_S("Slot 112 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4275, NJ_S("Slot 112 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4276, NJ_S("Slot 113 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4277, NJ_S("Slot 113 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4278, NJ_S("Slot 113 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4279, NJ_S("Slot 114 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4280, NJ_S("Slot 114 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4281, NJ_S("Slot 114 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4282, NJ_S("Slot 115 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4283, NJ_S("Slot 115 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4284, NJ_S("Slot 115 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4285, NJ_S("Slot 116 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4286, NJ_S("Slot 116 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4287, NJ_S("Slot 116 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4288, NJ_S("Slot 117 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4289, NJ_S("Slot 117 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4290, NJ_S("Slot 117 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4291, NJ_S("Slot 118 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4292, NJ_S("Slot 118 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4293, NJ_S("Slot 118 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4294, NJ_S("Slot 119 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4295, NJ_S("Slot 119 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4296, NJ_S("Slot 119 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4297, NJ_S("Slot 120 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4298, NJ_S("Slot 120 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4299, NJ_S("Slot 120 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4300, NJ_S("Slot 121 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4301, NJ_S("Slot 121 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4302, NJ_S("Slot 121 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4303, NJ_S("Slot 122 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4304, NJ_S("Slot 122 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4305, NJ_S("Slot 122 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4306, NJ_S("Slot 123 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4307, NJ_S("Slot 123 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4308, NJ_S("Slot 123 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4309, NJ_S("Slot 124 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4310, NJ_S("Slot 124 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4311, NJ_S("Slot 124 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4312, NJ_S("Slot 125 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4313, NJ_S("Slot 125 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4314, NJ_S("Slot 125 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4315, NJ_S("Slot 126 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4316, NJ_S("Slot 126 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4317, NJ_S("Slot 126 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4318, NJ_S("Slot 127 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4319, NJ_S("Slot 127 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4320, NJ_S("Slot 127 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4321, NJ_S("Slot 128 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4322, NJ_S("Slot 128 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4323, NJ_S("Slot 128 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4324, NJ_S("Slot 129 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4325, NJ_S("Slot 129 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4326, NJ_S("Slot 129 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4327, NJ_S("Slot 130 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4328, NJ_S("Slot 130 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4329, NJ_S("Slot 130 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4330, NJ_S("Slot 131 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4331, NJ_S("Slot 131 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4332, NJ_S("Slot 131 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4333, NJ_S("Slot 132 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4334, NJ_S("Slot 132 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4335, NJ_S("Slot 132 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4336, NJ_S("Slot 133 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4337, NJ_S("Slot 133 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4338, NJ_S("Slot 133 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4339, NJ_S("Slot 134 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4340, NJ_S("Slot 134 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4341, NJ_S("Slot 134 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4342, NJ_S("Slot 135 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4343, NJ_S("Slot 135 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4344, NJ_S("Slot 135 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4345, NJ_S("Slot 136 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4346, NJ_S("Slot 136 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4347, NJ_S("Slot 136 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4348, NJ_S("Slot 137 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4349, NJ_S("Slot 137 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4350, NJ_S("Slot 137 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4351, NJ_S("Slot 138 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4352, NJ_S("Slot 138 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4353, NJ_S("Slot 138 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4354, NJ_S("Slot 139 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4355, NJ_S("Slot 139 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4356, NJ_S("Slot 139 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4357, NJ_S("Slot 140 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4358, NJ_S("Slot 140 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4359, NJ_S("Slot 140 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4360, NJ_S("Slot 141 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4361, NJ_S("Slot 141 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4362, NJ_S("Slot 141 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4363, NJ_S("Slot 142 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4364, NJ_S("Slot 142 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4365, NJ_S("Slot 142 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4366, NJ_S("Slot 143 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4367, NJ_S("Slot 143 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4368, NJ_S("Slot 143 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4369, NJ_S("Slot 144 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4370, NJ_S("Slot 144 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4371, NJ_S("Slot 144 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4372, NJ_S("Slot 145 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4373, NJ_S("Slot 145 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4374, NJ_S("Slot 145 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4375, NJ_S("Slot 146 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4376, NJ_S("Slot 146 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4377, NJ_S("Slot 146 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4378, NJ_S("Slot 147 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4379, NJ_S("Slot 147 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4380, NJ_S("Slot 147 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4381, NJ_S("Slot 148 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4382, NJ_S("Slot 148 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4383, NJ_S("Slot 148 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4384, NJ_S("Slot 149 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4385, NJ_S("Slot 149 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4386, NJ_S("Slot 149 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4387, NJ_S("Slot 150 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4388, NJ_S("Slot 150 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4389, NJ_S("Slot 150 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4390, NJ_S("Slot 151 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4391, NJ_S("Slot 151 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4392, NJ_S("Slot 151 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4393, NJ_S("Slot 152 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4394, NJ_S("Slot 152 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4395, NJ_S("Slot 152 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4396, NJ_S("Slot 153 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4397, NJ_S("Slot 153 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4398, NJ_S("Slot 153 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4399, NJ_S("Slot 154 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4400, NJ_S("Slot 154 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4401, NJ_S("Slot 154 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4402, NJ_S("Slot 155 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4403, NJ_S("Slot 155 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4404, NJ_S("Slot 155 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4405, NJ_S("Slot 156 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4406, NJ_S("Slot 156 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4407, NJ_S("Slot 156 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4408, NJ_S("Slot 157 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4409, NJ_S("Slot 157 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4410, NJ_S("Slot 157 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4411, NJ_S("Slot 158 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4412, NJ_S("Slot 158 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4413, NJ_S("Slot 158 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4414, NJ_S("Slot 159 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4415, NJ_S("Slot 159 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4416, NJ_S("Slot 159 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4417, NJ_S("Slot 160 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4418, NJ_S("Slot 160 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4419, NJ_S("Slot 160 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4420, NJ_S("Slot 161 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4421, NJ_S("Slot 161 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4422, NJ_S("Slot 161 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4423, NJ_S("Slot 162 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4424, NJ_S("Slot 162 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4425, NJ_S("Slot 162 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4426, NJ_S("Slot 163 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4427, NJ_S("Slot 163 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4428, NJ_S("Slot 163 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4429, NJ_S("Slot 164 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4430, NJ_S("Slot 164 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4431, NJ_S("Slot 164 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4432, NJ_S("Slot 165 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4433, NJ_S("Slot 165 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4434, NJ_S("Slot 165 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4435, NJ_S("Slot 166 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4436, NJ_S("Slot 166 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4437, NJ_S("Slot 166 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4438, NJ_S("Slot 167 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4439, NJ_S("Slot 167 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4440, NJ_S("Slot 167 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4441, NJ_S("Slot 168 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4442, NJ_S("Slot 168 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4443, NJ_S("Slot 168 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4444, NJ_S("Slot 169 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4445, NJ_S("Slot 169 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4446, NJ_S("Slot 169 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4447, NJ_S("Slot 170 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4448, NJ_S("Slot 170 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4449, NJ_S("Slot 170 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4450, NJ_S("Slot 171 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4451, NJ_S("Slot 171 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4452, NJ_S("Slot 171 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4453, NJ_S("Slot 172 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4454, NJ_S("Slot 172 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4455, NJ_S("Slot 172 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4456, NJ_S("Slot 173 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4457, NJ_S("Slot 173 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4458, NJ_S("Slot 173 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4459, NJ_S("Slot 174 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4460, NJ_S("Slot 174 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4461, NJ_S("Slot 174 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4462, NJ_S("Slot 175 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4463, NJ_S("Slot 175 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4464, NJ_S("Slot 175 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4465, NJ_S("Slot 176 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4466, NJ_S("Slot 176 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4467, NJ_S("Slot 176 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4468, NJ_S("Slot 177 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4469, NJ_S("Slot 177 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4470, NJ_S("Slot 177 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4471, NJ_S("Slot 178 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4472, NJ_S("Slot 178 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4473, NJ_S("Slot 178 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4474, NJ_S("Slot 179 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4475, NJ_S("Slot 179 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4476, NJ_S("Slot 179 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4477, NJ_S("Slot 180 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4478, NJ_S("Slot 180 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4479, NJ_S("Slot 180 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4480, NJ_S("Slot 181 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4481, NJ_S("Slot 181 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4482, NJ_S("Slot 181 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4483, NJ_S("Slot 182 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4484, NJ_S("Slot 182 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4485, NJ_S("Slot 182 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4486, NJ_S("Slot 183 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4487, NJ_S("Slot 183 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4488, NJ_S("Slot 183 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4489, NJ_S("Slot 184 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4490, NJ_S("Slot 184 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4491, NJ_S("Slot 184 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4492, NJ_S("Slot 185 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4493, NJ_S("Slot 185 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4494, NJ_S("Slot 185 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4495, NJ_S("Slot 186 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4496, NJ_S("Slot 186 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4497, NJ_S("Slot 186 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4498, NJ_S("Slot 187 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4499, NJ_S("Slot 187 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4500, NJ_S("Slot 187 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4501, NJ_S("Slot 188 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4502, NJ_S("Slot 188 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4503, NJ_S("Slot 188 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4504, NJ_S("Slot 189 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4505, NJ_S("Slot 189 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4506, NJ_S("Slot 189 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4507, NJ_S("Slot 190 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4508, NJ_S("Slot 190 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4509, NJ_S("Slot 190 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4510, NJ_S("Slot 191 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4511, NJ_S("Slot 191 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4512, NJ_S("Slot 191 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4513, NJ_S("Slot 192 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4514, NJ_S("Slot 192 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4515, NJ_S("Slot 192 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4516, NJ_S("Slot 193 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4517, NJ_S("Slot 193 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4518, NJ_S("Slot 193 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4519, NJ_S("Slot 194 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4520, NJ_S("Slot 194 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4521, NJ_S("Slot 194 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4522, NJ_S("Slot 195 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4523, NJ_S("Slot 195 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4524, NJ_S("Slot 195 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4525, NJ_S("Slot 196 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4526, NJ_S("Slot 196 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4527, NJ_S("Slot 196 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4528, NJ_S("Slot 197 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4529, NJ_S("Slot 197 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4530, NJ_S("Slot 197 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4531, NJ_S("Slot 198 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4532, NJ_S("Slot 198 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4533, NJ_S("Slot 198 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4534, NJ_S("Slot 199 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4535, NJ_S("Slot 199 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4536, NJ_S("Slot 199 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4537, NJ_S("Slot 200 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4538, NJ_S("Slot 200 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4539, NJ_S("Slot 200 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4540, NJ_S("Slot 201 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4541, NJ_S("Slot 201 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4542, NJ_S("Slot 201 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4543, NJ_S("Slot 202 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4544, NJ_S("Slot 202 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4545, NJ_S("Slot 202 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4546, NJ_S("Slot 203 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4547, NJ_S("Slot 203 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4548, NJ_S("Slot 203 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4549, NJ_S("Slot 204 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4550, NJ_S("Slot 204 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4551, NJ_S("Slot 204 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4552, NJ_S("Slot 205 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4553, NJ_S("Slot 205 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4554, NJ_S("Slot 205 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4555, NJ_S("Slot 206 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4556, NJ_S("Slot 206 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4557, NJ_S("Slot 206 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4558, NJ_S("Slot 207 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4559, NJ_S("Slot 207 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4560, NJ_S("Slot 207 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4561, NJ_S("Slot 208 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4562, NJ_S("Slot 208 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4563, NJ_S("Slot 208 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4564, NJ_S("Slot 209 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4565, NJ_S("Slot 209 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4566, NJ_S("Slot 209 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4567, NJ_S("Slot 210 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4568, NJ_S("Slot 210 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4569, NJ_S("Slot 210 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4570, NJ_S("Slot 211 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4571, NJ_S("Slot 211 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4572, NJ_S("Slot 211 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4573, NJ_S("Slot 212 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4574, NJ_S("Slot 212 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4575, NJ_S("Slot 212 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4576, NJ_S("Slot 213 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4577, NJ_S("Slot 213 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4578, NJ_S("Slot 213 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4579, NJ_S("Slot 214 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4580, NJ_S("Slot 214 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4581, NJ_S("Slot 214 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4582, NJ_S("Slot 215 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4583, NJ_S("Slot 215 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4584, NJ_S("Slot 215 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4585, NJ_S("Slot 216 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4586, NJ_S("Slot 216 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4587, NJ_S("Slot 216 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4588, NJ_S("Slot 217 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4589, NJ_S("Slot 217 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4590, NJ_S("Slot 217 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4591, NJ_S("Slot 218 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4592, NJ_S("Slot 218 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4593, NJ_S("Slot 218 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4594, NJ_S("Slot 219 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4595, NJ_S("Slot 219 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4596, NJ_S("Slot 219 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4597, NJ_S("Slot 220 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4598, NJ_S("Slot 220 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4599, NJ_S("Slot 220 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4600, NJ_S("Slot 221 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4601, NJ_S("Slot 221 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4602, NJ_S("Slot 221 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4603, NJ_S("Slot 222 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4604, NJ_S("Slot 222 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4605, NJ_S("Slot 222 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4606, NJ_S("Slot 223 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4607, NJ_S("Slot 223 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4608, NJ_S("Slot 223 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4609, NJ_S("Slot 224 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4610, NJ_S("Slot 224 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4611, NJ_S("Slot 224 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4612, NJ_S("Slot 225 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4613, NJ_S("Slot 225 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4614, NJ_S("Slot 225 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4615, NJ_S("Slot 226 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4616, NJ_S("Slot 226 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4617, NJ_S("Slot 226 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4618, NJ_S("Slot 227 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4619, NJ_S("Slot 227 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4620, NJ_S("Slot 227 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4621, NJ_S("Slot 228 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4622, NJ_S("Slot 228 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4623, NJ_S("Slot 228 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4624, NJ_S("Slot 229 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4625, NJ_S("Slot 229 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4626, NJ_S("Slot 229 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4627, NJ_S("Slot 230 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4628, NJ_S("Slot 230 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4629, NJ_S("Slot 230 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4630, NJ_S("Slot 231 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4631, NJ_S("Slot 231 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4632, NJ_S("Slot 231 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4633, NJ_S("Slot 232 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4634, NJ_S("Slot 232 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4635, NJ_S("Slot 232 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4636, NJ_S("Slot 233 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4637, NJ_S("Slot 233 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4638, NJ_S("Slot 233 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4639, NJ_S("Slot 234 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4640, NJ_S("Slot 234 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4641, NJ_S("Slot 234 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4642, NJ_S("Slot 235 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4643, NJ_S("Slot 235 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4644, NJ_S("Slot 235 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4645, NJ_S("Slot 236 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4646, NJ_S("Slot 236 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4647, NJ_S("Slot 236 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4648, NJ_S("Slot 237 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4649, NJ_S("Slot 237 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4650, NJ_S("Slot 237 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4651, NJ_S("Slot 238 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4652, NJ_S("Slot 238 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4653, NJ_S("Slot 238 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4654, NJ_S("Slot 239 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4655, NJ_S("Slot 239 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4656, NJ_S("Slot 239 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4657, NJ_S("Slot 240 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4658, NJ_S("Slot 240 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4659, NJ_S("Slot 240 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4660, NJ_S("Slot 241 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4661, NJ_S("Slot 241 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4662, NJ_S("Slot 241 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4663, NJ_S("Slot 242 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4664, NJ_S("Slot 242 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4665, NJ_S("Slot 242 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4666, NJ_S("Slot 243 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4667, NJ_S("Slot 243 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4668, NJ_S("Slot 243 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4669, NJ_S("Slot 244 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4670, NJ_S("Slot 244 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4671, NJ_S("Slot 244 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4672, NJ_S("Slot 245 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4673, NJ_S("Slot 245 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4674, NJ_S("Slot 245 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4675, NJ_S("Slot 246 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4676, NJ_S("Slot 246 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4677, NJ_S("Slot 246 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4678, NJ_S("Slot 247 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4679, NJ_S("Slot 247 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4680, NJ_S("Slot 247 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4681, NJ_S("Slot 248 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4682, NJ_S("Slot 248 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4683, NJ_S("Slot 248 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4684, NJ_S("Slot 249 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4685, NJ_S("Slot 249 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4686, NJ_S("Slot 249 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4687, NJ_S("Slot 250 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4688, NJ_S("Slot 250 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4689, NJ_S("Slot 250 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4690, NJ_S("Slot 251 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4691, NJ_S("Slot 251 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4692, NJ_S("Slot 251 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4693, NJ_S("Slot 252 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4694, NJ_S("Slot 252 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4695, NJ_S("Slot 252 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4696, NJ_S("Slot 253 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4697, NJ_S("Slot 253 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4698, NJ_S("Slot 253 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4699, NJ_S("Slot 254 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4700, NJ_S("Slot 254 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4701, NJ_S("Slot 254 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4702, NJ_S("Slot 255 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4703, NJ_S("Slot 255 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4704, NJ_S("Slot 255 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 4705, NJ_S("Slot 256 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        { 4706, NJ_S("Slot 256 Dest"), 0.0, 635.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
-        { 4707, NJ_S("Slot 256 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        { 502, NJ_S("LFO 1 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 503, NJ_S("LFO 1 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 504, NJ_S("LFO 2 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 505, NJ_S("LFO 2 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 506, NJ_S("LFO 3 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 507, NJ_S("LFO 3 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 508, NJ_S("LFO 4 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 509, NJ_S("LFO 4 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 510, NJ_S("LFO 5 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 511, NJ_S("LFO 5 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 512, NJ_S("LFO 6 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 513, NJ_S("LFO 6 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 514, NJ_S("LFO 7 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 515, NJ_S("LFO 7 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 516, NJ_S("LFO 8 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 517, NJ_S("LFO 8 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 518, NJ_S("LFO 9 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 519, NJ_S("LFO 9 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 520, NJ_S("LFO 10 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
-        { 521, NJ_S("LFO 10 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
-        { 221, NJ_S("DC Block"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("DC Block"), {  } },
-        { 222, NJ_S("DC Block Freq"), 5.0, 200.0, 20.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("DC Freq"), {  } },
-        { 522, NJ_S("Sync BPM"), 0.0, 300.0, 0.0, NJ_S("BPM"), NJ_S("sld"), {  }, 1, NJ_S("Sync Tempo"), {  } },
-        { 536, NJ_S("Drive Algorithm"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch") }, 1, NJ_S("Algorithm"), {  } },
-        { 541, NJ_S("Main FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 542, NJ_S("Main FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 543, NJ_S("Main FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 544, NJ_S("Main FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 545, NJ_S("Main FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 546, NJ_S("Main FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 547, NJ_S("Main FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 548, NJ_S("Main FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 549, NJ_S("Main FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 550, NJ_S("Main FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 551, NJ_S("Main FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 552, NJ_S("Main FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 553, NJ_S("Main FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 554, NJ_S("Main FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 555, NJ_S("Main FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 556, NJ_S("Main FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 557, NJ_S("Main FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 558, NJ_S("Main FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 559, NJ_S("Main FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 560, NJ_S("Main FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 561, NJ_S("Main FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 562, NJ_S("Main FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 563, NJ_S("Main FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 564, NJ_S("Main FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 565, NJ_S("Main FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 566, NJ_S("Main FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 567, NJ_S("Main FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 568, NJ_S("Main FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 569, NJ_S("Main FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 570, NJ_S("Main FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 571, NJ_S("Main FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 572, NJ_S("Main FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 573, NJ_S("Main FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 574, NJ_S("Main FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 575, NJ_S("Main FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 576, NJ_S("Main FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 577, NJ_S("Main FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 578, NJ_S("Main FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 579, NJ_S("Main FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 580, NJ_S("Main FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 581, NJ_S("Main FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 582, NJ_S("Main FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 583, NJ_S("Main FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 584, NJ_S("Main FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 585, NJ_S("Main FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 586, NJ_S("Main FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 587, NJ_S("Main FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 588, NJ_S("Main FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 589, NJ_S("Main FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 590, NJ_S("Main FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 591, NJ_S("Main FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 592, NJ_S("Main FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 593, NJ_S("Main FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 594, NJ_S("Main FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 595, NJ_S("Main FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 596, NJ_S("Main FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 597, NJ_S("Main FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 598, NJ_S("Main FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 599, NJ_S("Main FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 600, NJ_S("Main FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 601, NJ_S("Main FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 602, NJ_S("Main FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 603, NJ_S("Main FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 604, NJ_S("Main FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 605, NJ_S("Main FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 606, NJ_S("Main FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 607, NJ_S("Main FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 608, NJ_S("Main FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 609, NJ_S("Main FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 610, NJ_S("Main FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 611, NJ_S("Main FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 612, NJ_S("Main FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 613, NJ_S("Main FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 614, NJ_S("Main FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 615, NJ_S("Main FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 616, NJ_S("Main FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 617, NJ_S("Main FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 618, NJ_S("Main FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 619, NJ_S("Main FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 620, NJ_S("Main FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 621, NJ_S("Main FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 622, NJ_S("Main FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 623, NJ_S("Main FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 624, NJ_S("Main FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 625, NJ_S("Main FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 626, NJ_S("Main FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 627, NJ_S("Main FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 628, NJ_S("Main FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 629, NJ_S("Main FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 630, NJ_S("Main FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 631, NJ_S("Main FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 632, NJ_S("Main FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 633, NJ_S("Main FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 634, NJ_S("Main FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 635, NJ_S("Main FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 636, NJ_S("Main FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 637, NJ_S("Main FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 638, NJ_S("Main FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 639, NJ_S("Main FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 640, NJ_S("Main FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 641, NJ_S("Main FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 642, NJ_S("Main FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 643, NJ_S("Main FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 644, NJ_S("Main FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 645, NJ_S("Main FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 646, NJ_S("Main FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 647, NJ_S("Main FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 648, NJ_S("Main FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 649, NJ_S("Main FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 650, NJ_S("Main FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 651, NJ_S("Bus 1 FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 652, NJ_S("Bus 1 FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 653, NJ_S("Bus 1 FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 654, NJ_S("Bus 1 FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 655, NJ_S("Bus 1 FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 656, NJ_S("Bus 1 FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 657, NJ_S("Bus 1 FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 658, NJ_S("Bus 1 FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 659, NJ_S("Bus 1 FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 660, NJ_S("Bus 1 FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 661, NJ_S("Bus 1 FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 662, NJ_S("Bus 1 FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 663, NJ_S("Bus 1 FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 664, NJ_S("Bus 1 FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 665, NJ_S("Bus 1 FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 666, NJ_S("Bus 1 FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 667, NJ_S("Bus 1 FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 668, NJ_S("Bus 1 FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 669, NJ_S("Bus 1 FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 670, NJ_S("Bus 1 FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 671, NJ_S("Bus 1 FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 672, NJ_S("Bus 1 FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 673, NJ_S("Bus 1 FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 674, NJ_S("Bus 1 FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 675, NJ_S("Bus 1 FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 676, NJ_S("Bus 1 FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 677, NJ_S("Bus 1 FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 678, NJ_S("Bus 1 FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 679, NJ_S("Bus 1 FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 680, NJ_S("Bus 1 FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 681, NJ_S("Bus 1 FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 682, NJ_S("Bus 1 FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 683, NJ_S("Bus 1 FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 684, NJ_S("Bus 1 FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 685, NJ_S("Bus 1 FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 686, NJ_S("Bus 1 FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 687, NJ_S("Bus 1 FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 688, NJ_S("Bus 1 FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 689, NJ_S("Bus 1 FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 690, NJ_S("Bus 1 FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 691, NJ_S("Bus 1 FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 692, NJ_S("Bus 1 FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 693, NJ_S("Bus 1 FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 694, NJ_S("Bus 1 FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 695, NJ_S("Bus 1 FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 696, NJ_S("Bus 1 FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 697, NJ_S("Bus 1 FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 698, NJ_S("Bus 1 FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 699, NJ_S("Bus 1 FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 700, NJ_S("Bus 1 FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 701, NJ_S("Bus 1 FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 702, NJ_S("Bus 1 FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 703, NJ_S("Bus 1 FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 704, NJ_S("Bus 1 FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 705, NJ_S("Bus 1 FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 706, NJ_S("Bus 1 FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 707, NJ_S("Bus 1 FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 708, NJ_S("Bus 1 FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 709, NJ_S("Bus 1 FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 710, NJ_S("Bus 1 FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 711, NJ_S("Bus 1 FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 712, NJ_S("Bus 1 FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 713, NJ_S("Bus 1 FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 714, NJ_S("Bus 1 FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 715, NJ_S("Bus 1 FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 716, NJ_S("Bus 1 FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 717, NJ_S("Bus 1 FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 718, NJ_S("Bus 1 FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 719, NJ_S("Bus 1 FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 720, NJ_S("Bus 1 FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 721, NJ_S("Bus 1 FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 722, NJ_S("Bus 1 FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 723, NJ_S("Bus 1 FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 724, NJ_S("Bus 1 FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 725, NJ_S("Bus 1 FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 726, NJ_S("Bus 1 FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 727, NJ_S("Bus 1 FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 728, NJ_S("Bus 1 FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 729, NJ_S("Bus 1 FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 730, NJ_S("Bus 1 FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 731, NJ_S("Bus 1 FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 732, NJ_S("Bus 1 FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 733, NJ_S("Bus 1 FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 734, NJ_S("Bus 1 FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 735, NJ_S("Bus 1 FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 736, NJ_S("Bus 1 FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 737, NJ_S("Bus 1 FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 738, NJ_S("Bus 1 FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 739, NJ_S("Bus 1 FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 740, NJ_S("Bus 1 FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 741, NJ_S("Bus 1 FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 742, NJ_S("Bus 1 FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 743, NJ_S("Bus 1 FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 744, NJ_S("Bus 1 FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 745, NJ_S("Bus 1 FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 746, NJ_S("Bus 1 FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 747, NJ_S("Bus 1 FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 748, NJ_S("Bus 1 FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 749, NJ_S("Bus 1 FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 750, NJ_S("Bus 1 FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 751, NJ_S("Bus 1 FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 752, NJ_S("Bus 1 FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 753, NJ_S("Bus 1 FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 754, NJ_S("Bus 1 FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 755, NJ_S("Bus 1 FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 756, NJ_S("Bus 1 FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 757, NJ_S("Bus 1 FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 758, NJ_S("Bus 1 FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 759, NJ_S("Bus 1 FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 760, NJ_S("Bus 1 FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 761, NJ_S("Bus 2 FX 1 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 762, NJ_S("Bus 2 FX 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 763, NJ_S("Bus 2 FX 1 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 764, NJ_S("Bus 2 FX 1 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 765, NJ_S("Bus 2 FX 1 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 766, NJ_S("Bus 2 FX 1 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 767, NJ_S("Bus 2 FX 1 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 768, NJ_S("Bus 2 FX 1 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 769, NJ_S("Bus 2 FX 1 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 770, NJ_S("Bus 2 FX 1 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 771, NJ_S("Bus 2 FX 2 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 772, NJ_S("Bus 2 FX 2 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 773, NJ_S("Bus 2 FX 2 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 774, NJ_S("Bus 2 FX 2 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 775, NJ_S("Bus 2 FX 2 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 776, NJ_S("Bus 2 FX 2 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 777, NJ_S("Bus 2 FX 2 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 778, NJ_S("Bus 2 FX 2 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 779, NJ_S("Bus 2 FX 2 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 780, NJ_S("Bus 2 FX 2 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 781, NJ_S("Bus 2 FX 3 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 782, NJ_S("Bus 2 FX 3 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 783, NJ_S("Bus 2 FX 3 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 784, NJ_S("Bus 2 FX 3 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 785, NJ_S("Bus 2 FX 3 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 786, NJ_S("Bus 2 FX 3 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 787, NJ_S("Bus 2 FX 3 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 788, NJ_S("Bus 2 FX 3 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 789, NJ_S("Bus 2 FX 3 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 790, NJ_S("Bus 2 FX 3 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 791, NJ_S("Bus 2 FX 4 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 792, NJ_S("Bus 2 FX 4 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 793, NJ_S("Bus 2 FX 4 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 794, NJ_S("Bus 2 FX 4 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 795, NJ_S("Bus 2 FX 4 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 796, NJ_S("Bus 2 FX 4 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 797, NJ_S("Bus 2 FX 4 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 798, NJ_S("Bus 2 FX 4 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 799, NJ_S("Bus 2 FX 4 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 800, NJ_S("Bus 2 FX 4 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 801, NJ_S("Bus 2 FX 5 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 802, NJ_S("Bus 2 FX 5 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 803, NJ_S("Bus 2 FX 5 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 804, NJ_S("Bus 2 FX 5 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 805, NJ_S("Bus 2 FX 5 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 806, NJ_S("Bus 2 FX 5 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 807, NJ_S("Bus 2 FX 5 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 808, NJ_S("Bus 2 FX 5 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 809, NJ_S("Bus 2 FX 5 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 810, NJ_S("Bus 2 FX 5 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 811, NJ_S("Bus 2 FX 6 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 812, NJ_S("Bus 2 FX 6 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 813, NJ_S("Bus 2 FX 6 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 814, NJ_S("Bus 2 FX 6 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 815, NJ_S("Bus 2 FX 6 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 816, NJ_S("Bus 2 FX 6 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 817, NJ_S("Bus 2 FX 6 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 818, NJ_S("Bus 2 FX 6 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 819, NJ_S("Bus 2 FX 6 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 820, NJ_S("Bus 2 FX 6 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 821, NJ_S("Bus 2 FX 7 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 822, NJ_S("Bus 2 FX 7 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 823, NJ_S("Bus 2 FX 7 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 824, NJ_S("Bus 2 FX 7 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 825, NJ_S("Bus 2 FX 7 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 826, NJ_S("Bus 2 FX 7 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 827, NJ_S("Bus 2 FX 7 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 828, NJ_S("Bus 2 FX 7 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 829, NJ_S("Bus 2 FX 7 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 830, NJ_S("Bus 2 FX 7 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 831, NJ_S("Bus 2 FX 8 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 832, NJ_S("Bus 2 FX 8 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 833, NJ_S("Bus 2 FX 8 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 834, NJ_S("Bus 2 FX 8 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 835, NJ_S("Bus 2 FX 8 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 836, NJ_S("Bus 2 FX 8 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 837, NJ_S("Bus 2 FX 8 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 838, NJ_S("Bus 2 FX 8 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 839, NJ_S("Bus 2 FX 8 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 840, NJ_S("Bus 2 FX 8 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 841, NJ_S("Bus 2 FX 9 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 842, NJ_S("Bus 2 FX 9 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 843, NJ_S("Bus 2 FX 9 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 844, NJ_S("Bus 2 FX 9 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 845, NJ_S("Bus 2 FX 9 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 846, NJ_S("Bus 2 FX 9 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 847, NJ_S("Bus 2 FX 9 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 848, NJ_S("Bus 2 FX 9 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 849, NJ_S("Bus 2 FX 9 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 850, NJ_S("Bus 2 FX 9 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 851, NJ_S("Bus 2 FX 10 Type"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("None"), NJ_S("Distortion"), NJ_S("Bit Crush"), NJ_S("Delay"), NJ_S("Chorus"), NJ_S("Flanger"), NJ_S("Phaser"), NJ_S("Tremolo"), NJ_S("Reverb"), NJ_S("Filter"), NJ_S("EQ"), NJ_S("Compressor"), NJ_S("Convolution"), NJ_S("Parametric EQ"), NJ_S("Saturator"), NJ_S("Waveshaper") }, 1, NJ_S("Type"), {  } },
-        { 852, NJ_S("Bus 2 FX 10 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 853, NJ_S("Bus 2 FX 10 Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 854, NJ_S("Bus 2 FX 10 Mode"), 0.0, 29.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, 1, NJ_S("Mode"), {  } },
-        { 855, NJ_S("Bus 2 FX 10 P1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P1"), {  } },
-        { 856, NJ_S("Bus 2 FX 10 P2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P2"), {  } },
-        { 857, NJ_S("Bus 2 FX 10 P3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P3"), {  } },
-        { 858, NJ_S("Bus 2 FX 10 P4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P4"), {  } },
-        { 859, NJ_S("Bus 2 FX 10 P5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P5"), {  } },
-        { 860, NJ_S("Bus 2 FX 10 P6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("P6"), {  } },
-        { 861, NJ_S("Bus 2 FX Order 1"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 862, NJ_S("Bus 2 FX Order 2"), 0.0, 9.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 863, NJ_S("Bus 2 FX Order 3"), 0.0, 9.0, 2.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 864, NJ_S("Bus 2 FX Order 4"), 0.0, 9.0, 3.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 865, NJ_S("Bus 2 FX Order 5"), 0.0, 9.0, 4.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 866, NJ_S("Bus 2 FX Order 6"), 0.0, 9.0, 5.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 867, NJ_S("Bus 2 FX Order 7"), 0.0, 9.0, 6.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 868, NJ_S("Bus 2 FX Order 8"), 0.0, 9.0, 7.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 869, NJ_S("Bus 2 FX Order 9"), 0.0, 9.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 870, NJ_S("Bus 2 FX Order 10"), 0.0, 9.0, 9.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Order"), {  } },
-        { 940, NJ_S("Main FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 941, NJ_S("Main FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 942, NJ_S("Main FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 943, NJ_S("Main FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 944, NJ_S("Main FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 945, NJ_S("Main FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 946, NJ_S("Main FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 947, NJ_S("Main FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 948, NJ_S("Main FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 949, NJ_S("Main FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 950, NJ_S("Bus 1 FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 951, NJ_S("Bus 1 FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 952, NJ_S("Bus 1 FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 953, NJ_S("Bus 1 FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 954, NJ_S("Bus 1 FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 955, NJ_S("Bus 1 FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 956, NJ_S("Bus 1 FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 957, NJ_S("Bus 1 FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 958, NJ_S("Bus 1 FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 959, NJ_S("Bus 1 FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 960, NJ_S("Bus 2 FX 1 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 961, NJ_S("Bus 2 FX 2 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 962, NJ_S("Bus 2 FX 3 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 963, NJ_S("Bus 2 FX 4 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 964, NJ_S("Bus 2 FX 5 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 965, NJ_S("Bus 2 FX 6 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 966, NJ_S("Bus 2 FX 7 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 967, NJ_S("Bus 2 FX 8 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 968, NJ_S("Bus 2 FX 9 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 969, NJ_S("Bus 2 FX 10 Sync"), 0.0, 18.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Sync"), {  } },
-        { 880, NJ_S("Bus 1 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 1"), {  } },
-        { 881, NJ_S("Bus 2 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 2"), {  } },
-        { 1000, NJ_S("OSC 1 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1001, NJ_S("OSC 1 Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1002, NJ_S("OSC 1 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1003, NJ_S("OSC 1 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1004, NJ_S("OSC 1 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1005, NJ_S("OSC 1 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1006, NJ_S("OSC 1 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1007, NJ_S("OSC 1 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1008, NJ_S("OSC 1 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1009, NJ_S("OSC 1 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1010, NJ_S("OSC 1 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1011, NJ_S("OSC 1 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1012, NJ_S("OSC 1 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1013, NJ_S("OSC 1 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1014, NJ_S("OSC 1 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1015, NJ_S("OSC 1 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1016, NJ_S("OSC 1 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1017, NJ_S("OSC 1 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1028, NJ_S("OSC 1 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1029, NJ_S("OSC 1 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1018, NJ_S("OSC 1 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1019, NJ_S("OSC 1 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1020, NJ_S("OSC 1 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1021, NJ_S("OSC 1 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1022, NJ_S("OSC 1 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1023, NJ_S("OSC 1 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1024, NJ_S("OSC 1 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1025, NJ_S("OSC 1 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1026, NJ_S("OSC 1 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1027, NJ_S("OSC 1 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1030, NJ_S("OSC 1 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1031, NJ_S("OSC 1 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1032, NJ_S("OSC 1 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1033, NJ_S("OSC 1 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1034, NJ_S("OSC 1 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1035, NJ_S("OSC 1 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1036, NJ_S("OSC 1 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1037, NJ_S("OSC 1 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1038, NJ_S("OSC 1 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1039, NJ_S("OSC 1 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1040, NJ_S("OSC 1 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1041, NJ_S("OSC 1 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1042, NJ_S("OSC 1 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1043, NJ_S("OSC 1 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1044, NJ_S("OSC 1 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1048, NJ_S("OSC 1 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1046, NJ_S("OSC 1 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1047, NJ_S("OSC 1 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1049, NJ_S("OSC 1 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1050, NJ_S("OSC 1 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1051, NJ_S("OSC 1 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1052, NJ_S("OSC 1 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1053, NJ_S("OSC 1 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1054, NJ_S("OSC 1 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1055, NJ_S("OSC 1 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1045, NJ_S("OSC 1 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1056, NJ_S("OSC 1 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1057, NJ_S("OSC 1 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1058, NJ_S("OSC 1 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1059, NJ_S("OSC 1 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1060, NJ_S("OSC 1 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1061, NJ_S("OSC 1 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1062, NJ_S("OSC 1 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1063, NJ_S("OSC 1 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1064, NJ_S("OSC 2 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1065, NJ_S("OSC 2 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1066, NJ_S("OSC 2 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1067, NJ_S("OSC 2 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1068, NJ_S("OSC 2 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1069, NJ_S("OSC 2 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1070, NJ_S("OSC 2 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1071, NJ_S("OSC 2 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1072, NJ_S("OSC 2 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1073, NJ_S("OSC 2 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1074, NJ_S("OSC 2 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1075, NJ_S("OSC 2 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1076, NJ_S("OSC 2 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1077, NJ_S("OSC 2 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1078, NJ_S("OSC 2 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1079, NJ_S("OSC 2 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1080, NJ_S("OSC 2 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1081, NJ_S("OSC 2 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1092, NJ_S("OSC 2 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1093, NJ_S("OSC 2 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1082, NJ_S("OSC 2 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1083, NJ_S("OSC 2 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1084, NJ_S("OSC 2 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1085, NJ_S("OSC 2 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1086, NJ_S("OSC 2 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1087, NJ_S("OSC 2 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1088, NJ_S("OSC 2 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1089, NJ_S("OSC 2 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1090, NJ_S("OSC 2 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1091, NJ_S("OSC 2 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1094, NJ_S("OSC 2 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1095, NJ_S("OSC 2 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1096, NJ_S("OSC 2 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1097, NJ_S("OSC 2 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1098, NJ_S("OSC 2 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1099, NJ_S("OSC 2 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1100, NJ_S("OSC 2 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1101, NJ_S("OSC 2 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1102, NJ_S("OSC 2 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1103, NJ_S("OSC 2 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1104, NJ_S("OSC 2 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1105, NJ_S("OSC 2 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1106, NJ_S("OSC 2 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1107, NJ_S("OSC 2 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1108, NJ_S("OSC 2 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1112, NJ_S("OSC 2 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1110, NJ_S("OSC 2 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1111, NJ_S("OSC 2 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1113, NJ_S("OSC 2 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1114, NJ_S("OSC 2 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1115, NJ_S("OSC 2 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1116, NJ_S("OSC 2 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1117, NJ_S("OSC 2 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1118, NJ_S("OSC 2 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1119, NJ_S("OSC 2 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1109, NJ_S("OSC 2 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1120, NJ_S("OSC 2 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1121, NJ_S("OSC 2 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1122, NJ_S("OSC 2 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1123, NJ_S("OSC 2 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1124, NJ_S("OSC 2 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1125, NJ_S("OSC 2 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1126, NJ_S("OSC 2 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1127, NJ_S("OSC 2 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1128, NJ_S("OSC 3 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1129, NJ_S("OSC 3 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1130, NJ_S("OSC 3 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1131, NJ_S("OSC 3 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1132, NJ_S("OSC 3 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1133, NJ_S("OSC 3 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1134, NJ_S("OSC 3 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1135, NJ_S("OSC 3 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1136, NJ_S("OSC 3 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1137, NJ_S("OSC 3 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1138, NJ_S("OSC 3 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1139, NJ_S("OSC 3 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1140, NJ_S("OSC 3 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1141, NJ_S("OSC 3 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1142, NJ_S("OSC 3 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1143, NJ_S("OSC 3 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1144, NJ_S("OSC 3 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1145, NJ_S("OSC 3 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1156, NJ_S("OSC 3 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1157, NJ_S("OSC 3 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1146, NJ_S("OSC 3 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1147, NJ_S("OSC 3 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1148, NJ_S("OSC 3 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1149, NJ_S("OSC 3 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1150, NJ_S("OSC 3 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1151, NJ_S("OSC 3 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1152, NJ_S("OSC 3 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1153, NJ_S("OSC 3 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1154, NJ_S("OSC 3 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1155, NJ_S("OSC 3 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1158, NJ_S("OSC 3 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1159, NJ_S("OSC 3 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1160, NJ_S("OSC 3 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1161, NJ_S("OSC 3 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1162, NJ_S("OSC 3 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1163, NJ_S("OSC 3 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1164, NJ_S("OSC 3 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1165, NJ_S("OSC 3 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1166, NJ_S("OSC 3 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1167, NJ_S("OSC 3 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1168, NJ_S("OSC 3 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1169, NJ_S("OSC 3 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1170, NJ_S("OSC 3 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1171, NJ_S("OSC 3 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1172, NJ_S("OSC 3 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1176, NJ_S("OSC 3 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1174, NJ_S("OSC 3 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1175, NJ_S("OSC 3 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1177, NJ_S("OSC 3 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1178, NJ_S("OSC 3 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1179, NJ_S("OSC 3 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1180, NJ_S("OSC 3 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1181, NJ_S("OSC 3 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1182, NJ_S("OSC 3 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1183, NJ_S("OSC 3 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1173, NJ_S("OSC 3 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1184, NJ_S("OSC 3 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1185, NJ_S("OSC 3 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1186, NJ_S("OSC 3 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1187, NJ_S("OSC 3 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1188, NJ_S("OSC 3 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1189, NJ_S("OSC 3 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1190, NJ_S("OSC 3 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1191, NJ_S("OSC 3 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1192, NJ_S("OSC 4 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1193, NJ_S("OSC 4 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1194, NJ_S("OSC 4 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1195, NJ_S("OSC 4 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1196, NJ_S("OSC 4 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1197, NJ_S("OSC 4 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1198, NJ_S("OSC 4 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1199, NJ_S("OSC 4 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1200, NJ_S("OSC 4 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1201, NJ_S("OSC 4 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1202, NJ_S("OSC 4 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1203, NJ_S("OSC 4 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1204, NJ_S("OSC 4 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1205, NJ_S("OSC 4 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1206, NJ_S("OSC 4 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1207, NJ_S("OSC 4 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1208, NJ_S("OSC 4 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1209, NJ_S("OSC 4 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1220, NJ_S("OSC 4 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1221, NJ_S("OSC 4 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1210, NJ_S("OSC 4 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1211, NJ_S("OSC 4 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1212, NJ_S("OSC 4 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1213, NJ_S("OSC 4 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1214, NJ_S("OSC 4 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1215, NJ_S("OSC 4 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1216, NJ_S("OSC 4 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1217, NJ_S("OSC 4 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1218, NJ_S("OSC 4 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1219, NJ_S("OSC 4 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1222, NJ_S("OSC 4 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1223, NJ_S("OSC 4 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1224, NJ_S("OSC 4 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1225, NJ_S("OSC 4 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1226, NJ_S("OSC 4 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1227, NJ_S("OSC 4 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1228, NJ_S("OSC 4 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1229, NJ_S("OSC 4 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1230, NJ_S("OSC 4 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1231, NJ_S("OSC 4 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1232, NJ_S("OSC 4 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1233, NJ_S("OSC 4 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1234, NJ_S("OSC 4 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1235, NJ_S("OSC 4 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1236, NJ_S("OSC 4 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1240, NJ_S("OSC 4 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1238, NJ_S("OSC 4 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1239, NJ_S("OSC 4 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1241, NJ_S("OSC 4 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1242, NJ_S("OSC 4 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1243, NJ_S("OSC 4 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1244, NJ_S("OSC 4 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1245, NJ_S("OSC 4 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1246, NJ_S("OSC 4 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1247, NJ_S("OSC 4 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1237, NJ_S("OSC 4 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1248, NJ_S("OSC 4 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1249, NJ_S("OSC 4 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1250, NJ_S("OSC 4 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1251, NJ_S("OSC 4 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1252, NJ_S("OSC 4 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1253, NJ_S("OSC 4 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1254, NJ_S("OSC 4 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1255, NJ_S("OSC 4 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1256, NJ_S("OSC 5 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1257, NJ_S("OSC 5 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1258, NJ_S("OSC 5 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1259, NJ_S("OSC 5 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1260, NJ_S("OSC 5 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1261, NJ_S("OSC 5 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1262, NJ_S("OSC 5 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1263, NJ_S("OSC 5 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1264, NJ_S("OSC 5 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1265, NJ_S("OSC 5 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1266, NJ_S("OSC 5 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1267, NJ_S("OSC 5 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1268, NJ_S("OSC 5 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1269, NJ_S("OSC 5 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1270, NJ_S("OSC 5 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1271, NJ_S("OSC 5 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1272, NJ_S("OSC 5 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1273, NJ_S("OSC 5 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1284, NJ_S("OSC 5 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1285, NJ_S("OSC 5 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1274, NJ_S("OSC 5 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1275, NJ_S("OSC 5 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1276, NJ_S("OSC 5 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1277, NJ_S("OSC 5 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1278, NJ_S("OSC 5 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1279, NJ_S("OSC 5 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1280, NJ_S("OSC 5 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1281, NJ_S("OSC 5 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1282, NJ_S("OSC 5 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1283, NJ_S("OSC 5 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1286, NJ_S("OSC 5 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1287, NJ_S("OSC 5 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1288, NJ_S("OSC 5 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1289, NJ_S("OSC 5 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1290, NJ_S("OSC 5 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1291, NJ_S("OSC 5 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1292, NJ_S("OSC 5 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1293, NJ_S("OSC 5 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1294, NJ_S("OSC 5 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1295, NJ_S("OSC 5 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1296, NJ_S("OSC 5 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1297, NJ_S("OSC 5 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1298, NJ_S("OSC 5 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1299, NJ_S("OSC 5 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1300, NJ_S("OSC 5 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1304, NJ_S("OSC 5 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1302, NJ_S("OSC 5 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1303, NJ_S("OSC 5 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1305, NJ_S("OSC 5 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1306, NJ_S("OSC 5 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1307, NJ_S("OSC 5 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1308, NJ_S("OSC 5 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1309, NJ_S("OSC 5 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1310, NJ_S("OSC 5 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1311, NJ_S("OSC 5 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1301, NJ_S("OSC 5 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1312, NJ_S("OSC 5 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1313, NJ_S("OSC 5 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1314, NJ_S("OSC 5 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1315, NJ_S("OSC 5 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1316, NJ_S("OSC 5 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1317, NJ_S("OSC 5 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1318, NJ_S("OSC 5 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1319, NJ_S("OSC 5 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1320, NJ_S("OSC 6 Source"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") }, 1, NJ_S("Source"), {  } },
-        { 1321, NJ_S("OSC 6 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
-        { 1322, NJ_S("OSC 6 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
-        { 1323, NJ_S("OSC 6 Output"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") }, 1, NJ_S("Output"), {  } },
-        { 1324, NJ_S("OSC 6 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
-        { 1325, NJ_S("OSC 6 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
-        { 1326, NJ_S("OSC 6 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        { 1327, NJ_S("OSC 6 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
-        { 1328, NJ_S("OSC 6 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 1329, NJ_S("OSC 6 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
-        { 1330, NJ_S("OSC 6 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1331, NJ_S("OSC 6 WT Frame Size"), 0.0, 4.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("256"), NJ_S("512"), NJ_S("1024"), NJ_S("2048"), NJ_S("4096") }, 1, NJ_S("Frame Size"), {  } },
-        { 1332, NJ_S("OSC 6 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
-        { 1333, NJ_S("OSC 6 Unison Voices"), 1.0, 7.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
-        { 1334, NJ_S("OSC 6 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        { 1335, NJ_S("OSC 6 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
-        { 1336, NJ_S("OSC 6 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1337, NJ_S("OSC 6 Unison Style"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") }, 1, NJ_S("Detune Curve"), {  } },
-        { 1348, NJ_S("OSC 6 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1349, NJ_S("OSC 6 Unison Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase Spread"), {  } },
-        { 1338, NJ_S("OSC 6 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
-        { 1339, NJ_S("OSC 6 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
-        { 1340, NJ_S("OSC 6 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        { 1341, NJ_S("OSC 6 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
-        { 1342, NJ_S("OSC 6 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
-        { 1343, NJ_S("OSC 6 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
-        { 1344, NJ_S("OSC 6 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
-        { 1345, NJ_S("OSC 6 Terrain Scale"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scale"), {  } },
-        { 1346, NJ_S("OSC 6 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1347, NJ_S("OSC 6 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
-        { 1350, NJ_S("OSC 6 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        { 1351, NJ_S("OSC 6 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
-        { 1352, NJ_S("OSC 6 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
-        { 1353, NJ_S("OSC 6 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
-        { 1354, NJ_S("OSC 6 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1355, NJ_S("OSC 6 Filter Key Track"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Track"), {  } },
-        { 1356, NJ_S("OSC 6 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
-        { 1357, NJ_S("OSC 6 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
-        { 1358, NJ_S("OSC 6 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        { 1359, NJ_S("OSC 6 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1360, NJ_S("OSC 6 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
-        { 1361, NJ_S("OSC 6 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
-        { 1362, NJ_S("OSC 6 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
-        { 1363, NJ_S("OSC 6 Distortion Drive"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1364, NJ_S("OSC 6 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1368, NJ_S("OSC 6 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
-        { 1366, NJ_S("OSC 6 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1367, NJ_S("OSC 6 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        { 1369, NJ_S("OSC 6 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1370, NJ_S("OSC 6 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
-        { 1371, NJ_S("OSC 6 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
-        { 1372, NJ_S("OSC 6 Wavefilter Contrast"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
-        { 1373, NJ_S("OSC 6 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
-        { 1374, NJ_S("OSC 6 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
-        { 1375, NJ_S("OSC 6 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        { 1365, NJ_S("OSC 6 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
-        { 1376, NJ_S("OSC 6 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
-        { 1377, NJ_S("OSC 6 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1378, NJ_S("OSC 6 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1379, NJ_S("OSC 6 Resonator Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1380, NJ_S("OSC 6 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
-        { 1381, NJ_S("OSC 6 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1382, NJ_S("OSC 6 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1383, NJ_S("OSC 6 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
-        { 1400, NJ_S("FM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
-        { 1440, NJ_S("PM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
-        { 1480, NJ_S("PD 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
-        { 1520, NJ_S("RM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
-        { 1560, NJ_S("AM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
-        { 1401, NJ_S("FM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
-        { 1441, NJ_S("PM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
-        { 1481, NJ_S("PD 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
-        { 1521, NJ_S("RM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
-        { 1561, NJ_S("AM 1 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→2"), {  } },
-        { 1402, NJ_S("FM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
-        { 1442, NJ_S("PM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
-        { 1482, NJ_S("PD 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
-        { 1522, NJ_S("RM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
-        { 1562, NJ_S("AM 1 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→3"), {  } },
-        { 1403, NJ_S("FM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
-        { 1443, NJ_S("PM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
-        { 1483, NJ_S("PD 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
-        { 1523, NJ_S("RM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
-        { 1563, NJ_S("AM 1 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→4"), {  } },
-        { 1404, NJ_S("FM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
-        { 1444, NJ_S("PM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
-        { 1484, NJ_S("PD 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
-        { 1524, NJ_S("RM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
-        { 1564, NJ_S("AM 1 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→5"), {  } },
-        { 1405, NJ_S("FM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
-        { 1445, NJ_S("PM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
-        { 1485, NJ_S("PD 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
-        { 1525, NJ_S("RM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
-        { 1565, NJ_S("AM 1 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→6"), {  } },
-        { 1406, NJ_S("FM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
-        { 1446, NJ_S("PM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
-        { 1486, NJ_S("PD 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
-        { 1526, NJ_S("RM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
-        { 1566, NJ_S("AM 2 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→1"), {  } },
-        { 1407, NJ_S("FM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        { 1447, NJ_S("PM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        { 1487, NJ_S("PD 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        { 1527, NJ_S("RM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        { 1567, NJ_S("AM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        { 1408, NJ_S("FM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
-        { 1448, NJ_S("PM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
-        { 1488, NJ_S("PD 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
-        { 1528, NJ_S("RM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
-        { 1568, NJ_S("AM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
-        { 1409, NJ_S("FM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
-        { 1449, NJ_S("PM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
-        { 1489, NJ_S("PD 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
-        { 1529, NJ_S("RM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
-        { 1569, NJ_S("AM 2 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→4"), {  } },
-        { 1410, NJ_S("FM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
-        { 1450, NJ_S("PM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
-        { 1490, NJ_S("PD 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
-        { 1530, NJ_S("RM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
-        { 1570, NJ_S("AM 2 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→5"), {  } },
-        { 1411, NJ_S("FM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
-        { 1451, NJ_S("PM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
-        { 1491, NJ_S("PD 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
-        { 1531, NJ_S("RM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
-        { 1571, NJ_S("AM 2 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→6"), {  } },
-        { 1412, NJ_S("FM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
-        { 1452, NJ_S("PM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
-        { 1492, NJ_S("PD 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
-        { 1532, NJ_S("RM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
-        { 1572, NJ_S("AM 3 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→1"), {  } },
-        { 1413, NJ_S("FM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
-        { 1453, NJ_S("PM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
-        { 1493, NJ_S("PD 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
-        { 1533, NJ_S("RM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
-        { 1573, NJ_S("AM 3 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→2"), {  } },
-        { 1414, NJ_S("FM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
-        { 1454, NJ_S("PM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
-        { 1494, NJ_S("PD 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
-        { 1534, NJ_S("RM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
-        { 1574, NJ_S("AM 3 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→3"), {  } },
-        { 1415, NJ_S("FM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        { 1455, NJ_S("PM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        { 1495, NJ_S("PD 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        { 1535, NJ_S("RM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        { 1575, NJ_S("AM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        { 1416, NJ_S("FM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
-        { 1456, NJ_S("PM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
-        { 1496, NJ_S("PD 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
-        { 1536, NJ_S("RM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
-        { 1576, NJ_S("AM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
-        { 1417, NJ_S("FM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
-        { 1457, NJ_S("PM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
-        { 1497, NJ_S("PD 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
-        { 1537, NJ_S("RM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
-        { 1577, NJ_S("AM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
-        { 1418, NJ_S("FM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        { 1458, NJ_S("PM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        { 1498, NJ_S("PD 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        { 1538, NJ_S("RM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        { 1578, NJ_S("AM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        { 1419, NJ_S("FM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
-        { 1459, NJ_S("PM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
-        { 1499, NJ_S("PD 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
-        { 1539, NJ_S("RM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
-        { 1579, NJ_S("AM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
-        { 1420, NJ_S("FM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
-        { 1460, NJ_S("PM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
-        { 1500, NJ_S("PD 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
-        { 1540, NJ_S("RM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
-        { 1580, NJ_S("AM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
-        { 1421, NJ_S("FM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
-        { 1461, NJ_S("PM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
-        { 1501, NJ_S("PD 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
-        { 1541, NJ_S("RM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
-        { 1581, NJ_S("AM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
-        { 1422, NJ_S("FM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
-        { 1462, NJ_S("PM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
-        { 1502, NJ_S("PD 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
-        { 1542, NJ_S("RM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
-        { 1582, NJ_S("AM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
-        { 1423, NJ_S("FM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        { 1463, NJ_S("PM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        { 1503, NJ_S("PD 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        { 1543, NJ_S("RM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        { 1583, NJ_S("AM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        { 1424, NJ_S("FM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
-        { 1464, NJ_S("PM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
-        { 1504, NJ_S("PD 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
-        { 1544, NJ_S("RM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
-        { 1584, NJ_S("AM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
-        { 1425, NJ_S("FM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
-        { 1465, NJ_S("PM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
-        { 1505, NJ_S("PD 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
-        { 1545, NJ_S("RM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
-        { 1585, NJ_S("AM 5 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→2"), {  } },
-        { 1426, NJ_S("FM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
-        { 1466, NJ_S("PM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
-        { 1506, NJ_S("PD 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
-        { 1546, NJ_S("RM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
-        { 1586, NJ_S("AM 5 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→3"), {  } },
-        { 1427, NJ_S("FM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
-        { 1467, NJ_S("PM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
-        { 1507, NJ_S("PD 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
-        { 1547, NJ_S("RM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
-        { 1587, NJ_S("AM 5 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→4"), {  } },
-        { 1428, NJ_S("FM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
-        { 1468, NJ_S("PM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
-        { 1508, NJ_S("PD 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
-        { 1548, NJ_S("RM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
-        { 1588, NJ_S("AM 5 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→5"), {  } },
-        { 1429, NJ_S("FM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
-        { 1469, NJ_S("PM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
-        { 1509, NJ_S("PD 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
-        { 1549, NJ_S("RM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
-        { 1589, NJ_S("AM 5 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→6"), {  } },
-        { 1430, NJ_S("FM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
-        { 1470, NJ_S("PM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
-        { 1510, NJ_S("PD 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
-        { 1550, NJ_S("RM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
-        { 1590, NJ_S("AM 6 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→1"), {  } },
-        { 1431, NJ_S("FM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        { 1471, NJ_S("PM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        { 1511, NJ_S("PD 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        { 1551, NJ_S("RM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        { 1591, NJ_S("AM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        { 1432, NJ_S("FM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
-        { 1472, NJ_S("PM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
-        { 1512, NJ_S("PD 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
-        { 1552, NJ_S("RM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
-        { 1592, NJ_S("AM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
-        { 1433, NJ_S("FM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
-        { 1473, NJ_S("PM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
-        { 1513, NJ_S("PD 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
-        { 1553, NJ_S("RM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
-        { 1593, NJ_S("AM 6 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→4"), {  } },
-        { 1434, NJ_S("FM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
-        { 1474, NJ_S("PM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
-        { 1514, NJ_S("PD 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
-        { 1554, NJ_S("RM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
-        { 1594, NJ_S("AM 6 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→5"), {  } },
-        { 1435, NJ_S("FM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
-        { 1475, NJ_S("PM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
-        { 1515, NJ_S("PD 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
-        { 1555, NJ_S("RM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
-        { 1595, NJ_S("AM 6 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→6"), {  } },
-        { 1700, NJ_S("OSC 1 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1701, NJ_S("OSC 1 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1702, NJ_S("OSC 1 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1703, NJ_S("OSC 1 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1704, NJ_S("OSC 1 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1705, NJ_S("OSC 1 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1706, NJ_S("OSC 1 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1707, NJ_S("OSC 1 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1708, NJ_S("OSC 1 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1709, NJ_S("OSC 1 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1710, NJ_S("OSC 1 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1711, NJ_S("OSC 1 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1712, NJ_S("OSC 1 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1713, NJ_S("OSC 1 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1714, NJ_S("OSC 1 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1715, NJ_S("OSC 1 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1732, NJ_S("OSC 2 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1733, NJ_S("OSC 2 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1734, NJ_S("OSC 2 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1735, NJ_S("OSC 2 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1736, NJ_S("OSC 2 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1737, NJ_S("OSC 2 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1738, NJ_S("OSC 2 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1739, NJ_S("OSC 2 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1740, NJ_S("OSC 2 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1741, NJ_S("OSC 2 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1742, NJ_S("OSC 2 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1743, NJ_S("OSC 2 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1744, NJ_S("OSC 2 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1745, NJ_S("OSC 2 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1746, NJ_S("OSC 2 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1747, NJ_S("OSC 2 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1764, NJ_S("OSC 3 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1765, NJ_S("OSC 3 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1766, NJ_S("OSC 3 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1767, NJ_S("OSC 3 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1768, NJ_S("OSC 3 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1769, NJ_S("OSC 3 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1770, NJ_S("OSC 3 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1771, NJ_S("OSC 3 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1772, NJ_S("OSC 3 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1773, NJ_S("OSC 3 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1774, NJ_S("OSC 3 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1775, NJ_S("OSC 3 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1776, NJ_S("OSC 3 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1777, NJ_S("OSC 3 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1778, NJ_S("OSC 3 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1779, NJ_S("OSC 3 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1796, NJ_S("OSC 4 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1797, NJ_S("OSC 4 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1798, NJ_S("OSC 4 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1799, NJ_S("OSC 4 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1800, NJ_S("OSC 4 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1801, NJ_S("OSC 4 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1802, NJ_S("OSC 4 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1803, NJ_S("OSC 4 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1804, NJ_S("OSC 4 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1805, NJ_S("OSC 4 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1806, NJ_S("OSC 4 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1807, NJ_S("OSC 4 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1808, NJ_S("OSC 4 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1809, NJ_S("OSC 4 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1810, NJ_S("OSC 4 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1811, NJ_S("OSC 4 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1828, NJ_S("OSC 5 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1829, NJ_S("OSC 5 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1830, NJ_S("OSC 5 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1831, NJ_S("OSC 5 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1832, NJ_S("OSC 5 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1833, NJ_S("OSC 5 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1834, NJ_S("OSC 5 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1835, NJ_S("OSC 5 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1836, NJ_S("OSC 5 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1837, NJ_S("OSC 5 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1838, NJ_S("OSC 5 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1839, NJ_S("OSC 5 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1840, NJ_S("OSC 5 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1841, NJ_S("OSC 5 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1842, NJ_S("OSC 5 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1843, NJ_S("OSC 5 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1860, NJ_S("OSC 6 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1861, NJ_S("OSC 6 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
-        { 1862, NJ_S("OSC 6 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
-        { 1863, NJ_S("OSC 6 Physical A Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1864, NJ_S("OSC 6 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1865, NJ_S("OSC 6 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1866, NJ_S("OSC 6 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1867, NJ_S("OSC 6 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1868, NJ_S("OSC 6 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
-        { 1869, NJ_S("OSC 6 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1870, NJ_S("OSC 6 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
-        { 1871, NJ_S("OSC 6 Physical B Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        { 1872, NJ_S("OSC 6 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
-        { 1873, NJ_S("OSC 6 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1874, NJ_S("OSC 6 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        { 1875, NJ_S("OSC 6 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
-        { 1716, NJ_S("OSC 1 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1717, NJ_S("OSC 1 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1718, NJ_S("OSC 1 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1719, NJ_S("OSC 1 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1720, NJ_S("OSC 1 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1721, NJ_S("OSC 1 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1722, NJ_S("OSC 1 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1723, NJ_S("OSC 1 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1724, NJ_S("OSC 1 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1725, NJ_S("OSC 1 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1748, NJ_S("OSC 2 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1749, NJ_S("OSC 2 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1750, NJ_S("OSC 2 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1751, NJ_S("OSC 2 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1752, NJ_S("OSC 2 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1753, NJ_S("OSC 2 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1754, NJ_S("OSC 2 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1755, NJ_S("OSC 2 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1756, NJ_S("OSC 2 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1757, NJ_S("OSC 2 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1780, NJ_S("OSC 3 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1781, NJ_S("OSC 3 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1782, NJ_S("OSC 3 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1783, NJ_S("OSC 3 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1784, NJ_S("OSC 3 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1785, NJ_S("OSC 3 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1786, NJ_S("OSC 3 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1787, NJ_S("OSC 3 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1788, NJ_S("OSC 3 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1789, NJ_S("OSC 3 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1812, NJ_S("OSC 4 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1813, NJ_S("OSC 4 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1814, NJ_S("OSC 4 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1815, NJ_S("OSC 4 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1816, NJ_S("OSC 4 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1817, NJ_S("OSC 4 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1818, NJ_S("OSC 4 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1819, NJ_S("OSC 4 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1820, NJ_S("OSC 4 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1821, NJ_S("OSC 4 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1844, NJ_S("OSC 5 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1845, NJ_S("OSC 5 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1846, NJ_S("OSC 5 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1847, NJ_S("OSC 5 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1848, NJ_S("OSC 5 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1849, NJ_S("OSC 5 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1850, NJ_S("OSC 5 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1851, NJ_S("OSC 5 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1852, NJ_S("OSC 5 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1853, NJ_S("OSC 5 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1876, NJ_S("OSC 6 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
-        { 1877, NJ_S("OSC 6 Juno Pulse Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse"), {  } },
-        { 1878, NJ_S("OSC 6 Juno Pulse Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        { 1879, NJ_S("OSC 6 Juno PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
-        { 1880, NJ_S("OSC 6 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
-        { 1881, NJ_S("OSC 6 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1882, NJ_S("OSC 6 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1883, NJ_S("OSC 6 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
-        { 1884, NJ_S("OSC 6 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
-        { 1885, NJ_S("OSC 6 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1726, NJ_S("OSC 1 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1727, NJ_S("OSC 1 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1728, NJ_S("OSC 1 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1729, NJ_S("OSC 1 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1730, NJ_S("OSC 1 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1758, NJ_S("OSC 2 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1759, NJ_S("OSC 2 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1760, NJ_S("OSC 2 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1761, NJ_S("OSC 2 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1762, NJ_S("OSC 2 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1790, NJ_S("OSC 3 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1791, NJ_S("OSC 3 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1792, NJ_S("OSC 3 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1793, NJ_S("OSC 3 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1794, NJ_S("OSC 3 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1822, NJ_S("OSC 4 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1823, NJ_S("OSC 4 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1824, NJ_S("OSC 4 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1825, NJ_S("OSC 4 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1826, NJ_S("OSC 4 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1854, NJ_S("OSC 5 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1855, NJ_S("OSC 5 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1856, NJ_S("OSC 5 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1857, NJ_S("OSC 5 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1858, NJ_S("OSC 5 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1886, NJ_S("OSC 6 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
-        { 1887, NJ_S("OSC 6 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        { 1888, NJ_S("OSC 6 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
-        { 1889, NJ_S("OSC 6 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
-        { 1890, NJ_S("OSC 6 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
-        { 1900, NJ_S("OSC 1 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1901, NJ_S("OSC 1 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1902, NJ_S("OSC 1 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1903, NJ_S("OSC 1 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1904, NJ_S("OSC 1 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1905, NJ_S("OSC 1 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1906, NJ_S("OSC 1 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1907, NJ_S("OSC 1 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1908, NJ_S("OSC 1 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1909, NJ_S("OSC 1 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1910, NJ_S("OSC 1 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1911, NJ_S("OSC 1 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1912, NJ_S("OSC 1 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1913, NJ_S("OSC 1 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1914, NJ_S("OSC 1 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1915, NJ_S("OSC 1 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 1916, NJ_S("OSC 2 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1917, NJ_S("OSC 2 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1918, NJ_S("OSC 2 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1919, NJ_S("OSC 2 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1920, NJ_S("OSC 2 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1921, NJ_S("OSC 2 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1922, NJ_S("OSC 2 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1923, NJ_S("OSC 2 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1924, NJ_S("OSC 2 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1925, NJ_S("OSC 2 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1926, NJ_S("OSC 2 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1927, NJ_S("OSC 2 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1928, NJ_S("OSC 2 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1929, NJ_S("OSC 2 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1930, NJ_S("OSC 2 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1931, NJ_S("OSC 2 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 1932, NJ_S("OSC 3 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1933, NJ_S("OSC 3 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1934, NJ_S("OSC 3 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1935, NJ_S("OSC 3 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1936, NJ_S("OSC 3 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1937, NJ_S("OSC 3 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1938, NJ_S("OSC 3 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1939, NJ_S("OSC 3 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1940, NJ_S("OSC 3 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1941, NJ_S("OSC 3 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1942, NJ_S("OSC 3 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1943, NJ_S("OSC 3 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1944, NJ_S("OSC 3 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1945, NJ_S("OSC 3 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1946, NJ_S("OSC 3 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1947, NJ_S("OSC 3 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 1948, NJ_S("OSC 4 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1949, NJ_S("OSC 4 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1950, NJ_S("OSC 4 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1951, NJ_S("OSC 4 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1952, NJ_S("OSC 4 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1953, NJ_S("OSC 4 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1954, NJ_S("OSC 4 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1955, NJ_S("OSC 4 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1956, NJ_S("OSC 4 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1957, NJ_S("OSC 4 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1958, NJ_S("OSC 4 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1959, NJ_S("OSC 4 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1960, NJ_S("OSC 4 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1961, NJ_S("OSC 4 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1962, NJ_S("OSC 4 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1963, NJ_S("OSC 4 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 1964, NJ_S("OSC 5 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1965, NJ_S("OSC 5 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1966, NJ_S("OSC 5 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1967, NJ_S("OSC 5 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1968, NJ_S("OSC 5 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1969, NJ_S("OSC 5 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1970, NJ_S("OSC 5 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1971, NJ_S("OSC 5 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1972, NJ_S("OSC 5 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1973, NJ_S("OSC 5 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1974, NJ_S("OSC 5 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1975, NJ_S("OSC 5 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1976, NJ_S("OSC 5 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1977, NJ_S("OSC 5 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1978, NJ_S("OSC 5 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1979, NJ_S("OSC 5 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 1980, NJ_S("OSC 6 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
-        { 1981, NJ_S("OSC 6 Kick Pitch Sweep"), 0.0, 6.0, 2.5, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Sweep"), {  } },
-        { 1982, NJ_S("OSC 6 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
-        { 1983, NJ_S("OSC 6 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
-        { 1984, NJ_S("OSC 6 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        { 1985, NJ_S("OSC 6 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
-        { 1986, NJ_S("OSC 6 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
-        { 1987, NJ_S("OSC 6 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
-        { 1988, NJ_S("OSC 6 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        { 1989, NJ_S("OSC 6 Kick Drive"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 1990, NJ_S("OSC 6 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
-        { 1991, NJ_S("OSC 6 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
-        { 1992, NJ_S("OSC 6 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        { 1993, NJ_S("OSC 6 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        { 1994, NJ_S("OSC 6 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
-        { 1995, NJ_S("OSC 6 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
-        { 2000, NJ_S("OSC 1 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2001, NJ_S("OSC 2 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2002, NJ_S("OSC 3 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2003, NJ_S("OSC 4 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2004, NJ_S("OSC 5 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2005, NJ_S("OSC 6 WT Aliasing"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Aliasing"), {  } },
-        { 2100, NJ_S("OSC 1 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2101, NJ_S("OSC 1 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2102, NJ_S("OSC 1 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2103, NJ_S("OSC 1 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2104, NJ_S("OSC 1 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2105, NJ_S("OSC 1 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2106, NJ_S("OSC 1 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2107, NJ_S("OSC 1 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2108, NJ_S("OSC 1 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2109, NJ_S("OSC 1 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2110, NJ_S("OSC 1 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2111, NJ_S("OSC 1 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2112, NJ_S("OSC 1 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2113, NJ_S("OSC 1 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2114, NJ_S("OSC 1 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2115, NJ_S("OSC 1 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-        { 2116, NJ_S("OSC 2 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2117, NJ_S("OSC 2 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2118, NJ_S("OSC 2 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2119, NJ_S("OSC 2 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2120, NJ_S("OSC 2 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2121, NJ_S("OSC 2 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2122, NJ_S("OSC 2 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2123, NJ_S("OSC 2 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2124, NJ_S("OSC 2 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2125, NJ_S("OSC 2 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2126, NJ_S("OSC 2 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2127, NJ_S("OSC 2 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2128, NJ_S("OSC 2 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2129, NJ_S("OSC 2 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2130, NJ_S("OSC 2 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2131, NJ_S("OSC 2 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-        { 2132, NJ_S("OSC 3 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2133, NJ_S("OSC 3 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2134, NJ_S("OSC 3 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2135, NJ_S("OSC 3 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2136, NJ_S("OSC 3 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2137, NJ_S("OSC 3 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2138, NJ_S("OSC 3 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2139, NJ_S("OSC 3 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2140, NJ_S("OSC 3 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2141, NJ_S("OSC 3 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2142, NJ_S("OSC 3 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2143, NJ_S("OSC 3 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2144, NJ_S("OSC 3 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2145, NJ_S("OSC 3 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2146, NJ_S("OSC 3 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2147, NJ_S("OSC 3 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-        { 2148, NJ_S("OSC 4 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2149, NJ_S("OSC 4 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2150, NJ_S("OSC 4 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2151, NJ_S("OSC 4 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2152, NJ_S("OSC 4 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2153, NJ_S("OSC 4 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2154, NJ_S("OSC 4 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2155, NJ_S("OSC 4 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2156, NJ_S("OSC 4 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2157, NJ_S("OSC 4 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2158, NJ_S("OSC 4 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2159, NJ_S("OSC 4 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2160, NJ_S("OSC 4 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2161, NJ_S("OSC 4 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2162, NJ_S("OSC 4 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2163, NJ_S("OSC 4 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-        { 2164, NJ_S("OSC 5 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2165, NJ_S("OSC 5 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2166, NJ_S("OSC 5 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2167, NJ_S("OSC 5 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2168, NJ_S("OSC 5 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2169, NJ_S("OSC 5 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2170, NJ_S("OSC 5 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2171, NJ_S("OSC 5 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2172, NJ_S("OSC 5 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2173, NJ_S("OSC 5 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2174, NJ_S("OSC 5 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2175, NJ_S("OSC 5 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2176, NJ_S("OSC 5 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2177, NJ_S("OSC 5 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2178, NJ_S("OSC 5 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2179, NJ_S("OSC 5 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-        { 2180, NJ_S("OSC 6 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
-        { 2181, NJ_S("OSC 6 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
-        { 2182, NJ_S("OSC 6 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
-        { 2183, NJ_S("OSC 6 Terrain Orbit Radius Y"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius Y"), {  } },
-        { 2184, NJ_S("OSC 6 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
-        { 2185, NJ_S("OSC 6 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
-        { 2186, NJ_S("OSC 6 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        { 2187, NJ_S("OSC 6 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
-        { 2188, NJ_S("OSC 6 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
-        { 2189, NJ_S("OSC 6 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
-        { 2190, NJ_S("OSC 6 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
-        { 2191, NJ_S("OSC 6 Terrain Morph A to B"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
-        { 2192, NJ_S("OSC 6 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
-        { 2193, NJ_S("OSC 6 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        { 2194, NJ_S("OSC 6 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        { 2195, NJ_S("OSC 6 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
-    };
+    static const std::vector<Spec> v = [] { std::vector<Spec> r; allSpecs_0 (r); allSpecs_1 (r); allSpecs_2 (r); allSpecs_3 (r); allSpecs_4 (r); allSpecs_5 (r); allSpecs_6 (r); allSpecs_7 (r); allSpecs_8 (r); allSpecs_9 (r); allSpecs_10 (r); allSpecs_11 (r); allSpecs_12 (r); allSpecs_13 (r); allSpecs_14 (r); allSpecs_15 (r); allSpecs_16 (r); allSpecs_17 (r); allSpecs_18 (r); allSpecs_19 (r); allSpecs_20 (r); allSpecs_21 (r); allSpecs_22 (r); allSpecs_23 (r); allSpecs_24 (r); allSpecs_25 (r); allSpecs_26 (r); allSpecs_27 (r); allSpecs_28 (r); allSpecs_29 (r); allSpecs_30 (r); allSpecs_31 (r); allSpecs_32 (r); allSpecs_33 (r); allSpecs_34 (r); allSpecs_35 (r); allSpecs_36 (r); allSpecs_37 (r); allSpecs_38 (r); allSpecs_39 (r); allSpecs_40 (r); allSpecs_41 (r); allSpecs_42 (r); allSpecs_43 (r); allSpecs_44 (r); allSpecs_45 (r); allSpecs_46 (r); allSpecs_47 (r); allSpecs_48 (r); allSpecs_49 (r); allSpecs_50 (r); allSpecs_51 (r); allSpecs_52 (r); allSpecs_53 (r); allSpecs_54 (r); allSpecs_55 (r); allSpecs_56 (r); return r; }();
     return v;
+}
+static void filterTypes_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("LP24"));
+    v.add (NJ_S("LP12"));
+    v.add (NJ_S("HP12"));
+    v.add (NJ_S("BP12"));
+    v.add (NJ_S("LP6"));
+    v.add (NJ_S("LP18"));
+    v.add (NJ_S("HP6"));
+    v.add (NJ_S("HP18"));
+    v.add (NJ_S("HP24"));
+    v.add (NJ_S("BP24"));
+    v.add (NJ_S("Notch12"));
+    v.add (NJ_S("Notch24"));
+    v.add (NJ_S("Peak"));
+    v.add (NJ_S("LowShelf"));
+    v.add (NJ_S("HighShelf"));
+    v.add (NJ_S("Allpass"));
+    v.add (NJ_S("Ladder"));
+    v.add (NJ_S("Diode"));
+    v.add (NJ_S("Acid"));
+    v.add (NJ_S("Dirty LP"));
+    v.add (NJ_S("Comb+"));
+    v.add (NJ_S("Comb-"));
+    v.add (NJ_S("Phaser"));
+    v.add (NJ_S("Vowel"));
+    v.add (NJ_S("MG Low 6"));
+    v.add (NJ_S("MG Low 12"));
+    v.add (NJ_S("MG Low 18"));
+    v.add (NJ_S("MG Low 24"));
+    v.add (NJ_S("Flange+"));
+    v.add (NJ_S("Flange-"));
 }
 const juce::StringArray& filterTypes()
 {
-    static const juce::StringArray v { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") };
+    static const juce::StringArray v = [] { juce::StringArray r; filterTypes_0 (r); return r; }();
     return v;
+}
+static void syncDivs_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("8/1"));
+    v.add (NJ_S("4/1"));
+    v.add (NJ_S("2/1"));
+    v.add (NJ_S("1/1"));
+    v.add (NJ_S("1/2."));
+    v.add (NJ_S("1/2"));
+    v.add (NJ_S("1/2T"));
+    v.add (NJ_S("1/4."));
+    v.add (NJ_S("1/4"));
+    v.add (NJ_S("1/4T"));
+    v.add (NJ_S("1/8."));
+    v.add (NJ_S("1/8"));
+    v.add (NJ_S("1/8T"));
+    v.add (NJ_S("1/16."));
+    v.add (NJ_S("1/16"));
+    v.add (NJ_S("1/16T"));
+    v.add (NJ_S("1/32"));
+    v.add (NJ_S("1/32T"));
 }
 const juce::StringArray& syncDivs()
 {
-    static const juce::StringArray v { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") };
+    static const juce::StringArray v = [] { juce::StringArray r; syncDivs_0 (r); return r; }();
     return v;
+}
+static void modWaves_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Sin"));
+    v.add (NJ_S("Tri"));
+    v.add (NJ_S("Sqr"));
+    v.add (NJ_S("S&H"));
+    v.add (NJ_S("Up"));
+    v.add (NJ_S("Dn"));
+    v.add (NJ_S("Drawn"));
 }
 const juce::StringArray& modWaves()
 {
-    static const juce::StringArray v { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("S&H"), NJ_S("Up"), NJ_S("Dn"), NJ_S("Drawn") };
+    static const juce::StringArray v = [] { juce::StringArray r; modWaves_0 (r); return r; }();
     return v;
+}
+static void modSrc_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Off"));
+    v.add (NJ_S("LFO 1"));
+    v.add (NJ_S("LFO 2"));
+    v.add (NJ_S("LFO 3"));
+    v.add (NJ_S("LFO 4"));
+    v.add (NJ_S("LFO 5"));
+    v.add (NJ_S("LFO 6"));
+    v.add (NJ_S("LFO 7"));
+    v.add (NJ_S("LFO 8"));
+    v.add (NJ_S("LFO 9"));
+    v.add (NJ_S("LFO 10"));
+    v.add (NJ_S("Env 1"));
+    v.add (NJ_S("Env 2"));
+    v.add (NJ_S("Env 3"));
+    v.add (NJ_S("Env 4"));
+    v.add (NJ_S("Env 5"));
+    v.add (NJ_S("Env 6"));
+    v.add (NJ_S("Env 7"));
+    v.add (NJ_S("Env 8"));
+    v.add (NJ_S("Env 9"));
+    v.add (NJ_S("Env 10"));
+    v.add (NJ_S("Velocity"));
+    v.add (NJ_S("Key"));
+    v.add (NJ_S("Random"));
+    v.add (NJ_S("Freq 1"));
+    v.add (NJ_S("Freq 2"));
+    v.add (NJ_S("Freq 3"));
+    v.add (NJ_S("Freq 4"));
+    v.add (NJ_S("Freq 5"));
+    v.add (NJ_S("Freq 6"));
+    v.add (NJ_S("Freq 7"));
+    v.add (NJ_S("Freq 8"));
+    v.add (NJ_S("Freq 9"));
+    v.add (NJ_S("Freq 10"));
 }
 const juce::StringArray& modSrc()
 {
-    static const juce::StringArray v { NJ_S("Off"), NJ_S("LFO 1"), NJ_S("LFO 2"), NJ_S("LFO 3"), NJ_S("LFO 4"), NJ_S("LFO 5"), NJ_S("LFO 6"), NJ_S("LFO 7"), NJ_S("LFO 8"), NJ_S("LFO 9"), NJ_S("LFO 10"), NJ_S("Env 1"), NJ_S("Env 2"), NJ_S("Env 3"), NJ_S("Env 4"), NJ_S("Env 5"), NJ_S("Env 6"), NJ_S("Env 7"), NJ_S("Env 8"), NJ_S("Env 9"), NJ_S("Env 10"), NJ_S("Velocity"), NJ_S("Key"), NJ_S("Random"), NJ_S("Freq 1"), NJ_S("Freq 2"), NJ_S("Freq 3"), NJ_S("Freq 4"), NJ_S("Freq 5"), NJ_S("Freq 6"), NJ_S("Freq 7"), NJ_S("Freq 8"), NJ_S("Freq 9"), NJ_S("Freq 10") };
+    static const juce::StringArray v = [] { juce::StringArray r; modSrc_0 (r); return r; }();
     return v;
+}
+static void modDst_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Off"));
+    v.add (NJ_S("Pitch (all)"));
+    v.add (NJ_S("Amp"));
+    v.add (NJ_S("Pan"));
+    v.add (NJ_S("Drive"));
+    v.add (NJ_S("Out Gain"));
+    v.add (NJ_S("OSC 1 Pitch"));
+    v.add (NJ_S("OSC 1 Level"));
+    v.add (NJ_S("OSC 1 Pan"));
+    v.add (NJ_S("OSC 1 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 1 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 1 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 1 Cutoff"));
+    v.add (NJ_S("OSC 1 Reso"));
+    v.add (NJ_S("OSC 1 Dist Drive"));
+    v.add (NJ_S("OSC 2 Pitch"));
+    v.add (NJ_S("OSC 2 Level"));
+    v.add (NJ_S("OSC 2 Pan"));
+    v.add (NJ_S("OSC 2 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 2 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 2 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 2 Cutoff"));
+    v.add (NJ_S("OSC 2 Reso"));
+    v.add (NJ_S("OSC 2 Dist Drive"));
+    v.add (NJ_S("OSC 3 Pitch"));
+    v.add (NJ_S("OSC 3 Level"));
+    v.add (NJ_S("OSC 3 Pan"));
+    v.add (NJ_S("OSC 3 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 3 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 3 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 3 Cutoff"));
+    v.add (NJ_S("OSC 3 Reso"));
+    v.add (NJ_S("OSC 3 Dist Drive"));
+    v.add (NJ_S("OSC 4 Pitch"));
+    v.add (NJ_S("OSC 4 Level"));
+    v.add (NJ_S("OSC 4 Pan"));
+    v.add (NJ_S("OSC 4 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 4 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 4 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 4 Cutoff"));
+    v.add (NJ_S("OSC 4 Reso"));
+    v.add (NJ_S("OSC 4 Dist Drive"));
+    v.add (NJ_S("OSC 5 Pitch"));
+    v.add (NJ_S("OSC 5 Level"));
+    v.add (NJ_S("OSC 5 Pan"));
+    v.add (NJ_S("OSC 5 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 5 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 5 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 5 Cutoff"));
+    v.add (NJ_S("OSC 5 Reso"));
+    v.add (NJ_S("OSC 5 Dist Drive"));
+    v.add (NJ_S("OSC 6 Pitch"));
+    v.add (NJ_S("OSC 6 Level"));
+    v.add (NJ_S("OSC 6 Pan"));
+    v.add (NJ_S("OSC 6 Position / Terrain Scale"));
+    v.add (NJ_S("OSC 6 Warp 1 / Terrain Warp"));
+    v.add (NJ_S("OSC 6 Warp 2 / Terrain Fold"));
+    v.add (NJ_S("OSC 6 Cutoff"));
+    v.add (NJ_S("OSC 6 Reso"));
+    v.add (NJ_S("OSC 6 Dist Drive"));
+    v.add (NJ_S("FM A > A"));
+    v.add (NJ_S("FM A > B"));
+    v.add (NJ_S("FM A > C"));
+    v.add (NJ_S("FM A > D"));
+    v.add (NJ_S("FM A > E"));
+    v.add (NJ_S("FM A > F"));
+    v.add (NJ_S("FM B > A"));
+    v.add (NJ_S("FM B > B"));
+    v.add (NJ_S("FM B > C"));
+    v.add (NJ_S("FM B > D"));
+    v.add (NJ_S("FM B > E"));
+    v.add (NJ_S("FM B > F"));
+    v.add (NJ_S("FM C > A"));
+    v.add (NJ_S("FM C > B"));
+    v.add (NJ_S("FM C > C"));
+    v.add (NJ_S("FM C > D"));
+    v.add (NJ_S("FM C > E"));
+    v.add (NJ_S("FM C > F"));
+    v.add (NJ_S("FM D > A"));
+    v.add (NJ_S("FM D > B"));
+    v.add (NJ_S("FM D > C"));
+    v.add (NJ_S("FM D > D"));
+    v.add (NJ_S("FM D > E"));
+    v.add (NJ_S("FM D > F"));
+    v.add (NJ_S("FM E > A"));
+    v.add (NJ_S("FM E > B"));
+    v.add (NJ_S("FM E > C"));
+    v.add (NJ_S("FM E > D"));
+    v.add (NJ_S("FM E > E"));
+    v.add (NJ_S("FM E > F"));
+    v.add (NJ_S("FM F > A"));
+    v.add (NJ_S("FM F > B"));
+    v.add (NJ_S("FM F > C"));
+    v.add (NJ_S("FM F > D"));
+    v.add (NJ_S("FM F > E"));
+    v.add (NJ_S("FM F > F"));
+    v.add (NJ_S("PM A > A"));
+    v.add (NJ_S("PM A > B"));
+    v.add (NJ_S("PM A > C"));
+    v.add (NJ_S("PM A > D"));
+}
+static void modDst_1 (juce::StringArray& v)
+{
+    v.add (NJ_S("PM A > E"));
+    v.add (NJ_S("PM A > F"));
+    v.add (NJ_S("PM B > A"));
+    v.add (NJ_S("PM B > B"));
+    v.add (NJ_S("PM B > C"));
+    v.add (NJ_S("PM B > D"));
+    v.add (NJ_S("PM B > E"));
+    v.add (NJ_S("PM B > F"));
+    v.add (NJ_S("PM C > A"));
+    v.add (NJ_S("PM C > B"));
+    v.add (NJ_S("PM C > C"));
+    v.add (NJ_S("PM C > D"));
+    v.add (NJ_S("PM C > E"));
+    v.add (NJ_S("PM C > F"));
+    v.add (NJ_S("PM D > A"));
+    v.add (NJ_S("PM D > B"));
+    v.add (NJ_S("PM D > C"));
+    v.add (NJ_S("PM D > D"));
+    v.add (NJ_S("PM D > E"));
+    v.add (NJ_S("PM D > F"));
+    v.add (NJ_S("PM E > A"));
+    v.add (NJ_S("PM E > B"));
+    v.add (NJ_S("PM E > C"));
+    v.add (NJ_S("PM E > D"));
+    v.add (NJ_S("PM E > E"));
+    v.add (NJ_S("PM E > F"));
+    v.add (NJ_S("PM F > A"));
+    v.add (NJ_S("PM F > B"));
+    v.add (NJ_S("PM F > C"));
+    v.add (NJ_S("PM F > D"));
+    v.add (NJ_S("PM F > E"));
+    v.add (NJ_S("PM F > F"));
+    v.add (NJ_S("PD A > A"));
+    v.add (NJ_S("PD A > B"));
+    v.add (NJ_S("PD A > C"));
+    v.add (NJ_S("PD A > D"));
+    v.add (NJ_S("PD A > E"));
+    v.add (NJ_S("PD A > F"));
+    v.add (NJ_S("PD B > A"));
+    v.add (NJ_S("PD B > B"));
+    v.add (NJ_S("PD B > C"));
+    v.add (NJ_S("PD B > D"));
+    v.add (NJ_S("PD B > E"));
+    v.add (NJ_S("PD B > F"));
+    v.add (NJ_S("PD C > A"));
+    v.add (NJ_S("PD C > B"));
+    v.add (NJ_S("PD C > C"));
+    v.add (NJ_S("PD C > D"));
+    v.add (NJ_S("PD C > E"));
+    v.add (NJ_S("PD C > F"));
+    v.add (NJ_S("PD D > A"));
+    v.add (NJ_S("PD D > B"));
+    v.add (NJ_S("PD D > C"));
+    v.add (NJ_S("PD D > D"));
+    v.add (NJ_S("PD D > E"));
+    v.add (NJ_S("PD D > F"));
+    v.add (NJ_S("PD E > A"));
+    v.add (NJ_S("PD E > B"));
+    v.add (NJ_S("PD E > C"));
+    v.add (NJ_S("PD E > D"));
+    v.add (NJ_S("PD E > E"));
+    v.add (NJ_S("PD E > F"));
+    v.add (NJ_S("PD F > A"));
+    v.add (NJ_S("PD F > B"));
+    v.add (NJ_S("PD F > C"));
+    v.add (NJ_S("PD F > D"));
+    v.add (NJ_S("PD F > E"));
+    v.add (NJ_S("PD F > F"));
+    v.add (NJ_S("OSC 1 Wavefilter Pos"));
+    v.add (NJ_S("OSC 1 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 2 Wavefilter Pos"));
+    v.add (NJ_S("OSC 2 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 3 Wavefilter Pos"));
+    v.add (NJ_S("OSC 3 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 4 Wavefilter Pos"));
+    v.add (NJ_S("OSC 4 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 5 Wavefilter Pos"));
+    v.add (NJ_S("OSC 5 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 6 Wavefilter Pos"));
+    v.add (NJ_S("OSC 6 Wavedistortion Pos"));
+    v.add (NJ_S("OSC 1 Frequency"));
+    v.add (NJ_S("OSC 2 Frequency"));
+    v.add (NJ_S("OSC 3 Frequency"));
+    v.add (NJ_S("OSC 4 Frequency"));
+    v.add (NJ_S("OSC 5 Frequency"));
+    v.add (NJ_S("OSC 6 Frequency"));
+    v.add (NJ_S("RM A > A"));
+    v.add (NJ_S("RM A > B"));
+    v.add (NJ_S("RM A > C"));
+    v.add (NJ_S("RM A > D"));
+    v.add (NJ_S("RM A > E"));
+    v.add (NJ_S("RM A > F"));
+    v.add (NJ_S("RM B > A"));
+    v.add (NJ_S("RM B > B"));
+    v.add (NJ_S("RM B > C"));
+    v.add (NJ_S("RM B > D"));
+    v.add (NJ_S("RM B > E"));
+    v.add (NJ_S("RM B > F"));
+    v.add (NJ_S("RM C > A"));
+    v.add (NJ_S("RM C > B"));
+}
+static void modDst_2 (juce::StringArray& v)
+{
+    v.add (NJ_S("RM C > C"));
+    v.add (NJ_S("RM C > D"));
+    v.add (NJ_S("RM C > E"));
+    v.add (NJ_S("RM C > F"));
+    v.add (NJ_S("RM D > A"));
+    v.add (NJ_S("RM D > B"));
+    v.add (NJ_S("RM D > C"));
+    v.add (NJ_S("RM D > D"));
+    v.add (NJ_S("RM D > E"));
+    v.add (NJ_S("RM D > F"));
+    v.add (NJ_S("RM E > A"));
+    v.add (NJ_S("RM E > B"));
+    v.add (NJ_S("RM E > C"));
+    v.add (NJ_S("RM E > D"));
+    v.add (NJ_S("RM E > E"));
+    v.add (NJ_S("RM E > F"));
+    v.add (NJ_S("RM F > A"));
+    v.add (NJ_S("RM F > B"));
+    v.add (NJ_S("RM F > C"));
+    v.add (NJ_S("RM F > D"));
+    v.add (NJ_S("RM F > E"));
+    v.add (NJ_S("RM F > F"));
+    v.add (NJ_S("AM A > A"));
+    v.add (NJ_S("AM A > B"));
+    v.add (NJ_S("AM A > C"));
+    v.add (NJ_S("AM A > D"));
+    v.add (NJ_S("AM A > E"));
+    v.add (NJ_S("AM A > F"));
+    v.add (NJ_S("AM B > A"));
+    v.add (NJ_S("AM B > B"));
+    v.add (NJ_S("AM B > C"));
+    v.add (NJ_S("AM B > D"));
+    v.add (NJ_S("AM B > E"));
+    v.add (NJ_S("AM B > F"));
+    v.add (NJ_S("AM C > A"));
+    v.add (NJ_S("AM C > B"));
+    v.add (NJ_S("AM C > C"));
+    v.add (NJ_S("AM C > D"));
+    v.add (NJ_S("AM C > E"));
+    v.add (NJ_S("AM C > F"));
+    v.add (NJ_S("AM D > A"));
+    v.add (NJ_S("AM D > B"));
+    v.add (NJ_S("AM D > C"));
+    v.add (NJ_S("AM D > D"));
+    v.add (NJ_S("AM D > E"));
+    v.add (NJ_S("AM D > F"));
+    v.add (NJ_S("AM E > A"));
+    v.add (NJ_S("AM E > B"));
+    v.add (NJ_S("AM E > C"));
+    v.add (NJ_S("AM E > D"));
+    v.add (NJ_S("AM E > E"));
+    v.add (NJ_S("AM E > F"));
+    v.add (NJ_S("AM F > A"));
+    v.add (NJ_S("AM F > B"));
+    v.add (NJ_S("AM F > C"));
+    v.add (NJ_S("AM F > D"));
+    v.add (NJ_S("AM F > E"));
+    v.add (NJ_S("AM F > F"));
+    v.add (NJ_S("OSC 1 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 1 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 1 Physical Noise Time"));
+    v.add (NJ_S("OSC 1 Physical A Model"));
+    v.add (NJ_S("OSC 1 Physical A Decay"));
+    v.add (NJ_S("OSC 1 Physical A Material"));
+    v.add (NJ_S("OSC 1 Physical A Hit Position"));
+    v.add (NJ_S("OSC 1 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 1 Physical B Model"));
+    v.add (NJ_S("OSC 1 Physical B Decay"));
+    v.add (NJ_S("OSC 1 Physical B Material"));
+    v.add (NJ_S("OSC 1 Physical B Hit Position"));
+    v.add (NJ_S("OSC 1 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 1 Physical B Tune"));
+    v.add (NJ_S("OSC 1 Physical A / B Balance"));
+    v.add (NJ_S("OSC 1 Physical Coupling"));
+    v.add (NJ_S("OSC 1 Juno Saw Level"));
+    v.add (NJ_S("OSC 1 Juno Pulse Level"));
+    v.add (NJ_S("OSC 1 Juno Pulse Width"));
+    v.add (NJ_S("OSC 1 Juno PWM Depth"));
+    v.add (NJ_S("OSC 1 Juno PWM Rate"));
+    v.add (NJ_S("OSC 1 Juno Sub Level"));
+    v.add (NJ_S("OSC 1 Juno Noise Level"));
+    v.add (NJ_S("OSC 1 Juno Range"));
+    v.add (NJ_S("OSC 1 Juno Drift"));
+    v.add (NJ_S("OSC 1 Juno Saw Curve"));
+    v.add (NJ_S("OSC 1 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 1 Juno Saw Wave"));
+    v.add (NJ_S("OSC 1 Juno Sub Wave"));
+    v.add (NJ_S("OSC 1 Juno PWM Source"));
+    v.add (NJ_S("OSC 1 Juno Vibrato"));
+    v.add (NJ_S("OSC 2 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 2 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 2 Physical Noise Time"));
+    v.add (NJ_S("OSC 2 Physical A Model"));
+    v.add (NJ_S("OSC 2 Physical A Decay"));
+    v.add (NJ_S("OSC 2 Physical A Material"));
+    v.add (NJ_S("OSC 2 Physical A Hit Position"));
+    v.add (NJ_S("OSC 2 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 2 Physical B Model"));
+    v.add (NJ_S("OSC 2 Physical B Decay"));
+    v.add (NJ_S("OSC 2 Physical B Material"));
+}
+static void modDst_3 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 2 Physical B Hit Position"));
+    v.add (NJ_S("OSC 2 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 2 Physical B Tune"));
+    v.add (NJ_S("OSC 2 Physical A / B Balance"));
+    v.add (NJ_S("OSC 2 Physical Coupling"));
+    v.add (NJ_S("OSC 2 Juno Saw Level"));
+    v.add (NJ_S("OSC 2 Juno Pulse Level"));
+    v.add (NJ_S("OSC 2 Juno Pulse Width"));
+    v.add (NJ_S("OSC 2 Juno PWM Depth"));
+    v.add (NJ_S("OSC 2 Juno PWM Rate"));
+    v.add (NJ_S("OSC 2 Juno Sub Level"));
+    v.add (NJ_S("OSC 2 Juno Noise Level"));
+    v.add (NJ_S("OSC 2 Juno Range"));
+    v.add (NJ_S("OSC 2 Juno Drift"));
+    v.add (NJ_S("OSC 2 Juno Saw Curve"));
+    v.add (NJ_S("OSC 2 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 2 Juno Saw Wave"));
+    v.add (NJ_S("OSC 2 Juno Sub Wave"));
+    v.add (NJ_S("OSC 2 Juno PWM Source"));
+    v.add (NJ_S("OSC 2 Juno Vibrato"));
+    v.add (NJ_S("OSC 3 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 3 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 3 Physical Noise Time"));
+    v.add (NJ_S("OSC 3 Physical A Model"));
+    v.add (NJ_S("OSC 3 Physical A Decay"));
+    v.add (NJ_S("OSC 3 Physical A Material"));
+    v.add (NJ_S("OSC 3 Physical A Hit Position"));
+    v.add (NJ_S("OSC 3 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 3 Physical B Model"));
+    v.add (NJ_S("OSC 3 Physical B Decay"));
+    v.add (NJ_S("OSC 3 Physical B Material"));
+    v.add (NJ_S("OSC 3 Physical B Hit Position"));
+    v.add (NJ_S("OSC 3 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 3 Physical B Tune"));
+    v.add (NJ_S("OSC 3 Physical A / B Balance"));
+    v.add (NJ_S("OSC 3 Physical Coupling"));
+    v.add (NJ_S("OSC 3 Juno Saw Level"));
+    v.add (NJ_S("OSC 3 Juno Pulse Level"));
+    v.add (NJ_S("OSC 3 Juno Pulse Width"));
+    v.add (NJ_S("OSC 3 Juno PWM Depth"));
+    v.add (NJ_S("OSC 3 Juno PWM Rate"));
+    v.add (NJ_S("OSC 3 Juno Sub Level"));
+    v.add (NJ_S("OSC 3 Juno Noise Level"));
+    v.add (NJ_S("OSC 3 Juno Range"));
+    v.add (NJ_S("OSC 3 Juno Drift"));
+    v.add (NJ_S("OSC 3 Juno Saw Curve"));
+    v.add (NJ_S("OSC 3 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 3 Juno Saw Wave"));
+    v.add (NJ_S("OSC 3 Juno Sub Wave"));
+    v.add (NJ_S("OSC 3 Juno PWM Source"));
+    v.add (NJ_S("OSC 3 Juno Vibrato"));
+    v.add (NJ_S("OSC 4 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 4 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 4 Physical Noise Time"));
+    v.add (NJ_S("OSC 4 Physical A Model"));
+    v.add (NJ_S("OSC 4 Physical A Decay"));
+    v.add (NJ_S("OSC 4 Physical A Material"));
+    v.add (NJ_S("OSC 4 Physical A Hit Position"));
+    v.add (NJ_S("OSC 4 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 4 Physical B Model"));
+    v.add (NJ_S("OSC 4 Physical B Decay"));
+    v.add (NJ_S("OSC 4 Physical B Material"));
+    v.add (NJ_S("OSC 4 Physical B Hit Position"));
+    v.add (NJ_S("OSC 4 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 4 Physical B Tune"));
+    v.add (NJ_S("OSC 4 Physical A / B Balance"));
+    v.add (NJ_S("OSC 4 Physical Coupling"));
+    v.add (NJ_S("OSC 4 Juno Saw Level"));
+    v.add (NJ_S("OSC 4 Juno Pulse Level"));
+    v.add (NJ_S("OSC 4 Juno Pulse Width"));
+    v.add (NJ_S("OSC 4 Juno PWM Depth"));
+    v.add (NJ_S("OSC 4 Juno PWM Rate"));
+    v.add (NJ_S("OSC 4 Juno Sub Level"));
+    v.add (NJ_S("OSC 4 Juno Noise Level"));
+    v.add (NJ_S("OSC 4 Juno Range"));
+    v.add (NJ_S("OSC 4 Juno Drift"));
+    v.add (NJ_S("OSC 4 Juno Saw Curve"));
+    v.add (NJ_S("OSC 4 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 4 Juno Saw Wave"));
+    v.add (NJ_S("OSC 4 Juno Sub Wave"));
+    v.add (NJ_S("OSC 4 Juno PWM Source"));
+    v.add (NJ_S("OSC 4 Juno Vibrato"));
+    v.add (NJ_S("OSC 5 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 5 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 5 Physical Noise Time"));
+    v.add (NJ_S("OSC 5 Physical A Model"));
+    v.add (NJ_S("OSC 5 Physical A Decay"));
+    v.add (NJ_S("OSC 5 Physical A Material"));
+    v.add (NJ_S("OSC 5 Physical A Hit Position"));
+    v.add (NJ_S("OSC 5 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 5 Physical B Model"));
+    v.add (NJ_S("OSC 5 Physical B Decay"));
+    v.add (NJ_S("OSC 5 Physical B Material"));
+    v.add (NJ_S("OSC 5 Physical B Hit Position"));
+    v.add (NJ_S("OSC 5 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 5 Physical B Tune"));
+    v.add (NJ_S("OSC 5 Physical A / B Balance"));
+    v.add (NJ_S("OSC 5 Physical Coupling"));
+    v.add (NJ_S("OSC 5 Juno Saw Level"));
+    v.add (NJ_S("OSC 5 Juno Pulse Level"));
+}
+static void modDst_4 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 Juno Pulse Width"));
+    v.add (NJ_S("OSC 5 Juno PWM Depth"));
+    v.add (NJ_S("OSC 5 Juno PWM Rate"));
+    v.add (NJ_S("OSC 5 Juno Sub Level"));
+    v.add (NJ_S("OSC 5 Juno Noise Level"));
+    v.add (NJ_S("OSC 5 Juno Range"));
+    v.add (NJ_S("OSC 5 Juno Drift"));
+    v.add (NJ_S("OSC 5 Juno Saw Curve"));
+    v.add (NJ_S("OSC 5 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 5 Juno Saw Wave"));
+    v.add (NJ_S("OSC 5 Juno Sub Wave"));
+    v.add (NJ_S("OSC 5 Juno PWM Source"));
+    v.add (NJ_S("OSC 5 Juno Vibrato"));
+    v.add (NJ_S("OSC 6 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 6 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 6 Physical Noise Time"));
+    v.add (NJ_S("OSC 6 Physical A Model"));
+    v.add (NJ_S("OSC 6 Physical A Decay"));
+    v.add (NJ_S("OSC 6 Physical A Material"));
+    v.add (NJ_S("OSC 6 Physical A Hit Position"));
+    v.add (NJ_S("OSC 6 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 6 Physical B Model"));
+    v.add (NJ_S("OSC 6 Physical B Decay"));
+    v.add (NJ_S("OSC 6 Physical B Material"));
+    v.add (NJ_S("OSC 6 Physical B Hit Position"));
+    v.add (NJ_S("OSC 6 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 6 Physical B Tune"));
+    v.add (NJ_S("OSC 6 Physical A / B Balance"));
+    v.add (NJ_S("OSC 6 Physical Coupling"));
+    v.add (NJ_S("OSC 6 Juno Saw Level"));
+    v.add (NJ_S("OSC 6 Juno Pulse Level"));
+    v.add (NJ_S("OSC 6 Juno Pulse Width"));
+    v.add (NJ_S("OSC 6 Juno PWM Depth"));
+    v.add (NJ_S("OSC 6 Juno PWM Rate"));
+    v.add (NJ_S("OSC 6 Juno Sub Level"));
+    v.add (NJ_S("OSC 6 Juno Noise Level"));
+    v.add (NJ_S("OSC 6 Juno Range"));
+    v.add (NJ_S("OSC 6 Juno Drift"));
+    v.add (NJ_S("OSC 6 Juno Saw Curve"));
+    v.add (NJ_S("OSC 6 Juno Pulse Wave"));
+    v.add (NJ_S("OSC 6 Juno Saw Wave"));
+    v.add (NJ_S("OSC 6 Juno Sub Wave"));
+    v.add (NJ_S("OSC 6 Juno PWM Source"));
+    v.add (NJ_S("OSC 6 Juno Vibrato"));
+    v.add (NJ_S("OSC 1 Kick Mode"));
+    v.add (NJ_S("OSC 1 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 1 Kick Sweep Time"));
+    v.add (NJ_S("OSC 1 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 1 Kick Decay"));
+    v.add (NJ_S("OSC 1 Kick Tone"));
+    v.add (NJ_S("OSC 1 Kick Click Level"));
+    v.add (NJ_S("OSC 1 Kick Click Tone"));
+    v.add (NJ_S("OSC 1 Kick Noise Level"));
+    v.add (NJ_S("OSC 1 Kick Drive"));
+    v.add (NJ_S("OSC 1 Kick Drive Curve"));
+    v.add (NJ_S("OSC 1 Kick Sub Level"));
+    v.add (NJ_S("OSC 1 Kick Punch"));
+    v.add (NJ_S("OSC 1 Kick Tune"));
+    v.add (NJ_S("OSC 1 Kick Click Decay"));
+    v.add (NJ_S("OSC 1 Kick Character"));
+    v.add (NJ_S("OSC 2 Kick Mode"));
+    v.add (NJ_S("OSC 2 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 2 Kick Sweep Time"));
+    v.add (NJ_S("OSC 2 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 2 Kick Decay"));
+    v.add (NJ_S("OSC 2 Kick Tone"));
+    v.add (NJ_S("OSC 2 Kick Click Level"));
+    v.add (NJ_S("OSC 2 Kick Click Tone"));
+    v.add (NJ_S("OSC 2 Kick Noise Level"));
+    v.add (NJ_S("OSC 2 Kick Drive"));
+    v.add (NJ_S("OSC 2 Kick Drive Curve"));
+    v.add (NJ_S("OSC 2 Kick Sub Level"));
+    v.add (NJ_S("OSC 2 Kick Punch"));
+    v.add (NJ_S("OSC 2 Kick Tune"));
+    v.add (NJ_S("OSC 2 Kick Click Decay"));
+    v.add (NJ_S("OSC 2 Kick Character"));
+    v.add (NJ_S("OSC 3 Kick Mode"));
+    v.add (NJ_S("OSC 3 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 3 Kick Sweep Time"));
+    v.add (NJ_S("OSC 3 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 3 Kick Decay"));
+    v.add (NJ_S("OSC 3 Kick Tone"));
+    v.add (NJ_S("OSC 3 Kick Click Level"));
+    v.add (NJ_S("OSC 3 Kick Click Tone"));
+    v.add (NJ_S("OSC 3 Kick Noise Level"));
+    v.add (NJ_S("OSC 3 Kick Drive"));
+    v.add (NJ_S("OSC 3 Kick Drive Curve"));
+    v.add (NJ_S("OSC 3 Kick Sub Level"));
+    v.add (NJ_S("OSC 3 Kick Punch"));
+    v.add (NJ_S("OSC 3 Kick Tune"));
+    v.add (NJ_S("OSC 3 Kick Click Decay"));
+    v.add (NJ_S("OSC 3 Kick Character"));
+    v.add (NJ_S("OSC 4 Kick Mode"));
+    v.add (NJ_S("OSC 4 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 4 Kick Sweep Time"));
+    v.add (NJ_S("OSC 4 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 4 Kick Decay"));
+    v.add (NJ_S("OSC 4 Kick Tone"));
+    v.add (NJ_S("OSC 4 Kick Click Level"));
+    v.add (NJ_S("OSC 4 Kick Click Tone"));
+}
+static void modDst_5 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 Kick Noise Level"));
+    v.add (NJ_S("OSC 4 Kick Drive"));
+    v.add (NJ_S("OSC 4 Kick Drive Curve"));
+    v.add (NJ_S("OSC 4 Kick Sub Level"));
+    v.add (NJ_S("OSC 4 Kick Punch"));
+    v.add (NJ_S("OSC 4 Kick Tune"));
+    v.add (NJ_S("OSC 4 Kick Click Decay"));
+    v.add (NJ_S("OSC 4 Kick Character"));
+    v.add (NJ_S("OSC 5 Kick Mode"));
+    v.add (NJ_S("OSC 5 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 5 Kick Sweep Time"));
+    v.add (NJ_S("OSC 5 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 5 Kick Decay"));
+    v.add (NJ_S("OSC 5 Kick Tone"));
+    v.add (NJ_S("OSC 5 Kick Click Level"));
+    v.add (NJ_S("OSC 5 Kick Click Tone"));
+    v.add (NJ_S("OSC 5 Kick Noise Level"));
+    v.add (NJ_S("OSC 5 Kick Drive"));
+    v.add (NJ_S("OSC 5 Kick Drive Curve"));
+    v.add (NJ_S("OSC 5 Kick Sub Level"));
+    v.add (NJ_S("OSC 5 Kick Punch"));
+    v.add (NJ_S("OSC 5 Kick Tune"));
+    v.add (NJ_S("OSC 5 Kick Click Decay"));
+    v.add (NJ_S("OSC 5 Kick Character"));
+    v.add (NJ_S("OSC 6 Kick Mode"));
+    v.add (NJ_S("OSC 6 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 6 Kick Sweep Time"));
+    v.add (NJ_S("OSC 6 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 6 Kick Decay"));
+    v.add (NJ_S("OSC 6 Kick Tone"));
+    v.add (NJ_S("OSC 6 Kick Click Level"));
+    v.add (NJ_S("OSC 6 Kick Click Tone"));
+    v.add (NJ_S("OSC 6 Kick Noise Level"));
+    v.add (NJ_S("OSC 6 Kick Drive"));
+    v.add (NJ_S("OSC 6 Kick Drive Curve"));
+    v.add (NJ_S("OSC 6 Kick Sub Level"));
+    v.add (NJ_S("OSC 6 Kick Punch"));
+    v.add (NJ_S("OSC 6 Kick Tune"));
+    v.add (NJ_S("OSC 6 Kick Click Decay"));
+    v.add (NJ_S("OSC 6 Kick Character"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 1 Terrain Move Rate"));
+    v.add (NJ_S("OSC 1 Terrain Move Depth"));
+    v.add (NJ_S("OSC 1 Terrain B"));
+    v.add (NJ_S("OSC 1 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 1 Terrain Smooth"));
+    v.add (NJ_S("OSC 1 Terrain Drive"));
+    v.add (NJ_S("OSC 1 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 1 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 2 Terrain Move Rate"));
+    v.add (NJ_S("OSC 2 Terrain Move Depth"));
+    v.add (NJ_S("OSC 2 Terrain B"));
+    v.add (NJ_S("OSC 2 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 2 Terrain Smooth"));
+    v.add (NJ_S("OSC 2 Terrain Drive"));
+    v.add (NJ_S("OSC 2 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 2 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 3 Terrain Move Rate"));
+    v.add (NJ_S("OSC 3 Terrain Move Depth"));
+    v.add (NJ_S("OSC 3 Terrain B"));
+    v.add (NJ_S("OSC 3 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 3 Terrain Smooth"));
+    v.add (NJ_S("OSC 3 Terrain Drive"));
+    v.add (NJ_S("OSC 3 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 3 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 4 Terrain Move Rate"));
+    v.add (NJ_S("OSC 4 Terrain Move Depth"));
+    v.add (NJ_S("OSC 4 Terrain B"));
+    v.add (NJ_S("OSC 4 Terrain Morph A to B"));
+}
+static void modDst_6 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 Terrain Smooth"));
+    v.add (NJ_S("OSC 4 Terrain Drive"));
+    v.add (NJ_S("OSC 4 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 4 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 5 Terrain Move Rate"));
+    v.add (NJ_S("OSC 5 Terrain Move Depth"));
+    v.add (NJ_S("OSC 5 Terrain B"));
+    v.add (NJ_S("OSC 5 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 5 Terrain Smooth"));
+    v.add (NJ_S("OSC 5 Terrain Drive"));
+    v.add (NJ_S("OSC 5 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 5 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 6 Terrain Move Rate"));
+    v.add (NJ_S("OSC 6 Terrain Move Depth"));
+    v.add (NJ_S("OSC 6 Terrain B"));
+    v.add (NJ_S("OSC 6 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 6 Terrain Smooth"));
+    v.add (NJ_S("OSC 6 Terrain Drive"));
+    v.add (NJ_S("OSC 6 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 6 Terrain Velocity to Radius"));
 }
 const juce::StringArray& modDst()
 {
-    static const juce::StringArray v { NJ_S("Off"), NJ_S("Pitch (all)"), NJ_S("Amp"), NJ_S("Pan"), NJ_S("Drive"), NJ_S("Out Gain"), NJ_S("OSC 1 Pitch"), NJ_S("OSC 1 Level"), NJ_S("OSC 1 Pan"), NJ_S("OSC 1 Position / Terrain Scale"), NJ_S("OSC 1 Warp 1 / Terrain Warp"), NJ_S("OSC 1 Warp 2 / Terrain Fold"), NJ_S("OSC 1 Cutoff"), NJ_S("OSC 1 Reso"), NJ_S("OSC 1 Dist Drive"), NJ_S("OSC 2 Pitch"), NJ_S("OSC 2 Level"), NJ_S("OSC 2 Pan"), NJ_S("OSC 2 Position / Terrain Scale"), NJ_S("OSC 2 Warp 1 / Terrain Warp"), NJ_S("OSC 2 Warp 2 / Terrain Fold"), NJ_S("OSC 2 Cutoff"), NJ_S("OSC 2 Reso"), NJ_S("OSC 2 Dist Drive"), NJ_S("OSC 3 Pitch"), NJ_S("OSC 3 Level"), NJ_S("OSC 3 Pan"), NJ_S("OSC 3 Position / Terrain Scale"), NJ_S("OSC 3 Warp 1 / Terrain Warp"), NJ_S("OSC 3 Warp 2 / Terrain Fold"), NJ_S("OSC 3 Cutoff"), NJ_S("OSC 3 Reso"), NJ_S("OSC 3 Dist Drive"), NJ_S("OSC 4 Pitch"), NJ_S("OSC 4 Level"), NJ_S("OSC 4 Pan"), NJ_S("OSC 4 Position / Terrain Scale"), NJ_S("OSC 4 Warp 1 / Terrain Warp"), NJ_S("OSC 4 Warp 2 / Terrain Fold"), NJ_S("OSC 4 Cutoff"), NJ_S("OSC 4 Reso"), NJ_S("OSC 4 Dist Drive"), NJ_S("OSC 5 Pitch"), NJ_S("OSC 5 Level"), NJ_S("OSC 5 Pan"), NJ_S("OSC 5 Position / Terrain Scale"), NJ_S("OSC 5 Warp 1 / Terrain Warp"), NJ_S("OSC 5 Warp 2 / Terrain Fold"), NJ_S("OSC 5 Cutoff"), NJ_S("OSC 5 Reso"), NJ_S("OSC 5 Dist Drive"), NJ_S("OSC 6 Pitch"), NJ_S("OSC 6 Level"), NJ_S("OSC 6 Pan"), NJ_S("OSC 6 Position / Terrain Scale"), NJ_S("OSC 6 Warp 1 / Terrain Warp"), NJ_S("OSC 6 Warp 2 / Terrain Fold"), NJ_S("OSC 6 Cutoff"), NJ_S("OSC 6 Reso"), NJ_S("OSC 6 Dist Drive"), NJ_S("FM A > A"), NJ_S("FM A > B"), NJ_S("FM A > C"), NJ_S("FM A > D"), NJ_S("FM A > E"), NJ_S("FM A > F"), NJ_S("FM B > A"), NJ_S("FM B > B"), NJ_S("FM B > C"), NJ_S("FM B > D"), NJ_S("FM B > E"), NJ_S("FM B > F"), NJ_S("FM C > A"), NJ_S("FM C > B"), NJ_S("FM C > C"), NJ_S("FM C > D"), NJ_S("FM C > E"), NJ_S("FM C > F"), NJ_S("FM D > A"), NJ_S("FM D > B"), NJ_S("FM D > C"), NJ_S("FM D > D"), NJ_S("FM D > E"), NJ_S("FM D > F"), NJ_S("FM E > A"), NJ_S("FM E > B"), NJ_S("FM E > C"), NJ_S("FM E > D"), NJ_S("FM E > E"), NJ_S("FM E > F"), NJ_S("FM F > A"), NJ_S("FM F > B"), NJ_S("FM F > C"), NJ_S("FM F > D"), NJ_S("FM F > E"), NJ_S("FM F > F"), NJ_S("PM A > A"), NJ_S("PM A > B"), NJ_S("PM A > C"), NJ_S("PM A > D"), NJ_S("PM A > E"), NJ_S("PM A > F"), NJ_S("PM B > A"), NJ_S("PM B > B"), NJ_S("PM B > C"), NJ_S("PM B > D"), NJ_S("PM B > E"), NJ_S("PM B > F"), NJ_S("PM C > A"), NJ_S("PM C > B"), NJ_S("PM C > C"), NJ_S("PM C > D"), NJ_S("PM C > E"), NJ_S("PM C > F"), NJ_S("PM D > A"), NJ_S("PM D > B"), NJ_S("PM D > C"), NJ_S("PM D > D"), NJ_S("PM D > E"), NJ_S("PM D > F"), NJ_S("PM E > A"), NJ_S("PM E > B"), NJ_S("PM E > C"), NJ_S("PM E > D"), NJ_S("PM E > E"), NJ_S("PM E > F"), NJ_S("PM F > A"), NJ_S("PM F > B"), NJ_S("PM F > C"), NJ_S("PM F > D"), NJ_S("PM F > E"), NJ_S("PM F > F"), NJ_S("PD A > A"), NJ_S("PD A > B"), NJ_S("PD A > C"), NJ_S("PD A > D"), NJ_S("PD A > E"), NJ_S("PD A > F"), NJ_S("PD B > A"), NJ_S("PD B > B"), NJ_S("PD B > C"), NJ_S("PD B > D"), NJ_S("PD B > E"), NJ_S("PD B > F"), NJ_S("PD C > A"), NJ_S("PD C > B"), NJ_S("PD C > C"), NJ_S("PD C > D"), NJ_S("PD C > E"), NJ_S("PD C > F"), NJ_S("PD D > A"), NJ_S("PD D > B"), NJ_S("PD D > C"), NJ_S("PD D > D"), NJ_S("PD D > E"), NJ_S("PD D > F"), NJ_S("PD E > A"), NJ_S("PD E > B"), NJ_S("PD E > C"), NJ_S("PD E > D"), NJ_S("PD E > E"), NJ_S("PD E > F"), NJ_S("PD F > A"), NJ_S("PD F > B"), NJ_S("PD F > C"), NJ_S("PD F > D"), NJ_S("PD F > E"), NJ_S("PD F > F"), NJ_S("OSC 1 Wavefilter Pos"), NJ_S("OSC 1 Wavedistortion Pos"), NJ_S("OSC 2 Wavefilter Pos"), NJ_S("OSC 2 Wavedistortion Pos"), NJ_S("OSC 3 Wavefilter Pos"), NJ_S("OSC 3 Wavedistortion Pos"), NJ_S("OSC 4 Wavefilter Pos"), NJ_S("OSC 4 Wavedistortion Pos"), NJ_S("OSC 5 Wavefilter Pos"), NJ_S("OSC 5 Wavedistortion Pos"), NJ_S("OSC 6 Wavefilter Pos"), NJ_S("OSC 6 Wavedistortion Pos"), NJ_S("OSC 1 Frequency"), NJ_S("OSC 2 Frequency"), NJ_S("OSC 3 Frequency"), NJ_S("OSC 4 Frequency"), NJ_S("OSC 5 Frequency"), NJ_S("OSC 6 Frequency"), NJ_S("RM A > A"), NJ_S("RM A > B"), NJ_S("RM A > C"), NJ_S("RM A > D"), NJ_S("RM A > E"), NJ_S("RM A > F"), NJ_S("RM B > A"), NJ_S("RM B > B"), NJ_S("RM B > C"), NJ_S("RM B > D"), NJ_S("RM B > E"), NJ_S("RM B > F"), NJ_S("RM C > A"), NJ_S("RM C > B"), NJ_S("RM C > C"), NJ_S("RM C > D"), NJ_S("RM C > E"), NJ_S("RM C > F"), NJ_S("RM D > A"), NJ_S("RM D > B"), NJ_S("RM D > C"), NJ_S("RM D > D"), NJ_S("RM D > E"), NJ_S("RM D > F"), NJ_S("RM E > A"), NJ_S("RM E > B"), NJ_S("RM E > C"), NJ_S("RM E > D"), NJ_S("RM E > E"), NJ_S("RM E > F"), NJ_S("RM F > A"), NJ_S("RM F > B"), NJ_S("RM F > C"), NJ_S("RM F > D"), NJ_S("RM F > E"), NJ_S("RM F > F"), NJ_S("AM A > A"), NJ_S("AM A > B"), NJ_S("AM A > C"), NJ_S("AM A > D"), NJ_S("AM A > E"), NJ_S("AM A > F"), NJ_S("AM B > A"), NJ_S("AM B > B"), NJ_S("AM B > C"), NJ_S("AM B > D"), NJ_S("AM B > E"), NJ_S("AM B > F"), NJ_S("AM C > A"), NJ_S("AM C > B"), NJ_S("AM C > C"), NJ_S("AM C > D"), NJ_S("AM C > E"), NJ_S("AM C > F"), NJ_S("AM D > A"), NJ_S("AM D > B"), NJ_S("AM D > C"), NJ_S("AM D > D"), NJ_S("AM D > E"), NJ_S("AM D > F"), NJ_S("AM E > A"), NJ_S("AM E > B"), NJ_S("AM E > C"), NJ_S("AM E > D"), NJ_S("AM E > E"), NJ_S("AM E > F"), NJ_S("AM F > A"), NJ_S("AM F > B"), NJ_S("AM F > C"), NJ_S("AM F > D"), NJ_S("AM F > E"), NJ_S("AM F > F"), NJ_S("OSC 1 Physical Noise vs Mallet"), NJ_S("OSC 1 Physical Mallet Hardness"), NJ_S("OSC 1 Physical Noise Time"), NJ_S("OSC 1 Physical A Model"), NJ_S("OSC 1 Physical A Decay"), NJ_S("OSC 1 Physical A Material"), NJ_S("OSC 1 Physical A Hit Position"), NJ_S("OSC 1 Physical A Inharmonicity"), NJ_S("OSC 1 Physical B Model"), NJ_S("OSC 1 Physical B Decay"), NJ_S("OSC 1 Physical B Material"), NJ_S("OSC 1 Physical B Hit Position"), NJ_S("OSC 1 Physical B Inharmonicity"), NJ_S("OSC 1 Physical B Tune"), NJ_S("OSC 1 Physical A / B Balance"), NJ_S("OSC 1 Physical Coupling"), NJ_S("OSC 1 Juno Saw Level"), NJ_S("OSC 1 Juno Pulse Level"), NJ_S("OSC 1 Juno Pulse Width"), NJ_S("OSC 1 Juno PWM Depth"), NJ_S("OSC 1 Juno PWM Rate"), NJ_S("OSC 1 Juno Sub Level"), NJ_S("OSC 1 Juno Noise Level"), NJ_S("OSC 1 Juno Range"), NJ_S("OSC 1 Juno Drift"), NJ_S("OSC 1 Juno Saw Curve"), NJ_S("OSC 1 Juno Pulse Wave"), NJ_S("OSC 1 Juno Saw Wave"), NJ_S("OSC 1 Juno Sub Wave"), NJ_S("OSC 1 Juno PWM Source"), NJ_S("OSC 1 Juno Vibrato"), NJ_S("OSC 2 Physical Noise vs Mallet"), NJ_S("OSC 2 Physical Mallet Hardness"), NJ_S("OSC 2 Physical Noise Time"), NJ_S("OSC 2 Physical A Model"), NJ_S("OSC 2 Physical A Decay"), NJ_S("OSC 2 Physical A Material"), NJ_S("OSC 2 Physical A Hit Position"), NJ_S("OSC 2 Physical A Inharmonicity"), NJ_S("OSC 2 Physical B Model"), NJ_S("OSC 2 Physical B Decay"), NJ_S("OSC 2 Physical B Material"), NJ_S("OSC 2 Physical B Hit Position"), NJ_S("OSC 2 Physical B Inharmonicity"), NJ_S("OSC 2 Physical B Tune"), NJ_S("OSC 2 Physical A / B Balance"), NJ_S("OSC 2 Physical Coupling"), NJ_S("OSC 2 Juno Saw Level"), NJ_S("OSC 2 Juno Pulse Level"), NJ_S("OSC 2 Juno Pulse Width"), NJ_S("OSC 2 Juno PWM Depth"), NJ_S("OSC 2 Juno PWM Rate"), NJ_S("OSC 2 Juno Sub Level"), NJ_S("OSC 2 Juno Noise Level"), NJ_S("OSC 2 Juno Range"), NJ_S("OSC 2 Juno Drift"), NJ_S("OSC 2 Juno Saw Curve"), NJ_S("OSC 2 Juno Pulse Wave"), NJ_S("OSC 2 Juno Saw Wave"), NJ_S("OSC 2 Juno Sub Wave"), NJ_S("OSC 2 Juno PWM Source"), NJ_S("OSC 2 Juno Vibrato"), NJ_S("OSC 3 Physical Noise vs Mallet"), NJ_S("OSC 3 Physical Mallet Hardness"), NJ_S("OSC 3 Physical Noise Time"), NJ_S("OSC 3 Physical A Model"), NJ_S("OSC 3 Physical A Decay"), NJ_S("OSC 3 Physical A Material"), NJ_S("OSC 3 Physical A Hit Position"), NJ_S("OSC 3 Physical A Inharmonicity"), NJ_S("OSC 3 Physical B Model"), NJ_S("OSC 3 Physical B Decay"), NJ_S("OSC 3 Physical B Material"), NJ_S("OSC 3 Physical B Hit Position"), NJ_S("OSC 3 Physical B Inharmonicity"), NJ_S("OSC 3 Physical B Tune"), NJ_S("OSC 3 Physical A / B Balance"), NJ_S("OSC 3 Physical Coupling"), NJ_S("OSC 3 Juno Saw Level"), NJ_S("OSC 3 Juno Pulse Level"), NJ_S("OSC 3 Juno Pulse Width"), NJ_S("OSC 3 Juno PWM Depth"), NJ_S("OSC 3 Juno PWM Rate"), NJ_S("OSC 3 Juno Sub Level"), NJ_S("OSC 3 Juno Noise Level"), NJ_S("OSC 3 Juno Range"), NJ_S("OSC 3 Juno Drift"), NJ_S("OSC 3 Juno Saw Curve"), NJ_S("OSC 3 Juno Pulse Wave"), NJ_S("OSC 3 Juno Saw Wave"), NJ_S("OSC 3 Juno Sub Wave"), NJ_S("OSC 3 Juno PWM Source"), NJ_S("OSC 3 Juno Vibrato"), NJ_S("OSC 4 Physical Noise vs Mallet"), NJ_S("OSC 4 Physical Mallet Hardness"), NJ_S("OSC 4 Physical Noise Time"), NJ_S("OSC 4 Physical A Model"), NJ_S("OSC 4 Physical A Decay"), NJ_S("OSC 4 Physical A Material"), NJ_S("OSC 4 Physical A Hit Position"), NJ_S("OSC 4 Physical A Inharmonicity"), NJ_S("OSC 4 Physical B Model"), NJ_S("OSC 4 Physical B Decay"), NJ_S("OSC 4 Physical B Material"), NJ_S("OSC 4 Physical B Hit Position"), NJ_S("OSC 4 Physical B Inharmonicity"), NJ_S("OSC 4 Physical B Tune"), NJ_S("OSC 4 Physical A / B Balance"), NJ_S("OSC 4 Physical Coupling"), NJ_S("OSC 4 Juno Saw Level"), NJ_S("OSC 4 Juno Pulse Level"), NJ_S("OSC 4 Juno Pulse Width"), NJ_S("OSC 4 Juno PWM Depth"), NJ_S("OSC 4 Juno PWM Rate"), NJ_S("OSC 4 Juno Sub Level"), NJ_S("OSC 4 Juno Noise Level"), NJ_S("OSC 4 Juno Range"), NJ_S("OSC 4 Juno Drift"), NJ_S("OSC 4 Juno Saw Curve"), NJ_S("OSC 4 Juno Pulse Wave"), NJ_S("OSC 4 Juno Saw Wave"), NJ_S("OSC 4 Juno Sub Wave"), NJ_S("OSC 4 Juno PWM Source"), NJ_S("OSC 4 Juno Vibrato"), NJ_S("OSC 5 Physical Noise vs Mallet"), NJ_S("OSC 5 Physical Mallet Hardness"), NJ_S("OSC 5 Physical Noise Time"), NJ_S("OSC 5 Physical A Model"), NJ_S("OSC 5 Physical A Decay"), NJ_S("OSC 5 Physical A Material"), NJ_S("OSC 5 Physical A Hit Position"), NJ_S("OSC 5 Physical A Inharmonicity"), NJ_S("OSC 5 Physical B Model"), NJ_S("OSC 5 Physical B Decay"), NJ_S("OSC 5 Physical B Material"), NJ_S("OSC 5 Physical B Hit Position"), NJ_S("OSC 5 Physical B Inharmonicity"), NJ_S("OSC 5 Physical B Tune"), NJ_S("OSC 5 Physical A / B Balance"), NJ_S("OSC 5 Physical Coupling"), NJ_S("OSC 5 Juno Saw Level"), NJ_S("OSC 5 Juno Pulse Level"), NJ_S("OSC 5 Juno Pulse Width"), NJ_S("OSC 5 Juno PWM Depth"), NJ_S("OSC 5 Juno PWM Rate"), NJ_S("OSC 5 Juno Sub Level"), NJ_S("OSC 5 Juno Noise Level"), NJ_S("OSC 5 Juno Range"), NJ_S("OSC 5 Juno Drift"), NJ_S("OSC 5 Juno Saw Curve"), NJ_S("OSC 5 Juno Pulse Wave"), NJ_S("OSC 5 Juno Saw Wave"), NJ_S("OSC 5 Juno Sub Wave"), NJ_S("OSC 5 Juno PWM Source"), NJ_S("OSC 5 Juno Vibrato"), NJ_S("OSC 6 Physical Noise vs Mallet"), NJ_S("OSC 6 Physical Mallet Hardness"), NJ_S("OSC 6 Physical Noise Time"), NJ_S("OSC 6 Physical A Model"), NJ_S("OSC 6 Physical A Decay"), NJ_S("OSC 6 Physical A Material"), NJ_S("OSC 6 Physical A Hit Position"), NJ_S("OSC 6 Physical A Inharmonicity"), NJ_S("OSC 6 Physical B Model"), NJ_S("OSC 6 Physical B Decay"), NJ_S("OSC 6 Physical B Material"), NJ_S("OSC 6 Physical B Hit Position"), NJ_S("OSC 6 Physical B Inharmonicity"), NJ_S("OSC 6 Physical B Tune"), NJ_S("OSC 6 Physical A / B Balance"), NJ_S("OSC 6 Physical Coupling"), NJ_S("OSC 6 Juno Saw Level"), NJ_S("OSC 6 Juno Pulse Level"), NJ_S("OSC 6 Juno Pulse Width"), NJ_S("OSC 6 Juno PWM Depth"), NJ_S("OSC 6 Juno PWM Rate"), NJ_S("OSC 6 Juno Sub Level"), NJ_S("OSC 6 Juno Noise Level"), NJ_S("OSC 6 Juno Range"), NJ_S("OSC 6 Juno Drift"), NJ_S("OSC 6 Juno Saw Curve"), NJ_S("OSC 6 Juno Pulse Wave"), NJ_S("OSC 6 Juno Saw Wave"), NJ_S("OSC 6 Juno Sub Wave"), NJ_S("OSC 6 Juno PWM Source"), NJ_S("OSC 6 Juno Vibrato"), NJ_S("OSC 1 Kick Mode"), NJ_S("OSC 1 Kick Pitch Sweep"), NJ_S("OSC 1 Kick Sweep Time"), NJ_S("OSC 1 Kick Sweep Curve"), NJ_S("OSC 1 Kick Decay"), NJ_S("OSC 1 Kick Tone"), NJ_S("OSC 1 Kick Click Level"), NJ_S("OSC 1 Kick Click Tone"), NJ_S("OSC 1 Kick Noise Level"), NJ_S("OSC 1 Kick Drive"), NJ_S("OSC 1 Kick Drive Curve"), NJ_S("OSC 1 Kick Sub Level"), NJ_S("OSC 1 Kick Punch"), NJ_S("OSC 1 Kick Tune"), NJ_S("OSC 1 Kick Click Decay"), NJ_S("OSC 1 Kick Character"), NJ_S("OSC 2 Kick Mode"), NJ_S("OSC 2 Kick Pitch Sweep"), NJ_S("OSC 2 Kick Sweep Time"), NJ_S("OSC 2 Kick Sweep Curve"), NJ_S("OSC 2 Kick Decay"), NJ_S("OSC 2 Kick Tone"), NJ_S("OSC 2 Kick Click Level"), NJ_S("OSC 2 Kick Click Tone"), NJ_S("OSC 2 Kick Noise Level"), NJ_S("OSC 2 Kick Drive"), NJ_S("OSC 2 Kick Drive Curve"), NJ_S("OSC 2 Kick Sub Level"), NJ_S("OSC 2 Kick Punch"), NJ_S("OSC 2 Kick Tune"), NJ_S("OSC 2 Kick Click Decay"), NJ_S("OSC 2 Kick Character"), NJ_S("OSC 3 Kick Mode"), NJ_S("OSC 3 Kick Pitch Sweep"), NJ_S("OSC 3 Kick Sweep Time"), NJ_S("OSC 3 Kick Sweep Curve"), NJ_S("OSC 3 Kick Decay"), NJ_S("OSC 3 Kick Tone"), NJ_S("OSC 3 Kick Click Level"), NJ_S("OSC 3 Kick Click Tone"), NJ_S("OSC 3 Kick Noise Level"), NJ_S("OSC 3 Kick Drive"), NJ_S("OSC 3 Kick Drive Curve"), NJ_S("OSC 3 Kick Sub Level"), NJ_S("OSC 3 Kick Punch"), NJ_S("OSC 3 Kick Tune"), NJ_S("OSC 3 Kick Click Decay"), NJ_S("OSC 3 Kick Character"), NJ_S("OSC 4 Kick Mode"), NJ_S("OSC 4 Kick Pitch Sweep"), NJ_S("OSC 4 Kick Sweep Time"), NJ_S("OSC 4 Kick Sweep Curve"), NJ_S("OSC 4 Kick Decay"), NJ_S("OSC 4 Kick Tone"), NJ_S("OSC 4 Kick Click Level"), NJ_S("OSC 4 Kick Click Tone"), NJ_S("OSC 4 Kick Noise Level"), NJ_S("OSC 4 Kick Drive"), NJ_S("OSC 4 Kick Drive Curve"), NJ_S("OSC 4 Kick Sub Level"), NJ_S("OSC 4 Kick Punch"), NJ_S("OSC 4 Kick Tune"), NJ_S("OSC 4 Kick Click Decay"), NJ_S("OSC 4 Kick Character"), NJ_S("OSC 5 Kick Mode"), NJ_S("OSC 5 Kick Pitch Sweep"), NJ_S("OSC 5 Kick Sweep Time"), NJ_S("OSC 5 Kick Sweep Curve"), NJ_S("OSC 5 Kick Decay"), NJ_S("OSC 5 Kick Tone"), NJ_S("OSC 5 Kick Click Level"), NJ_S("OSC 5 Kick Click Tone"), NJ_S("OSC 5 Kick Noise Level"), NJ_S("OSC 5 Kick Drive"), NJ_S("OSC 5 Kick Drive Curve"), NJ_S("OSC 5 Kick Sub Level"), NJ_S("OSC 5 Kick Punch"), NJ_S("OSC 5 Kick Tune"), NJ_S("OSC 5 Kick Click Decay"), NJ_S("OSC 5 Kick Character"), NJ_S("OSC 6 Kick Mode"), NJ_S("OSC 6 Kick Pitch Sweep"), NJ_S("OSC 6 Kick Sweep Time"), NJ_S("OSC 6 Kick Sweep Curve"), NJ_S("OSC 6 Kick Decay"), NJ_S("OSC 6 Kick Tone"), NJ_S("OSC 6 Kick Click Level"), NJ_S("OSC 6 Kick Click Tone"), NJ_S("OSC 6 Kick Noise Level"), NJ_S("OSC 6 Kick Drive"), NJ_S("OSC 6 Kick Drive Curve"), NJ_S("OSC 6 Kick Sub Level"), NJ_S("OSC 6 Kick Punch"), NJ_S("OSC 6 Kick Tune"), NJ_S("OSC 6 Kick Click Decay"), NJ_S("OSC 6 Kick Character"), NJ_S("OSC 1 Terrain Orbit Center X"), NJ_S("OSC 1 Terrain Orbit Center Y"), NJ_S("OSC 1 Terrain Orbit Radius X"), NJ_S("OSC 1 Terrain Orbit Radius Y"), NJ_S("OSC 1 Terrain Orbit Rotation"), NJ_S("OSC 1 Terrain Orbit Ratio"), NJ_S("OSC 1 Terrain Orbit Phase"), NJ_S("OSC 1 Terrain Orbit Shape"), NJ_S("OSC 1 Terrain Move Rate"), NJ_S("OSC 1 Terrain Move Depth"), NJ_S("OSC 1 Terrain B"), NJ_S("OSC 1 Terrain Morph A to B"), NJ_S("OSC 1 Terrain Smooth"), NJ_S("OSC 1 Terrain Drive"), NJ_S("OSC 1 Terrain Bit Depth"), NJ_S("OSC 1 Terrain Velocity to Radius"), NJ_S("OSC 2 Terrain Orbit Center X"), NJ_S("OSC 2 Terrain Orbit Center Y"), NJ_S("OSC 2 Terrain Orbit Radius X"), NJ_S("OSC 2 Terrain Orbit Radius Y"), NJ_S("OSC 2 Terrain Orbit Rotation"), NJ_S("OSC 2 Terrain Orbit Ratio"), NJ_S("OSC 2 Terrain Orbit Phase"), NJ_S("OSC 2 Terrain Orbit Shape"), NJ_S("OSC 2 Terrain Move Rate"), NJ_S("OSC 2 Terrain Move Depth"), NJ_S("OSC 2 Terrain B"), NJ_S("OSC 2 Terrain Morph A to B"), NJ_S("OSC 2 Terrain Smooth"), NJ_S("OSC 2 Terrain Drive"), NJ_S("OSC 2 Terrain Bit Depth"), NJ_S("OSC 2 Terrain Velocity to Radius"), NJ_S("OSC 3 Terrain Orbit Center X"), NJ_S("OSC 3 Terrain Orbit Center Y"), NJ_S("OSC 3 Terrain Orbit Radius X"), NJ_S("OSC 3 Terrain Orbit Radius Y"), NJ_S("OSC 3 Terrain Orbit Rotation"), NJ_S("OSC 3 Terrain Orbit Ratio"), NJ_S("OSC 3 Terrain Orbit Phase"), NJ_S("OSC 3 Terrain Orbit Shape"), NJ_S("OSC 3 Terrain Move Rate"), NJ_S("OSC 3 Terrain Move Depth"), NJ_S("OSC 3 Terrain B"), NJ_S("OSC 3 Terrain Morph A to B"), NJ_S("OSC 3 Terrain Smooth"), NJ_S("OSC 3 Terrain Drive"), NJ_S("OSC 3 Terrain Bit Depth"), NJ_S("OSC 3 Terrain Velocity to Radius"), NJ_S("OSC 4 Terrain Orbit Center X"), NJ_S("OSC 4 Terrain Orbit Center Y"), NJ_S("OSC 4 Terrain Orbit Radius X"), NJ_S("OSC 4 Terrain Orbit Radius Y"), NJ_S("OSC 4 Terrain Orbit Rotation"), NJ_S("OSC 4 Terrain Orbit Ratio"), NJ_S("OSC 4 Terrain Orbit Phase"), NJ_S("OSC 4 Terrain Orbit Shape"), NJ_S("OSC 4 Terrain Move Rate"), NJ_S("OSC 4 Terrain Move Depth"), NJ_S("OSC 4 Terrain B"), NJ_S("OSC 4 Terrain Morph A to B"), NJ_S("OSC 4 Terrain Smooth"), NJ_S("OSC 4 Terrain Drive"), NJ_S("OSC 4 Terrain Bit Depth"), NJ_S("OSC 4 Terrain Velocity to Radius"), NJ_S("OSC 5 Terrain Orbit Center X"), NJ_S("OSC 5 Terrain Orbit Center Y"), NJ_S("OSC 5 Terrain Orbit Radius X"), NJ_S("OSC 5 Terrain Orbit Radius Y"), NJ_S("OSC 5 Terrain Orbit Rotation"), NJ_S("OSC 5 Terrain Orbit Ratio"), NJ_S("OSC 5 Terrain Orbit Phase"), NJ_S("OSC 5 Terrain Orbit Shape"), NJ_S("OSC 5 Terrain Move Rate"), NJ_S("OSC 5 Terrain Move Depth"), NJ_S("OSC 5 Terrain B"), NJ_S("OSC 5 Terrain Morph A to B"), NJ_S("OSC 5 Terrain Smooth"), NJ_S("OSC 5 Terrain Drive"), NJ_S("OSC 5 Terrain Bit Depth"), NJ_S("OSC 5 Terrain Velocity to Radius"), NJ_S("OSC 6 Terrain Orbit Center X"), NJ_S("OSC 6 Terrain Orbit Center Y"), NJ_S("OSC 6 Terrain Orbit Radius X"), NJ_S("OSC 6 Terrain Orbit Radius Y"), NJ_S("OSC 6 Terrain Orbit Rotation"), NJ_S("OSC 6 Terrain Orbit Ratio"), NJ_S("OSC 6 Terrain Orbit Phase"), NJ_S("OSC 6 Terrain Orbit Shape"), NJ_S("OSC 6 Terrain Move Rate"), NJ_S("OSC 6 Terrain Move Depth"), NJ_S("OSC 6 Terrain B"), NJ_S("OSC 6 Terrain Morph A to B"), NJ_S("OSC 6 Terrain Smooth"), NJ_S("OSC 6 Terrain Drive"), NJ_S("OSC 6 Terrain Bit Depth"), NJ_S("OSC 6 Terrain Velocity to Radius") };
+    static const juce::StringArray v = [] { juce::StringArray r; modDst_0 (r); modDst_1 (r); modDst_2 (r); modDst_3 (r); modDst_4 (r); modDst_5 (r); modDst_6 (r); return r; }();
     return v;
+}
+static void distTypes_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Off"));
+    v.add (NJ_S("Soft"));
+    v.add (NJ_S("Tube"));
+    v.add (NJ_S("Hard"));
+    v.add (NJ_S("Fold"));
+    v.add (NJ_S("Sine"));
+    v.add (NJ_S("Crunch"));
+    v.add (NJ_S("Wavedistortion"));
 }
 const juce::StringArray& distTypes()
 {
-    static const juce::StringArray v { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") };
+    static const juce::StringArray v = [] { juce::StringArray r; distTypes_0 (r); return r; }();
     return v;
+}
+static void oscOuts_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Main"));
+    v.add (NJ_S("Bus 1"));
+    v.add (NJ_S("Bus 2"));
 }
 const juce::StringArray& oscOuts()
 {
-    static const juce::StringArray v { NJ_S("Main"), NJ_S("Bus 1"), NJ_S("Bus 2") };
+    static const juce::StringArray v = [] { juce::StringArray r; oscOuts_0 (r); return r; }();
     return v;
+}
+static void uniStyles_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Lin"));
+    v.add (NJ_S("Exp"));
+    v.add (NJ_S("Inv"));
+    v.add (NJ_S("Rnd"));
 }
 const juce::StringArray& uniStyles()
 {
-    static const juce::StringArray v { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd") };
+    static const juce::StringArray v = [] { juce::StringArray r; uniStyles_0 (r); return r; }();
     return v;
+}
+static void warpModes_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Off"));
+    v.add (NJ_S("Bend +"));
+    v.add (NJ_S("Bend −"));
+    v.add (NJ_S("Sync"));
+    v.add (NJ_S("PWM"));
+    v.add (NJ_S("Mirror"));
+    v.add (NJ_S("Flip"));
+    v.add (NJ_S("Quantize"));
+    v.add (NJ_S("Fold"));
 }
 const juce::StringArray& warpModes()
 {
-    static const juce::StringArray v { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") };
+    static const juce::StringArray v = [] { juce::StringArray r; warpModes_0 (r); return r; }();
     return v;
+}
+static void lfoModes_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Free"));
+    v.add (NJ_S("Trig"));
+    v.add (NJ_S("Env"));
 }
 const juce::StringArray& lfoModes()
 {
-    static const juce::StringArray v { NJ_S("Free"), NJ_S("Trig"), NJ_S("Env") };
+    static const juce::StringArray v = [] { juce::StringArray r; lfoModes_0 (r); return r; }();
     return v;
+}
+static void srcTypes_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("Wavetable"));
+    v.add (NJ_S("Sampler"));
+    v.add (NJ_S("Wave Terrain"));
+    v.add (NJ_S("Physical"));
+    v.add (NJ_S("Alpha Juno"));
+    v.add (NJ_S("Kick"));
 }
 const juce::StringArray& srcTypes()
 {
-    static const juce::StringArray v { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick") };
+    static const juce::StringArray v = [] { juce::StringArray r; srcTypes_0 (r); return r; }();
     return v;
+}
+static void noteNames_0 (juce::StringArray& v)
+{
+    v.add (NJ_S("C"));
+    v.add (NJ_S("C#"));
+    v.add (NJ_S("D"));
+    v.add (NJ_S("D#"));
+    v.add (NJ_S("E"));
+    v.add (NJ_S("F"));
+    v.add (NJ_S("F#"));
+    v.add (NJ_S("G"));
+    v.add (NJ_S("G#"));
+    v.add (NJ_S("A"));
+    v.add (NJ_S("A#"));
+    v.add (NJ_S("B"));
 }
 const juce::StringArray& noteNames()
 {
-    static const juce::StringArray v { NJ_S("C"), NJ_S("C#"), NJ_S("D"), NJ_S("D#"), NJ_S("E"), NJ_S("F"), NJ_S("F#"), NJ_S("G"), NJ_S("G#"), NJ_S("A"), NJ_S("A#"), NJ_S("B") };
+    static const juce::StringArray v = [] { juce::StringArray r; noteNames_0 (r); return r; }();
     return v;
 }
 const std::vector<std::pair<int, juce::String>>& filterGroups()
@@ -2351,9 +3459,9 @@ const std::vector<std::pair<int, juce::String>>& modDstGroups()
     static const std::vector<std::pair<int, juce::String>> v = { { 0, NJ_S("") }, { 1, NJ_S("Global") }, { 6, NJ_S("OSC 1") }, { 15, NJ_S("OSC 2") }, { 24, NJ_S("OSC 3") }, { 33, NJ_S("OSC 4") }, { 42, NJ_S("OSC 5") }, { 51, NJ_S("OSC 6") }, { 60, NJ_S("FM matrix (amount)") }, { 96, NJ_S("PM matrix (amount)") }, { 132, NJ_S("PD matrix (amount)") }, { 168, NJ_S("Tables") }, { 180, NJ_S("Frequency") }, { 186, NJ_S("RM matrix (amount)") }, { 222, NJ_S("AM matrix (amount)") }, { 258, NJ_S("OSC 1 Physical / Alpha Juno") }, { 289, NJ_S("OSC 2 Physical / Alpha Juno") }, { 320, NJ_S("OSC 3 Physical / Alpha Juno") }, { 351, NJ_S("OSC 4 Physical / Alpha Juno") }, { 382, NJ_S("OSC 5 Physical / Alpha Juno") }, { 413, NJ_S("OSC 6 Physical / Alpha Juno") }, { 444, NJ_S("OSC 1 Kick") }, { 460, NJ_S("OSC 2 Kick") }, { 476, NJ_S("OSC 3 Kick") }, { 492, NJ_S("OSC 4 Kick") }, { 508, NJ_S("OSC 5 Kick") }, { 524, NJ_S("OSC 6 Kick") }, { 540, NJ_S("OSC 1 Wave Terrain") }, { 556, NJ_S("OSC 2 Wave Terrain") }, { 572, NJ_S("OSC 3 Wave Terrain") }, { 588, NJ_S("OSC 4 Wave Terrain") }, { 604, NJ_S("OSC 5 Wave Terrain") }, { 620, NJ_S("OSC 6 Wave Terrain") } };
     return v;
 }
-const std::map<int, std::pair<int, float>>& modTarget()
+static void modTarget_0 (std::map<int, std::pair<int, float>>& v)
 {
-    static const std::map<int, std::pair<int, float>> v = {
+    v.insert ( {
         { 28, { 4, 0.5f } },
         { 29, { 3, 0.5f } },
         { 63, { 1, 0.5f } },
@@ -2454,6 +3562,11 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 1403, { 63, 0.5f } },
         { 1404, { 64, 0.5f } },
         { 1405, { 65, 0.5f } },
+    });
+}
+static void modTarget_1 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1406, { 66, 0.5f } },
         { 1407, { 67, 0.5f } },
         { 1408, { 68, 0.5f } },
@@ -2554,6 +3667,11 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 1511, { 163, 0.5f } },
         { 1512, { 164, 0.5f } },
         { 1513, { 165, 0.5f } },
+    });
+}
+static void modTarget_2 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1514, { 166, 0.5f } },
         { 1515, { 167, 0.5f } },
         { 1520, { 186, 0.5f } },
@@ -2654,6 +3772,11 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 1732, { 289, 0.5f } },
         { 1733, { 290, 0.5f } },
         { 1734, { 291, 0.5f } },
+    });
+}
+static void modTarget_3 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1736, { 293, 0.5f } },
         { 1737, { 294, 0.5f } },
         { 1738, { 295, 0.5f } },
@@ -2754,6 +3877,11 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 1870, { 423, 0.5f } },
         { 1871, { 424, 0.5f } },
         { 1872, { 425, 0.5f } },
+    });
+}
+static void modTarget_4 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1873, { 426, 0.5f } },
         { 1874, { 427, 0.5f } },
         { 1876, { 429, 0.5f } },
@@ -2854,6 +3982,11 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 2101, { 541, 0.5f } },
         { 2102, { 542, 0.5f } },
         { 2103, { 543, 0.5f } },
+    });
+}
+static void modTarget_5 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2104, { 544, 0.5f } },
         { 2105, { 545, 0.5f } },
         { 2106, { 546, 0.5f } },
@@ -2940,29 +4073,72 @@ const std::map<int, std::pair<int, float>>& modTarget()
         { 2193, { 633, 0.5f } },
         { 2194, { 634, 0.5f } },
         { 2195, { 635, 0.5f } },
-    };
+    });
+}
+const std::map<int, std::pair<int, float>>& modTarget()
+{
+    static const std::map<int, std::pair<int, float>> v = [] { std::map<int, std::pair<int, float>> r; modTarget_0 (r); modTarget_1 (r); modTarget_2 (r); modTarget_3 (r); modTarget_4 (r); modTarget_5 (r); return r; }();
     return v;
+}
+static void fxTypes_0 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("None"), 1.0f, {  }, {  }, {  } },
+        FxType { NJ_S("Distortion"), 1.0f, { NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Rectify"), NJ_S("Fuzz"), NJ_S("Tanh"), NJ_S("Diode"), NJ_S("Chebyshev"), NJ_S("Tape"), NJ_S("Gated") }, {  }, { { NJ_S("Drive"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Tone"), { "hz", 500.0, 20000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Output"), { "out2x", 0, 0, 0, "" }, 0.5f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Presence"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
+    });
+}
+static void fxTypes_1 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Bit Crush"), 1.0f, { NJ_S("Round"), NJ_S("Mu-law"), NJ_S("Floor"), NJ_S("Bits Only"), NJ_S("Rate Only"), NJ_S("Noise Shaped") }, {  }, { { NJ_S("Bits"), { "bits", 0, 0, 0, "" }, 0.5f }, { NJ_S("Rate"), { "rate", 0, 0, 0, "" }, 0.1f }, { NJ_S("Dither"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Jitter"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
+        FxType { NJ_S("Delay"), 0.35f, { NJ_S("Digital"), NJ_S("Tape"), NJ_S("Dual"), NJ_S("Ducking"), NJ_S("Reverse"), NJ_S("Multi-tap") }, {  }, { { NJ_S("Time"), { "ms", 10.0, 1000.0, 0, NJ_S("") }, 0.7870156338638593f }, { NJ_S("Feedback"), { "pctof", 0.95, 0.0, 0, NJ_S("") }, 0.37f }, { NJ_S("Damp"), { "hz", 500.0, 18000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Ping-Pong"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Mod"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Low Cut"), { "hz", 20.0, 1000.0, 0, NJ_S("") }, 0.0f } } },
+    });
+}
+static void fxTypes_2 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Chorus"), 0.5f, { NJ_S("Classic"), NJ_S("Dimension"), NJ_S("Vibrato"), NJ_S("Ensemble"), NJ_S("Wide") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 5.0, 0, NJ_S("") }, 0.6020599913279623f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Feedback"), { "pctof", 0.9, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
+        FxType { NJ_S("Flanger"), 0.5f, { NJ_S("Positive"), NJ_S("Negative"), NJ_S("Through-Zero"), NJ_S("Stereo") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 5.0, 0, NJ_S("") }, 0.38907562519182176f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.6f }, { NJ_S("Feedback"), { "pctof", 0.95, 0.0, 0, NJ_S("") }, 0.53f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
+    });
+}
+static void fxTypes_3 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Phaser"), 0.5f, { NJ_S("2 Stages"), NJ_S("4 Stages"), NJ_S("6 Stages"), NJ_S("8 Stages"), NJ_S("10 Stages"), NJ_S("12 Stages"), NJ_S("Inverted 4"), NJ_S("Inverted 8") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 8.0, 0, NJ_S("") }, 0.4097281427954464f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Feedback"), { "pctof", 0.9, 0.0, 0, NJ_S("") }, 0.55f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
+        FxType { NJ_S("Tremolo"), 1.0f, { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("Saw Dn"), NJ_S("Saw Up"), NJ_S("Trance Gate"), NJ_S("Auto-Pan"), NJ_S("Random S&H"), NJ_S("Smooth Random") }, {  }, { { NJ_S("Rate"), { "hz", 0.1, 20.0, 0, NJ_S("") }, 0.7383519587043745f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.7f }, { NJ_S("Stereo"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Pattern"), { "pat", 0, 0, 0, "" }, 0.0625f }, { NJ_S("Smooth"), { "ms", 0.3, 40.0, 0, NJ_S("") }, 0.3f }, { NJ_S("Swing"), { "pctof", 0.5, 0.0, 0, NJ_S("") }, 0.0f } } },
+    });
+}
+static void fxTypes_4 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Reverb"), 0.3f, { NJ_S("Hall"), NJ_S("Room"), NJ_S("Plate"), NJ_S("Cathedral"), NJ_S("Chamber"), NJ_S("Ambience"), NJ_S("Dark"), NJ_S("Bright"), NJ_S("Infinite") }, {  }, { { NJ_S("Size"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Damp"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("PreDly"), { "predly", 0, 0, 0, "" }, 0.2f }, { NJ_S("Width"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Low Cut"), { "hz", 20.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("High Cut"), { "hz", 1500.0, 20000.0, 0, NJ_S("") }, 1.0f } } },
+        FxType { NJ_S("Filter"), 1.0f, { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") } }, { { NJ_S("Cutoff"), { "hz", 20.0, 20000.0, 0, NJ_S("") }, 0.67f }, { NJ_S("Reso"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.2f }, { NJ_S("Drive"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
+    });
+}
+static void fxTypes_5 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("EQ"), 1.0f, { NJ_S("Classic"), NJ_S("Tilt"), NJ_S("Loudness"), NJ_S("Presence") }, {  }, { { NJ_S("Low"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid Freq"), { "hz", 200.0, 5000.0, 0, NJ_S("") }, 0.5f }, { NJ_S("High"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid Q"), { "midq", 0, 0, 0, "" }, 0.5f }, { NJ_S("High Freq"), { "hz", 4000.0, 16000.0, 0, NJ_S("") }, 0.5f } } },
+        FxType { NJ_S("Compressor"), 1.0f, { NJ_S("Peak"), NJ_S("RMS"), NJ_S("Limiter"), NJ_S("Expander"), NJ_S("Gate") }, {  }, { { NJ_S("Thresh"), { "lin", -60.0, 0.0, 1, NJ_S("dB") }, 0.6f }, { NJ_S("Ratio"), { "ratio", 0, 0, 0, "" }, 0.3f }, { NJ_S("Attack"), { "ms", 0.1, 100.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Release"), { "ms", 10.0, 1000.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Makeup"), { "lin", 0.0, 24.0, 1, NJ_S("dB") }, 0.2f }, { NJ_S("Knee"), { "lin", 0.0, 12.0, 1, NJ_S("dB") }, 0.0f } } },
+    });
+}
+static void fxTypes_6 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Convolution"), 0.3f, { NJ_S("Room"), NJ_S("Hall"), NJ_S("Plate"), NJ_S("Cathedral"), NJ_S("Chamber"), NJ_S("Reverse"), NJ_S("Gated"), NJ_S("Ambience"), NJ_S("User IR") }, {  }, { { NJ_S("Size"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Decay"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Damp"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.4f }, { NJ_S("PreDly"), { "lin", 0.0, 200.0, 0, NJ_S("ms") }, 0.0f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Tone"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f } } },
+        FxType { NJ_S("Parametric EQ"), 1.0f, {  }, {  }, { { NJ_S("Output"), { "db", -18.0, 18.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Gain Scale"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Freq Shift"), { "lin", -1.0, 1.0, 2, NJ_S("oct") }, 0.5f }, { NJ_S("Q Scale"), { "qsc", 0, 0, 0, "" }, 0.5f } } },
+    });
+}
+static void fxTypes_7 (std::vector<FxType>& v)
+{
+    v.insert (v.end(), {
+        FxType { NJ_S("Saturator"), 1.0f, { NJ_S("Tube"), NJ_S("Tape"), NJ_S("Transformer"), NJ_S("Diode"), NJ_S("Fuzz"), NJ_S("Soft Clip"), NJ_S("Hard Clip"), NJ_S("Rectifier"), NJ_S("Sine Fold"), NJ_S("Rational"), NJ_S("Exciter"), NJ_S("Arctan") }, {  }, { { NJ_S("Drive"), { "lin", 0.0, 36.0, 1, NJ_S("dB") }, 0.3f }, { NJ_S("Tone"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Output"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Sag"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
+        FxType { NJ_S("Waveshaper"), 1.0f, { NJ_S("Curve"), NJ_S("Mirror"), NJ_S("Rectified") }, {  }, { { NJ_S("Drive"), { "lin", 0.0, 30.0, 1, NJ_S("dB") }, 0.3f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Output"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Tone"), { "hz", 500.0, 20000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f } } },
+    });
 }
 const std::vector<FxType>& fxTypes()
 {
-    static const std::vector<FxType> v = {
-        { NJ_S("None"), 1.0f, {  }, {  }, {  } },
-        { NJ_S("Distortion"), 1.0f, { NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Rectify"), NJ_S("Fuzz"), NJ_S("Tanh"), NJ_S("Diode"), NJ_S("Chebyshev"), NJ_S("Tape"), NJ_S("Gated") }, {  }, { { NJ_S("Drive"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Tone"), { "hz", 500.0, 20000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Output"), { "out2x", 0, 0, 0, "" }, 0.5f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Presence"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("Bit Crush"), 1.0f, { NJ_S("Round"), NJ_S("Mu-law"), NJ_S("Floor"), NJ_S("Bits Only"), NJ_S("Rate Only"), NJ_S("Noise Shaped") }, {  }, { { NJ_S("Bits"), { "bits", 0, 0, 0, "" }, 0.5f }, { NJ_S("Rate"), { "rate", 0, 0, 0, "" }, 0.1f }, { NJ_S("Dither"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Jitter"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("Delay"), 0.35f, { NJ_S("Digital"), NJ_S("Tape"), NJ_S("Dual"), NJ_S("Ducking"), NJ_S("Reverse"), NJ_S("Multi-tap") }, {  }, { { NJ_S("Time"), { "ms", 10.0, 1000.0, 0, NJ_S("") }, 0.7870156338638593f }, { NJ_S("Feedback"), { "pctof", 0.95, 0.0, 0, NJ_S("") }, 0.37f }, { NJ_S("Damp"), { "hz", 500.0, 18000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Ping-Pong"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Mod"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Low Cut"), { "hz", 20.0, 1000.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("Chorus"), 0.5f, { NJ_S("Classic"), NJ_S("Dimension"), NJ_S("Vibrato"), NJ_S("Ensemble"), NJ_S("Wide") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 5.0, 0, NJ_S("") }, 0.6020599913279623f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Feedback"), { "pctof", 0.9, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
-        { NJ_S("Flanger"), 0.5f, { NJ_S("Positive"), NJ_S("Negative"), NJ_S("Through-Zero"), NJ_S("Stereo") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 5.0, 0, NJ_S("") }, 0.38907562519182176f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.6f }, { NJ_S("Feedback"), { "pctof", 0.95, 0.0, 0, NJ_S("") }, 0.53f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
-        { NJ_S("Phaser"), 0.5f, { NJ_S("2 Stages"), NJ_S("4 Stages"), NJ_S("6 Stages"), NJ_S("8 Stages"), NJ_S("10 Stages"), NJ_S("12 Stages"), NJ_S("Inverted 4"), NJ_S("Inverted 8") }, {  }, { { NJ_S("Rate"), { "hz", 0.05, 8.0, 0, NJ_S("") }, 0.4097281427954464f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Feedback"), { "pctof", 0.9, 0.0, 0, NJ_S("") }, 0.55f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f } } },
-        { NJ_S("Tremolo"), 1.0f, { NJ_S("Sin"), NJ_S("Tri"), NJ_S("Sqr"), NJ_S("Saw Dn"), NJ_S("Saw Up"), NJ_S("Trance Gate"), NJ_S("Auto-Pan"), NJ_S("Random S&H"), NJ_S("Smooth Random") }, {  }, { { NJ_S("Rate"), { "hz", 0.1, 20.0, 0, NJ_S("") }, 0.7383519587043745f }, { NJ_S("Depth"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.7f }, { NJ_S("Stereo"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Pattern"), { "pat", 0, 0, 0, "" }, 0.0625f }, { NJ_S("Smooth"), { "ms", 0.3, 40.0, 0, NJ_S("") }, 0.3f }, { NJ_S("Swing"), { "pctof", 0.5, 0.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("Reverb"), 0.3f, { NJ_S("Hall"), NJ_S("Room"), NJ_S("Plate"), NJ_S("Cathedral"), NJ_S("Chamber"), NJ_S("Ambience"), NJ_S("Dark"), NJ_S("Bright"), NJ_S("Infinite") }, {  }, { { NJ_S("Size"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Damp"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("PreDly"), { "predly", 0, 0, 0, "" }, 0.2f }, { NJ_S("Width"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Low Cut"), { "hz", 20.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("High Cut"), { "hz", 1500.0, 20000.0, 0, NJ_S("") }, 1.0f } } },
-        { NJ_S("Filter"), 1.0f, { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-") }, { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") } }, { { NJ_S("Cutoff"), { "hz", 20.0, 20000.0, 0, NJ_S("") }, 0.67f }, { NJ_S("Reso"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.2f }, { NJ_S("Drive"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("EQ"), 1.0f, { NJ_S("Classic"), NJ_S("Tilt"), NJ_S("Loudness"), NJ_S("Presence") }, {  }, { { NJ_S("Low"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid Freq"), { "hz", 200.0, 5000.0, 0, NJ_S("") }, 0.5f }, { NJ_S("High"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Mid Q"), { "midq", 0, 0, 0, "" }, 0.5f }, { NJ_S("High Freq"), { "hz", 4000.0, 16000.0, 0, NJ_S("") }, 0.5f } } },
-        { NJ_S("Compressor"), 1.0f, { NJ_S("Peak"), NJ_S("RMS"), NJ_S("Limiter"), NJ_S("Expander"), NJ_S("Gate") }, {  }, { { NJ_S("Thresh"), { "lin", -60.0, 0.0, 1, NJ_S("dB") }, 0.6f }, { NJ_S("Ratio"), { "ratio", 0, 0, 0, "" }, 0.3f }, { NJ_S("Attack"), { "ms", 0.1, 100.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Release"), { "ms", 10.0, 1000.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Makeup"), { "lin", 0.0, 24.0, 1, NJ_S("dB") }, 0.2f }, { NJ_S("Knee"), { "lin", 0.0, 12.0, 1, NJ_S("dB") }, 0.0f } } },
-        { NJ_S("Convolution"), 0.3f, { NJ_S("Room"), NJ_S("Hall"), NJ_S("Plate"), NJ_S("Cathedral"), NJ_S("Chamber"), NJ_S("Reverse"), NJ_S("Gated"), NJ_S("Ambience"), NJ_S("User IR") }, {  }, { { NJ_S("Size"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Decay"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Damp"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.4f }, { NJ_S("PreDly"), { "lin", 0.0, 200.0, 0, NJ_S("ms") }, 0.0f }, { NJ_S("Width"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Tone"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f } } },
-        { NJ_S("Parametric EQ"), 1.0f, {  }, {  }, { { NJ_S("Output"), { "db", -18.0, 18.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Gain Scale"), { "pctof", 2.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Freq Shift"), { "lin", -1.0, 1.0, 2, NJ_S("oct") }, 0.5f }, { NJ_S("Q Scale"), { "qsc", 0, 0, 0, "" }, 0.5f } } },
-        { NJ_S("Saturator"), 1.0f, { NJ_S("Tube"), NJ_S("Tape"), NJ_S("Transformer"), NJ_S("Diode"), NJ_S("Fuzz"), NJ_S("Soft Clip"), NJ_S("Hard Clip"), NJ_S("Rectifier"), NJ_S("Sine Fold"), NJ_S("Rational"), NJ_S("Exciter"), NJ_S("Arctan") }, {  }, { { NJ_S("Drive"), { "lin", 0.0, 36.0, 1, NJ_S("dB") }, 0.3f }, { NJ_S("Tone"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Output"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f }, { NJ_S("Sag"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
-        { NJ_S("Waveshaper"), 1.0f, { NJ_S("Curve"), NJ_S("Mirror"), NJ_S("Rectified") }, {  }, { { NJ_S("Drive"), { "lin", 0.0, 30.0, 1, NJ_S("dB") }, 0.3f }, { NJ_S("Bias"), { "lin", -100.0, 100.0, 0, NJ_S("%") }, 0.5f }, { NJ_S("Output"), { "db", -12.0, 12.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Tone"), { "hz", 500.0, 20000.0, 0, NJ_S("") }, 1.0f }, { NJ_S("Low Cut"), { "hz", 10.0, 800.0, 0, NJ_S("") }, 0.0f } } },
-    };
+    static const std::vector<FxType> v = [] { std::vector<FxType> r; fxTypes_0 (r); fxTypes_1 (r); fxTypes_2 (r); fxTypes_3 (r); fxTypes_4 (r); fxTypes_5 (r); fxTypes_6 (r); fxTypes_7 (r); return r; }();
     return v;
 }
 const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns()
@@ -3000,23 +4176,32 @@ const std::vector<FxRack>& fxRacks()
     static const std::vector<FxRack> v = { { NJ_S("Main"), 541, 641 }, { NJ_S("Bus 1"), 651, 751 }, { NJ_S("Bus 2"), 761, 861 } };
     return v;
 }
+static void lfoPresets_0 (std::vector<LfoPreset>& v)
+{
+    v.insert (v.end(), {
+        LfoPreset { NJ_S("Sine"), 0, {} },
+        LfoPreset { NJ_S("Triangle"), 1, {} },
+        LfoPreset { NJ_S("Square"), 2, {} },
+        LfoPreset { NJ_S("S&H"), 3, {} },
+        LfoPreset { NJ_S("Saw Up"), 4, {} },
+        LfoPreset { NJ_S("Saw Down"), 5, {} },
+        LfoPreset { NJ_S("Pulse 25%"), -1, { { 0.0f, 1.0f, 0.0f }, { 0.2485f, 1.0f, 0.0f }, { 0.25f, -1.0f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
+        LfoPreset { NJ_S("Half Sine"), -1, { { 0.0f, 0.0f, 0.0f }, { 0.03125f, 0.19509032201612825f, 0.0f }, { 0.0625f, 0.3826834323650898f, 0.0f }, { 0.09375f, 0.5555702330196022f, 0.0f }, { 0.125f, 0.7071067811865475f, 0.0f }, { 0.15625f, 0.8314696123025452f, 0.0f }, { 0.1875f, 0.9238795325112867f, 0.0f }, { 0.21875f, 0.9807852804032304f, 0.0f }, { 0.25f, 1.0f, 0.0f }, { 0.28125f, 0.9807852804032304f, 0.0f }, { 0.3125f, 0.9238795325112867f, 0.0f }, { 0.34375f, 0.8314696123025453f, 0.0f }, { 0.375f, 0.7071067811865476f, 0.0f }, { 0.40625f, 0.5555702330196022f, 0.0f }, { 0.4375f, 0.3826834323650899f, 0.0f }, { 0.46875f, 0.1950903220161286f, 0.0f }, { 0.5f, 1.2246467991473532e-16f, 0.0f }, { 0.5015f, -1.0f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
+    });
+}
+static void lfoPresets_1 (std::vector<LfoPreset>& v)
+{
+    v.insert (v.end(), {
+        LfoPreset { NJ_S("Exp Decay"), -1, { { 0.0f, 1.0f, 0.8f }, { 1.0f, -1.0f, 0.0f } } },
+        LfoPreset { NJ_S("Ramp + Hold"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.5f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } } },
+        LfoPreset { NJ_S("Bounce"), -1, { { 0.0f, -1.0f, -0.8f }, { 0.25f, 1.0f, 0.8f }, { 0.5f, -1.0f, -0.8f }, { 0.75f, 0.4f, 0.8f }, { 1.0f, -1.0f, 0.0f } } },
+        LfoPreset { NJ_S("Steps 4"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.2485f, -1.0f, 0.0f }, { 0.25f, -0.33f, 0.0f }, { 0.4985f, -0.33f, 0.0f }, { 0.5f, 0.33f, 0.0f }, { 0.7485f, 0.33f, 0.0f }, { 0.75f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } } },
+        LfoPreset { NJ_S("Double Hump"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.25f, 1.0f, 0.0f }, { 0.5f, -0.2f, 0.0f }, { 0.75f, 0.7f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
+    });
+}
 const std::vector<LfoPreset>& lfoPresets()
 {
-    static const std::vector<LfoPreset> v = {
-        { NJ_S("Sine"), 0, {} },
-        { NJ_S("Triangle"), 1, {} },
-        { NJ_S("Square"), 2, {} },
-        { NJ_S("S&H"), 3, {} },
-        { NJ_S("Saw Up"), 4, {} },
-        { NJ_S("Saw Down"), 5, {} },
-        { NJ_S("Pulse 25%"), -1, { { 0.0f, 1.0f, 0.0f }, { 0.2485f, 1.0f, 0.0f }, { 0.25f, -1.0f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
-        { NJ_S("Half Sine"), -1, { { 0.0f, 0.0f, 0.0f }, { 0.03125f, 0.19509032201612825f, 0.0f }, { 0.0625f, 0.3826834323650898f, 0.0f }, { 0.09375f, 0.5555702330196022f, 0.0f }, { 0.125f, 0.7071067811865475f, 0.0f }, { 0.15625f, 0.8314696123025452f, 0.0f }, { 0.1875f, 0.9238795325112867f, 0.0f }, { 0.21875f, 0.9807852804032304f, 0.0f }, { 0.25f, 1.0f, 0.0f }, { 0.28125f, 0.9807852804032304f, 0.0f }, { 0.3125f, 0.9238795325112867f, 0.0f }, { 0.34375f, 0.8314696123025453f, 0.0f }, { 0.375f, 0.7071067811865476f, 0.0f }, { 0.40625f, 0.5555702330196022f, 0.0f }, { 0.4375f, 0.3826834323650899f, 0.0f }, { 0.46875f, 0.1950903220161286f, 0.0f }, { 0.5f, 1.2246467991473532e-16f, 0.0f }, { 0.5015f, -1.0f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
-        { NJ_S("Exp Decay"), -1, { { 0.0f, 1.0f, 0.8f }, { 1.0f, -1.0f, 0.0f } } },
-        { NJ_S("Ramp + Hold"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.5f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } } },
-        { NJ_S("Bounce"), -1, { { 0.0f, -1.0f, -0.8f }, { 0.25f, 1.0f, 0.8f }, { 0.5f, -1.0f, -0.8f }, { 0.75f, 0.4f, 0.8f }, { 1.0f, -1.0f, 0.0f } } },
-        { NJ_S("Steps 4"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.2485f, -1.0f, 0.0f }, { 0.25f, -0.33f, 0.0f }, { 0.4985f, -0.33f, 0.0f }, { 0.5f, 0.33f, 0.0f }, { 0.7485f, 0.33f, 0.0f }, { 0.75f, 1.0f, 0.0f }, { 1.0f, 1.0f, 0.0f } } },
-        { NJ_S("Double Hump"), -1, { { 0.0f, -1.0f, 0.0f }, { 0.25f, 1.0f, 0.0f }, { 0.5f, -0.2f, 0.0f }, { 0.75f, 0.7f, 0.0f }, { 1.0f, -1.0f, 0.0f } } },
-    };
+    static const std::vector<LfoPreset> v = [] { std::vector<LfoPreset> r; lfoPresets_0 (r); lfoPresets_1 (r); return r; }();
     return v;
 }
 const std::map<juce::String, int>& oscKeys()
