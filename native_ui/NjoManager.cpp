@@ -1,6 +1,7 @@
 // The preset bar and its dropdown menus (preset browser, sound vault) in the style of Tone2 Icarus: click the name, pick from nested folder menus.
 // Files: <Backend::rootFolder()>/{Presets,Samples,Wavetables}; the preset file format is shared with the web UI (NjoManagerStore.h).
 #include "NjoManager.h"
+#include "NjoFactory.h"
 #include "NjoManagerStore.h"
 #include "NjoLfo.h"
 #include "NjoFreq.h"
@@ -219,6 +220,7 @@ namespace
 ManagerBar::Impl::Impl (ManagerBar& o, Ctx& c, SoundMemory& mem, juce::Component& h)
     : owner (o), ctx (c), memory (mem), host (h), store (c.be.rootFolder())
 {
+    installFactoryWavetables (c.be.rootFolder());   // first start: Wavetables/Factory/*.wav
     for (auto* b : { &prev, &nameBtn, &next, &save, &vault }) owner.addAndMakeVisible (*b);
     prev.onClick = [this] { presetStep (-1); };
     next.onClick = [this] { presetStep (1); };

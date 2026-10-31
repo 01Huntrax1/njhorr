@@ -43,7 +43,7 @@ temporary folder, and copy only the new `cmajor_plugin.cpp` back here.
 
 ## Factory wavetables
 `wavetables/Factory/*.wav` holds 14 ready-made wavetables (mono, 16 bit, one cycle = 2048 samples per frame): Basic Shapes (sine, triangle, saw, square, two pulses, half/full-wave rectified sine), Sine to Saw, Sine to Square, Sine to Triangle, Triangle to Saw, Saw to Square, PWM, Hard Sync, Harmonics, Odd Harmonics, FM Sine, Resonant Saw, Vowels, Organ. Every frame is built additively (band-limited, DC-free, same peak) by `tools/wavetables/build_factory.py`; the saw is a falling ramp so the saw/square morphs stay in phase.
-To use them copy the folder into `Documents/Njohrr/Wavetables`, press RESCAN in the Vault and load a file into a Wavetable oscillator.
+The plugin writes them itself: on the first start the preset bar creates `Documents/Njohrr/Wavetables/Factory/` with all 14 files (generated in C++ by `native_ui/NjoFactory.cpp`, a port of the Python script; `native_ui/test/factory_test.cpp` checks that both produce the same samples). A marker file `.factory-1` in that folder stops it from running again, so files you delete do not come back; delete the marker to reinstall. The files then show up in the Vault under Wavetables.
 
 ## Where samples and wavetables are saved
 Each plugin instance keeps its own samples and wavetables in the plugin's stored state, so they are saved with the DAW project and
