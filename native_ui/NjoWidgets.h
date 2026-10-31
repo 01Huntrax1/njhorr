@@ -17,7 +17,7 @@ namespace njo
         const Spec& spec() const { return *sp; }
         float value() const { return val; }
         void setValueFromUser (float v);               // clamps, sends to the backend, repaints
-        void setLabelOverride (const juce::String& s) { labelOverride = s; repaint(); }   // e.g. Plaits engine dependent names
+        void setLabelOverride (const juce::String& s) { labelOverride = s; repaint(); }   // e.g. source dependent names
         void setValueTextOverride (std::function<juce::String (float)> f) { valueText = std::move (f); repaint(); }
         juce::String labelText() const { return labelOverride.isNotEmpty() ? labelOverride : sp->name(); }
         juce::String valueString() const;

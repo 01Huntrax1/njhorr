@@ -47,8 +47,6 @@ namespace njo
     const juce::StringArray& syncDivs();     const juce::StringArray& modWaves();
     const juce::StringArray& modSrc();       const std::vector<std::pair<int, juce::String>>& modSrcGroups();
     const juce::StringArray& modDst();       const std::vector<std::pair<int, juce::String>>& modDstGroups();
-    const juce::StringArray& plaitsEngines();const std::vector<std::pair<int, juce::String>>& plaitsGroups();
-    const std::vector<juce::StringArray>& plaitsParams();   // per engine: names of Harmonics / Timbre / Morph
     const juce::StringArray& distTypes();    const juce::StringArray& oscOuts();
     const juce::StringArray& uniStyles();    const juce::StringArray& warpModes();
     const juce::StringArray& lfoModes();     const juce::StringArray& srcTypes();

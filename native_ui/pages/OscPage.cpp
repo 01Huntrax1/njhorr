@@ -1,9 +1,9 @@
-// OSC 1-6 page: source panel (wavetable / sampler / Plaits), tune + unison, filter, distortion + output.
+// OSC 1-6 page: source panel (wavetable / sampler / Wave Terrain), tune + unison, filter, distortion + output.
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
 #include "../NjoPages.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
-#include "../NjoPlx.h"
+#include "../NjoTer.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -159,7 +159,7 @@ namespace njo
                 if (e) owner.addChildComponent (e);
             if (tedit) tedit->onClose = [this] { layoutChildren(); };
             if (medit) medit->onClose = [this] { layoutChildren(); };
-            for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "pleng", "pharm", "ptimb", "pmorph",
+            for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "tterr", "tscale", "twarp", "tfold",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
                               "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
@@ -177,10 +177,10 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets["walias"] = std::move (w);
             }
-            // Plaits extras: their own id block (PLX_BASE + 16 * osc + j)
-            for (auto key : plxKeys)
+            // Wave Terrain extras: their own id block (TER_BASE + 16 * osc + j)
+            for (auto key : terKeys)
             {
-                auto w = makeWidget (ctx, plx::plxId (o, plx::key (key)), true);
+                auto w = makeWidget (ctx, ter::terId (o, ter::key (key)), true);
                 w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
@@ -246,7 +246,7 @@ namespace njo
             ctx.addListener (this);
             mem.addChangeListener (this);
             refreshDz();
-            updateEngineLabels();
+           
         }
 
         ~Impl() override { mem.removeChangeListener (this); ctx.removeListener (this); }
@@ -260,7 +260,7 @@ namespace njo
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
         int srcType() const { return juce::jlimit (0, 5, juce::roundToInt (ctx.get (pnum ("type")))); }
-        static constexpr const char* plxKeys[] = { "xacc", "xaux", "xedec", "xeharm", "xetimb", "xemorph", "xvtimb", "xvmorph", "xlpg", "xlpgdec", "xlpgcol", "xdrive", "xbits", "xrate", "xpenv", "xkey" };
+        static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
@@ -361,21 +361,9 @@ namespace njo
             if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
             int k = num - oscId (o, 0);
             if (k < 0 || k >= OSC_STRIDE) return;
-            if (k == oscKey ("type")) { if (dz.getState() != DropZone::Busy) dz.setState (DropZone::Empty, ""); refreshDz(); updateEngineLabels(); layoutChildren(); }
-            else if (k == oscKey ("pleng")) updateEngineLabels();
+            if (k == oscKey ("type")) { if (dz.getState() != DropZone::Busy) dz.setState (DropZone::Empty, ""); refreshDz(); layoutChildren(); }
             else if (k == oscKey ("ftype") || k == oscKey ("dtype")) layoutChildren();
             owner.repaint();
-        }
-
-        void updateEngineLabels()
-        {
-            int eng = juce::jlimit (0, plaitsEngines().size() - 1, juce::roundToInt (ctx.get (pnum ("pleng"))));
-            auto& pp = plaitsParams();
-            const char* keys[3] = { "pharm", "ptimb", "pmorph" };
-            for (int i = 0; i < 3; ++i)
-                if (auto* w = W (keys[i]); w != nullptr && eng < (int) pp.size() && i < pp[(size_t) eng].size()) w->setLabelOverride (pp[(size_t) eng][i]);
-            // the dropdown lists the engines in groups
-            if (auto* sel = dynamic_cast<SelectWidget*> (W ("pleng"))) sel->setOptions (plaitsEngines(), plaitsGroups());
         }
 
         // ---- layout ----
@@ -406,7 +394,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, pl = type == 2, ph = type == 3 || type == 4 || type == 5;
+            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -437,14 +425,16 @@ namespace njo
                 knob ("sstart", 179, 222, c, sm);
                 put ("sloop", 13, 337, w - 26, 32, c, sm);
 
-                put ("pleng", 13, 146, w - 26, 36, c, pl); strip ("pleng", 13, 146, w - 26, c, false, pl);
-                {   // the engine's three macro knobs and the extras, five knobs per row
+                {   // Wave Terrain: two terrain selectors, then the macro knobs, the orbit and the output, five knobs per row
+                    const int cw2 = (w - 26 - 8) / 2;
+                    put ("tterr", 13, 146, cw2, 36, c, tr);  strip ("tterr", 13, 146, cw2, c, false, tr);
+                    put ("tterr2", 13 + cw2 + 8, 146, cw2, 36, c, tr);  strip ("tterr2", 13 + cw2 + 8, 146, cw2, c, false, tr);
                     const float fw = (float) (w - 26);
-                    const char* rows[4][5] = { { "pharm", "ptimb", "pmorph", "xacc", "xaux" }, { "xedec", "xeharm", "xetimb", "xemorph", "xpenv" },
-                                               { "xvtimb", "xvmorph", "xkey", "xlpg", "xlpgdec" }, { "xlpgcol", "xdrive", "xbits", "xrate", nullptr } };
+                    const char* rows[4][5] = { { "tscale", "twarp", "tfold", "tmorph", "tsmooth" }, { "tcx", "tcy", "trx", "try", "trot" },
+                                               { "tratio", "tphase", "tshape", "tmrate", "tmdep" }, { "tdrive", "tbits", "tvel", nullptr, nullptr } };
                     for (int r = 0; r < 4; ++r)
                         for (int i = 0; i < 5; ++i)
-                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 56 * r, c, pl);
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 56 * r, c, tr);
                 }
 
                 // Alpha Juno: wave selectors with their levels, noise / character, pulse width
@@ -515,9 +505,9 @@ namespace njo
                 knob ("fine", cl, fineTop, c);
                 put ("track", rx, fineTop + 24, 72, 18, c); strip ("track", rx, fineTop + 11, 72, c, true);
                 int phaseTop = wt ? 152 : 309;
-                knob ("phase", cl, phaseTop, c, ! (pl || ph));
+                knob ("phase", cl, phaseTop, c, ! (tr || ph));
                 knob ("freq", cr, (wt || ph) ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
-                put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (pl || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (pl || ph));
+                put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (tr || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (tr || ph));
 
                 const bool uni = wt || type == 4;      // the wavetable and the Alpha Juno source share the unison section
                 showUnison = uni;

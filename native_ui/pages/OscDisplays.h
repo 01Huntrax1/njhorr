@@ -1,4 +1,4 @@
-// Displays of the OSC page: the wavetable / sample / Plaits panel and the filter response curve.
+// Displays of the OSC page: the wavetable / sample / source panel and the filter response curve.
 #pragma once
 #include "../NjoPages.h"
 #include <complex>
@@ -19,7 +19,7 @@ namespace njo
         void tblFrame (const std::vector<float>* loaded, bool filter, float pos, float* out);
     }
 
-    // waveform of the current wavetable frame (with warp), sample waveform with start marker, or the Plaits engine name;
+    // waveform of the current wavetable frame (with warp), sample waveform with start marker, or the terrain output;
     // the line below the picture says what is shown
     class OscDisplay : public juce::Component, private Ctx::Listener, private juce::ChangeListener
     {

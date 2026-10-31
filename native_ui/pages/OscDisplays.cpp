@@ -1,6 +1,7 @@
 #include "OscDisplays.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
+#include "../NjoTer.h"
 #include <cmath>
 
 namespace njo
@@ -185,9 +186,10 @@ namespace njo
     {
         if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= kick::KICK_BASE + kick::KICK_STRIDE * o && num < kick::KICK_BASE + kick::KICK_STRIDE * (o + 1)) { repaint(); return; }
+        if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
-        for (const char* n : { "type", "pleng", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
+        for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
             if (k == oscKey (n)) { repaint(); return; }
     }
 
@@ -405,15 +407,34 @@ namespace njo
             }
             else
             {
-                int eng = juce::jlimit (0, plaitsEngines().size() - 1, juce::roundToInt (pv ("pleng")));
-                g.setColour (juce::Colour (0xffff7864).withAlpha (0.85f));
-                g.setFont (font (std::round (H * 0.2f), true));
-                g.drawText (plaitsEngines()[eng].toUpperCase(), juce::Rectangle<float> (0, H / 2 + H * 0.05f - H * 0.2f, W, H * 0.25f), juce::Justification::centredBottom, false);
-                g.setColour (juce::Colour (0xffffc8be).withAlpha (0.5f));
-                g.setFont (font (std::round (H * 0.1f), true));
-                g.drawText ("PLAITS / " + juce::String (eng + 1) + " OF " + juce::String (plaitsEngines().size()), juce::Rectangle<float> (0, H / 2 + H * 0.25f - H * 0.1f, W, H * 0.13f), juce::Justification::centredBottom, false);
-                auto& pp = plaitsParams();
-                info = plaitsEngines()[eng] + " / " + (eng < (int) pp.size() ? pp[(size_t) eng].joinIntoString (" - ") : juce::String());
+                // Wave Terrain: one cycle of the output along the orbit (the DSP's terrain formulas)
+                auto V = [&] (const char* key) { return ctx.get (ter::terId (o, ter::key (key))); };
+                const int tt = juce::jlimit (0, 11, juce::roundToInt (pv ("tterr"))), tb = juce::jlimit (0, 11, juce::roundToInt (V ("tterr2")));
+                const double sc = 0.25 * std::pow (16.0, (double) pv ("tscale")), wp = pv ("twarp"), fo = pv ("tfold"), mo = V ("tmorph"), tp = 6.283185307179586;
+                const double shp = V ("tshape"), ex = 1.0 - 0.75 * shp, rot = tp * V ("trot"), ph0 = tp * V ("tphase");
+                auto sp = [&] (double q) { return shp > 0.001 ? (q < 0 ? -std::pow (-q, ex) : std::pow (q, ex)) : q; };
+                std::vector<float> arr ((size_t) W);
+                double mean = 0.0;
+                for (int i = 0; i < (int) arr.size(); ++i)
+                {
+                    const double a = tp * i / arr.size(), dx = V ("trx") * sp (std::cos (a)), dy = V ("try") * sp (std::sin (V ("tratio") * a + ph0));
+                    double x = juce::jlimit (-1.0, 1.0, V ("tcx") + dx * std::cos (rot) - dy * std::sin (rot)), y = juce::jlimit (-1.0, 1.0, V ("tcy") + dx * std::sin (rot) + dy * std::cos (rot));
+                    if (wp > 0.001) { const double x2 = x + wp * 0.5 * std::sin (tp * (y + 0.13)), y2 = y + wp * 0.5 * std::sin (tp * (1.3 * x + 0.4)); x = juce::jlimit (-1.0, 1.0, x2); y = juce::jlimit (-1.0, 1.0, y2); }
+                    double z = mo < 0.001 ? ter::terrain (tt, x, y, sc) : ter::terrain (tt, x, y, sc) * (1.0 - mo) + ter::terrain (tb, x, y, sc) * mo;
+                    if (fo > 0.001) z = z * (1.0 - fo) + fo * std::sin (z * (1.0 + 4.0 * fo) * 1.5708);
+                    const double dr = V ("tdrive"); if (dr > 0.001) { const double gg = 1.0 + dr * 6.0; z = std::tanh (z * gg) / std::tanh (gg); }
+                    arr[(size_t) i] = (float) (z * 0.8); mean += arr[(size_t) i];
+                }
+                mean /= (double) arr.size();
+                juce::Path p;
+                for (int x = 0; x < (int) arr.size(); ++x)
+                {
+                    const float y = H / 2 - juce::jlimit (-1.2f, 1.2f, arr[(size_t) x] - (float) mean) * (H / 2 - 4);
+                    if (x == 0) p.startNewSubPath ((float) x, y); else p.lineTo ((float) x, y);
+                }
+                g.setColour (juce::Colour (0xffff3b30)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                const auto& tn = findSpec (oscId (o, oscKey ("tterr")))->labels;
+                info = "WAVE TERRAIN / " + tn[tt].toUpperCase() + (mo > 0.001 ? " > " + tn[tb].toUpperCase() : juce::String()) + " / SCALE " + juce::String (sc, 2);
             }
             cornerBrackets (g, W, H, 16.0f);
         }

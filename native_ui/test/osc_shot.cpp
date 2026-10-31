@@ -43,7 +43,7 @@ int main (int argc, char** argv)
 
     P (0, "wpos", 0.55f); P (0, "w1m", 1); P (0, "w1a", 0.5f); P (0, "uvox", 3);
     P (1, "type", 1); P (1, "sstart", 0.2f); P (1, "sloop", 1);
-    P (2, "type", 2); P (2, "pleng", 8);
+    P (2, "type", 2); P (2, "tterr", 7);
 
     for (int o = 0; o < 3; ++o)
     {

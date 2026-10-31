@@ -1,6 +1,6 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
 #include "../NjoEq.h"
-#include "../NjoPlx.h"
+#include "../NjoTer.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -66,9 +66,10 @@ int main (int argc, char** argv)
         // Kick source
         cx.set (njo::oscId (0, njo::oscKey ("type")), 5.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kmode")), 1.0f); cx.set (njo::kick::kickId (0, njo::kick::key ("kdrive")), 0.5f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_kick.png"), scale);
-        // Plaits source with the extras
-        cx.set (njo::oscId (0, njo::oscKey ("type")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("pleng")), 9.0f); cx.set (njo::plx::plxId (0, njo::plx::key ("xlpg")), 0.6f); cx.set (njo::plx::plxId (0, njo::plx::key ("xetimb")), 0.5f);
-        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_plaits.png"), scale);
+        // Wave Terrain source
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("tterr")), 5.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tterr2")), 10.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tmorph")), 0.4f);
+        cx.set (njo::oscId (0, njo::oscKey ("twarp")), 0.3f); cx.set (njo::ter::terId (0, njo::ter::key ("tratio")), 3.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tcx")), 0.2f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_terrain.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

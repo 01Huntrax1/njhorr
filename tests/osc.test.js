@@ -1,4 +1,4 @@
-// 6-slot oscillator UI: pages, source switching, Plaits labels, FM matrix, parameter ids (jsdom)
+// 6-slot oscillator UI: pages, source switching, Wave Terrain, FM matrix, parameter ids (jsdom)
 const fs = require("fs"), path = require("path");
 const { JSDOM } = require("jsdom");
 const code = fs.readFileSync(process.argv[2] || path.join(__dirname, "..", "patch", "index.js"), "utf8").replace("export default function createPatchView", "function createPatchView").replace(/<style>[\s\S]*?<\/style>/, "");
@@ -20,27 +20,24 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("every slot has all 44 parameters", [0, 1, 2, 3, 4, 5].every(o => [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44].every(k => ctl(1000 + 64 * o + k))));
     check("36 PD amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1480 + 6 * s + d))));
     check("36 RM and 36 AM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1520 + 6 * s + d) && ctl(1560 + 6 * s + d))));
-    check("dest list: RM / AM cells (186..257) then every Physical / Alpha Juno parameter (258..443) every Kick parameter (444..539) and every Plaits extra (540..635)", opts(308).length === 636 && opts(308)[540] === "OSC 1 Plaits Accent" && opts(308)[635] === "OSC 6 Plaits Key to Timbre" && opts(308)[444] === "OSC 1 Kick Mode" && opts(308)[539] === "OSC 6 Kick Character" && opts(308)[258] === "OSC 1 Physical Noise vs Mallet" && opts(308)[443] === "OSC 6 Juno Vibrato" && opts(308)[186] === "RM A > A" && opts(308)[221] === "RM F > F" && opts(308)[222] === "AM A > A" && opts(308)[257] === "AM F > F");
+    check("dest list: RM / AM cells (186..257) then every Physical / Alpha Juno parameter (258..443) every Kick parameter (444..539) and every Wave Terrain parameter (540..635)", opts(308).length === 636 && opts(308)[540] === "OSC 1 Terrain Orbit Center X" && opts(308)[635] === "OSC 6 Terrain Velocity to Radius" && opts(308)[444] === "OSC 1 Kick Mode" && opts(308)[539] === "OSC 6 Kick Character" && opts(308)[258] === "OSC 1 Physical Noise vs Mallet" && opts(308)[443] === "OSC 6 Juno Vibrato" && opts(308)[186] === "RM A > A" && opts(308)[221] === "RM F > F" && opts(308)[222] === "AM A > A" && opts(308)[257] === "AM F > F");
     check("36 FM amounts", [0,1,2,3,4,5].every(s => [0,1,2,3,4,5].every(d => ctl(1400 + 6 * s + d))));
     check("filter has all 30 types plus the Wavefilter", opts(1031).length === 31 && opts(1031 + 64 * 5).length === 31 && opts(1031)[30] === "Wavefilter");
     check("distortion has 6 types plus the Wavedistortion", opts(1042).length === 8 && opts(1042)[7] === "Wavedistortion");
     check("table position controls exist for every slot", [0,1,2,3,4,5].every(o => ctl(1046 + 64 * o) && ctl(1047 + 64 * o)));
     check("every slot has a Frequency knob (0 = Off)", [0,1,2,3,4,5].every(o => ctl(1048 + 64 * o)) && V.querySelector(".control[data-param=\"param1048\"] .val") !== undefined);
     check("old filter / mixer / sampler controls are gone", !V.querySelector(".p-flt, .p-mix, .p-smp, .p-s2, .p-wt1") && !ctl(12) && !ctl(176) && !ctl(154));
-    check("Plaits engine selector lists 24 engines", opts(1024).length === 24);
+    check("Terrain selectors list the 12 terrains", opts(1024).length === 12 && opts(2110).length === 12 && opts(1000)[2] === "Wave Terrain");
     check("Source selector is a dropdown with the Kick source", opts(1000).length === 6 && opts(1000)[5] === "Kick" && opts(1064).length === 6 && ctl(1900) && ctl(1995) && opts(1900).length === 4 && opts(1910).length === 6);
 
     const pg = V.querySelector(".p-o0");
     const shown = sel => { const e = V.querySelector(sel); return e && e.style.display !== "none"; };
-    check("wavetable source shows warp, hides Plaits", shown('[data-o="0"][data-show="0"].o-g2') && !shown('[data-o="0"][data-show="2"]'));
+    check("wavetable source shows warp, hides Wave Terrain", shown('[data-o="0"][data-show="0"].o-g2') && !shown('[data-o="0"][data-show="2"]'));
     ctl(1000).setValue(1, true);
     check("sampler source shows sample controls", pg.getAttribute("data-src") === "1" && shown('[data-o="0"][data-show="1"]') && !shown('[data-o="0"][data-show="0"].o-g2'));
     ctl(1000).setValue(2, true);
-    check("Plaits source shows engine controls", pg.getAttribute("data-src") === "2" && shown('[data-o="0"][data-show="2"]'));
-    ctl(1024).setValue(21, true);
-    check("Plaits knob labels follow the engine", V.querySelector(".n1025 .lbl").textContent === "Attack" && V.querySelector(".n1027 .lbl").textContent === "Decay", V.querySelector(".n1025 .lbl").textContent);
-    ctl(1024 + 64).setValue(15, true);
-    check("labels are per slot", V.querySelector(".n1089 .lbl").textContent === "Species" && V.querySelector(".n1025 .lbl").textContent === "Attack");
+    check("Wave Terrain source shows its controls", pg.getAttribute("data-src") === "2" && shown('[data-o="0"][data-show="2"]'));
+    check("Wave Terrain controls exist in every slot", [0, 1, 2, 3, 4, 5].every(o => [24, 25, 26, 27].every(k => ctl(1000 + 64 * o + k)) && [0, 5, 10, 15].every(j => ctl(2100 + 16 * o + j))));
     check("slot dest list covers 185 (incl. the Frequency knobs)", opts(308).length >= 186 && opts(308)[180] === "OSC 1 Frequency" && opts(308)[185] === "OSC 6 Frequency" && opts(308)[168] === "OSC 1 Wavefilter Pos" && opts(308)[179] === "OSC 6 Wavedistortion Pos" && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
     V.querySelector('.stab[data-page="fm"]').click();
     check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 180 && V.querySelectorAll(".fmx-panel").length === 5 && V.querySelectorAll(".p-fm .fmx-panel").length === 3 && V.querySelectorAll(".p-rm .fmx-panel").length === 2);

@@ -57,11 +57,11 @@ int main (int argc, char** argv)
     run (3000);
     int bad = 0; float mn = 1e9f, mx = 0;
     // project state with a stored sine wavetable in OSC 1; the plugin must play it without any editor
-    {   // baseline: a Plaits slot needs no sample data, so it must sound when the audio path works
+    {   // baseline: a generator source (the last Source type) needs no sample data, so it must sound when the audio path works
         for (auto* p : inst->getParameters()) if (p->getName (100) == "OSC 1 Source") p->setValue (1.0f);
         gMidi.addEvent (MidiMessage::noteOn (1, 64, (uint8) 100), 0);
         float a = 1e9f, b = 0; run (1000, &a, &b);
-        std::cout << "baseline (Plaits slot): rms max " << b << std::endl;
+        std::cout << "baseline (generator source): rms max " << b << std::endl;
         gMidi.addEvent (MidiMessage::allNotesOff (1), 0); run (500);
         for (auto* p : inst->getParameters()) if (p->getName (100) == "OSC 1 Source") p->setValue (0.0f);
     }

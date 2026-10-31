@@ -393,13 +393,21 @@ for t in range(3):
     if not np.isfinite(a).all(): ok = False
 check("extreme settings stay finite", ok)
 
-# ---------------------------------------------------------------- Plaits slot
-for eng in range(24):
-    a = render([P(0, "type", 2), P(0, "pleng", eng), P(0, "level", 0.8), FOFF(0)], note=57, hold=0.6, tail=0.2, tag="pl%d" % eng)
+# ---------------------------------------------------------------- Wave Terrain slot (Source type 2)
+def TP(o, key, v):
+    for q in L.TER:
+        if q[1] == key: return (L.ter_id(o, q[0]), v)
+    return P(o, key, v)   # the macro knobs are slot parameters: tterr / tscale / twarp / tfold
+TBASE = [P(0, "type", 2), P(0, "level", 0.8), FOFF(0)]
+for t in range(12):
+    a = render(TBASE + [P(0, "tterr", t)], note=57, hold=0.6, tail=0.2, tag="ter%d" % t)
     good = np.isfinite(a).all() and rms(a[int(0.05 * RATE):int(0.6 * RATE)]) > 1e-3 and np.abs(a).max() < 4
-    check("Plaits engine %d sounds and stays finite" % eng, good, "rms %.3f peak %.2f" % (rms(a), np.abs(a).max()))
-a = render([P(0, "type", 2), P(0, "pleng", 10), P(0, "pharm", 0), P(0, "ptimb", 0), P(0, "pmorph", 0), P(0, "level", 0.8), FOFF(0)], note=69, tag="plpitch")
-check("Plaits slot follows the keyboard pitch (A4)", abs(peak_freq(seg(a)[:, 0]) - 440) < 3, "%.1f" % peak_freq(seg(a)[:, 0]))
+    check("Wave Terrain %s sounds and stays finite" % L.TERRAINS[t], good, "rms %.3f peak %.2f" % (rms(a), np.abs(a).max()))
+def period_freq(x):   # fundamental from the autocorrelation
+    x = x.astype(np.float64) - np.mean(x); n = len(x); ac = np.fft.irfft(np.abs(np.fft.rfft(x, 2 * n)) ** 2)[:n]
+    lo, hi = int(RATE / 1500), int(RATE / 100); k = lo + int(np.argmax(ac[lo:hi])); return RATE / k
+a = render(TBASE + [P(0, "tterr", 7)], note=69, tag="terpitch")
+check("Wave Terrain follows the keyboard pitch (A4)", abs(period_freq(seg(a)[:, 0]) - 440) < 6, "%.1f" % period_freq(seg(a)[:, 0]))
 
 # ---------------------------------------------------------------- physical modelling slot
 def PH(o, key, v): return (L.phy_id(o, [q[0] for q in L.PHY if q[1] == key][0]), v)
@@ -622,42 +630,32 @@ check("Mod destination of OSC 2 leaves the OSC 1 kick alone", np.allclose(k0, k2
 two = render(KBASE + [P(1, "type", 5), P(1, "level", 1.0), FOFF(1), KP(1, "kmode", 3)], note=36, hold=0.5, tail=0.3, tag="k2")
 check("two kick slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 4.0)
 
-# ---------------------------------------------------------------- Plaits extras (ids PLX_BASE + 16 * slot + j, mod destinations 540 + ...)
-def XP(o, key, v): return (L.plx_id(o, [q[0] for q in L.PLX if q[1] == key][0]), v)
-PBASE = [P(0, "type", 2), P(0, "level", 1.0), FOFF(0)]
-def plx(eng, extra=(), note=57, tag="px", hold=1.0, tail=0.3):
-    return render(PBASE + [P(0, "pleng", eng)] + list(extra), note=note, hold=hold, tail=tail, tag=tag)[:, 0]
 def win(x, t0, t1): return x[int(t0 * RATE):int(t1 * RATE)]
-base = plx(9, tag="px0")
-check("Plaits baseline is finite and sounds", np.isfinite(base).all() and rms(win(base, 0.3, 0.8)) > 0.01)
-# accent: the bass drum engine (21) is louder with a high accent
-a0 = plx(21, [XP(0, "xacc", 0.1)], note=36, tag="pxa0"); a1 = plx(21, [XP(0, "xacc", 1.0)], note=36, tag="pxa1")
-check("Plaits Accent changes the bass drum level", abs(rms(win(a1, 0.06, 0.4)) / max(rms(win(a0, 0.06, 0.4)), 1e-9) - 1.0) > 0.1, "%.4f %.4f" % (rms(win(a0, 0.06, 0.4)), rms(win(a1, 0.06, 0.4))))
-# aux mix: virtual analog (8) has an aux output
-x0 = plx(8, [XP(0, "xaux", 0.0)], tag="pxx0"); x1 = plx(8, [XP(0, "xaux", 1.0)], tag="pxx1")
-check("Plaits Aux Mix adds the aux output", rms(win(x1, 0.3, 0.8) - win(x0, 0.3, 0.8)) > 0.05 * rms(win(x0, 0.3, 0.8)), "%.4f" % rms(win(x1, 0.3, 0.8) - win(x0, 0.3, 0.8)))
-# envelope to timbre (waveshaper fold): brighter at the start than the end
-def bright(x, t0, t1): return band(win(x, t0, t1), 2500, 12000) / max(band(win(x, t0, t1), 100, 2500), 1e-9)
-e0 = plx(9, [XP(0, "xetimb", 0.0)], tag="pxe0"); e1 = plx(9, [XP(0, "xetimb", 1.0), XP(0, "xedec", 150)], tag="pxe1")
-check("Plaits Env > Timbre sweeps the timbre over the note", abs(bright(e1, 0.06, 0.2) / bright(e1, 0.7, 1.0) - 1) > 0.15 and abs(bright(e0, 0.06, 0.2) / bright(e0, 0.7, 1.0) - 1) < 0.3, "%.3f %.3f / %.3f %.3f" % (bright(e1, 0.06, 0.2), bright(e1, 0.7, 1.0), bright(e0, 0.06, 0.2), bright(e0, 0.7, 1.0)))
-# pitch envelope: starts higher
-pe = plx(9, [XP(0, "xpenv", 24), XP(0, "xedec", 150)], tag="pxp")
-check("Plaits Pitch Env starts above the note", peak_freq(win(pe, 0.06, 0.12)) > 1.3 * peak_freq(win(pe, 0.8, 1.0)), "%.1f %.1f" % (peak_freq(win(pe, 0.06, 0.12)), peak_freq(win(pe, 0.8, 1.0))))
-# low-pass gate closes the sound
-l0 = plx(9, tag="pxl0"); l1 = plx(9, [XP(0, "xlpg", 1.0), XP(0, "xlpgdec", 400)], tag="pxl1")
-check("Plaits LPG closes after the attack", rms(win(l1, 0.9, 1.2)) < 0.1 * rms(win(l0, 0.9, 1.2)) and rms(win(l1, 0.06, 0.1)) > 0.3 * rms(win(l0, 0.06, 0.1)), "%.4f %.4f" % (rms(win(l1, 0.06, 0.1)), rms(win(l0, 0.06, 0.1))))
-# drive, bits, rate
-d1 = plx(9, [XP(0, "xdrive", 1.0)], tag="pxd")
-check("Plaits Drive adds harmonics and stays bounded", band(win(d1, 0.3, 0.8), 2500, 12000) > 1.05 * band(win(base, 0.3, 0.8), 2500, 12000) and np.abs(d1).max() < 4.0)
-b1 = plx(9, [XP(0, "xbits", 3)], tag="pxb")
-check("Plaits Bits 3 changes the waveform", rms(win(b1, 0.3, 0.8) - win(base, 0.3, 0.8)) > 0.05 * rms(win(base, 0.3, 0.8)))
-r1 = plx(9, [XP(0, "xrate", 1.0)], tag="pxr")
-check("Plaits Rate reduction adds aliasing", rms(win(r1, 0.3, 0.8) - win(base, 0.3, 0.8)) > 0.05 * rms(win(base, 0.3, 0.8)) and np.isfinite(r1).all())
-# mod destination of the LPG amount (j = 8) from a constant LFO closes the sound, other slot leaves it alone
-m1 = render(PBASE + [P(0, "pleng", 9), XP(0, "xlpg", 0.5), XP(0, "xlpgdec", 60)] + MM(0, 1, L.plxdst(0, 8), 1.0) + CONST1, note=57, hold=1.0, tail=0.3, tag="pxm1")[:, 0]
-check("Mod destination 'Plaits LPG Amount' of OSC 1 closes the gate", rms(win(m1, 0.6, 0.9)) < 0.3 * rms(win(base, 0.6, 0.9)), "%.4f %.4f" % (rms(win(m1, 0.6, 0.9)), rms(win(base, 0.6, 0.9))))
-m2 = render(PBASE + [P(0, "pleng", 9), XP(0, "xlpgdec", 60)] + MM(0, 1, L.plxdst(1, 8), 0.5) + CONST1, note=57, hold=1.0, tail=0.3, tag="pxm2")[:, 0]
-check("Mod destination of OSC 2 leaves the OSC 1 Plaits alone", np.allclose(m2, base, atol=1e-4))
+# ---------------------------------------------------------------- Wave Terrain parameters (ids TER_BASE + 16 * slot + j, mod destinations 540 + ...)
+def ter(extra=(), note=57, tag="tx", hold=0.8, tail=0.2):
+    return render(TBASE + list(extra), note=note, hold=hold, tail=tail, tag=tag)[:, 0]
+def tw(x): return win(x, 0.3, 0.7)
+tb = ter([P(0, "tterr", 7)], tag="tx0")
+check("Terrain: radius 0 gives silence (the orbit is a point, DC is blocked)", rms(tw(ter([P(0, "tterr", 7), TP(0, "trx", 0), TP(0, "try", 0)], tag="txr"))) < 0.02 * rms(tw(tb)))
+check("Terrain: the center moves the orbit over the terrain", rms(tw(ter([P(0, "tterr", 7), TP(0, "tcx", 0.8), TP(0, "tcy", -0.6)], tag="txc")) - tw(tb)) > 0.1 * rms(tw(tb)))
+check("Terrain: scale changes the sound", rms(tw(ter([P(0, "tterr", 7), P(0, "tscale", 1.0)], tag="txs")) - tw(tb)) > 0.1 * rms(tw(tb)))
+check("Terrain: warp and fold change the sound", rms(tw(ter([P(0, "tterr", 7), P(0, "twarp", 1.0)], tag="txw")) - tw(tb)) > 0.1 * rms(tw(tb)) and rms(tw(ter([P(0, "tterr", 7), P(0, "tfold", 1.0)], tag="txf")) - tw(tb)) > 0.1 * rms(tw(tb)))
+check("Terrain: morph 0 is terrain A, morph 1 is terrain B", np.allclose(tw(ter([P(0, "tterr", 7), TP(0, "tterr2", 3), TP(0, "tmorph", 0)], tag="txm0")), tw(tb), atol=1e-5)
+      and np.allclose(tw(ter([P(0, "tterr", 7), TP(0, "tterr2", 3), TP(0, "tmorph", 1)], tag="txm1")), tw(ter([P(0, "tterr", 3)], tag="txb")), atol=1e-5))
+check("Terrain: orbit ratio 2 changes the waveform", rms(tw(ter([P(0, "tterr", 7), TP(0, "tratio", 2.0)], tag="txra")) - tw(tb)) > 0.1 * rms(tw(tb)))
+sm = ter([P(0, "tterr", 10), TP(0, "tsmooth", 1.0)], note=60, tag="txsm1"); sn = ter([P(0, "tterr", 10), TP(0, "tsmooth", 0.0)], note=60, tag="txsm0")
+check("Terrain: Smooth removes high frequencies", band(tw(sm), 4000, 20000) < 0.5 * band(tw(sn), 4000, 20000), "%.3f %.3f" % (band(tw(sm), 4000, 20000), band(tw(sn), 4000, 20000)))
+check("Terrain: drive and bits change the waveform and stay bounded", rms(tw(ter([P(0, "tterr", 7), TP(0, "tdrive", 1.0)], tag="txd")) - tw(tb)) > 0.05 * rms(tw(tb)) and rms(tw(ter([P(0, "tterr", 7), TP(0, "tbits", 3)], tag="txbt")) - tw(tb)) > 0.05 * rms(tw(tb)) and np.abs(ter([P(0, "tterr", 7), TP(0, "tdrive", 1.0)], tag="txd")).max() < 2)
+mv = ter([P(0, "tterr", 1), TP(0, "tmdep", 1.0), TP(0, "tmrate", 3.0)], tag="txmv")
+check("Terrain: a moving center modulates the sound over time", abs(rms(win(mv, 0.3, 0.45)) / max(rms(win(mv, 0.45, 0.6)), 1e-9) - 1) > 0.02 or abs(band(win(mv, 0.3, 0.5), 100, 1000) / max(band(win(mv, 0.5, 0.7), 100, 1000), 1e-9) - 1) > 0.02)
+# velocity > radius
+v0 = render(TBASE + [P(0, "tterr", 7), TP(0, "tvel", 1.0)], note=57, hold=0.8, tail=0.2, tag="txv0", vel=20)[:, 0]; v1 = render(TBASE + [P(0, "tterr", 7), TP(0, "tvel", 1.0)], note=57, hold=0.8, tail=0.2, tag="txv1", vel=127)[:, 0]
+check("Terrain: velocity widens the orbit", rms(tw(v1)) > 1.2 * rms(tw(v0)), "%.3f %.3f" % (rms(tw(v1)), rms(tw(v0))))
+# mod destination: Orbit Radius X (j = 2) of OSC 1 from a constant LFO; OSC 2's destination leaves OSC 1 alone
+m1 = render(TBASE + [P(0, "tterr", 7), TP(0, "trx", 0.0), TP(0, "try", 0.0)] + MM(0, 1, L.terdst(0, 2), 1.0) + MM(1, 1, L.terdst(0, 3), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="txm1x")[:, 0]
+check("Mod destination 'Terrain Orbit Radius X / Y' of OSC 1 opens the orbit", rms(tw(m1)) > 0.2 * rms(tw(tb)), "%.4f %.4f" % (rms(tw(m1)), rms(tw(tb))))
+m2 = render(TBASE + [P(0, "tterr", 7)] + MM(0, 1, L.terdst(1, 2), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="txm2x")[:, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 terrain alone", np.allclose(tw(m2), tw(tb), atol=1e-4))
 
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

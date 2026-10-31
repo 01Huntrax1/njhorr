@@ -12,7 +12,8 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Plaits", "Physical", "Alpha Juno", "Kick"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick"]
+TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
 # order of the three pre-matrix stages (F = filter, D = distortion, R = resonator); index = stage order table row in the DSP
@@ -47,10 +48,10 @@ PARAMS = [
  (21, "w2a",    "Warp 2 Amount", "Warp 2 Amt",0, 1, 0.5, "", "sld", None),
  (22, "sstart", "Sample Start",  "Start",     0, 1, 0, "", "sld", None),
  (23, "sloop",  "Sample Loop",   "Loop",      0, 1, 0, "", "btn", ["Off", "On"]),
- (24, "pleng",  "Plaits Engine", "Engine",    0, 23, 8, "", "sel", None),  # labels in UI (PLAITS_ENGINES)
- (25, "pharm",  "Plaits Harmonics", "Harmonics", 0, 1, 0.5, "", "sld", None),
- (26, "ptimb",  "Plaits Timbre", "Timbre",    0, 1, 0.5, "", "sld", None),
- (27, "pmorph", "Plaits Morph",  "Morph",     0, 1, 0.5, "", "sld", None),
+ (24, "tterr",   "Terrain A",     "Terrain",   0, 11, 0, "", "sel", TERRAINS),
+ (25, "tscale",  "Terrain Scale", "Scale",     0, 1, 0.5, "", "sld", None),   # 0.25 .. 4 times the terrain's features (exponential)
+ (26, "twarp",   "Terrain Warp",  "Warp",      0, 1, 0, "", "sld", None),
+ (27, "tfold",   "Terrain Fold",  "Fold",      0, 1, 0, "", "sld", None),
  (30, "fon",    "Filter On",     "Filter",    0, 1, 1, "", "btn", ["Off", "On"]),
  (31, "ftype",  "Filter Type",   "Type",      0, 30, 0, "", "sel", None),
  (32, "fcut",   "Filter Cutoff", "Cutoff",   20, 18000, 8000, "Hz", "sld", None),
@@ -185,28 +186,28 @@ KICK = [
 def kick_id(o, j): return KICK_BASE + KICK_STRIDE * o + j
 KICK_DST_BASE = PHY_DST_BASE + 31 * OSC_COUNT   # 444
 def kickdst(o, j): return KICK_DST_BASE + KICK_STRIDE * o + j
-# Plaits extras (tools/osc/build_plx.py): parameter j (0..15) of slot o has the id PLX_BASE + 16 * o + j and the mod destination 540 + 16 * o + j
-PLX_BASE = 2100
-PLX_STRIDE = 16
-PLX = [
- (0,  "xacc",    "Plaits Accent",          "Accent",      0, 1, 0.8, "", "sld", None),
- (1,  "xaux",    "Plaits Aux Mix",         "Aux Mix",     0, 1, 0.0, "", "sld", None),
- (2,  "xedec",   "Plaits Env Decay",       "Env Decay",   20, 5000, 400, "ms", "sld", None),
- (3,  "xeharm",  "Plaits Env to Harmonics","Env > Harm", -1, 1, 0.0, "", "sld", None),
- (4,  "xetimb",  "Plaits Env to Timbre",   "Env > Timbre", -1, 1, 0.0, "", "sld", None),
- (5,  "xemorph", "Plaits Env to Morph",    "Env > Morph", -1, 1, 0.0, "", "sld", None),
- (6,  "xvtimb",  "Plaits Velocity to Timbre", "Vel > Timbre", -1, 1, 0.0, "", "sld", None),
- (7,  "xvmorph", "Plaits Velocity to Morph",  "Vel > Morph",  -1, 1, 0.0, "", "sld", None),
- (8,  "xlpg",    "Plaits LPG Amount",      "LPG",         0, 1, 0.0, "", "sld", None),
- (9,  "xlpgdec", "Plaits LPG Decay",       "LPG Decay",   20, 3000, 300, "ms", "sld", None),
- (10, "xlpgcol", "Plaits LPG Colour",      "LPG Colour",  0, 1, 0.5, "", "sld", None),
- (11, "xdrive",  "Plaits Drive",           "Drive",       0, 1, 0.0, "", "sld", None),
- (12, "xbits",   "Plaits Bit Depth",       "Bits",        2, 16, 16, "", "sld", None),
- (13, "xrate",   "Plaits Rate Reduction",  "Rate",        0, 1, 0.0, "", "sld", None),
- (14, "xpenv",   "Plaits Pitch Env",       "Pitch Env",  -24, 24, 0.0, "st", "sld", None),
- (15, "xkey",    "Plaits Key to Timbre",   "Key > Timbre", -1, 1, 0.0, "", "sld", None),
+# Wave Terrain extras (tools/osc/build_ter.py): parameter j (0..15) of slot o has the id TER_BASE + 16 * o + j and the mod destination 540 + 16 * o + j
+TER_BASE = 2100
+TER_STRIDE = 16
+TER = [
+ (0,  "tcx",     "Terrain Orbit Center X", "Center X",   -1, 1, 0.0, "", "sld", None),
+ (1,  "tcy",     "Terrain Orbit Center Y", "Center Y",   -1, 1, 0.0, "", "sld", None),
+ (2,  "trx",     "Terrain Orbit Radius X", "Radius X",    0, 1, 0.6, "", "sld", None),
+ (3,  "try",     "Terrain Orbit Radius Y", "Radius Y",    0, 1, 0.6, "", "sld", None),
+ (4,  "trot",    "Terrain Orbit Rotation", "Rotation",    0, 1, 0.0, "", "sld", None),
+ (5,  "tratio",  "Terrain Orbit Ratio",    "Y : X",       0.25, 8, 1.0, "", "sld", None),
+ (6,  "tphase",  "Terrain Orbit Phase",    "Phase",       0, 1, 0.0, "", "sld", None),
+ (7,  "tshape",  "Terrain Orbit Shape",    "Shape",       0, 1, 0.0, "", "sld", None),
+ (8,  "tmrate",  "Terrain Move Rate",      "Move Rate",   0.05, 20, 1.0, "Hz", "sld", None),
+ (9,  "tmdep",   "Terrain Move Depth",     "Move Depth",  0, 1, 0.0, "", "sld", None),
+ (10, "tterr2",  "Terrain B",              "Terrain B",   0, 11, 1, "", "sel", TERRAINS),
+ (11, "tmorph",  "Terrain Morph A to B",   "Morph",       0, 1, 0.0, "", "sld", None),
+ (12, "tsmooth", "Terrain Smooth",         "Smooth",      0, 1, 0.3, "", "sld", None),
+ (13, "tdrive",  "Terrain Drive",          "Drive",       0, 1, 0.0, "", "sld", None),
+ (14, "tbits",   "Terrain Bit Depth",      "Bits",        2, 16, 16, "", "sld", None),
+ (15, "tvel",    "Terrain Velocity to Radius", "Vel > Radius", -1, 1, 0.0, "", "sld", None),
 ]
-def plx_id(o, j): return PLX_BASE + PLX_STRIDE * o + j
-PLX_DST_BASE = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540
-def plxdst(o, j): return PLX_DST_BASE + PLX_STRIDE * o + j
-N_DST_TOTAL = PLX_DST_BASE + PLX_STRIDE * OSC_COUNT   # 636
+def ter_id(o, j): return TER_BASE + TER_STRIDE * o + j
+TER_DST_BASE = KICK_DST_BASE + KICK_STRIDE * OSC_COUNT   # 540
+def terdst(o, j): return TER_DST_BASE + TER_STRIDE * o + j
+N_DST_TOTAL = TER_DST_BASE + TER_STRIDE * OSC_COUNT   # 636

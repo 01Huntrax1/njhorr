@@ -6,7 +6,7 @@
 
 namespace njo
 {
-    // OSC 1-6: source panel (wavetable / sampler / Plaits), tune + unison, filter, distortion + output
+    // OSC 1-6: source panel (wavetable / sampler / Wave Terrain / ...), tune + unison, filter, distortion + output
     class OscPage : public juce::Component
     {
     public:
