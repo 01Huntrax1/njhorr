@@ -220,7 +220,9 @@ namespace
 ManagerBar::Impl::Impl (ManagerBar& o, Ctx& c, SoundMemory& mem, juce::Component& h)
     : owner (o), ctx (c), memory (mem), host (h), store (c.be.rootFolder())
 {
-    installFactoryWavetables (c.be.rootFolder());   // first start: Wavetables/Factory/*.wav
+    // first start: Wavetables/Factory/*.wav, written in the background so the editor opens at once (the marker file is written last)
+    if (! c.be.rootFolder().getChildFile ("Wavetables/Factory/.factory-1").existsAsFile())
+        juce::Thread::launch ([root = c.be.rootFolder()] { installFactoryWavetables (root); });
     for (auto* b : { &prev, &nameBtn, &next, &save, &vault }) owner.addAndMakeVisible (*b);
     prev.onClick = [this] { presetStep (-1); };
     next.onClick = [this] { presetStep (1); };
