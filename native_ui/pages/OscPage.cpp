@@ -6,6 +6,8 @@
 #include "../NjoTer.h"
 #include "../NjoWg.h"
 #include "../NjoJp.h"
+#include "../NjoGr.h"
+#include "../NjoAd.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -203,6 +205,21 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Granular and Additive sources: their own id blocks (GR_BASE / AD_BASE + 16 * osc + j)
+            for (auto key : grKeys)
+            {
+                auto w = makeWidget (ctx, gr::grId (o, gr::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
+            for (auto key : adKeys)
+            {
+                auto w = makeWidget (ctx, ad::adId (o, ad::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             // Kick source: its own id block (KICK_BASE + 16 * osc + j)
             for (auto key : kickKeys)
             {
@@ -277,14 +294,16 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 7, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 9, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
+        static constexpr const char* grKeys[] = { "gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gdrive", "gvel" };
+        static constexpr const char* adKeys[] = { "ashape", "ashapeb", "amorph", "acount", "atilt", "aodd", "ainh", "aform", "aformg", "ashim", "ashimr", "adec", "adrive", "awid", "avel" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
-        SoundMemory::Kind kind() const { return srcType() == 1 ? SoundMemory::Sample : SoundMemory::Wavetable; }
+        SoundMemory::Kind kind() const { return srcType() == 1 || srcType() == 8 ? SoundMemory::Sample : SoundMemory::Wavetable; }
 
         // ---- memory / drop zone ----
         void refreshDz()
@@ -411,6 +430,7 @@ namespace njo
         // ---- parameter changes ----
         void paramChanged (int num, float) override
         {
+            if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1))) { owner.repaint(); return; }
             if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { updateJpLabels(); owner.repaint(); return; }
             if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { updateWgLabels(); owner.repaint(); return; }
             if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
@@ -449,7 +469,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7, wgf = type == 6, jpf = type == 7;
+            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9, wgf = type == 6, jpf = type == 7, grf = type == 8, adf = type == 9;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -465,7 +485,7 @@ namespace njo
                 display.setVisible (true);
                 dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - 56, 26);
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
-                dz.setVisible (wt || sm); vault.setVisible (wt || sm);
+                dz.setVisible (wt || sm || grf); vault.setVisible (wt || sm || grf);
 
                 const int colW = (w - 26 - 7) / 2, x2 = 13 + colW + 7;
                 put ("wpos", 13 + colW / 2 - 35, 190, 70, 54, c, wt);
@@ -476,7 +496,7 @@ namespace njo
                 put ("w2m", 13, 358, colW, 36, c, wt);     strip ("w2m", 13, 358, colW, c, false, wt);
                 knob ("w2a", x2 + colW / 2, 348, c, wt);
 
-                put ("root", 13, 248, 106, 17, c, sm);     strip ("root", 13, 236, 106, c, true, sm);
+                put ("root", 13, grf ? 200 : 248, 106, 17, c, sm || grf);     strip ("root", 13, grf ? 188 : 236, 106, c, true, sm || grf);
                 knob ("sstart", 179, 222, c, sm);
                 put ("sloop", 13, 337, w - 26, 32, c, sm);
 
@@ -512,6 +532,25 @@ namespace njo
                         for (int i = 0; i < 5; ++i)
                             knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 62 * r, c, jpf);
                     if (jpf) updateJpLabels();
+                }
+
+                {   // Granular: the sample memory (drop zone above) and three rows of knobs
+                    const float fw = (float) (w - 26);
+                    const char* rows[3][5] = { { "gpos", "gsize", "gdens", "gspray", "gpitch" }, { "gpan", "gshape", "grev", "gscan", "gjit" }, { "gvel", "gdrive", nullptr, nullptr, nullptr } };
+                    for (int r = 0; r < 3; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 222 + 62 * r, c, grf);
+                }
+
+                {   // Additive: two spectrum selectors, then rows of knobs
+                    const int cw2 = (w - 26 - 8) / 2;
+                    put ("ashape", 13, 146, cw2, 36, c, adf);  strip ("ashape", 13, 146, cw2, c, false, adf);
+                    put ("ashapeb", 13 + cw2 + 8, 146, cw2, 36, c, adf);  strip ("ashapeb", 13 + cw2 + 8, 146, cw2, c, false, adf);
+                    const float fw = (float) (w - 26);
+                    const char* rows[3][5] = { { "amorph", "acount", "atilt", "aodd", "ainh" }, { "aform", "aformg", "ashim", "ashimr", "adec" }, { "awid", "avel", "adrive", nullptr, nullptr } };
+                    for (int r = 0; r < 3; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 62 * r, c, adf);
                 }
 
                 // Alpha Juno: wave selectors with their levels, noise / character, pulse width

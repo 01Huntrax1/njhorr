@@ -758,5 +758,81 @@ check("Mod destination of OSC 2 leaves the OSC 1 JP-8080 alone", np.allclose(win
 two = render(JBASE + [JPP(0, "jpwave", 6), P(1, "type", 7), P(1, "level", 0.8), FOFF(1), JPP(1, "jpwave", 5)], note=57, hold=0.5, tail=0.3, tag="jp2")
 check("two JP-8080 slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
 
+
+# ---------------------------------------------------------------- Granular source (type 8): ids GR_BASE + 16 * slot + j, mod destinations 828 + ...
+def GP(o, key, v):
+    for q in L.GR:
+        if q[1] == key: return (L.gr_id(o, q[0]), v)
+    return P(o, key, v)
+GSMP = ["smp 0 sine 261.6256"]
+GBASE = GSMP + [P(0, "type", 8), P(0, "level", 0.8), FOFF(0)]
+def gr(extra=(), note=60, tag="grx", hold=0.8, tail=0.2, vel=100, ch=0):
+    return render(GBASE + [GP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:int((0.05 + hold + tail) * RATE) - 64, ch]
+g0 = gr(tag="gr0")
+check("Granular sounds and stays finite", np.isfinite(g0).all() and rms(win(g0, 0.2, 0.7)) > 5e-3 and np.abs(g0).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(g0, 0.2, 0.7)), np.abs(g0).max()))
+errs = []
+for note in (48, 60, 72):
+    f0 = 261.6256 * 2 ** ((note - 60) / 12); x = gr(note=note, tag="grp", extra=[("gspray", 0.0), ("gpitch", 0.0), ("gsize", 0.9), ("gdens", 0.4), ("gjit", 0.0)])
+    errs.append(1200 * math.log2(peak_near(win(x, 0.2, 0.7), f0, 0.1) / f0))
+check("Granular follows the keyboard relative to the root note (C2, C3, C4 within 40 cents with long grains: the grain phases are random)", max(abs(e) for e in errs) < 40, "%s cents" % ["%.1f" % e for e in errs])
+check("Granular without a sample is silent", rms(render(["p %d 8" % L.pid(0, K["type"]), P(0, "level", 0.8), FOFF(0)], tag="gr_none")) < 1e-4)
+gd = gr([("gdens", 0.0)], tag="gr1")
+check("Granular: Density 1 grain per second leaves gaps", rms(win(gd, 0.2, 0.7)) < 0.8 * rms(win(g0, 0.2, 0.7)))
+gp = gr([("gpitch", 1.0)], tag="gr2")
+check("Granular: Pitch Spread smears the pitch", band(win(gp, 0.2, 0.7), 150, 235) + band(win(gp, 0.2, 0.7), 290, 450) > 3 * (band(win(g0, 0.2, 0.7), 150, 235) + band(win(g0, 0.2, 0.7), 290, 450)) + 1e-3)
+l1, r1 = gr([("gpan", 1.0)], tag="gr3", ch=0), gr([("gpan", 1.0)], tag="gr3", ch=1)
+m0, m1 = gr([("gpan", 0.0)], tag="gr4", ch=0), gr([("gpan", 0.0)], tag="gr4", ch=1)
+check("Granular: Pan Spread makes it stereo, 0 makes it mono", rms(win(l1 - r1, 0.2, 0.7)) > 0.2 * rms(win(l1, 0.2, 0.7)) and rms(win(m0 - m1, 0.2, 0.7)) < 1e-4)
+check("Granular: Window changes the grain envelope", rms(win(gr([("gshape", 1.0)], tag="gr5") - g0, 0.2, 0.7)) > 0.05 * rms(win(g0, 0.2, 0.7)))
+bad = 0
+for note, vel, ex in ((24, 1, [("gdens", 1.0), ("gsize", 1.0), ("gpitch", 1.0), ("grev", 1.0), ("gdrive", 1.0)]), (120, 127, [("gsize", 0.0), ("gscan", 1.0), ("gjit", 1.0), ("gspray", 1.0)]), (60, 127, [("gvel", 1.0), ("gscan", -1.0), ("gdens", 1.0)])):
+    x = gr(ex, note=note, vel=vel, tag="grs", hold=0.4, tail=0.2)
+    if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("Granular: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+mm = render(GBASE + MM(0, 1, L.grdst(0, 4), 1.0) + CONST1, note=60, hold=0.8, tail=0.2, tag="grm1")[:int(1.05 * RATE) - 64, 0]
+check("Mod destination 'Granular Pitch Spread' of OSC 1 smears the pitch", band(win(mm, 0.2, 0.7), 150, 235) + band(win(mm, 0.2, 0.7), 290, 450) > 3 * (band(win(g0, 0.2, 0.7), 150, 235) + band(win(g0, 0.2, 0.7), 290, 450)) + 1e-3)
+
+# ---------------------------------------------------------------- Additive source (type 9): ids AD_BASE + 16 * slot + j, mod destinations 924 + ...
+def AP(o, key, v):
+    for q in L.AD:
+        if q[1] == key: return (L.ad_id(o, q[0]), v)
+    return P(o, key, v)
+ABASE = [P(0, "type", 9), P(0, "level", 0.8), FOFF(0)]
+def ad(shape, extra=(), note=57, tag="adx", hold=0.6, tail=0.2, vel=100, ch=0):
+    return render(ABASE + [AP(0, "ashape", shape)] + [AP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:int((0.05 + hold + tail) * RATE) - 64, ch]
+for sh, name in enumerate(L.AD_SHAPES):
+    a = ad(sh, tag="ad%d" % sh)
+    check("Additive %s sounds and stays finite" % name, np.isfinite(a).all() and rms(win(a, 0.1, 0.5)) > 5e-3 and np.abs(a).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(a, 0.1, 0.5)), np.abs(a).max()))
+    if sh != 5:
+        errs = []
+        for note in (45, 57, 69):
+            f0 = 440 * 2 ** ((note - 69) / 12); x = ad(sh, note=note, tag="adp%d" % sh)
+            errs.append(1200 * math.log2(peak_near(win(x, 0.1, 0.5), f0, 0.06) / f0))
+        check("Additive %s follows the keyboard (A2, A3, A4 within 12 cents)" % name, max(abs(e) for e in errs) < 12, "%s cents" % ["%.1f" % e for e in errs])
+a1 = ad(0, [("acount", 1)], tag="adc1")
+a64 = ad(0, [("acount", 64)], tag="adc64")
+check("Additive: Partials 1 is a sine, 64 is bright", hfrac(win(a1, 0.1, 0.5), 600) < 0.06 and hfrac(win(a64, 0.1, 0.5), 600) > 0.3, "%.3f %.3f" % (hfrac(win(a1, 0.1, 0.5), 600), hfrac(win(a64, 0.1, 0.5), 600)))
+check("Additive: Tilt darkens", hfrac(win(ad(0, [("atilt", 1.0)], tag="adt1"), 0.1, 0.5), 600) < 0.5 * hfrac(win(ad(0, [("atilt", -1.0)], tag="adt0"), 0.1, 0.5), 600))
+ev = lambda x: band(win(x, 0.1, 0.5), 400, 480) / (band(win(x, 0.1, 0.5), 200, 240) + 1e-9)
+check("Additive: Odd / Even removes the even partials (odd +1) or the odd ones (-1)", ev(ad(0, [("aodd", 1.0)], tag="ado1")) < 0.1 * ev(ad(0, [("aodd", -1.0)], tag="ado0")) + 0.01 and ev(ad(0, [("aodd", 1.0)], tag="ado1")) < 0.2)
+i0 = peak_near(win(ad(0, tag="adi0"), 0.1, 0.5), 660, 0.15); i1 = peak_near(win(ad(0, [("ainh", 1.0)], tag="adi1"), 0.1, 0.5), 660, 0.15)
+check("Additive: Inharmonicity stretches the upper partials", i1 > i0 * 1.04, "%.1f %.1f" % (i0, i1))
+l1, r1 = ad(0, [("awid", 1.0)], tag="adw1", ch=0), ad(0, [("awid", 1.0)], tag="adw1", ch=1)
+m0, m1 = ad(0, [("awid", 0.0)], tag="adw0", ch=0), ad(0, [("awid", 0.0)], tag="adw0", ch=1)
+check("Additive: Width makes it stereo, 0 makes it mono", rms(win(l1 - r1, 0.1, 0.5)) > 0.2 * rms(win(l1, 0.1, 0.5)) and rms(win(m0 - m1, 0.1, 0.5)) < 1e-4)
+check("Additive: Morph moves from spectrum A to B", rms(win(ad(0, [("ashapeb", 1), ("amorph", 1.0)], tag="adm1") - ad(1, tag="adm2"), 0.1, 0.5)) < 0.05 * rms(win(ad(1, tag="adm2"), 0.1, 0.5)) + 1e-3 and rms(win(ad(0, [("ashapeb", 1), ("amorph", 1.0)], tag="adm1") - ad(0, tag="adm3"), 0.1, 0.5)) > 0.2 * rms(win(ad(0, tag="adm3"), 0.1, 0.5)))
+dk = ad(0, [("adec", 1.0)], tag="add1", hold=1.0)
+check("Additive: Partial Decay makes the sound darker over time", band(win(dk, 0.7, 0.9), 500, 4000) / band(win(dk, 0.7, 0.9), 200, 240) < 0.75 * band(win(dk, 0.1, 0.3), 500, 4000) / band(win(dk, 0.1, 0.3), 200, 240))
+bad = 0
+for sh in range(8):
+    for note, vel, ex in ((24, 1, [("acount", 64), ("ainh", 1.0), ("atilt", -1.0), ("ashim", 1.0), ("adrive", 1.0)]), (120, 127, [("acount", 64), ("aformg", 1.0), ("aform", 1.0), ("avel", 1.0)]), (60, 127, [("aodd", -1.0), ("ashapeb", 4), ("amorph", 0.5), ("adec", 1.0)])):
+        x = ad(sh, ex, note=note, vel=vel, tag="ads", hold=0.4, tail=0.2)
+        if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("Additive: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+mm = render(ABASE + [AP(0, "ashape", 0), AP(0, "atilt", -1.0)] + MM(0, 1, L.addst(0, 4), 1.0) + CONST1, note=57, hold=0.6, tail=0.2, tag="adm4")[:int(0.85 * RATE) - 64, 0]
+check("Mod destination 'Additive Tilt' of OSC 1 moves the tilt from -1 to 0 (darker)", abs(hfrac(win(mm, 0.1, 0.5), 600) - hfrac(win(ad(0, [("atilt", 0.0)], tag="adt00"), 0.1, 0.5), 600)) < 0.02 and hfrac(win(mm, 0.1, 0.5), 600) < 0.7 * hfrac(win(ad(0, [("atilt", -1.0)], tag="adt0"), 0.1, 0.5), 600))
+two = render(ABASE + [AP(0, "ashape", 4), P(1, "type", 9), P(1, "level", 0.8), FOFF(1), AP(1, "ashape", 5), P(2, "type", 8), P(2, "level", 0.5), FOFF(2)], note=57, hold=0.5, tail=0.3, tag="ad2")
+check("Additive, Granular and Additive slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

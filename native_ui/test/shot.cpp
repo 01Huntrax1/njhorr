@@ -3,6 +3,8 @@
 #include "../NjoTer.h"
 #include "../NjoWg.h"
 #include "../NjoJp.h"
+#include "../NjoGr.h"
+#include "../NjoAd.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -82,6 +84,11 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_jp_supersaw.png"), scale);
         cx.set (njo::jp::jpId (0, njo::jp::key ("jpwave")), 7.0f); cx.set (njo::jp::jpId (0, njo::jp::key ("jpfb")), 0.8f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_jp_feedback.png"), scale);
+        // Additive and Granular sources
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 9.0f); cx.set (njo::ad::adId (0, njo::ad::key ("ashape")), 5.0f); cx.set (njo::ad::adId (0, njo::ad::key ("amorph")), 0.4f); cx.set (njo::ad::adId (0, njo::ad::key ("aformg")), 0.6f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_additive.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 8.0f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_granular.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

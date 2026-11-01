@@ -70,6 +70,21 @@ Source type 7, **JP-8080**, offers the oscillator waveforms of the Roland JP-800
 - Parameters: `2300 + 16 * slot + j`, mod destinations 732..827 (`OSC n JP ...`). Code: `tools/osc/build_jp.py` (DSP, `native_ui/NjoJp.h`), `tools/osc/apply_jp_ui.py` (patch/index.js), tests in `tools/osc/test_osc.py` and `tests/osc.test.js`.
 - State: Voice.jps, 6 slots x 64 floats per voice.
 
+## Granular source
+Source type 8, **Granular**, plays grains of the sample memory of its slot (load a sample like for the Sampler: drop zone, Vault, Root Note). Up to 12 grains sound at once per voice; their pitch follows the key relative to the Root Note.
+
+- **Position** of the grain start, **Scan** (moves the position through the sample, 1 = real time speed, negative = backwards), **Spray** (random position), **Vel > Position**.
+- **Size** (5 .. 500 ms), **Density** (1 .. 200 grains per second), **Timing Jitter** (0 = regular), **Window** (Hann .. trapezoid), **Reverse** (probability of a backwards grain), **Pitch Spread** (up to 12 semitones at random), **Pan Spread**, **Drive**. The level is normalised by the grain overlap.
+- Parameters: `2400 + 16 * slot + j` (12 used), mod destinations 828..923. Code: `tools/osc/build_gr.py`, `native_ui/NjoGr.h`.
+
+## Additive source
+Source type 9, **Additive**, sums up to 64 partials. Each partial is a rotating phasor (no sine call per sample); the amplitudes are recomputed every 32 samples and smoothed.
+
+- Eight spectra: Saw, Square, Triangle, Organ (drawbars 1, 2, 3, 4, 6, 8), Bell, Vowel (three formants at 650 / 1100 / 2600 Hz), Brass, Hollow (every third partial missing). **Spectrum A**, **Spectrum B** and **Morph** blend two of them.
+- **Partials** (1 .. 64), **Tilt** (-1 brighter .. +1 darker), **Odd / Even** (+1 only odd partials, -1 only even), **Inharmonicity** (stiff string stretch, partial n at n f sqrt(1 + B n^2)), **Formant** position and gain, **Shimmer** (slow amplitude movement per partial, with rate), **Partial Decay** (the high partials fade first), **Width** (odd partials left, even right), **Vel > Bright**, **Drive**.
+- Parameters: `2500 + 16 * slot + j` (15 used), mod destinations 924..1019. Code: `tools/osc/build_ad.py`, `native_ui/NjoAd.h`; both generators share `tools/osc/srcgen.py`, the web UI part is `tools/osc/apply_gradd_ui.py`.
+- State: Voice.grs (6 x 96 floats) and Voice.ads (6 x 512 floats) per voice.
+
 ## Where samples and wavetables are saved
 Each plugin instance keeps its own samples and wavetables in the plugin's stored state, so they are saved with the DAW project and
 are never shared between instances (loading a kick into Sampler 1 in one instance does not touch another instance).

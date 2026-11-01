@@ -4,6 +4,8 @@
 #include "../NjoTer.h"
 #include "../NjoWg.h"
 #include "../NjoJp.h"
+#include "../NjoGr.h"
+#include "../NjoAd.h"
 #include <cmath>
 
 namespace njo
@@ -191,6 +193,7 @@ namespace njo
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
+        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1))) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -288,7 +291,7 @@ namespace njo
                     info = s->name + " / FRAME " + juce::String (p + 1.0f, 1) + " OF " + juce::String (nF) + tag;
                 }
             }
-            else if (type == 1)
+            else if (type == 1 || type == 8)
             {
                 auto* s = mem.get (SoundMemory::Sample, o);
                 if (s == nullptr || s->data.empty()) info = "NO SAMPLE LOADED";
@@ -296,7 +299,7 @@ namespace njo
                 {
                     const int n = (int) s->data.size(), Wp = (int) W;
                     int step = juce::jmax (1, n / Wp);
-                    float start = juce::jlimit (0.0f, 1.0f, pv ("sstart"));
+                    float start = juce::jlimit (0.0f, 1.0f, type == 8 ? ctx.get (gr::grId (o, gr::key ("gpos"))) : pv ("sstart"));
                     g.setColour (juce::Colour (0xffff3b30).withAlpha (0.12f));
                     g.fillRect (0.0f, 0.0f, W * start, H);
                     juce::Path p;
@@ -315,6 +318,56 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 9)
+            {
+                // Additive: one cycle of the two morphed spectra (the partials of the DSP at 110 Hz)
+                auto V = [&] (const char* key) { return ctx.get (ad::adId (o, ad::key (key))); };
+                auto shape = [] (int sh, int n)
+                {
+                    const double fn = n; const bool od = (n % 2) == 1;
+                    switch (sh)
+                    {
+                        case 0: return 1.0 / fn;
+                        case 1: return od ? 1.0 / fn : 0.0;
+                        case 2: return od ? 1.6 / (fn * fn) : 0.0;
+                        case 3: { static const double d[9] = { 0, 1, 0.8, 0.7, 0.6, 0, 0.5, 0, 0.4 }; return n <= 8 ? d[n] : 0.0; }
+                        case 4: return std::pow (fn, -0.8) * (0.15 + std::pow (std::sin (fn * 2.3), 2.0));
+                        case 5: { const double f = fn * 110, a = std::exp (-0.5 * (f - 650) * (f - 650) / 22500.0) + 0.7 * std::exp (-0.5 * (f - 1100) * (f - 1100) / 40000.0) + 0.4 * std::exp (-0.5 * (f - 2600) * (f - 2600) / 90000.0); return (0.04 + a) / std::sqrt (fn); }
+                        case 6: return std::pow (fn, -0.5) * (1.0 - std::exp (-0.6 * fn));
+                        default: return n % 3 == 0 ? 0.0 : 1.0 / fn;
+                    }
+                };
+                const int cnt = juce::roundToInt (V ("acount")), sa = juce::jlimit (0, 7, juce::roundToInt (V ("ashape"))), sb = juce::jlimit (0, 7, juce::roundToInt (V ("ashapeb")));
+                const double mo = V ("amorph"), ex = V ("atilt") * 1.5, odd = V ("aodd"), fc = V ("aform") * 6, fg = V ("aformg") * 3;
+                double a[64], ss = 0;
+                for (int n = 1; n <= 64; ++n)
+                {
+                    double v = 0;
+                    if (n <= cnt && n * 110 < 20000)
+                    {
+                        v = shape (sa, n) * (1 - mo) + shape (sb, n) * mo;
+                        v *= std::pow ((double) n, -ex) * ((n % 2) ? 1 + odd : 1 - odd);
+                        if (fg > 0) { const double dd = (std::log2 ((double) n) - fc) / 0.35; v *= 1 + fg * std::exp (-0.5 * dd * dd); }
+                        v = juce::jmax (0.0, v);
+                    }
+                    a[n - 1] = v; ss += v * v;
+                }
+                const double gn = 0.45 / std::sqrt (ss * 0.5 + 1e-6), dr = V ("adrive");
+                juce::Path p; const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    double y = 0;
+                    for (int n = 1; n <= 64; ++n) if (a[n - 1] > 0) y += a[n - 1] * std::sin (6.283185307 * n * x / W);
+                    y = juce::jlimit (-1.0, 1.0, y * gn * 1.6);
+                    if (dr > 0.001) { const double gd = 1 + dr * 6; y = std::tanh (y * gd) / std::tanh (gd); }
+                    const float py = H / 2 - (float) y * (H / 2 - 4);
+                    if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
+                }
+                g.setColour (juce::Colour (0xffff3b30));
+                g.strokePath (p, juce::PathStrokeType (1.5f));
+                static const char* names[] = { "SAW", "SQUARE", "TRIANGLE", "ORGAN", "BELL", "VOWEL", "BRASS", "HOLLOW" };
+                info = juce::String ("ADDITIVE / ") + names[sa] + (mo > 0.001 ? juce::String (" > ") + names[sb] : juce::String()) + " / " + juce::String (cnt) + " PARTIALS";
             }
             else if (type == 7)
             {

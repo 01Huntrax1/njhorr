@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 7, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 9, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -280,4 +280,48 @@ JP_LABELS = [
 ]
 def jp_id(o, j): return JP_BASE + JP_STRIDE * o + j
 def jpdst(o, j): return JP_DST_BASE + JP_STRIDE * o + j
-N_DST_TOTAL = JP_DST_BASE + JP_STRIDE * OSC_COUNT   # 828
+GR_DST_BASE = JP_DST_BASE + JP_STRIDE * OSC_COUNT   # 828
+# Granular source (tools/osc/build_gr.py): parameter j (0..11) of slot o has the id GR_BASE + 16 * o + j and the mod destination 828 + 16 * o + j.  It reads the sample memory of its slot.
+GR_BASE = 2400
+GR_STRIDE = 16
+GR = [
+ (0,  "gpos",   "Granular Position",    "Position",   0, 1, 0.3, "", "sld", None),
+ (1,  "gsize",  "Granular Grain Size",  "Size",       0, 1, 0.5, "", "sld", None),    # 5 ms .. 500 ms (exponential)
+ (2,  "gdens",  "Granular Density",     "Density",    0, 1, 0.5, "", "sld", None),    # 1 .. 200 grains per second (exponential)
+ (3,  "gspray", "Granular Spray",       "Spray",      0, 1, 0.1, "", "sld", None),    # random position
+ (4,  "gpitch", "Granular Pitch Spread", "Pitch Spread", 0, 1, 0.0, "", "sld", None), # 0 .. 12 semitones
+ (5,  "gpan",   "Granular Pan Spread",  "Pan Spread", 0, 1, 0.5, "", "sld", None),
+ (6,  "gshape", "Granular Window",      "Window",     0, 1, 0.0, "", "sld", None),    # Hann .. trapezoid
+ (7,  "grev",   "Granular Reverse",     "Reverse",    0, 1, 0.0, "", "sld", None),    # probability of a reversed grain
+ (8,  "gscan",  "Granular Scan",        "Scan",      -1, 1, 0.0, "", "sld", None),    # the position moves through the sample
+ (9,  "gjit",   "Granular Timing",      "Timing Jitter", 0, 1, 0.3, "", "sld", None),
+ (10, "gdrive", "Granular Drive",       "Drive",      0, 1, 0.0, "", "sld", None),
+ (11, "gvel",   "Granular Velocity",    "Vel > Position", -1, 1, 0.0, "", "sld", None),
+]
+def gr_id(o, j): return GR_BASE + GR_STRIDE * o + j
+def grdst(o, j): return GR_DST_BASE + GR_STRIDE * o + j
+AD_DST_BASE = GR_DST_BASE + GR_STRIDE * OSC_COUNT   # 924
+# Additive source (tools/osc/build_ad.py): parameter j (0..14) of slot o has the id AD_BASE + 16 * o + j and the mod destination 924 + 16 * o + j
+AD_BASE = 2500
+AD_STRIDE = 16
+AD_SHAPES = ["Saw", "Square", "Triangle", "Organ", "Bell", "Vowel", "Brass", "Hollow"]
+AD = [
+ (0,  "ashape",  "Additive Spectrum A",   "Spectrum A", 0, 7, 0, "", "sel", AD_SHAPES),
+ (1,  "ashapeb", "Additive Spectrum B",   "Spectrum B", 0, 7, 3, "", "sel", AD_SHAPES),
+ (2,  "amorph",  "Additive Morph",        "Morph",      0, 1, 0.0, "", "sld", None),
+ (3,  "acount",  "Additive Partials",     "Partials",   1, 64, 32, "", "sld", None),
+ (4,  "atilt",   "Additive Tilt",         "Tilt",      -1, 1, 0.0, "", "sld", None),
+ (5,  "aodd",    "Additive Odd / Even",   "Odd / Even", -1, 1, 0.0, "", "sld", None),
+ (6,  "ainh",    "Additive Inharmonicity", "Inharm",     0, 1, 0.0, "", "sld", None),
+ (7,  "aform",   "Additive Formant",      "Formant",    0, 1, 0.4, "", "sld", None),
+ (8,  "aformg",  "Additive Formant Gain", "Form. Gain", 0, 1, 0.0, "", "sld", None),
+ (9,  "ashim",   "Additive Shimmer",      "Shimmer",    0, 1, 0.0, "", "sld", None),
+ (10, "ashimr",  "Additive Shimmer Rate", "Shim. Rate", 0.1, 20, 2.0, "Hz", "sld", None),
+ (11, "adec",    "Additive Partial Decay", "Partial Decay", 0, 1, 0.0, "", "sld", None),
+ (12, "adrive",  "Additive Drive",        "Drive",      0, 1, 0.0, "", "sld", None),
+ (13, "awid",    "Additive Stereo Spread", "Width",     0, 1, 0.3, "", "sld", None),
+ (14, "avel",    "Additive Velocity",     "Vel > Bright", 0, 1, 0.5, "", "sld", None),
+]
+def ad_id(o, j): return AD_BASE + AD_STRIDE * o + j
+def addst(o, j): return AD_DST_BASE + AD_STRIDE * o + j
+N_DST_TOTAL = AD_DST_BASE + AD_STRIDE * OSC_COUNT   # 1020
