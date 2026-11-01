@@ -716,5 +716,47 @@ check("Mod destination of OSC 2 leaves the OSC 1 waveguide alone", np.allclose(w
 two = render(WBASE + [WP(0, "wmodel", 3), P(1, "type", 6), P(1, "level", 0.8), FOFF(1), WP(1, "wmodel", 4)], note=57, hold=0.5, tail=0.3, tag="wg2")
 check("two Waveguide slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
 
+
+# ---------------------------------------------------------------- JP-8080 source (type 7): ids JP_BASE + 16 * slot + j, mod destinations 732 + ...
+def JPP(o, key, v):
+    for q in L.JP:
+        if q[1] == key: return (L.jp_id(o, q[0]), v)
+    return P(o, key, v)
+JBASE = [P(0, "type", 7), P(0, "level", 0.8), FOFF(0)]
+def jpr(wave, extra=(), note=57, tag="jpx", hold=0.6, tail=0.2, vel=100, ch=0):
+    r = render(JBASE + [JPP(0, "jpwave", wave)] + [JPP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)
+    return r[:, ch]
+for w, name in enumerate(L.JP_WAVES):
+    a = jpr(w, tag="jp%d" % w)
+    check("JP-8080 %s sounds and stays finite" % name, np.isfinite(a).all() and rms(win(a, 0.1, 0.5)) > 5e-3 and np.abs(a).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(a, 0.1, 0.5)), np.abs(a).max()))
+    if w in (0, 1, 2, 3, 5, 7, 8):
+        errs = []
+        for note in (45, 57, 69):
+            f0 = 440 * 2 ** ((note - 69) / 12); x = jpr(w, note=note, tag="jpp%d" % w, extra=[("jpfb", 0.0), ("jpfbc", 0.0), ("jptmd", 0.0)] if w in (7, 8) else [])
+            errs.append(1200 * math.log2(peak_near(win(x, 0.1, 0.5), f0) / f0))
+        check("JP-8080 %s follows the keyboard (A2, A3, A4 within 12 cents)" % name, max(abs(e) for e in errs) < 12, "%s cents" % ["%.1f" % e for e in errs])
+bad = 0
+for w in range(9):
+    for note, vel, ex in ((24, 1, [("jpfb", 1.0), ("jpdrv", 1.0), ("jpnz", 1.0), ("jpsub", 1.0), ("jpdet", 1.0)]), (120, 127, [("jpfb", 1.0), ("jpfbc", 1.0), ("jptmd", 1.0), ("jptmr", 1.0), ("jpstilt", 0.0)]), (60, 127, [("jpmix", 1.0), ("jpwid", 1.0), ("jpspk", 1.0), ("jppwm", 1.0)])):
+        x = jpr(w, ex, note=note, vel=vel, tag="jps", hold=0.4, tail=0.2)
+        if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("JP-8080: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+ss = jpr(6, tag="jps0")
+check("Super Saw: Detune spreads the spectrum around the note", abs(rms(win(jpr(6, [("jpdet", 1.0)], tag="jps1") - ss, 0.1, 0.5))) > 0.3 * rms(win(ss, 0.1, 0.5)))
+l, r_ = jpr(6, [("jpwid", 1.0)], tag="jps2", ch=0), jpr(6, [("jpwid", 1.0)], tag="jps2", ch=1)
+m0, m1 = jpr(6, [("jpwid", 0.0)], tag="jps3", ch=0), jpr(6, [("jpwid", 0.0)], tag="jps3", ch=1)
+check("Super Saw: Width makes it stereo, 0 makes it mono", rms(win(l - r_, 0.1, 0.5)) > 0.2 * rms(win(l, 0.1, 0.5)) and rms(win(m0 - m1, 0.1, 0.5)) < 1e-4, "%.4f %.6f" % (rms(win(l - r_, 0.1, 0.5)), rms(win(m0 - m1, 0.1, 0.5))))
+sq = jpr(1, tag="jq0")
+check("Square: Pulse Width changes the sound", rms(win(jpr(1, [("jppw", 0.15)], tag="jq1") - sq, 0.1, 0.5)) > 0.3 * rms(win(sq, 0.1, 0.5)))
+check("Feedback Osc: Feedback adds harmonics to the sine", hfrac(win(jpr(7, [("jpfb", 1.0)], tag="jf1"), 0.1, 0.5), 1000) > 20 * hfrac(win(jpr(7, [("jpfb", 0.0), ("jpfbc", 0.0)], tag="jf0"), 0.1, 0.5), 1000) + 0.02)
+check("Tri Mod: Mod Depth adds harmonics to the triangle", hfrac(win(jpr(8, [("jptmd", 1.0), ("jptmr", 0.7)], tag="jt1"), 0.1, 0.5), 1000) > 3 * hfrac(win(jpr(8, [("jptmd", 0.0)], tag="jt0"), 0.1, 0.5), 1000))
+check("Spectrum: Tilt darkens the wave", hfrac(win(jpr(5, [("jpstilt", 1.0)], tag="jx1"), 0.1, 0.5), 1000) < 0.5 * hfrac(win(jpr(5, [("jpstilt", 0.0)], tag="jx0"), 0.1, 0.5), 1000))
+mm = render(JBASE + [JPP(0, "jpwave", 7), JPP(0, "jpfb", 0.0), JPP(0, "jpfbc", 0.0)] + MM(0, 1, L.jpdst(0, 7), 1.0) + CONST1, note=57, hold=0.6, tail=0.2, tag="jm1")[:, 0]
+check("Mod destination 'JP Feedback' of OSC 1 adds harmonics", hfrac(win(mm, 0.1, 0.5), 1000) > 20 * hfrac(win(jpr(7, [("jpfb", 0.0), ("jpfbc", 0.0)], tag="jf0"), 0.1, 0.5), 1000) + 0.02)
+mo = render(JBASE + [JPP(0, "jpwave", 7), JPP(0, "jpfb", 0.0), JPP(0, "jpfbc", 0.0)] + MM(0, 1, L.jpdst(1, 7), 1.0) + CONST1, note=57, hold=0.6, tail=0.2, tag="jm2")[:, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 JP-8080 alone", np.allclose(win(mo, 0.1, 0.5), win(jpr(7, [("jpfb", 0.0), ("jpfbc", 0.0)], tag="jf0"), 0.1, 0.5), atol=1e-4))
+two = render(JBASE + [JPP(0, "jpwave", 6), P(1, "type", 7), P(1, "level", 0.8), FOFF(1), JPP(1, "jpwave", 5)], note=57, hold=0.5, tail=0.3, tag="jp2")
+check("two JP-8080 slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

@@ -2,6 +2,7 @@
 #include "../NjoEq.h"
 #include "../NjoTer.h"
 #include "../NjoWg.h"
+#include "../NjoJp.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -76,6 +77,11 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_waveguide_drum.png"), scale);
         cx.set (njo::wg::wgId (0, njo::wg::key ("wmodel")), 1.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_waveguide_bowed.png"), scale);
+        // JP-8080 source: Super Saw and Feedback Osc
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 7.0f); cx.set (njo::jp::jpId (0, njo::jp::key ("jpwave")), 6.0f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_jp_supersaw.png"), scale);
+        cx.set (njo::jp::jpId (0, njo::jp::key ("jpwave")), 7.0f); cx.set (njo::jp::jpId (0, njo::jp::key ("jpfb")), 0.8f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_jp_feedback.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

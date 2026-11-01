@@ -58,6 +58,18 @@ Source type 6, **Waveguide**, has five physical models. All loops are tuned with
 - Delay memory: 6 slots x 16384 floats per voice (8 voices); the lowest note is limited to about 12 Hz at 48 kHz.
 - Sources of the models: the Faust-STK physical models (clarinet reed table, bowed string, banded waveguides), tension modulation of drum membranes (Marogna / Avanzini / Bank) and the Bessel modes of the circular membrane. The algorithms are written from scratch for this synth.
 
+## JP-8080 source
+Source type 7, **JP-8080**, offers the oscillator waveforms of the Roland JP-8000 / JP-8080. The knobs show the names that belong to the selected waveform and dim the unused ones.
+
+- **Saw, Square** (Pulse Width, PWM Depth / Rate with an internal sine LFO), **Triangle, Sine, Noise** (white).
+- **Spectrum:** 32 harmonics with a Tilt (n^-0.3 .. n^-2.5) and a formant Peak (harmonic 2 .. 22); the harmonics above the Nyquist limit are left out.
+- **Super Saw:** seven free-running saws with the detune offsets of the analysed JP-8000 (Szabo), the detune curve and the centre / side mix curves; Detune, Mix, Width (0 = mono, 1 = the three lower saws left, the three upper right), and a high-pass that follows the pitch.
+- **Feedback Osc:** a sine whose phase is modulated by its own last two outputs (Feedback up to 4.5 rad) with a second-harmonic Color.
+- **Tri Mod:** a triangle whose phase is modulated by one of its own harmonics (Mod Ratio 1 .. 8, Mod Depth).
+- All waveforms: Noise (dark), Sub (square, one octave below), Drive (tanh).
+- Parameters: `2300 + 16 * slot + j`, mod destinations 732..827 (`OSC n JP ...`). Code: `tools/osc/build_jp.py` (DSP, `native_ui/NjoJp.h`), `tools/osc/apply_jp_ui.py` (patch/index.js), tests in `tools/osc/test_osc.py` and `tests/osc.test.js`.
+- State: Voice.jps, 6 slots x 64 floats per voice.
+
 ## Where samples and wavetables are saved
 Each plugin instance keeps its own samples and wavetables in the plugin's stored state, so they are saved with the DAW project and
 are never shared between instances (loading a kick into Sampler 1 in one instance does not touch another instance).

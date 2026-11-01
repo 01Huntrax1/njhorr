@@ -3,6 +3,7 @@
 #include "../NjoKick.h"
 #include "../NjoTer.h"
 #include "../NjoWg.h"
+#include "../NjoJp.h"
 #include <cmath>
 
 namespace njo
@@ -189,6 +190,7 @@ namespace njo
         if (num >= kick::KICK_BASE + kick::KICK_STRIDE * o && num < kick::KICK_BASE + kick::KICK_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
+        if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -313,6 +315,56 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 7)
+            {
+                // JP-8080: one cycle of the selected waveform
+                auto V = [&] (const char* key) { return ctx.get (jp::jpId (o, jp::key (key))); };
+                const int wv = juce::jlimit (0, 8, juce::roundToInt (V ("jpwave")));
+                const double tp = 6.283185307;
+                auto tri = [] (double q) { q -= std::floor (q); return q < 0.5 ? 4 * q - 1 : 3 - 4 * q; };
+                const double offs[7] = { -0.11002313, -0.06288439, -0.01952356, 0, 0.01991221, 0.06216538, 0.10745242 };
+                const double dt = (double) V ("jpdet") * V ("jpdet") * 0.6, mx = V ("jpmix");
+                const double cG = -0.55366 * mx + 0.99785, sG = -0.73764 * mx * mx + 1.2841 * mx + 0.044372;
+                juce::Random rnd (7);
+                juce::Path p; const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const double q = (double) x / W; double y = 0;
+                    if (wv == 0) y = 2 * q - 1;
+                    else if (wv == 1) y = q < juce::jlimit (0.05, 0.95, (double) V ("jppw")) ? 0.9 : -0.9;
+                    else if (wv == 2) y = tri (q);
+                    else if (wv == 3) y = std::sin (tp * q);
+                    else if (wv == 4) y = (rnd.nextDouble() * 2 - 1) * 0.7;
+                    else if (wv == 5)
+                    {
+                        const double ex = 0.3 + 2.2 * V ("jpstilt"), pk = 2 + 20 * V ("jpspk"); double s = 0;
+                        for (int n = 1; n <= 32; ++n) { const double d = (n - pk) / (1 + 0.15 * pk); s += std::pow ((double) n, -ex) * (1 + 3 * std::exp (-0.5 * d * d)) * std::sin (tp * n * q); }
+                        y = s * 0.6;
+                    }
+                    else if (wv == 6)
+                    {
+                        double s = 0;
+                        for (int k = 0; k < 7; ++k) { double qq = std::fmod (q * (1 + offs[k] * dt * 6) * 4, 1.0); s += (2 * qq - 1) * (k == 3 ? cG : sG); }
+                        y = s * 0.35;
+                    }
+                    else if (wv == 7)
+                    {
+                        const double k = V ("jpfb") * 4.5; double yy = std::sin (tp * q);
+                        for (int i = 0; i < 4; ++i) yy = std::sin (tp * q + k * yy + V ("jpfbc") * 1.5 * std::sin (2 * tp * q));
+                        y = yy;
+                    }
+                    else y = tri (q + V ("jptmd") * 0.35 * std::sin (tp * (1 + std::round (V ("jptmr") * 7)) * q));
+                    y = juce::jlimit (-1.0, 1.0, y * 0.9);
+                    const float dr = V ("jpdrv");
+                    if (dr > 0.001f) { const double gd = 1 + dr * 6; y = std::tanh (y * gd) / std::tanh (gd); }
+                    const float py = H / 2 - (float) y * (H / 2 - 4);
+                    if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
+                }
+                g.setColour (juce::Colour (0xffff3b30));
+                g.strokePath (p, juce::PathStrokeType (1.5f));
+                static const char* names[] = { "SAW", "SQUARE", "TRIANGLE", "SINE", "NOISE", "SPECTRUM", "SUPER SAW", "FEEDBACK OSC", "TRI MOD" };
+                info = juce::String ("JP-8080 / ") + names[wv];
             }
             else if (type == 6)
             {

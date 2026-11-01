@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 6, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 7, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -243,4 +243,41 @@ WG_LABELS = [
 def wg_id(o, j): return WG_BASE + WG_STRIDE * o + j
 WG_DST_BASE = TER_DST_BASE + TER_STRIDE * OSC_COUNT   # 636
 def wgdst(o, j): return WG_DST_BASE + WG_STRIDE * o + j
-N_DST_TOTAL = WG_DST_BASE + WG_STRIDE * OSC_COUNT   # 732
+JP_DST_BASE = WG_DST_BASE + WG_STRIDE * OSC_COUNT   # 732
+# JP-8080 source (tools/osc/build_jp.py): parameter j (0..15) of slot o has the id JP_BASE + 16 * o + j and the mod destination 732 + 16 * o + j
+JP_BASE = 2300
+JP_STRIDE = 16
+JP_WAVES = ["Saw", "Square", "Triangle", "Sine", "Noise", "Spectrum", "Super Saw", "Feedback Osc", "Tri Mod"]
+JP = [
+ (0,  "jpwave",  "JP Waveform",        "Waveform",   0, 8, 6, "", "sel", JP_WAVES),
+ (1,  "jppw",    "JP Pulse Width",     "Pulse Width", 0.05, 0.95, 0.5, "", "sld", None),
+ (2,  "jppwm",   "JP PWM Depth",       "PWM Depth",  0, 1, 0.0, "", "sld", None),
+ (3,  "jppwr",   "JP PWM Rate",        "PWM Rate",   0.05, 20, 1.0, "Hz", "sld", None),
+ (4,  "jpdet",   "JP Super Saw Detune", "Detune",    0, 1, 0.4, "", "sld", None),
+ (5,  "jpmix",   "JP Super Saw Mix",   "Mix",        0, 1, 0.7, "", "sld", None),
+ (6,  "jpwid",   "JP Stereo Width",    "Width",      0, 1, 0.7, "", "sld", None),
+ (7,  "jpfb",    "JP Feedback",        "Feedback",   0, 1, 0.5, "", "sld", None),
+ (8,  "jpfbc",   "JP Feedback Color",  "Color",      0, 1, 0.3, "", "sld", None),
+ (9,  "jptmd",   "JP Tri Mod Depth",   "Mod Depth",  0, 1, 0.5, "", "sld", None),
+ (10, "jptmr",   "JP Tri Mod Ratio",   "Mod Ratio",  0, 1, 0.2, "", "sld", None),    # 1 .. 8 (whole numbers)
+ (11, "jpstilt", "JP Spectrum Tilt",   "Tilt",       0, 1, 0.5, "", "sld", None),
+ (12, "jpspk",   "JP Spectrum Peak",   "Peak",       0, 1, 0.3, "", "sld", None),
+ (13, "jpnz",    "JP Noise Mix",       "Noise",      0, 1, 0.0, "", "sld", None),
+ (14, "jpdrv",   "JP Drive",           "Drive",      0, 1, 0.0, "", "sld", None),
+ (15, "jpsub",   "JP Sub Oscillator",  "Sub",        0, 1, 0.0, "", "sld", None),
+]
+# labels of parameters 1..15 per waveform ("" = not used)
+JP_LABELS = [
+ ["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["Pulse Width", "PWM Depth", "PWM Rate", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["", "", "", "", "", "", "", "", "", "", "", "", "", "Drive", ""],
+ ["", "", "", "", "", "", "", "", "", "", "Tilt", "Peak", "Noise", "Drive", "Sub"],
+ ["", "", "", "Detune", "Mix", "Width", "", "", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["", "", "", "", "", "", "Feedback", "Color", "", "", "", "", "Noise", "Drive", "Sub"],
+ ["", "", "", "", "", "", "", "", "Mod Depth", "Mod Ratio", "", "", "Noise", "Drive", "Sub"],
+]
+def jp_id(o, j): return JP_BASE + JP_STRIDE * o + j
+def jpdst(o, j): return JP_DST_BASE + JP_STRIDE * o + j
+N_DST_TOTAL = JP_DST_BASE + JP_STRIDE * OSC_COUNT   # 828
