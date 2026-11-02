@@ -2191,7 +2191,7 @@ const FX_TYPES = [
     { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral", "Chamber", "Ambience", "Dark", "Bright", "Infinite"],
       p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1], ["Low Cut", fxHz(20, 800), 0], ["High Cut", fxHz(1500, 20000), 1]] },
     { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
-      p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0]] },
+      p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0], ["Env Amt", fxLin(-100, 100, 0, "%"), 0.5], ["Attack", fxMs(1, 5000), 0.1], ["Decay", fxMs(5, 5000), 0.5]] },
     { n: "EQ", mix: 1, modes: ["Classic", "Tilt", "Loudness", "Presence"],
       p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5], ["High Freq", fxHz(4000, 16000), 0.5]] },
     { n: "Compressor", mix: 1, modes: ["Peak", "RMS", "Limiter", "Expander", "Gate"],
@@ -2401,6 +2401,8 @@ const SPECS = (() => {
     });
     // tempo sync of the effect slots: 0 = free, 1.. = the division (the Rate / Time knob is ignored while it is on)
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) L.push([940 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]); });
+    // ADSR of the Filter effect: Sustain and Release (ids 3000+g / 3030+g); Env Amt, Attack and Decay are P4..P6
+    FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) { L.push([3000 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Sustain", 0, 1, 1, "", "sld", null, 1, "Sustain"]); L.push([3030 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Release", 0, 1, 0.3, "", "sld", null, 1, "Release"]); } });
     L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
     L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);
     OSC_SPEC_ROWS.forEach(r => L.push(r));

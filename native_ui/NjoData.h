@@ -61,6 +61,8 @@ namespace njo
     const std::vector<FxType>& fxTypes();
     const std::vector<FxRack>& fxRacks();
     const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns();   // trance gate patterns: name, 16 steps (# open, + 45 %, . closed)
+    inline int fxEnvSusId (int g) { return 3000 + g; }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
+    inline int fxEnvRelId (int g) { return 3030 + g; }
     inline int fxSyncId (int g) { return 940 + g; }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
     struct FxLoc { int rk = 0, sl = 0, off = 0, g = 0, ord = -1; bool valid = false; };   // ord >= 0: a processing order parameter
     FxLoc fxLocate (int num);

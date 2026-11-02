@@ -2748,6 +2748,66 @@ processor Eisenpuls_Synth
     input event float param870    [[ name: "Bus 2 FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
     input event float param880    [[ name: "Bus 1 Level", min: 0.0, max: 1.5, init: 1.0 ]];
     input event float param881    [[ name: "Bus 2 Level", min: 0.0, max: 1.5, init: 1.0 ]];
+    input event float param3000 [[ name: "Main FX 1 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3001 [[ name: "Main FX 2 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3002 [[ name: "Main FX 3 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3003 [[ name: "Main FX 4 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3004 [[ name: "Main FX 5 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3005 [[ name: "Main FX 6 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3006 [[ name: "Main FX 7 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3007 [[ name: "Main FX 8 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3008 [[ name: "Main FX 9 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3009 [[ name: "Main FX 10 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3010 [[ name: "Bus 1 FX 1 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3011 [[ name: "Bus 1 FX 2 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3012 [[ name: "Bus 1 FX 3 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3013 [[ name: "Bus 1 FX 4 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3014 [[ name: "Bus 1 FX 5 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3015 [[ name: "Bus 1 FX 6 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3016 [[ name: "Bus 1 FX 7 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3017 [[ name: "Bus 1 FX 8 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3018 [[ name: "Bus 1 FX 9 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3019 [[ name: "Bus 1 FX 10 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3020 [[ name: "Bus 2 FX 1 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3021 [[ name: "Bus 2 FX 2 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3022 [[ name: "Bus 2 FX 3 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3023 [[ name: "Bus 2 FX 4 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3024 [[ name: "Bus 2 FX 5 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3025 [[ name: "Bus 2 FX 6 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3026 [[ name: "Bus 2 FX 7 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3027 [[ name: "Bus 2 FX 8 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3028 [[ name: "Bus 2 FX 9 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3029 [[ name: "Bus 2 FX 10 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
+    input event float param3030 [[ name: "Main FX 1 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3031 [[ name: "Main FX 2 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3032 [[ name: "Main FX 3 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3033 [[ name: "Main FX 4 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3034 [[ name: "Main FX 5 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3035 [[ name: "Main FX 6 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3036 [[ name: "Main FX 7 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3037 [[ name: "Main FX 8 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3038 [[ name: "Main FX 9 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3039 [[ name: "Main FX 10 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3040 [[ name: "Bus 1 FX 1 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3041 [[ name: "Bus 1 FX 2 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3042 [[ name: "Bus 1 FX 3 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3043 [[ name: "Bus 1 FX 4 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3044 [[ name: "Bus 1 FX 5 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3045 [[ name: "Bus 1 FX 6 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3046 [[ name: "Bus 1 FX 7 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3047 [[ name: "Bus 1 FX 8 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3048 [[ name: "Bus 1 FX 9 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3049 [[ name: "Bus 1 FX 10 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3050 [[ name: "Bus 2 FX 1 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3051 [[ name: "Bus 2 FX 2 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3052 [[ name: "Bus 2 FX 3 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3053 [[ name: "Bus 2 FX 4 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3054 [[ name: "Bus 2 FX 5 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3055 [[ name: "Bus 2 FX 6 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3056 [[ name: "Bus 2 FX 7 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3057 [[ name: "Bus 2 FX 8 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3058 [[ name: "Bus 2 FX 9 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3059 [[ name: "Bus 2 FX 10 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
     input event float param940 [[ name: "Main FX 1 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param941 [[ name: "Main FX 2 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param942 [[ name: "Main FX 3 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
@@ -2910,6 +2970,15 @@ processor Eisenpuls_Synth
     int[1920]     peqCh;
     int[32]       peqN;
     float[2880]   peqK;
+    float[32]     fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
+    float[32]     fxEnvRel;
+    float[32]     fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
+    int[32]       fxEnvSt;
+    int[32]       fxEnvSeen;
+    float[32]     fxEnvGc;
+    int[32]       fxEnvCt;
+    int           fxNoteSeq = 0;   // counts accepted note-ons
+    bool          fxHeld = false;  // any note is held (not yet released)
     int[32]       fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
@@ -5391,6 +5460,67 @@ processor Eisenpuls_Synth
     event param521 (float v) { mLfoDiv.at (9)  = v; }
     event param522 (float v) { syncBpmOver = v; }
     event param536 (float v) { driveAlg    = float (rint (v)); }
+    // FX-FENV: sustain / release of the filter effect envelope
+    event param3000 (float v) { fxEnvSus.at (0) = clamp (v, 0.0f, 1.0f); fxDirty.at (0) = true; }
+    event param3001 (float v) { fxEnvSus.at (1) = clamp (v, 0.0f, 1.0f); fxDirty.at (1) = true; }
+    event param3002 (float v) { fxEnvSus.at (2) = clamp (v, 0.0f, 1.0f); fxDirty.at (2) = true; }
+    event param3003 (float v) { fxEnvSus.at (3) = clamp (v, 0.0f, 1.0f); fxDirty.at (3) = true; }
+    event param3004 (float v) { fxEnvSus.at (4) = clamp (v, 0.0f, 1.0f); fxDirty.at (4) = true; }
+    event param3005 (float v) { fxEnvSus.at (5) = clamp (v, 0.0f, 1.0f); fxDirty.at (5) = true; }
+    event param3006 (float v) { fxEnvSus.at (6) = clamp (v, 0.0f, 1.0f); fxDirty.at (6) = true; }
+    event param3007 (float v) { fxEnvSus.at (7) = clamp (v, 0.0f, 1.0f); fxDirty.at (7) = true; }
+    event param3008 (float v) { fxEnvSus.at (8) = clamp (v, 0.0f, 1.0f); fxDirty.at (8) = true; }
+    event param3009 (float v) { fxEnvSus.at (9) = clamp (v, 0.0f, 1.0f); fxDirty.at (9) = true; }
+    event param3010 (float v) { fxEnvSus.at (10) = clamp (v, 0.0f, 1.0f); fxDirty.at (10) = true; }
+    event param3011 (float v) { fxEnvSus.at (11) = clamp (v, 0.0f, 1.0f); fxDirty.at (11) = true; }
+    event param3012 (float v) { fxEnvSus.at (12) = clamp (v, 0.0f, 1.0f); fxDirty.at (12) = true; }
+    event param3013 (float v) { fxEnvSus.at (13) = clamp (v, 0.0f, 1.0f); fxDirty.at (13) = true; }
+    event param3014 (float v) { fxEnvSus.at (14) = clamp (v, 0.0f, 1.0f); fxDirty.at (14) = true; }
+    event param3015 (float v) { fxEnvSus.at (15) = clamp (v, 0.0f, 1.0f); fxDirty.at (15) = true; }
+    event param3016 (float v) { fxEnvSus.at (16) = clamp (v, 0.0f, 1.0f); fxDirty.at (16) = true; }
+    event param3017 (float v) { fxEnvSus.at (17) = clamp (v, 0.0f, 1.0f); fxDirty.at (17) = true; }
+    event param3018 (float v) { fxEnvSus.at (18) = clamp (v, 0.0f, 1.0f); fxDirty.at (18) = true; }
+    event param3019 (float v) { fxEnvSus.at (19) = clamp (v, 0.0f, 1.0f); fxDirty.at (19) = true; }
+    event param3020 (float v) { fxEnvSus.at (20) = clamp (v, 0.0f, 1.0f); fxDirty.at (20) = true; }
+    event param3021 (float v) { fxEnvSus.at (21) = clamp (v, 0.0f, 1.0f); fxDirty.at (21) = true; }
+    event param3022 (float v) { fxEnvSus.at (22) = clamp (v, 0.0f, 1.0f); fxDirty.at (22) = true; }
+    event param3023 (float v) { fxEnvSus.at (23) = clamp (v, 0.0f, 1.0f); fxDirty.at (23) = true; }
+    event param3024 (float v) { fxEnvSus.at (24) = clamp (v, 0.0f, 1.0f); fxDirty.at (24) = true; }
+    event param3025 (float v) { fxEnvSus.at (25) = clamp (v, 0.0f, 1.0f); fxDirty.at (25) = true; }
+    event param3026 (float v) { fxEnvSus.at (26) = clamp (v, 0.0f, 1.0f); fxDirty.at (26) = true; }
+    event param3027 (float v) { fxEnvSus.at (27) = clamp (v, 0.0f, 1.0f); fxDirty.at (27) = true; }
+    event param3028 (float v) { fxEnvSus.at (28) = clamp (v, 0.0f, 1.0f); fxDirty.at (28) = true; }
+    event param3029 (float v) { fxEnvSus.at (29) = clamp (v, 0.0f, 1.0f); fxDirty.at (29) = true; }
+    event param3030 (float v) { fxEnvRel.at (0) = clamp (v, 0.0f, 1.0f); fxDirty.at (0) = true; }
+    event param3031 (float v) { fxEnvRel.at (1) = clamp (v, 0.0f, 1.0f); fxDirty.at (1) = true; }
+    event param3032 (float v) { fxEnvRel.at (2) = clamp (v, 0.0f, 1.0f); fxDirty.at (2) = true; }
+    event param3033 (float v) { fxEnvRel.at (3) = clamp (v, 0.0f, 1.0f); fxDirty.at (3) = true; }
+    event param3034 (float v) { fxEnvRel.at (4) = clamp (v, 0.0f, 1.0f); fxDirty.at (4) = true; }
+    event param3035 (float v) { fxEnvRel.at (5) = clamp (v, 0.0f, 1.0f); fxDirty.at (5) = true; }
+    event param3036 (float v) { fxEnvRel.at (6) = clamp (v, 0.0f, 1.0f); fxDirty.at (6) = true; }
+    event param3037 (float v) { fxEnvRel.at (7) = clamp (v, 0.0f, 1.0f); fxDirty.at (7) = true; }
+    event param3038 (float v) { fxEnvRel.at (8) = clamp (v, 0.0f, 1.0f); fxDirty.at (8) = true; }
+    event param3039 (float v) { fxEnvRel.at (9) = clamp (v, 0.0f, 1.0f); fxDirty.at (9) = true; }
+    event param3040 (float v) { fxEnvRel.at (10) = clamp (v, 0.0f, 1.0f); fxDirty.at (10) = true; }
+    event param3041 (float v) { fxEnvRel.at (11) = clamp (v, 0.0f, 1.0f); fxDirty.at (11) = true; }
+    event param3042 (float v) { fxEnvRel.at (12) = clamp (v, 0.0f, 1.0f); fxDirty.at (12) = true; }
+    event param3043 (float v) { fxEnvRel.at (13) = clamp (v, 0.0f, 1.0f); fxDirty.at (13) = true; }
+    event param3044 (float v) { fxEnvRel.at (14) = clamp (v, 0.0f, 1.0f); fxDirty.at (14) = true; }
+    event param3045 (float v) { fxEnvRel.at (15) = clamp (v, 0.0f, 1.0f); fxDirty.at (15) = true; }
+    event param3046 (float v) { fxEnvRel.at (16) = clamp (v, 0.0f, 1.0f); fxDirty.at (16) = true; }
+    event param3047 (float v) { fxEnvRel.at (17) = clamp (v, 0.0f, 1.0f); fxDirty.at (17) = true; }
+    event param3048 (float v) { fxEnvRel.at (18) = clamp (v, 0.0f, 1.0f); fxDirty.at (18) = true; }
+    event param3049 (float v) { fxEnvRel.at (19) = clamp (v, 0.0f, 1.0f); fxDirty.at (19) = true; }
+    event param3050 (float v) { fxEnvRel.at (20) = clamp (v, 0.0f, 1.0f); fxDirty.at (20) = true; }
+    event param3051 (float v) { fxEnvRel.at (21) = clamp (v, 0.0f, 1.0f); fxDirty.at (21) = true; }
+    event param3052 (float v) { fxEnvRel.at (22) = clamp (v, 0.0f, 1.0f); fxDirty.at (22) = true; }
+    event param3053 (float v) { fxEnvRel.at (23) = clamp (v, 0.0f, 1.0f); fxDirty.at (23) = true; }
+    event param3054 (float v) { fxEnvRel.at (24) = clamp (v, 0.0f, 1.0f); fxDirty.at (24) = true; }
+    event param3055 (float v) { fxEnvRel.at (25) = clamp (v, 0.0f, 1.0f); fxDirty.at (25) = true; }
+    event param3056 (float v) { fxEnvRel.at (26) = clamp (v, 0.0f, 1.0f); fxDirty.at (26) = true; }
+    event param3057 (float v) { fxEnvRel.at (27) = clamp (v, 0.0f, 1.0f); fxDirty.at (27) = true; }
+    event param3058 (float v) { fxEnvRel.at (28) = clamp (v, 0.0f, 1.0f); fxDirty.at (28) = true; }
+    event param3059 (float v) { fxEnvRel.at (29) = clamp (v, 0.0f, 1.0f); fxDirty.at (29) = true; }
     // FX-SYNC: sync divisions of the effect slots
     event param940 (float v) { fxSync.at (0) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (0) = true; }
     event param941 (float v) { fxSync.at (1) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (1) = true; }
@@ -5924,6 +6054,12 @@ processor Eisenpuls_Synth
             mLfoDiv.at (ld) = 8.0f;
 
         fxGateInit();
+
+        for (int ei = 0; ei < 32; ++ei)   // FX-FENV defaults
+        {
+            fxEnvSus.at (ei) = 1.0f;
+            fxEnvRel.at (ei) = 0.3f;
+        }
 
         for (int fm = 0; fm < 10; ++fm)
         {
@@ -6893,6 +7029,14 @@ processor Eisenpuls_Synth
             fxD.at (db + 2) = p2;
             fxD.at (db + 3) = fc;
             fxD.at (db + 4) = 1.0f + 8.0f * p3;
+
+            // FX-FENV: envelope on the cutoff: amount (+-1 = +-7 octaves), attack / decay / release coefficients, sustain
+            float p6 = clamp (fxP.at (pb + 5), 0.0f, 1.0f);
+            fxD.at (db + 5) = (p4 - 0.5f) * 2.0f;
+            fxD.at (db + 6) = 1.0f - float (exp (-2.2 / float64 (fxExpMap (p5, 1.0f, 5000.0f) * 0.001f * sr)));
+            fxD.at (db + 7) = 1.0f - float (exp (-4.6 / float64 (fxExpMap (p6, 5.0f, 5000.0f) * 0.001f * sr)));
+            fxD.at (db + 8) = clamp (fxEnvSus.at (s), 0.0f, 1.0f);
+            fxD.at (db + 9) = 1.0f - float (exp (-4.6 / float64 (fxExpMap (clamp (fxEnvRel.at (s), 0.0f, 1.0f), 5.0f, 5000.0f) * 0.001f * sr)));
         }
         else if (ty == 10)
         {
@@ -8904,6 +9048,72 @@ processor Eisenpuls_Synth
         return acc * 1.4f;
     }
 
+    // ---- FX-FENV: ADSR of the filter effect ----
+    void fxGateUpdate()
+    {
+        bool h = false;
+
+        for (int fv = 0; fv < 8; ++fv)
+            if (voices.at (fv).active && voices.at (fv).stage != 3)
+                h = true;
+
+        fxHeld = h;
+    }
+
+    float fxEnvStep (int s, int db)
+    {
+        int   st = fxEnvSt.at (s);
+        float lv = fxEnvLv.at (s);
+
+        if (fxEnvSeen.at (s) != fxNoteSeq)
+        {
+            fxEnvSeen.at (s) = fxNoteSeq;
+
+            if (fxHeld)
+                st = 1;
+        }
+
+        if (fxHeld)
+        {
+            if (st == 0 || st == 4)
+                st = 1;
+        }
+        else if (st >= 1 && st <= 3)
+            st = 4;
+
+        float sus = fxD.at (db + 8);
+
+        if (st == 1)
+        {
+            lv += (1.25f - lv) * fxD.at (db + 6);
+
+            if (lv >= 1.0f)
+            {
+                lv = 1.0f;
+                st = 2;
+            }
+        }
+        else if (st == 2 || st == 3)
+        {
+            lv += (sus - lv) * fxD.at (db + 7);
+            st = abs (lv - sus) < 0.0005f ? 3 : 2;
+        }
+        else if (st == 4)
+        {
+            lv -= lv * fxD.at (db + 9);
+
+            if (lv < 0.0001f)
+            {
+                lv = 0.0f;
+                st = 0;
+            }
+        }
+
+        fxEnvSt.at (s) = st;
+        fxEnvLv.at (s) = lv;
+        return lv;
+    }
+
     float<2> fxFilter (int s, float<2> x)
     {
         int   db  = s * 16;
@@ -8924,6 +9134,23 @@ processor Eisenpuls_Synth
         float k   = fxD.at (db + 1);
         float res = fxD.at (db + 2);
         float fc  = fxD.at (db + 3);
+        float eAmt = fxD.at (db + 5);
+
+        if (abs (eAmt) > 0.001f)   // FX-FENV
+        {
+            float lv = fxEnvStep (s, db);
+            fc = clamp (fc * float (exp (float64 (eAmt * lv * 7.0f) * 0.6931471805599453)), 20.0f, float (processor.frequency) * 0.45f);
+            int ec = fxEnvCt.at (s);
+
+            if (ec <= 0)
+            {
+                fxEnvGc.at (s) = float (tan (float64 (fc) * pi * processor.period));
+                ec = 4;
+            }
+
+            fxEnvCt.at (s) = ec - 1;
+            g = fxEnvGc.at (s);
+        }
 
         float yl = fxFilterX (s, 0, inL, g, k, res, fc, ft);
         float yr = fxFilterX (s, 1, inR, g, k, res, fc, ft);
@@ -13205,6 +13432,7 @@ processor Eisenpuls_Synth
                 if (voices.at (dv).active && voices.at (dv).noteNumber == nn && voices.at (dv).stage != 3)
                     return;
 
+            fxNoteSeq++;   // FX-FENV: retriggers the filter effect envelopes
             float vel      = msg.getFloatVelocity();
             float velGainV = (1.0f - velSens) + velSens * vel;
             bool  monoMode = voiceMode > 0.5f;
@@ -13768,6 +13996,8 @@ processor Eisenpuls_Synth
             }
 
             fxBeat += float64 (syncBpmOver > 1.0f ? syncBpmOver : hostBpm) * processor.period / 60.0;
+
+            fxGateUpdate();   // FX-FENV
 
             // ----- FX racks: Bus 1 and Bus 2 feed the Main rack, which feeds the output -----
             float<2> bus1 = fxRunRack (1, float<2> (busInL.at (1), busInR.at (1))) * busLevel1;
