@@ -1,5 +1,6 @@
 // The preset bar and its dropdown menus (preset browser, sound vault) in the style of Tone2 Icarus: click the name, pick from nested folder menus.
 // Files: <Backend::rootFolder()>/{Presets,Samples,Wavetables}; the preset file format is shared with the web UI (NjoManagerStore.h).
+#include <set>
 #include "NjoManager.h"
 #include "NjoFactory.h"
 #include "NjoManagerStore.h"
@@ -128,6 +129,11 @@ struct ManagerBar::Impl : private Ctx::Listener, private juce::ChangeListener
     // ---- vault state
     std::vector<LibRec> lib;
     std::map<juce::String, double> durCache;
+    bool durBusy = false;
+    std::map<juce::String, std::vector<int>> libByFolder[2];   // kind -> folder -> indices into lib (sorted like lib)
+    std::set<juce::String> libFolderUsed[2];                   // folders that hold a file, directly or deeper down
+    void libIndex();
+    void durWarm();
     std::map<juce::String, juce::String> hashCache;       // "id|size" -> fileHash
     struct SlotRef { juce::String id, name; };
     std::map<juce::String, SlotRef> slotLib;
@@ -244,6 +250,7 @@ ManagerBar::Impl::Impl (ManagerBar& o, Ctx& c, SoundMemory& mem, juce::Component
         for (auto& kv : so->getProperties())
             if (kv.value.isString() && findSlot (kv.name.toString())) slotLib[kv.name.toString()] = { kv.value.toString(), {} };
     favs = store.favLoad();
+    durCache = store.durLoad();
     updateBar();
     presetsRefresh();
     libRefresh();
@@ -561,7 +568,46 @@ void ManagerBar::Impl::openInFileManager (const juce::String& folderPath)
 void ManagerBar::Impl::libRefresh()
 {
     lib = store.libList (durCache);
+    libIndex();                          // stat only: durations come from the cache, the rest is probed in the background
     foldersRefresh();
+    durWarm();
+}
+
+void ManagerBar::Impl::libIndex()
+{
+    for (int k = 0; k < 2; ++k) { libByFolder[k].clear(); libFolderUsed[k].clear(); }
+    for (int i = 0; i < (int) lib.size(); ++i)
+    {
+        auto& r = lib[(size_t) i];
+        libByFolder[r.kind][r.folder].push_back (i);
+        for (auto f = r.folder; f.isNotEmpty(); f = parentRel (f)) if (! libFolderUsed[r.kind].insert (f).second) break;
+    }
+}
+
+// Opens the files whose duration is not cached yet on a worker thread (never on the UI thread), then merges and persists the result.
+void ManagerBar::Impl::durWarm()
+{
+    if (durBusy) return;
+    std::vector<std::pair<juce::String, juce::File>> todo;
+    for (auto& r : lib) { auto k = Store::durKey (r); if (durCache.find (k) == durCache.end()) todo.emplace_back (k, store.fileFor (r)); }
+    if (todo.empty()) return;
+    durBusy = true;
+    auto a = alive;
+    juce::Thread::launch ([this, a, todo = std::move (todo)]
+    {
+        std::vector<std::pair<juce::String, double>> got;
+        got.reserve (todo.size());
+        for (auto& t : todo) { if (! *a) return; got.emplace_back (t.first, audioDuration (t.second)); }
+        juce::MessageManager::callAsync ([this, a, got = std::move (got)]
+        {
+            if (! *a) return;
+            durBusy = false;
+            for (auto& g : got) durCache[g.first] = g.second;
+            for (auto& r : lib) { auto it = durCache.find (Store::durKey (r)); if (it != durCache.end()) r.dur = it->second; }
+            store.durSave (durCache);
+            durWarm();   // files that appeared while the worker was busy
+        });
+    });
 }
 
 void ManagerBar::Impl::libImport (const juce::Array<juce::File>& files, const juce::String& destFolderPath)
@@ -575,7 +621,12 @@ void ManagerBar::Impl::libImport (const juce::Array<juce::File>& files, const ju
         bool dup = false;
         auto id = store.libAdd (kind, rel, f, lib, dup);
         if (id.isEmpty()) { ++bad; continue; }
-        if (! dup) { ++n; libRefresh(); }
+        if (! dup)
+        {
+            ++n;   // remember it for the duplicate check of the next file; one rescan after the loop
+            LibRec nr; nr.kind = kind; nr.id = id; nr.fname = id.fromLastOccurrenceOf ("/", false, false); nr.folder = rel; nr.size = f.getSize();
+            lib.push_back (nr);
+        }
     }
     libRefresh();
     barInfo ("ADDED " + juce::String (n) + " FILE(S) TO " + destFolderPath.toUpperCase() + (bad ? ", " + juce::String (bad) + " UNSUPPORTED/FAILED" : juce::String()));
@@ -894,17 +945,19 @@ void ManagerBar::Impl::libTree (MB& mb, juce::PopupMenu& menu, int kind, const j
         if (parentRel (f) != rel) continue;
         juce::PopupMenu sub;
         libTree (mb, sub, kind, f, osc);
-        bool any = false;
-        for (auto& r : lib) if (r.kind == kind && (r.folder == f || r.folder.startsWith (f + "/"))) { any = true; break; }
+        bool any = libFolderUsed[kind].count (f) > 0;
         if (! any) mb.item (sub, "(empty)", [] {}, false);
         bool hasCur = false;
         for (auto& kv : slotLib) if (kv.second.id.startsWith (area + "/" + f + "/")) hasCur = true;
         menu.addSubMenu (leafRel (f), sub, true, nullptr, hasCur);
     }
     auto key = slotKey (kind, osc);
-    for (auto& r : lib)
+    auto& here = libByFolder[kind];
+    auto fit = here.find (rel);
+    if (fit != here.end())
+    for (int ri : fit->second)
     {
-        if (r.kind != kind || r.folder != rel) continue;
+        auto& r = lib[(size_t) ri];
         auto id = r.id;
         auto it = slotLib.find (key);
         bool tick = it != slotLib.end() && it->second.id == id;

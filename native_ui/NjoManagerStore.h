@@ -79,7 +79,10 @@ namespace njo::mgr
         bool favSave (const std::set<juce::String>&) const;
 
         // vault
-        std::vector<LibRec> libList (std::map<juce::String, double>& durCache) const;   // recursive
+        std::vector<LibRec> libList (const std::map<juce::String, double>& durCache) const;   // recursive; durations come from the cache only (never opens a file)
+        std::map<juce::String, double> durLoad() const;                                 // persisted durations <root>/.durcache (key = id|size)
+        void durSave (const std::map<juce::String, double>&) const;
+        static juce::String durKey (const LibRec& r) { return r.id + "|" + juce::String (r.size); }
         juce::String uniqueName (int kind, const juce::String& folder, const juce::String& fname) const;
         juce::String libAdd (int kind, const juce::String& folder, const juce::File& src, const std::vector<LibRec>& existing, bool& duplicate);  // id or ""
         juce::String libRename (const LibRec&, const juce::String& newLabel);   // new id or ""

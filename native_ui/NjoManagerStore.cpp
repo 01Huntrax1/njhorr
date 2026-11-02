@@ -278,31 +278,47 @@ namespace njo::mgr
     }
 
     // ------------------------------------------------------------------ vault
-    std::vector<LibRec> Store::libList (std::map<juce::String, double>& durCache) const
+    std::vector<LibRec> Store::libList (const std::map<juce::String, double>& durCache) const
     {
         std::vector<LibRec> out;
         for (int kind = 0; kind < 2; ++kind)
         {
             auto base = kindDir (kind);
-            for (auto& f : base.findChildFiles (juce::File::findFiles, true))
+            for (const auto& entry : juce::RangedDirectoryIterator (base, true, "*", juce::File::findFiles))   // one stat per file, no second pass
             {
-                if (f.isHidden() || ! isAudioName (f.getFileName())) continue;
+                auto f = entry.getFile();
+                if (entry.isHidden() || ! isAudioName (f.getFileName())) continue;
                 auto rel = f.getRelativePathFrom (base).replaceCharacter ('\\', '/');
                 if (! safeRel (parentRel (rel))) continue;
                 LibRec r;
                 r.kind = kind; r.fname = f.getFileName(); r.folder = parentRel (rel);
                 r.id = areaOf (kind) + "/" + rel;
                 r.label = stemOf (r.fname);
-                r.size = f.getSize(); r.added = f.getLastModificationTime().toMilliseconds();
-                auto key = r.id + "|" + juce::String (r.size);
-                auto it = durCache.find (key);
-                if (it == durCache.end()) it = durCache.emplace (key, audioDuration (f)).first;
-                r.dur = it->second;
+                r.size = entry.getFileSize(); r.added = entry.getModificationTime().toMilliseconds();
+                auto it = durCache.find (durKey (r));
+                r.dur = it != durCache.end() ? it->second : 0.0;
                 out.push_back (std::move (r));
             }
         }
         std::sort (out.begin(), out.end(), [] (auto& a, auto& b) { return a.label.compareIgnoreCase (b.label) < 0; });
         return out;
+    }
+
+    std::map<juce::String, double> Store::durLoad() const
+    {
+        std::map<juce::String, double> m;
+        juce::StringArray lines;
+        lines.addLines (root.getChildFile (".durcache").loadFileAsString());
+        for (auto& l : lines) { int t = l.lastIndexOfChar ('\t'); if (t > 0) m[l.substring (0, t)] = l.substring (t + 1).getDoubleValue(); }
+        return m;
+    }
+
+    void Store::durSave (const std::map<juce::String, double>& m) const
+    {
+        juce::String t;
+        for (auto& kv : m) t << kv.first << "\t" << juce::String (kv.second, 4) << "\n";
+        root.createDirectory();
+        root.getChildFile (".durcache").replaceWithText (t);
     }
 
     juce::String Store::uniqueName (int kind, const juce::String& folder, const juce::String& fname) const

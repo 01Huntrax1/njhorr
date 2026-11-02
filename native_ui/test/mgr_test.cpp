@@ -122,14 +122,17 @@ int main (int argc, char** argv)
     src.createDirectory();
     makeWav (src.getChildFile ("kick.wav"), 0.5, 60);  makeWav (src.getChildFile ("saw table.wav"), 1.0, 220); makeWav (src.getChildFile ("pad.wav"), 2.25, 110);
     src.getChildFile ("notes.txt").replaceWithText ("x");
+    auto userN = [&] { int n = 0; for (auto& r : im.lib) if (! r.id.contains ("/Factory/")) ++n; return n; };   // the factory wavetables are installed on a worker thread
     juce::Array<juce::File> fs { src.getChildFile ("kick.wav"), src.getChildFile ("pad.wav"), src.getChildFile ("notes.txt") };
     im.libImport (fs, "samples");
-    CHECK (im.lib.size() == 2);
+    CHECK (userN() == 2);
     im.libImport ({ src.getChildFile ("kick.wav") }, "samples");   // duplicate: not added again
-    CHECK (im.lib.size() == 2);
+    CHECK (userN() == 2);
     im.libImport ({ src.getChildFile ("saw table.wav") }, "wavetables");
-    CHECK (im.lib.size() == 3 && root.getChildFile ("Wavetables/saw table.wav").existsAsFile());
+    CHECK (userN() == 3 && root.getChildFile ("Wavetables/saw table.wav").existsAsFile());
+    for (int t = 0; t < 200; ++t) { pump(); bool all = true; for (auto& r : im.lib) if (r.fname == "pad.wav" && r.dur <= 0) all = false; if (all) break; juce::Thread::sleep (20); }   // durations are read in the background
     for (auto& r : im.lib) if (r.fname == "pad.wav") CHECK (std::abs (r.dur - 2.25) < 0.01);
+    CHECK (im.store.durLoad().size() >= 2);   // persisted for the next start
     // load into slots
     im.libLoad ("samples/kick.wav", 1); im.libLoad ("wavetables/saw table.wav", 0); pump();
     CHECK (mem.get (njo::SoundMemory::Sample, 1) != nullptr && mem.get (njo::SoundMemory::Wavetable, 0) != nullptr);
