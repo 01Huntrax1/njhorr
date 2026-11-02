@@ -6,6 +6,7 @@
 #include "../NjoJp.h"
 #include "../NjoGr.h"
 #include "../NjoAd.h"
+#include "../NjoDk.h"
 #include <cmath>
 
 namespace njo
@@ -193,7 +194,7 @@ namespace njo
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
-        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1))) { repaint(); return; }
+        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1))) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -222,7 +223,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 6, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 10, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -318,6 +319,26 @@ namespace njo
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 10)
+            {
+                // Modal Drum: the first 300 ms of the batter head modes (110 Hz) with the damping of Decay / Head Tone
+                auto V = [&] (const char* key) { return ctx.get (dk::dkId (o, dk::key (key))); };
+                static const double R[12] = { 1, 1.594, 2.136, 2.296, 2.653, 2.918, 3.156, 3.501, 3.6, 3.652, 4.06, 4.231 };
+                const double t60 = 0.05 * std::pow (160.0, (double) V ("ddecay")), it = 1.0 - V ("dtone"), T = 0.3;
+                juce::Path p; const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const double t = (double) x / W * T; double y = 0;
+                    for (int k = 0; k < 12; ++k)
+                        y += std::sin (6.283185307 * 110.0 * R[k] * t * (1.0 + 0.3 * V ("dtens") * std::exp (-t * 20.0))) * std::exp (-t * 6.9 / std::max (0.01, t60 * std::pow (R[k], -2.0 * it))) / (1.0 + 0.35 * k);
+                    y = juce::jlimit (-1.0, 1.0, y * 0.35);
+                    const float py = H / 2 - (float) y * (H / 2 - 4);
+                    if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
+                }
+                g.setColour (juce::Colour (0xffff3b30));
+                g.strokePath (p, juce::PathStrokeType (1.5f));
+                info = juce::String ("MODAL DRUM / T60 ") + juce::String (t60, 2) + " S" + (V ("dsnare") > 0.01f ? " / SNARE" : "") + (V ("dsym") > 0.01f ? " / SYMPATHETIC" : "");
             }
             else if (type == 9)
             {

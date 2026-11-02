@@ -834,5 +834,52 @@ check("Mod destination 'Additive Tilt' of OSC 1 moves the tilt from -1 to 0 (dar
 two = render(ABASE + [AP(0, "ashape", 4), P(1, "type", 9), P(1, "level", 0.8), FOFF(1), AP(1, "ashape", 5), P(2, "type", 8), P(2, "level", 0.5), FOFF(2)], note=57, hold=0.5, tail=0.3, tag="ad2")
 check("Additive, Granular and Additive slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
 
+
+# ---------------------------------------------------------------- Modal Drum source (type 10): ids DK_BASE + 16 * slot + j, mod destinations 1020 + ...
+def DP(o, key, v):
+    for q in L.DK:
+        if q[1] == key: return (L.dk_id(o, q[0]), v)
+    return P(o, key, v)
+DBASE = [P(0, "type", 10), P(0, "level", 0.8), FOFF(0)]
+def dk(extra=(), note=57, tag="dkx", hold=0.8, tail=0.2, vel=100, ch=0, base=None):
+    return render((base or DBASE) + [DP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:int((0.05 + hold + tail) * RATE) - 64, ch]
+d0 = dk(tag="dk0")
+check("Modal Drum sounds and stays finite", np.isfinite(d0).all() and rms(win(d0, 0.05, 0.4)) > 5e-3 and np.abs(d0).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(d0, 0.05, 0.4)), np.abs(d0).max()))
+errs = []
+for note in (45, 57, 69):
+    f0 = 440 * 2 ** ((note - 69) / 12); x = dk([("dtens", 0.0), ("dres", 0.0), ("dshell", 0.0)], note=note, tag="dkp")
+    errs.append(1200 * math.log2(peak_near(win(x, 0.03, 0.3), f0) / f0))
+check("Modal Drum follows the keyboard (A2, A3, A4 within 15 cents)", max(abs(e) for e in errs) < 15, "%s cents" % ["%.1f" % e for e in errs])
+rr = dk([("dres", 1.0), ("drtune", 1.0), ("dtens", 0.0), ("dshell", 0.0)], tag="dk1")
+r0 = dk([("dres", 0.0), ("drtune", 1.0), ("dtens", 0.0), ("dshell", 0.0)], tag="dk2")
+check("Modal Drum: the resonant head adds a second pitch (Reso Tune +7 semitones, 330 Hz)", band(win(rr, 0.05, 0.4), 315, 345) > 3 * band(win(r0, 0.05, 0.4), 315, 345), "%.1f vs %.1f" % (band(win(rr, 0.05, 0.4), 315, 345), band(win(r0, 0.05, 0.4), 315, 345)))
+check("Modal Drum: the shell adds its own modes", rms(win(dk([("dshell", 1.0)], tag="dk3") - dk([("dshell", 0.0)], tag="dk4"), 0.02, 0.3)) > 0.05 * rms(win(d0, 0.02, 0.3)))
+sn = dk([("dsnare", 1.0)], tag="dk5")
+hb = lambda x: band(win(x, 0.03, 0.3), 3000, 12000)
+check("Modal Drum: the snare wires add noise", hb(sn) > 3 * hb(d0) + 1e-3, "%.4f vs %.4f" % (hb(sn), hb(d0)))
+hl = lambda x: band(win(x, 0.2, 0.5), 3000, 12000)
+check("Modal Drum: a tighter snare rattles shorter", hl(dk([("dsnare", 1.0), ("dsten", 1.0)], tag="dk6")) < 0.8 * hl(dk([("dsnare", 1.0), ("dsten", 0.0)], tag="dk7")))
+hs = lambda x: band(win(x, 0.0, 0.15), 600, 1200) / band(win(x, 0.0, 0.15), 150, 300)
+check("Modal Drum: a hard stick is brighter than a soft one", hs(dk([("dstick", 1.0), ("dvel", 0.0)], tag="dk8")) > 1.3 * hs(dk([("dstick", 0.0), ("dvel", 0.0)], tag="dk9")))
+check("Modal Drum: the hit position changes the sound", rms(win(dk([("dhit", 0.95)], tag="dka") - d0, 0.02, 0.3)) > 0.2 * rms(win(d0, 0.02, 0.3)))
+dt = dk([("dtens", 1.0), ("ddecay", 0.9)], tag="dkb", hold=1.0)
+check("Modal Drum: Tension raises the pitch after the strike and lets it fall back", peak_near(win(dt, 0.08, 0.16), 220, 0.6) > 1.15 * 220 and peak_near(win(dt, 0.7, 0.95), 220, 0.6) < 1.1 * peak_near(win(dt, 0.08, 0.16), 220, 0.6), "%.1f %.1f" % (peak_near(win(dt, 0.08, 0.16), 220, 0.6), peak_near(win(dt, 0.7, 0.95), 220, 0.6)))
+# sympathetic resonance: slot 2 (almost silent) plays a Modal Drum as well; slot 1 hears it through Sympathetic
+SYM = DBASE + [P(1, "type", 10), P(1, "level", 0.001), FOFF(1), DP(1, "ddecay", 0.9), DP(1, "dres", 1.0), DP(1, "dstick", 1.0), DP(1, "dtens", 0.0)]
+sy0 = dk([("dsym", 0.0), ("dtens", 0.0)], tag="dks0", base=SYM)
+sy1 = dk([("dsym", 1.0), ("dtens", 0.0)], tag="dks1", base=SYM)
+ref = dk([("dsym", 1.0), ("dtens", 0.0)], tag="dks2")
+check("Modal Drum: Sympathetic lets the other drum slots shake this drum", rms(win(sy1 - sy0, 0.1, 0.6)) > 0.03 * rms(win(sy0, 0.1, 0.6)) and np.allclose(win(ref, 0.1, 0.6), win(dk([("dsym", 0.0), ("dtens", 0.0)], tag="dks3"), 0.1, 0.6), atol=1e-6), "%.4f vs %.4f" % (rms(win(sy1 - sy0, 0.1, 0.6)), rms(win(sy0, 0.1, 0.6))))
+bad = 0
+for note, vel, ex in ((24, 1, [("ddecay", 1.0), ("dtens", 1.0), ("dsnare", 1.0), ("dsym", 1.0), ("dshell", 1.0), ("ddrive", 1.0)]), (120, 127, [("dstick", 1.0), ("dres", 1.0), ("drtune", -1.0), ("dsize", 1.0)]), (60, 127, [("dhit", 1.0), ("dedge", 1.0), ("dtone", 1.0), ("ddecay", 1.0), ("dres", 1.0), ("dsnare", 1.0), ("dsym", 1.0)])):
+    x = dk(ex, note=note, vel=vel, tag="dkc", hold=0.5, tail=0.3, base=SYM)
+    if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("Modal Drum: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+mm = render(DBASE + [DP(0, "ddecay", 0.2), DP(0, "dtens", 0.0)] + MM(0, 1, L.dkdst(0, 0), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="dkm1")[:int(1.05 * RATE) - 64, 0]
+rf = dk([("ddecay", 0.2), ("dtens", 0.0)], tag="dkm0")
+check("Mod destination 'Drum Decay' of OSC 1 lengthens the note", rms(win(mm, 0.5, 0.8)) > 5 * max(rms(win(rf, 0.5, 0.8)), 1e-6), "%.4f %.4f" % (rms(win(mm, 0.5, 0.8)), rms(win(rf, 0.5, 0.8))))
+mo = render(DBASE + [DP(0, "ddecay", 0.2), DP(0, "dtens", 0.0)] + MM(0, 1, L.dkdst(1, 0), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="dkm2")[:int(1.05 * RATE) - 64, 0]
+check("Mod destination of OSC 2 leaves the OSC 1 drum alone", np.allclose(win(mo, 0.1, 0.8), win(rf, 0.1, 0.8), atol=1e-4))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

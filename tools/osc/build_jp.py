@@ -307,7 +307,7 @@ block("DECL", DECL, r"^    input event float param1600 ")
 block("HAND", HAND, r"^    event param1600 ")
 block("INIT", INIT, r"^            op\.at \(io \* 64 \+ 11\) = 3\.0f;\n", "            ")
 block("VOICE", VOICE, r"^        int     fdlW; ", "        ")
-s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )[23456]\.0', r'\g<1>7.0', s)
+s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )\d+\.0', r'\g<1>7.0', s)
 def rep(old, new):
     global s
     if new in s: return

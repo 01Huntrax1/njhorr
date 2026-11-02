@@ -85,6 +85,18 @@ Source type 9, **Additive**, sums up to 64 partials. Each partial is a rotating 
 - Parameters: `2500 + 16 * slot + j` (15 used), mod destinations 924..1019. Code: `tools/osc/build_ad.py`, `native_ui/NjoAd.h`; both generators share `tools/osc/srcgen.py`, the web UI part is `tools/osc/apply_gradd_ui.py`.
 - State: Voice.grs (6 x 96 floats) and Voice.ads (6 x 512 floats) per voice.
 
+## Modal Drum source
+Source type 10, **Modal Drum**, is a drum in the manner of modal drum models (MODO DRUM, V-Drums, Chromaphone). The pitch follows the key.
+
+- **Batter head:** 12 modes of a circular membrane (Bessel zeros), weighted by the **Hit Position** (centre .. rim); **Decay**, **Head Tone** (coated .. clear: damping of the upper modes), **Edge** (sharp .. round bearing edge), **Stick** (felt .. hard, a Hann pulse) and **Vel > Stick**.
+- **Resonant head:** the same 12 modes, tuned by **Reso Tune** (+-7 semitones) and excited by the batter head and by the air pressure of the hit; **Reso Head** is its level.
+- **Shell:** 6 modes excited by the batter head; **Size** and **Shell Depth** set their pitch and ring time, **Shell** the level.
+- **Snare wires:** noise that only rattles while the resonant head moves faster than a threshold (**Snare Tension**), then dies quickly.
+- **Sympathetic:** the output of the other Modal Drum slots (all voices, previous sample) shakes the heads of this slot, so a kick makes a snare slot buzz. Set up a kick in one slot and a snare in another.
+- **Tension:** the pitch rises with the vibration energy (tension modulation), **Drive** saturates.
+- Parameters: `2600 + 16 * slot + j`, mod destinations 1020..1115 (the mod value array grew to 2048 entries). Code: `tools/osc/build_dk.py` (DSP, `native_ui/NjoDk.h`), `tools/osc/apply_dk_ui.py`. Research notes: modal synthesis of membranes with tension modulation (Marogna / Avanzini / Bank), reso head and shell coupling and snare contact as in the published modal drum models; MODO DRUM itself is closed source.
+- State: Voice.dks, 6 x 192 floats per voice.
+
 ## Where samples and wavetables are saved
 Each plugin instance keeps its own samples and wavetables in the plugin's stored state, so they are saved with the DAW project and
 are never shared between instances (loading a kick into Sampler 1 in one instance does not touch another instance).

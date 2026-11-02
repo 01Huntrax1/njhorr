@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 9, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 10, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -324,4 +324,28 @@ AD = [
 ]
 def ad_id(o, j): return AD_BASE + AD_STRIDE * o + j
 def addst(o, j): return AD_DST_BASE + AD_STRIDE * o + j
-N_DST_TOTAL = AD_DST_BASE + AD_STRIDE * OSC_COUNT   # 1020
+DK_DST_BASE = AD_DST_BASE + AD_STRIDE * OSC_COUNT   # 1020
+# Modal Drum source (tools/osc/build_dk.py): parameter j (0..15) of slot o has the id DK_BASE + 16 * o + j and the mod destination 1020 + 16 * o + j
+DK_BASE = 2600
+DK_STRIDE = 16
+DK = [
+ (0,  "ddecay", "Drum Decay",           "Decay",       0, 1, 0.5, "", "sld", None),    # batter head ring time 0.05 .. 8 s (exponential)
+ (1,  "dtone",  "Drum Head Tone",       "Head Tone",   0, 1, 0.6, "", "sld", None),    # coated (dark) .. clear (bright): damping of the upper modes
+ (2,  "dhit",   "Drum Hit Position",    "Hit Position", 0, 1, 0.25, "", "sld", None),  # centre .. rim
+ (3,  "dstick", "Drum Stick",           "Stick",       0, 1, 0.5, "", "sld", None),    # felt / soft .. hard
+ (4,  "dedge",  "Drum Edge",            "Edge",        0, 1, 0.3, "", "sld", None),    # sharp .. round bearing edge
+ (5,  "dres",   "Drum Reso Head",       "Reso Head",   0, 1, 0.6, "", "sld", None),
+ (6,  "drtune", "Drum Reso Tune",       "Reso Tune",  -1, 1, 0.0, "", "sld", None),    # +-7 semitones against the batter head
+ (7,  "dshell", "Drum Shell",           "Shell",       0, 1, 0.4, "", "sld", None),
+ (8,  "ddepth", "Drum Shell Depth",     "Shell Depth", 0, 1, 0.5, "", "sld", None),
+ (9,  "dsnare", "Drum Snare",           "Snare",       0, 1, 0.0, "", "sld", None),
+ (10, "dsten",  "Drum Snare Tension",   "Snare Tension", 0, 1, 0.5, "", "sld", None),
+ (11, "dsym",   "Drum Sympathetic",     "Sympathetic", 0, 1, 0.0, "", "sld", None),    # the other Modal Drum slots shake this drum
+ (12, "dtens",  "Drum Tension",         "Tension",     0, 1, 0.3, "", "sld", None),    # pitch rises with the vibration energy
+ (13, "dvel",   "Drum Velocity",        "Vel > Stick", 0, 1, 0.5, "", "sld", None),
+ (14, "ddrive", "Drum Drive",           "Drive",       0, 1, 0.0, "", "sld", None),
+ (15, "dsize",  "Drum Size",            "Size",        0, 1, 0.5, "", "sld", None),    # large drums: lower and longer shell
+]
+def dk_id(o, j): return DK_BASE + DK_STRIDE * o + j
+def dkdst(o, j): return DK_DST_BASE + DK_STRIDE * o + j
+N_DST_TOTAL = DK_DST_BASE + DK_STRIDE * OSC_COUNT   # 1116

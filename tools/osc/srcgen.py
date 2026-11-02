@@ -8,7 +8,7 @@ def table(K, idx, n=16):
     for p in K: out[p[0]] = float(p[4]); hi[p[0]] = float(p[5])
     return ", ".join("%sf" % repr(x) for x in out), ", ".join("%sf" % repr(x) for x in hi)
 
-def install(patch, after, tag, K, idfn, dstbase, dsp, voice, noteon, stepcall, setfn, parr, header, hdrname, ns, base, stride):
+def install(patch, after, tag, K, idfn, dstbase, dsp, voice, noteon, stepcall, setfn, parr, header, hdrname, ns, base, stride, extras=()):
     s = open(patch).read()
     decl = "".join('    input event float param%d [[ name: "OSC %d %s", min: %s, max: %s, init: %s%s ]];\n' % (
         idfn(o, p[0]), o + 1, p[2], repr(float(p[4])), repr(float(p[5])), repr(float(p[6])), ", step: 1.0" if p[8] == "sel" else "")
@@ -27,7 +27,7 @@ def install(patch, after, tag, K, idfn, dstbase, dsp, voice, noteon, stepcall, s
     block("HAND", hand, r"^    event param1600 ")
     block("INIT", init, r"^            op\.at \(io \* 64 \+ 11\) = 3\.0f;\n", "            ")
     block("VOICE", voice, r"^        int     fdlW; ", "        ")
-    s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )[2-8]\.0', r'\g<1>%d.0' % 9, s)
+    s = re.sub(r'(name: "OSC \d Source", min: 0.0, max: )\d+\.0', r'\g<1>%d.0' % (len(L.SRC_TYPES) - 1), s)
     def rep(old, new):
         nonlocal s
         if new in s: return
@@ -36,6 +36,10 @@ def install(patch, after, tag, K, idfn, dstbase, dsp, voice, noteon, stepcall, s
     rep(after, after + noteon)
     if stepcall not in s:
         rep("\n                    // ----- filter envelope of the slot -----\n", "\n" + stepcall + "\n                    // ----- filter envelope of the slot -----\n")
+    for old, new in extras:
+        if new not in s:
+            assert s.count(old) == 1, (old[:60], s.count(old))
+            s = s.replace(old, new)
     DMAX = L.N_DST_TOTAL - 1
     s = re.sub(r"(mmDstI\.at \(\d+\) = clamp \(int \(v \+ 0\.5f\), 0, )\d+\)", lambda m: m.group(1) + "%d)" % DMAX, s)
     s = re.sub(r'(Mod Slot \d+ Dest \(0-)\d+(, see Dest list\)", min: 0\.0, max: )\d+(\.0)', lambda m: m.group(1) + "%d" % DMAX + m.group(2) + "%d" % DMAX + m.group(3), s)

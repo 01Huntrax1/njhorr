@@ -5,6 +5,7 @@
 #include "../NjoJp.h"
 #include "../NjoGr.h"
 #include "../NjoAd.h"
+#include "../NjoDk.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -89,6 +90,9 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_additive.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 8.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_granular.png"), scale);
+        // Modal Drum
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 10.0f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsnare")), 0.6f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsym")), 0.4f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_modaldrum.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {
