@@ -85,6 +85,7 @@ namespace njo
         void mouseMove (const juce::MouseEvent&) override;
         void mouseExit (const juce::MouseEvent& e) override { hoverIdx = -1; ParamWidget::mouseExit (e); }
         void setShowLabel (bool b) { showLabel = b; repaint(); }
+        void setColumns (int n) { cols = n; repaint(); }
     private:
         int indexAt (juce::Point<float>) const;
         juce::Rectangle<float> cellRect (int i) const;

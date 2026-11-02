@@ -43,11 +43,11 @@ processor Eisenpuls_Synth
     input event float param1010 [[ name: "OSC 1 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1011 [[ name: "OSC 1 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1012 [[ name: "OSC 1 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1013 [[ name: "OSC 1 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1013 [[ name: "OSC 1 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1014 [[ name: "OSC 1 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1015 [[ name: "OSC 1 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1016 [[ name: "OSC 1 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1017 [[ name: "OSC 1 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1017 [[ name: "OSC 1 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1018 [[ name: "OSC 1 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1019 [[ name: "OSC 1 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1020 [[ name: "OSC 1 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -97,11 +97,11 @@ processor Eisenpuls_Synth
     input event float param1074 [[ name: "OSC 2 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1075 [[ name: "OSC 2 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1076 [[ name: "OSC 2 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1077 [[ name: "OSC 2 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1077 [[ name: "OSC 2 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1078 [[ name: "OSC 2 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1079 [[ name: "OSC 2 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1080 [[ name: "OSC 2 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1081 [[ name: "OSC 2 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1081 [[ name: "OSC 2 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1082 [[ name: "OSC 2 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1083 [[ name: "OSC 2 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1084 [[ name: "OSC 2 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -151,11 +151,11 @@ processor Eisenpuls_Synth
     input event float param1138 [[ name: "OSC 3 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1139 [[ name: "OSC 3 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1140 [[ name: "OSC 3 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1141 [[ name: "OSC 3 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1141 [[ name: "OSC 3 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1142 [[ name: "OSC 3 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1143 [[ name: "OSC 3 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1144 [[ name: "OSC 3 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1145 [[ name: "OSC 3 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1145 [[ name: "OSC 3 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1146 [[ name: "OSC 3 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1147 [[ name: "OSC 3 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1148 [[ name: "OSC 3 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -205,11 +205,11 @@ processor Eisenpuls_Synth
     input event float param1202 [[ name: "OSC 4 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1203 [[ name: "OSC 4 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1204 [[ name: "OSC 4 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1205 [[ name: "OSC 4 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1205 [[ name: "OSC 4 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1206 [[ name: "OSC 4 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1207 [[ name: "OSC 4 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1208 [[ name: "OSC 4 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1209 [[ name: "OSC 4 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1209 [[ name: "OSC 4 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1210 [[ name: "OSC 4 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1211 [[ name: "OSC 4 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1212 [[ name: "OSC 4 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -259,11 +259,11 @@ processor Eisenpuls_Synth
     input event float param1266 [[ name: "OSC 5 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1267 [[ name: "OSC 5 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1268 [[ name: "OSC 5 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1269 [[ name: "OSC 5 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1269 [[ name: "OSC 5 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1270 [[ name: "OSC 5 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1271 [[ name: "OSC 5 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1272 [[ name: "OSC 5 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1273 [[ name: "OSC 5 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1273 [[ name: "OSC 5 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1274 [[ name: "OSC 5 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1275 [[ name: "OSC 5 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1276 [[ name: "OSC 5 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -313,11 +313,11 @@ processor Eisenpuls_Synth
     input event float param1330 [[ name: "OSC 6 WT Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1331 [[ name: "OSC 6 WT Frame Size", min: 0.0, max: 4.0, init: 3.0, step: 1.0 ]];
     input event float param1332 [[ name: "OSC 6 Root Note", min: 0.0, max: 127.0, init: 60.0, step: 1.0 ]];
-    input event float param1333 [[ name: "OSC 6 Unison Voices", min: 1.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param1333 [[ name: "OSC 6 Unison Voices", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];
     input event float param1334 [[ name: "OSC 6 Unison Detune", min: 0.0, max: 1.0, init: 0.25 ]];
     input event float param1335 [[ name: "OSC 6 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1336 [[ name: "OSC 6 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
-    input event float param1337 [[ name: "OSC 6 Unison Style", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];
+    input event float param1337 [[ name: "OSC 6 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1338 [[ name: "OSC 6 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
     input event float param1339 [[ name: "OSC 6 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1340 [[ name: "OSC 6 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
@@ -5850,7 +5850,7 @@ processor Eisenpuls_Synth
         float   curFreq;
         float   targetFreq;
         float64[8]  synPos;   // sampler read position per slot
-        float64[64] wtUPh;    // wavetable unison phases: slot * 7 + unison voice
+        float64[128] wtUPh;   // wavetable unison phases: slot * 16 + unison voice
         float[32]   wtDcS;    // wavetable warp DC blocker: slot * 4 + {xL, yL, xR, yR}
         float[8]    fmPrev;   // last output of every slot (FM source)
         float[8]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
@@ -5876,7 +5876,7 @@ processor Eisenpuls_Synth
         float[512]  wfg;      // Wavefilter band gains in use: (slot * 2 + channel) * 32 + band
         float[512]  wft;      // Wavefilter band gains wanted (recomputed every 8 samples)
         int[16]     wfc;      // Wavefilter sample counters: slot * 2 + channel
-        float[2048] phs;      // physical modelling states: slot * 176 + ...
+        float[4096] phs;      // physical modelling states: slot * 176 + ...; 2048.. unison drift, 2240.. Juno sub counters
         // WG-VOICE-BEGIN
         float[131072] wgd;    // Waveguide source: delay lines, slot * 16384
         float[2048]   wgs;    // Waveguide source: state, slot * 192
@@ -9934,10 +9934,10 @@ processor Eisenpuls_Synth
 
     // wavetable unison (per slot, up to 7 voices)
     int[8]        uniCnt;  // padded to a power of two (cheap index wrap)
-    float[64]     uniRatio;  // padded to a power of two (cheap index wrap)
-    float[64]     uniCents;  // padded to a power of two (cheap index wrap)
-    float[64]     uniGL;  // padded to a power of two (cheap index wrap)
-    float[64]     uniGR;  // padded to a power of two (cheap index wrap)
+    float[128]     uniRatio;  // padded to a power of two (cheap index wrap)
+    float[128]     uniCents;  // padded to a power of two (cheap index wrap)
+    float[128]     uniGL;  // padded to a power of two (cheap index wrap)
+    float[128]     uniGR;  // padded to a power of two (cheap index wrap)
 
     float opv (int o, int k)
     {
@@ -10212,49 +10212,78 @@ processor Eisenpuls_Synth
     }
 
     // ---------------- wavetable unison ----------------
+    // Unison Style 0..3: the classic detune curves (+-50 cents).  4 Super Saw: the voices sit at the offsets of the JP-8000 Super Saw. 5 Hyper Saw: wide and dense. Up to 16 voices.
     void updateWtUni (int o)
     {
-        int   n     = clamp (int (opv (o, 13) + 0.5f), 1, 7);
+        int   n     = clamp (int (opv (o, 13) + 0.5f), 1, 16);
         float det   = clamp (opv (o, 14), 0.0f, 1.0f);
         float blend = clamp (opv (o, 15), 0.0f, 1.0f);
         float width = clamp (opv (o, 16), 0.0f, 1.0f);
-        int   style = clamp (int (opv (o, 17) + 0.5f), 0, 3);
+        int   style = clamp (int (opv (o, 17) + 0.5f), 0, 5);
 
         uniCnt.at (o) = n;
 
         float powSum = 0.0f;
+        float dtn    = jpDetCurve (det);
 
-        for (int j = 0; j < 7; ++j)
+        for (int j = 0; j < 16; ++j)
         {
             float pos = 0.0f;
             if (n > 1)
                 pos = 2.0f * float (j) / float (n - 1) - 1.0f;
 
-            float dpos = pos;
-            if (style == 1)      dpos = pos * abs (pos);
-            else if (style == 2) dpos = (pos < 0.0f ? -1.0f : 1.0f) * float (sqrt (abs (pos)));
-            else if (style == 3 && n > 1) dpos = uniRandPos (o, j);
+            float ratio = 1.0f;
+            float w     = blend + (1.0f - blend) * (1.0f - abs (pos));
 
-            float cents = dpos * det * 50.0f;
-            uniRatio.at (o * 7 + j) = float (pow (2.0f, cents / 1200.0f));
-            uniCents.at (o * 7 + j) = dpos * 50.0f;
+            if (style <= 3)
+            {
+                float dpos = pos;
+                if (style == 1)      dpos = pos * abs (pos);
+                else if (style == 2) dpos = (pos < 0.0f ? -1.0f : 1.0f) * float (sqrt (abs (pos)));
+                else if (style == 3 && n > 1) dpos = uniRandPos (o, j);
 
-            float w = blend + (1.0f - blend) * (1.0f - abs (pos));
+                float cents = dpos * det * 50.0f;
+                ratio = float (pow (2.0f, cents / 1200.0f));
+                uniCents.at (o * 16 + j) = dpos * 50.0f;
+            }
+            else if (style == 4)
+            {
+                // Super Saw: the offsets of the seven JP-8000 saws, interpolated over the voices; Blend = the JP-8000 Mix
+                float t  = (pos + 1.0f) * 3.0f;
+                int   i0 = clamp (int (t), 0, 5);
+                float fr = t - float (i0);
+                float of = jpOff.at (i0) * (1.0f - fr) + jpOff.at (i0 + 1) * fr;
+                ratio = 1.0f + of * dtn;
+                uniCents.at (o * 16 + j) = 0.0f;
+                float cG = -0.55366f * blend + 0.99785f;
+                float sG = -0.73764f * blend * blend + 1.2841f * blend + 0.044372f;
+                w = abs (pos) < 0.001f ? cG : sG;
+            }
+            else
+            {
+                // Hyper Saw: a wide, dense spread, packed towards the centre
+                float dp = pos * (0.55f + 0.45f * abs (pos));
+                ratio = 1.0f + dp * 0.22f * float (pow (det, 1.6f));
+                uniCents.at (o * 16 + j) = 0.0f;
+            }
+
+            uniRatio.at (o * 16 + j) = ratio;
+
             if (j >= n) w = 0.0f;
             powSum += w * w;
 
             float pp  = pos * width;
             float ang = (pp + 1.0f) * 0.25f * float (pi);
-            uniGL.at (o * 7 + j) = w * float (cos (ang)) * 1.4142f;
-            uniGR.at (o * 7 + j) = w * float (sin (ang)) * 1.4142f;
+            uniGL.at (o * 16 + j) = w * float (cos (ang)) * 1.4142f;
+            uniGR.at (o * 16 + j) = w * float (sin (ang)) * 1.4142f;
         }
 
         float norm = 1.0f / float (sqrt (max (powSum, 0.01f)));
 
-        for (int j = 0; j < 7; ++j)
+        for (int j = 0; j < 16; ++j)
         {
-            uniGL.at (o * 7 + j) = uniGL.at (o * 7 + j) * norm;
-            uniGR.at (o * 7 + j) = uniGR.at (o * 7 + j) * norm;
+            uniGL.at (o * 16 + j) = uniGL.at (o * 16 + j) * norm;
+            uniGR.at (o * 16 + j) = uniGR.at (o * 16 + j) * norm;
         }
     }
 
@@ -10262,7 +10291,7 @@ processor Eisenpuls_Synth
     {
         float spread = clamp (opv (o, 29), 0.0f, 1.0f);
 
-        for (int j = 0; j < 7; ++j)
+        for (int j = 0; j < 16; ++j)
         {
             float64 rp = float64 (clamp (opv (o, 8), 0.0f, 1.0f));
             if (opv (o, 9) > 0.5f)
@@ -10273,7 +10302,7 @@ processor Eisenpuls_Synth
                 rp = rp - float64 (floor (float (rp)));
             }
 
-            voices.at (vi).wtUPh.at (o * 7 + j) = rp;
+            voices.at (vi).wtUPh.at (o * 16 + j) = rp;
         }
     }
 
@@ -10347,7 +10376,7 @@ processor Eisenpuls_Synth
         // mip level every voice does, and the level is looked up twice instead of once per voice
         int lvlAll = -1;
 
-        if (n > 2)
+        if (n > 2 && opv (o, 17) < 3.5f)
         {
             int lvLo = wtLevel (clamp (freq * 0.9640f, 1.0f, sr * 0.45f));
             int lvHi = wtLevel (clamp (freq * 1.0380f, 1.0f, sr * 0.45f));
@@ -10363,7 +10392,7 @@ processor Eisenpuls_Synth
 
         for (int j = 0; j < n; ++j)
         {
-            int     si = o * 7 + j;
+            int     si = o * 16 + j;
             float64 ph = voices.at (vi).wtUPh.at (si);
             float   f  = clamp (freq * uniRatio.at (si) * (1.0f + udr * uniDriftRaw (vi, o, j, udr > 0.0f)), 1.0f, sr * 0.45f);
 
@@ -12812,7 +12841,7 @@ processor Eisenpuls_Synth
     {
         float sr = float (processor.frequency);
         int   pb = o * 32;
-        int   ui = o * 7;
+        int   ui = o * 16;
         int   n  = uniCnt.at (o);
 
         // the LFO (triangle) drives the pulse width and the vibrato
@@ -12904,7 +12933,7 @@ processor Eisenpuls_Synth
                 pul = junoPulse (rp, ptp == 0 ? w : (ptp == 1 ? 0.25f : 0.125f), dt);
 
             // sub oscillator
-            float s4  = voices.at (vi).phs.at (1854 + ui + j);
+            float s4  = voices.at (vi).phs.at (2240 + ui + j);
             float sub = 0.0f;
 
             if (sl > 0.0f)
@@ -12928,7 +12957,7 @@ processor Eisenpuls_Synth
                 ph -= 1.0;
                 s4 += 1.0f;
                 if (s4 > 3.5f) s4 = 0.0f;
-                voices.at (vi).phs.at (1854 + ui + j) = s4;
+                voices.at (vi).phs.at (2240 + ui + j) = s4;
             }
 
             voices.at (vi).wtUPh.at (ui + j) = ph;
@@ -12965,14 +12994,14 @@ processor Eisenpuls_Synth
             {
                 cnt = 2048.0f;
 
-                for (int k = 0; k < 7; ++k)
-                    voices.at (vi).phs.at (1752 + (o * 7 + k) * 2 + 1) = nextNoise();
+                for (int k = 0; k < 16; ++k)
+                    voices.at (vi).phs.at (2048 + (o * 16 + k) * 2 + 1) = nextNoise();
             }
 
             voices.at (vi).phs.at (1836 + o) = cnt - 1.0f;
         }
 
-        int   di = 1752 + (o * 7 + j) * 2;
+        int   di = 2048 + (o * 16 + j) * 2;
         float v  = voices.at (vi).phs.at (di);
         v += 0.0006f * (voices.at (vi).phs.at (di + 1) - v);
         voices.at (vi).phs.at (di) = v;

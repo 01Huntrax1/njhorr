@@ -881,5 +881,26 @@ check("Mod destination 'Drum Decay' of OSC 1 lengthens the note", rms(win(mm, 0.
 mo = render(DBASE + [DP(0, "ddecay", 0.2), DP(0, "dtens", 0.0)] + MM(0, 1, L.dkdst(1, 0), 1.0) + CONST1, note=57, hold=0.8, tail=0.2, tag="dkm2")[:int(1.05 * RATE) - 64, 0]
 check("Mod destination of OSC 2 leaves the OSC 1 drum alone", np.allclose(win(mo, 0.1, 0.8), win(rf, 0.1, 0.8), atol=1e-4))
 
+
+# ---------------------------------------------------------------- Unison: up to 16 voices, Super Saw and Hyper Saw detune curves (Unison Style 4 / 5)
+def uni(style, n, det, extra=(), tag="unx", src=None):
+    return render((src or ["wt 0 saw"]) + [FOFF(0), P(0, "uvox", n), P(0, "udet", det), P(0, "ustyle", style), P(0, "uwid", 1)] + list(extra), tag=tag, hold=0.8, tail=0.1)
+un1 = uni(0, 1, 0.5, tag="un1")
+lin = uni(0, 7, 1.0, tag="un_lin"); sup = uni(4, 7, 1.0, tag="un_sup"); hyp = uni(5, 16, 1.0, tag="un_hyp")
+wide = lambda a: band(seg(a)[:, 0], 440 * 1.05, 440 * 1.14) + band(seg(a)[:, 0], 440 * 0.88, 440 * 0.95)
+check("Super Saw spreads the voices much wider than the linear curve (up to 1.9 semitones)", wide(sup) > 3 * wide(lin), "%.1f vs %.1f" % (wide(sup), wide(lin)))
+check("Hyper Saw with 16 voices is wider than Super Saw at full detune", band(seg(hyp)[:, 0], 440 * 1.14, 440 * 1.3) + band(seg(hyp)[:, 0], 440 * 0.77, 440 * 0.88) > 2 * (band(seg(sup)[:, 0], 440 * 1.14, 440 * 1.3) + band(seg(sup)[:, 0], 440 * 0.77, 440 * 0.88)) + 1.0)
+for nm, a in (("Super Saw", sup), ("Hyper Saw", hyp)):
+    check("%s is stereo, finite and keeps the level of one voice (within 4 dB)" % nm, np.isfinite(a).all() and np.abs(a).max() < 1.0 and float(np.corrcoef(seg(a)[:, 0], seg(a)[:, 1])[0, 1]) < 0.95 and abs(20 * np.log10(rms(seg(a)) / rms(seg(un1)))) < 4.0, "%.2f dB" % (20 * np.log10(rms(seg(a)) / rms(seg(un1)))))
+s0 = uni(4, 7, 0.0, tag="un_s0")
+check("Super Saw at Detune 0 plays the note pitch (A4 = 440 Hz)", abs(peak_freq(seg(s0)[:, 0]) - 440) < 2.0, "%.1f Hz" % peak_freq(seg(s0)[:, 0]))
+m0, m1 = uni(4, 7, 0.6, [P(0, "ublend", 0.0)], tag="un_m0"), uni(4, 7, 0.6, [P(0, "ublend", 1.0)], tag="un_m1")
+check("Super Saw: Blend (the JP-8000 Mix) changes the centre / side balance", rms(seg(m0) - seg(m1)) > 0.1 * rms(seg(m0)))
+check("16 unison voices on the classic curves still work", np.isfinite(uni(0, 16, 1.0, tag="un16")).all() and np.abs(uni(0, 16, 1.0, tag="un16")).max() < 1.0)
+dr = uni(5, 16, 0.8, [P(0, "udrift", 1.0), P(0, "uphase", 1.0)], tag="un_dr")
+check("16 voices with Drift and Phase Spread stay finite and bounded", np.isfinite(dr).all() and np.abs(dr).max() < 1.0)
+js = uni(4, 16, 0.7, tag="un_j", src=JS)
+check("Alpha Juno shares the unison: Super Saw with 16 voices is finite and stereo", np.isfinite(js).all() and np.abs(js).max() < 1.0 and float(np.corrcoef(seg(js)[:, 0], seg(js)[:, 1])[0, 1]) < 0.98 and rms(seg(js)) > 0.02)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

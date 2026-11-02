@@ -647,7 +647,8 @@ namespace njo
                 knob ("udet", u0, 256, c, uni);  knob ("ublend", u1, 256, c, uni);  knob ("uwid", u2, 256, c, uni);
                 knob ("udrift", u0, 316, c, uni);  knob ("uphase", u1, 316, c, uni);
                 put ("uvox", u2 - 36, 343, 72, 17, c, uni);   strip ("uvox", u2 - 36, 331, 72, c, true, uni);
-                put ("ustyle", lx, 387, w - 24, 31, c, uni);
+                put ("ustyle", lx, 383, w - 24, 44, c, uni);
+                if (auto* ub = dynamic_cast<ButtonsWidget*> (W ("ustyle"))) ub->setColumns (3);
             }
             // ---- output (oscillator page) ----
             if (mode == 0)
