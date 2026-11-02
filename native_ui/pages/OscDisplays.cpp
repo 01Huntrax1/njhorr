@@ -7,6 +7,7 @@
 #include "../NjoGr.h"
 #include "../NjoAd.h"
 #include "../NjoDk.h"
+#include "../NjoSp.h"
 #include <cmath>
 
 namespace njo
@@ -194,7 +195,7 @@ namespace njo
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
-        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1))) { repaint(); return; }
+        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1))) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -223,7 +224,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 10, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 11, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -292,7 +293,7 @@ namespace njo
                     info = s->name + " / FRAME " + juce::String (p + 1.0f, 1) + " OF " + juce::String (nF) + tag;
                 }
             }
-            else if (type == 1 || type == 8)
+            else if (type == 1 || type == 8 || (type == 11 && ctx.get (sp::spId (o, sp::key ("smode"))) < 0.5f))
             {
                 auto* s = mem.get (SoundMemory::Sample, o);
                 if (s == nullptr || s->data.empty()) info = "NO SAMPLE LOADED";
@@ -300,7 +301,7 @@ namespace njo
                 {
                     const int n = (int) s->data.size(), Wp = (int) W;
                     int step = juce::jmax (1, n / Wp);
-                    float start = juce::jlimit (0.0f, 1.0f, type == 8 ? ctx.get (gr::grId (o, gr::key ("gpos"))) : pv ("sstart"));
+                    float start = juce::jlimit (0.0f, 1.0f, type == 8 ? ctx.get (gr::grId (o, gr::key ("gpos"))) : (type == 11 ? ctx.get (sp::spId (o, sp::key ("spos"))) : pv ("sstart")));
                     g.setColour (juce::Colour (0xffff3b30).withAlpha (0.12f));
                     g.fillRect (0.0f, 0.0f, W * start, H);
                     juce::Path p;
@@ -317,8 +318,33 @@ namespace njo
                     juce::Path sl; sl.startNewSubPath (W * start, 0); sl.lineTo (W * start, H);
                     g.setColour (juce::Colour (0xffffc8be).withAlpha (0.7f));
                     strokeDashed (g, sl, 1.0f, 4.0f, 4.0f);
+                    if (type == 11)   // frame B and the morph between the frames
+                    {
+                        const float pb = juce::jlimit (0.0f, 1.0f, ctx.get (sp::spId (o, sp::key ("spos2"))));
+                        juce::Path sb2; sb2.startNewSubPath (W * pb, 0); sb2.lineTo (W * pb, H);
+                        g.setColour (juce::Colour (0xff7fd0ff).withAlpha (0.35f + 0.5f * ctx.get (sp::spId (o, sp::key ("smorph")))));
+                        strokeDashed (g, sb2, 1.0f, 4.0f, 4.0f);
+                    }
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
                 }
+            }
+            else if (type == 11)
+            {
+                // Spectral, Spectrum mode: the envelope the partials follow (two formant peaks, Position / Position B, Morph, Blur)
+                auto V = [&] (const char* key) { return ctx.get (sp::spId (o, sp::key (key))); };
+                const double sg = 0.12 + V ("sblur") * 0.9, c1 = 100.0 * std::pow (2.0, V ("spos") * 6.6), c2 = 100.0 * std::pow (2.0, V ("spos2") * 6.6), m = V ("smorph");
+                juce::Path p, fillP; const int Wp = (int) W;
+                for (int x = 0; x < Wp; ++x)
+                {
+                    const double l = std::log2 (40.0 * std::pow (2.0, (double) x / W * 9.0)), d1 = (l - std::log2 (c1)) / sg, d2 = (l - std::log2 (c2)) / sg;
+                    const double y = std::min (1.0, (1.0 - m) * std::exp (-0.5 * d1 * d1) + m * std::exp (-0.5 * d2 * d2));
+                    const float py = H - 6 - (float) y * (H - 14);
+                    if (x == 0) { p.startNewSubPath ((float) x, py); fillP.startNewSubPath ((float) x, H); fillP.lineTo ((float) x, py); } else { p.lineTo ((float) x, py); fillP.lineTo ((float) x, py); }
+                }
+                fillP.lineTo (W, H); fillP.closeSubPath();
+                g.setColour (juce::Colour (0xffff3b30).withAlpha (0.12f)); g.fillPath (fillP);
+                g.setColour (juce::Colour (0xffff3b30)); g.strokePath (p, juce::PathStrokeType (1.5f));
+                info = juce::String ("SPECTRUM / ") + juce::String (juce::roundToInt (c1)) + " HZ" + (m > 0.01 ? " > " + juce::String (juce::roundToInt (c2)) + " HZ" : juce::String());
             }
             else if (type == 10)
             {

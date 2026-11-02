@@ -6,6 +6,7 @@
 #include "../NjoGr.h"
 #include "../NjoAd.h"
 #include "../NjoDk.h"
+#include "../NjoSp.h"
 #include "../NjoShaper.h"
 #include "../NjoKick.h"
 #include "../pages/Editors.h"
@@ -93,6 +94,11 @@ int main (int argc, char** argv)
         // Modal Drum
         cx.set (njo::oscId (0, njo::oscKey ("type")), 10.0f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsnare")), 0.6f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsym")), 0.4f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_modaldrum.png"), scale);
+        // Spectral: Spectrum mode (formant curve) and Resynth
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 11.0f); cx.set (njo::sp::spId (0, njo::sp::key ("smode")), 1.0f); cx.set (njo::sp::spId (0, njo::sp::key ("smorph")), 0.5f); cx.set (njo::sp::spId (0, njo::sp::key ("spos2")), 0.8f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_spectral_spectrum.png"), scale);
+        cx.set (njo::sp::spId (0, njo::sp::key ("smode")), 0.0f);
+        ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_spectral.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

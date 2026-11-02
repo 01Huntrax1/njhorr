@@ -9,7 +9,7 @@
 //                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, saw2k, morph2k, big, clear)
 //                 fshape <freq mod 0-9> const <v> | ramp   load the 256-point curve (0..1) of a Freq modulator
 //                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
-//                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, clear)
+//                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, sweep, clear)
 //                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
 //                 moded <bank 0-17> reset | <mode 0-15> <freq> <gain> <decay>   resonator mode edits of slot*3+set (0 = Physical A, 1 = B, 2 = Resonator stage)
 //                 eqband <slot 0-29> <band 0-23> <on> <type 0-14> <Hz> <dB> <Q> [harmonics falloff(0-1) set(0 all,1 odd,2 even) channel(0 st,1 L,2 R,3 M,4 S)]   set a band of a Parametric EQ slot
@@ -119,6 +119,12 @@ struct Host
             {
                 double ph = fmod (hz * i / kRate, 1.0);
                 rng = rng * 1664525u + 1013904223u;
+                if (kind == "sweep")   // exponential sine sweep 200 Hz -> 6 kHz over the 1 s of the sample
+                {
+                    const double T = 48000.0 / kRate, r = std::log (30.0), t = i / kRate;
+                    d.push_back ((float) (0.9 * sin (tp * 200.0 * T / r * (std::exp (r * t / T) - 1.0))));
+                    continue;
+                }
                 d.push_back (kind == "saw" ? (float) (0.9 * (2 * ph - 1)) : kind == "noise" ? (float) ((rng >> 8) / 8388608.0 - 1.0) * 0.9f : (float) (0.9 * sin (tp * ph)));
             }
         }

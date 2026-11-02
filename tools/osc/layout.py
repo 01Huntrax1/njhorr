@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 10, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 11, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -348,4 +348,28 @@ DK = [
 ]
 def dk_id(o, j): return DK_BASE + DK_STRIDE * o + j
 def dkdst(o, j): return DK_DST_BASE + DK_STRIDE * o + j
-N_DST_TOTAL = DK_DST_BASE + DK_STRIDE * OSC_COUNT   # 1116
+SP_DST_BASE = DK_DST_BASE + DK_STRIDE * OSC_COUNT   # 1116
+# Spectral source (tools/osc/build_sp.py): parameter j (0..15) of slot o has the id SP_BASE + 16 * o + j and the mod destination 1116 + 16 * o + j
+SP_BASE = 2700
+SP_STRIDE = 16
+SP = [
+ (0,  "smode",  "Spectral Mode",       "Mode",        0, 1, 0, "", "btn", ["Resynth", "Spectrum"]),   # Resynth: spectral envelope of the sample memory; Spectrum: two formant peaks
+ (1,  "spos",   "Spectral Position",   "Position",    0, 1, 0.0, "", "sld", None),   # frame A: where in the sample (Resynth) / formant 1 (Spectrum)
+ (2,  "spos2",  "Spectral Position B", "Position B",  0, 1, 0.5, "", "sld", None),
+ (3,  "smorph", "Spectral Morph",      "Morph",       0, 1, 0.0, "", "sld", None),   # A -> B
+ (4,  "sscan",  "Spectral Scan",       "Scan",       -1, 1, 0.0, "", "sld", None),   # moves both positions through the sample (0 = freeze)
+ (5,  "sblur",  "Spectral Blur",       "Blur",        0, 1, 0.3, "", "sld", None),   # smears the spectrum (1/6 octave .. 1.5 octaves)
+ (6,  "sshift", "Spectral Shift",      "Shift",      -1, 1, 0.0, "", "sld", None),   # moves the spectral envelope (+-1 octave), the pitch stays
+ (7,  "stilt",  "Spectral Tilt",       "Tilt",       -1, 1, 0.0, "", "sld", None),   # dark .. bright
+ (8,  "sharm",  "Spectral Harmonics",  "Harmonics",   0, 1, 1.0, "", "sld", None),   # 4 .. 64 partials
+ (9,  "sodd",   "Spectral Odd Even",   "Odd / Even", -1, 1, 0.0, "", "sld", None),
+ (10, "scomb",  "Spectral Comb",       "Comb",        0, 1, 0.0, "", "sld", None),   # notches every 2nd..8th partial
+ (11, "scont",  "Spectral Contrast",   "Contrast",    0, 1, 0.0, "", "sld", None),   # sharpens peaks, removes weak partials
+ (12, "sjit",   "Spectral Jitter",     "Jitter",      0, 1, 0.0, "", "sld", None),   # random partial wobble (breath)
+ (13, "sspr",   "Spectral Spread",     "Spread",      0, 1, 0.0, "", "sld", None),   # inharmonic stretch
+ (14, "swid",   "Spectral Width",      "Width",       0, 1, 0.5, "", "sld", None),
+ (15, "svel",   "Spectral Velocity",   "Vel > Pos",   0, 1, 0.0, "", "sld", None),
+]
+def sp_id(o, j): return SP_BASE + SP_STRIDE * o + j
+def spdst(o, j): return SP_DST_BASE + SP_STRIDE * o + j
+N_DST_TOTAL = SP_DST_BASE + SP_STRIDE * OSC_COUNT   # 1212

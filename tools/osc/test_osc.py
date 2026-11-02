@@ -902,5 +902,55 @@ check("16 voices with Drift and Phase Spread stay finite and bounded", np.isfini
 js = uni(4, 16, 0.7, tag="un_j", src=JS)
 check("Alpha Juno shares the unison: Super Saw with 16 voices is finite and stereo", np.isfinite(js).all() and np.abs(js).max() < 1.0 and float(np.corrcoef(seg(js)[:, 0], seg(js)[:, 1])[0, 1]) < 0.98 and rms(seg(js)) > 0.02)
 
+
+# ---------------------------------------------------------------- Spectral source (type 11): ids SP_BASE + 16 * slot + j, mod destinations 1116 + ...
+def SPp(o, key, v):
+    for q in L.SP:
+        if q[1] == key: return (L.sp_id(o, q[0]), v)
+    return P(o, key, v)
+def centroid(x, f0=100.0, f1=12000.0):
+    f, X = spec(x); m = (f >= f0) & (f < f1); return float(np.sum(f[m] * X[m]) / max(np.sum(X[m]), 1e-12))
+def frac_band(x, f0, f1):
+    f, X = spec(x); m = (f >= 100) & (f < 16000); b = (f >= f0) & (f < f1); return float(np.sum(X[b] ** 2) / max(np.sum(X[m] ** 2), 1e-12))
+def sp(extra=(), smp="smp 0 sine 1000", note=45, tag="spx", hold=0.8, tail=0.2, vel=100, ch=0, mode=0):
+    cmds = ([smp] if smp else []) + [P(0, "type", 11), P(0, "level", 0.8), FOFF(0), SPp(0, "smode", mode)] + [SPp(0, k, v) for k, v in extra]
+    return render(cmds, note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:int((0.05 + hold + tail) * RATE) - 64, ch]
+s0 = sp(tag="sp0")
+check("Spectral Resynth sounds and stays finite", np.isfinite(s0).all() and rms(win(s0, 0.2, 0.7)) > 5e-3 and np.abs(s0).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(s0, 0.2, 0.7)), np.abs(s0).max()))
+check("Spectral Resynth puts the energy where the sample has it (1 kHz sine, key A2: formant at 1 kHz)", frac_band(win(s0, 0.2, 0.7), 700, 1500) > 0.7, "%.2f" % frac_band(win(s0, 0.2, 0.7), 700, 1500))
+fq = peak_freq(win(s0, 0.2, 0.7)); nn = fq / 110.0
+check("Spectral Resynth plays harmonics of the key pitch (peak on a multiple of 110 Hz)", abs(nn - round(nn)) < 0.08, "%.1f Hz" % fq)
+s1 = sp([("sshift", 1.0)], tag="sp1")
+check("Spectral Shift +1 moves the envelope up an octave", frac_band(win(s1, 0.2, 0.7), 1500, 3000) > 0.6 and frac_band(win(s1, 0.2, 0.7), 700, 1500) < 0.2, "%.2f" % frac_band(win(s1, 0.2, 0.7), 1500, 3000))
+s2 = sp([("sblur", 1.0)], tag="sp2"); s3 = sp([("sblur", 0.0)], tag="sp3")
+check("Spectral Blur widens the envelope", frac_band(win(s2, 0.2, 0.7), 700, 1500) < frac_band(win(s3, 0.2, 0.7), 700, 1500) - 0.1, "%.2f vs %.2f" % (frac_band(win(s2, 0.2, 0.7), 700, 1500), frac_band(win(s3, 0.2, 0.7), 700, 1500)))
+k0 = centroid(win(sp([("spos", 0.0), ("smorph", 0.0)], smp="smp 0 sweep", tag="sp4"), 0.2, 0.7)); k1 = centroid(win(sp([("spos", 1.0), ("smorph", 0.0)], smp="smp 0 sweep", tag="sp5"), 0.2, 0.7))
+km = centroid(win(sp([("spos", 0.0), ("spos2", 1.0), ("smorph", 0.5)], smp="smp 0 sweep", tag="sp6"), 0.2, 0.7))
+check("Spectral Position picks the frame (sweep sample: the start is dark, the end bright)", k1 > 3 * k0, "%.0f Hz vs %.0f Hz" % (k0, k1))
+check("Spectral Morph blends the two frames", k0 < km < k1, "%.0f < %.0f < %.0f" % (k0, km, k1))
+sa = sp([("spos", 0.0), ("sscan", 0.0)], smp="smp 0 sweep", tag="sp7", hold=1.2)
+sb = sp([("spos", 0.0), ("sscan", 1.0)], smp="smp 0 sweep", tag="sp8", hold=1.2)
+check("Spectral Scan moves through the sample (the sound gets brighter), Scan 0 freezes", centroid(win(sb, 0.9, 1.2)) > 2 * centroid(win(sb, 0.1, 0.3)) and abs(centroid(win(sa, 0.9, 1.2)) / centroid(win(sa, 0.1, 0.3)) - 1) < 0.25, "%.0f -> %.0f, frozen %.0f -> %.0f" % (centroid(win(sb, 0.1, 0.3)), centroid(win(sb, 0.9, 1.2)), centroid(win(sa, 0.1, 0.3)), centroid(win(sa, 0.9, 1.2))))
+check("Spectral Resynth without a sample is silent", rms(sp(smp=None, tag="sp_none")) < 1e-4)
+c0 = sp(tag="spc0", smp="smp 0 noise", note=57); c1 = sp([("scomb", 0.5)], tag="spc1", smp="smp 0 noise", note=57)
+check("Spectral Comb changes the spectrum", rms(win(c0, 0.2, 0.7) - win(c1, 0.2, 0.7)) > 0.1 * rms(win(c0, 0.2, 0.7)))
+# spectrum mode: formants without a sample
+m0 = sp([("spos", 0.2), ("smorph", 0.0)], smp=None, mode=1, tag="spm0"); m1 = sp([("spos", 0.8), ("smorph", 0.0)], smp=None, mode=1, tag="spm1")
+check("Spectral Spectrum mode needs no sample and Position moves the formant", rms(win(m0, 0.2, 0.7)) > 5e-3 and centroid(win(m1, 0.2, 0.7)) > 2 * centroid(win(m0, 0.2, 0.7)), "%.0f vs %.0f Hz" % (centroid(win(m0, 0.2, 0.7)), centroid(win(m1, 0.2, 0.7))))
+od0 = sp([("sodd", 0.0), ("spos", 0.5), ("sblur", 1.0)], smp=None, mode=1, note=57, tag="spo0"); od1 = sp([("sodd", 1.0), ("spos", 0.5), ("sblur", 1.0)], smp=None, mode=1, note=57, tag="spo1")
+check("Spectral Odd / Even +1 removes the even partials", band(win(od1, 0.2, 0.7), 420, 460) < 0.1 * band(win(od0, 0.2, 0.7), 420, 460) and band(win(od1, 0.2, 0.7), 640, 680) > 0.5 * band(win(od0, 0.2, 0.7), 640, 680))
+w1l, w1r = sp([("swid", 1.0)], smp=None, mode=1, tag="spw", ch=0), sp([("swid", 1.0)], smp=None, mode=1, tag="spw", ch=1)
+w0l, w0r = sp([("swid", 0.5)], smp=None, mode=1, tag="spw0", ch=0), sp([("swid", 0.5)], smp=None, mode=1, tag="spw0", ch=1)
+check("Spectral Width: 0.5 is mono, 1 splits odd and even partials to the sides", rms(win(w1l - w1r, 0.2, 0.7)) > 0.3 * rms(win(w1l, 0.2, 0.7)) and rms(win(w0l - w0r, 0.2, 0.7)) < 1e-4)
+bad = 0
+for note, vel, ex, smp in ((24, 1, [("sharm", 1.0), ("sjit", 1.0), ("sspr", 1.0), ("scont", 1.0)], "smp 0 saw 110"), (120, 127, [("sshift", -1.0), ("stilt", 1.0), ("scomb", 1.0), ("sscan", 1.0)], "smp 0 noise"), (60, 127, [("svel", 1.0), ("sblur", 0.0), ("sodd", -1.0), ("sshift", 1.0), ("smorph", 1.0), ("spos2", 1.0)], "smp 0 sweep")):
+    x = sp(ex, note=note, vel=vel, tag="sps", hold=0.4, tail=0.2, smp=smp)
+    if not (np.isfinite(x).all() and np.abs(x).max() < 1.0): bad += 1
+check("Spectral: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+cr = render_script(["smp 0 sine 1000", "p %d 11" % L.pid(0, K["type"]), "p %d 0.8" % L.pid(0, K["level"]), "p %d 0" % L.pid(0, K["fon"]), "run 0.05", "on 45 100", "run 0.4", "smp 0 sine 3000", "run 0.5"], "sp_reload")
+check("Spectral: loading another sample clears the analysis cache (1 kHz -> 3 kHz)", frac_band(win(cr[:, 0], 0.2, 0.4), 700, 1500) > 0.6 and frac_band(win(cr[:, 0], 0.7, 0.95), 2200, 4500) > 0.5, "%.2f / %.2f" % (frac_band(win(cr[:, 0], 0.2, 0.4), 700, 1500), frac_band(win(cr[:, 0], 0.7, 0.95), 2200, 4500)))
+mm = render(["smp 0 sweep", P(0, "type", 11), P(0, "level", 0.8), FOFF(0), SPp(0, "spos", 0.0)] + MM(0, 1, L.spdst(0, 1), 1.0) + CONST1, note=45, hold=0.8, tail=0.2, tag="spm_mod")[:int(1.05 * RATE) - 64, 0]
+check("Mod destination 'Spectral Position' of OSC 1 moves the frame", centroid(win(mm, 0.2, 0.7)) > 2 * k0, "%.0f vs %.0f Hz" % (centroid(win(mm, 0.2, 0.7)), k0))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

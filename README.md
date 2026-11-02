@@ -85,6 +85,13 @@ Source type 9, **Additive**, sums up to 64 partials. Each partial is a rotating 
 - Parameters: `2500 + 16 * slot + j` (15 used), mod destinations 924..1019. Code: `tools/osc/build_ad.py`, `native_ui/NjoAd.h`; both generators share `tools/osc/srcgen.py`, the web UI part is `tools/osc/apply_gradd_ui.py`.
 - State: Voice.grs (6 x 96 floats) and Voice.ads (6 x 512 floats) per voice.
 
+## Spectral source
+Source type 11, **Spectral**, is a bank of up to 64 harmonic partials (like the Additive source) whose amplitudes follow a spectral envelope. Two modes (**Mode** switch):
+* **Resynth**: the sample memory of the slot (load a sample like for the Sampler; the VAULT button and the drop zone work as there) is analysed with a 2048-point FFT, the envelope is smoothed on a 1/24 octave grid (four blur levels) and imposed on the harmonics of the key pitch: the timbre of the sample at any pitch, held for ever. **Position** / **Position B** pick two frames, **Morph** blends them, **Scan** moves both through the sample (1 = real time, 0 = freeze, negative = backwards, wraps), **Blur** smears the envelope (1/6 octave .. 1.5 octaves), **Shift** moves the envelope up or down by up to an octave while the pitch stays, **Vel > Pos** adds the velocity to the positions. A 1 kHz sine sample, for example, gives a formant at 1 kHz on every key. This is envelope transfer, not a phase vocoder: the sample's own pitch and phases are not kept.
+* **Spectrum**: no sample needed. Two formant peaks (**Position** and **Position B** = their frequency, 100 Hz .. 9.7 kHz, **Morph** blends, **Blur** = width).
+Both modes: **Tilt**, **Harmonics** (4 .. 64 partials), **Odd / Even**, **Comb** (notches every 2nd .. 8th partial), **Contrast** (sharpens peaks), **Jitter** (slow random partial wobble), **Spread** (inharmonic stretch), **Width** (odd and even partials to the two sides; 0.5 = mono).
+Parameters `SP_BASE (2700) + 16 * slot + j`, mod destinations 1116 + 16 * slot + j. The analysis is cached per slot (8 frames) and cleared when a sample is loaded; a frame costs one FFT. Code: `tools/osc/build_sp.py`, `tools/osc/apply_sp_ui.py`, tests in `tools/osc/test_osc.py`.
+
 ## Modal Drum source
 Source type 10, **Modal Drum**, is a drum in the manner of modal drum models (MODO DRUM, V-Drums, Chromaphone). The pitch follows the key.
 
