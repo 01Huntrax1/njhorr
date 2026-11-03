@@ -10,6 +10,7 @@
 #include "../NjoAd.h"
 #include "../NjoDk.h"
 #include "../NjoSp.h"
+#include "../NjoSf.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -22,6 +23,7 @@ namespace njo
     {
         const char* const WT_DZ_EMPTY  = "DROP A WAVETABLE / CLICK TO LOAD";
         const char* const SMP_DZ_EMPTY = "DROP A SAMPLE / CLICK TO LOAD";
+        const char* const SF_DZ_EMPTY  = "DROP A SOUNDFONT (.SF2) / CLICK TO LOAD";
 
         float textWidth (const juce::Font& f, const juce::String& t)
         {
@@ -64,6 +66,7 @@ namespace njo
             std::function<void()> onClick;
             bool on = false;
             void setOn (bool b) { if (b != on) { on = b; repaint(); } }
+            void setText (const juce::String& t) { if (t != text) { text = t; repaint(); } }
             void paint (juce::Graphics& g) override
             {
                 auto r = getLocalBounds().toFloat().reduced (0.5f);
@@ -222,6 +225,13 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            for (auto key : sfKeys)
+            {
+                auto w = makeWidget (ctx, sf::sfId (o, sf::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             for (auto key : dkKeys)
             {
                 auto w = makeWidget (ctx, dk::dkId (o, dk::key (key)), true);
@@ -292,6 +302,8 @@ namespace njo
             dz.onFile = [this] (const juce::File& f) { loadFile (f); };
             dz.onClick = [this] { chooseFile(); };
             dz.onClear = [this] { clearMemory(); };
+            presetBtn.onClick = [this] { choosePreset(); };
+            owner.addChildComponent (presetBtn);
             vault.onClick = [this] { if (ctx.onOpenVault) ctx.onOpenVault ((int) kind(), o, &vault); };
 
             ctx.addListener (this);
@@ -310,18 +322,19 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 11, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 12, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
         static constexpr const char* grKeys[] = { "gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gdrive", "gvel" };
         static constexpr const char* adKeys[] = { "ashape", "ashapeb", "amorph", "acount", "atilt", "aodd", "ainh", "aform", "aformg", "ashim", "ashimr", "adec", "adrive", "awid", "avel" };
         static constexpr const char* spKeys[] = { "smode", "spos", "spos2", "smorph", "sscan", "sblur", "sshift", "stilt", "sharm", "sodd", "scomb", "scont", "sjit", "sspr", "swid", "svel" };
+        static constexpr const char* sfKeys[] = { "sfgain", "sfvel", "sfatk", "sfdec", "sfsus", "sfrel", "sfloop", "sfpan", "sfstart", "sfdrive" };
         static constexpr const char* dkKeys[] = { "ddecay", "dtone", "dhit", "dstick", "dedge", "dres", "drtune", "dshell", "ddepth", "dsnare", "dsten", "dsym", "dtens", "dvel", "ddrive", "dsize" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
         static constexpr const char* phyKeys[] = { "phmix", "phhard", "phntim", "phmodA", "phdecA", "phmatA", "phhitA", "phinhA", "phmodB", "phdecB", "phmatB", "phhitB", "phinhB", "phtunB", "phbal", "phser",
                                                          "jsaw", "jpulse", "jwidth", "jpwm", "jpwmr", "jsub", "jnoise", "jrange", "jdrift", "jcurve", "jptype", "jstype", "jbtype", "jpwms", "jvib" };
-        SoundMemory::Kind kind() const { return srcType() == 1 || srcType() == 8 || srcType() == 11 ? SoundMemory::Sample : SoundMemory::Wavetable; }
+        SoundMemory::Kind kind() const { return srcType() == 12 ? SoundMemory::SoundFont : srcType() == 1 || srcType() == 8 || srcType() == 11 ? SoundMemory::Sample : SoundMemory::Wavetable; }
 
         // ---- memory / drop zone ----
         void refreshDz()
@@ -331,7 +344,31 @@ namespace njo
             auto k = kind();
             auto* s = mem.get (k, o);
             if (s != nullptr) dz.setState (DropZone::Loaded, s->name);
-            else dz.setState (DropZone::Empty, k == SoundMemory::Wavetable ? WT_DZ_EMPTY : SMP_DZ_EMPTY);
+            else dz.setState (DropZone::Empty, k == SoundMemory::Wavetable ? WT_DZ_EMPTY : k == SoundMemory::SoundFont ? SF_DZ_EMPTY : SMP_DZ_EMPTY);
+            presetBtn.setText (presetLabel());
+        }
+
+        // SoundFont: the preset button shows the loaded preset and opens the list of the file's presets
+        juce::String presetLabel() const
+        {
+            auto* s = mem.get (SoundMemory::SoundFont, o);
+            return s == nullptr ? juce::String ("PRESET") : "PRESET " + juce::String (s->preset + 1) + " > " + s->name;
+        }
+        void choosePreset()
+        {
+            auto names = mem.soundFontPresets (o);
+            if (names.isEmpty()) { ctx.status ("SOUNDFONT FILE NOT FOUND"); return; }
+            auto* s = mem.get (SoundMemory::SoundFont, o);
+            const int cur = s ? s->preset : -1;
+            juce::PopupMenu m;
+            for (int i = 0; i < names.size(); ++i) m.addItem (i + 1, names[i], true, i == cur);
+            juce::Component::SafePointer<OscPage> safe (&owner);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn).withMinimumWidth (presetBtn.getWidth()).withMaximumNumColumns (1),
+                             [safe, this] (int r)
+                             {
+                                 if (r <= 0 || safe == nullptr) return;
+                                 mem.selectSoundFontPreset (o, r - 1, [safe] (bool, const juce::String&) { juce::MessageManager::callAsync ([safe] { if (safe != nullptr) safe->impl->refreshDz(); }); });
+                             });
         }
 
         // Wavefilter / Wavedistortion tables (a wavetable file whose frames are filter curves / transfer curves)
@@ -380,7 +417,7 @@ namespace njo
 
         void chooseFile()
         {
-            chooser = std::make_shared<juce::FileChooser> ("Load audio", juce::File(), SoundMemory::fileWildcard());
+            chooser = std::make_shared<juce::FileChooser> (kind() == SoundMemory::SoundFont ? "Load a SoundFont" : "Load audio", juce::File(), kind() == SoundMemory::SoundFont ? juce::String ("*.sf2") : SoundMemory::fileWildcard());
             auto self = juce::Component::SafePointer<OscPage> (&owner);
             chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles,
                                   [self] (const juce::FileChooser& fc)
@@ -448,7 +485,7 @@ namespace njo
         // ---- parameter changes ----
         void paramChanged (int num, float) override
         {
-            if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1))) { owner.repaint(); return; }
+            if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1)) || (num >= sf::SF_BASE + sf::SF_STRIDE * o && num < sf::SF_BASE + sf::SF_STRIDE * (o + 1))) { owner.repaint(); return; }
             if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { updateJpLabels(); owner.repaint(); return; }
             if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { updateWgLabels(); owner.repaint(); return; }
             if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
@@ -483,11 +520,11 @@ namespace njo
             for (auto& kv : widgets) kv.second->setVisible (false);
             for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &rdisplay, (juce::Component*) &tdisplay,
                                         (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
-                                        (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
+                                        (juce::Component*) &presetBtn, (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11, wgf = type == 6, jpf = type == 7, grf = type == 8, adf = type == 9, dkf = type == 10, spf = type == 11;
+            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11 || type == 12, wgf = type == 6, jpf = type == 7, grf = type == 8, adf = type == 9, dkf = type == 10, spf = type == 11, sff = type == 12;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -501,9 +538,10 @@ namespace njo
                 put ("type", 13, 24, w - 26, 36, c);
                 display.setBounds (c.getX() + 13, c.getY() + 64, w - 26, 71);
                 display.setVisible (true);
-                dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - 56, 26);
+                dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - (sff ? 0 : 56), 26);   // the vault has no SoundFont kind: the .sf2 is kept (path + preset + zone table) in the plugin state
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
-                dz.setVisible (wt || sm || grf || spf); vault.setVisible (wt || sm || grf || spf);
+                dz.setVisible (wt || sm || grf || spf || sff); vault.setVisible (wt || sm || grf || spf);
+                presetBtn.setBounds (c.getX() + 13, c.getY() + 166, w - 26, 24); presetBtn.setVisible (sff);
 
                 const int colW = (w - 26 - 7) / 2, x2 = 13 + colW + 7;
                 put ("wpos", 13 + colW / 2 - 35, 190, 70, 54, c, wt);
@@ -578,6 +616,15 @@ namespace njo
                     for (int r = 0; r < 3; ++r)
                         for (int i = 0; i < 5; ++i)
                             knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 222 + 62 * r, c, spf);
+                }
+
+                {   // SoundFont: preset button above, the loop switch, then two rows of knobs
+                    put ("sfloop", 13, 198, w - 26, 28, c, sff);
+                    const float fw = (float) (w - 26);
+                    const char* rows[2][5] = { { "sfgain", "sfvel", "sfatk", "sfdec", "sfsus" }, { "sfrel", "sfpan", "sfstart", "sfdrive", nullptr } };
+                    for (int r = 0; r < 2; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 240 + 66 * r, c, sff);
                 }
 
                 {   // Modal Drum: four rows of four knobs
@@ -851,7 +898,7 @@ if (! wf)
         std::map<juce::String, std::unique_ptr<ParamWidget>> widgets;
         OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
         ResoDisplay rdisplay; TableDisplay tdisplay;
-        DropZone dz, dzF, dzS; PushButton vault;
+        DropZone dz, dzF, dzS; PushButton vault, presetBtn { "PRESET" };
         PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit;
          std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;

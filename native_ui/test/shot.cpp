@@ -99,6 +99,13 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_spectral_spectrum.png"), scale);
         cx.set (njo::sp::spId (0, njo::sp::key ("smode")), 0.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_spectral.png"), scale);
+        // SoundFont: the zone map of tools/osc/mk_sf2.py output (NJO_SF2 = path of the .sf2)
+        if (auto* sf2 = std::getenv ("NJO_SF2"))
+        {
+            ed.soundMemory().load (njo::SoundMemory::SoundFont, 0, juce::File (sf2));
+            cx.set (njo::oscId (0, njo::oscKey ("type")), 12.0f);
+            ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_soundfont.png"), scale);
+        }
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
     }
     {

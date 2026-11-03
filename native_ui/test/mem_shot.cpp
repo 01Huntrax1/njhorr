@@ -151,6 +151,36 @@ int main (int argc, char** argv)
         CHECK (njo::modSourceAllowed (24, njo::oscId (0, njo::oscKey ("fcut"))) && njo::modSourceAllowed (33, njo::oscId (5, njo::oscKey ("freq"))));
         CHECK (! njo::modSourceAllowed (24, njo::oscId (0, njo::oscKey ("level"))) && njo::modSourceAllowed (1, njo::oscId (0, njo::oscKey ("level"))));
     }
+    // SoundFont: .sf2 -> zone table + audio, float32 persistence, preset switch (needs tools/osc/mk_sf2.py output in <audio>/test.sf2)
+    if (audio.getChildFile ("test.sf2").existsAsFile())
+    {
+        be.events.clear();
+        std::vector<float> keep;
+        {
+            SoundMemory mem3 (ctx);
+            bool ok = false;
+            mem3.load (SoundMemory::SoundFont, 2, audio.getChildFile ("test.sf2"), [&] (bool o, const juce::String&) { ok = o; });
+            auto* s = mem3.get (SoundMemory::SoundFont, 2);
+            CHECK (ok && s && s->data.size() > 5000 && s->data[0] == 12345.0f && (int) s->data[1] == 3 && s->name == "PIANO" && s->preset == 0);
+            CHECK (mem3.soundFontPresets (2).size() == 2);
+            pump (1500);
+            int chunks = 0; for (auto& e : be.events) if (e.endpoint == "sfBankLoad" && (int) e.value["bank"] == 2) ++chunks;
+            CHECK (s && chunks == ((int) s->data.size() + 255) / 256);
+            CHECK (be.stored.count ("njo.mem.osc2.sf") == 1);
+            if (s) keep = s->data;
+            mem3.selectSoundFontPreset (2, 1);
+            s = mem3.get (SoundMemory::SoundFont, 2);
+            CHECK (s && s->preset == 1 && s->name == "OCTAVE UP" && s->data != keep);
+            if (s) keep = s->data;
+            pump (1500);
+        }
+        SoundMemory mem4 (ctx);
+        auto* s2 = mem4.get (SoundMemory::SoundFont, 2);
+        CHECK (s2 && s2->data == keep && s2->preset == 1 && s2->srcPath.endsWith ("test.sf2"));
+        mem4.clear (SoundMemory::SoundFont, 2);
+        CHECK (mem4.get (SoundMemory::SoundFont, 2) == nullptr && be.stored.count ("njo.mem.osc2.sf") == 0);
+        mem4.load (SoundMemory::SoundFont, 3, audio.getChildFile ("t.wav"), [&] (bool o, const juce::String&) { CHECK (! o); });
+    }
     // FM / GLOBAL pages
     MockBackend be2; EditorContent ed (be2);
     ed.setBounds (0, 0, BASE_W, BASE_H); pump();

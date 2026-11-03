@@ -8,6 +8,8 @@
 #include "../NjoAd.h"
 #include "../NjoDk.h"
 #include "../NjoSp.h"
+#include "../NjoSf.h"
+#include "../NjoSf2.h"
 #include <cmath>
 
 namespace njo
@@ -195,7 +197,7 @@ namespace njo
         if (num >= ter::TER_BASE + ter::TER_STRIDE * o && num < ter::TER_BASE + ter::TER_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
-        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1))) { repaint(); return; }
+        if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1)) || (num >= sf::SF_BASE + sf::SF_STRIDE * o && num < sf::SF_BASE + sf::SF_STRIDE * (o + 1))) { repaint(); return; }
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
@@ -224,7 +226,7 @@ namespace njo
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
-            const int type = juce::jlimit (0, 11, juce::roundToInt (pv ("type")));
+            const int type = juce::jlimit (0, 12, juce::roundToInt (pv ("type")));
             auto traceOf = [&] (const std::vector<float>& arr)
             {
                 juce::Path p;
@@ -326,6 +328,27 @@ namespace njo
                         strokeDashed (g, sb2, 1.0f, 4.0f, 4.0f);
                     }
                     info = s->name + " / " + juce::String ((double) n / 48000.0, 2) + " S" + (pv ("sloop") > 0.5f ? " / LOOP" : "");
+                }
+            }
+            else if (type == 12)
+            {
+                // SoundFont: the zone map of the loaded preset, keys 0..127 across, velocity up (every zone is a rectangle; the root key is marked)
+                auto* s = mem.get (SoundMemory::SoundFont, o);
+                const int nz = s && s->data.size() >= (size_t) sf2::kSfHdr ? juce::jlimit (0, sf2::kSfMaxZones, (int) s->data[1]) : 0;
+                if (nz == 0) info = "NO SOUNDFONT LOADED";
+                else
+                {
+                    const float kx = W / 128.0f;
+                    for (int z = 0; z < nz; ++z)
+                    {
+                        const float* r = s->data.data() + 8 + z * sf2::kSfZf;
+                        const float x0 = r[sf2::KeyLo] * kx, x1 = (r[sf2::KeyHi] + 1.0f) * kx, y0 = H - 4 - (r[sf2::VelHi] + 1.0f) / 128.0f * (H - 8), y1 = H - 4 - r[sf2::VelLo] / 128.0f * (H - 8);
+                        g.setColour (juce::Colour (0xffff3b30).withAlpha (0.16f)); g.fillRect (x0, y0, x1 - x0, y1 - y0);
+                        g.setColour (juce::Colour (0xffff3b30).withAlpha (0.7f)); g.drawRect (x0, y0, x1 - x0, y1 - y0, 1.0f);
+                        const float rx = r[sf2::Root] * kx + kx * 0.5f;
+                        g.setColour (juce::Colour (0xffffc8be).withAlpha (0.55f)); g.drawLine (rx, y0, rx, y1, 1.0f);
+                    }
+                    info = s->name + " / " + juce::String (nz) + " ZONES" + (s->srcPath.isNotEmpty() ? " / " + juce::File (s->srcPath).getFileNameWithoutExtension().toUpperCase().substring (0, 18) : juce::String());
                 }
             }
             else if (type == 11)
