@@ -361,5 +361,45 @@ f5 = render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.62, 0.1, 0.0, 0.0, 0.0, 0.45)) + 
 check("filter effect: negative Env Amt closes the cutoff on the note and reopens it", hf(f5, 0.62, 0.68) < 0.5 * hf(f5, 1.3, 1.5), "%.4f -> %.4f" % (hf(f5, 0.62, 0.68), hf(f5, 1.3, 1.5)))
 check("filter effect envelope stays finite and bounded", all(np.isfinite(a).all() and np.abs(a).max() < 4.0 for a in (f1, f2, f3, f4, f5)))
 
+
+# ---- FX-UNI: Unison (type 16)
+def uni(mode=0, p=(0.5, 0.25, 0.7, 0.2, 0.5, 1.0), tag="u", hold=1.0, mix=1.0):
+    return render(fx(0, 16, mode, mix, p), hold=hold, tail=0.5, tag=tag)
+def band(a, f0, f1, t0=0.9, t1=1.5):
+    seg = a[int(t0 * RATE):int(t1 * RATE), 0].astype(np.float64) * np.hanning(int((t1 - t0) * RATE))
+    sp = np.abs(np.fft.rfft(seg, 1 << 17)) ** 2; fr = np.fft.rfftfreq(1 << 17, 1.0 / RATE)
+    return float(sp[(fr >= f0) & (fr <= f1)].sum())
+udry = render([], hold=1.0, tail=0.5, tag="udry")
+ok = True; worst = 0.0
+for mode in range(4):
+    for p in [(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), (1.0, 1.0, 1.0, 1.0, 1.0, 1.0), (0.5, 0.5, 0.5, 0.5, 0.5, 0.5), (1.0, 1.0, 0.0, 1.0, 0.0, 1.0)]:
+        a = uni(mode, p, "u%d" % mode); ok = ok and bool(np.isfinite(a).all()); worst = max(worst, float(np.abs(a).max()))
+check("Unison: every mode at parameter extremes is finite and bounded", ok and worst < 4.0, "peak %.2f" % worst)
+base_rms = rms(udry[int(0.9 * RATE):int(1.5 * RATE)])
+w = uni(0, (0.5, 0.25, 0.7, 0.2, 0.5, 1.0), "u_a")
+check("Unison produces a level comparable to the dry signal", 0.4 < rms(w[int(0.9 * RATE):int(1.5 * RATE)]) / base_rms < 2.5, "%.2f" % (rms(w[int(0.9 * RATE):int(1.5 * RATE)]) / base_rms))
+# detune 0 / drift 0 / spread 0: every voice is the dry signal, sum / sqrt(n) = sqrt(n) x dry (n = 5)
+z = uni(0, (0.5, 0.0, 0.0, 0.0, 0.5, 1.0), "u_z")
+r5 = rms(z[int(0.9 * RATE):int(1.5 * RATE)]) / base_rms
+check("Unison with no detune is the dry signal times sqrt(voices)", abs(r5 - 5 ** 0.5) < 0.25, "%.2f" % r5)
+# detune broadens the line of the 440 Hz sine: energy 4..12 Hz away from the peak
+wide = band(uni(0, (0.5, 0.4, 0.5, 0.0, 0.5, 1.0), "u_d"), 424, 437) + band(uni(0, (0.5, 0.4, 0.5, 0.0, 0.5, 1.0), "u_d"), 443, 456)
+narrow = band(udry, 424, 437) + band(udry, 443, 456)
+check("Detune puts energy beside the dry frequency", wide > 50 * max(narrow, 1e-12) and wide > 0, "%.3g vs %.3g" % (wide, narrow))
+# more detune -> sidebands further out
+d1 = band(uni(0, (0.5, 0.1, 0.5, 0.0, 0.5, 1.0), "u_d1"), 450, 470); d2 = band(uni(0, (0.5, 0.6, 0.5, 0.0, 0.5, 1.0), "u_d2"), 450, 470)
+check("More detune spreads the sidebands wider", d2 > 3 * d1, "%.3g vs %.3g" % (d2, d1))
+# octaves mode: lines at 220 and 880 Hz
+oc = uni(3, (0.5, 0.1, 0.5, 0.0, 0.5, 1.0), "u_o")
+check("Octaves mode adds the octave above and below", band(oc, 870, 890) > 100 * max(band(udry, 870, 890), 1e-12) and band(oc, 215, 225) > 100 * max(band(udry, 215, 225), 1e-12))
+# stereo spread
+s0 = uni(0, (0.5, 0.3, 0.0, 0.0, 0.5, 1.0), "u_s0"); s1 = uni(0, (0.5, 0.3, 1.0, 0.0, 0.5, 1.0), "u_s1")
+seg0 = slice(int(0.9 * RATE), int(1.5 * RATE))
+check("Spread 0 keeps the channels equal, Spread 1 decorrelates them", np.allclose(s0[seg0, 0], s0[seg0, 1], atol=1e-5) and rms(s1[seg0, 0] - s1[seg0, 1]) > 0.1 * rms(s1[seg0, 0]))
+# tone low-pass: 1.0 = off, low value removes the octave-up line of the octave mode
+ot = uni(3, (0.5, 0.1, 0.5, 0.0, 0.5, 0.0), "u_ot")
+check("Tone low-pass damps the octave above", band(ot, 870, 890) < 0.5 * band(oc, 870, 890))
+check("Unison mix 0 equals dry", np.allclose(uni(0, mix=0.0, tag="u_m0"), udry, atol=1e-5))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

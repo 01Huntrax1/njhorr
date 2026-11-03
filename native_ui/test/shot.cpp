@@ -165,6 +165,7 @@ int main (int argc, char** argv)
         cx.set (base + 3, 8.0f); pump(); save (ed, dir.getChildFile ("fx_sat_fold.png"), scale);
         ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "WS", {}, njo::shaper::encode (njo::shaper::preset (5)));
         setFx (0, 15); pump(); save (ed, dir.getChildFile ("fx_shaper.png"), scale);
+        setFx (0, 16); cx.set (base + 3, 1.0f); cx.set (base + 4, 0.8f); cx.set (base + 5, 0.4f); pump(); save (ed, dir.getChildFile ("fx_unison.png"), scale);
         ed.soundMemory().set (njo::SoundMemory::EqBands, 0, "WS", {}, njo::shaper::encode (njo::shaper::preset (3)));
         cx.set (base + 3, 1.0f); pump(); save (ed, dir.getChildFile ("fx_shaper_mirror.png"), scale);
         for (int sl = 0; sl < 4; ++sl) setFx (sl, 0);

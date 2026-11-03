@@ -2367,7 +2367,10 @@ const FX_TYPES = [
       p: [["Drive", fxLin(0, 36, 1, "dB"), 0.3], ["Tone", fxLin(-100, 100, 0, "%"), 0.5], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Low Cut", fxHz(10, 800), 0], ["Sag", fxPct, 0]] },
     // transfer-curve nodes live in the sound memory (native editor)
     { n: "Waveshaper", mix: 1, modes: ["Curve", "Mirror", "Rectified"],
-      p: [["Drive", fxLin(0, 30, 1, "dB"), 0.3], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Tone", fxHz(500, 20000), 1], ["Low Cut", fxHz(10, 800), 0]] }
+      p: [["Drive", fxLin(0, 30, 1, "dB"), 0.3], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Tone", fxHz(500, 20000), 1], ["Low Cut", fxHz(10, 800), 0]] },
+    // Unison: detuned pitch-shifted copies of the input (two-tap crossfading delay lines)
+    { n: "Unison", mix: 0.5, modes: ["Classic", "Super", "Hyper", "Octaves"],
+      p: [["Voices", fxLin(2, 8, 0, ""), 0.5], ["Detune", fxLin(0, 100, 0, "ct"), 0.25], ["Spread", fxPct, 0.7], ["Drift", fxLin(0, 12, 1, "ct"), 0.2], ["Window", fxLin(10, 60, 0, "ms"), 0.5], ["Tone", fxHz(800, 20000), 1]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
@@ -2553,7 +2556,7 @@ const SPECS = (() => {
     FX_RACKS.forEach(rack => {
         for (let sl = 0; sl < 10; sl++) {
             const b = rack.id + sl * 10, n = rack.name + " FX " + (sl + 1);
-            L.push([b,     n + " Type", 0, 15, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b,     n + " Type", 0, 16, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
             L.push([b + 3, n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);

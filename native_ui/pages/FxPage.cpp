@@ -19,8 +19,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050 };
-            return juce::Colour (c[juce::jlimit (0, 15, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a };
+            return juce::Colour (c[juce::jlimit (0, 16, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -399,6 +399,24 @@ namespace njo
                     auto p = curve ([&] (double t) { return 0.08 + 0.84 * (1.0 - depth * (1.0 - wav (t * cycles))); }, 480);
                     fill (p, 0.0); stroke (p); label (syncName.isNotEmpty() ? syncName + "  (tempo sync)" : juce::String (rate, 1) + " Hz");
                     }
+                }
+                else if (ty == 16)   // Unison: the detune of every voice (x, in cents) and its stereo position (height)
+                {
+                    const int nv = 2 + juce::roundToInt (P (0) * 6.0), um = mode;
+                    const double det = P (1) * 100.0;
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
+                    for (int v = 0; v < nv; ++v)
+                    {
+                        const double lin = nv > 1 ? 2.0 * v / (nv - 1) - 1.0 : 0.0, sg = lin < 0 ? -1.0 : 1.0;
+                        double xx = lin, oct = 0.0;
+                        if (um == 1) xx = sg * std::pow (std::abs (lin), 1.5);
+                        if (um == 2) xx = sg * std::pow (std::abs (lin), 0.7);
+                        if (um == 3) { xx = lin * 0.3; oct = v % 3 == 1 ? 1200.0 : (v % 3 == 2 ? -1200.0 : 0.0); }
+                        const double cents = xx * det + oct, span = um == 3 ? 1300.0 : juce::jmax (30.0, det * 1.2);
+                        const double t = juce::jlimit (0.03, 0.97, 0.5 + 0.5 * cents / span), yl = 0.5 - 0.35 * P (2) * lin;
+                        g.setColour (col.withAlpha (0.8f)); g.fillRect (X (t) - 1.5f, Y (yl) - 14.0f, 3.0f, 28.0f);
+                    }
+                    label (juce::String (nv) + " VOICES   +-" + juce::String (juce::roundToInt (det)) + " ct" + (um == 3 ? "   OCTAVES" : juce::String()));
                 }
                 else if (ty == 8)   // Reverb: decay
                 {
