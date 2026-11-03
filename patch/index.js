@@ -2565,6 +2565,9 @@ const SPECS = (() => {
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) L.push([940 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]); });
     // ADSR of the Filter effect: Sustain and Release (ids 3000+g / 3030+g); Env Amt, Attack and Decay are P4..P6
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) { L.push([3000 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Sustain", 0, 1, 1, "", "sld", null, 1, "Sustain"]); L.push([3030 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Release", 0, 1, 0.3, "", "sld", null, 1, "Release"]); } });
+    // MOD-BIP: Bipolar switch of every envelope (3100 + i) and of Velocity (3110): Unipolar 0..1 / Bipolar -1..1
+    for (let i = 0; i < 10; i++) L.push([3100 + i, "Env " + (i + 1) + " Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
+    L.push([3110, "Velocity Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Velocity Polarity", null]);
     L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
     L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);
     OSC_SPEC_ROWS.forEach(r => L.push(r));
@@ -4297,10 +4300,10 @@ class EisenpulsPatchView extends HTMLElement {
         let sets = "";
         for (let i = 0; i < 10; i++) {
             const b = 267 + 4 * i;
-            sets += `<div class="env-set" data-env="${i}">${[0, 1, 2, 3].map(k => this.controlHTML(b + k, true)).join("")}</div>`;
+            sets += `<div class="env-set" data-env="${i}">${[0, 1, 2, 3].map(k => this.controlHTML(b + k, true)).join("")}<div class="env-pol">${this.controlHTML(3100 + i)}</div></div>`;
         }
         return `<section class="bs-env"><div class="bs-chips">${chips}<span class="bs-gap"></span>${others}</div>`
-            + `<div class="bs-envbody"><canvas class="env-canvas" width="360" height="130"></canvas><div class="env-knobs">${sets}</div></div></section>`;
+            + `<div class="bs-envbody"><canvas class="env-canvas" width="360" height="130"></canvas><div class="env-knobs">${sets}</div></div><div class="env-pol env-vel"><span class="lbl">VEL</span>${this.controlHTML(3110)}</div></section>`;
     }
 
     lfoPanelHTML () {

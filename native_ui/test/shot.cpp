@@ -171,6 +171,7 @@ int main (int argc, char** argv)
         pump();
     }
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);
+    ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix
         auto& cx = ed.context();
         for (int k = 0; k < 24; ++k) cx.modAssign (1 + k % 10, 258 + 31 * (k % 6) + (k * 3) % 31, 0.1f + 0.03f * k);

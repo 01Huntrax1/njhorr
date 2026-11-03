@@ -87,6 +87,14 @@ namespace njo
             g.setGradientFill (juce::ColourGradient (blue.withAlpha (0.30f), 0, 0, blue.withAlpha (0.03f), 0, H, false)); g.fillPath (p);
             g.setColour (blue); g.strokePath (p, juce::PathStrokeType (2.0f));
             g.setColour (juce::Colours::white.withAlpha (0.4f)); g.setFont (font (11.0f));
+            {   // axis: 0..1, or -1..1 in Bipolar mode (the curve is the same, the value is mapped to value * 2 - 1)
+                const bool bip = ctx.get (3100 + ctx.selectedEnv) > 0.5f;
+                g.setColour (juce::Colours::white.withAlpha (bip ? 0.22f : 0.0f)); if (bip) g.drawHorizontalLine ((int) Y (0.5f), pad, W - pad);
+                g.setColour (juce::Colours::white.withAlpha (0.45f)); g.setFont (font (8.5f, true));
+                g.drawText (bip ? "+1" : "1", (int) W - 26, (int) Y (1.0f) - 1, 22, 11, juce::Justification::centredRight);
+                if (bip) g.drawText ("0", (int) W - 26, (int) Y (0.5f) - 11, 22, 11, juce::Justification::centredRight);
+                g.drawText (bip ? "-1" : "0", (int) W - 26, (int) Y (0.0f) - 11, 22, 11, juce::Justification::centredRight);
+            }
             const char* l[4] = { "A", "D", "S", "R" }; float xs[4] = { 0, x1, x2, x3 };
             for (int k = 0; k < 4; ++k) g.drawText (l[k], (int) X (xs[k]) + 4, (int) H - 26, 14, 14, juce::Justification::centredLeft);
         }
@@ -227,7 +235,9 @@ namespace njo
         Ctx& ctx; ModEditors& owner;
         juce::OwnedArray<SourceChip> lfoChips, envChips, miscChips;
         EnvCanvas envCv; LfoCanvas lfoCv;
-        juce::OwnedArray<ParamWidget> envKnobs, lfoKnobs, modeBtn, syncBtn;
+        juce::OwnedArray<ParamWidget> envKnobs, lfoKnobs, modeBtn, syncBtn, envPol;
+        std::unique_ptr<ParamWidget> velPol;     // Unipolar / Bipolar switches of the envelopes (ids 3100 + i) and of Velocity (3110)
+        juce::Rectangle<int> envPolLbl, velPolLbl;
         juce::OwnedArray<MiniSelect> divSel;
         MiniSelect shape;
         struct GridButton : juce::Component
@@ -255,6 +265,8 @@ namespace njo
             }
             for (int n = 21; n <= 23; ++n) { auto* m = miscChips.add (new SourceChip (n)); owner.addAndMakeVisible (m); }
             owner.addAndMakeVisible (envCv); owner.addAndMakeVisible (lfoCv);
+            for (int i = 0; i < 10; ++i) { auto* b = static_cast<ButtonsWidget*> (envPol.add (makeWidget (ctx, 3100 + i, false).release())); b->setShowLabel (false); owner.addChildComponent (b); }
+            { auto* b = static_cast<ButtonsWidget*> (makeWidget (ctx, 3110, false).release()); b->setShowLabel (false); velPol.reset (b); owner.addAndMakeVisible (b); }
             for (int i = 0; i < 10; ++i)
             {
                 for (int k = 0; k < 4; ++k) { auto* w = envKnobs.add (makeWidget (ctx, envParam (i) + k, true).release()); w->setLook (true); owner.addChildComponent (w); }
@@ -300,7 +312,7 @@ namespace njo
         void paramChanged (int n, float) override
         {
             int i = ctx.selectedLfo, e = ctx.selectedEnv;
-            if (n >= envParam (e) && n < envParam (e) + 4) envCv.repaint();
+            if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e) envCv.repaint();
             if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); }
             if (n == lfoSyncParam (i)) refreshAll();
         }
@@ -313,6 +325,7 @@ namespace njo
                 lfoChips[i]->on = i == li; lfoChips[i]->repaint();
                 envChips[i]->on = i == ei; envChips[i]->repaint();
                 for (int k = 0; k < 4; ++k) envKnobs[i * 4 + k]->setVisible (i == ei);
+                envPol[i]->setVisible (i == ei);
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
                 modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li);
                 divSel[i]->setVisible (i == li);
@@ -320,7 +333,7 @@ namespace njo
                 divSel[i]->dimmed = ! sync; divSel[i]->repaint();
                 lfoKnobs[i * 5]->setAlpha (sync ? 0.45f : 1.0f);
             }
-            envCv.repaint(); lfoCv.repaint(); shape.repaint(); grid.repaint();
+            envCv.repaint(); lfoCv.repaint(); shape.repaint(); grid.repaint(); owner.repaint();
         }
     };
 
@@ -339,6 +352,8 @@ namespace njo
         g.drawText (juce::String (juce::CharPointer_UTF8 ("click: add point \xc2\xb7 drag: move \xc2\xb7 dbl-click point: delete \xc2\xb7 drag the diamond: curve")), impl->helpRect, juce::Justification::centredLeft, true);
         g.setFont (font (8.5f, true)); g.setColour (dim);
         g.drawText ("SHAPE", impl->shapeLabel, juce::Justification::topLeft);
+        g.drawText ("ENV " + juce::String (impl->ctx.selectedEnv + 1), impl->envPolLbl, juce::Justification::centredLeft);
+        g.drawText ("VELOCITY", impl->velPolLbl, juce::Justification::centredLeft);
     }
 
     void ModEditors::resized()
@@ -364,6 +379,14 @@ namespace njo
             for (int k = 0; k < 3; ++k) I.miscChips[k]->setBounds (row2.getRight() - (3 - k) * cw - (2 - k) * cg, row2.getY(), cw, ch);
             auto knobs = c.removeFromBottom (46);
             c.removeFromBottom (3);
+            {   // polarity switches under the display: selected envelope | velocity
+                auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
+                const int lw = 52, half = (pr.getWidth() - 10) / 2;
+                auto left = pr.removeFromLeft (half); pr.removeFromLeft (10);
+                I.envPolLbl = left.removeFromLeft (lw); I.velPolLbl = pr.removeFromLeft (lw);
+                for (int i = 0; i < 10; ++i) I.envPol[i]->setBounds (left);
+                I.velPol->setBounds (pr);
+            }
             I.envCv.setBounds (c);
             int kw = knobs.getWidth() / 4;
             for (int i = 0; i < 10; ++i) for (int k = 0; k < 4; ++k) I.envKnobs[i * 4 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());

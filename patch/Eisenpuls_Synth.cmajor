@@ -2969,6 +2969,17 @@ processor Eisenpuls_Synth
     input event float param3057 [[ name: "Bus 2 FX 8 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
     input event float param3058 [[ name: "Bus 2 FX 9 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
     input event float param3059 [[ name: "Bus 2 FX 10 Env Release", min: 0.0, max: 1.0, init: 0.3 ]];   // FX-FENV
+    input event float param3100 [[ name: "Mod Env 1 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3101 [[ name: "Mod Env 2 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3102 [[ name: "Mod Env 3 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3103 [[ name: "Mod Env 4 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3104 [[ name: "Mod Env 5 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3105 [[ name: "Mod Env 6 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3106 [[ name: "Mod Env 7 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3107 [[ name: "Mod Env 8 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3108 [[ name: "Mod Env 9 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3109 [[ name: "Mod Env 10 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3110 [[ name: "Mod Velocity Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
     input event float param940 [[ name: "Main FX 1 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param941 [[ name: "Main FX 2 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param942 [[ name: "Main FX 3 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
@@ -3223,6 +3234,7 @@ processor Eisenpuls_Synth
     float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvR;  // padded to a power of two (cheap index wrap)
     float[16]   envMax;  // padded to a power of two (cheap index wrap)
+    float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
     float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
     float[32]   mmSrc;  // padded to a power of two (cheap index wrap)
@@ -5842,6 +5854,18 @@ processor Eisenpuls_Synth
     event param3057 (float v) { fxEnvRel.at (27) = clamp (v, 0.0f, 1.0f); fxDirty.at (27) = true; }
     event param3058 (float v) { fxEnvRel.at (28) = clamp (v, 0.0f, 1.0f); fxDirty.at (28) = true; }
     event param3059 (float v) { fxEnvRel.at (29) = clamp (v, 0.0f, 1.0f); fxDirty.at (29) = true; }
+    // MOD-BIP: bipolar switches of ENV 1-10 (0..9) and Velocity (10)
+    event param3100 (float v) { modBip.at (0) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3101 (float v) { modBip.at (1) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3102 (float v) { modBip.at (2) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3103 (float v) { modBip.at (3) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3104 (float v) { modBip.at (4) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3105 (float v) { modBip.at (5) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3106 (float v) { modBip.at (6) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3107 (float v) { modBip.at (7) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3108 (float v) { modBip.at (8) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3109 (float v) { modBip.at (9) = v > 0.5f ? 1.0f : 0.0f; }
+    event param3110 (float v) { modBip.at (10) = v > 0.5f ? 1.0f : 0.0f; }
     // FX-SYNC: sync divisions of the effect slots
     event param940 (float v) { fxSync.at (0) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (0) = true; }
     event param941 (float v) { fxSync.at (1) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (1) = true; }
@@ -10034,6 +10058,12 @@ processor Eisenpuls_Synth
     }
 
     // Mod source value for a voice (1-10 LFO, 11-20 envelope, 21 velocity, 22 key, 23 random)
+    // MOD-BIP: unipolar 0..1 -> bipolar -1..1 when the modulator's Bipolar switch is on
+    float bipMap (float v, int i)
+    {
+        return modBip.at (i) > 0.5f ? v * 2.0f - 1.0f : v;
+    }
+
     float srcValueVoice (int src, int vi)
     {
         if (src >= 1 && src <= 10)
@@ -10043,9 +10073,9 @@ processor Eisenpuls_Synth
             return mLfoV.at (src - 1);
         }
         if (src >= 11 && src <= 20)
-            return voices.at (vi).menv.at (src - 11);
+            return bipMap (voices.at (vi).menv.at (src - 11), src - 11);   // MOD-BIP
         if (src == 21)
-            return voices.at (vi).velRaw;
+            return bipMap (voices.at (vi).velRaw, 10);   // MOD-BIP
         if (src == 22)
             return clamp ((float (voices.at (vi).noteNumber) - 60.0f) / 48.0f, -1.0f, 1.0f);
         if (src == 23)
@@ -10065,9 +10095,9 @@ processor Eisenpuls_Synth
             return mLfoV.at (src - 1);
         }
         if (src >= 11 && src <= 20)
-            return envMax.at (src - 11);
+            return bipMap (envMax.at (src - 11), src - 11);   // MOD-BIP
         if (src == 21)
-            return lastVelV;
+            return bipMap (lastVelV, 10);   // MOD-BIP
         if (src == 22)
             return lastKeyV;
         if (src == 23)

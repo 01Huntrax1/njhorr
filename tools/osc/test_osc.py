@@ -499,6 +499,19 @@ def MM(slot, src, dst, amt):   # slot is 0-based
 a0 = render(only(saw=0.0), tag="mdj0")
 a1 = render(only(saw=0.0) + MM(0, 1, L.phydst(0, 16), 1.0) + CONST1, tag="mdj1")
 check("Mod destination 'Juno Saw Level' of OSC 1 opens a silent saw", rms(seg(a0)) < 0.002 and rms(seg(a1)) > 0.02, "%.4f -> %.4f" % (rms(seg(a0)), rms(seg(a1))))
+def win(x, t0, t1): return x[int(t0 * RATE):int(t1 * RATE)]
+# MOD-BIP: Bipolar switch of the envelopes (3100 + i) and Velocity (3110): value * 2 - 1
+ENVH = [(267, 0.0), (269, 0.5)]    # Env 1: instant attack, sustain 0.5 (held for the whole test)
+b_u = render(only(saw=0.0) + MM(0, 11, L.phydst(0, 16), 1.0) + ENVH, tag="bip_u")
+b_b = render(only(saw=0.0) + MM(0, 11, L.phydst(0, 16), 1.0) + ENVH + [(3100, 1.0)], tag="bip_b")
+check("Env Bipolar off: a sustain of 0.5 opens the saw (unipolar), on: it is mapped to 0 and the saw stays silent", rms(win(b_u, 0.3, 0.6)) > 0.01 and rms(win(b_b, 0.3, 0.6)) < 0.003, "%.4f / %.4f" % (rms(win(b_u, 0.3, 0.6)), rms(win(b_b, 0.3, 0.6))))
+b_hi = render(only(saw=0.0) + MM(0, 11, L.phydst(0, 16), 1.0) + [(267, 0.0), (269, 1.0), (3100, 1.0)], tag="bip_hi")
+check("Env Bipolar at sustain 1 gives +1 (full)", rms(win(b_hi, 0.3, 0.6)) > 0.01)
+v_u = render(only(saw=0.0) + MM(0, 21, L.phydst(0, 16), 1.0), vel=64, tag="bip_vu")
+v_b = render(only(saw=0.0) + MM(0, 21, L.phydst(0, 16), 1.0) + [(3110, 1.0)], vel=64, tag="bip_vb")
+check("Velocity Bipolar: vel 64 is about 0 instead of 0.5", rms(win(v_u, 0.2, 0.6)) > 0.01 and rms(win(v_b, 0.2, 0.6)) < 0.004, "%.4f / %.4f" % (rms(win(v_u, 0.2, 0.6)), rms(win(v_b, 0.2, 0.6))))
+v_h = render(only(saw=0.0) + MM(0, 21, L.phydst(0, 16), 1.0) + [(3110, 1.0)], vel=127, tag="bip_vh")
+check("Velocity Bipolar: vel 127 is about +1", rms(win(v_h, 0.2, 0.6)) > 0.02)
 # the same destination of OSC 2 does not touch OSC 1
 a2 = render(only(saw=0.0) + MM(0, 1, L.phydst(1, 16), 1.0) + CONST1, tag="mdj2")
 check("Mod destination of OSC 2 leaves OSC 1 alone", rms(seg(a2)) < 0.002)

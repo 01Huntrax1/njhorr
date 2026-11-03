@@ -44,6 +44,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("JP-8080 controls exist in every slot, the waveform selector lists 9 waveforms", [0, 1, 2, 3, 4, 5].every(o => [0, 1, 7, 15].every(j => ctl(2300 + 16 * o + j))) && opts(2300).length === 9 && opts(2300)[6] === "Super Saw" && opts(2300)[7] === "Feedback Osc");
     check("Granular and Additive controls exist in every slot", [0, 1, 2, 3, 4, 5].every(o => [0, 1, 7, 11].every(j => ctl(2400 + 16 * o + j)) && [0, 1, 7, 14].every(j => ctl(2500 + 16 * o + j))) && opts(2500).length === 8 && opts(2500)[4] === "Bell");
     check("Modal Drum controls exist in every slot", [0, 1, 2, 3, 4, 5].every(o => [0, 1, 6, 11, 15].every(j => ctl(2600 + 16 * o + j))));
+    check("Bipolar switches of the envelopes and Velocity exist", [...Array(10).keys()].every(i => ctl(3100 + i)) && ctl(3110));
     check("SoundFont controls exist in every slot", [0, 1, 2, 3, 4, 5].every(o => [0, 6, 9].every(j => ctl(2800 + 16 * o + j))));
     check("Spectral controls exist in every slot", [0, 1, 2, 3, 4, 5].every(o => [0, 1, 6, 11, 15].every(j => ctl(2700 + 16 * o + j))));
     ctl(1000).setValue(2, true);
