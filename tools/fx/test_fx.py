@@ -340,26 +340,34 @@ cv0 = render(ws([(-1, -1, 0), (1, 1, 0)], 0, (0.5, 0.5, 0.5, 1.0, 0.0, 0.0)), ta
 check("waveshaper segment curvature changes the sound", not np.allclose(cv0, cv1, atol=1e-3))
 
 
-# ================================================= FX-FENV: ADSR on the cutoff of the Filter effect
+# ================================================= FX-FENV2: envelope of the Filter effect = a modulation envelope (ENV 1-10), key tracking
 def hf(a, t0, t1, f0=2000.0, f1=20000.0):
     x = a[int(t0 * RATE):int(t1 * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(x * np.hanning(len(x)))) ** 2; f = np.fft.rfftfreq(len(x), 1.0 / RATE)
     return float(np.sqrt(X[(f >= f0) & (f < f1)].sum() / len(x)))
-def fenv(amt, atk, dec, sus, rel, tag):
-    # slot 0 = Filter, 24 dB low pass at about 300 Hz, saw at 110 Hz, held for 1 s
-    return render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.39, 0.1, 0.0, amt, atk, dec)) + ["p 3000 %s" % sus, "p 3030 %s" % rel], hold=1.0, tail=1.2, tag=tag, note=45)
-f0 = fenv(0.5, 0.0, 0.45, 0.0, 0.3, "fe0")
+def fenv(amt, atk, dec, sus, rel, tag, src=0, kt=0.0, note=45, env=0):
+    # slot 0 = Filter, 24 dB low pass at about 300 Hz, saw, held for 1 s; the times come from modulation envelope `env` (ids 267 + 4 * env)
+    b = 267 + 4 * env
+    return render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.39, 0.1, 0.0, amt, src / 9.0, kt)) + ["p %d %s" % (b, atk), "p %d %s" % (b + 1, dec), "p %d %s" % (b + 2, sus), "p %d %s" % (b + 3, rel)], hold=1.0, tail=1.2, tag=tag, note=note)
+f0 = fenv(0.5, 1, 300, 0.0, 100, "fe0")
 check("filter effect: Env Amt 0 keeps the cutoff fixed", 0.6 < hf(f0, 0.62, 0.68) / max(hf(f0, 1.3, 1.5), 1e-9) < 1.7, "%.4f / %.4f" % (hf(f0, 0.62, 0.68), hf(f0, 1.3, 1.5)))
-f1 = fenv(1.0, 0.0, 0.45, 0.0, 0.3, "fe1")
-check("filter effect: positive Env Amt opens the cutoff on the note and closes it with the decay", hf(f1, 0.62, 0.68) > 4 * hf(f1, 1.3, 1.5) and hf(f1, 0.62, 0.68) > 3 * hf(f0, 0.62, 0.68), "%.4f vs late %.4f, fixed %.4f" % (hf(f1, 0.62, 0.68), hf(f1, 1.3, 1.5), hf(f0, 0.62, 0.68)))
-f2 = fenv(1.0, 0.0, 0.45, 1.0, 0.3, "fe2")
-check("filter effect: Sustain 1 holds the cutoff open", hf(f2, 1.3, 1.5) > 3 * hf(f1, 1.3, 1.5) and hf(f2, 1.3, 1.5) > 0.4 * hf(f2, 0.62, 0.68), "%.4f vs %.4f" % (hf(f2, 1.3, 1.5), hf(f1, 1.3, 1.5)))
-f3 = fenv(1.0, 0.0, 0.45, 1.0, 0.7, "fe3")
-check("filter effect: Release closes the cutoff after the note off", hf(f3, 1.62, 1.72) > 3 * hf(f3, 2.5, 2.7), "%.4f -> %.4f" % (hf(f3, 1.62, 1.72), hf(f3, 2.5, 2.7)))
-f4 = fenv(1.0, 0.6, 0.45, 1.0, 0.3, "fe4")
-check("filter effect: Attack opens the cutoff slowly", hf(f4, 0.6, 0.64) < 0.3 * hf(f4, 1.3, 1.5), "%.4f -> %.4f" % (hf(f4, 0.6, 0.64), hf(f4, 1.3, 1.5)))
-f5 = render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.62, 0.1, 0.0, 0.0, 0.0, 0.45)) + ["p 3000 0", "p 3030 0.3"], hold=1.0, tail=1.2, tag="fe5", note=45)
+f1 = fenv(1.0, 1, 300, 0.0, 100, "fe1")
+check("filter effect: positive Env Amt opens the cutoff on the note and closes it with the modulation envelope's decay", hf(f1, 0.62, 0.68) > 4 * hf(f1, 1.3, 1.5) and hf(f1, 0.62, 0.68) > 3 * hf(f0, 0.62, 0.68), "%.4f vs late %.4f, fixed %.4f" % (hf(f1, 0.62, 0.68), hf(f1, 1.3, 1.5), hf(f0, 0.62, 0.68)))
+f2 = fenv(1.0, 1, 300, 1.0, 100, "fe2")
+check("filter effect: the modulation envelope's Sustain 1 holds the cutoff open", hf(f2, 1.3, 1.5) > 3 * hf(f1, 1.3, 1.5) and hf(f2, 1.3, 1.5) > 0.4 * hf(f2, 0.62, 0.68), "%.4f vs %.4f" % (hf(f2, 1.3, 1.5), hf(f1, 1.3, 1.5)))
+f3 = fenv(1.0, 1, 300, 1.0, 1500, "fe3")
+check("filter effect: the modulation envelope's Release closes the cutoff after the note off", hf(f3, 1.62, 1.72) > 3 * hf(f3, 2.5, 2.7), "%.4f -> %.4f" % (hf(f3, 1.62, 1.72), hf(f3, 2.5, 2.7)))
+f4 = fenv(1.0, 600, 300, 1.0, 100, "fe4")
+check("filter effect: the modulation envelope's Attack opens the cutoff slowly", hf(f4, 0.6, 0.64) < 0.3 * hf(f4, 1.3, 1.5), "%.4f -> %.4f" % (hf(f4, 0.6, 0.64), hf(f4, 1.3, 1.5)))
+f5 = render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.62, 0.1, 0.0, 0.0, 0.0, 0.0)) + ["p 267 1", "p 268 300", "p 269 0", "p 270 100"], hold=1.0, tail=1.2, tag="fe5", note=45)
 check("filter effect: negative Env Amt closes the cutoff on the note and reopens it", hf(f5, 0.62, 0.68) < 0.5 * hf(f5, 1.3, 1.5), "%.4f -> %.4f" % (hf(f5, 0.62, 0.68), hf(f5, 1.3, 1.5)))
-check("filter effect envelope stays finite and bounded", all(np.isfinite(a).all() and np.abs(a).max() < 4.0 for a in (f1, f2, f3, f4, f5)))
+# source selection: ENV 1 stays open (sustain 1), ENV 2 closes (sustain 0): the filter follows the chosen one
+sel = lambda src, tag: render(["wt 0 saw"] + fx(0, 9, 0, 1.0, (0.39, 0.1, 0.0, 1.0, src / 9.0, 0.0)) + ["p 267 1", "p 268 300", "p 269 1", "p 270 100", "p 271 1", "p 272 300", "p 273 0", "p 274 100"], hold=1.0, tail=1.2, tag=tag, note=45)
+sa, sb = sel(0, "fesa"), sel(1, "fesb")
+check("filter effect: Env Src picks the modulation envelope (ENV 1 sustains open, ENV 2 closes)", hf(sa, 1.3, 1.5) > 3 * hf(sb, 1.3, 1.5), "%.4f vs %.4f" % (hf(sa, 1.3, 1.5), hf(sb, 1.3, 1.5)))
+# key tracking: the cutoff follows the played note
+k0, k1 = fenv(0.5, 1, 300, 0.0, 100, "fek0", kt=0.0, note=69), fenv(0.5, 1, 300, 0.0, 100, "fek1", kt=1.0, note=69)
+check("filter effect: Key Track raises the cutoff for a note above C4", hf(k1, 0.7, 1.4, 1500, 20000) > 1.3 * hf(k0, 0.7, 1.4, 1500, 20000), "%.4f vs %.4f" % (hf(k1, 0.7, 1.4, 1500, 20000), hf(k0, 0.7, 1.4, 1500, 20000)))
+check("filter effect envelope stays finite and bounded", all(np.isfinite(a).all() and np.abs(a).max() < 4.0 for a in (f1, f2, f3, f4, f5, sa, sb, k0, k1)))
 
 
 # ---- FX-UNI: Unison (type 16)

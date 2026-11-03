@@ -144,6 +144,7 @@ int main (int argc, char** argv)
             setFx (0, t); if (t == 12) cx.set (base + 3, 8.0f); pump();
             save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);
         }
+        setFx (0, 9); cx.set (base + 7, 0.85f); cx.set (base + 8, 2.0f / 9.0f); cx.set (base + 9, 0.4f); pump(); save (ed, dir.getChildFile ("fx_filter_env.png"), scale);
         setFx (0, 9); setFx (1, 3); setFx (2, 8); setFx (3, 11); pump();
         save (ed, dir.getChildFile ("fx.png"), scale);
         // tempo sync and the trance gate

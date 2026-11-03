@@ -233,6 +233,12 @@ namespace njo
                     g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (fc / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawHorizontalLine ((int) Y ((0 + 48.0) / 72.0), r.getX(), r.getRight());
                     freqAxis();
+                    if (std::abs (P (3) - 0.5) > 0.004)   // the modulation envelope that drives the cutoff
+                    {
+                        const int e = juce::jlimit (0, 9, juce::roundToInt (P (4) * 9.0)), eb = envParam (e);
+                        label ("ENV " + juce::String (e + 1) + "   A " + juce::String (juce::roundToInt (im.ctx.get (eb))) + " ms   D " + juce::String (juce::roundToInt (im.ctx.get (eb + 1))) + " ms   S "
+                               + juce::String (juce::roundToInt (im.ctx.get (eb + 2) * 100.0f)) + "%   R " + juce::String (juce::roundToInt (im.ctx.get (eb + 3))) + " ms", juce::Justification::topRight);
+                    }
                 }
                 else if (ty == 10)   // EQ: sum of low shelf, peak, high shelf
                 {
@@ -607,7 +613,6 @@ namespace njo
             auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, type)];
             ctx.set (b + 1, 1.0f); ctx.set (b + 2, t.mix); ctx.set (b + 3, 0.0f);
             for (size_t k = 0; k < t.params.size(); ++k) ctx.set (b + 4 + (int) k, t.params[k].def);
-            if (type == 9) { ctx.set (fxEnvSusId (g), 1.0f); ctx.set (fxEnvRelId (g), 0.3f); }
         }
 
         // labels / mode list of the widgets of one slot follow its effect type
@@ -685,12 +690,11 @@ namespace njo
             c.removeFromBottom (6);
             if (ty == 15) { shEd->setBounds (c); shEd->setSlot (g, slotBase (g)); shEd->setVisible (true); }
             else { display.setVisible (true); display.setBounds (c); }
-            int n = 1 + (int) t.params.size() + (ty == 9 ? 2 : 0), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
+            int n = 1 + (int) t.params.size(), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
             int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
             auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
             put (*mixK[g], 0);
             for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
-            if (ty == 9) { put (*envS[g], (int) t.params.size() + 1); put (*envR[g], (int) t.params.size() + 2); }   // ADSR: Env Amt / Attack / Decay are P4..P6
             // controls that do nothing right now are dimmed: the rate / time follows the sync division, the gate knobs only matter for their modes
             const int md = juce::roundToInt (ctx.get (slotBase (g) + 3)), sy = juce::roundToInt (ctx.get (fxSyncId (g)));
             for (int k = 0; k < 6; ++k) pK[g][k]->setAlpha (1.0f);
@@ -698,8 +702,7 @@ namespace njo
             if (ty == 9)
             {
                 const float ea = std::abs (ctx.get (slotBase (g) + 7) - 0.5f) < 0.004f ? 0.35f : 1.0f;   // Env Amt in the middle = no envelope
-                for (int k = 4; k < 6; ++k) pK[g][k]->setAlpha (ea);
-                envS[g]->setAlpha (ea); envR[g]->setAlpha (ea);
+                pK[g][4]->setAlpha (ea);   // Env Src only matters with an Env Amt
             }
             if (ty == 7)
             {

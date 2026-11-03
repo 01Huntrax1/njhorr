@@ -3148,6 +3148,7 @@ processor Eisenpuls_Synth
     int[32]       fxEnvSt;
     int[32]       fxEnvSeen;
     float[32]     fxEnvGc;
+    float[32]     fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
     int[32]       fxEnvCt;
     int           fxNoteSeq = 0;   // counts accepted note-ons
     bool          fxHeld = false;  // any note is held (not yet released)
@@ -7127,6 +7128,8 @@ processor Eisenpuls_Synth
         for (int i = 0; i < 40; ++i)
             fxF.at (s * 40 + i) = 0.0f;
 
+        fxFcS.at (s) = 0.0f;   // FX-FENV2
+
         for (int i = 0; i < 24; ++i)
             fxI.at (s * 24 + i) = 0;
 
@@ -7411,13 +7414,10 @@ processor Eisenpuls_Synth
             fxD.at (db + 3) = fc;
             fxD.at (db + 4) = 1.0f + 8.0f * p3;
 
-            // FX-FENV: envelope on the cutoff: amount (+-1 = +-7 octaves), attack / decay / release coefficients, sustain
-            float p6 = clamp (fxP.at (pb + 5), 0.0f, 1.0f);
+            // FX-FENV2: envelope amount (+-1 = +-7 octaves), the modulation envelope that supplies the times (0..9), key tracking amount
             fxD.at (db + 5) = (p4 - 0.5f) * 2.0f;
-            fxD.at (db + 6) = 1.0f - float (exp (-2.2 / float64 (fxExpMap (p5, 1.0f, 5000.0f) * 0.001f * sr)));
-            fxD.at (db + 7) = 1.0f - float (exp (-4.6 / float64 (fxExpMap (p6, 5.0f, 5000.0f) * 0.001f * sr)));
-            fxD.at (db + 8) = clamp (fxEnvSus.at (s), 0.0f, 1.0f);
-            fxD.at (db + 9) = 1.0f - float (exp (-4.6 / float64 (fxExpMap (clamp (fxEnvRel.at (s), 0.0f, 1.0f), 5.0f, 5000.0f) * 0.001f * sr)));
+            fxD.at (db + 6) = float (clamp (int (p5 * 9.0f + 0.5f), 0, 9));
+            fxD.at (db + 7) = clamp (fxP.at (pb + 5), 0.0f, 1.0f);
         }
         else if (ty == 10)
         {
@@ -9444,10 +9444,13 @@ processor Eisenpuls_Synth
         fxHeld = h;
     }
 
+    // FX-FENV2: the envelope of the filter effect runs like the modulation envelope e (same times, sustain and curves)
     float fxEnvStep (int s, int db)
     {
         int   st = fxEnvSt.at (s);
         float lv = fxEnvLv.at (s);
+        int   e  = clamp (int (fxD.at (db + 6) + 0.5f), 0, 9);
+        float dt = float (processor.period);
 
         if (fxEnvSeen.at (s) != fxNoteSeq)
         {
@@ -9465,11 +9468,9 @@ processor Eisenpuls_Synth
         else if (st >= 1 && st <= 3)
             st = 4;
 
-        float sus = fxD.at (db + 8);
-
         if (st == 1)
         {
-            lv += (1.25f - lv) * fxD.at (db + 6);
+            lv += dt / max (mEnvA.at (e) * 0.001f, 0.0005f);
 
             if (lv >= 1.0f)
             {
@@ -9479,12 +9480,13 @@ processor Eisenpuls_Synth
         }
         else if (st == 2 || st == 3)
         {
-            lv += (sus - lv) * fxD.at (db + 7);
+            float sus = mEnvS.at (e);
+            lv += (sus - lv) * clamp (dt * 5.0f / (max (mEnvD.at (e), 1.0f) * 0.001f), 0.0f, 0.99f);
             st = abs (lv - sus) < 0.0005f ? 3 : 2;
         }
         else if (st == 4)
         {
-            lv -= lv * fxD.at (db + 9);
+            lv -= lv * clamp (dt * 5.0f / (max (mEnvR.at (e), 1.0f) * 0.001f), 0.0f, 0.99f);
 
             if (lv < 0.0001f)
             {
@@ -9519,11 +9521,31 @@ processor Eisenpuls_Synth
         float res = fxD.at (db + 2);
         float fc  = fxD.at (db + 3);
         float eAmt = fxD.at (db + 5);
+        float kt   = fxD.at (db + 7);
 
-        if (abs (eAmt) > 0.001f)   // FX-FENV
+        // FX-FENV2: key tracking and cutoff smoothing, then the envelope
+        float sr   = float (processor.frequency);
+        float fcT  = kt > 0.001f ? clamp (fc * float (pow (2.0f, lastKeyV * 4.0f * kt)), 20.0f, sr * 0.45f) : fc;
+        float fcS  = fxFcS.at (s);
+        bool  mv   = false;
+
+        if (fcS < 1.0f)
+            fcS = fcT;
+
+        if (abs (fcT - fcS) > fcT * 0.0003f)
         {
-            float lv = fxEnvStep (s, db);
-            fc = clamp (fc * float (exp (float64 (eAmt * lv * 7.0f) * 0.6931471805599453)), 20.0f, float (processor.frequency) * 0.45f);
+            fcS += (fcT - fcS) * 0.004f;
+            mv = true;
+        }
+        else
+            fcS = fcT;
+
+        fxFcS.at (s) = fcS;
+
+        if (abs (eAmt) > 0.001f || mv || kt > 0.001f || abs (fcS - fc) > fc * 0.0003f)
+        {
+            float lv = abs (eAmt) > 0.001f ? fxEnvStep (s, db) : 0.0f;
+            fc = clamp (fcS * float (exp (float64 (eAmt * lv * 7.0f) * 0.6931471805599453)), 20.0f, sr * 0.45f);
             int ec = fxEnvCt.at (s);
 
             if (ec <= 0)

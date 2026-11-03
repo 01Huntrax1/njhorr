@@ -2353,7 +2353,7 @@ const FX_TYPES = [
     { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral", "Chamber", "Ambience", "Dark", "Bright", "Infinite"],
       p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1], ["Low Cut", fxHz(20, 800), 0], ["High Cut", fxHz(1500, 20000), 1]] },
     { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
-      p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0], ["Env Amt", fxLin(-100, 100, 0, "%"), 0.5], ["Attack", fxMs(1, 5000), 0.1], ["Decay", fxMs(5, 5000), 0.5]] },
+      p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0], ["Env Amt", fxLin(-100, 100, 0, "%"), 0.5], ["Env Src", fxLin(1, 10, 0, ""), 0], ["Key Track", fxPct, 0]] },   // the envelope takes its times from a modulation envelope (ENV 1-10)
     { n: "EQ", mix: 1, modes: ["Classic", "Tilt", "Loudness", "Presence"],
       p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5], ["High Freq", fxHz(4000, 16000), 0.5]] },
     { n: "Compressor", mix: 1, modes: ["Peak", "RMS", "Limiter", "Expander", "Gate"],
