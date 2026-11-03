@@ -952,5 +952,69 @@ check("Spectral: loading another sample clears the analysis cache (1 kHz -> 3 kH
 mm = render(["smp 0 sweep", P(0, "type", 11), P(0, "level", 0.8), FOFF(0), SPp(0, "spos", 0.0)] + MM(0, 1, L.spdst(0, 1), 1.0) + CONST1, note=45, hold=0.8, tail=0.2, tag="spm_mod")[:int(1.05 * RATE) - 64, 0]
 check("Mod destination 'Spectral Position' of OSC 1 moves the frame", centroid(win(mm, 0.2, 0.7)) > 2 * k0, "%.0f vs %.0f Hz" % (centroid(win(mm, 0.2, 0.7)), k0))
 
+
+# ---------------------------------------------------------------- SoundFont source (type 12): ids SF_BASE + 16 * slot + j, mod destinations 1212 + ...
+def SFp(o, key, v):
+    for q in L.SF:
+        if q[1] == key: return (L.sf_id(o, q[0]), v)
+    return P(o, key, v)
+SFR = 52325.0   # 200 samples per cycle of a C4 (261.6256 Hz) at this sample rate, 100 samples at C5
+def sf_zone(lo=0, hi=127, vlo=0, vhi=127, start=0, n=0, ls=0, le=0, mode=0, root=60, tune=0, rate=SFR, att=0, pan=0, a=1, h=0, d=100, sus=0, r=300, scale=100):
+    return [lo, hi, vlo, vhi, start, n, ls, le, mode, root, tune, rate, att, pan, a, h, d, sus, r, scale]
+def sf_pack(zones, audio, tag):
+    hdr = np.zeros(L.SF_HDR, dtype=np.float32); hdr[0] = 12345; hdr[1] = len(zones)
+    for i, z in enumerate(zones): hdr[8 + i * L.SF_ZF:8 + (i + 1) * L.SF_ZF] = z
+    path = os.path.join(TMP, tag + ".sf.f32"); np.concatenate([hdr, np.asarray(audio, dtype=np.float32)]).tofile(path); return path
+def cyc(shape, n=200, cycles=24):
+    ph = (np.arange(n * cycles) % n) / n
+    return 0.8 * (np.sin(2 * np.pi * ph) if shape == "sine" else np.sign(np.sin(2 * np.pi * ph)) if shape == "square" else 2 * ph - 1)
+def sfr(path, extra=(), note=60, tag="sfx", hold=0.8, tail=0.3, vel=100, ch=0, pre=()):
+    cmds = ["sf 0 " + path if path else "sf 0 clear"] + [P(0, "type", 12), P(0, "level", 0.8), FOFF(0)] + list(pre) + [SFp(0, k, v) for k, v in extra]
+    return render(cmds, note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:int((0.05 + hold + tail) * RATE) - 64, ch]
+sine = cyc("sine"); sq = cyc("square", 100, 48)
+pA = sf_pack([sf_zone(0, 59, n=len(sine), ls=400, le=len(sine) - 400, mode=1, root=60), sf_zone(60, 127, start=len(sine), n=len(sq), ls=200, le=len(sq) - 200, mode=1, root=72)], np.concatenate([sine, sq]), "sfA")
+f0s = {}
+errs = []
+for note, ref in ((48, 130.8128), (59, 246.9417), (60, 261.6256), (72, 523.2511), (84, 1046.502)):
+    x = sfr(pA, note=note, tag="sfp"); f0s[note] = x
+    errs.append(1200 * math.log2(peak_freq(win(x, 0.2, 0.7)) / ref))
+check("SoundFont plays zones at the key pitch (five keys within 5 cents)", max(abs(e) for e in errs) < 5, "%s cents" % ["%.1f" % e for e in errs])
+x59, x60 = win(f0s[59], 0.2, 0.7), win(f0s[60], 0.2, 0.7)
+check("SoundFont key ranges pick the zone (C3-B3 sine, C4 up square)", band(x59, 700, 5000) < 0.05 * band(x59, 200, 300) and band(x60, 700, 1000) > 0.15 * band(x60, 230, 300), "%.3f / %.3f" % (band(x59, 700, 5000) / band(x59, 200, 300), band(x60, 700, 1000) / band(x60, 230, 300)))
+check("SoundFont loops keep the note sounding (0.2 s sample held for 2 s)", rms(win(sfr(pA, tag="sfl", hold=2.0), 1.6, 1.9)) > 0.7 * rms(win(f0s[60], 0.2, 0.5)))
+pN = sf_pack([sf_zone(n=len(sine), mode=0)], sine, "sfN")
+xn = sfr(pN, tag="sfn", hold=1.0)
+check("SoundFont without a loop plays the sample once (0.1 s sample)", rms(win(xn, 0.06, 0.12)) > 0.05 and rms(win(xn, 0.4, 0.9)) < 0.01 * rms(win(xn, 0.06, 0.12)), "%.4f -> %.5f" % (rms(win(xn, 0.06, 0.12)), rms(win(xn, 0.4, 0.9))))
+pV = sf_pack([sf_zone(vlo=0, vhi=63, n=len(sine), ls=400, le=len(sine) - 400, mode=1), sf_zone(vlo=64, vhi=127, start=len(sine), n=len(sq), ls=200, le=len(sq) - 200, mode=1, root=72, tune=-1200 + 0)], np.concatenate([sine, sq]), "sfV")
+vq, vl = sfr(pV, tag="sfv0", vel=30), sfr(pV, tag="sfv1", vel=110)
+check("SoundFont velocity ranges pick the zone", band(win(vq, 0.2, 0.7), 700, 3000) < 0.05 * band(win(vq, 0.2, 0.7), 230, 300) and band(win(vl, 0.2, 0.7), 700, 3000) > 0.15 * band(win(vl, 0.2, 0.7), 230, 300))
+pL = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, pan=-500), sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, pan=500)], sine, "sfL")
+l0, r0 = sfr(pL, tag="sfs", ch=0), sfr(pL, tag="sfs", ch=1)
+check("SoundFont plays layers (two zones, pan -500 / +500) as one stereo sound", rms(win(l0, 0.2, 0.7)) > 0.01 and rms(win(l0, 0.2, 0.7)) > 0.0 and abs(rms(win(l0, 0.2, 0.7)) - rms(win(r0, 0.2, 0.7))) < 0.2 * rms(win(l0, 0.2, 0.7)))
+pP = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, pan=-500)], sine, "sfP")
+pl, pr = sfr(pP, tag="sfp1", ch=0), sfr(pP, tag="sfp1", ch=1)
+pl0, pr0 = sfr(pP, [("sfpan", 0.0)], tag="sfp0", ch=0), sfr(pP, [("sfpan", 0.0)], tag="sfp0", ch=1)
+check("SoundFont zone pan puts the sound left; Stereo 0 centres it", rms(win(pl, 0.2, 0.7)) > 20 * rms(win(pr, 0.2, 0.7)) and abs(rms(win(pl0, 0.2, 0.7)) - rms(win(pr0, 0.2, 0.7))) < 0.02 * rms(win(pl0, 0.2, 0.7)))
+pE = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, a=300, r=800)], sine, "sfE")
+xe = sfr(pE, tag="sfe", hold=1.0, tail=1.2)
+check("SoundFont zone envelope: attack rises over 300 ms", rms(win(xe, 0.05, 0.10)) < 0.35 * rms(win(xe, 0.5, 0.9)), "%.4f vs %.4f" % (rms(win(xe, 0.05, 0.10)), rms(win(xe, 0.5, 0.9))))
+pE2 = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, a=1, r=800)], sine, "sfE2"); pE3 = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, a=1, r=5)], sine, "sfE3")
+xr, xs = sfr(pE2, tag="sfe2", hold=1.0, tail=0.5), sfr(pE3, tag="sfe3", hold=1.0, tail=0.5)
+check("SoundFont zone release shapes the tail (800 ms vs 5 ms)", rms(win(xr, 1.10, 1.17)) > 4 * rms(win(xs, 1.10, 1.17)) + 1e-4, "%.4f vs %.4f" % (rms(win(xr, 1.10, 1.17)), rms(win(xs, 1.10, 1.17))))
+pT = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, tune=1200)], sine, "sfT"); pQ = sf_pack([sf_zone(n=len(sine), ls=400, le=len(sine) - 400, mode=1, att=60)], sine, "sfQ")
+check("SoundFont zone tuning (+1200 cents = one octave)", abs(1200 * math.log2(peak_freq(win(sfr(pT, tag="sft"), 0.2, 0.7)) / 523.2511)) < 5)
+check("SoundFont zone attenuation (60 cB = 0.5)", abs(rms(win(sfr(pQ, tag="sfq"), 0.2, 0.7)) / rms(win(sfr(pP, [("sfpan", 0.0)], tag="sfq0"), 0.2, 0.7)) - 0.5) < 0.06)
+check("SoundFont without a bank is silent", rms(sfr(None, tag="sf_none")) < 1e-4)
+check("SoundFont Loop Off plays the loop once (no sustain)", rms(win(sfr(pA, [("sfloop", 1)], tag="sflo", hold=1.0), 0.6, 0.9)) < 0.01)
+gg1, gg0 = rms(win(sfr(pP, [("sfgain", 1.0), ("sfpan", 0.0)], tag="sfg"), 0.2, 0.7)), rms(win(sfr(pP, [("sfpan", 0.0)], tag="sfg0"), 0.2, 0.7))
+check("SoundFont Gain +12 dB (the master output compresses softly)", 2.0 < gg1 / gg0 < 4.5, "%.2f" % (gg1 / gg0))
+bad = 0
+for note, vel, ex in ((0, 1, [("sfdrive", 1.0), ("sfgain", 1.0)]), (127, 127, [("sfstart", 1.0), ("sfatk", 1.0), ("sfrel", -1.0)]), (60, 127, [("sfloop", 2), ("sfsus", 1.0), ("sfdec", -1.0)])):
+    x = sfr(pA, ex, note=note, vel=vel, tag="sfxx", hold=0.4, tail=0.2)
+    if not (np.isfinite(x).all() and np.abs(x).max() < 2.5): bad += 1
+check("SoundFont: extreme notes, velocities and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+mm = render(["sf 0 " + pP, P(0, "type", 12), P(0, "level", 0.8), FOFF(0), SFp(0, "sfgain", -1.0)] + MM(0, 1, L.sfdst(0, 0), 1.0) + CONST1, note=60, hold=0.8, tail=0.2, tag="sfm")[:int(1.05 * RATE) - 64, 0]
+check("Mod destination 'SoundFont Gain' of OSC 1", rms(win(mm, 0.2, 0.7)) > 1.5 * rms(win(sfr(pP, [("sfgain", -1.0)], tag="sfm0"), 0.2, 0.7)))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

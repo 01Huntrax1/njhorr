@@ -9,6 +9,7 @@
 //                 wt <slot 0-5> <kind> [a] [b]   load a wavetable memory (kinds: sine, saw, morph = 8 frames sine->saw, saw2k, morph2k, big, clear)
 //                 fshape <freq mod 0-9> const <v> | ramp   load the 256-point curve (0..1) of a Freq modulator
 //                 tbl <bank 0-11> <kind>   load a Wavefilter (0-5) / Wavedistortion (6-11) table (kinds: clear, ones, zeros, lin)
+//                 sf <slot 0-5> <file.f32|clear>   load a SoundFont bank (raw float32: preamble, zone table, audio)
 //                 smp <slot 0-5> <kind> [hz]     load a 1 s sample (kinds: sine, saw, noise, sweep, clear)
 //                 ir <rack 0-2> <kind> [n]  load a convolution impulse response (kinds: clear, impulse n = unit pulse at sample n, burst = 0.3 s decaying noise)
 //                 moded <bank 0-17> reset | <mode 0-15> <freq> <gain> <decay>   resonator mode edits of slot*3+set (0 = Physical A, 1 = B, 2 = Resonator stage)
@@ -129,6 +130,32 @@ struct Host
             }
         }
         sendBank (wt, slot, d);
+    }
+
+    // SoundFont bank: raw little-endian float32 (preamble + zone table + audio, see layout.py SF_*)
+    void sfLoad (int slot, const std::string& file)
+    {
+        std::vector<float> d;
+        if (file != "clear")
+        {
+            FILE* f = fopen (file.c_str(), "rb");
+            if (f == nullptr) { fprintf (stderr, "cannot open %s\n", file.c_str()); return; }
+            float v;
+            while (fread (&v, 4, 1, f) == 1) d.push_back (v);
+            fclose (f);
+        }
+        int total = (int) d.size();
+        for (int off = 0; off == 0 || off < total; off += 256)
+        {
+            Eisenpuls_Synth::_Eisenpuls_Synth_BankChunk c {};
+            c.bank = slot; c.offset = off; c.total = total;
+            c.count = total - off < 256 ? (total - off > 0 ? total - off : 0) : 256;
+            for (int i = 0; i < c.count; ++i) c.data[i] = d[(size_t) off + i];
+            dsp.addEvent_sfBankLoad (c);
+            ++queued;
+            flushIfNeeded();
+            if (total == 0) break;
+        }
     }
 
     void table (int bank, const std::string& kind)
@@ -259,6 +286,7 @@ int main (int argc, char** argv)
         else if (cmd == "fshape") { int m; std::string k; float v = 0; ls >> m >> k >> v; h.freqShape (m, k, v); }
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
+        else if (cmd == "sf")  { int n; std::string f; ls >> n >> f; h.sfLoad (n, f); }
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }
         else if (cmd == "eqband") { int sl, ix, on, ty, hm = 0, hs = 0, ch = 0; float hz, db, q, hf = 0.5f; ls >> sl >> ix >> on >> ty >> hz >> db >> q >> hm >> hf >> hs >> ch; h.eqBand (sl, ix, on, ty, hz, db, q, hm, hf, hs, ch); }

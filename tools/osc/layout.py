@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral", "SoundFont"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 11, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 12, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -372,4 +372,28 @@ SP = [
 ]
 def sp_id(o, j): return SP_BASE + SP_STRIDE * o + j
 def spdst(o, j): return SP_DST_BASE + SP_STRIDE * o + j
-N_DST_TOTAL = SP_DST_BASE + SP_STRIDE * OSC_COUNT   # 1212
+SF_DST_BASE = SP_DST_BASE + SP_STRIDE * OSC_COUNT   # 1212
+# SoundFont source (tools/osc/build_sf.py): parameter j (0..9) of slot o has the id SF_BASE + 16 * o + j and the mod destination 1212 + 16 * o + j.
+# The sound memory of the slot (kind SoundFont, endpoint sfBankLoad): 8 floats of preamble + SF_MAX_ZONES * SF_ZF zone records, then the audio (SF_AUDIO samples).
+SF_BASE = 2800
+SF_STRIDE = 16
+SF_MAX_ZONES = 64
+SF_ZF = 20          # zone fields: keyLo keyHi velLo velHi start len loopS loopE loopMode root tuneCents sampleRate attenCb pan attackMs holdMs decayMs sustainCb releaseMs scaleTuning
+SF_HDR = 8 + SF_MAX_ZONES * SF_ZF     # 1288
+SF_AUDIO = 262144
+SF_BANK = SF_HDR + SF_AUDIO
+SF = [
+ (0, "sfgain",  "SoundFont Gain",        "Gain",         -1, 1, 0.0, "", "sld", None),   # +-12 dB
+ (1, "sfvel",   "SoundFont Velocity",    "Vel Sens",      0, 1, 0.5, "", "sld", None),
+ (2, "sfatk",   "SoundFont Attack",      "Attack",       -1, 1, 0.0, "", "sld", None),   # x0.25 .. x4 of the zone's attack time
+ (3, "sfdec",   "SoundFont Decay",       "Decay",        -1, 1, 0.0, "", "sld", None),
+ (4, "sfsus",   "SoundFont Sustain",     "Sustain",      -1, 1, 0.0, "", "sld", None),   # +-0.5 on the zone's sustain level
+ (5, "sfrel",   "SoundFont Release",     "Release",      -1, 1, 0.0, "", "sld", None),
+ (6, "sfloop",  "SoundFont Loop",        "Loop",          0, 2, 0, "", "btn", ["Zone", "Off", "On"]),   # Zone: as in the file; Off: play every sample once; On: loop every zone that has loop points
+ (7, "sfpan",   "SoundFont Stereo",      "Stereo",        0, 1, 1.0, "", "sld", None),   # 0 = everything in the centre, 1 = the zones' own pan
+ (8, "sfstart", "SoundFont Start",       "Start",         0, 1, 0.0, "", "sld", None),   # start offset inside every zone
+ (9, "sfdrive", "SoundFont Drive",       "Drive",         0, 1, 0.0, "", "sld", None),
+]
+def sf_id(o, j): return SF_BASE + SF_STRIDE * o + j
+def sfdst(o, j): return SF_DST_BASE + SF_STRIDE * o + j
+N_DST_TOTAL = SF_DST_BASE + SF_STRIDE * OSC_COUNT   # 1308
