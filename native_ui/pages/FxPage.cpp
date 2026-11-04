@@ -1,6 +1,7 @@
 // FX page: three racks (Bus 1, Bus 2, Main) of 10 slots, laid out like a modern synth's effect page: the list of the rack's effects on the left
 // (processing order, on / off, move, drag), "+ ADD FX" opens a grid of all effect types, and the selected effect has its own page with a display and large knobs.
 // Below: the output section. Parameters and the processing order are unchanged (patch/index.js FX rack).
+#include <complex>
 #include "../NjoPages.h"
 #include "OscDisplays.h"
 #include "EqEditor.h"
@@ -19,8 +20,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860 };
-            return juce::Colour (c[juce::jlimit (0, 17, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060 };
+            return juce::Colour (c[juce::jlimit (0, 18, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -267,6 +268,31 @@ namespace njo
                     auto p = curve ([&] (double t) { const double f = 20.0 * std::pow (1000.0, t); return (juce::jlimit (-18.0, 18.0, bell (f, f1, g1) + bell (f, f2, g2)) + 18.0) / 36.0; });
                     fill (p, 0.5); stroke (p);
                     g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    freqAxis();
+                }
+                else if (ty == 18)   // Filterbank: magnitude response of the two multimode filters
+                {
+                    using C = std::complex<double>;
+                    const double fc1 = 20.0 * std::pow (1000.0, P (0)), st = std::round ((P (5) - 0.5) * 48.0), fc2 = fc1 * std::pow (2.0, st / 12.0);
+                    const double k1 = 2.0 - 1.84 * P (1), k2 = 2.0 - 1.84 * juce::jmin (1.0, P (1) * 1.15), c = P (3);
+                    const int rt = mode % 3; const bool mir = mode >= 3;
+                    auto resp = [&] (double f, double fc, double k, double p3)
+                    {
+                        const C jw (0.0, f / fc), den = jw * jw + k * jw + 1.0;
+                        const C lp = 1.0 / den, bp = k * jw / den, hp = (jw * jw) / den;
+                        const double wl = juce::jlimit (0.0, 1.0, 1.0 - 2.0 * p3), wh = juce::jlimit (0.0, 1.0, 2.0 * p3 - 1.0), wb = 1.0 - std::abs (2.0 * p3 - 1.0);
+                        const C y = wl * lp + wb * bp + wh * hp;
+                        return y + c * (lp + hp - bp - y);
+                    };
+                    auto p = curve ([&] (double t)
+                    {
+                        const double f = 20.0 * std::pow (1000.0, t);
+                        const C a = resp (f, fc1, k1, P (2)), b = resp (f, fc2, k2, mir ? 1.0 - P (2) : P (2));
+                        const double par = 0.5 * std::abs (a + b), ser = std::abs (a * b);
+                        const double m = rt == 0 ? par : rt == 1 ? ser : 0.5 * (par + ser);
+                        return juce::jlimit (0.0, 1.0, 0.1 + 0.8 * (20.0 * std::log10 (juce::jmax (1e-4, m)) + 36.0) / 48.0);
+                    });
+                    fill (p, 0.0); stroke (p);
                     freqAxis();
                 }
                 else if (ty == 1)   // Distortion: transfer curve

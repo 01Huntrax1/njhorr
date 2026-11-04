@@ -2375,7 +2375,10 @@ const FX_TYPES = [
       p: [["Voices", fxLin(2, 8, 0, ""), 0.5], ["Detune", fxLin(0, 100, 0, "ct"), 0.25], ["Spread", fxPct, 0.7], ["Drift", fxLin(0, 12, 1, "ct"), 0.2], ["Window", fxLin(10, 60, 0, "ms"), 0.5], ["Tone", fxHz(800, 20000), 1]] },
     // Console: channel strip with transformer drive and two sweepable mid bands (mode = bandwidth, +4 = EQ before the saturation)
     { n: "Console", mix: 1, modes: ["Wide", "Medium", "Narrow", "Surgical", "Wide, EQ first", "Medium, EQ first", "Narrow, EQ first", "Surgical, EQ first"],
-      p: [["Lo-Mid Freq", fxHz(45, 3000), 0.45], ["Lo-Mid Gain", fxDb(-15, 15), 0.5], ["Hi-Mid Freq", fxHz(500, 18000), 0.55], ["Hi-Mid Gain", fxDb(-15, 15), 0.5], ["Drive", fxPct, 0.2], ["Age", fxPct, 0]] }
+      p: [["Lo-Mid Freq", fxHz(45, 3000), 0.45], ["Lo-Mid Gain", fxDb(-15, 15), 0.5], ["Hi-Mid Freq", fxHz(500, 18000), 0.55], ["Hi-Mid Gain", fxDb(-15, 15), 0.5], ["Drive", fxPct, 0.2], ["Age", fxPct, 0]] },
+    // Filterbank (after the Sherman Filterbank): two multimode filters, response LP-BP-HP, anti-mix to the notch, filter 2 tuned in semitones
+    { n: "Filterbank", mix: 1, modes: ["Parallel", "Series", "Blend", "Parallel Mirror", "Series Mirror", "Blend Mirror"],
+      p: [["Freq", fxHz(20, 20000), 0.5], ["Reso", fxPct, 0.4], ["Response", fxPct, 0.5], ["Anti-Mix", fxPct, 0], ["Drive", fxPct, 0.1], ["F2 Offset", fxLin(-24, 24, 0, "st"), 0.5]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

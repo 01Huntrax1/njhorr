@@ -453,5 +453,21 @@ check("Console Drive adds harmonics to a sine (transformer saturation)", band2(s
 check("Console Age rounds the highs", band2(c5, 9000, 20000) < band2(c4, 9000, 20000), "%.5f vs %.5f" % (band2(c5, 9000, 20000), band2(c4, 9000, 20000)))
 check("Console extreme settings finite and bounded (also EQ first)", fl(c4) and fl(c5) and fl(c6))
 
+# ---- FX-FBANK: Filterbank (type 18)
+def fbk(mode=0, p=(0.5, 0.4, 0.0, 0.0, 0.1, 0.5), tag="fb", note=45):
+    return render(["wt 0 saw"] + fx(0, 18, mode, 1.0, p), hold=1.0, tail=0.5, tag=tag, note=note)
+# P1 0.5 = 632 Hz
+fb_lp = fbk(p=(0.5, 0.4, 0.0, 0.0, 0.1, 0.5), tag="fbl"); fb_hp = fbk(p=(0.5, 0.4, 1.0, 0.0, 0.1, 0.5), tag="fbh"); fb_bp = fbk(p=(0.5, 0.4, 0.5, 0.0, 0.1, 0.5), tag="fbb")
+fb_nt = fbk(p=(0.5, 0.4, 0.5, 1.0, 0.1, 0.5), tag="fbn")
+fb_pl = fbk(0, p=(0.5, 0.4, 0.0, 0.0, 0.1, 0.5), tag="fbp"); fb_sl = fbk(1, p=(0.5, 0.4, 0.0, 0.0, 0.1, 0.5), tag="fbs")
+fb_off = fbk(1, p=(0.5, 0.4, 0.0, 0.0, 0.1, 0.75), tag="fbo")   # filter 2 +12 st
+fb_x = [fbk(m, p=(0.5, 1.0, 0.5, 0.5, 1.0, 0.1 * m), tag="fbx%d" % m) for m in range(6)]
+check("Filterbank LP removes the highs, HP removes the lows", band2(fb_lp, 4000, 20000) < 0.1 * band2(fb_lp, 100, 700) and band2(fb_hp, 100, 400) < 0.25 * band2(fb_lp, 100, 400), "%.4f/%.4f %.4f/%.4f" % (band2(fb_lp, 4000, 20000), band2(fb_lp, 100, 700), band2(fb_hp, 100, 400), band2(fb_lp, 100, 400)))
+check("Filterbank BP sits between LP and HP (less lows than LP, less highs than HP)", band2(fb_bp, 60, 300) < 0.5 * band2(fb_lp, 60, 300) and band2(fb_bp, 3000, 20000) < 0.5 * band2(fb_hp, 3000, 20000), "%.4f/%.4f %.4f/%.4f" % (band2(fb_bp, 60, 300), band2(fb_lp, 60, 300), band2(fb_bp, 3000, 20000), band2(fb_hp, 3000, 20000)))
+check("Filterbank Anti-Mix turns the band-pass into a notch (passes lows and highs)", band2(fb_nt, 3000, 12000) > 3 * band2(fb_bp, 3000, 12000) and band2(fb_nt, 80, 200) > 3 * band2(fb_bp, 80, 200), "%.4f vs %.4f" % (band2(fb_nt, 3000, 12000), band2(fb_bp, 3000, 12000)))
+check("Filterbank Series is steeper than Parallel (24 vs 12 dB)", band2(fb_sl, 3000, 20000) < 0.7 * band2(fb_pl, 3000, 20000), "%.5f vs %.5f" % (band2(fb_sl, 3000, 20000), band2(fb_pl, 3000, 20000)))
+check("Filterbank F2 Offset moves the second cutoff (series passes more highs with +12 st)", band2(fb_off, 1500, 3000) > 1.5 * band2(fb_sl, 1500, 3000), "%.5f vs %.5f" % (band2(fb_off, 1500, 3000), band2(fb_sl, 1500, 3000)))
+check("Filterbank extreme settings in all six modes stay finite and bounded", all(bool(np.all(np.isfinite(a)) and np.abs(a).max() < 2.0) for a in fb_x))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)
