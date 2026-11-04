@@ -262,6 +262,13 @@ More algorithms and parameters (`tools/fx/build_fx2.py`; all effects keep their 
 
 Tests: `python3 tools/fx/test_fx.py --host <dsp_host built from cmaj generate --target=cpp>` (the host got an `ir` command).
 
+## Unison on every source
+Every oscillator source has the **Unison** section (Voices 1-16, Detune, Blend, Width, Detune Curve, Drift). Wavetable and Alpha Juno run several voices of the oscillator itself. All other sources (Sampler, Wave Terrain, Physical, Kick, Waveguide, JP-8080, Granular, Additive, Modal Drum, Spectral, SoundFont) play once per note and then go through a detuned-copy stage (`tools/osc/build_unigen.py`, marker UNI-ALL): every copy is a two-tap crossfading delay-line pitch shifter (window about 35 ms) of the source's mono sum, with the slot's detune curve, blend, width and drift; the side signal (L - R) of a stereo source is kept. Phase Spread has no effect there, and a pitch shifter adds a little graininess compared with real oscillator voices (most audible on very low notes).
+
+## Tools
+* `tools/regen_plugin.sh` regenerates `cmajor_plugin.cpp` (Cmajor target **juce**, never `cpp`: that one lacks `createPluginFilter()` and the plugin would not link) and the native UI tables; `--check` only reports whether both are up to date.
+* `tools/fx/test_fx.py` also checks that every effect type is wired everywhere (DSP parameter range and dispatch, generated UI tables, colours) and that no type is clamped to another.
+
 ## Unison on the Alpha Juno source, Unison Drift and Phase Spread
 The Alpha Juno source now has the same **unison** as the wavetable source (Voices 1-7, Detune, Blend, Width, Detune Curve; shared parameters, so presets and modulation work the same way). Every unison voice is a complete DCO (saw + pulse + sub, band-limited); the LFO, pulse width and noise are shared. Level is kept equal to a single voice. Two new unison parameters on both sources (OSC page, Tune card):
 * **Drift**: slow random pitch wander per unison voice (a new target every 2048 samples, up to about 12 cents). On the Juno source it adds to the DCO's own analog Drift, which is now independent per voice.

@@ -469,5 +469,31 @@ check("Filterbank Series is steeper than Parallel (24 vs 12 dB)", band2(fb_sl, 3
 check("Filterbank F2 Offset moves the second cutoff (series passes more highs with +12 st)", band2(fb_off, 1500, 3000) > 1.5 * band2(fb_sl, 1500, 3000), "%.5f vs %.5f" % (band2(fb_off, 1500, 3000), band2(fb_sl, 1500, 3000)))
 check("Filterbank extreme settings in all six modes stay finite and bounded", all(bool(np.all(np.isfinite(a)) and np.abs(a).max() < 2.0) for a in fb_x))
 
+# ---- effect type list: every type is wired through the DSP, the parameter ranges, the generated UI tables and the UI colours
+import re
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+def rd(*p): return open(os.path.join(ROOT, *p), encoding="utf-8").read()
+js = rd("patch", "index.js"); cm = rd("patch", "Eisenpuls_Synth.cmajor"); gen = rd("native_ui", "NjoData.gen.cpp"); fxp = rd("native_ui", "pages", "FxPage.cpp")
+blk = js[js.index("const FX_TYPES = ["):]; blk = blk[:blk.index("\n];")]
+NT = len(re.findall(r'^    \{ n: "', blk, re.M))
+check("FX types counted in index.js", NT >= 19, "%d types incl. None" % NT)
+tm = re.findall(r'FX \d+ Type",\s*min: 0\.0, max: ([0-9.]+)', cm)
+check("DSP: all 30 FX Type parameters allow every type", len(tm) == 30 and all(float(m) == NT - 1 for m in tm), "%d params, max %s" % (len(tm), sorted(set(tm))))
+m = re.search(r'int nt = clamp \(t, 0, (\d+)\)', cm)
+check("DSP: the type clamp allows every type", bool(m) and int(m.group(1)) == NT - 1, m.group(1) if m else "not found")
+gm = re.findall(r'FX \d+ Type"\), 0\.0, ([0-9.]+),', gen)
+check("UI tables (NjoData.gen.cpp): the 30 Type specs allow every type - run gen_data.js after changing index.js", len(gm) == 30 and all(float(x) == NT - 1 for x in gm), "%d specs, max %s" % (len(gm), sorted(set(gm))))
+check("DSP: every type is dispatched", all(re.search(r'ty == %d\) +y = fx' % k, cm) for k in range(1, NT)), str([k for k in range(1, NT) if not re.search(r'ty == %d\) +y = fx' % k, cm)]))
+cl = re.search(r'static const juce::uint32 c\[\] = \{([^}]*)\}', fxp); ncol = len(re.findall(r'0x[0-9a-fA-F]+', cl.group(1))) if cl else 0
+check("UI: every type has a colour, and the colour index limit covers it", ncol >= NT and re.search(r'jlimit \(0, %d, type\)' % (ncol - 1), fxp) is not None, "%d colours" % ncol)
+outs = {}
+for k in range(1, NT):   # the Parametric EQ (13) keeps its bands in the sound memory: without bands it passes the signal, so it is left out of the comparison
+    outs[k] = render(["wt 0 saw"] + fx(0, k, 0, 1.0, (0.8,) * 6), hold=0.6, tail=0.3, tag="ty%d" % k, note=57)
+outs.pop(13, None)
+ok_fin = all(np.isfinite(a).all() for a in outs.values())
+dup = [(a, b) for a in outs for b in outs if a < b and outs[a].shape == outs[b].shape and np.allclose(outs[a], outs[b], atol=1e-7)]
+check("Every effect type can be selected and is finite", ok_fin)
+check("No two effect types render the same (a type clamped to another would)", not dup, str(dup[:5]))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

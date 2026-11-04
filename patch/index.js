@@ -3875,7 +3875,7 @@ class EisenpulsPatchView extends HTMLElement {
           </section>`;
         const tune = `<section class="card o-tune"><h2>Tune</h2>
             <div class="cgrid o-g2">${["oct", "semi", "fine", "track", "freq"].map(c).join("")}${sh("0,1", ["phase", "rphase"].map(c).join(""), "o-sub o-g2")}</div>
-            ${sh("0,4", "<div class=\"o-uh\">Unison</div>" + ["uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle"].map(c).join(""), "cgrid o-g2 o-uni")}
+            ${sh("0,1,2,3,4,5,6,7,8,9,10,11,12", "<div class=\"o-uh\">Unison</div>" + ["uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle"].map(c).join(""), "cgrid o-g2 o-uni")}
           </section>`;
         const out = `<section class="card o-out"><h2>Output</h2>
             <div class="cgrid o-g2">${["level", "pan"].map(c).join("")}</div>

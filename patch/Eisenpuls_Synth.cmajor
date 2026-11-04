@@ -10905,6 +10905,11 @@ processor Eisenpuls_Synth
     int[8]        smpLen;  // padded to a power of two (cheap index wrap)
     float[1048576] smpBuf;
 
+    // UNI-ALL: delay lines / phases of the generic unison (all sources except Wavetable and Alpha Juno)
+    float[196608] gUniBuf;
+    int[64]       gUniPos;
+    float[1024]   gUniPh;
+
     // wavetable unison (per slot, up to 7 voices)
     int[8]        uniCnt;  // padded to a power of two (cheap index wrap)
     float[128]     uniRatio;  // padded to a power of two (cheap index wrap)
@@ -14642,6 +14647,73 @@ processor Eisenpuls_Synth
         return v;
     }
 
+    // ---------------- UNI-ALL: generic unison for the other sources ----------------
+    float uniTap (int bb, int pos, float d)
+    {
+        float p  = float (pos) - d;
+        int   i  = int (floor (p));
+        float fr = p - float (i);
+        float a  = gUniBuf.at (bb + (i & 4095));
+        float b  = gUniBuf.at (bb + ((i + 1) & 4095));
+        return a + (b - a) * fr;
+    }
+
+    float<2> uniGeneric (int vi, int o, float sL, float sR, bool stereo)
+    {
+        int   vo   = vi * 6 + o;
+        int   bb   = vo * 4096;
+        int   n    = clamp (uniCnt.at (o), 1, 16);
+        float m    = stereo ? (sL + sR) * 0.5f : sL;
+        float sd   = stereo ? (sL - sR) * 0.5f : 0.0f;
+        int   pos  = gUniPos.at (vo);
+        float wnd  = clamp (0.035f * float (processor.frequency), 256.0f, 3800.0f);
+        float invW = 1.0f / wnd;
+        float udr  = clamp (opv (o, 28), 0.0f, 1.0f) * 0.007f;
+        float oL   = 0.0f;
+        float oR   = 0.0f;
+
+        gUniBuf.at (bb + pos) = m;
+
+        for (int j = 0; j < n; ++j)
+        {
+            int   si    = o * 16 + j;
+            float ratio = uniRatio.at (si) * (1.0f + udr * uniDriftRaw (vi, o, j, udr > 0.0f));
+            float v     = m;
+
+            if (abs (ratio - 1.0f) > 0.00005f)
+            {
+                int   pi2 = vo * 16 + j;
+                float phi = gUniPh.at (pi2) + (1.0f - ratio) * invW;
+                phi -= float (floor (phi));
+                gUniPh.at (pi2) = phi;
+
+                float sn = float (sin (3.14159265f * phi));
+                float w1 = sn * sn;
+                float w2 = 1.0f - w1;
+                float p2 = phi + 0.5f;
+                if (p2 >= 1.0f) p2 -= 1.0f;
+                v = uniTap (bb, pos, phi * wnd + 2.0f) * w1 + uniTap (bb, pos, p2 * wnd + 2.0f) * w2;
+            }
+
+            oL += v * uniGL.at (si);
+            oR += v * uniGR.at (si);
+        }
+
+        gUniPos.at (vo) = (pos + 1) & 4095;
+        return float<2> (oL + sd, oR - sd);
+    }
+
+    void uniGenReset (int vi, int o)
+    {
+        int vo = vi * 6 + o;
+
+        for (int k = 0; k < 4096; ++k)
+            gUniBuf.at (vo * 4096 + k) = 0.0f;
+
+        for (int j = 0; j < 16; ++j)
+            gUniPh.at (vo * 16 + j) = float (j) / 16.0f;
+    }
+
     // UNI-DSP-END
     // KICK-DSP-BEGIN
     // ---------------- Kick source (tools/kick/build_kick.py) ----------------
@@ -14865,6 +14937,7 @@ processor Eisenpuls_Synth
                     int sStart = clamp (int (opv (o, 22) * float (sLen)), 0, max (sLen - 1, 0));
                     voices.at (v).synPos.at (o) = float64 (sStart);
                     resetWtUni (v, o);
+                    uniGenReset (v, o);   // UNI-ALL
                     phyNoteOn (v, o);
                     terNoteOn (v, o);
                     kickNoteOn (v, o);
@@ -15234,6 +15307,14 @@ processor Eisenpuls_Synth
                         float<2> fw = sfStep (i, o, cf, sExp);
                         sL = fw[0];
                         sR = fw[1];
+                        stereo = true;
+                    }
+
+                    if (ty != 0 && ty != 4 && uniCnt.at (o) > 1)   // UNI-ALL: the sources without their own unison
+                    {
+                        float<2> uw = uniGeneric (i, o, sL, sR, stereo);
+                        sL = uw[0];
+                        sR = uw[1];
                         stereo = true;
                     }
 

@@ -1029,5 +1029,24 @@ check("SoundFont: extreme notes, velocities and settings stay finite and bounded
 mm = render(["sf 0 " + pP, P(0, "type", 12), P(0, "level", 0.8), FOFF(0), SFp(0, "sfgain", -1.0)] + MM(0, 1, L.sfdst(0, 0), 1.0) + CONST1, note=60, hold=0.8, tail=0.2, tag="sfm")[:int(1.05 * RATE) - 64, 0]
 check("Mod destination 'SoundFont Gain' of OSC 1", rms(win(mm, 0.2, 0.7)) > 1.5 * rms(win(sfr(pP, [("sfgain", -1.0)], tag="sfm0"), 0.2, 0.7)))
 
+# ---------------------------------------------------------------- UNI-ALL: generic unison of the other sources
+sg = ["smp 0 sine 261.6256", P(0, "type", 1), P(0, "level", 0.8), FOFF(0), P(0, "sloop", 1)]
+g1 = render(sg + [P(0, "uvox", 1)], note=60, hold=1.0, tail=0.1, tag="ug1")[:, 0]
+g5 = render(sg + [P(0, "uvox", 5), P(0, "udet", 0.5), P(0, "uwid", 1)], note=60, hold=1.0, tail=0.1, tag="ug5")
+def side(a, f0=261.6256): return band(win(a[:, 0] if a.ndim > 1 else a, 0.3, 0.9), f0 * 0.965, f0 * 0.99) + band(win(a[:, 0] if a.ndim > 1 else a, 0.3, 0.9), f0 * 1.01, f0 * 1.035)
+check("Unison on the Sampler: voices 1 leaves the sound alone", rms(win(g1, 0.3, 0.9)) > 0.05)
+check("Unison on the Sampler: 5 detuned voices put energy beside the carrier", side(g5) > 20 * side(g1) + 1e-6, "%.4f vs %.4f" % (side(g5), side(g1)))
+check("Unison on the Sampler: stereo width", float(np.abs(win(g5[:, 0], 0.3, 0.9) - win(g5[:, 1], 0.3, 0.9)).mean()) > 0.02 * rms(win(g5[:, 0], 0.3, 0.9)))
+check("Unison on the Sampler: level stays near the single voice", 0.4 < rms(win(g5[:, 0], 0.3, 0.9)) / rms(win(g1, 0.3, 0.9)) < 2.5, "%.2f" % (rms(win(g5[:, 0], 0.3, 0.9)) / rms(win(g1, 0.3, 0.9))))
+ut1 = ter([P(0, "tterr", 7)], tag="ut1"); ut5 = render(TBASE + [P(0, "tterr", 7), P(0, "uvox", 5), P(0, "udet", 0.5)], note=57, hold=0.8, tail=0.2, tag="ut5")[:, 0]
+check("Unison on Wave Terrain changes the sound and stays bounded", rms(tw(ut5) - tw(ut1)) > 0.1 * rms(tw(ut1)) and np.abs(ut5).max() < 4.0)
+# every source with 16 voices and all curves: finite and bounded
+okf = True
+for ty in range(1, 13):
+    for st in (0, 4, 5):
+        a = render([P(0, "type", ty), P(0, "level", 0.8), FOFF(0), P(0, "uvox", 16), P(0, "udet", 1.0), P(0, "udrift", 1.0), P(0, "ustyle", st), "smp 0 saw 261.6256"], note=48, hold=0.4, tail=0.1, tag="uf%d_%d" % (ty, st))
+        if not (np.isfinite(a).all() and np.abs(a).max() < 6.0): okf = False; print("   source", ty, "style", st, "peak", np.abs(a).max())
+check("Unison with 16 voices on every source stays finite and bounded", okf)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

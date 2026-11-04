@@ -698,15 +698,15 @@ namespace njo
                 const int lx = 12, rx = w - 12 - 72, cl = lx + 36, cr = rx + 36;
                 put ("oct", lx, 52, 72, 17, c);   strip ("oct", lx, 41, 72, c, true);
                 put ("semi", rx, 52, 72, 17, c);  strip ("semi", rx, 41, 72, c, true);
-                int fineTop = (wt || ph) ? 86 : (sm ? 191 : 269);
+                int fineTop = 86;   // the unison section below is the same for every source
                 knob ("fine", cl, fineTop, c);
                 put ("track", rx, fineTop + 24, 72, 18, c); strip ("track", rx, fineTop + 11, 72, c, true);
-                int phaseTop = wt ? 152 : 309;
+                int phaseTop = 152;
                 knob ("phase", cl, phaseTop, c, ! (tr || ph));
-                knob ("freq", cr, (wt || ph) ? 205 : (sm ? 250 : 330), c);   // fixed frequency (0 = Off), target of the Freq modulators
+                knob ("freq", cr, 205, c);   // fixed frequency (0 = Off), target of the Freq modulators
                 put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (tr || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (tr || ph));
 
-                const bool uni = wt || type == 4;      // the wavetable and the Alpha Juno source share the unison section
+                const bool uni = true;      // every source has unison (wavetable and Alpha Juno natively, the others through the detuned-copy stage)
                 showUnison = uni;
                 const int u0 = 12 + (w - 24) / 6, u1 = 12 + (w - 24) / 2, u2 = 12 + (w - 24) * 5 / 6;
                 knob ("udet", u0, 256, c, uni);  knob ("ublend", u1, 256, c, uni);  knob ("uwid", u2, 256, c, uni);

@@ -76,6 +76,7 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("type")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("tterr")), 5.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tterr2")), 10.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tmorph")), 0.4f);
         cx.set (njo::oscId (0, njo::oscKey ("twarp")), 0.3f); cx.set (njo::ter::terId (0, njo::ter::key ("tratio")), 3.0f); cx.set (njo::ter::terId (0, njo::ter::key ("tcx")), 0.2f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_terrain.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 1.0f); ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_sampler.png"), scale);
         // Waveguide source: the drum model and the bowed string
         cx.set (njo::oscId (0, njo::oscKey ("type")), 6.0f); cx.set (njo::wg::wgId (0, njo::wg::key ("wmodel")), 4.0f); cx.set (njo::wg::wgId (0, njo::wg::key ("wsnare")), 0.4f); cx.set (njo::wg::wgId (0, njo::wg::key ("wglide")), 0.6f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_waveguide_drum.png"), scale);
