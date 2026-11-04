@@ -2372,7 +2372,10 @@ const FX_TYPES = [
       p: [["Drive", fxLin(0, 30, 1, "dB"), 0.3], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Output", fxDb(-12, 12), 0.5], ["Tone", fxHz(500, 20000), 1], ["Low Cut", fxHz(10, 800), 0]] },
     // Unison: detuned pitch-shifted copies of the input (two-tap crossfading delay lines)
     { n: "Unison", mix: 0.5, modes: ["Classic", "Super", "Hyper", "Octaves"],
-      p: [["Voices", fxLin(2, 8, 0, ""), 0.5], ["Detune", fxLin(0, 100, 0, "ct"), 0.25], ["Spread", fxPct, 0.7], ["Drift", fxLin(0, 12, 1, "ct"), 0.2], ["Window", fxLin(10, 60, 0, "ms"), 0.5], ["Tone", fxHz(800, 20000), 1]] }
+      p: [["Voices", fxLin(2, 8, 0, ""), 0.5], ["Detune", fxLin(0, 100, 0, "ct"), 0.25], ["Spread", fxPct, 0.7], ["Drift", fxLin(0, 12, 1, "ct"), 0.2], ["Window", fxLin(10, 60, 0, "ms"), 0.5], ["Tone", fxHz(800, 20000), 1]] },
+    // Console: channel strip with transformer drive and two sweepable mid bands (mode = bandwidth, +4 = EQ before the saturation)
+    { n: "Console", mix: 1, modes: ["Wide", "Medium", "Narrow", "Surgical", "Wide, EQ first", "Medium, EQ first", "Narrow, EQ first", "Surgical, EQ first"],
+      p: [["Lo-Mid Freq", fxHz(45, 3000), 0.45], ["Lo-Mid Gain", fxDb(-15, 15), 0.5], ["Hi-Mid Freq", fxHz(500, 18000), 0.55], ["Hi-Mid Gain", fxDb(-15, 15), 0.5], ["Drive", fxPct, 0.2], ["Age", fxPct, 0]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

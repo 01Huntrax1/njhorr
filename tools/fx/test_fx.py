@@ -434,5 +434,24 @@ check("Scream amount (Drive knob) feeds the output back: a dirty peak at the cut
 check("Scream amount adds harmonics above the cutoff", band2(s1, 1500, 8000) > 2 * band2(s0, 1500, 8000), "%.4f vs %.4f" % (band2(s1, 1500, 8000), band2(s0, 1500, 8000)))
 check("Scream: Reso raises the peak as well", band2(s2, 300, 800) > 1.2 * band2(s0, 300, 800))
 
+# ---- FX-CONSOLE: Console (type 17)
+def con(mode=0, p=(0.45, 0.5, 0.55, 0.5, 0.0, 0.0), tag="c", note=45, wave="saw"):
+    return render(["wt 0 " + wave] + fx(0, 17, mode, 1.0, p), hold=1.0, tail=0.5, tag=tag, note=note)
+c0 = con(tag="c0")
+c1 = con(p=(0.45, 1.0, 0.55, 0.5, 0.0, 0.0), tag="c1")          # lo-mid +15 dB at ~370 Hz
+c2 = con(p=(0.45, 0.0, 0.55, 0.5, 0.0, 0.0), tag="c2")          # lo-mid -15 dB
+c3 = con(p=(0.45, 0.5, 0.55, 1.0, 0.0, 0.0), tag="c3")          # hi-mid +15 dB at ~2.5 kHz
+c4 = con(p=(0.45, 0.5, 0.55, 0.5, 1.0, 0.0), tag="c4")          # full drive
+c5 = con(p=(0.45, 0.5, 0.55, 0.5, 1.0, 1.0), tag="c5")          # drive + age
+c6 = con(mode=4, p=(0.45, 1.0, 0.55, 0.5, 1.0, 0.5), tag="c6")  # EQ first
+fl = lambda a: bool(np.all(np.isfinite(a)) and np.abs(a).max() < 2.0)
+check("Console: neutral settings sound and stay finite", rms(c0[int(0.7 * RATE):int(1.5 * RATE)]) > 1e-3 and fl(c0))
+check("Console Lo-Mid boost raises and cut lowers its band", band2(c1, 250, 600) > 1.5 * band2(c0, 250, 600) and band2(c2, 250, 600) < 0.6 * band2(c0, 250, 600), "%.4f %.4f %.4f" % (band2(c1, 250, 600), band2(c0, 250, 600), band2(c2, 250, 600)))
+check("Console Hi-Mid boost raises its band", band2(c3, 1800, 3500) > 1.5 * band2(c0, 1800, 3500), "%.4f vs %.4f" % (band2(c3, 1800, 3500), band2(c0, 1800, 3500)))
+sd0 = con(tag="sd0", note=57, wave="sine"); sd1 = con(p=(0.45, 0.5, 0.55, 0.5, 1.0, 0.0), tag="sd1", note=57, wave="sine")
+check("Console Drive adds harmonics to a sine (transformer saturation)", band2(sd1, 400, 8000) > 2.5 * band2(sd0, 400, 8000), "%.5f vs %.5f" % (band2(sd1, 400, 8000), band2(sd0, 400, 8000)))
+check("Console Age rounds the highs", band2(c5, 9000, 20000) < band2(c4, 9000, 20000), "%.5f vs %.5f" % (band2(c5, 9000, 20000), band2(c4, 9000, 20000)))
+check("Console extreme settings finite and bounded (also EQ first)", fl(c4) and fl(c5) and fl(c6))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

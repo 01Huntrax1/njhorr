@@ -19,8 +19,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a };
-            return juce::Colour (c[juce::jlimit (0, 16, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860 };
+            return juce::Colour (c[juce::jlimit (0, 17, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -253,6 +253,18 @@ namespace njo
                         return lo + mid + hi;
                     };
                     auto p = curve ([&] (double t) { return (juce::jlimit (-18.0, 18.0, db (20.0 * std::pow (1000.0, t))) + 18.0) / 36.0; });
+                    fill (p, 0.5); stroke (p);
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    freqAxis();
+                }
+                else if (ty == 17)   // Console: two bells (Lo-Mid / Hi-Mid)
+                {
+                    static const double qs[] = { 0.45, 1.0, 2.5, 6.0 };
+                    const double q = qs[mode & 3];
+                    const double f1 = 45.0 * std::pow (3000.0 / 45.0, P (0)), g1 = (P (1) - 0.5) * 30.0;
+                    const double f2 = 500.0 * std::pow (18000.0 / 500.0, P (2)), g2 = (P (3) - 0.5) * 30.0;
+                    auto bell = [&] (double f, double fc, double gd) { const double x = std::log2 (f / fc) * q * 1.6; return gd / (1.0 + x * x); };
+                    auto p = curve ([&] (double t) { const double f = 20.0 * std::pow (1000.0, t); return (juce::jlimit (-18.0, 18.0, bell (f, f1, g1) + bell (f, f2, g2)) + 18.0) / 36.0; });
                     fill (p, 0.5); stroke (p);
                     g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
                     freqAxis();
