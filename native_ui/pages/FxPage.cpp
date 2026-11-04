@@ -226,7 +226,7 @@ namespace njo
                     auto p = curve ([&] (double t)
                     {
                         double f = 20.0 * std::pow (1000.0, t);
-                        double db = 20.0 * std::log10 (juce::jmax (1e-5, std::abs (oscmodel::filterH (juce::jlimit (0, 29, mode), fc, res, f))));
+                        double db = 20.0 * std::log10 (juce::jmax (1e-5, std::abs (oscmodel::filterH (mode == 30 ? 1 : mode == 31 ? 2 : mode == 32 ? 1 : juce::jlimit (0, 29, mode), fc, res, f))));
                         return (juce::jlimit (-48.0, 24.0, db) + 48.0) / 72.0;
                     });
                     fill (p, 0.0); stroke (p);

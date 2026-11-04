@@ -257,6 +257,8 @@ const FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP1
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"];
 const FILTER_GROUPS = [[0, "Basic"], [4, "6 / 18 dB"], [8, "24 dB / Notch"], [12, "Peak / Shelf / Allpass"], [16, "Ladder / Dirty"], [20, "Comb / Phaser / Vowel"], [24, "MG Low"], [28, "Flange"]];
 const TBL_FL = 512, TBL_MAX_FR = 64;   // Wavefilter / Wavedistortion tables
+const FX_FILTER_TYPES = FILTER_TYPES.concat(["Korg35 LP", "Korg35 HP", "Scream"]);   // the Filter effect has three more types than the oscillator filter
+const FX_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Korg / Scream"]]);
 const OSC_FILTER_TYPES = FILTER_TYPES.concat(["Wavefilter"]);
 const OSC_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Table"]]);
 // LFO sync divisions, in the order of the DSP table
@@ -2352,7 +2354,7 @@ const FX_TYPES = [
       p: [["Rate", fxHz(0.1, 20), fxExpN(5, 0.1, 20)], ["Depth", fxPct, 0.7], ["Stereo", fxPct, 0], ["Pattern", fxPat, 1.5 / 24], ["Smooth", fxMs(0.3, 40), 0.3], ["Swing", fxPctOf(0.5), 0]] },
     { n: "Reverb", mix: 0.3, modes: ["Hall", "Room", "Plate", "Cathedral", "Chamber", "Ambience", "Dark", "Bright", "Infinite"],
       p: [["Size", fxPct, 0.5], ["Damp", fxPct, 0.5], ["PreDly", n => Math.round(n * 100) + " ms", 0.2], ["Width", fxPct, 1], ["Low Cut", fxHz(20, 800), 0], ["High Cut", fxHz(1500, 20000), 1]] },
-    { n: "Filter", mix: 1, modes: FILTER_TYPES, groups: FILTER_GROUPS,
+    { n: "Filter", mix: 1, modes: FX_FILTER_TYPES, groups: FX_FILTER_GROUPS,
       p: [["Cutoff", fxHz(20, 20000), 0.67], ["Reso", fxPct, 0.2], ["Drive", fxPct, 0], ["Env Amt", fxLin(-100, 100, 0, "%"), 0.5], ["Env Src", fxLin(1, 10, 0, ""), 0], ["Key Track", fxPct, 0]] },   // the envelope takes its times from a modulation envelope (ENV 1-10)
     { n: "EQ", mix: 1, modes: ["Classic", "Tilt", "Loudness", "Presence"],
       p: [["Low", fxDb(-12, 12), 0.5], ["Mid", fxDb(-12, 12), 0.5], ["Mid Freq", fxHz(200, 5000), 0.5], ["High", fxDb(-12, 12), 0.5], ["Mid Q", n => "Q " + fxExp(0.3, 4)(n).toFixed(2), 0.5], ["High Freq", fxHz(4000, 16000), 0.5]] },
@@ -2559,7 +2561,7 @@ const SPECS = (() => {
             L.push([b,     n + " Type", 0, 16, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-            L.push([b + 3, n + " Mode", 0, 29, 0, "", "sel", FILTER_TYPES, 1, "Mode"]);
+            L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
             for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
         }
         for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);

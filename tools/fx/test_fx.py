@@ -409,5 +409,28 @@ ot = uni(3, (0.5, 0.1, 0.5, 0.0, 0.5, 0.0), "u_ot")
 check("Tone low-pass damps the octave above", band(ot, 870, 890) < 0.5 * band(oc, 870, 890))
 check("Unison mix 0 equals dry", np.allclose(uni(0, mix=0.0, tag="u_m0"), udry, atol=1e-5))
 
+
+# ---- FX-KORG: Korg35 LP / HP and Scream (Filter effect modes 30..32)
+def kf(mode, cut, res, drive=0.0, tag="k", note=45, wave="saw"):
+    return render(["wt 0 " + wave] + fx(0, 9, mode, 1.0, (cut, res, drive, 0.5, 0.0, 0.0)), hold=1.0, tail=0.5, tag=tag, note=note)
+def band2(a, f0, f1, t0=0.7, t1=1.5):
+    x = a[int(t0 * RATE):int(t1 * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(x * np.hanning(len(x)))) ** 2; f = np.fft.rfftfreq(len(x), 1.0 / RATE)
+    return float(np.sqrt(X[(f >= f0) & (f < f1)].sum() / len(x)))
+kdry = kf(1, 1.0, 0.0, tag="kdry")     # LP12 fully open = (almost) the dry saw
+ok = True; worst = 0.0
+for mode in (30, 31, 32):
+    for cut, res, drv in [(0.0, 0.0, 0.0), (0.5, 1.0, 1.0), (1.0, 1.0, 0.0), (0.3, 0.9, 0.5), (0.7, 1.0, 1.0)]:
+        a = kf(mode, cut, res, drv, "k%d" % mode); ok = ok and bool(np.isfinite(a).all()); worst = max(worst, float(np.abs(a).max()))
+check("Korg35 / Scream: extreme settings stay finite and bounded", ok and worst < 4.0, "peak %.2f" % worst)
+lp = kf(30, 0.39, 0.1, tag="klp")
+check("Korg35 LP removes the highs of a saw (cutoff 300 Hz)", band2(lp, 2000, 20000) < 0.05 * band2(kdry, 2000, 20000) and band2(lp, 80, 300) > 0.2 * band2(kdry, 80, 300), "%.5f vs %.5f" % (band2(lp, 2000, 20000), band2(kdry, 2000, 20000)))
+hp = kf(31, 0.6, 0.1, tag="khp")
+check("Korg35 HP removes the lows of a saw (cutoff 800 Hz)", band2(hp, 80, 300) < 0.1 * band2(kdry, 80, 300) and band2(hp, 2000, 20000) > 0.3 * band2(kdry, 2000, 20000), "%.5f vs %.5f" % (band2(hp, 80, 300), band2(kdry, 80, 300)))
+r0 = kf(30, 0.45, 0.0, tag="kr0"); r9 = kf(30, 0.45, 0.9, tag="kr9")
+check("Korg35 LP: more Reso raises the peak at the cutoff", band2(r9, 300, 600) > 1.5 * band2(r0, 300, 600), "%.4f vs %.4f" % (band2(r9, 300, 600), band2(r0, 300, 600)))
+s0 = kf(32, 0.45, 0.0, 0.0, "ks0"); s1 = kf(32, 0.45, 1.0, 0.0, "ks1")
+check("Scream makes sound and its resonance adds energy at the cutoff", rms(s0[int(0.7 * RATE):int(1.5 * RATE)]) > 1e-3 and band2(s1, 300, 800) > 1.3 * band2(s0, 300, 800), "%.4f vs %.4f" % (band2(s1, 300, 800), band2(s0, 300, 800)))
+check("Scream is distorted: more harmonic energy than the Korg35 LP at the same settings", band2(s1, 1500, 8000) > 2 * band2(kf(30, 0.45, 1.0, 0.0, "kc"), 1500, 8000))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)
