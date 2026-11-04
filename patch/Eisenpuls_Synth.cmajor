@@ -9444,11 +9444,16 @@ processor Eisenpuls_Synth
 
         if (ft == 32)
         {
-            // Scream: driven input, resonance past self-oscillation, distorted low-pass + band-pass
-            float xi = softClip (x * 1.8f + 0.12f * x * x);
-            float lp = fxSatSvf (b, xi, g, res * 2.3f, 2.5f, 0);
-            float bp = fxF.at (b) * g;
-            return softClip (2.2f * (lp + 0.6f * res * bp * 4.0f)) * 0.7f;
+            // Scream (after Massive): 24 dB low-pass (saturating-resonance stage + plain 12 dB stage) with extra internal feedback of the saturated output
+            // back to the input; the Drive knob is the Scream amount (fxD db + 4 = 1 + 8 * knob), Reso is the normal resonance
+            float sc = clamp ((fxD.at (s * 16 + 4) - 1.0f) * 0.125f, 0.0f, 1.0f);
+            float yp = fxF.at (b + 4);
+            float fb = softClip (yp * 2.0f + 0.25f * yp * yp);   // FX-SCREAM: asymmetric saturation of the fed-back output
+            float u  = softClip (x * (1.0f + 0.6f * sc) - sc * 3.0f * fb);
+            float y1 = fxSatSvf (b, u, g, res * 1.5f, 1.4f, 0);
+            float y2 = fxSvfStage (b + 2, y1, g, 1.2f, 0);
+            fxF.at (b + 4) = y2;
+            return y2 * (1.0f + 0.3f * sc);
         }
 
         // 23: vowel / formant filter, cutoff sweeps A-E-I-O-U
@@ -9547,7 +9552,7 @@ processor Eisenpuls_Synth
         float inL = x[0];
         float inR = x[1];
 
-        if (gd > 1.01f)
+        if (gd > 1.01f && ft != 32)   // FX-SCREAM: in Scream mode Drive is the Scream (feedback) amount
         {
             inL = softClip (inL * gd);
             inR = softClip (inR * gd);

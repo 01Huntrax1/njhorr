@@ -621,6 +621,8 @@ namespace njo
             auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, ctx.fxSlotTypes()[g])];
             if (auto* s = dynamic_cast<SelectWidget*> (modeS[g].get())) s->setOptions (t.modes, t.groups);
             for (int k = 0; k < 6; ++k) if (k < (int) t.params.size()) pK[g][k]->setLabelOverride (t.params[(size_t) k].name);
+            if (ctx.fxSlotTypes()[g] == 9 && juce::roundToInt (ctx.get (slotBase (g) + 3)) == 32)
+                pK[g][2]->setLabelOverride ("Scream");   // Drive knob = Scream amount
         }
 
         void paramChanged (int num, float) override
@@ -629,6 +631,7 @@ namespace njo
             auto loc = fxLocate (num);
             if (! loc.valid) return;
             if (loc.ord >= 0) { applyOrder (loc.rk); return; }
+            if (loc.off == 3) refreshSlot (loc.g);
             if (loc.off == 3 && loc.rk == current) { layoutCentre(); owner.repaint(); }
             if (loc.off == 0)
             {
