@@ -142,14 +142,22 @@ namespace njo
         struct Chooser : public juce::Component
         {
             explicit Chooser (Impl& i) : im (i) {}
-            Impl& im; int over = -1;
-            static constexpr int cols = 3, bw = 190, bh = 40, gap = 14;
+            Impl& im; int over = -1; int scroll = 0;
+            static constexpr int cols = 3, bw = 190, bh = 40, gap = 14, headH = 54;
+            int contentH() const { int n = (int) fxTypes().size() - 1, rows = (n + cols - 1) / cols; return rows * bh + (rows - 1) * gap + 16; }
+            int maxScroll() const { return juce::jmax (0, contentH() - (getHeight() - headH)); }
             juce::Rectangle<int> cell (int i) const
             {
                 int n = (int) fxTypes().size() - 1, rows = (n + cols - 1) / cols;
                 int totalW = cols * bw + (cols - 1) * gap, totalH = rows * bh + (rows - 1) * gap;
-                int x0 = (getWidth() - totalW) / 2, y0 = 54 + juce::jmax (0, (getHeight() - 54 - totalH) / 2 - 10);
+                int x0 = (getWidth() - totalW) / 2, y0 = headH + juce::jmax (0, (getHeight() - headH - totalH) / 2 - 10) - scroll;
                 return { x0 + (i % cols) * (bw + gap), y0 + (i / cols) * (bh + gap), bw, bh };
+            }
+            void resized() override { scroll = juce::jlimit (0, maxScroll(), scroll); }
+            void mouseWheelMove (const juce::MouseEvent&, const juce::MouseWheelDetails& w) override
+            {
+                int ns = juce::jlimit (0, maxScroll(), scroll - juce::roundToInt (w.deltaY * (w.isReversed ? -1.0f : 1.0f) * 160.0f));
+                if (ns != scroll) { scroll = ns; repaint(); }
             }
             void paint (juce::Graphics& g) override
             {
@@ -158,19 +166,29 @@ namespace njo
                 g.drawText (full ? "THIS RACK IS FULL (10 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
                 g.setColour (dim); g.setFont (font (9.5f));
                 g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
+                g.saveState();
+                g.reduceClipRegion (getLocalBounds().withTrimmedTop (headH - 4));
                 for (int i = 0; i < (int) fxTypes().size() - 1; ++i)
                 {
                     auto r = cell (i).toFloat();
+                    if (r.getBottom() < headH - 4 || r.getY() > getHeight()) continue;
                     g.setColour (juce::Colour (over == i && ! full ? 0xff2a2c2f : 0xff17181a)); g.fillRoundedRectangle (r, 3.0f);
                     g.setColour (fxColour (i + 1).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
                     g.setColour (full ? dim : ink); g.setFont (font (12.0f, true));
                     g.drawText (fxTypes()[(size_t) i + 1].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);
                 }
+                g.restoreState();
+                if (maxScroll() > 0)   // scroll bar
+                {
+                    float trackH = (float) (getHeight() - headH - 8), th = juce::jmax (24.0f, trackH * (float) (getHeight() - headH) / (float) contentH());
+                    float ty = (float) headH + 4.0f + (trackH - th) * (float) scroll / (float) maxScroll();
+                    g.setColour (juce::Colours::white.withAlpha (0.18f)); g.fillRoundedRectangle ((float) getWidth() - 8.0f, ty, 4.0f, th, 2.0f);
+                }
             }
             void mouseMove (const juce::MouseEvent& e) override { int o = hit (e.getPosition()); if (o != over) { over = o; repaint(); } }
             void mouseExit (const juce::MouseEvent&) override { over = -1; repaint(); }
             void mouseUp (const juce::MouseEvent& e) override { int i = hit (e.getPosition()); if (i >= 0) im.addEffect (i + 1); }
-            int hit (juce::Point<int> p) const { for (int i = 0; i < (int) fxTypes().size() - 1; ++i) if (cell (i).contains (p)) return i; return -1; }
+            int hit (juce::Point<int> p) const { if (p.y < headH - 4) return -1; for (int i = 0; i < (int) fxTypes().size() - 1; ++i) if (cell (i).contains (p)) return i; return -1; }
         };
 
         // ---- display of the selected effect (schematic: follows the knobs, not the exact DSP) ----
