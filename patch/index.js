@@ -2564,7 +2564,7 @@ const SPECS = (() => {
     FX_RACKS.forEach(rack => {
         for (let sl = 0; sl < 10; sl++) {
             const b = rack.id + sl * 10, n = rack.name + " FX " + (sl + 1);
-            L.push([b,     n + " Type", 0, 16, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
             L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
