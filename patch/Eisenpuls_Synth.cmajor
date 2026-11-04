@@ -537,6 +537,7 @@ processor Eisenpuls_Synth
     input event float param1515 [[ name: "PD 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
 
     input event float param2  [[ name: "Voice Mode (0 Poly / 1 Mono)", min: 0.0,   max: 1.0,    init: 0.0,   step: 1.0 ]];
+    input event float param4  [[ name: "Legato (Mono: 0 Off / 1 On)", min: 0.0,   max: 1.0,    init: 1.0,   step: 1.0 ]];   // LEGATO
     input event float param3  [[ name: "Glide",                        min: 0.0,   max: 1000.0, init: 0.0,   unit: "ms" ]];
 
     // ---------------- OSCILLATORS ----------------
@@ -3090,6 +3091,7 @@ processor Eisenpuls_Synth
 
     // ---------------- STATE ----------------
     float voiceMode    = 0.0f;
+    float legatoOn     = 1.0f;   // LEGATO: in Mono mode a note played over a held one does not restart the oscillators
     float glideMs      = 0.0f;
     float ampAttack    = 2.0f;
     float ampDecay     = 500.0f;
@@ -3780,6 +3782,7 @@ processor Eisenpuls_Synth
     event param1515 (float v) { pdSet (5, 5, v * 0.01f); }
 
     event param2  (float v) { voiceMode   = v; }
+    event param4  (float v) { legatoOn    = v; }
     event param3  (float v) { glideMs     = v; }
     event param18 (float v) { ampAttack   = v; }
     event param19 (float v) { ampDecay    = v; }
@@ -14915,6 +14918,7 @@ processor Eisenpuls_Synth
             float vel      = msg.getFloatVelocity();
             float velGainV = (1.0f - velSens) + velSens * vel;
             bool  monoMode = voiceMode > 0.5f;
+            bool  legato   = monoMode && legatoOn > 0.5f;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)
 
             int v = 0;
             if (! monoMode) v = findFreeVoice();
@@ -14929,7 +14933,7 @@ processor Eisenpuls_Synth
                 voices.at (v).curFreq = target;
 
             // restart every slot on each non-legato note
-            if (! (monoMode && wasActive))
+            if (! (legato && wasActive))
             {
                 for (int o = 0; o < 6; ++o)
                 {

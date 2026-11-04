@@ -262,6 +262,9 @@ More algorithms and parameters (`tools/fx/build_fx2.py`; all effects keep their 
 
 Tests: `python3 tools/fx/test_fx.py --host <dsp_host built from cmaj generate --target=cpp>` (the host got an `ir` command).
 
+## Legato switch
+Global page, Voice card: **Legato** (On by default, parameter id 4). In Mono mode with Legato on, a note played over a held one only changes the pitch (with Glide) and does not restart the oscillators; with Legato off every note restarts them (the pitch still glides). It has no effect in Poly mode.
+
 ## Unison on every source
 Every oscillator source has the **Unison** section (Voices 1-16, Detune, Blend, Width, Detune Curve, Drift). Wavetable and Alpha Juno run several voices of the oscillator itself. All other sources (Sampler, Wave Terrain, Physical, Kick, Waveguide, JP-8080, Granular, Additive, Modal Drum, Spectral, SoundFont) play once per note and then go through a detuned-copy stage (`tools/osc/build_unigen.py`, marker UNI-ALL): every copy is a two-tap crossfading delay-line pitch shifter (window about 35 ms) of the source's mono sum, with the slot's detune curve, blend, width and drift; the side signal (L - R) of a stereo source is kept. Phase Spread has no effect there, and a pitch shifter adds a little graininess compared with real oscillator voices (most audible on very low notes).
 

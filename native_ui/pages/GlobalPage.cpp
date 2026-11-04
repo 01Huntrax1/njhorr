@@ -10,7 +10,7 @@ namespace njo
         struct Card { const char* title; int col0, span, cols; std::vector<int> ids; juce::Rectangle<int> r; };
         explicit Impl (GlobalPage& p, Ctx& c) : owner (p), ctx (c)
         {
-            cards = { { "VOICE", 0, 2, 1, { 2, 3, 63 }, {} },
+            cards = { { "VOICE", 0, 2, 1, { 2, 4, 3, 63 }, {} },
                       { "AMP EG", 2, 3, 2, { 18, 19, 20, 21, 22 }, {} },
                       { "PITCH EG", 5, 2, 1, { 45, 46 }, {} },
                       { "OUTPUT", 7, 5, 3, { 29, 190, 36, 880, 881, 522 }, {} } };

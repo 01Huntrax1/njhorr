@@ -2503,6 +2503,7 @@ const MOD_SRC_COLOR = n => n >= 1 && n <= 10 ? "#ff6a4d" : n >= 11 && n <= 20 ? 
 const SPECS = (() => {
     const L = [
         [2,  "Voice",        0, 1, 0, "", "btn", ["Poly", "Mono"]],
+        [4,  "Legato",       0, 1, 1, "", "btn", ["Off", "On"]],
         [3,  "Glide",        0, 1000, 0, "ms", "sld"],
         [18, "Attack",       0, 2000, 2, "ms", "sld"],
         [19, "Decay",        10, 4000, 500, "ms", "sld"],
@@ -4042,7 +4043,7 @@ class EisenpulsPatchView extends HTMLElement {
 
     globalPageHTML () {
         const k = ids => ids.map(i => this.controlHTML(i, true)).join("");
-        return this.card("Voice", [2, 3, 63], "g-voice") + this.card("Amp EG", [18, 19, 20, 21, 22], "g-amp") + this.card("Pitch EG", [45, 46], "g-peg")
+        return this.card("Voice", [2, 4, 3, 63], "g-voice") + this.card("Amp EG", [18, 19, 20, 21, 22], "g-amp") + this.card("Pitch EG", [45, 46], "g-peg")
             + this.card("Output", [29, 190, 36, 880, 881, 522], "g-out");
     }
 

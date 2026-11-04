@@ -1048,5 +1048,14 @@ for ty in range(1, 13):
         if not (np.isfinite(a).all() and np.abs(a).max() < 6.0): okf = False; print("   source", ty, "style", st, "peak", np.abs(a).max())
 check("Unison with 16 voices on every source stays finite and bounded", okf)
 
+# ---------------------------------------------------------------- Legato switch (param 4): Mono, a second note over a held one
+def mono_script(leg, tag):
+    kb = ["p 2 1", "p 4 %d" % leg, "p %d 5" % L.pid(0, K["type"]), "p %d 1.0" % L.pid(0, K["level"]), "p %d 0" % L.pid(0, K["fon"]), "p %d 60" % KP(0, "kdec", 60)[0], "run 0.05"]
+    return render_script(kb + ["on 36 100", "run 0.6", "on 40 100", "run 0.3"], tag)
+lg1 = mono_script(1, "leg1"); lg0 = mono_script(0, "leg0")
+check("Legato on (default): a note played over a held one does not restart the oscillator", rms(win(lg1[:, 0], 0.66, 0.72)) < 0.3 * rms(win(lg0[:, 0], 0.66, 0.72)) + 1e-4, "%.4f vs %.4f" % (rms(win(lg1[:, 0], 0.66, 0.72)), rms(win(lg0[:, 0], 0.66, 0.72))))
+check("Legato off: every note restarts the oscillator", rms(win(lg0[:, 0], 0.66, 0.72)) > 0.02, "%.4f" % rms(win(lg0[:, 0], 0.66, 0.72)))
+check("Legato does not change the first note", np.allclose(win(lg1[:, 0], 0.1, 0.5), win(lg0[:, 0], 0.1, 0.5), atol=1e-5))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
