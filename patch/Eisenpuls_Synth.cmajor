@@ -3018,6 +3018,16 @@ processor Eisenpuls_Synth
     input event float param3108 [[ name: "Mod Env 9 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
     input event float param3109 [[ name: "Mod Env 10 Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
     input event float param3110 [[ name: "Mod Velocity Bipolar", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-BIP
+    input event float param3111 [[ name: "Mod LFO 1 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3112 [[ name: "Mod LFO 2 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3113 [[ name: "Mod LFO 3 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3114 [[ name: "Mod LFO 4 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3115 [[ name: "Mod LFO 5 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3116 [[ name: "Mod LFO 6 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3117 [[ name: "Mod LFO 7 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3118 [[ name: "Mod LFO 8 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3119 [[ name: "Mod LFO 9 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3120 [[ name: "Mod LFO 10 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param940 [[ name: "Main FX 1 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param941 [[ name: "Main FX 2 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param942 [[ name: "Main FX 3 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
@@ -3274,6 +3284,7 @@ processor Eisenpuls_Synth
     float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvR;  // padded to a power of two (cheap index wrap)
     float[16]   envMax;  // padded to a power of two (cheap index wrap)
+    float[16]   lfoUni;  // MOD-LFOBIP
     float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
     float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
@@ -5943,6 +5954,17 @@ processor Eisenpuls_Synth
     event param3108 (float v) { modBip.at (8) = v > 0.5f ? 1.0f : 0.0f; }
     event param3109 (float v) { modBip.at (9) = v > 0.5f ? 1.0f : 0.0f; }
     event param3110 (float v) { modBip.at (10) = v > 0.5f ? 1.0f : 0.0f; }
+    // MOD-LFOBIP: polarity of LFO 1-10 (state 1 = unipolar; the default 0 = bipolar matches the parameter default)
+    event param3111 (float v) { lfoUni.at (0) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3112 (float v) { lfoUni.at (1) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3113 (float v) { lfoUni.at (2) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3114 (float v) { lfoUni.at (3) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3115 (float v) { lfoUni.at (4) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3116 (float v) { lfoUni.at (5) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3117 (float v) { lfoUni.at (6) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3118 (float v) { lfoUni.at (7) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3119 (float v) { lfoUni.at (8) = v > 0.5f ? 0.0f : 1.0f; }
+    event param3120 (float v) { lfoUni.at (9) = v > 0.5f ? 0.0f : 1.0f; }
     // FX-SYNC: sync divisions of the effect slots
     event param940 (float v) { fxSync.at (0) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (0) = true; }
     event param941 (float v) { fxSync.at (1) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (1) = true; }
@@ -10500,13 +10522,19 @@ processor Eisenpuls_Synth
         return modBip.at (i) > 0.5f ? v * 2.0f - 1.0f : v;
     }
 
+    // MOD-LFOBIP: -1..1 -> 0..1 when the LFO is unipolar
+    float lfoPol (float v, int i)
+    {
+        return lfoUni.at (i) > 0.5f ? v * 0.5f + 0.5f : v;
+    }
+
     float srcValueVoice (int src, int vi)
     {
         if (src >= 1 && src <= 10)
         {
             if (mLfoMode.at (src - 1) > 0.5f)
-                return voices.at (vi).lfoV.at (src - 1);
-            return mLfoV.at (src - 1);
+                return lfoPol (voices.at (vi).lfoV.at (src - 1), src - 1);   // MOD-LFOBIP
+            return lfoPol (mLfoV.at (src - 1), src - 1);
         }
         if (src >= 11 && src <= 20)
             return bipMap (voices.at (vi).menv.at (src - 11), src - 11);   // MOD-BIP
@@ -10527,8 +10555,8 @@ processor Eisenpuls_Synth
         if (src >= 1 && src <= 10)
         {
             if (mLfoMode.at (src - 1) > 0.5f)
-                return voices.at (lastVoice).lfoV.at (src - 1);
-            return mLfoV.at (src - 1);
+                return lfoPol (voices.at (lastVoice).lfoV.at (src - 1), src - 1);   // MOD-LFOBIP
+            return lfoPol (mLfoV.at (src - 1), src - 1);
         }
         if (src >= 11 && src <= 20)
             return bipMap (envMax.at (src - 11), src - 11);   // MOD-BIP

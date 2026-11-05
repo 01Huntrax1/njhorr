@@ -2617,6 +2617,8 @@ const SPECS = (() => {
     // MOD-BIP: Bipolar switch of every envelope (3100 + i) and of Velocity (3110): Unipolar 0..1 / Bipolar -1..1
     for (let i = 0; i < 10; i++) L.push([3100 + i, "Env " + (i + 1) + " Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     L.push([3110, "Velocity Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Velocity Polarity", null]);
+    // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
+    for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
     L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);
     OSC_SPEC_ROWS.forEach(r => L.push(r));
@@ -4363,7 +4365,7 @@ class EisenpulsPatchView extends HTMLElement {
         for (let i = 0; i < 10; i++) {
             sets += `<div class="lfo-set" data-lfo="${i}">`
                 + `<div class="ls-top"><div class="ls-shape"><span class="lbl">Shape</span><select class="dd lfo-preset">${opts}</select></div>`
-                + `<div class="ls-mode">${this.controlHTML(882 + 5 * i)}</div><div class="ls-sync">${this.controlHTML(502 + 2 * i)}</div><div class="ls-div">${this.controlHTML(503 + 2 * i)}</div></div>`
+                + `<div class="ls-mode">${this.controlHTML(882 + 5 * i)}</div><div class="ls-sync">${this.controlHTML(502 + 2 * i)}</div><div class="ls-div">${this.controlHTML(503 + 2 * i)}</div><div class="ls-pol">${this.controlHTML(3111 + i)}</div></div>`
                 + `<div class="ls-knobs">${[248 + 2 * i, 883 + 5 * i, 884 + 5 * i, 885 + 5 * i, 886 + 5 * i].map(id => this.controlHTML(id, true)).join("")}</div>`
                 + `<div class="ls-hid">${this.controlHTML(247 + 2 * i)}</div></div>`;
         }

@@ -235,9 +235,9 @@ namespace njo
         Ctx& ctx; ModEditors& owner;
         juce::OwnedArray<SourceChip> lfoChips, envChips, miscChips;
         EnvCanvas envCv; LfoCanvas lfoCv;
-        juce::OwnedArray<ParamWidget> envKnobs, lfoKnobs, modeBtn, syncBtn, envPol;
+        juce::OwnedArray<ParamWidget> envKnobs, lfoKnobs, modeBtn, syncBtn, envPol, lfoPol;   // lfoPol: Unipolar / Bipolar of the LFOs (ids 3111 + i)
         std::unique_ptr<ParamWidget> velPol;     // Unipolar / Bipolar switches of the envelopes (ids 3100 + i) and of Velocity (3110)
-        juce::Rectangle<int> envPolLbl, velPolLbl;
+        juce::Rectangle<int> envPolLbl, velPolLbl, lfoPolLbl;
         juce::OwnedArray<MiniSelect> divSel;
         MiniSelect shape;
         struct GridButton : juce::Component
@@ -273,6 +273,7 @@ namespace njo
                 int ks[5] = { lfoRateParam (i), lfoModeParam (i) + 1, lfoModeParam (i) + 2, lfoModeParam (i) + 3, lfoModeParam (i) + 4 };
                 for (int k : ks) { auto* w = lfoKnobs.add (makeWidget (ctx, k, true).release()); w->setLook (true); owner.addChildComponent (w); }
                 auto* m = static_cast<ButtonsWidget*> (modeBtn.add (makeWidget (ctx, lfoModeParam (i), false).release())); m->setShowLabel (false); owner.addChildComponent (m);
+                auto* lp = static_cast<ButtonsWidget*> (lfoPol.add (makeWidget (ctx, 3111 + i, false).release())); lp->setShowLabel (false); owner.addChildComponent (lp);
                 auto* s = static_cast<ButtonsWidget*> (syncBtn.add (makeWidget (ctx, lfoSyncParam (i), false).release())); s->setShowLabel (false); owner.addChildComponent (s);
                 auto* d = divSel.add (new MiniSelect());
                 int dp = lfoDivParam (i);
@@ -315,6 +316,7 @@ namespace njo
             if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e) envCv.repaint();
             if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); }
             if (n == lfoSyncParam (i)) refreshAll();
+            if (n == 3111 + i) lfoCv.repaint();
         }
 
         void refreshAll() override
@@ -327,7 +329,7 @@ namespace njo
                 for (int k = 0; k < 4; ++k) envKnobs[i * 4 + k]->setVisible (i == ei);
                 envPol[i]->setVisible (i == ei);
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
-                modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li);
+                modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (i == li);
                 divSel[i]->setVisible (i == li);
                 bool sync = ctx.get (lfoSyncParam (i)) > 0.5f;
                 divSel[i]->dimmed = ! sync; divSel[i]->repaint();
@@ -354,6 +356,7 @@ namespace njo
         g.drawText ("SHAPE", impl->shapeLabel, juce::Justification::topLeft);
         g.drawText ("ENV " + juce::String (impl->ctx.selectedEnv + 1), impl->envPolLbl, juce::Justification::centredLeft);
         g.drawText ("VELOCITY", impl->velPolLbl, juce::Justification::centredLeft);
+        g.drawText ("LFO " + juce::String (impl->ctx.selectedLfo + 1), impl->lfoPolLbl, juce::Justification::centredLeft);
     }
 
     void ModEditors::resized()
@@ -398,6 +401,12 @@ namespace njo
             auto row = c.removeFromTop (ch); c.removeFromTop (4);
             for (int i = 0; i < 10; ++i) I.lfoChips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
             I.helpRect = c.removeFromBottom (12);
+            {   // polarity switch of the selected LFO under the display
+                auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
+                I.lfoPolLbl = pr.removeFromLeft (52);
+                auto pb = pr.removeFromLeft (juce::jmin (pr.getWidth(), 150));
+                for (int i = 0; i < 10; ++i) I.lfoPol[i]->setBounds (pb);
+            }
             I.lfoCv.setBounds (c.withTrimmedBottom (2));
         }
         // control column

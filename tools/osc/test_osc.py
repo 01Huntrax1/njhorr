@@ -512,6 +512,11 @@ v_b = render(only(saw=0.0) + MM(0, 21, L.phydst(0, 16), 1.0) + [(3110, 1.0)], ve
 check("Velocity Bipolar: vel 64 is about 0 instead of 0.5", rms(win(v_u, 0.2, 0.6)) > 0.01 and rms(win(v_b, 0.2, 0.6)) < 0.004, "%.4f / %.4f" % (rms(win(v_u, 0.2, 0.6)), rms(win(v_b, 0.2, 0.6))))
 v_h = render(only(saw=0.0) + MM(0, 21, L.phydst(0, 16), 1.0) + [(3110, 1.0)], vel=127, tag="bip_vh")
 check("Velocity Bipolar: vel 127 is about +1", rms(win(v_h, 0.2, 0.6)) > 0.02)
+# MOD-LFOBIP: polarity of the LFOs (3111 + i): Bipolar -1..1 (default) / Unipolar 0..1
+LC0 = [("shape", 0, "const", 0), (882, 1), (247, 6)]
+l_b = render(only(saw=0.0) + MM(0, 1, L.phydst(0, 16), 1.0) + LC0, tag="lfobip_b")
+l_u = render(only(saw=0.0) + MM(0, 1, L.phydst(0, 16), 1.0) + LC0 + [(3111, 0.0)], tag="lfobip_u")
+check("LFO Bipolar (default): a constant shape 0 gives 0 (silent), Unipolar maps it to 0.5 (opens)", rms(win(l_b, 0.3, 0.6)) < 0.003 and rms(win(l_u, 0.3, 0.6)) > 0.01, "%.4f / %.4f" % (rms(win(l_b, 0.3, 0.6)), rms(win(l_u, 0.3, 0.6))))
 # the same destination of OSC 2 does not touch OSC 1
 a2 = render(only(saw=0.0) + MM(0, 1, L.phydst(1, 16), 1.0) + CONST1, tag="mdj2")
 check("Mod destination of OSC 2 leaves OSC 1 alone", rms(seg(a2)) < 0.002)
