@@ -50,7 +50,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     ctl(1000).setValue(2, true);
     check("slot dest list covers 185 (incl. the Frequency knobs)", opts(308).length >= 186 && opts(308)[180] === "OSC 1 Frequency" && opts(308)[185] === "OSC 6 Frequency" && opts(308)[168] === "OSC 1 Wavefilter Pos" && opts(308)[179] === "OSC 6 Wavedistortion Pos" && opts(308)[6] === "OSC 1 Pitch" && opts(308)[59] === "OSC 6 Dist Drive" && opts(308)[60] === "FM A > A" && opts(308)[167] === "PD F > F");
     V.querySelector('.stab[data-page="fm"]').click();
-    check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 180 && V.querySelectorAll(".fmx-panel").length === 5 && V.querySelectorAll(".p-fm .fmx-panel").length === 3 && V.querySelectorAll(".p-rm .fmx-panel").length === 2);
+    check("FM page opens", V.getAttribute("data-page") === "fm" && V.querySelectorAll(".fmx-c").length === 216 && V.querySelectorAll(".fmx-panel").length === 6 && V.querySelectorAll(".p-fm .fmx-panel").length === 3 && V.querySelectorAll(".p-rm .fmx-panel").length === 3);
     V.querySelector('.stab[data-page="rm"]').click();
     check("RM / AM page opens", V.getAttribute("data-page") === "rm");
     V.querySelector('.stab[data-page="fm"]').click();
