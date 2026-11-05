@@ -463,6 +463,43 @@ processor Eisenpuls_Synth
     input event float param1553 [[ name: "RM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1554 [[ name: "RM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1555 [[ name: "RM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    // TZFM-DSP: through-zero FM matrix
+    input event float param2900 [[ name: "TZFM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2901 [[ name: "TZFM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2902 [[ name: "TZFM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2903 [[ name: "TZFM 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2904 [[ name: "TZFM 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2905 [[ name: "TZFM 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2906 [[ name: "TZFM 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2907 [[ name: "TZFM 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2908 [[ name: "TZFM 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2909 [[ name: "TZFM 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2910 [[ name: "TZFM 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2911 [[ name: "TZFM 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2912 [[ name: "TZFM 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2913 [[ name: "TZFM 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2914 [[ name: "TZFM 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2915 [[ name: "TZFM 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2916 [[ name: "TZFM 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2917 [[ name: "TZFM 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2918 [[ name: "TZFM 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2919 [[ name: "TZFM 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2920 [[ name: "TZFM 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2921 [[ name: "TZFM 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2922 [[ name: "TZFM 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2923 [[ name: "TZFM 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2924 [[ name: "TZFM 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2925 [[ name: "TZFM 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2926 [[ name: "TZFM 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2927 [[ name: "TZFM 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2928 [[ name: "TZFM 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2929 [[ name: "TZFM 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2930 [[ name: "TZFM 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2931 [[ name: "TZFM 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2932 [[ name: "TZFM 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2933 [[ name: "TZFM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2934 [[ name: "TZFM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param2935 [[ name: "TZFM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1560 [[ name: "AM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1561 [[ name: "AM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1562 [[ name: "AM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
@@ -3708,6 +3745,42 @@ processor Eisenpuls_Synth
     event param1553 (float v) { rmSet (5, 3, v * 0.01f); }
     event param1554 (float v) { rmSet (5, 4, v * 0.01f); }
     event param1555 (float v) { rmSet (5, 5, v * 0.01f); }
+    event param2900 (float v) { tzSet (0, 0, v * 0.01f); }
+    event param2901 (float v) { tzSet (0, 1, v * 0.01f); }
+    event param2902 (float v) { tzSet (0, 2, v * 0.01f); }
+    event param2903 (float v) { tzSet (0, 3, v * 0.01f); }
+    event param2904 (float v) { tzSet (0, 4, v * 0.01f); }
+    event param2905 (float v) { tzSet (0, 5, v * 0.01f); }
+    event param2906 (float v) { tzSet (1, 0, v * 0.01f); }
+    event param2907 (float v) { tzSet (1, 1, v * 0.01f); }
+    event param2908 (float v) { tzSet (1, 2, v * 0.01f); }
+    event param2909 (float v) { tzSet (1, 3, v * 0.01f); }
+    event param2910 (float v) { tzSet (1, 4, v * 0.01f); }
+    event param2911 (float v) { tzSet (1, 5, v * 0.01f); }
+    event param2912 (float v) { tzSet (2, 0, v * 0.01f); }
+    event param2913 (float v) { tzSet (2, 1, v * 0.01f); }
+    event param2914 (float v) { tzSet (2, 2, v * 0.01f); }
+    event param2915 (float v) { tzSet (2, 3, v * 0.01f); }
+    event param2916 (float v) { tzSet (2, 4, v * 0.01f); }
+    event param2917 (float v) { tzSet (2, 5, v * 0.01f); }
+    event param2918 (float v) { tzSet (3, 0, v * 0.01f); }
+    event param2919 (float v) { tzSet (3, 1, v * 0.01f); }
+    event param2920 (float v) { tzSet (3, 2, v * 0.01f); }
+    event param2921 (float v) { tzSet (3, 3, v * 0.01f); }
+    event param2922 (float v) { tzSet (3, 4, v * 0.01f); }
+    event param2923 (float v) { tzSet (3, 5, v * 0.01f); }
+    event param2924 (float v) { tzSet (4, 0, v * 0.01f); }
+    event param2925 (float v) { tzSet (4, 1, v * 0.01f); }
+    event param2926 (float v) { tzSet (4, 2, v * 0.01f); }
+    event param2927 (float v) { tzSet (4, 3, v * 0.01f); }
+    event param2928 (float v) { tzSet (4, 4, v * 0.01f); }
+    event param2929 (float v) { tzSet (4, 5, v * 0.01f); }
+    event param2930 (float v) { tzSet (5, 0, v * 0.01f); }
+    event param2931 (float v) { tzSet (5, 1, v * 0.01f); }
+    event param2932 (float v) { tzSet (5, 2, v * 0.01f); }
+    event param2933 (float v) { tzSet (5, 3, v * 0.01f); }
+    event param2934 (float v) { tzSet (5, 4, v * 0.01f); }
+    event param2935 (float v) { tzSet (5, 5, v * 0.01f); }
     event param1560 (float v) { amSet (0, 0, v * 0.01f); }
     event param1561 (float v) { amSet (0, 1, v * 0.01f); }
     event param1562 (float v) { amSet (0, 2, v * 0.01f); }
@@ -6332,6 +6405,7 @@ processor Eisenpuls_Synth
         float64[128] wtUPh;   // wavetable unison phases: slot * 16 + unison voice
         float[32]   wtDcS;    // wavetable warp DC blocker: slot * 4 + {xL, yL, xR, yR}
         float[8]    fmPrev;   // last output of every slot (FM source)
+        float[8]    tzPh;     // through-zero FM: integrated modulator phase per slot (cycles)
         float[8]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
         float[8]    fenv;     // filter envelope level per slot
         int[8]      fstage;   // filter envelope stage per slot
@@ -10874,6 +10948,7 @@ processor Eisenpuls_Synth
     float[64]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
     float[64]     rmAmt;      // ring modulation (carrier x modulator)
     float[64]     amAmt;      // amplitude modulation (carrier x unipolar modulator)
+    float[64]     tzAmt;      // through-zero FM (TZFM-DSP)
     bool[8]       fmUsed;  // padded to a power of two (cheap index wrap)
     bool          fmAny;      // any FM / PM / PD / RM / AM amount is set
 
@@ -10945,7 +11020,7 @@ processor Eisenpuls_Synth
             bool u = false;
             for (int r = 0; r < 6; ++r)
                 if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f
-                    || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f) u = true;
+                    || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f || tzAmt.at (q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
             if (u) any = true;
         }
@@ -10974,6 +11049,12 @@ processor Eisenpuls_Synth
     void rmSet (int s, int d, float v)
     {
         rmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void tzSet (int s, int d, float v)
+    {
+        tzAmt.at (s * 6 + d) = v;
         updateFmUsed();
     }
 
@@ -14987,6 +15068,9 @@ processor Eisenpuls_Synth
 
                 for (int o = 0; o < 6; ++o)
                     voices.at (v).fmPrev.at (o) = 0.0f;
+
+                for (int tz = 0; tz < 8; ++tz)
+                    voices.at (v).tzPh.at (tz) = 0.0f;
             }
 
             voices.at (v).stage = 1;
@@ -15121,11 +15205,13 @@ processor Eisenpuls_Synth
                 float[6] fmIn;
                 float[6] pmIn;
                 float[6] pdIn;
+                float[6] tzIn;
                 for (int fd = 0; fd < (fmAny || vmodMat ? 6 : 0); ++fd)
                 {
                     float acc = 0.0f;
                     float acp = 0.0f;
                     float acd = 0.0f;
+                    float acz = 0.0f;
                     for (int fs = 0; fs < 6; ++fs)
                     {
                         int   mi = fs * 6 + fd;
@@ -15144,10 +15230,14 @@ processor Eisenpuls_Synth
                             acp += ap * voices.at (i).fmPrev.at (fs);
                         if (ad != 0.0f)
                             acd += ad * voices.at (i).fmPrev.at (fs);
+                        float az = tzAmt.at (mi);
+                        if (az != 0.0f)
+                            acz += az * voices.at (i).fmPrev.at (fs);
                     }
                     fmIn.at (fd) = acc;
                     pmIn.at (fd) = acp;
                     pdIn.at (fd) = acd;
+                    tzIn.at (fd) = acz;
                 }
 
                 // outputs of the previous sample: the modulators of the ring / amplitude modulation matrices
@@ -15185,6 +15275,21 @@ processor Eisenpuls_Synth
                         sExp += clamp (fmx, -2.0f, 2.0f) * 4.0f;   // exponential FM: +-4 octaves at full amount and full scale modulator
                     float freq  = clamp (base * float (pow (2.0f, sExp)), 1.0f, sr * 0.45f);
                     float pm    = pmIn.at (o);
+
+                    // TZFM-DSP: the modulator is integrated into a phase offset: frequency f * (1 + 4 * amount * modulator), negative values run backwards
+                    if (fmAny)
+                    {
+                        float tzv = tzIn.at (o);
+                        float tzp = voices.at (i).tzPh.at (o);
+
+                        if (tzv != 0.0f || tzp != 0.0f)
+                        {
+                            tzp += clamp (tzv, -2.0f, 2.0f) * 4.0f * freq / sr;
+                            tzp -= float (floor (tzp));
+                            voices.at (i).tzPh.at (o) = tzp;
+                            pm += tzp;
+                        }
+                    }
 
                     // phase distortion: the modulator moves the break point of a two-segment phase warp (identity at 0.5), like the Casio CZ
                     float pdv = pdIn.at (o);

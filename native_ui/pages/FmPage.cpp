@@ -9,12 +9,12 @@ namespace njo
     {
         struct Kind { const char* title; const char* sub; int base; };
         static constexpr Kind kindsFm[3] = { { "FM", "frequency modulation", FM_BASE }, { "PM", "phase modulation", PM_BASE }, { "PD", "phase distortion", PD_BASE } };
-        static constexpr Kind kindsRm[2] = { { "RM", "ring modulation", RM_BASE }, { "AM", "amplitude modulation", AM_BASE } };
+        static constexpr Kind kindsRm[3] = { { "RM", "ring modulation", RM_BASE }, { "AM", "amplitude modulation", AM_BASE }, { "TZFM", "through-zero FM", TZ_BASE } };
         const Kind* kinds; int nk;
         enum Part { None, Cell, Fb, Node };
         struct Hit { int k = -1, s = 0, d = 0; Part part = None; bool operator== (const Hit& o) const { return k == o.k && s == o.s && d == o.d && part == o.part; } };
 
-        Impl (FmPage& p, Ctx& c, int page) : kinds (page == 1 ? kindsRm : kindsFm), nk (page == 1 ? 2 : 3), owner (p), ctx (c) { ctx.addListener (this); }
+        Impl (FmPage& p, Ctx& c, int page) : kinds (page == 1 ? kindsRm : kindsFm), nk (3), owner (p), ctx (c) { ctx.addListener (this); }
         ~Impl() override { ctx.removeListener (this); }
 
         FmPage& owner; Ctx& ctx; int pageNo = 0;
@@ -26,7 +26,7 @@ namespace njo
 
         void paramChanged (int n, float) override
         {
-            if ((n >= FM_BASE && n < AM_BASE + 36) || isModSlotParam (n)) owner.repaint();
+            if ((n >= FM_BASE && n < AM_BASE + 36) || (n >= TZ_BASE && n < TZ_BASE + 36) || isModSlotParam (n)) owner.repaint();
         }
 
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }
@@ -118,9 +118,10 @@ namespace njo
             // title
             auto tr = panel[k].withHeight (20.0f);
             g.setColour (red); g.setFont (impact (14.0f));
-            g.drawText (kinds[k].title, tr.withWidth (30), juce::Justification::centredLeft);
+            const int tw = juce::String (kinds[k].title).length() > 2 ? 54 : 30;
+            g.drawText (kinds[k].title, tr.withWidth (tw), juce::Justification::centredLeft);
             g.setColour (dim); g.setFont (font (8.5f));
-            g.drawText (juce::String (kinds[k].sub).toUpperCase(), tr.withTrimmedLeft (30), juce::Justification::centredLeft);
+            g.drawText (juce::String (kinds[k].sub).toUpperCase(), tr.withTrimmedLeft (tw), juce::Justification::centredLeft);
 
             // matrix background
             auto in = inset[k];
@@ -202,7 +203,7 @@ namespace njo
         }
     };
     constexpr FmPage::Impl::Kind FmPage::Impl::kindsFm[3];
-    constexpr FmPage::Impl::Kind FmPage::Impl::kindsRm[2];
+    constexpr FmPage::Impl::Kind FmPage::Impl::kindsRm[3];
 
     static void refreshHover (FmPage& p, FmPage::Impl& i, juce::Point<float> pos)
     {
@@ -331,11 +332,11 @@ namespace njo
     {
         paintCard (g, getLocalBounds().toFloat());
         g.setColour (red); g.fillRect (juce::Rectangle<float> (12, 13, 7, 7));
-        g.setFont (impact (11.0f)); g.drawText (impl->pageNo == 1 ? "RING / AMPLITUDE MODULATION MATRIX" : "FM / PM / PD MATRIX", 24, 8, 320, 16, juce::Justification::centredLeft);
+        g.setFont (impact (11.0f)); g.drawText (impl->pageNo == 1 ? "RING / AMPLITUDE / THROUGH-ZERO FM MATRIX" : "FM / PM / PD MATRIX", 24, 8, 320, 16, juce::Justification::centredLeft);
         g.setColour (dim); g.setFont (font (8.0f));
         g.drawText (impl->pageNo == 1
-                        ? "The letter in a row modulates the letter in the column it meets. RM = ring modulation (carrier x modulator), AM = amplitude modulation (carrier x 0..1 modulator). "
-                          "0 = off, 100 = 100%. Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self modulation. Click a letter to open that oscillator."
+                        ? "The letter in a row modulates the letter in the column it meets. RM = ring modulation (carrier x modulator), AM = amplitude modulation (carrier x 0..1 modulator), TZFM = through-zero FM. "
+                          "0 = off, 100 = 100%. Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self mod. Click a letter to open that oscillator."
                         : "The letter in a row modulates the letter in the column it meets. FM = carrier pitch (+-4 octaves at 100%), PM = phase shift, PD = phase distortion. 0 = off, 100 = 100%. "
                           "Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self feedback. Click a letter to open that oscillator.",
                     impl->noteRect.toNearestInt(), juce::Justification::centredLeft, 2);

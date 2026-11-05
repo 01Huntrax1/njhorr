@@ -262,6 +262,9 @@ More algorithms and parameters (`tools/fx/build_fx2.py`; all effects keep their 
 
 Tests: `python3 tools/fx/test_fx.py --host <dsp_host built from cmaj generate --target=cpp>` (the host got an `ir` command).
 
+## Through-zero FM matrix (TZFM)
+A fourth modulation matrix next to FM, PM, PD, RM and AM: on the RM / AM page, third panel (parameter ids 2900 + 6 * modulator + carrier, 0-100 %, `tools/osc/build_tzfm.py`). It is linear FM with a signed frequency: the modulator is integrated into a phase offset, so the carrier's frequency is f * (1 + 4 * amount * modulator) and runs backwards through zero when that factor is negative (the exponential FM matrix cannot do that). Because the modulator is integrated, a DC offset detunes the carrier. Like PM and PD it only reaches sources with a phase input (Wavetable, Sampler, Wave Terrain, Alpha Juno, Kick, JP-8080); the cells are not modulation matrix destinations.
+
 ## Legato switch
 Global page, Voice card: **Legato** (On by default, parameter id 4). In Mono mode with Legato on, a note played over a held one only changes the pitch (with Glide) and does not restart the oscillators; with Legato off every note restarts them (the pitch still glides). It has no effect in Poly mode.
 

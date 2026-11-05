@@ -1057,5 +1057,17 @@ check("Legato on (default): a note played over a held one does not restart the o
 check("Legato off: every note restarts the oscillator", rms(win(lg0[:, 0], 0.66, 0.72)) > 0.02, "%.4f" % rms(win(lg0[:, 0], 0.66, 0.72)))
 check("Legato does not change the first note", np.allclose(win(lg1[:, 0], 0.1, 0.5), win(lg0[:, 0], 0.1, 0.5), atol=1e-5))
 
+# ---------------------------------------------------------------- Through-zero FM matrix (ids 2900 + 6 * modulator + carrier)
+tzb = ["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), P(0, "sloop", 1), P(1, "sloop", 1)]
+tz0 = render(tzb, note=60, hold=0.6, tail=0.05, tag="tz0")[:, 0]
+tz1 = render(tzb + [(2901, 25)], note=60, hold=0.6, tail=0.05, tag="tz1")[:, 0]
+tz2 = render(tzb + [(2901, 100), (2900, 100)], note=60, hold=0.6, tail=0.05, tag="tz2")[:, 0]
+tz3 = render(tzb + [(2905, 100), (2906, 100)], note=60, hold=0.6, tail=0.05, tag="tz3")[:, 0]
+check("TZFM: off, the carrier is (nearly) a sine; the 25% modulator adds much more harmonic energy", band(seg(tz0), 500, 6000) < 0.08 * band(seg(tz0), 240, 290) and band(seg(tz1), 500, 6000) > 5 * band(seg(tz0), 500, 6000), "%.1f -> %.1f" % (band(seg(tz0), 500, 6000), band(seg(tz1), 500, 6000)))
+check("TZFM: a 1:1 sine modulator at 25% adds harmonics of the carrier", band(seg(tz1), 500, 6000) > 0.2 * band(seg(tz1), 240, 290), "%.4f vs %.4f" % (band(seg(tz1), 500, 6000), band(seg(tz1), 240, 290)))
+check("TZFM: the sideband series stays harmonic (energy at multiples of the pitch, little in between)", band(seg(tz1), 255 * 2 - 10, 255 * 2 + 40) > 3 * band(seg(tz1), 390, 500))
+check("TZFM: full amount with feedback and a second matrix path stays finite and bounded", np.isfinite(tz2).all() and np.abs(tz2).max() < 2.0 and np.isfinite(tz3).all() and np.abs(tz3).max() < 2.0)
+check("TZFM: a slot that is not a modulator target is left alone", np.allclose(render(tzb + [(2900 + 6 * 1 + 0, 100)], note=60, hold=0.6, tail=0.05, tag="tz4")[:, 0], tz0, atol=1e-5))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

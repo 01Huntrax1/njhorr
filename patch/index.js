@@ -613,7 +613,7 @@ const AudioDecode = (() => {
     return { decodeNative, raw, wav, aiff, au, caf, flac };
 })();
 /*AUDIODEC-END*/
-const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560;
+const OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560, TZ_BASE = 2900;
 const OSC_K = {"type": 0, "level": 1, "pan": 2, "out": 3, "oct": 4, "semi": 5, "fine": 6, "track": 7, "phase": 8, "rphase": 9, "wpos": 10, "wsize": 11, "root": 12, "uvox": 13, "udet": 14, "ublend": 15, "uwid": 16, "ustyle": 17, "udrift": 28, "uphase": 29, "w1m": 18, "w1a": 19, "w2m": 20, "w2a": 21, "sstart": 22, "sloop": 23, "tterr": 24, "tscale": 25, "twarp": 26, "tfold": 27, "fon": 30, "ftype": 31, "fcut": 32, "fres": 33, "fdrv": 34, "fkey": 35, "feg": 36, "fvel": 37, "fatk": 38, "fdec": 39, "fsus": 40, "frel": 41, "dtype": 42, "ddrv": 43, "dmix": 44, "freq": 48, "wfpos": 46, "wdpos": 47, "wfmix": 49, "wfrange": 50, "wfwarp": 51, "wfcont": 52, "wftilt": 53, "wfspr": 54, "wflaw": 55, "dpos": 45, "rson": 56, "rsmod": 57, "rsdec": 58, "rsmat": 59, "rshit": 60, "rsinh": 61, "rstune": 62, "rsmix": 63};
 const oscId = (o, k) => OSC_BASE + OSC_STRIDE * o + (typeof k === "string" ? OSC_K[k] : k);
 const fmId = (s, d) => FM_BASE + 6 * s + d;
@@ -621,6 +621,7 @@ const pmId = (s, d) => PM_BASE + 6 * s + d;
 const pdId = (s, d) => PD_BASE + 6 * s + d;
 const rmId = (s, d) => RM_BASE + 6 * s + d;
 const amId = (s, d) => AM_BASE + 6 * s + d;
+const tzId = (s, d) => TZ_BASE + 6 * s + d;   // through-zero FM matrix
 const OSC_SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral", "SoundFont"];
 const PHY_BASE = 1700, PHY_STRIDE = 32;
 const PHY_K = {"phmix": 0, "phhard": 1, "phntim": 2, "phmodA": 3, "phdecA": 4, "phmatA": 5, "phhitA": 6, "phinhA": 7, "phmodB": 8, "phdecB": 9, "phmatB": 10, "phhitB": 11, "phinhB": 12, "phtunB": 13, "phbal": 14, "phser": 15, "jsaw": 16, "jpulse": 17, "jwidth": 18, "jpwm": 19, "jpwmr": 20, "jsub": 21, "jnoise": 22, "jrange": 23, "jdrift": 24, "jcurve": 25, "jptype": 26, "jstype": 27, "jbtype": 28, "jpwms": 29, "jvib": 30};
@@ -1232,6 +1233,42 @@ const OSC_SPEC_ROWS = [
     [1515, "PD 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
     [1555, "RM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
     [1595, "AM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
+    [2900, "TZFM 1 to 1", 0, 100, 0, "", "knb", null, 1, "1→1", null],
+    [2901, "TZFM 1 to 2", 0, 100, 0, "", "knb", null, 1, "1→2", null],
+    [2902, "TZFM 1 to 3", 0, 100, 0, "", "knb", null, 1, "1→3", null],
+    [2903, "TZFM 1 to 4", 0, 100, 0, "", "knb", null, 1, "1→4", null],
+    [2904, "TZFM 1 to 5", 0, 100, 0, "", "knb", null, 1, "1→5", null],
+    [2905, "TZFM 1 to 6", 0, 100, 0, "", "knb", null, 1, "1→6", null],
+    [2906, "TZFM 2 to 1", 0, 100, 0, "", "knb", null, 1, "2→1", null],
+    [2907, "TZFM 2 to 2", 0, 100, 0, "", "knb", null, 1, "2→2", null],
+    [2908, "TZFM 2 to 3", 0, 100, 0, "", "knb", null, 1, "2→3", null],
+    [2909, "TZFM 2 to 4", 0, 100, 0, "", "knb", null, 1, "2→4", null],
+    [2910, "TZFM 2 to 5", 0, 100, 0, "", "knb", null, 1, "2→5", null],
+    [2911, "TZFM 2 to 6", 0, 100, 0, "", "knb", null, 1, "2→6", null],
+    [2912, "TZFM 3 to 1", 0, 100, 0, "", "knb", null, 1, "3→1", null],
+    [2913, "TZFM 3 to 2", 0, 100, 0, "", "knb", null, 1, "3→2", null],
+    [2914, "TZFM 3 to 3", 0, 100, 0, "", "knb", null, 1, "3→3", null],
+    [2915, "TZFM 3 to 4", 0, 100, 0, "", "knb", null, 1, "3→4", null],
+    [2916, "TZFM 3 to 5", 0, 100, 0, "", "knb", null, 1, "3→5", null],
+    [2917, "TZFM 3 to 6", 0, 100, 0, "", "knb", null, 1, "3→6", null],
+    [2918, "TZFM 4 to 1", 0, 100, 0, "", "knb", null, 1, "4→1", null],
+    [2919, "TZFM 4 to 2", 0, 100, 0, "", "knb", null, 1, "4→2", null],
+    [2920, "TZFM 4 to 3", 0, 100, 0, "", "knb", null, 1, "4→3", null],
+    [2921, "TZFM 4 to 4", 0, 100, 0, "", "knb", null, 1, "4→4", null],
+    [2922, "TZFM 4 to 5", 0, 100, 0, "", "knb", null, 1, "4→5", null],
+    [2923, "TZFM 4 to 6", 0, 100, 0, "", "knb", null, 1, "4→6", null],
+    [2924, "TZFM 5 to 1", 0, 100, 0, "", "knb", null, 1, "5→1", null],
+    [2925, "TZFM 5 to 2", 0, 100, 0, "", "knb", null, 1, "5→2", null],
+    [2926, "TZFM 5 to 3", 0, 100, 0, "", "knb", null, 1, "5→3", null],
+    [2927, "TZFM 5 to 4", 0, 100, 0, "", "knb", null, 1, "5→4", null],
+    [2928, "TZFM 5 to 5", 0, 100, 0, "", "knb", null, 1, "5→5", null],
+    [2929, "TZFM 5 to 6", 0, 100, 0, "", "knb", null, 1, "5→6", null],
+    [2930, "TZFM 6 to 1", 0, 100, 0, "", "knb", null, 1, "6→1", null],
+    [2931, "TZFM 6 to 2", 0, 100, 0, "", "knb", null, 1, "6→2", null],
+    [2932, "TZFM 6 to 3", 0, 100, 0, "", "knb", null, 1, "6→3", null],
+    [2933, "TZFM 6 to 4", 0, 100, 0, "", "knb", null, 1, "6→4", null],
+    [2934, "TZFM 6 to 5", 0, 100, 0, "", "knb", null, 1, "6→5", null],
+    [2935, "TZFM 6 to 6", 0, 100, 0, "", "knb", null, 1, "6→6", null],
     [1700, "OSC 1 Physical Noise vs Mallet", 0, 1, 0.25, "", "sld", null, 1, "Noise", null],
     [1701, "OSC 1 Physical Mallet Hardness", 0, 1, 0.6, "", "sld", null, 1, "Hardness", null],
     [1702, "OSC 1 Physical Noise Time", 2, 3000, 60, "ms", "sld", null, 1, "Noise Time", null],
@@ -2642,7 +2679,7 @@ function fmt (s, v) {
     if (fxLocate(s.num)) return fxLocate(s.num).ord !== undefined ? String(Math.round(v) + 1) : fxFmt(s, v);
     if (s.num === 880 || s.num === 881) return Math.round(v * 100) + "%";
     if (s.num === 522) return v < 1 ? "HOST" : Math.round(v) + " BPM";
-    if (s.num >= FM_BASE && s.num < AM_BASE + 36) return Math.round(v) + "%";
+    if ((s.num >= FM_BASE && s.num < AM_BASE + 36) || (s.num >= TZ_BASE && s.num < TZ_BASE + 36)) return Math.round(v) + "%";
     if (s.num >= OSC_BASE && s.num < OSC_BASE + OSC_STRIDE * OSC_N) {
         const k = (s.num - OSC_BASE) % OSC_STRIDE;
         if (k === OSC_K.pan) { const p = Math.round(v * 50); return p === 0 ? "C" : (p < 0 ? "L" + (-p) : "R" + p); }
@@ -3932,7 +3969,8 @@ class EisenpulsPatchView extends HTMLElement {
     // distortion (the modulator bends the carrier's phase, Casio CZ style). All amounts run from 0 (off) to 100 (%).
     fmxKinds () {
         return [{ key: "fm", base: FM_BASE, title: "FM", sub: "frequency modulation", page: "fm" }, { key: "pm", base: PM_BASE, title: "PM", sub: "phase modulation", page: "fm" }, { key: "pd", base: PD_BASE, title: "PD", sub: "phase distortion", page: "fm" },
-            { key: "rm", base: RM_BASE, title: "RM", sub: "ring modulation", page: "rm" }, { key: "am", base: AM_BASE, title: "AM", sub: "amplitude modulation", page: "rm" }];
+            { key: "rm", base: RM_BASE, title: "RM", sub: "ring modulation", page: "rm" }, { key: "am", base: AM_BASE, title: "AM", sub: "amplitude modulation", page: "rm" },
+            { key: "tz", base: TZ_BASE, title: "TZFM", sub: "through-zero FM", page: "rm" }];
     }
 
     fmPageHTML (page) {
@@ -3946,7 +3984,7 @@ class EisenpulsPatchView extends HTMLElement {
             }
             return `<div class="fmx-panel" data-k="${k.key}"><div class="fmx-title"><b>${k.title}</b> ${k.sub}</div><div class="fmx"><svg class="fmx-svg"></svg><div class="fmx-grid">${cells}</div></div><div class="fmx-hid">${hid}</div></div>`;
         }).join("");
-        const title = page === "rm" ? "Ring / Amplitude Modulation Matrix" : "FM / PM / PD Matrix";
+        const title = page === "rm" ? "Ring / Amplitude / Through-Zero FM Matrix" : "FM / PM / PD Matrix";
         const note = page === "rm"
             ? "The letter in a row modulates the letter in the column it meets. RM multiplies the carrier with the modulator (ring modulation: the carrier and modulator themselves disappear, sum and difference tones remain), AM multiplies it with the modulator turned into a 0..1 control (amplitude modulation / tremolo: the carrier stays). The modulators are the slots' processed outputs. Amounts run from 0 (off) to 100%. Click a dot to connect, drag a value up / down (Shift = fine), double-click to clear. A letter on the diagonal is the slot itself (a slot can modulate itself). Click a letter to open that oscillator."
             : "The letter in a row modulates the letter in the column it meets. FM changes the carrier's pitch (exponential, +-4 octaves at 100%), PM shifts its phase, PD bends its phase (phase distortion). Amounts run from 0 (off) to 100%. Click a dot to connect, drag a value up / down (Shift = fine), double-click to clear. FB is self feedback. Click a letter to open that oscillator.";
@@ -4050,7 +4088,7 @@ class EisenpulsPatchView extends HTMLElement {
     // ---------- parameter hooks ----------
     onValue (spec, v, user) {
         const n = spec.num;
-        if (n >= FM_BASE && n < AM_BASE + 36 && this._modReady) this.fmxRefresh();
+        if (((n >= FM_BASE && n < AM_BASE + 36) || (n >= TZ_BASE && n < TZ_BASE + 36)) && this._modReady) this.fmxRefresh();
         if (fxLocate(n)) this.onFxValue(spec, v, user);
         if (n >= PHY_BASE && n < PHY_BASE + PHY_STRIDE * OSC_N && this._oscReady) this.drawOsc(Math.floor((n - PHY_BASE) / PHY_STRIDE));
         if (n >= OSC_BASE && n < OSC_BASE + OSC_STRIDE * OSC_N) this.onOscValue(Math.floor((n - OSC_BASE) / OSC_STRIDE), (n - OSC_BASE) % OSC_STRIDE);
@@ -4815,7 +4853,7 @@ class EisenpulsPatchView extends HTMLElement {
         const nums = onlyNum ? [onlyNum] : Object.keys(MOD_TARGET).map(Number);
         nums.forEach(num => {
             const t = MOD_TARGET[num];
-            if (!t || (num >= FM_BASE && num < AM_BASE + 36)) return;   // matrix cells have their own marks (fmxModMarks)
+            if (!t || (num >= FM_BASE && num < AM_BASE + 36) || (num >= TZ_BASE && num < TZ_BASE + 36)) return;   // matrix cells have their own marks (fmxModMarks)
             const ctl = this.fxCtl(num);
             if (!ctl || !ctl.node) return;
             const node = ctl.node, mods = this.modsFor(t[0]).filter(m => Math.abs(m.amt) > 0.0005);
@@ -4846,7 +4884,7 @@ class EisenpulsPatchView extends HTMLElement {
             dot.style.background = MOD_SRC_COLOR(mods[0].src);
             dot.textContent = mods.length > 1 ? String(mods.length) : "";
         });
-        if (!onlyNum || (onlyNum >= FM_BASE && onlyNum < AM_BASE + 36)) this.fmxModMarks();
+        if (!onlyNum || (onlyNum >= FM_BASE && onlyNum < AM_BASE + 36) || (onlyNum >= TZ_BASE && onlyNum < TZ_BASE + 36)) this.fmxModMarks();
     }
 
     // little dots on the FM / PM / PD cells that are modulated (click = amount popup)
@@ -4885,7 +4923,7 @@ class EisenpulsPatchView extends HTMLElement {
         const pop = document.createElement("div");
         pop.className = "modpop";
         const sp0 = SPEC_BY_NUM.get(num) || {};
-        const label = (num >= FM_BASE && num < AM_BASE + 36) ? sp0.label : (sp0.short || sp0.label || "");
+        const label = ((num >= FM_BASE && num < AM_BASE + 36) || (num >= TZ_BASE && num < TZ_BASE + 36)) ? sp0.label : (sp0.short || sp0.label || "");
         pop.innerHTML = `<div class="mp-title">${label} modulation</div>` + mods.map(m => `<div class="mp-row" data-s="${m.s}"><span class="mp-src" style="background:${MOD_SRC_COLOR(m.src)}">${MOD_SRC_SHORT(m.src)}</span>`
             + `<input type="range" min="-100" max="100" step="1" value="${Math.round(m.amt * 100)}"><span class="mp-val">${Math.round(m.amt * 100)}%</span><button type="button" class="mp-x" title="Remove">&times;</button></div>`).join("");
         this.appendChild(pop);
