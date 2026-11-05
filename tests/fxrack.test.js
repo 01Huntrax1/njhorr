@@ -76,7 +76,7 @@ const ctl = (v, n) => v._controls.get("param" + n);
 
     // ---- the Filter effect offers all 30 filter types of the Filter page
     ctl(A, 561).setValue(9, true);
-    check("filter effect lists all 30 filter types", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 30);
+    check("filter effect lists the 30 filter types plus Korg35 LP / HP and Scream", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 33);
     ctl(A, 564).setValue(23, true);
     check("filter type 23 (Vowel) selectable and sent", last(pcA, "param564") === 23 && A.querySelector('.fxrow[data-g="2"] .fxmd select').selectedIndex === 23);
     ctl(A, 561).setValue(2, true);

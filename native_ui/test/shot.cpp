@@ -37,7 +37,21 @@ int main (int argc, char** argv)
     juce::File dir (argc > 1 ? argv[1] : "shots");
     dir.createDirectory();
     float scale = argc > 2 ? (float) std::atof (argv[2]) : 1.0f;
+    struct FakeVst3 : njo::Vst3Control
+    {
+        juce::String name (int slot) const override { return slot == 0 ? "Surge XT" : juce::String(); }
+        juce::String status (int) const override { return {}; }
+        juce::StringArray known (int) override { return { "Surge XT", "Vital" }; }
+        void rescan() override {}
+        void loadKnown (int, int) override {}
+        void loadFile (int, const juce::File&) override {}
+        void unload (int) override {}
+        bool hasEditor (int slot) const override { return slot == 0; }
+        void openEditor (int) override {}
+        int latencySamples (int) const override { return 64; }
+    } fakeVst3;
     njo::MockBackend be;
+    be.vst3Ctl = &fakeVst3;
     njo::EditorContent ed (be);
     ed.setBounds (0, 0, njo::BASE_W, njo::BASE_H);
     auto pump = [] { juce::MessageManager::getInstance()->runDispatchLoopUntil (50); };
@@ -92,6 +106,7 @@ int main (int argc, char** argv)
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_additive.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("type")), 8.0f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_granular.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 13.0f); ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_vst3.png"), scale);
         // Modal Drum
         cx.set (njo::oscId (0, njo::oscKey ("type")), 10.0f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsnare")), 0.6f); cx.set (njo::dk::dkId (0, njo::dk::key ("dsym")), 0.4f);
         ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("osc1_modaldrum.png"), scale);
@@ -140,7 +155,7 @@ int main (int argc, char** argv)
                 for (size_t k = 0; k < t.params.size(); ++k) cx.set (b + 4 + (int) k, t.params[k].def);
             }
         };
-        for (int t = 1; t <= 18; ++t)
+        for (int t = 1; t <= 19; ++t)
         {
             setFx (0, t); if (t == 12) cx.set (base + 3, 8.0f); pump();
             save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);

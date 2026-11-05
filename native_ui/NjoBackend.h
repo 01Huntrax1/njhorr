@@ -5,6 +5,8 @@
 
 namespace njo
 {
+    struct Vst3Control;
+
     class Backend
     {
     public:
@@ -28,6 +30,9 @@ namespace njo
 
         // ---- identity of the loaded DSP: changes whenever the patch is (re)loaded and the DSP banks start empty again ----
         virtual unsigned long long dspGeneration() { return 1; }
+
+        // ---- the VST3 host of the plugin (null when there is none: the harness, the effects plugin) ----
+        virtual Vst3Control* vst3() { return nullptr; }
 
         // ---- host info for the LCD / meters ----
         virtual float getOutputLevel() { return 0.0f; }

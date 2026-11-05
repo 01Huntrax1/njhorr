@@ -39,6 +39,10 @@
  #include "../../../native_ui/NjoPluginEditor.h"
 #endif
 
+#if NJOHRR_VST3_HOST
+ #include "NjoVst3Host.h"   // hosted VST3 instrument (OSC source "VST3") and effect (FX type "VST3")
+#endif
+
 #if CMAJ_USE_QUICKJS_WORKER
  #include "cmaj_PatchWorker_QuickJS.h"
 #else
@@ -81,6 +85,10 @@ public:
        #if NJOHRR_NATIVE_UI
         njoBridge = std::make_unique<njo::Bridge> (*patch);
        #endif
+       #if NJOHRR_VST3_HOST
+        vst3Host = std::make_unique<njo::Vst3Host>();
+        njoBridge->backend.vst3Ctl = vst3Host.get();
+       #endif
 
         patch->stopPlayback  = [this] { suspendProcessing (true); };
         patch->startPlayback = [this] { suspendProcessing (false); };
@@ -114,6 +122,10 @@ public:
 
     ~JUCEPluginBase() override
     {
+       #if NJOHRR_VST3_HOST
+        if (njoBridge) njoBridge->backend.vst3Ctl = nullptr;
+        vst3Host.reset();
+       #endif
        #if NJOHRR_NATIVE_UI
         njoBridge.reset();
        #endif
@@ -258,6 +270,9 @@ public:
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override
     {
+       #if NJOHRR_VST3_HOST
+        if (vst3Host) vst3Host->prepare (sampleRate);
+       #endif
         applyRateAndBlockSize (sampleRate, static_cast<uint32_t> (samplesPerBlock));
     }
 
@@ -311,6 +326,14 @@ public:
         if (auto ph = getPlayHead())
             updateTimelineFromPlayhead (*ph);
 
+       #if NJOHRR_VST3_HOST
+        if (vst3Host)
+        {
+            processWithVst3Host (audio, midi);
+            return;
+        }
+       #endif
+
         auto audioChannels = audio.getArrayOfWritePointers();
         auto numFrames = static_cast<choc::buffer::FrameCount> (audio.getNumSamples());
 
@@ -328,6 +351,60 @@ public:
 
     void processBlock (juce::AudioBuffer<double>&, juce::MidiBuffer&) override { CMAJ_ASSERT_FALSE; }
 
+   #if NJOHRR_VST3_HOST
+    // The DSP has the streams hostSrc / hostRet (in) and hostSend (out), see tools/fx/build_vst3.py. They are not host buses: the block is cut into
+    // chunks of kChunk samples; per chunk the hosted instrument renders into hostSrc, the effect's answer to the previous chunks goes into hostRet,
+    // and the DSP's hostSend is handed to the effect (so the effect answers one chunk late). Channels of the DSP buffer: 0-1 hostSrc / out, 2-3 hostRet / hostSend.
+    void processWithVst3Host (juce::AudioBuffer<float>& audio, juce::MidiBuffer& midi)
+    {
+        constexpr int K = njo::Vst3Host::kChunk;
+        const int total = audio.getNumSamples();
+        const int nOut = audio.getNumChannels();
+
+        hostMidiIn.clear();
+        hostMidiIn.addEvents (midi, 0, total, 0);
+        midi.clear();
+
+        for (int pos = 0; pos < total; pos += K)
+        {
+            const int n = juce::jmin (K, total - pos);
+
+            hostMidiChunk.clear();
+
+            for (auto m : hostMidiIn)
+            {
+                const int sp = m.samplePosition;
+
+                if (sp >= pos && sp < pos + n)
+                {
+                    hostMidiChunk.addEvent (m.data, m.numBytes, sp - pos);
+                    patch->addMIDIMessage (static_cast<uint32_t> (sp - pos), m.data, static_cast<uint32_t> (m.numBytes));
+                }
+            }
+
+            vst3Host->renderInstrument (hostMidiChunk, hostBuf[0], hostBuf[1], n);
+            vst3Host->fetchReturn (hostBuf[2], hostBuf[3], n);
+
+            float* channels[4] = { hostBuf[0], hostBuf[1], hostBuf[2], hostBuf[3] };
+
+            patch->process (channels, static_cast<choc::buffer::FrameCount> (n),
+                            [&] (uint32_t frame, choc::midi::ShortMessage m)
+                            {
+                                midi.addEvent (m.data(), static_cast<int> (m.length()), pos + static_cast<int> (frame));
+                            });
+
+            for (int c = 0; c < nOut && c < 2; ++c)
+                juce::FloatVectorOperations::copy (audio.getWritePointer (c) + pos, channels[c], n);
+
+            vst3Host->pushSend (channels[2], channels[3], n);
+        }
+    }
+
+    std::unique_ptr<njo::Vst3Host> vst3Host;
+    juce::MidiBuffer hostMidiIn, hostMidiChunk;
+    float hostBuf[4][njo::Vst3Host::kChunk] {};
+   #endif
+
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& data) override
     {
@@ -344,13 +421,31 @@ public:
         if (lastLoadedStateHash != stateHash)
         {
             lastLoadedStateHash = stateHash;
-            setNewStateAsync (juce::ValueTree::readFromData (data, static_cast<size_t> (size)));
+            auto tree = juce::ValueTree::readFromData (data, static_cast<size_t> (size));
+
+           #if NJOHRR_VST3_HOST
+            if (vst3Host)
+            {
+                auto hosted = tree.getChildWithName ("NJV3");
+                const auto restore = [this, hosted] { vst3Host->restoreState (hosted); };
+
+                if (juce::MessageManager::getInstance()->isThisTheMessageThread()) restore();
+                else juce::MessageManager::callAsync (restore);
+            }
+           #endif
+
+            setNewStateAsync (std::move (tree));
         }
     }
 
     Patch::PlaybackParams getPlaybackParams (double rate, uint32_t requestedBlockSize)
     {
         auto layout = getBusesLayout();
+
+       #if NJOHRR_VST3_HOST
+        // the streams hostSrc / hostRet (in) and hostSend (out) are served by the wrapper: the DSP sees 4 input and 4 output channels
+        return Patch::PlaybackParams (rate, requestedBlockSize, 4, 4);
+       #endif
 
         return Patch::PlaybackParams (rate, requestedBlockSize,
                                       static_cast<choc::buffer::ChannelCount> (layout.getMainInputChannels()),
@@ -417,6 +512,18 @@ protected:
     }
 
     //==============================================================================
+    // the endpoints hostSrc / hostRet / hostSend belong to the VST3 host of the wrapper, they are no host buses
+    static bool isVst3HostEndpoint (const EndpointDetails& e)
+    {
+       #if NJOHRR_VST3_HOST
+        const auto& id = e.endpointID.toString();
+        return id == "hostSrc" || id == "hostRet" || id == "hostSend";
+       #else
+        (void) e;
+        return false;
+       #endif
+    }
+
     static BusesProperties getBusesProperties (const EndpointDetailsList& inputs,
                                                const EndpointDetailsList& outputs)
     {
@@ -425,10 +532,12 @@ protected:
         uint32_t inputChannelCount = 0, outputChannelCount = 0;
 
         for (auto& input : inputs)
-            inputChannelCount += input.getNumAudioChannels();
+            if (! isVst3HostEndpoint (input))
+                inputChannelCount += input.getNumAudioChannels();
 
         for (auto& output : outputs)
-            outputChannelCount += output.getNumAudioChannels();
+            if (! isVst3HostEndpoint (output))
+                outputChannelCount += output.getNumAudioChannels();
 
         if (inputChannelCount > 0)
             layout.addBus (true, "in", juce::AudioChannelSet::canonicalChannelSet ((int) inputChannelCount), true);
@@ -538,6 +647,12 @@ protected:
                                    nullptr);
 
         state.appendChild (paramList, nullptr);
+
+       #if NJOHRR_VST3_HOST
+        if (vst3Host)
+            state.appendChild (vst3Host->saveState(), nullptr);   // the hosted plugins and their state
+       #endif
+
         return state;
     }
 

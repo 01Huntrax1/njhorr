@@ -12,6 +12,8 @@ def rep(old, new, count=1):
     global src
     assert src.count(old) == count, (old[:80], src.count(old))
     src = src.replace(old, new)
+# the VST3 host streams belong to the synth plugin only
+src = ''.join(l for l in src.splitlines(True) if not any(k in l for k in ('VST3-EP', 'VST3-IN', 'VST3-OUT')))
 rep('    output stream float<2> out;\n', '    output stream float<2> out;\n    input stream float<2> audioIn;   // FX-PLUGIN: the signal the racks process\n')
 rep('                float rawL = shapeSig (mixSynthL.at (bg) * 0.35f, driveEff) * gPanL;\n                float rawR = shapeSig (mixSynthR.at (bg) * 0.35f, driveEff) * gPanR;\n',
     '                float xinL = audioIn[0];\n                float xinR = audioIn[1];\n'

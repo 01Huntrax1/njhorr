@@ -6,6 +6,7 @@
 #include "OscDisplays.h"
 #include "EqEditor.h"
 #include "ShaperEditor.h"
+#include "Vst3Panel.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -20,8 +21,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060 };
-            return juce::Colour (c[juce::jlimit (0, 18, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060, 0xff59b7ff };
+            return juce::Colour (c[juce::jlimit (0, 19, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -559,6 +560,7 @@ namespace njo
             owner.addAndMakeVisible (list); owner.addChildComponent (chooser); owner.addChildComponent (display);
             eqEd = std::make_unique<EqEditor> (ctx, mem); owner.addChildComponent (*eqEd);
             shEd = std::make_unique<ShaperEditor> (ctx, mem); owner.addChildComponent (*shEd);
+            vstFx = std::make_unique<Vst3Panel> (ctx, 1); owner.addChildComponent (*vstFx);
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); list.repaint(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
@@ -710,7 +712,7 @@ namespace njo
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
             chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage);
-            loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
+            loadIr.setVisible (false); clearIr.setVisible (false); irRect = {}; vstFx->setVisible (false);
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
             if (! effectPage) return;
@@ -748,6 +750,7 @@ namespace njo
             auto knobs = c.removeFromBottom (84);
             c.removeFromBottom (6);
             if (ty == 15) { shEd->setBounds (c); shEd->setSlot (g, slotBase (g)); shEd->setVisible (true); }
+            else if (ty == 19) { vstFx->setBounds (c.withSizeKeepingCentre (juce::jmin (c.getWidth(), 460), juce::jmin (c.getHeight(), 210))); vstFx->setVisible (true); }   // VST3: the hosted effect
             else { display.setVisible (true); display.setBounds (c); }
             int n = 1 + (int) t.params.size(), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
             int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
@@ -775,6 +778,7 @@ namespace njo
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
         std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
+        std::unique_ptr<Vst3Panel> vstFx;
         ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
         std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], syncS[30], envS[30], envR[30], pK[30][6]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;

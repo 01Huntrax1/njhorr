@@ -87,6 +87,8 @@ if (NJOHRR_NATIVE_UI)
     file(GLOB NJO_UI_SOURCES CONFIGURE_DEPENDS native_ui/*.cpp native_ui/pages/*.cpp)
     target_sources(Njohrr PRIVATE ${NJO_UI_SOURCES})
     target_compile_definitions(Njohrr PRIVATE NJOHRR_NATIVE_UI=1)
+    # the VST3 host (OSC source / FX type "VST3", include/cmajor/helpers/NjoVst3Host.h): JUCE hosting of VST3 plugins
+    target_compile_definitions(Njohrr PUBLIC NJOHRR_VST3_HOST=1 JUCE_PLUGINHOST_VST3=1)
     target_include_directories(Njohrr PRIVATE native_ui)
 else()
     target_compile_definitions(Njohrr PRIVATE NJOHRR_NATIVE_UI=0)
