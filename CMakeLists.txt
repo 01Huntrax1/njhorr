@@ -112,3 +112,45 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     target_link_libraries (Njohrr PUBLIC ${GTK3_LIBRARIES} ${WEBKIT2_LIBRARIES})
     target_include_directories(Njohrr PRIVATE ${GTK3_INCLUDE_DIRS} ${WEBKIT2_INCLUDE_DIRS})
 endif()
+
+# ---- Njohrr FX: the effects-only plugin (audio input, the three FX racks, native editor with only the FX page) ----
+# The DSP comes from patch_fx/ (tools/fx/build_fxplugin.py) through tools/regen_plugin.sh -> cmajor_plugin_fx.cpp.
+option (NJOHRR_BUILD_FX "Also build the effects-only plugin Njohrr FX" ON)
+
+if (NJOHRR_BUILD_FX)
+    juce_add_plugin(NjohrrFX
+        FORMATS VST3
+        DESCRIPTION "Njohrr effects"
+        PRODUCT_NAME "Njohrr FX"
+        PLUGIN_NAME "Njohrr FX"
+        BUNDLE_ID "dev.njohrr.fx"
+        PLUGIN_CODE "NjFX"
+        PLUGIN_MANUFACTURER_CODE "Njhr"
+        COMPANY_NAME "Njohrr"
+        COMPANY_WEBSITE ""
+        NEEDS_MIDI_INPUT FALSE
+        NEEDS_MIDI_OUTPUT FALSE
+        MICROPHONE_PERMISSION_ENABLED FALSE
+        IS_SYNTH FALSE
+    )
+
+    juce_generate_juce_header(NjohrrFX)
+
+    file(GLOB NJO_FX_UI_SOURCES CONFIGURE_DEPENDS native_ui/*.cpp native_ui/pages/*.cpp)
+    target_sources(NjohrrFX PRIVATE cmajor_plugin_fx.cpp ${HEADERS} ${NJO_FX_UI_SOURCES})
+    target_compile_definitions(NjohrrFX PRIVATE NJOHRR_NATIVE_UI=1 NJOHRR_FX_ONLY=1)
+    target_compile_features(NjohrrFX PRIVATE cxx_std_17)
+    target_include_directories(NjohrrFX PRIVATE include include/choc native_ui)
+
+    target_link_libraries(NjohrrFX
+        PRIVATE
+            juce::juce_audio_utils
+            juce::juce_audio_formats
+            $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
+    )
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        target_link_libraries (NjohrrFX PUBLIC ${GTK3_LIBRARIES} ${WEBKIT2_LIBRARIES})
+        target_include_directories(NjohrrFX PRIVATE ${GTK3_INCLUDE_DIRS} ${WEBKIT2_INCLUDE_DIRS})
+    endif()
+endif()

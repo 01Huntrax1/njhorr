@@ -26,7 +26,7 @@ if ! cmp -s "$TMP/NjoData.old" "$ROOT/native_ui/NjoData.gen.cpp"; then
     else echo "updated native_ui/NjoData.gen.cpp"; fi
 fi
 
-# 2. the JUCE plugin source
+# 2. the JUCE plugin source (synth)
 "$CMAJ" generate --target=juce --output="$TMP/juce" --cmajorIncludePath="$CMAJ_INCLUDE" "$ROOT/patch/Eisenpuls_Synth.cmajorpatch" >/dev/null
 NEW="$TMP/juce/cmajor_plugin.cpp"
 [ -f "$NEW" ] || { echo "the juce target produced no cmajor_plugin.cpp"; exit 2; }
@@ -38,5 +38,28 @@ elif [ $CHECK = 1 ]; then
     echo "cmajor_plugin.cpp is out of date (run tools/regen_plugin.sh)"; fail=1
 else
     cp "$NEW" "$ROOT/cmajor_plugin.cpp"; echo "updated cmajor_plugin.cpp"
+fi
+
+# 3. the effects-only plugin: patch_fx/ is generated from the synth source, then cmajor_plugin_fx.cpp from it
+cp -r "$ROOT/patch_fx" "$TMP/patch_fx.old" 2>/dev/null || true
+python3 "$ROOT/tools/fx/build_fxplugin.py" >/dev/null
+for f in Eisenpuls_Synth.cmajor Njohrr_FX.cmajorpatch; do
+    if ! cmp -s "$TMP/patch_fx.old/$f" "$ROOT/patch_fx/$f"; then
+        if [ $CHECK = 1 ]; then echo "patch_fx/$f is out of date (run tools/regen_plugin.sh)"; cp "$TMP/patch_fx.old/$f" "$ROOT/patch_fx/$f" 2>/dev/null || true; fail=1
+        else echo "updated patch_fx/$f"; fi
+    fi
+done
+if [ $fail = 0 ] || [ $CHECK = 0 ]; then
+    "$CMAJ" generate --target=juce --output="$TMP/juce_fx" --cmajorIncludePath="$CMAJ_INCLUDE" "$ROOT/patch_fx/Njohrr_FX.cmajorpatch" >/dev/null
+    NEWFX="$TMP/juce_fx/cmajor_plugin.cpp"
+    [ -f "$NEWFX" ] || { echo "the juce target produced no cmajor_plugin.cpp for the FX plugin"; exit 2; }
+    grep -q "JUCE_CALLTYPE createPluginFilter" "$NEWFX" || { echo "generated FX file has no createPluginFilter()"; exit 2; }
+    if cmp -s "$NEWFX" "$ROOT/cmajor_plugin_fx.cpp"; then
+        echo "cmajor_plugin_fx.cpp is up to date"
+    elif [ $CHECK = 1 ]; then
+        echo "cmajor_plugin_fx.cpp is out of date (run tools/regen_plugin.sh)"; fail=1
+    else
+        cp "$NEWFX" "$ROOT/cmajor_plugin_fx.cpp"; echo "updated cmajor_plugin_fx.cpp"
+    fi
 fi
 exit $fail

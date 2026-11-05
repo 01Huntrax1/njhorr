@@ -118,7 +118,7 @@ namespace njo
         mk (impl->modFrqBtn, "FREQ", [this] { modTab = 1; layoutAll(); });
         addAndMakeVisible (manager);
         setSize (BASE_W, BASE_H);
-        setGroup (Synth);
+        setGroup (NJOHRR_FX_ONLY ? Effects : Synth);
         startTimerHz (20);
     }
 
@@ -154,16 +154,16 @@ namespace njo
 
     void EditorContent::layoutAll()
     {
+        if (NJOHRR_FX_ONLY) currentGroup = Effects;
         auto r = getLocalBounds().reduced (10, 8);
         impl->topBar = r.removeFromTop (44);
         r.removeFromTop (3 + 6);
-        r.removeFromLeft (66);
-        r.removeFromLeft (8);
+        if (! NJOHRR_FX_ONLY) { r.removeFromLeft (66); r.removeFromLeft (8); }
         // equal thirds with 6px gaps
         {
             auto rr = juce::Rectangle<int> (10, impl->topBar.getBottom() + 9, 66, r.getHeight());
             int h = (rr.getHeight() - 12) / 3;
-            for (int i = 0; i < 3; ++i) impl->rail[i]->setBounds (rr.getX(), rr.getY() + i * (h + 6), rr.getWidth(), h);
+            for (int i = 0; i < 3; ++i) { impl->rail[i]->setBounds (rr.getX(), rr.getY() + i * (h + 6), rr.getWidth(), h); impl->rail[i]->setVisible (! NJOHRR_FX_ONLY); }
         }
         impl->mainRect = r;
 
@@ -188,7 +188,7 @@ namespace njo
         impl->mgrRect = m.removeFromTop (24); m.removeFromTop (6);
         manager.setBounds (impl->mgrRect);
 
-        int stripH = mod ? 0 : (stripOpen ? 190 : 26);
+        int stripH = (mod || NJOHRR_FX_ONLY) ? 0 : (stripOpen ? 190 : 26);
         if (! mod) { impl->stripRect = m.removeFromBottom (stripH); m.removeFromBottom (6); }
         impl->stageRect = m;
 
@@ -237,6 +237,11 @@ namespace njo
             impl->stripModBtn->setVisible (true); impl->stripFrqBtn->setVisible (true);
         }
         else impl->stripToggle->setVisible (false);
+        if (NJOHRR_FX_ONLY)   // no modulation strip in the effects plugin
+        {
+            impl->stripToggle->setVisible (false); editors.setVisible (false); freq.setVisible (false);
+            impl->stripModBtn->setVisible (false); impl->stripFrqBtn->setVisible (false);
+        }
         impl->sizeButton->setBounds (impl->topBar.getRight() - 346, impl->topBar.getY() + 12, 44, 20);
         impl->lcdRect = { impl->topBar.getRight() - 250, impl->topBar.getY() + 6, 214, 32 };
         repaint();
@@ -257,7 +262,7 @@ namespace njo
         g.drawText ("NJOHRR", juce::Rectangle<int> (impl->topBar.getX() + 16, impl->topBar.getY(), 130, impl->topBar.getHeight()), juce::Justification::centredLeft);
         auto model = juce::Rectangle<float> (t.getX() + 138, t.getY() + 13, 72, 18);
         g.setColour (red); g.fillRoundedRectangle (model, 1.5f);
-        g.setColour (juce::Colour (0xff111111)); g.setFont (font (10.0f, true)); g.drawText ("SYNTH", model.toNearestInt(), juce::Justification::centred);
+        g.setColour (juce::Colour (0xff111111)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : "SYNTH", model.toNearestInt(), juce::Justification::centred);
         auto ver = juce::Rectangle<float> (t.getX() + 220, t.getY() + 14, 46, 16);
         g.setColour (line); g.drawRoundedRectangle (ver, 2.0f, 1.0f); g.setColour (dim); g.setFont (mono (8.0f, true)); g.drawText ("V1.0.0", ver.toNearestInt(), juce::Justification::centred);
         // VU
@@ -283,7 +288,7 @@ namespace njo
         g.setGradientFill (juce::ColourGradient (red, hz.getCentreX(), 0, juce::Colours::transparentBlack, hz.getRight(), 0, false));
         g.fillRect (hz.withTrimmedLeft (hz.getWidth() * 0.5f));
         // bottom strip frame
-        if (currentGroup != Modulation)
+        if (currentGroup != Modulation && ! NJOHRR_FX_ONLY)
         {
             auto s = impl->stripRect.toFloat();
             g.setGradientFill (vertical (juce::Colour (0xff25282c), juce::Colour (0xff1a1c1f), s));

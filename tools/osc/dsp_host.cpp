@@ -46,11 +46,33 @@ struct Host
         if (queued >= 24) { render (1); queued = 0; }
     }
 
+#ifdef DSP_FX
+    // effects-only plugin: the audio input signal ("in <saw|sine|noise|off> <amp> <Hz>" in a script)
+    int inKind = 0; float inAmp = 0.5f, inFreq = 220.0f; double inPh = 0.0; uint32_t inRng = 12345u; std::vector<float> inBuf;
+    void fillInput (int n)
+    {
+        inBuf.resize ((size_t) n * 2);
+        for (int i = 0; i < n; ++i)
+        {
+            float v = 0.0f;
+            if (inKind == 1) v = (float) (inAmp * (2.0 * inPh - 1.0));
+            else if (inKind == 2) v = (float) (inAmp * sin (6.283185307179586 * inPh));
+            else if (inKind == 3) { inRng = inRng * 1664525u + 1013904223u; v = inAmp * ((float) (inRng >> 8) / 8388608.0f - 1.0f); }
+            inPh += inFreq / kRate; if (inPh >= 1.0) inPh -= 1.0;
+            inBuf[(size_t) i * 2] = v; inBuf[(size_t) i * 2 + 1] = v;
+        }
+        dsp.setInputFrames_audioIn (inBuf.data(), (uint32_t) n, 0);
+    }
+#endif
+
     void render (int frames)
     {
         while (frames > 0)
         {
             int n = frames < 512 ? frames : 512;
+#ifdef DSP_FX
+            fillInput (n);
+#endif
             dsp.advance (n);
             dsp.copyOutputFrames ((Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::out, block.data(), (uint32_t) n);
             if (out) fwrite (block.data(), sizeof (float), (size_t) n * 2, out);
@@ -294,6 +316,9 @@ int main (int argc, char** argv)
         else if (cmd == "wscount") { int sl, n; ls >> sl >> n; auto& v = h.eqData[sl]; if (v.empty()) v.assign (240, 0.0f); v[0] = n / 16.0f; }
         else if (cmd == "eqsend") { int sl; ls >> sl; h.eqSend (sl, false); }
         else if (cmd == "eqclear") { int sl; ls >> sl; h.eqSend (sl, true); }
+#ifdef DSP_FX
+        else if (cmd == "in")  { std::string k; float a = 0.5f, f = 220.0f; ls >> k >> a >> f; h.inKind = k == "saw" ? 1 : k == "sine" ? 2 : k == "noise" ? 3 : 0; h.inAmp = a; h.inFreq = f; }
+#endif
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }
         else if (cmd == "off") { int n; ls >> n; h.midi (0x80, n, 0); }
         else if (cmd == "run") { double s; ls >> s; h.render ((int) (s * kRate)); h.queued = 0; }

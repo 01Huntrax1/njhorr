@@ -25,3 +25,7 @@ jobs:
         with:
           name: Njohrr-VST3-${{ runner.os }}
           path: build/Njohrr_artefacts/Release/VST3/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NjohrrFX-VST3-${{ runner.os }}
+          path: build/NjohrrFX_artefacts/Release/VST3/

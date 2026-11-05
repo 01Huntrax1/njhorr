@@ -51,7 +51,7 @@ namespace njo
         void paint (juce::Graphics& g) override { g.fillAll (juce::Colour (0xff0b0b0d)); }
 
     private:
-        static constexpr float logicalW = 1180.0f, logicalH = 760.0f;
+        static constexpr float logicalW = (float) BASE_W, logicalH = (float) BASE_H;
         Bridge& bridge;
         EditorContent content;
     };

@@ -13,7 +13,7 @@ mkdir -p "$OUT"
 cat > "$OUT/Makefile" <<MK
 SRC := $SRC
 OUT := $OUT
-CXXFLAGS := -O1 -g0 -std=c++17 -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_MODAL_LOOPS_PERMITTED=1 -DJUCE_MODULE_AVAILABLE_juce_audio_basics=1 -DJUCE_MODULE_AVAILABLE_juce_audio_formats=1 -DJUCE_MODULE_AVAILABLE_juce_core=1 -DJUCE_MODULE_AVAILABLE_juce_data_structures=1 -DJUCE_MODULE_AVAILABLE_juce_events=1 -DJUCE_MODULE_AVAILABLE_juce_graphics=1 -DJUCE_MODULE_AVAILABLE_juce_gui_basics=1 -DJUCE_OPENGL_ES=0 -DJUCE_STANDALONE_APPLICATION=1 -DJUCE_USE_CURL=0 -DJUCE_USE_FLAC=1 -DJUCE_USE_OGGVORBIS=1 -DJUCE_WEB_BROWSER=0 -DLINUX=1 -DNDEBUG=1 -D_NDEBUG=1 -I$JOBJ/JuceLibraryCode -I$JUCE/modules -I/usr/include/freetype2 -I/usr/include/libpng16 -Wno-psabi
+CXXFLAGS := -O1 -g0 $NJO_EXTRA_FLAGS -std=c++17 -DJUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 -DJUCE_MODAL_LOOPS_PERMITTED=1 -DJUCE_MODULE_AVAILABLE_juce_audio_basics=1 -DJUCE_MODULE_AVAILABLE_juce_audio_formats=1 -DJUCE_MODULE_AVAILABLE_juce_core=1 -DJUCE_MODULE_AVAILABLE_juce_data_structures=1 -DJUCE_MODULE_AVAILABLE_juce_events=1 -DJUCE_MODULE_AVAILABLE_juce_graphics=1 -DJUCE_MODULE_AVAILABLE_juce_gui_basics=1 -DJUCE_OPENGL_ES=0 -DJUCE_STANDALONE_APPLICATION=1 -DJUCE_USE_CURL=0 -DJUCE_USE_FLAC=1 -DJUCE_USE_OGGVORBIS=1 -DJUCE_WEB_BROWSER=0 -DLINUX=1 -DNDEBUG=1 -D_NDEBUG=1 -I$JOBJ/JuceLibraryCode -I$JUCE/modules -I/usr/include/freetype2 -I/usr/include/libpng16 -Wno-psabi
 SRCS := \$(wildcard \$(SRC)/*.cpp) \$(wildcard \$(SRC)/pages/*.cpp) \$(SRC)/test/shot.cpp
 OBJS := \$(patsubst \$(SRC)/%.cpp,\$(OUT)/obj/%.o,\$(SRCS))
 JOBJS := \$(shell find $JOBJ -name '*.o')

@@ -1,0 +1,15 @@
+{
+    "CmajorVersion": 1,
+    "ID": "dev.njohrr.fx",
+    "version": "1.0",
+    "name": "Njohrr FX",
+    "description": "Njohrr effects",
+    "manufacturer": "Njohrr",
+    "category": "fx",
+    "isInstrument": false,
+    "source": "Eisenpuls_Synth.cmajor",
+    "plugin": {
+        "pluginCode": "NjFX",
+        "manufacturerCode": "Njhr"
+    }
+}
