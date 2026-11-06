@@ -15,7 +15,7 @@ processor Eisenpuls_Synth
     input event BankChunk wtBankLoad;
     input event LfoShapeChunk frqShapeLoad;   // drawn curve of a Freq modulator (256 points, 0..1)
     input event BankChunk irLoad;        // convolution reverb impulse response (bank = rack 0..2)  // FX-CONV
-    input event BankChunk eqLoad;        // FX-PEQ: bands of a Parametric EQ slot (bank = global slot 0..29, 240 values)
+    input event BankChunk eqLoad;        // FX-PEQ: bands of a Parametric EQ slot (bank = global slot 0..47, 240 values)
     input event BankChunk modLoad;       // per-mode edits of the resonators: bank = slot * 3 + set (0 = Physical A, 1 = Physical B, 2 = Resonator stage)  // MODED
     input event BankChunk tblLoad;       // Wavefilter / Wavedistortion tables: bank 0..5 filter table of OSC 1..6, 6..11 shaper table
     input event BankChunk smpBankLoad;
@@ -2718,16 +2718,16 @@ processor Eisenpuls_Synth
     input event float param638     [[ name: "Main FX 10 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param639     [[ name: "Main FX 10 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param640     [[ name: "Main FX 10 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param641    [[ name: "Main FX Order 1", min: 0.0, max: 9.0, init: 0.0, step: 1.0 ]];
-    input event float param642    [[ name: "Main FX Order 2", min: 0.0, max: 9.0, init: 1.0, step: 1.0 ]];
-    input event float param643    [[ name: "Main FX Order 3", min: 0.0, max: 9.0, init: 2.0, step: 1.0 ]];
-    input event float param644    [[ name: "Main FX Order 4", min: 0.0, max: 9.0, init: 3.0, step: 1.0 ]];
-    input event float param645    [[ name: "Main FX Order 5", min: 0.0, max: 9.0, init: 4.0, step: 1.0 ]];
-    input event float param646    [[ name: "Main FX Order 6", min: 0.0, max: 9.0, init: 5.0, step: 1.0 ]];
-    input event float param647    [[ name: "Main FX Order 7", min: 0.0, max: 9.0, init: 6.0, step: 1.0 ]];
-    input event float param648    [[ name: "Main FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
-    input event float param649    [[ name: "Main FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
-    input event float param650    [[ name: "Main FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
+    input event float param641    [[ name: "Main FX Order 1", min: 0.0, max: 15.0, init: 0.0, step: 1.0 ]];
+    input event float param642    [[ name: "Main FX Order 2", min: 0.0, max: 15.0, init: 1.0, step: 1.0 ]];
+    input event float param643    [[ name: "Main FX Order 3", min: 0.0, max: 15.0, init: 2.0, step: 1.0 ]];
+    input event float param644    [[ name: "Main FX Order 4", min: 0.0, max: 15.0, init: 3.0, step: 1.0 ]];
+    input event float param645    [[ name: "Main FX Order 5", min: 0.0, max: 15.0, init: 4.0, step: 1.0 ]];
+    input event float param646    [[ name: "Main FX Order 6", min: 0.0, max: 15.0, init: 5.0, step: 1.0 ]];
+    input event float param647    [[ name: "Main FX Order 7", min: 0.0, max: 15.0, init: 6.0, step: 1.0 ]];
+    input event float param648    [[ name: "Main FX Order 8", min: 0.0, max: 15.0, init: 7.0, step: 1.0 ]];
+    input event float param649    [[ name: "Main FX Order 9", min: 0.0, max: 15.0, init: 8.0, step: 1.0 ]];
+    input event float param650    [[ name: "Main FX Order 10", min: 0.0, max: 15.0, init: 9.0, step: 1.0 ]];
     input event float param651     [[ name: "Bus 1 FX 1 Type",  min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];
     input event float param652     [[ name: "Bus 1 FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param653     [[ name: "Bus 1 FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
@@ -2828,16 +2828,16 @@ processor Eisenpuls_Synth
     input event float param748     [[ name: "Bus 1 FX 10 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param749     [[ name: "Bus 1 FX 10 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param750     [[ name: "Bus 1 FX 10 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param751    [[ name: "Bus 1 FX Order 1", min: 0.0, max: 9.0, init: 0.0, step: 1.0 ]];
-    input event float param752    [[ name: "Bus 1 FX Order 2", min: 0.0, max: 9.0, init: 1.0, step: 1.0 ]];
-    input event float param753    [[ name: "Bus 1 FX Order 3", min: 0.0, max: 9.0, init: 2.0, step: 1.0 ]];
-    input event float param754    [[ name: "Bus 1 FX Order 4", min: 0.0, max: 9.0, init: 3.0, step: 1.0 ]];
-    input event float param755    [[ name: "Bus 1 FX Order 5", min: 0.0, max: 9.0, init: 4.0, step: 1.0 ]];
-    input event float param756    [[ name: "Bus 1 FX Order 6", min: 0.0, max: 9.0, init: 5.0, step: 1.0 ]];
-    input event float param757    [[ name: "Bus 1 FX Order 7", min: 0.0, max: 9.0, init: 6.0, step: 1.0 ]];
-    input event float param758    [[ name: "Bus 1 FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
-    input event float param759    [[ name: "Bus 1 FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
-    input event float param760    [[ name: "Bus 1 FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
+    input event float param751    [[ name: "Bus 1 FX Order 1", min: 0.0, max: 15.0, init: 0.0, step: 1.0 ]];
+    input event float param752    [[ name: "Bus 1 FX Order 2", min: 0.0, max: 15.0, init: 1.0, step: 1.0 ]];
+    input event float param753    [[ name: "Bus 1 FX Order 3", min: 0.0, max: 15.0, init: 2.0, step: 1.0 ]];
+    input event float param754    [[ name: "Bus 1 FX Order 4", min: 0.0, max: 15.0, init: 3.0, step: 1.0 ]];
+    input event float param755    [[ name: "Bus 1 FX Order 5", min: 0.0, max: 15.0, init: 4.0, step: 1.0 ]];
+    input event float param756    [[ name: "Bus 1 FX Order 6", min: 0.0, max: 15.0, init: 5.0, step: 1.0 ]];
+    input event float param757    [[ name: "Bus 1 FX Order 7", min: 0.0, max: 15.0, init: 6.0, step: 1.0 ]];
+    input event float param758    [[ name: "Bus 1 FX Order 8", min: 0.0, max: 15.0, init: 7.0, step: 1.0 ]];
+    input event float param759    [[ name: "Bus 1 FX Order 9", min: 0.0, max: 15.0, init: 8.0, step: 1.0 ]];
+    input event float param760    [[ name: "Bus 1 FX Order 10", min: 0.0, max: 15.0, init: 9.0, step: 1.0 ]];
     input event float param761     [[ name: "Bus 2 FX 1 Type",  min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];
     input event float param762     [[ name: "Bus 2 FX 1 On",    min: 0.0, max: 1.0,  init: 1.0, step: 1.0 ]];
     input event float param763     [[ name: "Bus 2 FX 1 Mix",   min: 0.0, max: 1.0,  init: 1.0 ]];
@@ -2938,16 +2938,16 @@ processor Eisenpuls_Synth
     input event float param858     [[ name: "Bus 2 FX 10 P4",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param859     [[ name: "Bus 2 FX 10 P5",    min: 0.0, max: 1.0,  init: 0.5 ]];
     input event float param860     [[ name: "Bus 2 FX 10 P6",    min: 0.0, max: 1.0,  init: 0.5 ]];
-    input event float param861    [[ name: "Bus 2 FX Order 1", min: 0.0, max: 9.0, init: 0.0, step: 1.0 ]];
-    input event float param862    [[ name: "Bus 2 FX Order 2", min: 0.0, max: 9.0, init: 1.0, step: 1.0 ]];
-    input event float param863    [[ name: "Bus 2 FX Order 3", min: 0.0, max: 9.0, init: 2.0, step: 1.0 ]];
-    input event float param864    [[ name: "Bus 2 FX Order 4", min: 0.0, max: 9.0, init: 3.0, step: 1.0 ]];
-    input event float param865    [[ name: "Bus 2 FX Order 5", min: 0.0, max: 9.0, init: 4.0, step: 1.0 ]];
-    input event float param866    [[ name: "Bus 2 FX Order 6", min: 0.0, max: 9.0, init: 5.0, step: 1.0 ]];
-    input event float param867    [[ name: "Bus 2 FX Order 7", min: 0.0, max: 9.0, init: 6.0, step: 1.0 ]];
-    input event float param868    [[ name: "Bus 2 FX Order 8", min: 0.0, max: 9.0, init: 7.0, step: 1.0 ]];
-    input event float param869    [[ name: "Bus 2 FX Order 9", min: 0.0, max: 9.0, init: 8.0, step: 1.0 ]];
-    input event float param870    [[ name: "Bus 2 FX Order 10", min: 0.0, max: 9.0, init: 9.0, step: 1.0 ]];
+    input event float param861    [[ name: "Bus 2 FX Order 1", min: 0.0, max: 15.0, init: 0.0, step: 1.0 ]];
+    input event float param862    [[ name: "Bus 2 FX Order 2", min: 0.0, max: 15.0, init: 1.0, step: 1.0 ]];
+    input event float param863    [[ name: "Bus 2 FX Order 3", min: 0.0, max: 15.0, init: 2.0, step: 1.0 ]];
+    input event float param864    [[ name: "Bus 2 FX Order 4", min: 0.0, max: 15.0, init: 3.0, step: 1.0 ]];
+    input event float param865    [[ name: "Bus 2 FX Order 5", min: 0.0, max: 15.0, init: 4.0, step: 1.0 ]];
+    input event float param866    [[ name: "Bus 2 FX Order 6", min: 0.0, max: 15.0, init: 5.0, step: 1.0 ]];
+    input event float param867    [[ name: "Bus 2 FX Order 7", min: 0.0, max: 15.0, init: 6.0, step: 1.0 ]];
+    input event float param868    [[ name: "Bus 2 FX Order 8", min: 0.0, max: 15.0, init: 7.0, step: 1.0 ]];
+    input event float param869    [[ name: "Bus 2 FX Order 9", min: 0.0, max: 15.0, init: 8.0, step: 1.0 ]];
+    input event float param870    [[ name: "Bus 2 FX Order 10", min: 0.0, max: 15.0, init: 9.0, step: 1.0 ]];
     input event float param880    [[ name: "Bus 1 Level", min: 0.0, max: 1.5, init: 1.0 ]];
     input event float param881    [[ name: "Bus 2 Level", min: 0.0, max: 1.5, init: 1.0 ]];
     input event float param3000 [[ name: "Main FX 1 Env Sustain", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-FENV
@@ -3031,6 +3031,222 @@ processor Eisenpuls_Synth
     input event float param3118 [[ name: "Mod LFO 8 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3119 [[ name: "Mod LFO 9 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3120 [[ name: "Mod LFO 10 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3200 [[ name: "Main FX 11 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3201 [[ name: "Main FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3202 [[ name: "Main FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3203 [[ name: "Main FX 11 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3204 [[ name: "Main FX 11 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3205 [[ name: "Main FX 11 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3206 [[ name: "Main FX 11 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3207 [[ name: "Main FX 11 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3208 [[ name: "Main FX 11 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3209 [[ name: "Main FX 11 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3400 [[ name: "Main FX 11 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3380 [[ name: "Main FX Order 11", min: 0.0, max: 15.0, init: 10, step: 1.0 ]];
+    input event float param3210 [[ name: "Main FX 12 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3211 [[ name: "Main FX 12 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3212 [[ name: "Main FX 12 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3213 [[ name: "Main FX 12 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3214 [[ name: "Main FX 12 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3215 [[ name: "Main FX 12 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3216 [[ name: "Main FX 12 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3217 [[ name: "Main FX 12 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3218 [[ name: "Main FX 12 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3219 [[ name: "Main FX 12 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3401 [[ name: "Main FX 12 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3381 [[ name: "Main FX Order 12", min: 0.0, max: 15.0, init: 11, step: 1.0 ]];
+    input event float param3220 [[ name: "Main FX 13 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3221 [[ name: "Main FX 13 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3222 [[ name: "Main FX 13 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3223 [[ name: "Main FX 13 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3224 [[ name: "Main FX 13 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3225 [[ name: "Main FX 13 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3226 [[ name: "Main FX 13 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3227 [[ name: "Main FX 13 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3228 [[ name: "Main FX 13 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3229 [[ name: "Main FX 13 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3402 [[ name: "Main FX 13 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3382 [[ name: "Main FX Order 13", min: 0.0, max: 15.0, init: 12, step: 1.0 ]];
+    input event float param3230 [[ name: "Main FX 14 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3231 [[ name: "Main FX 14 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3232 [[ name: "Main FX 14 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3233 [[ name: "Main FX 14 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3234 [[ name: "Main FX 14 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3235 [[ name: "Main FX 14 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3236 [[ name: "Main FX 14 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3237 [[ name: "Main FX 14 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3238 [[ name: "Main FX 14 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3239 [[ name: "Main FX 14 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3403 [[ name: "Main FX 14 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3383 [[ name: "Main FX Order 14", min: 0.0, max: 15.0, init: 13, step: 1.0 ]];
+    input event float param3240 [[ name: "Main FX 15 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3241 [[ name: "Main FX 15 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3242 [[ name: "Main FX 15 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3243 [[ name: "Main FX 15 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3244 [[ name: "Main FX 15 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3245 [[ name: "Main FX 15 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3246 [[ name: "Main FX 15 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3247 [[ name: "Main FX 15 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3248 [[ name: "Main FX 15 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3249 [[ name: "Main FX 15 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3404 [[ name: "Main FX 15 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3384 [[ name: "Main FX Order 15", min: 0.0, max: 15.0, init: 14, step: 1.0 ]];
+    input event float param3250 [[ name: "Main FX 16 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3251 [[ name: "Main FX 16 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3252 [[ name: "Main FX 16 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3253 [[ name: "Main FX 16 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3254 [[ name: "Main FX 16 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3255 [[ name: "Main FX 16 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3256 [[ name: "Main FX 16 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3257 [[ name: "Main FX 16 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3258 [[ name: "Main FX 16 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3259 [[ name: "Main FX 16 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3405 [[ name: "Main FX 16 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3385 [[ name: "Main FX Order 16", min: 0.0, max: 15.0, init: 15, step: 1.0 ]];
+    input event float param3260 [[ name: "Bus 1 FX 11 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3261 [[ name: "Bus 1 FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3262 [[ name: "Bus 1 FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3263 [[ name: "Bus 1 FX 11 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3264 [[ name: "Bus 1 FX 11 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3265 [[ name: "Bus 1 FX 11 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3266 [[ name: "Bus 1 FX 11 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3267 [[ name: "Bus 1 FX 11 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3268 [[ name: "Bus 1 FX 11 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3269 [[ name: "Bus 1 FX 11 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3406 [[ name: "Bus 1 FX 11 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3386 [[ name: "Bus 1 FX Order 11", min: 0.0, max: 15.0, init: 10, step: 1.0 ]];
+    input event float param3270 [[ name: "Bus 1 FX 12 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3271 [[ name: "Bus 1 FX 12 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3272 [[ name: "Bus 1 FX 12 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3273 [[ name: "Bus 1 FX 12 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3274 [[ name: "Bus 1 FX 12 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3275 [[ name: "Bus 1 FX 12 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3276 [[ name: "Bus 1 FX 12 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3277 [[ name: "Bus 1 FX 12 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3278 [[ name: "Bus 1 FX 12 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3279 [[ name: "Bus 1 FX 12 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3407 [[ name: "Bus 1 FX 12 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3387 [[ name: "Bus 1 FX Order 12", min: 0.0, max: 15.0, init: 11, step: 1.0 ]];
+    input event float param3280 [[ name: "Bus 1 FX 13 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3281 [[ name: "Bus 1 FX 13 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3282 [[ name: "Bus 1 FX 13 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3283 [[ name: "Bus 1 FX 13 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3284 [[ name: "Bus 1 FX 13 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3285 [[ name: "Bus 1 FX 13 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3286 [[ name: "Bus 1 FX 13 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3287 [[ name: "Bus 1 FX 13 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3288 [[ name: "Bus 1 FX 13 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3289 [[ name: "Bus 1 FX 13 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3408 [[ name: "Bus 1 FX 13 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3388 [[ name: "Bus 1 FX Order 13", min: 0.0, max: 15.0, init: 12, step: 1.0 ]];
+    input event float param3290 [[ name: "Bus 1 FX 14 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3291 [[ name: "Bus 1 FX 14 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3292 [[ name: "Bus 1 FX 14 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3293 [[ name: "Bus 1 FX 14 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3294 [[ name: "Bus 1 FX 14 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3295 [[ name: "Bus 1 FX 14 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3296 [[ name: "Bus 1 FX 14 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3297 [[ name: "Bus 1 FX 14 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3298 [[ name: "Bus 1 FX 14 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3299 [[ name: "Bus 1 FX 14 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3409 [[ name: "Bus 1 FX 14 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3389 [[ name: "Bus 1 FX Order 14", min: 0.0, max: 15.0, init: 13, step: 1.0 ]];
+    input event float param3300 [[ name: "Bus 1 FX 15 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3301 [[ name: "Bus 1 FX 15 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3302 [[ name: "Bus 1 FX 15 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3303 [[ name: "Bus 1 FX 15 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3304 [[ name: "Bus 1 FX 15 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3305 [[ name: "Bus 1 FX 15 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3306 [[ name: "Bus 1 FX 15 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3307 [[ name: "Bus 1 FX 15 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3308 [[ name: "Bus 1 FX 15 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3309 [[ name: "Bus 1 FX 15 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3410 [[ name: "Bus 1 FX 15 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3390 [[ name: "Bus 1 FX Order 15", min: 0.0, max: 15.0, init: 14, step: 1.0 ]];
+    input event float param3310 [[ name: "Bus 1 FX 16 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3311 [[ name: "Bus 1 FX 16 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3312 [[ name: "Bus 1 FX 16 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3313 [[ name: "Bus 1 FX 16 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3314 [[ name: "Bus 1 FX 16 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3315 [[ name: "Bus 1 FX 16 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3316 [[ name: "Bus 1 FX 16 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3317 [[ name: "Bus 1 FX 16 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3318 [[ name: "Bus 1 FX 16 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3319 [[ name: "Bus 1 FX 16 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3411 [[ name: "Bus 1 FX 16 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3391 [[ name: "Bus 1 FX Order 16", min: 0.0, max: 15.0, init: 15, step: 1.0 ]];
+    input event float param3320 [[ name: "Bus 2 FX 11 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3321 [[ name: "Bus 2 FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3322 [[ name: "Bus 2 FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3323 [[ name: "Bus 2 FX 11 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3324 [[ name: "Bus 2 FX 11 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3325 [[ name: "Bus 2 FX 11 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3326 [[ name: "Bus 2 FX 11 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3327 [[ name: "Bus 2 FX 11 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3328 [[ name: "Bus 2 FX 11 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3329 [[ name: "Bus 2 FX 11 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3412 [[ name: "Bus 2 FX 11 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3392 [[ name: "Bus 2 FX Order 11", min: 0.0, max: 15.0, init: 10, step: 1.0 ]];
+    input event float param3330 [[ name: "Bus 2 FX 12 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3331 [[ name: "Bus 2 FX 12 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3332 [[ name: "Bus 2 FX 12 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3333 [[ name: "Bus 2 FX 12 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3334 [[ name: "Bus 2 FX 12 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3335 [[ name: "Bus 2 FX 12 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3336 [[ name: "Bus 2 FX 12 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3337 [[ name: "Bus 2 FX 12 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3338 [[ name: "Bus 2 FX 12 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3339 [[ name: "Bus 2 FX 12 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3413 [[ name: "Bus 2 FX 12 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3393 [[ name: "Bus 2 FX Order 12", min: 0.0, max: 15.0, init: 11, step: 1.0 ]];
+    input event float param3340 [[ name: "Bus 2 FX 13 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3341 [[ name: "Bus 2 FX 13 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3342 [[ name: "Bus 2 FX 13 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3343 [[ name: "Bus 2 FX 13 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3344 [[ name: "Bus 2 FX 13 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3345 [[ name: "Bus 2 FX 13 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3346 [[ name: "Bus 2 FX 13 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3347 [[ name: "Bus 2 FX 13 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3348 [[ name: "Bus 2 FX 13 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3349 [[ name: "Bus 2 FX 13 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3414 [[ name: "Bus 2 FX 13 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3394 [[ name: "Bus 2 FX Order 13", min: 0.0, max: 15.0, init: 12, step: 1.0 ]];
+    input event float param3350 [[ name: "Bus 2 FX 14 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3351 [[ name: "Bus 2 FX 14 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3352 [[ name: "Bus 2 FX 14 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3353 [[ name: "Bus 2 FX 14 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3354 [[ name: "Bus 2 FX 14 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3355 [[ name: "Bus 2 FX 14 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3356 [[ name: "Bus 2 FX 14 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3357 [[ name: "Bus 2 FX 14 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3358 [[ name: "Bus 2 FX 14 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3359 [[ name: "Bus 2 FX 14 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3415 [[ name: "Bus 2 FX 14 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3395 [[ name: "Bus 2 FX Order 14", min: 0.0, max: 15.0, init: 13, step: 1.0 ]];
+    input event float param3360 [[ name: "Bus 2 FX 15 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3361 [[ name: "Bus 2 FX 15 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3362 [[ name: "Bus 2 FX 15 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3363 [[ name: "Bus 2 FX 15 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3364 [[ name: "Bus 2 FX 15 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3365 [[ name: "Bus 2 FX 15 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3366 [[ name: "Bus 2 FX 15 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3367 [[ name: "Bus 2 FX 15 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3368 [[ name: "Bus 2 FX 15 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3369 [[ name: "Bus 2 FX 15 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3416 [[ name: "Bus 2 FX 15 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3396 [[ name: "Bus 2 FX Order 15", min: 0.0, max: 15.0, init: 14, step: 1.0 ]];
+    input event float param3370 [[ name: "Bus 2 FX 16 Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
+    input event float param3371 [[ name: "Bus 2 FX 16 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param3372 [[ name: "Bus 2 FX 16 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param3373 [[ name: "Bus 2 FX 16 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
+    input event float param3374 [[ name: "Bus 2 FX 16 P1", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3375 [[ name: "Bus 2 FX 16 P2", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3376 [[ name: "Bus 2 FX 16 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3377 [[ name: "Bus 2 FX 16 P4", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3378 [[ name: "Bus 2 FX 16 P5", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3379 [[ name: "Bus 2 FX 16 P6", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param3417 [[ name: "Bus 2 FX 16 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
+    input event float param3397 [[ name: "Bus 2 FX Order 16", min: 0.0, max: 15.0, init: 15, step: 1.0 ]];
     input event float param940 [[ name: "Main FX 1 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param941 [[ name: "Main FX 2 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
     input event float param942 [[ name: "Main FX 3 Sync", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];
@@ -3183,39 +3399,39 @@ processor Eisenpuls_Synth
 
     // Wavetable 3 memory bank (1 memory x 96000 samples)
     // ---------------- FX RACK STATE ----------------
-    int[32]       fxType;  // padded to a power of two (cheap index wrap)
-    float[32]     fxOn;  // padded to a power of two (cheap index wrap)
-    float[32]     fxMix;  // padded to a power of two (cheap index wrap)
-    int[32]       fxMode;  // padded to a power of two (cheap index wrap)
+    int[64]       fxType;  // padded to a power of two (cheap index wrap)
+    float[64]     fxOn;  // padded to a power of two (cheap index wrap)
+    float[64]     fxMix;  // padded to a power of two (cheap index wrap)
+    int[64]       fxMode;  // padded to a power of two (cheap index wrap)
     // FX-PEQ: band table (10 values per band, 24 bands per slot, normalised), biquad sections (64 per slot, 5 coefficients, 4 states), combs (4 values per band)
-    float[7200]   peqB;
-    float[9600]   peqC;
-    float[7680]   peqZ;
-    int[1920]     peqCh;
-    int[32]       peqN;
-    float[2880]   peqK;
-    float[32]     fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
-    float[32]     fxEnvRel;
-    float[32]     fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
-    int[32]       fxEnvSt;
-    int[32]       fxEnvSeen;
-    float[32]     fxEnvGc;
-    float[32]     fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
-    int[32]       fxEnvCt;
+    float[11520]   peqB;
+    float[15360]   peqC;
+    float[12288]   peqZ;
+    int[3072]     peqCh;
+    int[64]       peqN;
+    float[4608]   peqK;
+    float[64]     fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
+    float[64]     fxEnvRel;
+    float[64]     fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
+    int[64]       fxEnvSt;
+    int[64]       fxEnvSeen;
+    float[64]     fxEnvGc;
+    float[64]     fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
+    int[64]       fxEnvCt;
     int           fxNoteSeq = 0;   // counts accepted note-ons
     bool          fxHeld = false;  // any note is held (not yet released)
-    int[32]       fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
+    int[64]       fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
-    float[256]    fxP;  // padded to a power of two (cheap index wrap)
-    bool[32]      fxDirty;  // padded to a power of two (cheap index wrap)
-    int[32]       fxOrder;  // padded to a power of two (cheap index wrap)
-    int[32]       fxSeq;  // padded to a power of two (cheap index wrap)
-    float[512]    fxD;  // padded to a power of two (cheap index wrap)
+    float[512]    fxP;  // padded to a power of two (cheap index wrap)
+    bool[64]      fxDirty;  // padded to a power of two (cheap index wrap)
+    int[64]       fxOrder;  // padded to a power of two (cheap index wrap)
+    int[64]       fxSeq;  // padded to a power of two (cheap index wrap)
+    float[1024]    fxD;  // padded to a power of two (cheap index wrap)
     float[2048]   fxF;  // padded to a power of two (cheap index wrap)
-    int[1024]      fxI;  // padded to a power of two (cheap index wrap)
-    float64[128]  fxPh;  // padded to a power of two (cheap index wrap)
-    float[5898240] fxArena;   // 30 slots x 196608 floats
+    int[2048]      fxI;  // padded to a power of two (cheap index wrap)
+    float64[256]  fxPh;  // padded to a power of two (cheap index wrap)
+    float[9437184] fxArena;   // FX-SLOTS: 48 slots x 196608 floats
     float[8]      busDcX;  // padded to a power of two (cheap index wrap)
     float[8]      busDcY;  // padded to a power of two (cheap index wrap)
     float         busLevel1 = 1.0f;
@@ -5968,6 +6184,223 @@ processor Eisenpuls_Synth
     event param3118 (float v) { lfoUni.at (7) = v > 0.5f ? 0.0f : 1.0f; }
     event param3119 (float v) { lfoUni.at (8) = v > 0.5f ? 0.0f : 1.0f; }
     event param3120 (float v) { lfoUni.at (9) = v > 0.5f ? 0.0f : 1.0f; }
+    // FX-SLOTS: slots 11-16 of the three racks
+    event param3200 (float v) { fxSetType (30, int (v + 0.5f)); }
+    event param3201 (float v) { fxOn.at (30) = v; }
+    event param3202 (float v) { fxMix.at (30) = v; }
+    event param3203 (float v) { fxMode.at (30) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (30) = true; }
+    event param3204 (float v) { fxP.at (180) = v; fxDirty.at (30) = true; }
+    event param3205 (float v) { fxP.at (181) = v; fxDirty.at (30) = true; }
+    event param3206 (float v) { fxP.at (182) = v; fxDirty.at (30) = true; }
+    event param3207 (float v) { fxP.at (183) = v; fxDirty.at (30) = true; }
+    event param3208 (float v) { fxP.at (184) = v; fxDirty.at (30) = true; }
+    event param3209 (float v) { fxP.at (185) = v; fxDirty.at (30) = true; }
+    event param3400 (float v) { fxSync.at (30) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (30) = true; }
+    event param3380 (float v) { fxOrder.at (10) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3210 (float v) { fxSetType (31, int (v + 0.5f)); }
+    event param3211 (float v) { fxOn.at (31) = v; }
+    event param3212 (float v) { fxMix.at (31) = v; }
+    event param3213 (float v) { fxMode.at (31) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (31) = true; }
+    event param3214 (float v) { fxP.at (186) = v; fxDirty.at (31) = true; }
+    event param3215 (float v) { fxP.at (187) = v; fxDirty.at (31) = true; }
+    event param3216 (float v) { fxP.at (188) = v; fxDirty.at (31) = true; }
+    event param3217 (float v) { fxP.at (189) = v; fxDirty.at (31) = true; }
+    event param3218 (float v) { fxP.at (190) = v; fxDirty.at (31) = true; }
+    event param3219 (float v) { fxP.at (191) = v; fxDirty.at (31) = true; }
+    event param3401 (float v) { fxSync.at (31) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (31) = true; }
+    event param3381 (float v) { fxOrder.at (11) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3220 (float v) { fxSetType (32, int (v + 0.5f)); }
+    event param3221 (float v) { fxOn.at (32) = v; }
+    event param3222 (float v) { fxMix.at (32) = v; }
+    event param3223 (float v) { fxMode.at (32) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (32) = true; }
+    event param3224 (float v) { fxP.at (192) = v; fxDirty.at (32) = true; }
+    event param3225 (float v) { fxP.at (193) = v; fxDirty.at (32) = true; }
+    event param3226 (float v) { fxP.at (194) = v; fxDirty.at (32) = true; }
+    event param3227 (float v) { fxP.at (195) = v; fxDirty.at (32) = true; }
+    event param3228 (float v) { fxP.at (196) = v; fxDirty.at (32) = true; }
+    event param3229 (float v) { fxP.at (197) = v; fxDirty.at (32) = true; }
+    event param3402 (float v) { fxSync.at (32) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (32) = true; }
+    event param3382 (float v) { fxOrder.at (12) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3230 (float v) { fxSetType (33, int (v + 0.5f)); }
+    event param3231 (float v) { fxOn.at (33) = v; }
+    event param3232 (float v) { fxMix.at (33) = v; }
+    event param3233 (float v) { fxMode.at (33) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (33) = true; }
+    event param3234 (float v) { fxP.at (198) = v; fxDirty.at (33) = true; }
+    event param3235 (float v) { fxP.at (199) = v; fxDirty.at (33) = true; }
+    event param3236 (float v) { fxP.at (200) = v; fxDirty.at (33) = true; }
+    event param3237 (float v) { fxP.at (201) = v; fxDirty.at (33) = true; }
+    event param3238 (float v) { fxP.at (202) = v; fxDirty.at (33) = true; }
+    event param3239 (float v) { fxP.at (203) = v; fxDirty.at (33) = true; }
+    event param3403 (float v) { fxSync.at (33) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (33) = true; }
+    event param3383 (float v) { fxOrder.at (13) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3240 (float v) { fxSetType (34, int (v + 0.5f)); }
+    event param3241 (float v) { fxOn.at (34) = v; }
+    event param3242 (float v) { fxMix.at (34) = v; }
+    event param3243 (float v) { fxMode.at (34) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (34) = true; }
+    event param3244 (float v) { fxP.at (204) = v; fxDirty.at (34) = true; }
+    event param3245 (float v) { fxP.at (205) = v; fxDirty.at (34) = true; }
+    event param3246 (float v) { fxP.at (206) = v; fxDirty.at (34) = true; }
+    event param3247 (float v) { fxP.at (207) = v; fxDirty.at (34) = true; }
+    event param3248 (float v) { fxP.at (208) = v; fxDirty.at (34) = true; }
+    event param3249 (float v) { fxP.at (209) = v; fxDirty.at (34) = true; }
+    event param3404 (float v) { fxSync.at (34) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (34) = true; }
+    event param3384 (float v) { fxOrder.at (14) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3250 (float v) { fxSetType (35, int (v + 0.5f)); }
+    event param3251 (float v) { fxOn.at (35) = v; }
+    event param3252 (float v) { fxMix.at (35) = v; }
+    event param3253 (float v) { fxMode.at (35) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (35) = true; }
+    event param3254 (float v) { fxP.at (210) = v; fxDirty.at (35) = true; }
+    event param3255 (float v) { fxP.at (211) = v; fxDirty.at (35) = true; }
+    event param3256 (float v) { fxP.at (212) = v; fxDirty.at (35) = true; }
+    event param3257 (float v) { fxP.at (213) = v; fxDirty.at (35) = true; }
+    event param3258 (float v) { fxP.at (214) = v; fxDirty.at (35) = true; }
+    event param3259 (float v) { fxP.at (215) = v; fxDirty.at (35) = true; }
+    event param3405 (float v) { fxSync.at (35) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (35) = true; }
+    event param3385 (float v) { fxOrder.at (15) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }
+    event param3260 (float v) { fxSetType (36, int (v + 0.5f)); }
+    event param3261 (float v) { fxOn.at (36) = v; }
+    event param3262 (float v) { fxMix.at (36) = v; }
+    event param3263 (float v) { fxMode.at (36) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (36) = true; }
+    event param3264 (float v) { fxP.at (216) = v; fxDirty.at (36) = true; }
+    event param3265 (float v) { fxP.at (217) = v; fxDirty.at (36) = true; }
+    event param3266 (float v) { fxP.at (218) = v; fxDirty.at (36) = true; }
+    event param3267 (float v) { fxP.at (219) = v; fxDirty.at (36) = true; }
+    event param3268 (float v) { fxP.at (220) = v; fxDirty.at (36) = true; }
+    event param3269 (float v) { fxP.at (221) = v; fxDirty.at (36) = true; }
+    event param3406 (float v) { fxSync.at (36) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (36) = true; }
+    event param3386 (float v) { fxOrder.at (26) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3270 (float v) { fxSetType (37, int (v + 0.5f)); }
+    event param3271 (float v) { fxOn.at (37) = v; }
+    event param3272 (float v) { fxMix.at (37) = v; }
+    event param3273 (float v) { fxMode.at (37) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (37) = true; }
+    event param3274 (float v) { fxP.at (222) = v; fxDirty.at (37) = true; }
+    event param3275 (float v) { fxP.at (223) = v; fxDirty.at (37) = true; }
+    event param3276 (float v) { fxP.at (224) = v; fxDirty.at (37) = true; }
+    event param3277 (float v) { fxP.at (225) = v; fxDirty.at (37) = true; }
+    event param3278 (float v) { fxP.at (226) = v; fxDirty.at (37) = true; }
+    event param3279 (float v) { fxP.at (227) = v; fxDirty.at (37) = true; }
+    event param3407 (float v) { fxSync.at (37) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (37) = true; }
+    event param3387 (float v) { fxOrder.at (27) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3280 (float v) { fxSetType (38, int (v + 0.5f)); }
+    event param3281 (float v) { fxOn.at (38) = v; }
+    event param3282 (float v) { fxMix.at (38) = v; }
+    event param3283 (float v) { fxMode.at (38) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (38) = true; }
+    event param3284 (float v) { fxP.at (228) = v; fxDirty.at (38) = true; }
+    event param3285 (float v) { fxP.at (229) = v; fxDirty.at (38) = true; }
+    event param3286 (float v) { fxP.at (230) = v; fxDirty.at (38) = true; }
+    event param3287 (float v) { fxP.at (231) = v; fxDirty.at (38) = true; }
+    event param3288 (float v) { fxP.at (232) = v; fxDirty.at (38) = true; }
+    event param3289 (float v) { fxP.at (233) = v; fxDirty.at (38) = true; }
+    event param3408 (float v) { fxSync.at (38) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (38) = true; }
+    event param3388 (float v) { fxOrder.at (28) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3290 (float v) { fxSetType (39, int (v + 0.5f)); }
+    event param3291 (float v) { fxOn.at (39) = v; }
+    event param3292 (float v) { fxMix.at (39) = v; }
+    event param3293 (float v) { fxMode.at (39) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (39) = true; }
+    event param3294 (float v) { fxP.at (234) = v; fxDirty.at (39) = true; }
+    event param3295 (float v) { fxP.at (235) = v; fxDirty.at (39) = true; }
+    event param3296 (float v) { fxP.at (236) = v; fxDirty.at (39) = true; }
+    event param3297 (float v) { fxP.at (237) = v; fxDirty.at (39) = true; }
+    event param3298 (float v) { fxP.at (238) = v; fxDirty.at (39) = true; }
+    event param3299 (float v) { fxP.at (239) = v; fxDirty.at (39) = true; }
+    event param3409 (float v) { fxSync.at (39) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (39) = true; }
+    event param3389 (float v) { fxOrder.at (29) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3300 (float v) { fxSetType (40, int (v + 0.5f)); }
+    event param3301 (float v) { fxOn.at (40) = v; }
+    event param3302 (float v) { fxMix.at (40) = v; }
+    event param3303 (float v) { fxMode.at (40) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (40) = true; }
+    event param3304 (float v) { fxP.at (240) = v; fxDirty.at (40) = true; }
+    event param3305 (float v) { fxP.at (241) = v; fxDirty.at (40) = true; }
+    event param3306 (float v) { fxP.at (242) = v; fxDirty.at (40) = true; }
+    event param3307 (float v) { fxP.at (243) = v; fxDirty.at (40) = true; }
+    event param3308 (float v) { fxP.at (244) = v; fxDirty.at (40) = true; }
+    event param3309 (float v) { fxP.at (245) = v; fxDirty.at (40) = true; }
+    event param3410 (float v) { fxSync.at (40) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (40) = true; }
+    event param3390 (float v) { fxOrder.at (30) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3310 (float v) { fxSetType (41, int (v + 0.5f)); }
+    event param3311 (float v) { fxOn.at (41) = v; }
+    event param3312 (float v) { fxMix.at (41) = v; }
+    event param3313 (float v) { fxMode.at (41) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (41) = true; }
+    event param3314 (float v) { fxP.at (246) = v; fxDirty.at (41) = true; }
+    event param3315 (float v) { fxP.at (247) = v; fxDirty.at (41) = true; }
+    event param3316 (float v) { fxP.at (248) = v; fxDirty.at (41) = true; }
+    event param3317 (float v) { fxP.at (249) = v; fxDirty.at (41) = true; }
+    event param3318 (float v) { fxP.at (250) = v; fxDirty.at (41) = true; }
+    event param3319 (float v) { fxP.at (251) = v; fxDirty.at (41) = true; }
+    event param3411 (float v) { fxSync.at (41) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (41) = true; }
+    event param3391 (float v) { fxOrder.at (31) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }
+    event param3320 (float v) { fxSetType (42, int (v + 0.5f)); }
+    event param3321 (float v) { fxOn.at (42) = v; }
+    event param3322 (float v) { fxMix.at (42) = v; }
+    event param3323 (float v) { fxMode.at (42) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (42) = true; }
+    event param3324 (float v) { fxP.at (252) = v; fxDirty.at (42) = true; }
+    event param3325 (float v) { fxP.at (253) = v; fxDirty.at (42) = true; }
+    event param3326 (float v) { fxP.at (254) = v; fxDirty.at (42) = true; }
+    event param3327 (float v) { fxP.at (255) = v; fxDirty.at (42) = true; }
+    event param3328 (float v) { fxP.at (256) = v; fxDirty.at (42) = true; }
+    event param3329 (float v) { fxP.at (257) = v; fxDirty.at (42) = true; }
+    event param3412 (float v) { fxSync.at (42) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (42) = true; }
+    event param3392 (float v) { fxOrder.at (42) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
+    event param3330 (float v) { fxSetType (43, int (v + 0.5f)); }
+    event param3331 (float v) { fxOn.at (43) = v; }
+    event param3332 (float v) { fxMix.at (43) = v; }
+    event param3333 (float v) { fxMode.at (43) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (43) = true; }
+    event param3334 (float v) { fxP.at (258) = v; fxDirty.at (43) = true; }
+    event param3335 (float v) { fxP.at (259) = v; fxDirty.at (43) = true; }
+    event param3336 (float v) { fxP.at (260) = v; fxDirty.at (43) = true; }
+    event param3337 (float v) { fxP.at (261) = v; fxDirty.at (43) = true; }
+    event param3338 (float v) { fxP.at (262) = v; fxDirty.at (43) = true; }
+    event param3339 (float v) { fxP.at (263) = v; fxDirty.at (43) = true; }
+    event param3413 (float v) { fxSync.at (43) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (43) = true; }
+    event param3393 (float v) { fxOrder.at (43) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
+    event param3340 (float v) { fxSetType (44, int (v + 0.5f)); }
+    event param3341 (float v) { fxOn.at (44) = v; }
+    event param3342 (float v) { fxMix.at (44) = v; }
+    event param3343 (float v) { fxMode.at (44) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (44) = true; }
+    event param3344 (float v) { fxP.at (264) = v; fxDirty.at (44) = true; }
+    event param3345 (float v) { fxP.at (265) = v; fxDirty.at (44) = true; }
+    event param3346 (float v) { fxP.at (266) = v; fxDirty.at (44) = true; }
+    event param3347 (float v) { fxP.at (267) = v; fxDirty.at (44) = true; }
+    event param3348 (float v) { fxP.at (268) = v; fxDirty.at (44) = true; }
+    event param3349 (float v) { fxP.at (269) = v; fxDirty.at (44) = true; }
+    event param3414 (float v) { fxSync.at (44) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (44) = true; }
+    event param3394 (float v) { fxOrder.at (44) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
+    event param3350 (float v) { fxSetType (45, int (v + 0.5f)); }
+    event param3351 (float v) { fxOn.at (45) = v; }
+    event param3352 (float v) { fxMix.at (45) = v; }
+    event param3353 (float v) { fxMode.at (45) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (45) = true; }
+    event param3354 (float v) { fxP.at (270) = v; fxDirty.at (45) = true; }
+    event param3355 (float v) { fxP.at (271) = v; fxDirty.at (45) = true; }
+    event param3356 (float v) { fxP.at (272) = v; fxDirty.at (45) = true; }
+    event param3357 (float v) { fxP.at (273) = v; fxDirty.at (45) = true; }
+    event param3358 (float v) { fxP.at (274) = v; fxDirty.at (45) = true; }
+    event param3359 (float v) { fxP.at (275) = v; fxDirty.at (45) = true; }
+    event param3415 (float v) { fxSync.at (45) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (45) = true; }
+    event param3395 (float v) { fxOrder.at (45) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
+    event param3360 (float v) { fxSetType (46, int (v + 0.5f)); }
+    event param3361 (float v) { fxOn.at (46) = v; }
+    event param3362 (float v) { fxMix.at (46) = v; }
+    event param3363 (float v) { fxMode.at (46) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (46) = true; }
+    event param3364 (float v) { fxP.at (276) = v; fxDirty.at (46) = true; }
+    event param3365 (float v) { fxP.at (277) = v; fxDirty.at (46) = true; }
+    event param3366 (float v) { fxP.at (278) = v; fxDirty.at (46) = true; }
+    event param3367 (float v) { fxP.at (279) = v; fxDirty.at (46) = true; }
+    event param3368 (float v) { fxP.at (280) = v; fxDirty.at (46) = true; }
+    event param3369 (float v) { fxP.at (281) = v; fxDirty.at (46) = true; }
+    event param3416 (float v) { fxSync.at (46) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (46) = true; }
+    event param3396 (float v) { fxOrder.at (46) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
+    event param3370 (float v) { fxSetType (47, int (v + 0.5f)); }
+    event param3371 (float v) { fxOn.at (47) = v; }
+    event param3372 (float v) { fxMix.at (47) = v; }
+    event param3373 (float v) { fxMode.at (47) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (47) = true; }
+    event param3374 (float v) { fxP.at (282) = v; fxDirty.at (47) = true; }
+    event param3375 (float v) { fxP.at (283) = v; fxDirty.at (47) = true; }
+    event param3376 (float v) { fxP.at (284) = v; fxDirty.at (47) = true; }
+    event param3377 (float v) { fxP.at (285) = v; fxDirty.at (47) = true; }
+    event param3378 (float v) { fxP.at (286) = v; fxDirty.at (47) = true; }
+    event param3379 (float v) { fxP.at (287) = v; fxDirty.at (47) = true; }
+    event param3417 (float v) { fxSync.at (47) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (47) = true; }
+    event param3397 (float v) { fxOrder.at (47) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }
     // FX-SYNC: sync divisions of the effect slots
     event param940 (float v) { fxSync.at (0) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (0) = true; }
     event param941 (float v) { fxSync.at (1) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (1) = true; }
@@ -6101,16 +6534,16 @@ processor Eisenpuls_Synth
     event param638     (float v) { fxP.at (57) = v; fxDirty.at (9) = true; }
     event param639     (float v) { fxP.at (58) = v; fxDirty.at (9) = true; }
     event param640     (float v) { fxP.at (59) = v; fxDirty.at (9) = true; }
-    event param641    (float v) { fxOrder.at (0) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param642    (float v) { fxOrder.at (1) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param643    (float v) { fxOrder.at (2) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param644    (float v) { fxOrder.at (3) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param645    (float v) { fxOrder.at (4) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param646    (float v) { fxOrder.at (5) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param647    (float v) { fxOrder.at (6) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param648    (float v) { fxOrder.at (7) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param649    (float v) { fxOrder.at (8) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
-    event param650    (float v) { fxOrder.at (9) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (0); }
+    event param641    (float v) { fxOrder.at (0) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param642    (float v) { fxOrder.at (1) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param643    (float v) { fxOrder.at (2) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param644    (float v) { fxOrder.at (3) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param645    (float v) { fxOrder.at (4) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param646    (float v) { fxOrder.at (5) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param647    (float v) { fxOrder.at (6) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param648    (float v) { fxOrder.at (7) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param649    (float v) { fxOrder.at (8) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
+    event param650    (float v) { fxOrder.at (9) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (0); }   // FX-SLOTS
     event param651     (float v) { fxSetType (10, int (v + 0.5f)); }
     event param652     (float v) { fxOn.at (10) = v; }
     event param653     (float v) { fxMix.at (10) = v; }
@@ -6211,16 +6644,16 @@ processor Eisenpuls_Synth
     event param748     (float v) { fxP.at (117) = v; fxDirty.at (19) = true; }
     event param749     (float v) { fxP.at (118) = v; fxDirty.at (19) = true; }
     event param750     (float v) { fxP.at (119) = v; fxDirty.at (19) = true; }
-    event param751    (float v) { fxOrder.at (10) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param752    (float v) { fxOrder.at (11) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param753    (float v) { fxOrder.at (12) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param754    (float v) { fxOrder.at (13) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param755    (float v) { fxOrder.at (14) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param756    (float v) { fxOrder.at (15) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param757    (float v) { fxOrder.at (16) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param758    (float v) { fxOrder.at (17) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param759    (float v) { fxOrder.at (18) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
-    event param760    (float v) { fxOrder.at (19) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (1); }
+    event param751    (float v) { fxOrder.at (16) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param752    (float v) { fxOrder.at (17) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param753    (float v) { fxOrder.at (18) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param754    (float v) { fxOrder.at (19) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param755    (float v) { fxOrder.at (20) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param756    (float v) { fxOrder.at (21) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param757    (float v) { fxOrder.at (22) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param758    (float v) { fxOrder.at (23) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param759    (float v) { fxOrder.at (24) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
+    event param760    (float v) { fxOrder.at (25) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (1); }   // FX-SLOTS
     event param761     (float v) { fxSetType (20, int (v + 0.5f)); }
     event param762     (float v) { fxOn.at (20) = v; }
     event param763     (float v) { fxMix.at (20) = v; }
@@ -6321,16 +6754,16 @@ processor Eisenpuls_Synth
     event param858     (float v) { fxP.at (177) = v; fxDirty.at (29) = true; }
     event param859     (float v) { fxP.at (178) = v; fxDirty.at (29) = true; }
     event param860     (float v) { fxP.at (179) = v; fxDirty.at (29) = true; }
-    event param861    (float v) { fxOrder.at (20) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param862    (float v) { fxOrder.at (21) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param863    (float v) { fxOrder.at (22) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param864    (float v) { fxOrder.at (23) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param865    (float v) { fxOrder.at (24) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param866    (float v) { fxOrder.at (25) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param867    (float v) { fxOrder.at (26) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param868    (float v) { fxOrder.at (27) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param869    (float v) { fxOrder.at (28) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
-    event param870    (float v) { fxOrder.at (29) = clamp (int (v + 0.5f), 0, 9); fxRebuildSeq (2); }
+    event param861    (float v) { fxOrder.at (32) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param862    (float v) { fxOrder.at (33) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param863    (float v) { fxOrder.at (34) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param864    (float v) { fxOrder.at (35) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param865    (float v) { fxOrder.at (36) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param866    (float v) { fxOrder.at (37) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param867    (float v) { fxOrder.at (38) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param868    (float v) { fxOrder.at (39) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param869    (float v) { fxOrder.at (40) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
+    event param870    (float v) { fxOrder.at (41) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (2); }   // FX-SLOTS
     event param880    (float v) { busLevel1 = v; }
     event param881    (float v) { busLevel2 = v; }
 
@@ -6400,7 +6833,7 @@ processor Eisenpuls_Synth
         {
             hostBpm = t.bpm;
 
-            for (int fs = 0; fs < 30; ++fs)
+            for (int fs = 0; fs < 48; ++fs)
                 fxDirty.at (fs) = true;
         }
     }
@@ -6489,7 +6922,7 @@ processor Eisenpuls_Synth
     float<2>    hostRetS;
     float<2>    hostSendAcc;
     float<2>    hostXd;
-    float[3840] hostDry;
+    float[6144] hostDry;
     int         hostDryPos;
     int         hostVoice;
 
@@ -7208,7 +7641,7 @@ processor Eisenpuls_Synth
 
     event eqLoad (BankChunk c)
     {
-        int b = clamp (c.bank, 0, 29);
+        int b = clamp (c.bank, 0, 47);
 
         if (c.total <= 0)
         {
@@ -7252,6 +7685,10 @@ processor Eisenpuls_Synth
             peqZ.at (s * 256 + i) = 0.0f;
     }
 
+    // FX-SLOTS: global slot numbers: 0..29 = slots 1-10 of the racks (rk * 10 + k), 30..47 = slots 11-16 (30 + rk * 6 + j)
+    int fxRk (int s)            { return s < 30 ? s / 10 : (s - 30) / 6; }
+    int fxG (int rk, int ls)    { return ls < 10 ? rk * 10 + ls : 30 + rk * 6 + (ls - 10); }
+
     // Selects the effect of a slot (its memory is cleared only when the type really changes)
     void fxSetType (int s, int t)
     {
@@ -7264,20 +7701,20 @@ processor Eisenpuls_Synth
         }
 
         fxDirty.at (s) = true;
-        cvUpdateOwner (s / 10);
+        cvUpdateOwner (fxRk (s));
     }
 
-    // Rebuilds the processing order from the 10 "FX Order" values; an order that is not a permutation of the
-    // 10 slots (for example while the UI is still sending the values one by one) is ignored
+    // Rebuilds the processing order from the 16 "FX Order" values of a rack (rack-local slot numbers 0..15); an order that is not a permutation
+    // of the 16 slots (for example while the UI is still sending the values one by one) is ignored
     void fxRebuildSeq (int rk)
     {
-        int[10] used;
+        int[16] used;
         bool    valid = true;
-        int     ob    = rk * 10;
+        int     ob    = rk * 16;
 
-        for (int k = 0; k < 10; ++k)
+        for (int k = 0; k < 16; ++k)
         {
-            int s = clamp (fxOrder.at (ob + k), 0, 9);
+            int s = clamp (fxOrder.at (ob + k), 0, 15);
 
             if (used.at (s) != 0)
                 valid = false;
@@ -7287,8 +7724,8 @@ processor Eisenpuls_Synth
 
         if (valid)
         {
-            for (int k = 0; k < 10; ++k)
-                fxSeq.at (ob + k) = clamp (fxOrder.at (ob + k), 0, 9);
+            for (int k = 0; k < 16; ++k)
+                fxSeq.at (ob + k) = clamp (fxOrder.at (ob + k), 0, 15);
         }
     }
 
@@ -7580,7 +8017,7 @@ processor Eisenpuls_Synth
             fxD.at (db + 5) = clamp (1.0f - float (exp (-float (twoPi) * lpf * dt)), 0.0f, 1.0f);
             fxD.at (db + 6) = clamp (1.0f - float (exp (-float (twoPi) * hpf * dt)), 0.0f, 1.0f);
 
-            int rk = s / 10;
+            int rk = fxRk (s);
 
             if (cvOwner.at (rk) == s)
             {
@@ -7672,7 +8109,7 @@ processor Eisenpuls_Synth
     float[524288]  cvUser;         // e * 96000: loaded impulse response (mono)
     int[128]       cvI;
     float[128]     cvF;
-    int[4]         cvOwner;        // slot (0..29) that owns the engine of rack e, or -1
+    int[4]         cvOwner;        // slot (0..47) that owns the engine of rack e, or -1
 
     void cvInit()
     {
@@ -8164,9 +8601,9 @@ processor Eisenpuls_Synth
     {
         int ow = -1;
 
-        for (int k = 9; k >= 0; --k)
-            if (fxType.at (rk * 10 + k) == 12)
-                ow = rk * 10 + k;
+        for (int k = 15; k >= 0; --k)
+            if (fxType.at (fxG (rk, k)) == 12)
+                ow = fxG (rk, k);
 
         if (ow != cvOwner.at (rk))
         {
@@ -8211,7 +8648,7 @@ processor Eisenpuls_Synth
     // the slot s (owner or not) of convolution type: dry when it does not own the engine
     float<2> fxConv (int s, float<2> x)
     {
-        int   rk = s / 10;
+        int   rk = fxRk (s);
 
         if (cvOwner.at (rk) != s)
             return x;
@@ -10191,8 +10628,8 @@ processor Eisenpuls_Synth
     {
         float<2> v = x;
 
-        for (int k = 0; k < 10; ++k)
-            v = fxRunSlot (rk * 10 + fxSeq.at (rk * 10 + k), v);
+        for (int k = 0; k < 16; ++k)
+            v = fxRunSlot (fxG (rk, fxSeq.at (rk * 16 + k)), v);
 
         return v;
     }
@@ -10200,18 +10637,22 @@ processor Eisenpuls_Synth
     // Start-up values of the rack (every slot empty, on, 100 % mix, identity order)
     void fxInit()
     {
-        for (int s = 0; s < 30; ++s)
+        for (int s = 0; s < 48; ++s)
         {
             fxType.at (s)  = 0;
             fxOn.at (s)    = 1.0f;
             fxMix.at (s)   = 1.0f;
             fxMode.at (s)  = 0;
             fxDirty.at (s) = true;
-            fxOrder.at (s) = s - (s / 10) * 10;
-            fxSeq.at (s)   = s - (s / 10) * 10;
 
             for (int k = 0; k < 6; ++k)
                 fxP.at (s * 6 + k) = 0.5f;
+        }
+
+        for (int o = 0; o < 48; ++o)
+        {
+            fxOrder.at (o) = o - (o / 16) * 16;
+            fxSeq.at (o)   = o - (o / 16) * 16;
         }
     }
 
@@ -15685,10 +16126,8 @@ processor Eisenpuls_Synth
 
             fxGateUpdate();   // FX-FENV
 
-            // ----- FX racks: Bus 1 and Bus 2 feed the Main rack, which feeds the output -----
-            float<2> bus1 = fxRunRack (1, float<2> (busInL.at (1), busInR.at (1))) * busLevel1;
-            float<2> bus2 = fxRunRack (2, float<2> (busInL.at (2), busInR.at (2))) * busLevel2;
-            float<2> rack = fxRunRack (0, float<2> (busInL.at (0) + bus1[0] + bus2[0], busInR.at (0) + bus1[1] + bus2[1]));
+            // ----- FX-NOBUS: one FX rack (Main); what an oscillator routes to Bus 1 / Bus 2 plays through it as well -----
+            float<2> rack = fxRunRack (0, float<2> (busInL.at (0) + busInL.at (1) + busInL.at (2), busInR.at (0) + busInR.at (1) + busInR.at (2)));   // FX-NOBUS-SUM
             float outL = rack[0];
             float outR = rack[1];
 

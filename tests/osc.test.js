@@ -28,7 +28,7 @@ const pc = { sent: [], requestFullStoredState (cb) { setTimeout(() => cb({ value
     check("every slot has a Frequency knob (0 = Off)", [0,1,2,3,4,5].every(o => ctl(1048 + 64 * o)) && V.querySelector(".control[data-param=\"param1048\"] .val") !== undefined);
     check("old filter / mixer / sampler controls are gone", !V.querySelector(".p-flt, .p-mix, .p-smp, .p-s2, .p-wt1") && !ctl(12) && !ctl(176) && !ctl(154));
     check("Terrain selectors list the 12 terrains", opts(1024).length === 12 && opts(2110).length === 12 && opts(1000)[2] === "Wave Terrain");
-    check("Source selector is a dropdown with the Kick source", opts(1000).length === 13 && opts(1000)[12] === "SoundFont" && opts(1000)[5] === "Kick" && opts(1000)[6] === "Waveguide" && opts(1000)[7] === "JP-8080" && opts(1000)[8] === "Granular" && opts(1000)[9] === "Additive" && opts(1000)[10] === "Modal Drum" && opts(1000)[11] === "Spectral" && opts(1064).length === 13 && ctl(1900) && ctl(1995) && opts(1900).length === 4 && opts(1910).length === 6);
+    check("Source selector is a dropdown with the Kick source", opts(1000).length === 14 && opts(1000)[12] === "SoundFont" && opts(1000)[13] === "VST3" && opts(1000)[5] === "Kick" && opts(1000)[6] === "Waveguide" && opts(1000)[7] === "JP-8080" && opts(1000)[8] === "Granular" && opts(1000)[9] === "Additive" && opts(1000)[10] === "Modal Drum" && opts(1000)[11] === "Spectral" && opts(1064).length === 14 && ctl(1900) && ctl(1995) && opts(1900).length === 4 && opts(1910).length === 6);
 
     const pg = V.querySelector(".p-o0");
     const shown = sel => { const e = V.querySelector(sel); return e && e.style.display !== "none"; };

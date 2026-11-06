@@ -20,7 +20,7 @@ namespace njo
             return "njo.mem.osc" + juce::String (o) + ext[(int) k];
         }
         const char* endpointFor (SoundMemory::Kind k) { return k == SoundMemory::SoundFont ? "sfBankLoad" : k == SoundMemory::EqBands ? "eqLoad" : k == SoundMemory::ModeEdit ? "modLoad" : k == SoundMemory::ImpulseResponse ? "irLoad" : isTable (k) ? "tblLoad" : k == SoundMemory::Wavetable ? "wtBankLoad" : "smpBankLoad"; }
-        constexpr int kMaxIdx = 30;                  // slots per kind: 6 oscillators, 3 FX racks, 18 resonator mode sets (slot * 3 + set), 30 FX slots (Parametric EQ bands)
+        constexpr int kMaxIdx = 48;                  // slots per kind: 6 oscillators, 3 FX racks, 18 resonator mode sets (slot * 3 + set), 48 FX slots (Parametric EQ bands)
         constexpr float kModeScale = 8.0f;           // mode edit multipliers run 0..8, stored as pcm16 of value / 8
         int bankFor (SoundMemory::Kind k, int o) { return k == SoundMemory::ShaperTable ? OSC_N + o : o; }
 

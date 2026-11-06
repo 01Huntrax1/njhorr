@@ -123,15 +123,14 @@ They are stored as 16-bit audio, roughly 260 KB of project data per loaded sampl
 The Sound Vault folders (Documents/Njohrr/...) are a shared library of files; which vault file an oscillator uses is also per instance.
 Regression test: `cd tests && npm install && npm test`.
 
-## FX racks and buses 
-There are three FX racks of 10 slots each: **Bus 1**, **Bus 2** and **Main** (tabs on the FX page). Any effect (Distortion, Bit Crush, Delay,
+## FX rack
+There is one FX rack of 16 slots (see *16 effects per rack* below): **Main**. (The Bus 1 and Bus 2 racks were removed.) Any effect (Distortion, Bit Crush, Delay,
 Chorus, Flanger, Phaser, Tremolo, Reverb, Filter with all 30 filter types of the Filter page, EQ, Compressor) fits in any slot, with on/off, mix,
-a mode selector and up to six knobs. Drag the grip (or use the arrows) to change the order within a rack; the signal runs top to bottom.
+a mode selector and up to six knobs. Drag the grip (or use the arrows) to change the order within the rack; the signal runs top to bottom.
 
-Routing: every mixer channel (Osc, Sub, Noise, Supersaw, Sampler 1/2, WT 1-3) has an **Output** selector (Main / Bus 1 / Bus 2) on the Mixer page.
-Sources on Bus 1 / Bus 2 are filtered by their own copy of the voice filter, pass through the synth Drive, then the bus rack and the **Bus 1 / Bus 2**
-level faders; both buses then feed the Main rack, which feeds Width / Tone / Output. With every source on Main (the default) the sound is the same as
-without buses.
+Routing: the Output selector of the oscillators is gone from the native editor. Everything plays through the Main rack, which feeds Width / Tone / Output.
+Old presets that route a source to Bus 1 / Bus 2 keep sounding: the parameters (`out`, `880` / `881`) stay in the file but all three buses are summed into Main
+(the bus racks and levels are no longer processed, their stored slot settings are ignored).
 
 Parameters: Main slots `param541`-`640` (order `641`-`650`), Bus 1 `651`-`750` (order `751`-`760`), Bus 2 `761`-`860` (order `861`-`870`), channel outputs
 `871`-`879`, bus levels `880`/`881`. The old fixed-chain parameters were removed; presets saved before the racks are converted when loaded.
@@ -221,7 +220,7 @@ Each oscillator slot has a fourth Source type, **Physical**: modal synthesis in 
 
 ## FX page
 
-The FX page (native editor) is laid out like a modern synth's effect page. The three racks (Bus 1, Bus 2, Main) are the tabs on top; each rack still holds up to 10 effects in the same parameters and processing order as before (presets are unchanged).
+The FX page (native editor) is laid out like a modern synth's effect page. The Main rack is shown; it holds up to 16 effects (the list scrolls) in the same parameters and processing order as before (presets are unchanged).
 
 - **List** (left): the effects of the rack in processing order. Click an effect to open its page, the dot bypasses it, the arrows and the grip move it (drag to reorder). **+ ADD FX** opens a grid of all effect types; a new effect is appended to the end of the chain with its own default settings and selected.
 - **Effect page** (centre): name, mode dropdown (for effects that have modes), ON / bypass, **REMOVE**, a display and large knobs for Mix and every parameter of the effect (all of them accept modulation drops). The displays follow the knobs and are schematic: Filter and EQ show the frequency response, Distortion the transfer curve of the chosen algorithm, Bit Crush the quantised sine, Delay the echo taps (with Ping-Pong), Chorus / Flanger / Phaser the modulation (the Phaser also its notches), Tremolo the gain shape of the chosen waveform, Reverb the decay with pre-delay, Compressor the transfer curve with threshold, ratio and makeup.
@@ -265,11 +264,11 @@ More algorithms and parameters (`tools/fx/build_fx2.py`; all effects keep their 
 Tests: `python3 tools/fx/test_fx.py --host <dsp_host built from cmaj generate --target=cpp>` (the host got an `ir` command).
 
 ## Njohrr FX (effects-only plugin)
-A second VST3, **Njohrr FX**, with only the effects section: an audio input, the three FX racks (Main, Bus 1, Bus 2, all 18 effect types), the Output card (Drive, algorithm, width, tone, DC block, output gain) and the preset bar. No oscillators, no modulation page, no MIDI.
-* Same DSP source and the same parameter ids as the synth (generated, `tools/fx/build_fxplugin.py` -> `patch_fx/`), so FX settings are compatible. Differences: the input feeds the three bus inputs at unity gain (the synth Master level is not applied), **Drive** blends the shaped input in (default 0 = clean), **Bus 1 / Bus 2 return levels default to 0** (the buses are parallel racks: raise the return to hear them), and the output limit is +-8 instead of +-1.
+A second VST3, **Njohrr FX**, with only the effects section: an audio input, the Main FX rack (all 18 effect types), the Output card (Drive, algorithm, width, tone, DC block, output gain) and the preset bar. No oscillators, no modulation page, no MIDI.
+* Same DSP source and the same parameter ids as the synth (generated, `tools/fx/build_fxplugin.py` -> `patch_fx/`), so FX settings are compatible. Differences: the input feeds the Main rack at unity gain (the synth Master level is not applied), **Drive** blends the shaped input in (default 0 = clean), **Bus 1 / Bus 2 return levels default to 0** (the buses are parallel racks: raise the return to hear them), and the output limit is +-8 instead of +-1.
 * The editor is the same native UI built with `NJOHRR_FX_ONLY=1` (no page rail, no modulation strip, window 1180 x 564). Mod-matrix sources that need notes (envelopes, key, velocity) have no signal here; free-running LFOs still work.
 * Build: CMake target `NjohrrFX` (option `NJOHRR_BUILD_FX`, default ON), output `build/NjohrrFX_artefacts/Release/VST3/`; the CI workflow uploads it as `NjohrrFX-VST3-<OS>`. Its plugin source is `cmajor_plugin_fx.cpp`, generated by `tools/regen_plugin.sh` (which also regenerates `patch_fx/`).
-* Tests: `tools/fx/test_fxplugin.py --host <dsp_host built with -DDSP_FX from the patch_fx class>` (unity pass-through, silence, no synth on MIDI, racks and bus parallel rack).
+* Tests: `tools/fx/test_fxplugin.py --host <dsp_host built with -DDSP_FX from the patch_fx class>` (unity pass-through, silence, no synth on MIDI, and racks).
 
 ## Through-zero FM matrix (TZFM)
 A fourth modulation matrix next to FM, PM, PD, RM and AM: on the RM / AM page, third panel (parameter ids 2900 + 6 * modulator + carrier, 0-100 %, `tools/osc/build_tzfm.py`). It is linear FM with a signed frequency: the modulator is integrated into a phase offset, so the carrier's frequency is f * (1 + 4 * amount * modulator) and runs backwards through zero when that factor is negative (the exponential FM matrix cannot do that). Because the modulator is integrated, a DC offset detunes the carrier. Like PM and PD it only reaches sources with a phase input (Wavetable, Sampler, Wave Terrain, Alpha Juno, Kick, JP-8080); the cells are not modulation matrix destinations.
@@ -279,6 +278,9 @@ Global page, Voice card: **Legato** (On by default, parameter id 4). In Mono mod
 
 ## Unison on every source
 Every oscillator source has the **Unison** section (Voices 1-16, Detune, Blend, Width, Detune Curve, Drift). Wavetable and Alpha Juno run several voices of the oscillator itself. All other sources (Sampler, Wave Terrain, Physical, Kick, Waveguide, JP-8080, Granular, Additive, Modal Drum, Spectral, SoundFont) play once per note and then go through a detuned-copy stage (`tools/osc/build_unigen.py`, marker UNI-ALL): every copy is a two-tap crossfading delay-line pitch shifter (window about 35 ms) of the source's mono sum, with the slot's detune curve, blend, width and drift; the side signal (L - R) of a stereo source is kept. Phase Spread has no effect there, and a pitch shifter adds a little graininess compared with real oscillator voices (most audible on very low notes).
+
+## 16 effects per rack
+The Main FX rack holds **16 effects** instead of 10. The ids of slots 1-10 are unchanged (presets keep loading); slots 11-16 are new global slots 30..47 with their own parameters: slot parameters `3200 + (rack * 6 + j) * 10` (Type, On, Mix, Mode, P1-P6), tempo sync `3400 + rack * 6 + j`, processing order `3380 + rack * 6 + j`. The **FX Order** parameters (`641..`, `751..`, `861..`) now run 0-15 and hold rack-local slot numbers; a stored order of 10 entries stays valid (the new slots follow in their natural order). The DSP arrays grew to 48 slots (effect memory 48 x 196608 floats, about 38 MB). In the native editor the effect list is a scrollable list. The web fallback UI (`patch/index.js` view) still shows slots 1-10 only. Code: `tools/fx/build_fxslots.py`; tests in `tools/fx/test_fx.py` (slots 11 and 16 behave like slot 1, order across old and new slots, sync).
 
 ## VST3 host (instrument source and effect)
 The Njohrr synth plugin can host other VST3 plugins (the effects-only plugin cannot).

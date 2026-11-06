@@ -2610,7 +2610,21 @@ const SPECS = (() => {
             L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
             for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
         }
-        for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 9, k, "", "stp", null, 1, "Order"]);
+        for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
+    });
+    // FX-SLOTS: slots 11-16 of every rack (global slots 30..47): parameters 3200 + (rk * 6 + j) * 10, order 3380 + rk * 6 + j, sync 3400 + rk * 6 + j
+    // (the web UI shows slots 1-10 only; the native editor and the DSP have 16 per rack)
+    FX_RACKS.forEach((rack, rk) => {
+        for (let j = 0; j < 6; j++) {
+            const b = 3200 + (rk * 6 + j) * 10, n = rack.name + " FX " + (11 + j);
+            L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
+            L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
+            L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
+            L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
+            for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
+            L.push([3380 + rk * 6 + j, rack.name + " FX Order " + (11 + j), 0, 15, 10 + j, "", "stp", null, 1, "Order"]);
+            L.push([3400 + rk * 6 + j, n + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]);
+        }
     });
     // tempo sync of the effect slots: 0 = free, 1.. = the division (the Rate / Time knob is ignored while it is on)
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) L.push([940 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]); });
@@ -4086,7 +4100,7 @@ class EisenpulsPatchView extends HTMLElement {
     globalPageHTML () {
         const k = ids => ids.map(i => this.controlHTML(i, true)).join("");
         return this.card("Voice", [2, 4, 3, 63], "g-voice") + this.card("Amp EG", [18, 19, 20, 21, 22], "g-amp") + this.card("Pitch EG", [45, 46], "g-peg")
-            + this.card("Output", [29, 190, 36, 880, 881, 522], "g-out");
+            + this.card("Output", [29, 190, 36, 522], "g-out");
     }
 
     // ---------- parameter hooks ----------
@@ -4336,10 +4350,10 @@ class EisenpulsPatchView extends HTMLElement {
             for (let k = 0; k < 10; k++) hid += this.controlHTML(R.ord + k);
             racks += `<div class="fxlist f-rack" data-rack="${rk}">${rows}<div class="fx-hid">${hid}</div></div>`;
         });
-        // tab order follows the signal: the buses feed Main
-        const tabs = [1, 2, 0].map(rk => `<button type="button" class="fxtab" data-rack="${rk}">${FX_RACKS[rk].name}<i class="fxdot"></i></button>`).join("");
+        // only the Main rack is left (Bus 1 / Bus 2 were removed)
+        const tabs = [0].map(rk => `<button type="button" class="fxtab" data-rack="${rk}">${FX_RACKS[rk].name}<i class="fxdot"></i></button>`).join("");
         const out = FX_OUT.map(i => `<div class="fxo">${this.controlHTML(i, true)}</div>`).join("");
-        return `<section class="card f-main"><h2>FX <span class="fxtabs">${tabs}</span><span class="fxhint">Bus 1 + Bus 2 feed Main &middot; signal runs top to bottom</span></h2>${racks}</section>`
+        return `<section class="card f-main"><h2>FX <span class="fxtabs">${tabs}</span><span class="fxhint">signal runs top to bottom</span></h2>${racks}</section>`
             + `<section class="card f-out"><h2>Output</h2><div class="fxoutrow">${out}</div></section>`;
     }
 

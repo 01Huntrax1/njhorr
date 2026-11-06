@@ -478,11 +478,11 @@ blk = js[js.index("const FX_TYPES = ["):]; blk = blk[:blk.index("\n];")]
 NT = len(re.findall(r'^    \{ n: "', blk, re.M))
 check("FX types counted in index.js", NT >= 19, "%d types incl. None" % NT)
 tm = re.findall(r'FX \d+ Type",\s*min: 0\.0, max: ([0-9.]+)', cm)
-check("DSP: all 30 FX Type parameters allow every type", len(tm) == 30 and all(float(m) == NT - 1 for m in tm), "%d params, max %s" % (len(tm), sorted(set(tm))))
+check("DSP: all 48 FX Type parameters allow every type", len(tm) == 48 and all(float(m) == NT - 1 for m in tm), "%d params, max %s" % (len(tm), sorted(set(tm))))
 m = re.search(r'int nt = clamp \(t, 0, (\d+)\)', cm)
 check("DSP: the type clamp allows every type", bool(m) and int(m.group(1)) == NT - 1, m.group(1) if m else "not found")
 gm = re.findall(r'FX \d+ Type"\), 0\.0, ([0-9.]+),', gen)
-check("UI tables (NjoData.gen.cpp): the 30 Type specs allow every type - run gen_data.js after changing index.js", len(gm) == 30 and all(float(x) == NT - 1 for x in gm), "%d specs, max %s" % (len(gm), sorted(set(gm))))
+check("UI tables (NjoData.gen.cpp): the 48 Type specs allow every type - run gen_data.js after changing index.js", len(gm) == 48 and all(float(x) == NT - 1 for x in gm), "%d specs, max %s" % (len(gm), sorted(set(gm))))
 check("DSP: every type is dispatched", all(re.search(r'ty == %d\) +y = fx' % k, cm) for k in range(1, NT)), str([k for k in range(1, NT) if not re.search(r'ty == %d\) +y = fx' % k, cm)]))
 cl = re.search(r'static const juce::uint32 c\[\] = \{([^}]*)\}', fxp); ncol = len(re.findall(r'0x[0-9a-fA-F]+', cl.group(1))) if cl else 0
 check("UI: every type has a colour, and the colour index limit covers it", ncol >= NT and re.search(r'jlimit \(0, %d, type\)' % (ncol - 1), fxp) is not None, "%d colours" % ncol)
@@ -494,6 +494,33 @@ ok_fin = all(np.isfinite(a).all() for a in outs.values())
 dup = [(a, b) for a in outs for b in outs if a < b and outs[a].shape == outs[b].shape and np.allclose(outs[a], outs[b], atol=1e-7)]
 check("Every effect type can be selected and is finite", ok_fin)
 check("No two effect types render the same (a type clamped to another would)", not dup, str(dup[:5]))
+
+# ---- FX-SLOTS: 16 slots per rack (slots 11-16 = ids 3200 + (rack * 6 + j) * 10, order 3380 +, sync 3400 +)
+def xbase(rk, j): return 3200 + (rk * 6 + j) * 10
+def fxb(b, ty, mode=0, mix=1.0, p=(0.5,) * 6):
+    return ["p %d %d" % (b, ty), "p %d 1" % (b + 1), "p %d %s" % (b + 2, mix), "p %d %d" % (b + 3, mode)] + ["p %d %s" % (b + 4 + i, v) for i, v in enumerate(p)]
+DIST = (0.8, 0.5, 0.5, 0.5, 0.5, 0.5); LPF = (0.3, 0.3, 0.5, 0.5, 0.5, 0.5)
+ref = render(fxb(base(0), 1, 0, 1.0, DIST), tag="sl_ref")
+n11 = render(fxb(xbase(0, 0), 1, 0, 1.0, DIST), tag="sl_n11")
+n16 = render(fxb(xbase(0, 5), 1, 0, 1.0, DIST), tag="sl_n16")
+check("Slot 11 of the Main rack behaves like slot 1", np.abs(ref - n11).max() < 1e-5 and rms(ref) > 1e-3, "%.2g" % np.abs(ref - n11).max())
+check("Slot 16 of the Main rack behaves like slot 1", np.abs(ref - n16).max() < 1e-5, "%.2g" % np.abs(ref - n16).max())
+# processing order across the old and the new slots: distortion -> low-pass in the old slots, the same with the distortion in slot 11 and the order param changed
+r_a = render(fxb(base(0), 1, 0, 1.0, DIST) + fxb(base(1), 9, 1, 1.0, LPF), tag="sl_a")
+r_b = render(fxb(xbase(0, 0), 1, 0, 1.0, DIST) + fxb(base(0), 9, 1, 1.0, LPF), tag="sl_b")
+order = [10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15]
+ordc = ["p %d %d" % (641 + k if k < 10 else 3380 + (k - 10), order[k]) for k in range(16)]
+r_c = render(fxb(xbase(0, 0), 1, 0, 1.0, DIST) + fxb(base(0), 9, 1, 1.0, LPF) + ordc, tag="sl_c")
+check("Default order runs slot 11 after slot 1 (low-pass -> distortion differs from distortion -> low-pass)", np.abs(r_a - r_b).max() > 0.01, "%.3f" % np.abs(r_a - r_b).max())
+check("Order parameters reach slot 11: moved to the front it matches distortion -> low-pass", np.abs(r_a - r_c[len(r_c) - len(r_a):]).max() < 1e-4, "%.2g" % np.abs(r_a - r_c[len(r_c) - len(r_a):]).max())
+# tempo sync of an extra slot (delay): the sync division changes the echo time
+d0 = render(fxb(xbase(0, 2), 3, 0, 0.5, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="sl_d0")
+d1 = render(fxb(xbase(0, 2), 3, 0, 0.5, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)) + ["p %d 5" % (3400 + 2)], tag="sl_d1")
+check("Sync parameter of slot 13 is wired (the delay changes)", np.abs(d0 - d1).max() > 0.001, "%.3g" % np.abs(d0 - d1).max())
+# the Parametric EQ and the convolution reverb work in the new slots too
+q0 = render(fxb(base(0), 14, 0, 1.0, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="sl_q0")
+q1 = render(fxb(xbase(0, 3), 14, 0, 1.0, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="sl_q1")
+check("Saturator in slot 14 behaves like in slot 1", np.abs(q0 - q1).max() < 1e-5 and rms(q0) > 1e-3)
 
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

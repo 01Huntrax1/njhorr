@@ -173,7 +173,7 @@ namespace njo
             for (auto key : { "type", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "root", "sstart", "sloop", "tterr", "tscale", "twarp", "tfold",
                               "oct", "semi", "fine", "track", "freq", "phase", "rphase", "uvox", "udet", "ublend", "uwid", "udrift", "uphase", "ustyle",
                               "fon", "ftype", "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel",
-                              "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan", "out" })
+                              "dtype", "dpos", "ddrv", "dmix", "rson", "rsmod", "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix", "wfpos", "wdpos", "wfmix", "wfrange", "wfwarp", "wfcont", "wftilt", "wfspr", "wflaw", "level", "pan" })
             {
                 std::unique_ptr<ParamWidget> w;
                 if (findSpec (oscId (o, oscKey (key)))->kind == "stp") w = std::make_unique<OscStepper> (ctx, oscId (o, oscKey (key)));
@@ -724,7 +724,6 @@ namespace njo
                 auto c = cardOut; int w = c.getWidth();
                 const int cl = 12 + (w - 24) / 4, cr = 12 + (w - 24) * 3 / 4;
                 knob ("level", cl, 60, c); knob ("pan", cr, 60, c);
-                put ("out", 12, 170, w - 24, 31, c);
             }
             // ---- filter page: response, Filter / Wavefilter switch, controls; table card ----
             if (mode == 1)

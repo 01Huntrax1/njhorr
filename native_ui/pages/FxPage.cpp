@@ -1,4 +1,4 @@
-// FX page: three racks (Bus 1, Bus 2, Main) of 10 slots, laid out like a modern synth's effect page: the list of the rack's effects on the left
+// FX page: one rack (Main) of 16 slots, laid out like a modern synth's effect page: the list of the rack's effects on the left
 // (processing order, on / off, move, drag), "+ ADD FX" opens a grid of all effect types, and the selected effect has its own page with a display and large knobs.
 // Below: the output section. Parameters and the processing order are unchanged (patch/index.js FX rack).
 #include <complex>
@@ -92,7 +92,7 @@ namespace njo
                 }
                 for (int i = 0; i < (int) used.size(); ++i)
                 {
-                    int sl = used[(size_t) i], gi = im.current * 10 + sl, ty = im.ctx.fxSlotTypes()[gi];
+                    int sl = used[(size_t) i], gi = fxG (im.current, sl), ty = im.ctx.fxSlotTypes()[gi];
                     bool on = im.ctx.get (im.slotBase (gi) + 1) > 0.5f, selected = im.sel[im.current] == sl && ! im.adding;
                     auto r = itemR (i).toFloat().reduced (0, 1.5f);
                     g.setColour (dragIdx == i ? juce::Colour (0xff3a1815) : (selected ? juce::Colour (0xff2a2020) : juce::Colour (0xff131415))); g.fillRoundedRectangle (r, 3.0f);
@@ -120,7 +120,7 @@ namespace njo
             {
                 auto used = im.usedSlots (im.current);
                 int i = e.y / kItemH; if (i < 0 || i >= (int) used.size()) return;
-                int sl = used[(size_t) i], gi = im.current * 10 + sl;
+                int sl = used[(size_t) i], gi = fxG (im.current, sl);
                 auto p = e.getPosition();
                 if (upR (i).expanded (3).contains (p)) im.moveUsed (im.current, sl, -1);
                 else if (dnR (i).expanded (3).contains (p)) im.moveUsed (im.current, sl, +1);
@@ -164,7 +164,7 @@ namespace njo
             {
                 bool full = im.freeSlot (im.current) < 0;
                 g.setColour (ink); g.setFont (impact (14.0f));
-                g.drawText (full ? "THIS RACK IS FULL (10 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
+                g.drawText (full ? "THIS RACK IS FULL (16 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
                 g.setColour (dim); g.setFont (font (9.5f));
                 g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
                 g.saveState();
@@ -204,7 +204,7 @@ namespace njo
                 auto box = getLocalBounds().toFloat();
                 paintInset (g, box, 4.0f);
                 int sl = im.sel[im.current]; if (sl < 0) return;
-                int gi = im.current * 10 + sl, ty = im.ctx.fxSlotTypes()[gi], b = im.slotBase (gi);
+                int gi = fxG (im.current, sl), ty = im.ctx.fxSlotTypes()[gi], b = im.slotBase (gi);
                 auto col = fxColour (ty);
                 auto P = [&] (int k) { return (double) juce::jlimit (0.0f, 1.0f, im.ctx.get (b + 4 + k)); };
                 const int mode = juce::roundToInt (im.ctx.get (b + 3));
@@ -528,7 +528,7 @@ namespace njo
         // ====================================================================================================================
         Impl (FxPage& o, Ctx& c, SoundMemory& m) : owner (o), ctx (c), mem (m), list (*this), chooser (*this), display (*this)
         {
-            for (int g = 0; g < 30; ++g)
+            for (int g = 0; g < kFxTotal; ++g)
             {
                 int b = slotBase (g);
                 onT[g] = std::make_unique<OnToggle> (ctx, b + 1);
@@ -541,15 +541,8 @@ namespace njo
                 for (auto& w : pK[g]) owner.addChildComponent (*w);
                 auto drop = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
                 mixK[g]->onModDropped = drop; for (auto& w : pK[g]) w->onModDropped = drop;
-                pos[g] = g % 10;
+                pos[fxRkOf (g) * kFxPer + fxSlOf (g)] = fxSlOf (g);
                 refreshSlot (g);
-            }
-            const int tabRk[] = { 1, 2, 0 };
-            for (int i = 0; i < 3; ++i)
-            {
-                auto* t = tabs.add (new DotTab()); t->text = fxRacks()[(size_t) tabRk[i]].name;
-                t->click = [this, rk = tabRk[i]] { showRack (rk); };
-                owner.addAndMakeVisible (t);
             }
             for (int num : { 28, 536, 175, 189, 221, 222 })
             {
@@ -557,11 +550,11 @@ namespace njo
                 w->onModDropped = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
                 owner.addAndMakeVisible (*w); outs.add (w.release());
             }
-            owner.addAndMakeVisible (list); owner.addChildComponent (chooser); owner.addChildComponent (display);
+            listVp.setViewedComponent (&list, false); listVp.setScrollBarsShown (true, false); listVp.setScrollBarThickness (8); owner.addAndMakeVisible (listVp); owner.addChildComponent (chooser); owner.addChildComponent (display);
             eqEd = std::make_unique<EqEditor> (ctx, mem); owner.addChildComponent (*eqEd);
             shEd = std::make_unique<ShaperEditor> (ctx, mem); owner.addChildComponent (*shEd);
             vstFx = std::make_unique<Vst3Panel> (ctx, 1); owner.addChildComponent (*vstFx);
-            addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); list.repaint(); };
+            addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); refreshList(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
             for (int rk = 0; rk < 3; ++rk) { sel[rk] = -1; }
@@ -584,39 +577,58 @@ namespace njo
         }
         ~Impl() override { ctx.removeListener (this); }
 
-        int slotBase (int g) const { return fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10; }
+        int slotBase (int g) const { return fxSlotId (g); }
 
-        // ---- order bookkeeping (same data as before: 10 order parameters per rack) ----
-        std::array<int, 10> orderNow (int rk) const
+        // the list lives in a viewport (16 effects do not fit): its height follows the number of effects, the selected one is kept in view
+        void refreshList()
         {
-            std::array<int, 10> o {};
-            for (int k = 0; k < 10; ++k) o[(size_t) k] = juce::roundToInt (ctx.get (fxRacks()[(size_t) rk].ord + k));
+            auto u = usedSlots (current);
+            list.setSize (juce::jmax (10, listVp.getMaximumVisibleWidth()), juce::jmax (listVp.getHeight(), (int) u.size() * kItemH));
+            if (! adding && sel[current] >= 0)
+            {
+                int idx = (int) (std::find (u.begin(), u.end(), sel[current]) - u.begin());
+                if (idx < (int) u.size())
+                {
+                    const int y = idx * kItemH, vy = listVp.getViewPositionY();
+                    if (y < vy) listVp.setViewPosition (0, y);
+                    else if (y + kItemH > vy + listVp.getHeight()) listVp.setViewPosition (0, y + kItemH - listVp.getHeight());
+                }
+            }
+            list.repaint();
+        }
+
+        // ---- order bookkeeping (16 order parameters per rack: position k holds the rack-local slot number) ----
+        using Order = std::array<int, kFxPer>;
+        Order orderNow (int rk) const
+        {
+            Order o {};
+            for (int k = 0; k < kFxPer; ++k) o[(size_t) k] = juce::roundToInt (ctx.get (fxOrdId (rk, k)));
             return o;
         }
         void applyOrders() { for (int rk = 0; rk < 3; ++rk) applyOrder (rk); }
         void applyOrder (int rk)
         {
             auto order = orderNow (rk);
-            int p[10]; for (int& x : p) x = -1;
-            for (int k = 0; k < 10; ++k) if (order[(size_t) k] >= 0 && order[(size_t) k] < 10 && p[order[(size_t) k]] < 0) p[order[(size_t) k]] = k;
-            int spare = 10; for (int sl = 0; sl < 10; ++sl) if (p[sl] < 0) p[sl] = spare++;
-            for (int sl = 0; sl < 10; ++sl) pos[rk * 10 + sl] = p[sl];
-            list.repaint();
+            int p[kFxPer]; for (int& x : p) x = -1;
+            for (int k = 0; k < kFxPer; ++k) if (order[(size_t) k] >= 0 && order[(size_t) k] < kFxPer && p[order[(size_t) k]] < 0) p[order[(size_t) k]] = k;
+            int spare = kFxPer; for (int sl = 0; sl < kFxPer; ++sl) if (p[sl] < 0) p[sl] = spare++;
+            for (int sl = 0; sl < kFxPer; ++sl) pos[rk * kFxPer + sl] = p[sl];
+            refreshList();
         }
-        void commit (int rk, const std::array<int, 10>& order)
+        void commit (int rk, const Order& order)
         {
             auto cur = orderNow (rk);
-            for (int k = 0; k < 10; ++k) if (order[(size_t) k] != cur[(size_t) k]) ctx.set (fxRacks()[(size_t) rk].ord + k, (float) order[(size_t) k]);
+            for (int k = 0; k < kFxPer; ++k) if (order[(size_t) k] != cur[(size_t) k]) ctx.set (fxOrdId (rk, k), (float) order[(size_t) k]);
             applyOrder (rk);
         }
         std::vector<int> usedSlots (int rk) const
         {
             std::vector<int> v;
-            for (int sl = 0; sl < 10; ++sl) if (ctx.fxSlotTypes()[rk * 10 + sl] > 0) v.push_back (sl);
-            std::sort (v.begin(), v.end(), [&] (int a, int b) { return pos[rk * 10 + a] < pos[rk * 10 + b]; });
+            for (int sl = 0; sl < kFxPer; ++sl) if (ctx.fxSlotTypes()[fxG (rk, sl)] > 0) v.push_back (sl);
+            std::sort (v.begin(), v.end(), [&] (int a, int b) { return pos[rk * kFxPer + a] < pos[rk * kFxPer + b]; });
             return v;
         }
-        int freeSlot (int rk) const { for (int sl = 0; sl < 10; ++sl) if (ctx.fxSlotTypes()[rk * 10 + sl] == 0) return sl; return -1; }
+        int freeSlot (int rk) const { for (int sl = 0; sl < kFxPer; ++sl) if (ctx.fxSlotTypes()[fxG (rk, sl)] == 0) return sl; return -1; }
 
         // moves an effect by `dir` places among the used ones (swapping the processing positions)
         void moveUsed (int rk, int sl, int dir)
@@ -626,20 +638,20 @@ namespace njo
             int to = juce::jlimit (0, (int) used.size() - 1, idx + dir); if (idx >= (int) used.size() || to == idx) return;
             auto order = orderNow (rk);
             std::vector<int> v (order.begin(), order.end());
-            int target = pos[rk * 10 + used[(size_t) to]];
-            v.erase (std::find (v.begin(), v.end(), sl)); v.insert (v.begin() + juce::jlimit (0, 9, target), sl);
-            std::array<int, 10> n; for (int k = 0; k < 10; ++k) n[(size_t) k] = v[(size_t) k];
+            int target = pos[rk * kFxPer + used[(size_t) to]];
+            v.erase (std::find (v.begin(), v.end(), sl)); v.insert (v.begin() + juce::jlimit (0, kFxPer - 1, target), sl);
+            Order n; for (int k = 0; k < kFxPer; ++k) n[(size_t) k] = v[(size_t) k];
             commit (rk, n);
         }
 
         // ---- selection / add / remove ----
-        void select (int rk, int sl) { sel[rk] = sl; adding = false; layoutCentre(); list.repaint(); owner.repaint(); }
-        void autoSelect (int rk) { auto u = usedSlots (rk); if (sel[rk] < 0 || ctx.fxSlotTypes()[rk * 10 + sel[rk]] == 0) sel[rk] = u.empty() ? -1 : u.back(); }
-        void showRack (int rk) { current = rk; adding = false; autoSelect (rk); updateTabs(); layoutCentre(); list.repaint(); owner.repaint(); }
+        void select (int rk, int sl) { sel[rk] = sl; adding = false; layoutCentre(); refreshList(); owner.repaint(); }
+        void autoSelect (int rk) { auto u = usedSlots (rk); if (sel[rk] < 0 || ctx.fxSlotTypes()[fxG (rk, sel[rk])] == 0) sel[rk] = u.empty() ? -1 : u.back(); }
+        void showRack (int rk) { current = rk; adding = false; autoSelect (rk); updateTabs(); layoutCentre(); refreshList(); owner.repaint(); }
         void updateTabs()
         {
-            const int tabRk[] = { 1, 2, 0 };
-            for (int i = 0; i < 3; ++i) { tabs[i]->used = ! usedSlots (tabRk[i]).empty(); tabs[i]->on = tabRk[i] == current; tabs[i]->repaint(); }
+            const int tabRk[] = { 0 };
+            for (int i = 0; i < tabs.size(); ++i) { tabs[i]->used = ! usedSlots (tabRk[i]).empty(); tabs[i]->on = tabRk[i] == current; tabs[i]->repaint(); }
         }
 
         void addEffect (int type)
@@ -647,21 +659,21 @@ namespace njo
             int rk = current, sl = freeSlot (rk); if (sl < 0) return;
             auto used = usedSlots (rk);
             std::vector<int> v = used; v.push_back (sl);
-            for (int s : std::array<int, 10> (orderNow (rk))) if (std::find (v.begin(), v.end(), s) == v.end()) v.push_back (s);
-            std::array<int, 10> n; for (int k = 0; k < 10; ++k) n[(size_t) k] = v[(size_t) k];
-            int b = slotBase (rk * 10 + sl);
+            for (int s : Order (orderNow (rk))) if (std::find (v.begin(), v.end(), s) == v.end()) v.push_back (s);
+            Order n; for (int k = 0; k < kFxPer; ++k) n[(size_t) k] = v[(size_t) k];
+            int b = slotBase (fxG (rk, sl));
             ctx.begin (b); ctx.set (b, (float) type); ctx.end (b);
-            applyTypeDefaults (rk * 10 + sl, type);
+            applyTypeDefaults (fxG (rk, sl), type);
             commit (rk, n);
             sel[rk] = sl; adding = false;
-            refreshSlot (rk * 10 + sl); updateTabs(); layoutCentre(); list.repaint(); owner.repaint();
+            refreshSlot (fxG (rk, sl)); updateTabs(); layoutCentre(); refreshList(); owner.repaint();
         }
         void removeSelected()
         {
             int rk = current, sl = sel[rk]; if (sl < 0) return;
-            int b = slotBase (rk * 10 + sl);
+            int b = slotBase (fxG (rk, sl));
             ctx.begin (b); ctx.set (b, 0.0f); ctx.end (b);
-            sel[rk] = -1; autoSelect (rk); updateTabs(); layoutCentre(); list.repaint(); owner.repaint();
+            sel[rk] = -1; autoSelect (rk); updateTabs(); layoutCentre(); refreshList(); owner.repaint();
         }
 
         // a new effect starts from its own sensible settings (user changes only)
@@ -685,7 +697,7 @@ namespace njo
 
         void paramChanged (int num, float) override
         {
-            if ((num >= 940 && num < 970) || (num >= 3000 && num < 3060)) { layoutCentre(); owner.repaint(); return; }
+            if ((num >= 940 && num < 970) || (num >= 3000 && num < 3060) || (num >= 3400 && num < 3418)) { layoutCentre(); owner.repaint(); return; }
             auto loc = fxLocate (num);
             if (! loc.valid) return;
             if (loc.ord >= 0) { applyOrder (loc.rk); return; }
@@ -698,25 +710,25 @@ namespace njo
                 autoSelect (loc.rk); updateTabs();
                 if (loc.rk == current) { layoutCentre(); owner.repaint(); }
             }
-            list.repaint();
+            refreshList();
         }
 
         // ---- centre area ----
         void layoutCentre()
         {
-            for (int g = 0; g < 30; ++g)
+            for (int g = 0; g < kFxTotal; ++g)
             {
                 onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false); syncS[g]->setVisible (false); envS[g]->setVisible (false); envR[g]->setVisible (false);
                 for (auto& w : pK[g]) w->setVisible (false);
             }
             int sl = sel[current];
-            bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[current * 10 + sl] > 0;
+            bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[fxG (current, sl)] > 0;
             chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage);
             loadIr.setVisible (false); clearIr.setVisible (false); irRect = {}; vstFx->setVisible (false);
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
             if (! effectPage) return;
-            int g = current * 10 + sl, ty = ctx.fxSlotTypes()[g];
+            int g = fxG (current, sl), ty = ctx.fxSlotTypes()[g];
             auto& t = fxTypes()[(size_t) ty];
             auto c = centre;
             auto head = c.removeFromTop (34);
@@ -779,11 +791,11 @@ namespace njo
         std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         std::unique_ptr<Vst3Panel> vstFx;
-        ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
-        std::unique_ptr<OnToggle> onT[30]; std::unique_ptr<ParamWidget> mixK[30], modeS[30], syncS[30], envS[30], envR[30], pK[30][6]; juce::Rectangle<int> syncRect;
+        juce::Viewport listVp; ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
+        std::unique_ptr<OnToggle> onT[kFxTotal]; std::unique_ptr<ParamWidget> mixK[kFxTotal], modeS[kFxTotal], syncS[kFxTotal], envS[kFxTotal], envR[kFxTotal], pK[kFxTotal][6]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
         juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
-        int current = 0, sel[3] = { -1, -1, -1 }, pos[30] = {}; bool adding = false;
+        int current = 0, sel[3] = { -1, -1, -1 }, pos[3 * kFxPer] = {}; bool adding = false;
     };
 
     FxPage::FxPage (Ctx& c, SoundMemory& m) : impl (new Impl (*this, c, m)) {}
@@ -803,7 +815,8 @@ namespace njo
         auto left = m.removeFromLeft (kLeftW); m.removeFromLeft (14);
         impl->addRect = left.removeFromBottom (28); left.removeFromBottom (6);
         impl->listRect = left;
-        impl->list.setBounds (impl->listRect.withHeight (juce::jmin (impl->listRect.getHeight(), 10 * kItemH)));
+        impl->listVp.setBounds (impl->listRect);
+        impl->refreshList();
         impl->centre = m;
         impl->layoutCentre();
         auto o = impl->outCard.reduced (12, 6); o.removeFromTop (18);
@@ -822,15 +835,15 @@ namespace njo
         };
         head (impl->mainCard, "FX"); head (impl->outCard, "OUTPUT");
         g.setColour (dim); g.setFont (font (8.5f));
-        g.drawText ("Bus 1 + Bus 2 feed Main  -  signal runs top to bottom", impl->mainCard.withTrimmedLeft (320).withHeight (30).reduced (10, 0), juce::Justification::centredRight, true);
+        g.drawText ("Signal runs top to bottom", impl->mainCard.withTrimmedLeft (320).withHeight (30).reduced (10, 0), juce::Justification::centredRight, true);
         // panel behind the list and the centre area
         paintInset (g, impl->listRect.toFloat().expanded (4, 4).withTrimmedBottom (-34), 4.0f);
         g.setColour (dim); g.setFont (font (8.0f, true).withExtraKerningFactor (0.2f));
         // effect page title
         int sl = impl->sel[impl->current];
-        if (! impl->adding && sl >= 0 && impl->ctx.fxSlotTypes()[impl->current * 10 + sl] > 0)
+        if (! impl->adding && sl >= 0 && impl->ctx.fxSlotTypes()[fxG (impl->current, sl)] > 0)
         {
-            int ty = impl->ctx.fxSlotTypes()[impl->current * 10 + sl];
+            int ty = impl->ctx.fxSlotTypes()[fxG (impl->current, sl)];
             g.setColour (fxColour (ty)); g.fillRect (impl->titleRect.getX(), impl->titleRect.getY() + 6, 4, impl->titleRect.getHeight() - 12);
             g.setColour (ink); g.setFont (impact (19.0f));
             g.drawText (fxTypes()[(size_t) ty].name.toUpperCase(), impl->titleRect.withTrimmedLeft (14), juce::Justification::centredLeft, true);

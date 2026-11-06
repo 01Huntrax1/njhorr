@@ -35,6 +35,8 @@ namespace njo
             if (num >= R.id && num < R.id + 100) { r.valid = true; r.rk = rk; r.sl = (num - R.id) / 10; r.off = (num - R.id) % 10; r.g = rk * 10 + r.sl; return r; }
             if (num >= R.ord && num < R.ord + 10) { r.valid = true; r.rk = rk; r.ord = num - R.ord; return r; }
         }
+        if (num >= 3200 && num < 3380) { int g = 30 + (num - 3200) / 10; r.valid = true; r.g = g; r.rk = fxRkOf (g); r.sl = fxSlOf (g); r.off = (num - 3200) % 10; return r; }
+        if (num >= 3380 && num < 3398) { r.valid = true; r.rk = (num - 3380) / 6; r.ord = 10 + (num - 3380) % 6; return r; }
         return r;
     }
 

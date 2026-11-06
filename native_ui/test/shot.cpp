@@ -160,6 +160,16 @@ int main (int argc, char** argv)
             setFx (0, t); if (t == 12) cx.set (base + 3, 8.0f); pump();
             save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);
         }
+        {   // 16 effects in the Main rack (slots 11-16 use the new ids), the list scrolls
+            for (int g = 0; g < 16; ++g)
+            {
+                const int b2 = njo::fxSlotId (njo::fxG (0, g));
+                cx.set (b2, (float) (1 + g % 12)); cx.set (b2 + 1, 1.0f); cx.set (b2 + 2, 1.0f);
+            }
+            pump(); save (ed, dir.getChildFile ("fx_16slots.png"), scale);
+            for (int g = 0; g < 16; ++g) cx.set (njo::fxSlotId (njo::fxG (0, g)), 0.0f);
+            pump();
+        }
         setFx (0, 9); cx.set (base + 3, 32.0f); cx.set (base + 4, 0.5f); cx.set (base + 5, 0.85f); pump(); save (ed, dir.getChildFile ("fx_filter_scream.png"), scale); cx.set (base + 3, 1.0f);
         setFx (0, 9); cx.set (base + 7, 0.85f); cx.set (base + 8, 2.0f / 9.0f); cx.set (base + 9, 0.4f); pump(); save (ed, dir.getChildFile ("fx_filter_env.png"), scale);
         setFx (0, 9); setFx (1, 3); setFx (2, 8); setFx (3, 11); pump();

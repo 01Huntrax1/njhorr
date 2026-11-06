@@ -57,4 +57,9 @@ m0 = render(WT + fxs(19, 0.0) + ["hfx 0.5 1"], "m0")
 x0 = W(m0, 0.5, 0.8)[:, 0]
 best0 = min(range(0, 200), key=lambda k: np.mean((x0[k:k + 6000] - x[:6000]) ** 2))
 check("VST3 FX: Mix 0 gives the dry signal, delayed like the wet path", best0 == 64 and rms(W(m0, 0.5, 0.85)) / d > 0.95, "best %d" % best0)
+# the 16-slot racks: VST3 effect in slot 11 of the Main rack (ids 3200..) while slot 1 holds a second one -> separate dry delays
+g1 = render(WT + ["p 3200 19", "p 3201 1", "p 3202 1.0"] + ["hfx 1.0 1"], "fx11")
+x = W(dry, 0.5, 0.8)[:, 0]; y = W(g1, 0.5, 0.8)[:, 0]
+best = min(range(0, 200), key=lambda k: np.mean((y[k:k + 6000] - x[:6000]) ** 2))
+check("VST3 FX in slot 11 of the Main rack: unity pass with 64 samples latency", best == 64 and rms(W(g1, 0.5, 0.85)) / d > 0.9, "best %d" % best)
 print("ALL OK" if failures == 0 else "FAILURES: %d" % failures); sys.exit(1 if failures else 0)

@@ -13,7 +13,7 @@ namespace njo
             cards = { { "VOICE", 0, 2, 1, { 2, 4, 3, 63 }, {} },
                       { "AMP EG", 2, 3, 2, { 18, 19, 20, 21, 22 }, {} },
                       { "PITCH EG", 5, 2, 1, { 45, 46 }, {} },
-                      { "OUTPUT", 7, 5, 3, { 29, 190, 36, 880, 881, 522 }, {} } };
+                      { "OUTPUT", 7, 5, 2, { 29, 190, 36, 522 }, {} } };
             for (auto& card : cards)
                 for (int id : card.ids)
                 {

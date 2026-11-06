@@ -32,7 +32,7 @@ rep('int nt = clamp (t, 0, 18);', 'int nt = clamp (t, 0, 19);')
 rep('    Voice[8] voices;', '    Voice[8] voices;\n\n'
     '    // VST3-HOST: streams from / to the plugin wrapper, per-slot dry delay (64 samples)\n'
     '    float<2>    hostSrcS;\n    float<2>    hostRetS;\n    float<2>    hostSendAcc;\n    float<2>    hostXd;\n'
-    '    float[3840] hostDry;\n    int         hostDryPos;\n    int         hostVoice;\n')
+    '    float[6144] hostDry;\n    int         hostDryPos;\n    int         hostVoice;\n')
 # FX slot
 rep('        else if (ty == 18) y = fxFb     (s, x);\n', '        else if (ty == 18) y = fxFb     (s, x);\n        else if (ty == 19) y = fxHost   (s, x);   // VST3-HOST\n')
 rep('        float mix = clamp (fxMix.at (s), 0.0f, 1.0f);\n        return x + (y - x) * mix;',

@@ -4,12 +4,8 @@ namespace njo
 {
     Ctx::Ctx (Backend& b) : be (b)
     {
-        for (auto& r : fxRacks())
-            for (int sl = 0; sl < 10; ++sl)
-            {
-                int rk = (int) (&r - &fxRacks()[0]);
-                fxTypes[rk * 10 + sl] = juce::roundToInt (be.getParam (r.id + sl * 10));
-            }
+        for (int g = 0; g < kFxTotal; ++g)
+            fxTypes[g] = juce::roundToInt (be.getParam (fxSlotId (g)));
         be.addListener (this);
     }
 
@@ -30,9 +26,8 @@ namespace njo
 
     void Ctx::touchAll()
     {
-        for (auto& r : fxRacks())
-            for (int sl = 0; sl < 10; ++sl)
-                fxTypes[(int) (&r - &fxRacks()[0]) * 10 + sl] = juce::roundToInt (be.getParam (r.id + sl * 10));
+        for (int g = 0; g < kFxTotal; ++g)
+            fxTypes[g] = juce::roundToInt (be.getParam (fxSlotId (g)));
         for (auto& s : allSpecs()) { float v = be.getParam (s.num); listeners.call ([&] (Listener& l) { l.paramChanged (s.num, v); }); }
     }
 

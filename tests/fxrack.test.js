@@ -92,32 +92,7 @@ const ctl = (v, n) => v._controls.get("param" + n);
     check("down arrow moves one place", JSON.stringify(A.fxOrderNow(0)) === JSON.stringify([0, 2, 1, 3, 4, 5, 6, 7, 8, 9]));
     check("the sent order is always a permutation at the end", new Set(A.fxOrderNow(0)).size === 10);
 
-    // ---- buses: Bus 1 (651..) and Bus 2 (761..) racks, source routing, bus levels
-    pcA.sent.length = 0;
-    ctl(A, 651 + 10).setValue(10, true);                  // EQ in Bus 1 slot 2
-    ctl(A, 761).setValue(8, true);                        // reverb in Bus 2 slot 1
-    check("Bus 1 slot parameters reach the DSP", last(pcA, "param661") === 10 && last(pcA, "param651") !== 10);
-    check("Bus 2 slot parameters reach the DSP", last(pcA, "param761") === 8);
-    check("Bus slots are global slots 10-29", A._fxTypes[11] === 10 && A._fxTypes[20] === 8 && A._fxTypes[1] === 0);
-    check("Bus rows labelled by their own type", /Reverb/.test(A.querySelector('.fxrow[data-g="20"] .fxty select').value));
-    A.fxMove(1, 1, 0);
-    check("Bus 1 reorder uses its own order parameters", JSON.stringify(A.fxOrderNow(1)) === JSON.stringify([1, 0, 2, 3, 4, 5, 6, 7, 8, 9]) && last(pcA, "param751") === 1);
-    check("Main order untouched by Bus 1 reorder", JSON.stringify(A.fxOrderNow(0)) === JSON.stringify([0, 2, 1, 3, 4, 5, 6, 7, 8, 9]));
-    check("rack tabs exist (Bus 1, Bus 2, Main)", [...A.querySelectorAll(".fxtab")].map(t => t.textContent).join("|") === "Bus 1|Bus 2|Main");
-    A.querySelector('.fxtab[data-rack="1"]').click();
-    check("tab switches the visible rack", A.querySelector('.f-rack[data-rack="1"]').classList.contains("on") && !A.querySelector('.f-rack[data-rack="0"]').classList.contains("on"));
-    check("tab marks racks in use", A.querySelector('.fxtab[data-rack="1"]').classList.contains("used") && A.querySelector('.fxtab[data-rack="2"]').classList.contains("used"));
-    ctl(A, 1003).setValue(2, true);
-    check("source output route is sent", last(pcA, "param1003") === 2);
-    ctl(A, 880).setValue(0.5, true);
-    check("bus level is sent", last(pcA, "param880") === 0.5);
-    const sv = A.collectParams();
-    check("preset stores routes, bus levels and bus racks", sv["1003"] === 2 && sv["880"] === 0.5 && sv["661"] === 10 && sv["761"] === 8 && sv["751"] === 1);
-    const E = mount(makeWebView(), makePC());
-    await sleep(100);
-    await E.presetApply({ name: "bus", params: sv, refs: {} });
-    check("preset restores bus state", E._fxTypes[11] === 10 && E._fxTypes[20] === 8 && JSON.stringify(E.fxOrderNow(1)) === JSON.stringify(A.fxOrderNow(1)) && ctl(E, 1003).value === 2 && ctl(E, 880).value === 0.5);
-    ctl(A, 1003).setValue(0, true); ctl(A, 880).setValue(1, true); ctl(A, 661).setValue(0, true); ctl(A, 761).setValue(0, true);
+    check("only the Main rack tab is left", [...A.querySelectorAll(".fxtab")].map(t => t.textContent).join("|") === "Main");
 
     // ---- preset round trip
     ctl(A, 541).setValue(4, true); ctl(A, 546).setValue(0.9, true);     // chorus in slot 1, P3? (param546 = P3 of slot 1)

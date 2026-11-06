@@ -96,9 +96,9 @@ a1 = render(WT0 + [FOFF(0), (28, 0), P(0, "level", 0.1)], tag="lv4"); a2 = rende
 check("level scales the output (2x)", abs(rms(seg(a2)) / rms(seg(a1)) - 2.0) < 0.05, "%.3f" % (rms(seg(a2)) / rms(seg(a1))))
 for rt, nm in ((0, "Main"), (1, "Bus 1"), (2, "Bus 2")):
     a = render(WT0 + [FOFF(0), P(0, "out", rt)], tag="route%d" % rt)
-    check("output routed to %s" % nm, rms(seg(a)) > 0.02, "%.3f" % rms(seg(a)))
+    check("output routed to %s (plays through Main)" % nm, rms(seg(a)) > 0.02, "%.3f" % rms(seg(a)))
 am = render(WT0 + [FOFF(0), P(0, "out", 0)], tag="rm"); ab = render(WT0 + [FOFF(0), P(0, "out", 1)], tag="rb")
-check("Bus 1 and Main give the same level through empty racks", abs(rms(seg(am)) / rms(seg(ab)) - 1) < 0.02)
+check("old Bus 1 routing gives the same level as Main", abs(rms(seg(am)) / rms(seg(ab)) - 1) < 0.02)
 
 # ---------------------------------------------------------------- filter
 a_off = render(["wt 0 saw", FOFF(0)], tag="saw_off")

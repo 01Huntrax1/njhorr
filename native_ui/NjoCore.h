@@ -62,7 +62,7 @@ namespace njo
 
     private:
         void paramChanged (int num, float v) override;
-        int fxTypes[30] = {};
+        int fxTypes[kFxTotal] = {};
         juce::ListenerList<Listener> listeners;
     };
 }

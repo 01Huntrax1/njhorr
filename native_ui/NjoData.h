@@ -66,10 +66,17 @@ namespace njo
     const std::vector<FxType>& fxTypes();
     const std::vector<FxRack>& fxRacks();
     const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns();   // trance gate patterns: name, 16 steps (# open, + 45 %, . closed)
-    inline int fxEnvSusId (int g) { return 3000 + g; }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
-    inline int fxEnvRelId (int g) { return 3030 + g; }
-    inline int fxSyncId (int g) { return 940 + g; }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
-    struct FxLoc { int rk = 0, sl = 0, off = 0, g = 0, ord = -1; bool valid = false; };   // ord >= 0: a processing order parameter
+    // FX-SLOTS: 16 slots per rack. Global slot g: 0..29 = slots 1-10 (rack * 10 + k), 30..47 = slots 11-16 (30 + rack * 6 + j); the same numbering as the DSP
+    constexpr int kFxPer = 16, kFxTotal = 48;
+    inline int fxG (int rk, int sl)  { return sl < 10 ? rk * 10 + sl : 30 + rk * 6 + (sl - 10); }
+    inline int fxRkOf (int g)        { return g < 30 ? g / 10 : (g - 30) / 6; }
+    inline int fxSlOf (int g)        { return g < 30 ? g % 10 : 10 + (g - 30) % 6; }       // slot number inside its rack, 0..15
+    inline int fxSlotId (int g)      { return g < 30 ? fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10 : 3200 + (g - 30) * 10; }   // id of the Type parameter (+1 On, +2 Mix, +3 Mode, +4..+9 P1..P6)
+    inline int fxOrdId (int rk, int k) { return k < 10 ? fxRacks()[(size_t) rk].ord + k : 3380 + rk * 6 + (k - 10); }   // processing order parameter of position k
+    inline int fxEnvSusId (int g) { return g < 30 ? 3000 + g : 3000 + (g - 30); }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
+    inline int fxEnvRelId (int g) { return g < 30 ? 3030 + g : 3030 + (g - 30); }   // legacy, never shown
+    inline int fxSyncId (int g) { return g < 30 ? 940 + g : 3400 + (g - 30); }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
+    struct FxLoc { int rk = 0, sl = 0, off = 0, g = 0, ord = -1; bool valid = false; };   // sl 0..15, g global slot 0..47; ord >= 0: position of a processing order parameter
     FxLoc fxLocate (int num);
     juce::String fxFormatParam (const FxParam::Fmt&, double n);
 
