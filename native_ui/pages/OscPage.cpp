@@ -9,7 +9,6 @@
 #include "../NjoGr.h"
 #include "../NjoAd.h"
 #include "../NjoDk.h"
-#include "Vst3Panel.h"
 #include "../NjoSp.h"
 #include "../NjoSf.h"
 #include "OscDisplays.h"
@@ -163,7 +162,6 @@ namespace njo
         {
             editBtn.onClick = [this] { openEditor(); };
             owner.addAndMakeVisible (editBtn);
-            if (pageMode == 0) { vstPanel = std::make_unique<Vst3Panel> (c, 0); owner.addChildComponent (*vstPanel); }
             if (pageMode == 1 || pageMode == 2) tedit = std::make_unique<TableEditor> (c, m, osc, pageMode == 1);
             if (pageMode == 0 || pageMode == 3) medit = std::make_unique<ModeEditor> (c, m, osc);
             for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get() })
@@ -324,7 +322,7 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 13, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 12, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
@@ -539,8 +537,7 @@ namespace njo
                 auto c = cardSrc; int w = c.getWidth();
                 put ("type", 13, 24, w - 26, 36, c);
                 display.setBounds (c.getX() + 13, c.getY() + 64, w - 26, 71);
-                display.setVisible (type != 13);
-                if (vstPanel) { vstPanel->setBounds (c.getX() + 13, c.getY() + 64, w - 26, 190); vstPanel->setVisible (type == 13); }
+                display.setVisible (true);
                 dz.setBounds (c.getX() + 13, c.getY() + 136, w - 26 - (sff ? 0 : 56), 26);   // the vault has no SoundFont kind: the .sf2 is kept (path + preset + zone table) in the plugin state
                 vault.setBounds (c.getX() + w - 13 - 49, c.getY() + 136, 49, 26);
                 dz.setVisible (wt || sm || grf || spf || sff); vault.setVisible (wt || sm || grf || spf);
@@ -709,7 +706,7 @@ namespace njo
                 knob ("freq", cr, 205, c);   // fixed frequency (0 = Off), target of the Freq modulators
                 put ("rphase", rx, phaseTop + 24, 72, 18, c, ! (tr || ph)); strip ("rphase", rx, phaseTop + 11, 72, c, true, ! (tr || ph));
 
-                const bool uni = type != 13;      // every source has unison (wavetable and Alpha Juno natively, the others through the detuned-copy stage)
+                const bool uni = true;      // every source has unison (wavetable and Alpha Juno natively, the others through the detuned-copy stage)
                 showUnison = uni;
                 const int u0 = 12 + (w - 24) / 6, u1 = 12 + (w - 24) / 2, u2 = 12 + (w - 24) * 5 / 6;
                 knob ("udet", u0, 256, c, uni);  knob ("ublend", u1, 256, c, uni);  knob ("uwid", u2, 256, c, uni);
@@ -904,7 +901,6 @@ if (! wf)
         PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit;
          std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
-        std::unique_ptr<Vst3Panel> vstPanel;      // source "VST3": the hosted instrument
     };
 
     // ============================================================================================ OscPage

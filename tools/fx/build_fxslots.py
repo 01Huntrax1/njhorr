@@ -119,7 +119,7 @@ decl = ''; hand = ''
 for rk in range(3):
     for j in range(6):
         s = 30 + rk * 6 + j; b = 3200 + (rk * 6 + j) * 10; nm = '%s FX %d' % (RN[rk], 11 + j)
-        decl += '    input event float param%d [[ name: "%s Type", min: 0.0, max: 19.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS\n' % (b, nm)
+        decl += '    input event float param%d [[ name: "%s Type", min: 0.0, max: 18.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS\n' % (b, nm)
         decl += '    input event float param%d [[ name: "%s On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];\n' % (b + 1, nm)
         decl += '    input event float param%d [[ name: "%s Mix", min: 0.0, max: 1.0, init: 1.0 ]];\n' % (b + 2, nm)
         decl += '    input event float param%d [[ name: "%s Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];\n' % (b + 3, nm)

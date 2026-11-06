@@ -2,7 +2,6 @@
 #pragma once
 #include "NjoBackend.h"
 #include "NjoData.h"
-#include "NjoVst3Iface.h"
 
 namespace njo
 {
@@ -22,8 +21,6 @@ namespace njo
         juce::var getStored (const juce::String& k) override { auto it = stored.find (k); return it == stored.end() ? juce::var() : it->second; }
         void setStored (const juce::String& k, const juce::var& v) override { if (v.isVoid()) stored.erase (k); else stored[k] = v; }
         juce::File rootFolder() override { return root; }
-        Vst3Control* vst3Ctl = nullptr;
-        Vst3Control* vst3() override { return vst3Ctl; }
 
         std::map<int, float> values;
         std::map<juce::String, juce::var> stored;

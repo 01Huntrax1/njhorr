@@ -65,48 +65,15 @@ struct Host
     }
 #endif
 
-#ifdef DSP_VST
-    // VST3 host streams, modelled like the plugin wrapper: 64-sample chunks, the hosted effect (a gain here) answers one chunk late
-    int vKind = 0; float vAmp = 0.5f, vFreq = 220.0f; double vPh = 0.0; float fxGain = 1.0f; bool fxLoaded = true;
-    std::vector<float> vSrc, vRet, vSend, vPrev = std::vector<float> (128, 0.0f);
-    void vstChunk (int n)
-    {
-        vSrc.assign ((size_t) n * 2, 0.0f); vRet.assign ((size_t) n * 2, 0.0f); vSend.assign ((size_t) n * 2, 0.0f);
-        for (int i = 0; i < n; ++i)
-        {
-            float v = vKind == 1 ? (float) (vAmp * (2.0 * vPh - 1.0)) : vKind == 2 ? (float) (vAmp * sin (6.283185307179586 * vPh)) : 0.0f;
-            vPh += vFreq / kRate; if (vPh >= 1.0) vPh -= 1.0;
-            vSrc[(size_t) i * 2] = v; vSrc[(size_t) i * 2 + 1] = v;
-            vRet[(size_t) i * 2] = vPrev[(size_t) i * 2] * (fxLoaded ? fxGain : 0.0f); vRet[(size_t) i * 2 + 1] = vPrev[(size_t) i * 2 + 1] * (fxLoaded ? fxGain : 0.0f);
-        }
-        dsp.setInputFrames_hostSrc (vSrc.data(), (uint32_t) n, 0);
-        dsp.setInputFrames_hostRet (vRet.data(), (uint32_t) n, 0);
-    }
-    void vstAfter (int n)
-    {
-        dsp.copyOutputFrames ((Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::hostSend, vSend.data(), (uint32_t) n);
-        for (int i = 0; i < n * 2; ++i) vPrev[(size_t) i] = vSend[(size_t) i];
-        for (int i = n * 2; i < 128; ++i) vPrev[(size_t) i] = 0.0f;
-    }
-#endif
-
     void render (int frames)
     {
         while (frames > 0)
         {
-#ifdef DSP_VST
-            int n = frames < 64 ? frames : 64;
-            vstChunk (n);
-#else
             int n = frames < 512 ? frames : 512;
-#endif
 #ifdef DSP_FX
             fillInput (n);
 #endif
             dsp.advance (n);
-#ifdef DSP_VST
-            vstAfter (n);
-#endif
             dsp.copyOutputFrames ((Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::out, block.data(), (uint32_t) n);
             if (out) fwrite (block.data(), sizeof (float), (size_t) n * 2, out);
             frames -= n;
@@ -349,10 +316,6 @@ int main (int argc, char** argv)
         else if (cmd == "wscount") { int sl, n; ls >> sl >> n; auto& v = h.eqData[sl]; if (v.empty()) v.assign (240, 0.0f); v[0] = n / 16.0f; }
         else if (cmd == "eqsend") { int sl; ls >> sl; h.eqSend (sl, false); }
         else if (cmd == "eqclear") { int sl; ls >> sl; h.eqSend (sl, true); }
-#ifdef DSP_VST
-        else if (cmd == "hsrc") { std::string k; float a = 0.5f, f = 220.0f; ls >> k >> a >> f; h.vKind = k == "saw" ? 1 : k == "sine" ? 2 : 0; h.vAmp = a; h.vFreq = f; }
-        else if (cmd == "hfx")  { float g = 1.0f; int l = 1; ls >> g >> l; h.fxGain = g; h.fxLoaded = l != 0; }
-#endif
 #ifdef DSP_FX
         else if (cmd == "in")  { std::string k; float a = 0.5f, f = 220.0f; ls >> k >> a >> f; h.inKind = k == "saw" ? 1 : k == "sine" ? 2 : k == "noise" ? 3 : 0; h.inAmp = a; h.inFreq = f; }
 #endif

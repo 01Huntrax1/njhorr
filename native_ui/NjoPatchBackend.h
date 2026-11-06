@@ -1,7 +1,6 @@
 // Backend implementation over a cmaj::Patch (used by the plugin editor). Header only, included from the Cmajor plugin header.
 #pragma once
 #include "NjoBackend.h"
-#include "NjoVst3Iface.h"
 
 namespace njo
 {
@@ -32,8 +31,6 @@ namespace njo
         }
         unsigned long long dspGeneration() override { return generation; }
         std::function<void()> onReloaded;
-        Vst3Control* vst3Ctl = nullptr;                 // set by the plugin when it hosts VST3 plugins
-        Vst3Control* vst3() override { return vst3Ctl; }
 
         float getParam (int num) override
         {
