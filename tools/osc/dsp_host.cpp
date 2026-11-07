@@ -48,7 +48,7 @@ struct Host
 
 #ifdef DSP_FX
     // effects-only plugin: the audio input signal ("in <saw|sine|noise|off> <amp> <Hz>" in a script)
-    int inKind = 0; float inAmp = 0.5f, inFreq = 220.0f; double inPh = 0.0; uint32_t inRng = 12345u; std::vector<float> inBuf;
+    int inKind = 0; float inAmp = 0.5f, inFreq = 220.0f; double inPh = 0.0; uint32_t inRng = 12345u; std::vector<float> inBuf, inFile; size_t inPos = 0;   // inFile: stereo float32 samples ("inf <path>")
     void fillInput (int n)
     {
         inBuf.resize ((size_t) n * 2);
@@ -60,6 +60,7 @@ struct Host
             else if (inKind == 3) { inRng = inRng * 1664525u + 1013904223u; v = inAmp * ((float) (inRng >> 8) / 8388608.0f - 1.0f); }
             inPh += inFreq / kRate; if (inPh >= 1.0) inPh -= 1.0;
             inBuf[(size_t) i * 2] = v; inBuf[(size_t) i * 2 + 1] = v;
+            if (inKind == 4) { for (int c = 0; c < 2; ++c) inBuf[(size_t) i * 2 + c] = inPos * 2 + c < inFile.size() ? inFile[inPos * 2 + c] : 0.0f; ++inPos; }
         }
         dsp.setInputFrames_audioIn (inBuf.data(), (uint32_t) n, 0);
     }
@@ -317,6 +318,7 @@ int main (int argc, char** argv)
         else if (cmd == "eqsend") { int sl; ls >> sl; h.eqSend (sl, false); }
         else if (cmd == "eqclear") { int sl; ls >> sl; h.eqSend (sl, true); }
 #ifdef DSP_FX
+        else if (cmd == "inf") { std::string path; ls >> path; FILE* f = fopen (path.c_str(), "rb"); h.inFile.clear(); h.inPos = 0; h.inKind = 4; if (f) { float v[2]; while (fread (v, 4, 2, f) == 2) { h.inFile.push_back (v[0]); h.inFile.push_back (v[1]); } fclose (f); } }
         else if (cmd == "in")  { std::string k; float a = 0.5f, f = 220.0f; ls >> k >> a >> f; h.inKind = k == "saw" ? 1 : k == "sine" ? 2 : k == "noise" ? 3 : 0; h.inAmp = a; h.inFreq = f; }
 #endif
         else if (cmd == "on")  { int n, v; ls >> n >> v; h.midi (0x90, n, v); }

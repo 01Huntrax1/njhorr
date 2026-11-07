@@ -20,8 +20,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060 };
-            return juce::Colour (c[juce::jlimit (0, 18, type)]);
+            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060, 0xffe07050, 0xff50c0b0, 0xffd09040, 0xffb08050, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffd07080 };
+            return juce::Colour (c[juce::jlimit (0, 26, type)]);
         }
 
         class OnToggle : public ParamWidget

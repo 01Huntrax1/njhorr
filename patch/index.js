@@ -2415,7 +2415,24 @@ const FX_TYPES = [
       p: [["Lo-Mid Freq", fxHz(45, 3000), 0.45], ["Lo-Mid Gain", fxDb(-15, 15), 0.5], ["Hi-Mid Freq", fxHz(500, 18000), 0.55], ["Hi-Mid Gain", fxDb(-15, 15), 0.5], ["Drive", fxPct, 0.2], ["Age", fxPct, 0]] },
     // Filterbank (after the Sherman Filterbank): two multimode filters, response LP-BP-HP, anti-mix to the notch, filter 2 tuned in semitones
     { n: "Filterbank", mix: 1, modes: ["Parallel", "Series", "Blend", "Parallel Mirror", "Series Mirror", "Blend Mirror"],
-      p: [["Freq", fxHz(20, 20000), 0.5], ["Reso", fxPct, 0.4], ["Response", fxPct, 0.5], ["Anti-Mix", fxPct, 0], ["Drive", fxPct, 0.1], ["F2 Offset", fxLin(-24, 24, 0, "st"), 0.5]] }
+      p: [["Freq", fxHz(20, 20000), 0.5], ["Reso", fxPct, 0.4], ["Response", fxPct, 0.5], ["Anti-Mix", fxPct, 0], ["Drive", fxPct, 0.1], ["F2 Offset", fxLin(-24, 24, 0, "st"), 0.5]] },
+    // FX-AW: ports of Airwindows plugins by Chris Johnson (MIT licence, https://github.com/airwindows/airwindows), types 19..26
+    { n: "AW PurestDrive", mix: 1, modes: [],
+      p: [["Drive", fxPct, 1]] },
+    { n: "AW Spiral", mix: 1, modes: [],
+      p: [["Input", fxPct, 0.5], ["Highpass", fxPct, 0], ["Presence", fxPct, 0.5], ["Output", fxPct, 1]] },
+    { n: "AW Drive", mix: 1, modes: [],
+      p: [["Drive", fxPct, 0.5], ["Highpass", fxPct, 0], ["Output", fxPct, 1]] },
+    { n: "AW Tube", mix: 1, modes: [],
+      p: [["Input", fxPct, 0.5], ["Tube", fxPct, 0.5]] },
+    { n: "AW Density", mix: 1, modes: [],
+      p: [["Density", fxPct, 0.4], ["Highpass", fxPct, 0], ["Output", fxPct, 1]] },
+    { n: "AW Console 7", mix: 1, modes: [],
+      p: [["Fader", fxPct, 0.772]] },
+    { n: "AW Channel", mix: 1, modes: ["Neve", "API", "SSL", "Teac", "Mackie"],
+      p: [["Drive", fxPct, 0.3], ["Output", fxPct, 1]] },
+    { n: "AW ToTape", mix: 1, modes: [],
+      p: [["Input", fxDb(-12, 12), 0.5], ["Soften", fxPct, 0.5], ["Head Bump", fxPct, 0.5], ["Flutter", fxPct, 0.5], ["Output", fxDb(-12, 12), 0.5]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

@@ -522,5 +522,17 @@ q0 = render(fxb(base(0), 14, 0, 1.0, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="sl_q0
 q1 = render(fxb(xbase(0, 3), 14, 0, 1.0, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="sl_q1")
 check("Saturator in slot 14 behaves like in slot 1", np.abs(q0 - q1).max() < 1e-5 and rms(q0) > 1e-3)
 
+# ---- FX-AW: Airwindows ports (types 19..26)
+AWN = {19: "PurestDrive", 20: "Spiral", 21: "Drive", 22: "Tube", 23: "Density", 24: "Console 7", 25: "Channel", 26: "ToTape"}
+dry_aw = render([], tag="aw_dry", note=57)
+for ty, nm in AWN.items():
+    for pn, pv in (("default", (0.5,) * 6), ("max", (1.0,) * 6), ("min", (0.0,) * 6)):
+        a = render(["wt 0 saw"] + fxb(base(0), ty, 0, 1.0, pv), hold=0.6, tail=0.5, tag="aw%d%s" % (ty, pn), note=57)
+        check("AW %s (%s): finite, bounded and audible" % (nm, pn), bool(np.isfinite(a).all()) and np.abs(a).max() < 4.0 and (rms(a) > 1e-4 or pn == "min"), "peak %.2f rms %.4f" % (np.abs(a).max(), rms(a)))
+    a = render(["wt 0 saw"] + fxb(base(0), ty, 0, 1.0, (0.7,) * 6), hold=0.6, tail=0.3, tag="aw%dx" % ty, note=57)
+    check("AW %s changes the sound" % nm, np.abs(a - dry_aw[:len(a)]).max() > 1e-3 if len(a) <= len(dry_aw) else True)
+cm = [render(["wt 0 saw"] + fxb(base(0), 25, m, 1.0, (0.9, 1.0, 0.5, 0.5, 0.5, 0.5)), hold=0.5, tail=0.2, tag="awch%d" % m, note=57) for m in range(5)]
+check("AW Channel: the five console types differ", all(not np.allclose(cm[i], cm[j], atol=1e-6) for i in range(5) for j in range(i + 1, 5)))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)
