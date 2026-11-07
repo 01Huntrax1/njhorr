@@ -69,11 +69,11 @@ namespace performer
 
         //==============================================================================
         static constexpr uint32_t numInputEndpoints  = 3460;
-        static constexpr uint32_t numOutputEndpoints = 1;
+        static constexpr uint32_t numOutputEndpoints = 2;
 
         static constexpr uint32_t maxFramesPerBlock  = 512;
         static constexpr uint32_t eventBufferSize    = 32;
-        static constexpr uint32_t maxOutputEventSize = 0;
+        static constexpr uint32_t maxOutputEventSize = 8;
         static constexpr double   latency            = 0.000000;
 
         enum class EndpointHandles
@@ -82,6 +82,7 @@ namespace performer
             midiIn       = 1   ,
             tempoIn      = 2   ,
             positionIn   = 3   ,
+            seqPos       = 3462,
             lfoShapeLoad = 4   ,
             wtBankLoad   = 5   ,
             frqShapeLoad = 6   ,
@@ -3547,6 +3548,7 @@ namespace performer
             if (endpointName == "midiIn")        return static_cast<uint32_t> (EndpointHandles::midiIn);
             if (endpointName == "tempoIn")       return static_cast<uint32_t> (EndpointHandles::tempoIn);
             if (endpointName == "positionIn")    return static_cast<uint32_t> (EndpointHandles::positionIn);
+            if (endpointName == "seqPos")        return static_cast<uint32_t> (EndpointHandles::seqPos);
             if (endpointName == "lfoShapeLoad")  return static_cast<uint32_t> (EndpointHandles::lfoShapeLoad);
             if (endpointName == "wtBankLoad")    return static_cast<uint32_t> (EndpointHandles::wtBankLoad);
             if (endpointName == "frqShapeLoad")  return static_cast<uint32_t> (EndpointHandles::frqShapeLoad);
@@ -10473,7 +10475,8 @@ namespace performer
 
         static constexpr EndpointInfo outputEndpoints[] =
         {
-            { 3461,  "out",  EndpointType::stream }
+            { 3461,  "out",     EndpointType::stream },
+            { 3462,  "seqPos",  EndpointType::event  }
         };
 
         //==============================================================================
@@ -10485,7 +10488,10 @@ namespace performer
             outputEndpoints[0]
         };
 
-        static constexpr std::array<EndpointInfo, 0> outputEvents {};
+        static constexpr std::array outputEvents
+        {
+            outputEndpoints[1]
+        };
 
         static constexpr std::array<EndpointInfo, 0> outputMIDIEvents {};
 
@@ -35066,7 +35072,9 @@ namespace performer
                 110,116,84,121,112,101,34,58,32,34,115,116,114,101,97,109,34,44,10,32,32,32,32,32,32,34,100,97,116,97,84,121,112,101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,118,101,
                 99,116,111,114,34,44,10,32,32,32,32,32,32,32,32,34,101,108,101,109,101,110,116,34,58,32,123,10,32,32,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,102,108,111,97,116,51,50,34,10,32,32,32,
                 32,32,32,32,32,125,44,10,32,32,32,32,32,32,32,32,34,115,105,122,101,34,58,32,50,10,32,32,32,32,32,32,125,44,10,32,32,32,32,32,32,34,112,117,114,112,111,115,101,34,58,32,34,97,117,100,105,111,32,
-                111,117,116,34,44,10,32,32,32,32,32,32,34,110,117,109,65,117,100,105,111,67,104,97,110,110,101,108,115,34,58,32,50,10,32,32,32,32,125,10,32,32,93,10,125, 0 };
+                111,117,116,34,44,10,32,32,32,32,32,32,34,110,117,109,65,117,100,105,111,67,104,97,110,110,101,108,115,34,58,32,50,10,32,32,32,32,125,44,10,32,32,32,32,123,10,32,32,32,32,32,32,34,101,110,100,112,
+                111,105,110,116,73,68,34,58,32,34,115,101,113,80,111,115,34,44,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,84,121,112,101,34,58,32,34,101,118,101,110,116,34,44,10,32,32,32,32,32,32,34,
+                100,97,116,97,84,121,112,101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,105,110,116,51,50,34,10,32,32,32,32,32,32,125,10,32,32,32,32,125,10,32,32,93,10,125, 0 };
 
         //==============================================================================
         struct intrinsics
@@ -35613,6 +35621,8 @@ namespace performer
             Array<float, 16> seqRetrig;
             Array<float, 16> seqPol;
             int32_t seqMask = {};
+            int32_t seqRepVoice = {};
+            Array<int32_t, 16> seqLastPos;
             Array<float, 16> modBip;
             Array<float, 16> envMaxNext;
             Array<int32_t, 256> mmSrcI;
@@ -35725,10 +35735,19 @@ namespace performer
             int32_t _resumeIndex = {};
         };
 
+        struct Eisenpuls_Synth_eventValue_seqPos
+        {
+            int32_t frame = {};
+            int32_t type = {};
+            int32_t value_0 = {};
+        };
+
         struct Eisenpuls_Synth_State
         {
             int32_t _currentFrame = {};
             _Eisenpuls_Synth_State _state;
+            int32_t seqPos_eventCount = {};
+            Array<Eisenpuls_Synth_eventValue_seqPos, 32> seqPos;
         };
 
         struct std_midi_Message
@@ -35856,21 +35875,19 @@ namespace performer
 
         uint32_t getNumOutputEvents (EndpointHandle endpointHandle)
         {
-            (void) endpointHandle;
-
+            if (endpointHandle == 3462) return (uint32_t) cmajState.seqPos_eventCount;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return {};
         }
 
         void resetOutputEventCount (EndpointHandle endpointHandle)
         {
-            (void) endpointHandle;
+            if (endpointHandle == 3462) { cmajState.seqPos_eventCount = 0; return; }
         }
 
         uint32_t getOutputEventType (EndpointHandle endpointHandle, uint32_t index)
         {
-            (void) endpointHandle; (void) index;
-
+            if (endpointHandle == 3462) return (uint32_t) cmajState.seqPos[(IndexType) index].type;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return {};
         }
@@ -35879,14 +35896,23 @@ namespace performer
         {
             (void) endpointHandle; (void) typeIndex;
 
+            if (endpointHandle == 3462 && typeIndex == 0) return 4;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return 0;
         }
 
         uint32_t readOutputEvent (EndpointHandle endpointHandle, uint32_t index, unsigned char* dest)
         {
-
-            (void) endpointHandle; (void) index; (void) dest;
+            if (endpointHandle == 3462)
+            {
+                auto& event = cmajState.seqPos[(IndexType) index];
+                if (event.type == 0)
+                {
+                    memcpy (dest, std::addressof (event.value_0), 4);
+                    dest += 4;
+                    return (uint32_t) event.frame;
+                }
+            }
 
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return {};
@@ -81261,6 +81287,7 @@ namespace performer
                         }
                     }
                 }
+                _state.seqRepVoice = v;
                 _state.lastVelV = vel;
                 _state.lastKeyV = intrinsics::clamp ((static_cast<float> (nn) - 60.0f) / 48.0f, -1.0f, 1.0f);
                 _state.lastRandV = _state.voices[std__intrinsics___wrap_8 (v)].modRand;
@@ -119237,6 +119264,7 @@ namespace performer
             _state.lastRandV = 0.0f;
             _state.flfPhase = 0.0;
             _state.spTwOk = false;
+            _state.seqRepVoice = int32_t {0};
             _state.toneStL = 0.0f;
             _state.toneStR = 0.0f;
             _state.dcYL = 0.0f;
@@ -119956,6 +119984,8 @@ namespace performer
             float  sr;
             int32_t  fs;
             int32_t  fs_0;
+            int32_t  m;
+            int32_t  sp;
             Array<float, 3>  mixSynthL;
             Array<float, 3>  mixSynthR;
             int32_t  i;
@@ -120144,6 +120174,28 @@ namespace performer
                     }
                 }
                 _Eisenpuls_Synth__updateSeqGlobal (_state, dt);
+                {
+                    m = int32_t {0};
+                    for (;;)
+                    {
+                        if  (! (m < int32_t {10}))
+                        {
+                            break;
+                        }
+                        if ((_state.seqMask & intrinsics::leftShift (int32_t {1}, m)) != int32_t {0})
+                        {
+                            sp = static_cast<int32_t> (((_state.seqRetrig[std__intrinsics___wrap_16 (m)] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (_state.seqRepVoice)].seqS[std__intrinsics___wrap_16 (m)].idx : _state.seqG[std__intrinsics___wrap_16 (m)].idx) + 0.5f);
+                            if (sp != _state.seqLastPos[std__intrinsics___wrap_16 (m)])
+                            {
+                                _state.seqLastPos[std__intrinsics___wrap_16 (m)] = sp;
+                                _Eisenpuls_Synth___writeEvent_seqPos (_state, intrinsics::add (intrinsics::multiply (m, int32_t {16}), sp));
+                            }
+                        }
+                        {
+                            intrinsics::addTo (m, 1);
+                        }
+                    }
+                }
                 _Eisenpuls_Synth__updateFrqGlobal (_state, dt);
                 _Eisenpuls_Synth__rollEnvMax (_state);
                 _Eisenpuls_Synth__computeGlobalMod (_state);
@@ -121328,6 +121380,27 @@ namespace performer
                 _temp = _state.seqRate[std__intrinsics___wrap_16 (m)];
             }
             return _temp;
+        }
+
+        void _Eisenpuls_Synth___writeEvent_seqPos (_Eisenpuls_Synth_State& _state, int32_t value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_seqPos (state_upcast_struct_Eisenpuls_Synth_St_LSrTwb(_state), value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_seqPos (Eisenpuls_Synth_State& _state, const int32_t& value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_seqPos_0 (_state, value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_seqPos_0 (Eisenpuls_Synth_State& _state, int32_t value) noexcept
+        {
+            if (_state.seqPos_eventCount < int32_t {32})
+            {
+                _state.seqPos[_state.seqPos_eventCount].frame = _state._currentFrame;
+                _state.seqPos[_state.seqPos_eventCount].type = int32_t {0};
+                _state.seqPos[_state.seqPos_eventCount].value_0 = value;
+            }
+            intrinsics::addTo (_state.seqPos_eventCount, 1);
         }
 
         void _Eisenpuls_Synth__updateFrqGlobal (_Eisenpuls_Synth_State& _state, float dt) noexcept
@@ -134250,6 +134323,10 @@ namespace performer
             (void) handle; (void) stringLength;
             return "";
         }
+
+        //==============================================================================
+        #define OFFSETOF(type, member)   ((size_t)((char *)&(*(type *)nullptr).member))
+        static Eisenpuls_Synth_State& state_upcast_struct_Eisenpuls_Synth_St_LSrTwb (_Eisenpuls_Synth_State& child) { return *reinterpret_cast<Eisenpuls_Synth_State*> (reinterpret_cast<char*> (std::addressof (child)) - (OFFSETOF (Eisenpuls_Synth_State, _state))); }
 
         //==============================================================================
         double g__frequency {};

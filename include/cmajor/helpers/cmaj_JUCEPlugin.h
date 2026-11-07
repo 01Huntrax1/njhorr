@@ -676,6 +676,14 @@ protected:
 
     void handleOutputEvent (uint64_t, std::string_view endpointID, const choc::value::ValueView& value)
     {
+       #if NJOHRR_NATIVE_UI
+        if (endpointID == "seqPos")   // playhead of the step sequencers (message thread)
+        {
+            if (njoBridge && value.isInt32()) njoBridge->backend.setSeqPos (value.getInt32());
+            return;
+        }
+       #endif
+
         if (endpointID == cmaj::getConsoleEndpointID())
         {
             auto text = cmaj::convertConsoleMessageToString (value);

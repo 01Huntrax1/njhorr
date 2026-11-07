@@ -32,6 +32,10 @@ namespace njo
         // ---- host info for the LCD / meters ----
         virtual float getOutputLevel() { return 0.0f; }
 
+        // ---- playhead of the step sequencers: the DSP reports "sequencer * 16 + step" (output event seqPos); -1 = unknown ----
+        int seqStepPos[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+        void setSeqPos (int v) { int m = v / 16; if (v >= 0 && m < 10) seqStepPos[m] = v % 16; }
+
         struct Listener
         {
             virtual ~Listener() = default;

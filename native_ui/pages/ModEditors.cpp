@@ -676,6 +676,7 @@ namespace njo
             g.setColour (juce::Colour (0xff0c0d0f)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
             float sw = a.getWidth() / 16.0f;
             if (bip) { g.setColour (dim.withAlpha (0.5f)); g.drawHorizontalLine ((int) a.getCentreY(), a.getX(), a.getRight()); }
+            int head = ctx.be.seqStepPos[m];
             for (int k = 0; k < 16; ++k)
             {
                 float v = ctx.get (seqParam (m, k));
@@ -688,6 +689,11 @@ namespace njo
                 g.setColour (col.withAlpha (act ? 0.95f : 0.25f)); g.fillRoundedRectangle (bar.withHeight (juce::jmax (bar.getHeight(), 2.0f)), 2.0f);
                 g.setColour (dim.withAlpha (act ? 0.9f : 0.4f)); g.setFont (font (8.0f));
                 g.drawText (juce::String (k + 1), cell.toNearestInt().removeFromTop (10), juce::Justification::centred);
+                if (k == head && act)   // playhead
+                {
+                    g.setColour (col.withAlpha (0.18f)); g.fillRoundedRectangle (cell, 2.0f);
+                    g.setColour (juce::Colours::white.withAlpha (0.9f)); g.drawRoundedRectangle (cell, 2.0f, 1.4f);
+                }
             }
         }
         void setFromMouse (const juce::MouseEvent& e)
@@ -710,8 +716,9 @@ namespace njo
         }
     };
 
-    struct SeqEditor::Impl : Ctx::Listener, SeqRefresh
+    struct SeqEditor::Impl : Ctx::Listener, SeqRefresh, private juce::Timer
     {
+        int lastHead[10];
         Ctx& ctx; SeqEditor& owner;
         juce::OwnedArray<SourceChip> chips;
         SeqCanvas cv;
@@ -736,9 +743,16 @@ namespace njo
                 }
             }
             owner.addAndMakeVisible (cv);
+            for (int& h : lastHead) h = -2;
+            startTimerHz (30);   // playhead
             refreshAll();
         }
-        ~Impl() override { ctx.removeListener (this); gSeqAll.erase (std::remove (gSeqAll.begin(), gSeqAll.end(), this), gSeqAll.end()); }
+        void timerCallback() override
+        {
+            int m = ctx.selectedSeq;
+            if (owner.isShowing() && ctx.be.seqStepPos[m] != lastHead[m]) { lastHead[m] = ctx.be.seqStepPos[m]; cv.repaint(); }
+        }
+        ~Impl() override { stopTimer(); ctx.removeListener (this); gSeqAll.erase (std::remove (gSeqAll.begin(), gSeqAll.end(), this), gSeqAll.end()); }
 
         void paramChanged (int n, float) override
         {

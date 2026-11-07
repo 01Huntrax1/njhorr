@@ -6,6 +6,7 @@ processor Eisenpuls_Synth
     input event std::midi::Message midiIn;
     input event std::timeline::Tempo tempoIn;
     input event std::timeline::Position positionIn;   // FX-SYNC
+    output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
     input event LfoShapeChunk lfoShapeLoad;
@@ -3754,6 +3755,8 @@ processor Eisenpuls_Synth
     float[16]   seqRetrig;
     float[16]   seqPol;    // 1 = bipolar
     int         seqMask = 0;   // bit m: sequencer m is used by the matrix
+    int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
+    int[16]     seqLastPos;        // MOD-SEQPOS
     float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
     float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
@@ -17005,6 +17008,8 @@ processor Eisenpuls_Synth
                 voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ
             }
 
+            seqRepVoice = v;   // MOD-SEQPOS
+
             lastVelV  = vel;
             lastKeyV  = clamp ((float (nn) - 60.0f) / 48.0f, -1.0f, 1.0f);
             lastRandV = voices.at (v).modRand;
@@ -17054,6 +17059,17 @@ processor Eisenpuls_Synth
                 if (mmSrcI.at (fs) >= 34 && mmDstI.at (fs) > 0)
                     seqMask |= 1 << (mmSrcI.at (fs) - 34);
             updateSeqGlobal (dt);
+            for (int m = 0; m < 10; ++m)   // MOD-SEQPOS
+                if ((seqMask & (1 << m)) != 0)
+                {
+                    int sp = int ((seqRetrig.at (m) > 0.5f ? voices.at (seqRepVoice).seqS.at (m).idx : seqG.at (m).idx) + 0.5f);
+
+                    if (sp != seqLastPos.at (m))
+                    {
+                        seqLastPos.at (m) = sp;
+                        seqPos <- m * 16 + sp;
+                    }
+                }
             updateFrqGlobal (dt);
             rollEnvMax();
             computeGlobalMod();
