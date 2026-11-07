@@ -13,6 +13,138 @@ namespace njo::theme
         return juce::Font (juce::FontOptions (juce::Font::getDefaultMonospacedFontName(), h, bold ? juce::Font::bold : juce::Font::plain));
     }
 
+    // ------------------------------------------------------------------ textures
+    namespace
+    {
+        float hash2 (int x, int y, int seed)
+        {
+            unsigned h = (unsigned) x * 374761393u + (unsigned) y * 668265263u + (unsigned) seed * 2246822519u;
+            h = (h ^ (h >> 13)) * 1274126177u;
+            return (float) ((h ^ (h >> 16)) & 0xffffu) / 65535.0f;
+        }
+        // value noise on a lattice of px * py cells that wraps around (the tile is seamless)
+        float vnoise (float x, float y, int px, int py, int seed)
+        {
+            int x0 = (int) std::floor (x), y0 = (int) std::floor (y);
+            float fx = x - (float) x0, fy = y - (float) y0;
+            fx = fx * fx * (3.0f - 2.0f * fx); fy = fy * fy * (3.0f - 2.0f * fy);
+            auto h = [&] (int a, int b) { return hash2 (((a % px) + px) % px, ((b % py) + py) % py, seed); };
+            float a = h (x0, y0), b = h (x0 + 1, y0), c = h (x0, y0 + 1), d = h (x0 + 1, y0 + 1);
+            return (a + (b - a) * fx) + ((c + (d - c) * fx) - (a + (b - a) * fx)) * fy;
+        }
+        juce::Colour mix (juce::Colour a, juce::Colour b, float t) { return a.interpolatedWith (b, juce::jlimit (0.0f, 1.0f, t)); }
+    }
+
+    const juce::Image& texPlate()
+    {
+        static juce::Image img = []
+        {
+            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true);
+            juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
+            const juce::Colour dark (0xff0e0c07), mid (0xff231e13), brass (0xff54462a);
+            for (int y = 0; y < N; ++y)
+                for (int x = 0; x < N; ++x)
+                {
+                    float u = (float) x / N, v = (float) y / N;
+                    float streak = vnoise (u * 3.0f, v * 160.0f, 3, 160, 11);       // brushed: long horizontal fibres
+                    float streak2 = vnoise (u * 9.0f, v * 80.0f, 9, 80, 12);
+                    float blotch = vnoise (u * 4.0f, v * 4.0f, 4, 4, 13);            // forged unevenness
+                    float grain = hash2 (x, y, 14);
+                    float L = 0.42f + 0.26f * (streak - 0.5f) + 0.18f * (streak2 - 0.5f) + 0.30f * (blotch - 0.5f) + 0.10f * (grain - 0.5f);
+                    float pit = hash2 (x / 3, y / 3, 15) > 0.985f ? -0.25f : 0.0f;   // pits
+                    L = juce::jlimit (0.0f, 1.0f, L + pit);
+                    auto col = L < 0.5f ? mix (dark, mid, L * 2.0f) : mix (mid, brass, (L - 0.5f) * 1.6f);
+                    bd.setPixelColour (x, y, col);
+                }
+            return im;
+        }();
+        return img;
+    }
+
+    const juce::Image& texScales()
+    {
+        static juce::Image img = []
+        {
+            const int W = 48, H = 32; juce::Image im (juce::Image::ARGB, W, H, true);
+            juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
+            const juce::Colour dark (0xff050504), lo (0xff100e0a), hi (0xff2a2418);
+            for (int y = 0; y < H; ++y)
+                for (int x = 0; x < W; ++x)
+                {
+                    int row = y / 16; int xo = (row & 1) * 12;
+                    float u = (float) (((x + xo) % 24)) / 24.0f, v = (float) (y % 16) / 16.0f;
+                    float bulge = 1.0f - std::abs (2.0f * u - 1.0f);                 // pointed scale: ridge along the middle
+                    float tip = v - 0.55f * (1.0f - bulge);                           // lower edge is a V
+                    bool groove = u < 0.07f || u > 0.93f || tip > 0.80f || v < 0.05f;
+                    float lit = 0.55f * (1.0f - v) + 0.45f * bulge;
+                    float n = hash2 (x, y, 21) * 0.18f;
+                    auto col = groove ? dark : mix (lo, hi, lit * 0.9f + n);
+                    bd.setPixelColour (x, y, col);
+                }
+            return im;
+        }();
+        return img;
+    }
+
+    const juce::Image& texPlasma()
+    {
+        static juce::Image img = []
+        {
+            const int N = 128; juce::Image im (juce::Image::ARGB, N, N, true);
+            juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
+            const juce::Colour deepG (0xff1f5208), midG (0xff5fc41c), hotG (0xffd2ff7a);
+            for (int y = 0; y < N; ++y)
+                for (int x = 0; x < N; ++x)
+                {
+                    float u = (float) x / N, v = (float) y / N;
+                    float n = 0.55f * vnoise (u * 4.0f, v * 4.0f, 4, 4, 31) + 0.30f * vnoise (u * 8.0f, v * 8.0f, 8, 8, 32) + 0.15f * vnoise (u * 16.0f, v * 16.0f, 16, 16, 33);
+                    float ridge = 1.0f - std::abs (2.0f * n - 1.0f);                  // energy veins
+                    ridge = ridge * ridge * ridge;
+                    float L = 0.30f + 0.50f * n + 0.55f * ridge;
+                    auto col = L < 0.6f ? mix (deepG, midG, L / 0.6f) : mix (midG, hotG, (L - 0.6f) / 0.5f);
+                    bd.setPixelColour (x, y, col);
+                }
+            return im;
+        }();
+        return img;
+    }
+
+    const juce::Image& texGlass()
+    {
+        static juce::Image img = []
+        {
+            const int N = 64; juce::Image im (juce::Image::ARGB, N, N, true);
+            juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
+            for (int y = 0; y < N; ++y)
+                for (int x = 0; x < N; ++x)
+                {
+                    float n = vnoise ((float) x / 8.0f, (float) y / 8.0f, 8, 8, 41) * 0.6f + hash2 (x, y, 42) * 0.4f;
+                    bool line = (y % 4) == 0;
+                    bd.setPixelColour (x, y, mix (juce::Colour (0xff040703), juce::Colour (0xff10200a), n * (line ? 0.5f : 1.0f)));
+                }
+            return im;
+        }();
+        return img;
+    }
+
+    void fillPlate (juce::Graphics& g, const juce::Path& p, juce::Rectangle<float> r, float shade)
+    {
+        g.saveState();
+        g.setTiledImageFill (texPlate(), (int) r.getX() * 3, (int) r.getY() * 5, 1.0f);
+        g.fillPath (p);
+        g.setGradientFill (juce::ColourGradient (juce::Colours::white.withAlpha (0.07f), r.getX(), r.getY(), juce::Colours::black.withAlpha (0.52f + 0.3f * shade), r.getX(), r.getBottom(), false));
+        g.fillPath (p);
+        g.restoreState();
+    }
+
+    void paintBackground (juce::Graphics& g, juce::Rectangle<int> r)
+    {
+        g.setTiledImageFill (texScales(), 0, 0, 1.0f);
+        g.fillRect (r);
+        g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, r.getCentreX() * 1.0f, r.getCentreY() * 1.0f, juce::Colours::black.withAlpha (0.6f), 0.0f, 0.0f, true));   // vignette
+        g.fillRect (r);
+    }
+
     juce::ColourGradient vertical (juce::Colour top, juce::Colour bottom, juce::Rectangle<float> r)
     {
         return juce::ColourGradient (top, r.getX(), r.getY(), bottom, r.getX(), r.getBottom(), false);
@@ -39,8 +171,7 @@ namespace njo::theme
         const float cut = juce::jlimit (6.0f, 16.0f, cornerTL * 1.3f);
         auto p = chamfer (r, cut, 3.0f, cut, 3.0f);
         // hammered bronze plate
-        g.setGradientFill (vertical (juce::Colour (0xff2a251c), juce::Colour (0xff1b1812), r));
-        g.fillPath (p);
+        fillPlate (g, p, r);
         g.setColour (juce::Colour (0xff0c0b08));   // shadow line inside the frame
         g.strokePath (chamfer (r.reduced (3.0f), cut - 2.0f, 2.0f, cut - 2.0f, 2.0f), juce::PathStrokeType (1.0f));
         g.setColour (juce::Colour (0xff6d5c3a));   // bronze frame
@@ -95,14 +226,15 @@ namespace njo::theme
         auto p = chamfer (r, c, 0.0f, c, 0.0f);
         if (on)
         {
-            g.setGradientFill (vertical (juce::Colour (0xffb8ff5a), juce::Colour (0xff3f7f10), r)); g.fillPath (p);
+            g.setTiledImageFill (texPlasma(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
+            g.setGradientFill (vertical (juce::Colours::white.withAlpha (0.10f), juce::Colours::black.withAlpha (0.45f), r)); g.fillPath (p);
             g.setColour (juce::Colour (0xffd6ff9a)); g.strokePath (p, juce::PathStrokeType (1.0f));
             g.setColour (juce::Colours::white.withAlpha (0.35f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
             g.setColour (red.withAlpha (0.18f)); g.strokePath (p, juce::PathStrokeType (3.5f));   // plasma glow
         }
         else
         {
-            g.setGradientFill (vertical (down ? juce::Colour (0xff1c1913) : juce::Colour (0xff342e22), juce::Colour (0xff15130e), r)); g.fillPath (p);
+            fillPlate (g, p, r, down ? 0.8f : 0.2f);
             g.setColour (hover ? red : juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.0f));
             g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
         }
@@ -145,7 +277,8 @@ namespace njo::theme
             if (i == 0) hex.startNewSubPath (x, y); else hex.lineTo (x, y);
         }
         hex.closeSubPath();
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff8a7648), c.x - br * 0.6f, c.y - br, juce::Colour (0xff2a2316), c.x + br * 0.6f, c.y + br, false));
+        g.setTiledImageFill (texPlate(), (int) c.x * 7, (int) c.y * 3, 1.0f); g.fillPath (hex);
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff9a8450).withAlpha (0.55f), c.x - br * 0.8f, c.y - br, juce::Colours::black.withAlpha (0.4f), c.x + br * 0.6f, c.y + br, false));
         g.fillPath (hex);
         g.setColour (dragging ? red : (hover ? juce::Colour (0xff9fd44a) : juce::Colour (0xff0a0906)));
         g.strokePath (hex, juce::PathStrokeType (1.2f));
@@ -168,7 +301,7 @@ namespace njo::theme
     void paintLcdBox (juce::Graphics& g, juce::Rectangle<float> r)
     {
         auto p = chamfer (r, 6.0f, 0.0f, 6.0f, 0.0f);
-        g.setColour (juce::Colour (0xff050a03)); g.fillPath (p);
+        g.setTiledImageFill (texGlass(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
         g.setColour (juce::Colours::black.withAlpha (0.35f));   // scan lines
         for (float y = r.getY() + 2.0f; y < r.getBottom(); y += 3.0f) g.drawHorizontalLine ((int) y, r.getX() + 4.0f, r.getRight() - 4.0f);
         g.setColour (juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.2f));
@@ -178,7 +311,7 @@ namespace njo::theme
     {
         const float c = juce::jlimit (2.0f, 6.0f, corner + 1.0f);
         auto p = chamfer (r, c, 0.0f, c, 0.0f);
-        g.setColour (juce::Colour (0xff070905)); g.fillPath (p);
+        g.setTiledImageFill (texGlass(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
         g.setColour (juce::Colour (0xff3f6a1c)); g.strokePath (chamfer (r.reduced (0.5f), c, 0.0f, c, 0.0f), juce::PathStrokeType (1.0f));
     }
 }

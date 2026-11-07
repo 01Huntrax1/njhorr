@@ -259,14 +259,11 @@ namespace njo
     void EditorContent::paint (juce::Graphics& g)
     {
         g.fillAll (bg);
-        // diagonal hatching like the web background
-        g.setColour (juce::Colours::white.withAlpha (0.022f));
-        for (int i = -BASE_H; i < BASE_W; i += 7) g.drawLine ((float) i, (float) BASE_H, (float) (i + BASE_H), 0.0f, 1.0f);
+        paintBackground (g, getLocalBounds());   // dragon-scale armour texture
         // top bar
         auto t = impl->topBar.toFloat();
-        g.setGradientFill (vertical (juce::Colour (0xff363027), juce::Colour (0xff211d17), t));
         auto tp = chamfer (t, 26.0f, 8.0f, 26.0f, 8.0f);
-        g.fillPath (tp);
+        fillPlate (g, tp, t, 0.0f);
         g.setColour (juce::Colour (0xff0c0b08)); g.strokePath (chamfer (t.reduced (3), 23.0f, 6.0f, 23.0f, 6.0f), juce::PathStrokeType (1.0f));
         g.setColour (juce::Colour (0xff7a6740)); g.strokePath (tp, juce::PathStrokeType (2.0f));
         g.setColour (red.withAlpha (0.5f)); g.drawLine (t.getX() + 3.0f, t.getY() + 26.0f, t.getX() + 26.0f, t.getY() + 3.0f, 1.2f);    // etched cut

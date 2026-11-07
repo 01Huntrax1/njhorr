@@ -14,6 +14,13 @@ namespace njo::theme
     juce::Font mono (float height, bool bold = false);
 
     // draws the dark rounded "card" panel background with the red hairline on top and two screws at the bottom
+    // procedural textures (generated once, seamless tiles): brushed bronze plate, dragon-scale armour, plasma veins, grained glass
+    const juce::Image& texPlate();
+    const juce::Image& texScales();
+    const juce::Image& texPlasma();
+    const juce::Image& texGlass();
+    void fillPlate (juce::Graphics&, const juce::Path&, juce::Rectangle<float> r, float shade = 0.0f);   // textured bronze plate with a light-to-dark gradient (shade: 0..1 darker)
+    void paintBackground (juce::Graphics&, juce::Rectangle<int> r);                                         // the window background
     juce::Path chamfer (juce::Rectangle<float> r, float tl, float tr, float br, float bl);   // plate with cut corners
     void paintCard (juce::Graphics&, juce::Rectangle<float> r, float cornerTopLeft = 10.0f);
     // the red/grey pill button background used by tabs and segment buttons
