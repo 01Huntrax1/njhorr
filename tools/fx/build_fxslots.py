@@ -119,7 +119,7 @@ decl = ''; hand = ''
 for rk in range(3):
     for j in range(6):
         s = 30 + rk * 6 + j; b = 3200 + (rk * 6 + j) * 10; nm = '%s FX %d' % (RN[rk], 11 + j)
-        decl += '    input event float param%d [[ name: "%s Type", min: 0.0, max: 26.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS\n' % (b, nm)
+        decl += '    input event float param%d [[ name: "%s Type", min: 0.0, max: 27.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS\n' % (b, nm)
         decl += '    input event float param%d [[ name: "%s On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];\n' % (b + 1, nm)
         decl += '    input event float param%d [[ name: "%s Mix", min: 0.0, max: 1.0, init: 1.0 ]];\n' % (b + 2, nm)
         decl += '    input event float param%d [[ name: "%s Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];\n' % (b + 3, nm)
@@ -131,7 +131,7 @@ for rk in range(3):
         hand += '    event param%d (float v) { fxMode.at (%d) = clamp (int (v + 0.5f), 0, 32); fxDirty.at (%d) = true; }\n' % (b + 3, s, s)
         for k in range(6):
             hand += '    event param%d (float v) { fxP.at (%d) = v; fxDirty.at (%d) = true; }\n' % (b + 4 + k, s * 6 + k, s)
-        decl += '    input event float param%d [[ name: "%s Sync", min: 0.0, max: 26.0, init: 0.0, step: 1.0 ]];\n' % (3400 + rk * 6 + j, nm)
+        decl += '    input event float param%d [[ name: "%s Sync", min: 0.0, max: 27.0, init: 0.0, step: 1.0 ]];\n' % (3400 + rk * 6 + j, nm)
         hand += '    event param%d (float v) { fxSync.at (%d) = clamp (int (v + 0.5f), 0, 18); fxDirty.at (%d) = true; }\n' % (3400 + rk * 6 + j, s, s)
         decl += '    input event float param%d [[ name: "%s FX Order %d", min: 0.0, max: 15.0, init: %d, step: 1.0 ]];\n' % (3380 + rk * 6 + j, RN[rk], 11 + j, 10 + j)
         hand += '    event param%d (float v) { fxOrder.at (%d) = clamp (int (v + 0.5f), 0, 15); fxRebuildSeq (%d); }\n' % (3380 + rk * 6 + j, rk * 16 + 10 + j, rk)

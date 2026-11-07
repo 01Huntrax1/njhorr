@@ -523,7 +523,7 @@ q1 = render(fxb(xbase(0, 3), 14, 0, 1.0, (0.5, 0.5, 0.5, 0.5, 0.5, 0.5)), tag="s
 check("Saturator in slot 14 behaves like in slot 1", np.abs(q0 - q1).max() < 1e-5 and rms(q0) > 1e-3)
 
 # ---- FX-AW: Airwindows ports (types 19..26)
-AWN = {19: "PurestDrive", 20: "Spiral", 21: "Drive", 22: "Tube", 23: "Density", 24: "Console 7", 25: "Channel", 26: "ToTape"}
+AWN = {19: "PurestDrive", 20: "Spiral", 21: "Drive", 22: "Tube", 23: "Density", 24: "Console 7", 25: "Channel", 26: "ToTape", 27: "MackEQ"}
 dry_aw = render([], tag="aw_dry", note=57)
 for ty, nm in AWN.items():
     for pn, pv in (("default", (0.5,) * 6), ("max", (1.0,) * 6), ("min", (0.0,) * 6)):

@@ -10,7 +10,7 @@ import numpy as np
 ap = argparse.ArgumentParser(); ap.add_argument("--host", required=True); ap.add_argument("--awsrc", required=True); A = ap.parse_args()
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOST = A.host; TMP = tempfile.mkdtemp(prefix="awref"); RATE = 48000
-for pl in ("PurestDrive", "Spiral2", "Drive", "Tube2", "Density2", "Console7Channel", "Channel9", "ToTape6"):
+for pl in ("PurestDrive", "Spiral2", "Drive", "Tube2", "Density2", "Console7Channel", "Channel9", "ToTape6", "MackEQ"):
     subprocess.run(["g++", "-O2", "-std=c++17", "-w", "-I" + HERE, "-I" + os.path.join(A.awsrc, pl), '-DHDR="%s.cpp"' % pl, '-DHDR2="%sProc.cpp"' % pl, "-DPLUG=" + pl, "-x", "c++", os.path.join(HERE, "harness.cpp"), "-o", os.path.join(TMP, "ref_" + pl)], check=True)
 def base(slot): return 541 + 10 * slot
 def fx(slot, ty, mode=0, mix=1.0, p=(0.5,) * 6):
@@ -38,6 +38,7 @@ CASES = {
  24: ("Console7Channel", lambda p,m:[p[0]], 1),
  25: ("Channel9", lambda p,m:[(m+0.5)/5,p[0],p[1]], 2),
  26: ("ToTape6", lambda p,m:[p[0],p[1],p[2],p[3],p[4],1.0], 5),
+ 27: ("MackEQ", lambda p,m:[p[0],p[1],p[2],p[3],1.0], 4),
 }
 PS = [(0.6,0.2,0.6,0.8,0.5),(0.4,0.0,0.5,1.0,0.5),(0.5,0.5,0.5,0.5,0.5)]
 for kind,amp in (("noise",0.3),("mod",0.4)):

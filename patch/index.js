@@ -2432,7 +2432,9 @@ const FX_TYPES = [
     { n: "AW Channel", mix: 1, modes: ["Neve", "API", "SSL", "Teac", "Mackie"],
       p: [["Drive", fxPct, 0.3], ["Output", fxPct, 1]] },
     { n: "AW ToTape", mix: 1, modes: [],
-      p: [["Input", fxDb(-12, 12), 0.5], ["Soften", fxPct, 0.5], ["Head Bump", fxPct, 0.5], ["Flutter", fxPct, 0.5], ["Output", fxDb(-12, 12), 0.5]] }
+      p: [["Input", fxDb(-12, 12), 0.5], ["Soften", fxPct, 0.5], ["Head Bump", fxPct, 0.5], ["Flutter", fxPct, 0.5], ["Output", fxDb(-12, 12), 0.5]] },
+    { n: "AW MackEQ", mix: 1, modes: [],
+      p: [["Trim", fxPct, 0.1], ["Hi", fxPct, 0.5], ["Lo", fxPct, 0.5], ["Gain", fxPct, 1]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

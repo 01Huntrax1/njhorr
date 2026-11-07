@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Idempotent: eight Airwindows effects as FX types 19..26, marker FX-AW.
+"""Idempotent: eight Airwindows effects as FX types 19..27, marker FX-AW.
 Ports of Airwindows plugins by Chris Johnson (MIT licence, https://github.com/airwindows/airwindows): PurestDrive, Spiral2, Drive, Tube2, Density2,
 Console7Channel, Channel9, ToTape6. The processing is computed in float64 (awS = state, awD = derived values); delay lines (ToTape flutter) use the slot arena."""
 import os, sys
@@ -43,7 +43,7 @@ rep('        else if (ty == 18) y = fxFb     (s, x);\n',
     '        else if (ty == 25) y = fxAwChannel (s, x);\n'
     '        else if (ty == 26) y = fxAwTape    (s, x);\n')
 
-CODE = r'''    // ================= FX-AW: Airwindows effects (FX types 19..26) =================
+CODE = r'''    // ================= FX-AW: Airwindows effects (FX types 19..27) =================
     // Ports of Airwindows plugins by Chris Johnson (MIT licence, https://github.com/airwindows/airwindows). Computed in float64; state awS[s * 40 + ...], derived awD[s * 24 + ...].
     // 19 PurestDrive, 20 Spiral2, 21 Drive, 22 Tube2, 23 Density2, 24 Console7Channel, 25 Channel9 (mode = console type), 26 ToTape6.
 
