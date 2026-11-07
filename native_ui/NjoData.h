@@ -91,6 +91,7 @@ namespace njo
     inline int lfoDivParam (int i) { return 503 + 2 * i; }
     inline int lfoModeParam (int i) { return 882 + 5 * i; }       // +1 delay +2 rise +3 smooth +4 phase
     inline int envParam (int i) { return 267 + 4 * i; }           // +0 attack +1 decay +2 sustain +3 release
+    constexpr int ARP_BASE = 3920;   // arpeggiator: +0 On, +1 Mode, +2 Octaves, +3 Sync, +4 Division, +5 Rate, +6 Gate, +7 Latch
     constexpr int SEQ_BASE = 3600;   // sequencer m: steps 0..15, +16 length, +17 rate, +18 sync, +19 division, +20 glide, +21 direction, +22 retrig, +23 bipolar (ids SEQ_BASE + 32 * m + k)
     inline int seqParam (int m, int k) { return SEQ_BASE + 32 * m + k; }
     inline int frqParam (int i) { return FRQ_BASE + 4 * i; }      // Freq modulator i: +0 rate (ms) +1 transpose (st) +2 retrig +3 loop

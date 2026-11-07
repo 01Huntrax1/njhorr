@@ -3269,6 +3269,14 @@ processor Eisenpuls_Synth
     input event float param3909 [[ name: "Seq 10 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3910 [[ name: "Seq 10 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3911 [[ name: "Seq 10 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3925 [[ name: "Arp Rate", min: 0.25, max: 30.0, init: 6.0, unit: "Hz" ]];   // MOD-ARP
+    input event float param3926 [[ name: "Arp Gate", min: 0.05, max: 1.0, init: 0.6 ]];   // MOD-ARP
+    input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3200 [[ name: "Main FX 11 Type", min: 0.0, max: 27.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
     input event float param3201 [[ name: "Main FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param3202 [[ name: "Main FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
@@ -3755,6 +3763,18 @@ processor Eisenpuls_Synth
     float[16]   seqRetrig;
     float[16]   seqPol;    // 1 = bipolar
     int         seqMask = 0;   // bit m: sequencer m is used by the matrix
+    // ---------------- MOD-ARP: arpeggiator ----------------
+    float       arpOn = 0.0f, arpMode = 0.0f, arpOct = 1.0f, arpSync = 1.0f, arpDiv = 11.0f, arpRate = 6.0f, arpGate = 0.6f, arpLatch = 0.0f;
+    int[16]     arpHN;      // held notes in the order they were pressed
+    float[16]   arpHV;
+    int[16]     arpSN;      // work copy (sorted)
+    float[16]   arpSV;
+    int         arpN = 0;   // number of held notes
+    int         arpKeys = 0;   // keys physically down
+    int         arpCur = -1;   // note currently sounding from the arp
+    int         arpStep = 0;
+    float       arpPh = 1.0f;
+    float       arpCurVel = 1.0f;
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
@@ -6463,6 +6483,14 @@ processor Eisenpuls_Synth
     event param3910 (float v) { seqRetrig.at (9) = v; }
     event param3911 (float v) { seqPol.at (9) = v; }
 
+    event param3920 (float v) { arpOn = v; }   // MOD-ARP
+    event param3921 (float v) { arpMode = v; }   // MOD-ARP
+    event param3922 (float v) { arpOct = v; }   // MOD-ARP
+    event param3923 (float v) { arpSync = v; }   // MOD-ARP
+    event param3924 (float v) { arpDiv = v; }   // MOD-ARP
+    event param3925 (float v) { arpRate = v; }   // MOD-ARP
+    event param3926 (float v) { arpGate = v; }   // MOD-ARP
+    event param3927 (float v) { arpLatch = v; }   // MOD-ARP
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -16891,148 +16919,293 @@ processor Eisenpuls_Synth
 
     // KICK-DSP-END
     // ---------------- MIDI ----------------
+    // MOD-ARP: the voice start / release code of the MIDI handler, shared by the keys and the arpeggiator
+    void voiceNoteOn (int nn, float vel)
+    {
+
+        // a note that is already sounding (held, not released) is not played a second time
+        for (int dv = 0; dv < 8; ++dv)
+            if (voices.at (dv).active && voices.at (dv).noteNumber == nn && voices.at (dv).stage != 3)
+                return;
+
+        fxNoteSeq++;   // FX-FENV: retriggers the filter effect envelopes
+        float velGainV = (1.0f - velSens) + velSens * vel;
+        bool  monoMode = voiceMode > 0.5f;
+        bool  legato   = monoMode && legatoOn > 0.5f;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)
+
+        int v = 0;
+        if (! monoMode) v = findFreeVoice();
+
+        bool wasActive = voices.at (v).active;
+        float target = float (std::notes::noteToFrequency (nn));
+
+        voices.at (v).noteNumber = nn;
+        voices.at (v).targetFreq = target;
+
+        if (! (monoMode && wasActive))
+            voices.at (v).curFreq = target;
+
+        // restart every slot on each non-legato note
+        if (! (legato && wasActive))
+        {
+            for (int o = 0; o < 6; ++o)
+            {
+                int sLen   = smpLen.at (o);
+                int sStart = clamp (int (opv (o, 22) * float (sLen)), 0, max (sLen - 1, 0));
+                voices.at (v).synPos.at (o) = float64 (sStart);
+                resetWtUni (v, o);
+                uniGenReset (v, o);   // UNI-ALL
+                phyNoteOn (v, o);
+                terNoteOn (v, o);
+                kickNoteOn (v, o);
+                wgNoteOn (v, o);
+                jpNoteOn (v, o);
+                grNoteOn (v, o);
+                adNoteOn (v, o);
+                dkNoteOn (v, o);
+                spNoteOn (v, o);
+                sfNoteOn (v, o, vel);
+                resNoteOn (v, o);
+            }
+        }
+
+        if (! wasActive)
+        {
+            voices.at (v).env  = 0.0f;
+            voices.at (v).fdlW = 0;
+
+            for (int po = 0; po < 6; ++po)
+                voices.at (v).pdPh.at (po) = clamp (op.at (po * 64 + 8), 0.0f, 1.0f);
+
+            for (int fq = 0; fq < 192; ++fq)
+                voices.at (v).fx.at (fq) = 0.0f;
+
+            for (int wq = 0; wq < 768; ++wq)
+                voices.at (v).wfs.at (wq) = 0.0f;
+
+            for (int wg = 0; wg < 384; ++wg)
+            {
+                voices.at (v).wfg.at (wg) = 0.0f;
+                voices.at (v).wft.at (wg) = 0.0f;
+            }
+
+            for (int wc = 0; wc < 16; ++wc)
+                voices.at (v).wfc.at (wc) = 0;
+
+            for (int fd = 0; fd < 24576; ++fd)
+                voices.at (v).fdl.at (fd) = 0.0f;
+
+            for (int me = 0; me < 10; ++me)
+                voices.at (v).menv.at (me) = 0.0f;
+
+            for (int o = 0; o < 6; ++o)
+                voices.at (v).fmPrev.at (o) = 0.0f;
+
+            for (int tz = 0; tz < 8; ++tz)
+                voices.at (v).tzPh.at (tz) = 0.0f;
+        }
+
+        voices.at (v).stage = 1;
+
+        for (int o = 0; o < 6; ++o)
+        {
+            voices.at (v).fstage.at (o) = 1;
+            voices.at (v).fenv.at (o)   = opv (o, 38) > 0.5f ? 0.0f : 1.0f;
+        }
+
+        for (int ms = 0; ms < 10; ++ms)
+            voices.at (v).mstage.at (ms) = 1;
+
+        voices.at (v).penv    = 1.0f;
+        voices.at (v).velGain = velGainV;
+        voices.at (v).velRaw  = vel;
+        voices.at (v).modRand = nextNoise();
+        lastVoice = v;
+
+        for (int lm = 0; lm < 10; ++lm)
+        {
+            voices.at (v).lfoPh.at (lm)  = 0.0;
+            voices.at (v).lfoAge.at (lm) = -1.0f;
+            voices.at (v).lfoSh.at (lm)  = nextNoise();
+            voices.at (v).lfoV.at (lm)   = 0.0f;
+            voices.at (v).frqT.at (lm)   = 0.0f;
+            voices.at (v).frqV.at (lm)   = frqEval (lm, 0.0f);
+            voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ
+        }
+
+        seqRepVoice = v;   // MOD-SEQPOS
+
+        lastVelV  = vel;
+        lastKeyV  = clamp ((float (nn) - 60.0f) / 48.0f, -1.0f, 1.0f);
+        lastRandV = voices.at (v).modRand;
+        voices.at (v).age     = 0;
+        voices.at (v).active  = true;
+    }
+
+    void voiceNoteOff (int nn)
+    {
+
+        for (int i = 0; i < 8; ++i)
+        {
+            if (voices.at (i).active && voices.at (i).noteNumber == nn)
+            {
+                voices.at (i).stage = 3;
+
+                for (int o = 0; o < 6; ++o)
+                    voices.at (i).fstage.at (o) = 3;
+
+                for (int mq = 0; mq < 10; ++mq)
+                    voices.at (i).mstage.at (mq) = 3;
+            }
+        }
+    }
+
+    // ---- arpeggiator ----
+    void arpPress (int nn, float vel)
+    {
+        if (arpLatch > 0.5f && arpKeys <= 0)
+            arpN = 0;
+
+        arpKeys++;
+
+        for (int i = 0; i < arpN; ++i)
+            if (arpHN.at (i) == nn)
+            {
+                arpHV.at (i) = vel;
+                return;
+            }
+
+        if (arpN < 16)
+        {
+            arpHN.at (arpN) = nn;
+            arpHV.at (arpN) = vel;
+            arpN++;
+        }
+    }
+
+    void arpRelease (int nn)
+    {
+        arpKeys = max (arpKeys - 1, 0);
+
+        if (arpLatch > 0.5f)
+            return;
+
+        for (int i = 0; i < arpN; ++i)
+            if (arpHN.at (i) == nn)
+            {
+                for (int j = i; j < arpN - 1; ++j)
+                {
+                    arpHN.at (j) = arpHN.at (j + 1);
+                    arpHV.at (j) = arpHV.at (j + 1);
+                }
+
+                arpN--;
+                return;
+            }
+    }
+
+    int arpNote (int step)
+    {
+        for (int i = 0; i < arpN; ++i)
+        {
+            arpSN.at (i) = arpHN.at (i);
+            arpSV.at (i) = arpHV.at (i);
+        }
+
+        int md = int (arpMode + 0.5f);
+
+        if (md != 4)   // sorted ascending unless "As played"
+            for (int i = 1; i < arpN; ++i)
+                for (int j = i; j > 0 && arpSN.at (j - 1) > arpSN.at (j); --j)
+                {
+                    int   tn = arpSN.at (j);
+                    float tv = arpSV.at (j);
+                    arpSN.at (j) = arpSN.at (j - 1);  arpSV.at (j) = arpSV.at (j - 1);
+                    arpSN.at (j - 1) = tn;            arpSV.at (j - 1) = tv;
+                }
+
+        int n     = max (arpN, 1);
+        int total = n * clamp (int (arpOct + 0.5f), 1, 4);
+        int i     = step % total;
+
+        if (md == 1)
+            i = total - 1 - i;
+        else if (md == 2)
+        {
+            int per = max (2 * total - 2, 1);
+            int p   = step % per;
+            i = p < total ? p : per - p;
+        }
+        else if (md == 3)
+            i = clamp (int (abs (nextNoise()) * float (total)), 0, total - 1);
+
+        arpCurVel = arpSV.at (i % n);
+        return clamp (arpSN.at (i % n) + 12 * (i / n), 0, 127);
+    }
+
+    void arpTick (float dt)
+    {
+        if (arpOn < 0.5f || arpN == 0)
+        {
+            if (arpCur >= 0)
+            {
+                voiceNoteOff (arpCur);
+                arpCur = -1;
+            }
+
+            if (arpOn < 0.5f)
+            {
+                arpN = 0;
+                arpKeys = 0;
+            }
+
+            arpPh   = 1.0f;
+            arpStep = 0;
+            return;
+        }
+
+        float hz = arpSync > 0.5f ? syncHz (arpDiv) : arpRate;
+        arpPh += max (hz, 0.01f) * dt;
+
+        if (arpPh >= 1.0f)
+        {
+            arpPh -= 1.0f;
+
+            if (arpPh >= 1.0f)
+                arpPh = 0.0f;
+
+            if (arpCur >= 0)
+                voiceNoteOff (arpCur);
+
+            arpCur = arpNote (arpStep);
+            arpStep++;
+            voiceNoteOn (arpCur, arpCurVel);
+        }
+        else if (arpCur >= 0 && arpPh >= arpGate)
+        {
+            voiceNoteOff (arpCur);
+            arpCur = -1;
+        }
+    }
+
     event midiIn (std::midi::Message msg)
     {
         if (msg.isNoteOn())
         {
-            int   nn       = msg.getNoteNumber();
-
-            // a note that is already sounding (held, not released) is not played a second time
-            for (int dv = 0; dv < 8; ++dv)
-                if (voices.at (dv).active && voices.at (dv).noteNumber == nn && voices.at (dv).stage != 3)
-                    return;
-
-            fxNoteSeq++;   // FX-FENV: retriggers the filter effect envelopes
-            float vel      = msg.getFloatVelocity();
-            float velGainV = (1.0f - velSens) + velSens * vel;
-            bool  monoMode = voiceMode > 0.5f;
-            bool  legato   = monoMode && legatoOn > 0.5f;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)
-
-            int v = 0;
-            if (! monoMode) v = findFreeVoice();
-
-            bool wasActive = voices.at (v).active;
-            float target = float (std::notes::noteToFrequency (nn));
-
-            voices.at (v).noteNumber = nn;
-            voices.at (v).targetFreq = target;
-
-            if (! (monoMode && wasActive))
-                voices.at (v).curFreq = target;
-
-            // restart every slot on each non-legato note
-            if (! (legato && wasActive))
-            {
-                for (int o = 0; o < 6; ++o)
-                {
-                    int sLen   = smpLen.at (o);
-                    int sStart = clamp (int (opv (o, 22) * float (sLen)), 0, max (sLen - 1, 0));
-                    voices.at (v).synPos.at (o) = float64 (sStart);
-                    resetWtUni (v, o);
-                    uniGenReset (v, o);   // UNI-ALL
-                    phyNoteOn (v, o);
-                    terNoteOn (v, o);
-                    kickNoteOn (v, o);
-                    wgNoteOn (v, o);
-                    jpNoteOn (v, o);
-                    grNoteOn (v, o);
-                    adNoteOn (v, o);
-                    dkNoteOn (v, o);
-                    spNoteOn (v, o);
-                    sfNoteOn (v, o, vel);
-                    resNoteOn (v, o);
-                }
-            }
-
-            if (! wasActive)
-            {
-                voices.at (v).env  = 0.0f;
-                voices.at (v).fdlW = 0;
-
-                for (int po = 0; po < 6; ++po)
-                    voices.at (v).pdPh.at (po) = clamp (op.at (po * 64 + 8), 0.0f, 1.0f);
-
-                for (int fq = 0; fq < 192; ++fq)
-                    voices.at (v).fx.at (fq) = 0.0f;
-
-                for (int wq = 0; wq < 768; ++wq)
-                    voices.at (v).wfs.at (wq) = 0.0f;
-
-                for (int wg = 0; wg < 384; ++wg)
-                {
-                    voices.at (v).wfg.at (wg) = 0.0f;
-                    voices.at (v).wft.at (wg) = 0.0f;
-                }
-
-                for (int wc = 0; wc < 16; ++wc)
-                    voices.at (v).wfc.at (wc) = 0;
-
-                for (int fd = 0; fd < 24576; ++fd)
-                    voices.at (v).fdl.at (fd) = 0.0f;
-
-                for (int me = 0; me < 10; ++me)
-                    voices.at (v).menv.at (me) = 0.0f;
-
-                for (int o = 0; o < 6; ++o)
-                    voices.at (v).fmPrev.at (o) = 0.0f;
-
-                for (int tz = 0; tz < 8; ++tz)
-                    voices.at (v).tzPh.at (tz) = 0.0f;
-            }
-
-            voices.at (v).stage = 1;
-
-            for (int o = 0; o < 6; ++o)
-            {
-                voices.at (v).fstage.at (o) = 1;
-                voices.at (v).fenv.at (o)   = opv (o, 38) > 0.5f ? 0.0f : 1.0f;
-            }
-
-            for (int ms = 0; ms < 10; ++ms)
-                voices.at (v).mstage.at (ms) = 1;
-
-            voices.at (v).penv    = 1.0f;
-            voices.at (v).velGain = velGainV;
-            voices.at (v).velRaw  = vel;
-            voices.at (v).modRand = nextNoise();
-            lastVoice = v;
-
-            for (int lm = 0; lm < 10; ++lm)
-            {
-                voices.at (v).lfoPh.at (lm)  = 0.0;
-                voices.at (v).lfoAge.at (lm) = -1.0f;
-                voices.at (v).lfoSh.at (lm)  = nextNoise();
-                voices.at (v).lfoV.at (lm)   = 0.0f;
-                voices.at (v).frqT.at (lm)   = 0.0f;
-                voices.at (v).frqV.at (lm)   = frqEval (lm, 0.0f);
-                voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ
-            }
-
-            seqRepVoice = v;   // MOD-SEQPOS
-
-            lastVelV  = vel;
-            lastKeyV  = clamp ((float (nn) - 60.0f) / 48.0f, -1.0f, 1.0f);
-            lastRandV = voices.at (v).modRand;
-            voices.at (v).age     = 0;
-            voices.at (v).active  = true;
+            if (arpOn > 0.5f)
+                arpPress (msg.getNoteNumber(), msg.getFloatVelocity());
+            else
+                voiceNoteOn (msg.getNoteNumber(), msg.getFloatVelocity());
         }
         else if (msg.isNoteOff())
         {
             int nn = msg.getNoteNumber();
 
-            for (int i = 0; i < 8; ++i)
-            {
-                if (voices.at (i).active && voices.at (i).noteNumber == nn)
-                {
-                    voices.at (i).stage = 3;
+            if (arpOn > 0.5f)
+                arpRelease (nn);
 
-                    for (int o = 0; o < 6; ++o)
-                        voices.at (i).fstage.at (o) = 3;
-
-                    for (int mq = 0; mq < 10; ++mq)
-                        voices.at (i).mstage.at (mq) = 3;
-                }
-            }
+            if (arpOn < 0.5f || arpCur != nn)
+                voiceNoteOff (nn);
         }
     }
 
@@ -17049,6 +17222,7 @@ processor Eisenpuls_Synth
 
             // ----- mod page: 10 LFOs + global matrix sums -----
             wtBuildTick();
+            arpTick (dt);   // MOD-ARP
             updateModLfos (dt);
             frqMask = 0;
             for (int fs = 0; fs < mmTop; ++fs)

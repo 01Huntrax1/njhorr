@@ -803,13 +803,67 @@ namespace njo
         auto c = right;
         auto r1 = c.removeFromTop (20); c.removeFromTop (3);
         auto r2 = c.removeFromTop (20); c.removeFromTop (4);
-        auto kn = c.removeFromBottom (juce::jmin (c.getHeight(), 60));
+        if (I.full) c.removeFromTop (10);
+        auto kn = I.full ? c.removeFromTop (juce::jmin (c.getHeight(), 80)) : c.removeFromBottom (juce::jmin (c.getHeight(), 60));
         int bw = r1.getWidth() / 3, sw = r2.getWidth() / 2, kw = kn.getWidth() / 3;
         for (int i = 0; i < 10; ++i)
         {
             for (int k = 0; k < 3; ++k) I.w[i * 8 + k]->setBounds (r1.getX() + k * bw + 1, r1.getY(), bw - 2, r1.getHeight());
             for (int k = 0; k < 2; ++k) I.w[i * 8 + 3 + k]->setBounds (r2.getX() + k * sw + 1, r2.getY(), sw - 2, r2.getHeight());
             for (int k = 0; k < 3; ++k) I.w[i * 8 + 5 + k]->setBounds (kn.getX() + k * kw, kn.getY(), kw, kn.getHeight());
+        }
+    }
+
+    // ------------------------------------------------------------------ page: sequencers + arpeggiator
+    struct SeqArpPage::Impl
+    {
+        SeqEditor seq;
+        juce::OwnedArray<ParamWidget> w;     // On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
+        juce::Rectangle<int> arpRect;
+        explicit Impl (Ctx& c) : seq (c) {}
+    };
+
+    SeqArpPage::SeqArpPage (Ctx& c) : impl (new Impl (c))
+    {
+        auto& I = *impl;
+        addAndMakeVisible (I.seq);
+        const bool knob[8] = { false, false, false, false, false, true, true, false };
+        for (int k = 0; k < 8; ++k)
+        {
+            auto* x = I.w.add (makeWidget (c, ARP_BASE + k, knob[k]).release());
+            if (knob[k]) x->setLook (true);
+            addAndMakeVisible (x);
+        }
+    }
+    SeqArpPage::~SeqArpPage() = default;
+
+    void SeqArpPage::paint (juce::Graphics& g)
+    {
+        auto& I = *impl;
+        paintCard (g, I.arpRect.toFloat());
+        g.setColour (red); g.setFont (impact (11.0f));
+        g.drawText ("ARPEGGIATOR", I.arpRect.getX() + 10, I.arpRect.getY() + 4, 260, 16, juce::Justification::centredLeft);
+        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+        g.drawText ("plays the held keys one after the other instead of as a chord", I.arpRect.getX() + 10, I.arpRect.getBottom() - 16, 400, 12, juce::Justification::centredLeft);
+    }
+
+    void SeqArpPage::resized()
+    {
+        auto& I = *impl;
+        auto b = getLocalBounds();
+        I.arpRect = b.removeFromBottom (juce::jmin (130, b.getHeight() / 3));
+        b.removeFromBottom (6);
+        I.seq.setBounds (b);
+        auto r = I.arpRect.reduced (12, 4); r.removeFromTop (18); r.removeFromBottom (16);
+        const int wd[8] = { 1, 2, 2, 1, 2, 2, 2, 1 };    // relative widths: On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
+        int tot = 0; for (int v : wd) tot += v;
+        int x = r.getX();
+        for (int k = 0; k < 8; ++k)
+        {
+            int ww = (int) ((float) r.getWidth() * (float) wd[k] / (float) tot);
+            const bool kn = k == 5 || k == 6;
+            I.w[k]->setBounds (x + 3, r.getY(), ww - 6, kn ? r.getHeight() : juce::jmin (r.getHeight(), 48));
+            x += ww;
         }
     }
 }

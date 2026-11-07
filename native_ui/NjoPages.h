@@ -90,6 +90,17 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
+    // page "SEQ / ARP": the step sequencer editor on top, the arpeggiator below
+    class SeqArpPage : public juce::Component
+    {
+    public:
+        explicit SeqArpPage (Ctx&);
+        ~SeqArpPage() override;
+        void paint (juce::Graphics&) override;
+        void resized() override;
+        struct Impl; std::unique_ptr<Impl> impl;
+    };
+
     // the modulation matrix (pages of 20 slots)
     class MatrixPanel : public juce::Component
     {

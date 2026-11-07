@@ -2651,6 +2651,15 @@ const SPECS = (() => {
     // MOD-BIP: Bipolar switch of every envelope (3100 + i) and of Velocity (3110): Unipolar 0..1 / Bipolar -1..1
     for (let i = 0; i < 10; i++) L.push([3100 + i, "Env " + (i + 1) + " Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     L.push([3110, "Velocity Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Velocity Polarity", null]);
+    // MOD-ARP: arpeggiator, ids 3920..3927
+    L.push([3920, "Arp On",       0, 1, 0, "", "btn", ["Off", "On"], 1, "Arp"]);
+    L.push([3921, "Arp Mode",     0, 4, 0, "", "sel", ["Up", "Down", "Up / Down", "Random", "As played"], 1, "Mode"]);
+    L.push([3922, "Arp Octaves",  1, 4, 1, "", "stp", null, 1, "Octaves"]);
+    L.push([3923, "Arp Sync",     0, 1, 1, "", "btn", ["Free", "Sync"], 1, "Sync"]);
+    L.push([3924, "Arp Division", 0, 17, 11, "", "sel", SYNC_DIVS, 1, "Division"]);
+    L.push([3925, "Arp Rate",     0.25, 30, 6, "Hz", "sld", null, 1, "Rate"]);
+    L.push([3926, "Arp Gate",     0.05, 1, 0.6, "", "sld", null, 1, "Gate"]);
+    L.push([3927, "Arp Latch",    0, 1, 0, "", "btn", ["Off", "On"], 1, "Latch"]);
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k

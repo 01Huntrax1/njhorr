@@ -15,7 +15,7 @@ namespace njo
         void paintOverChildren (juce::Graphics&) override;
         void resized() override;
 
-        enum Group { Synth = 0, Effects = 1, Modulation = 2 };
+        enum Group { Synth = 0, Effects = 1, Modulation = 2, Sequencer = 3 };
         void setGroup (Group);
         void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ, 2 = SEQ
         void setMatrixPage (int p) { matrix.setPage (p); }
@@ -42,7 +42,7 @@ namespace njo
         juce::OwnedArray<OscPage> osc, fltPages, distPages, resoPages;
         int fltOsc = 0, distOsc = 0, resoOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
         FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx;
-        ModEditors editors, editorsFull; FreqEditor freq, freqFull; SeqEditor seq, seqFull; MatrixPanel matrix;
+        ModEditors editors, editorsFull; FreqEditor freq, freqFull; SeqEditor seq, seqFull; MatrixPanel matrix; SeqArpPage seqArp;
         int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators, 2 = step sequencers
         ManagerBar manager;
         juce::OwnedArray<juce::TextButton> railButtons, subButtons;   // plain buttons, painted by us

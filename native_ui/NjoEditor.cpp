@@ -51,7 +51,7 @@ namespace njo
     };
 
     EditorContent::EditorContent (Backend& be, SoundMemory* sharedMemory)
-        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), matrix (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), matrix (ctx), seqArp (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
@@ -59,8 +59,8 @@ namespace njo
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
         ctx.onStatus = [this] (const juce::String& t) { status = t; statusUntil = juce::Time::getMillisecondCounterHiRes() + 2500; repaint (impl->lcdRect); };
 
-        const char* rn[] = { "SYNTH", "EFFECTS", "MODULATION" };
-        for (int i = 0; i < 3; ++i)
+        const char* rn[] = { "SYNTH", "EFFECTS", "MODULATION", "SEQ / ARP" };
+        for (int i = 0; i < 4; ++i)
         {
             auto* b = impl->rail.add (new NavButton (NavButton::Rail, rn[i], juce::String (i + 1)));
             b->onClick = [this, i] { setGroup ((Group) i); };
@@ -107,7 +107,7 @@ namespace njo
         glob.onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
         fx.onModDropped = glob.onModDropped;
         addChildComponent (fm); addChildComponent (fmRm); addChildComponent (glob); addChildComponent (fx);
-        addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (seqFull); addChildComponent (matrix);
+        addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (seqFull); addChildComponent (matrix); addChildComponent (seqArp);
         addChildComponent (freq); addChildComponent (seq);
         addAndMakeVisible (editors);
         // tabs of the bottom strip (MOD / FREQ) and of the top panel of the modulation page (ENV / LFO | FREQ)
@@ -137,7 +137,7 @@ namespace njo
     void EditorContent::setGroup (Group g)
     {
         currentGroup = g;
-        for (int i = 0; i < 3; ++i) impl->rail[i]->setOn (i == (int) g);
+        for (int i = 0; i < 4; ++i) impl->rail[i]->setOn (i == (int) g);
         layoutAll();
     }
 
@@ -148,7 +148,7 @@ namespace njo
         else if (currentSynthPage >= 15 && currentSynthPage < 21) distOsc = currentSynthPage - 15;
         else if (currentSynthPage >= 21) resoOsc = currentSynthPage - 21;
         currentGroup = Synth;
-        for (int i = 0; i < 3; ++i) impl->rail[i]->setOn (i == 0);
+        for (int i = 0; i < 4; ++i) impl->rail[i]->setOn (i == 0);
         layoutAll();
     }
 
@@ -164,12 +164,12 @@ namespace njo
         // equal thirds with 6px gaps
         {
             auto rr = juce::Rectangle<int> (10, impl->topBar.getBottom() + 9, 66, r.getHeight());
-            int h = (rr.getHeight() - 12) / 3;
-            for (int i = 0; i < 3; ++i) { impl->rail[i]->setBounds (rr.getX(), rr.getY() + i * (h + 6), rr.getWidth(), h); impl->rail[i]->setVisible (! NJOHRR_FX_ONLY); }
+            int h = (rr.getHeight() - 18) / 4;
+            for (int i = 0; i < 4; ++i) { impl->rail[i]->setBounds (rr.getX(), rr.getY() + i * (h + 6), rr.getWidth(), h); impl->rail[i]->setVisible (! NJOHRR_FX_ONLY); }
         }
         impl->mainRect = r;
 
-        bool synth = currentGroup == Synth, mod = currentGroup == Modulation;
+        bool synth = currentGroup == Synth, mod = currentGroup == Modulation, seqa = currentGroup == Sequencer;
         auto m = r;
         impl->subRect = synth ? m.removeFromTop (24) : juce::Rectangle<int>();
         if (synth) m.removeFromTop (6);
@@ -190,15 +190,15 @@ namespace njo
         impl->mgrRect = m.removeFromTop (24); m.removeFromTop (6);
         manager.setBounds (impl->mgrRect);
 
-        int stripH = (mod || NJOHRR_FX_ONLY) ? 0 : (stripOpen ? 190 : 26);
-        if (! mod) { impl->stripRect = m.removeFromBottom (stripH); m.removeFromBottom (6); }
+        int stripH = (mod || seqa || NJOHRR_FX_ONLY) ? 0 : (stripOpen ? 190 : 26);
+        if (! mod && ! seqa) { impl->stripRect = m.removeFromBottom (stripH); m.removeFromBottom (6); }
         impl->stageRect = m;
 
         for (auto* p : osc) p->setVisible (false);
         for (auto* p : fltPages) p->setVisible (false);
         for (auto* p : distPages) p->setVisible (false);
         for (auto* p : resoPages) p->setVisible (false);
-        fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false);
+        fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false); seqArp.setVisible (false);
         editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false); seq.setVisible (false); seqFull.setVisible (false);
         for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get() }) b->setVisible (false);
         if (synth)
@@ -212,6 +212,7 @@ namespace njo
             else { glob.setBounds (impl->stageRect); glob.setVisible (true); }
         }
         else if (currentGroup == Effects) { fx.setBounds (impl->stageRect); fx.setVisible (true); }
+        else if (seqa) { seqArp.setBounds (impl->stageRect); seqArp.setVisible (true); }
         else
         {
             // modulation page: editors on top, the matrix below (paged)
@@ -226,7 +227,7 @@ namespace njo
             impl->modEnvBtn->setVisible (true); impl->modFrqBtn->setVisible (true); impl->modSeqBtn->setVisible (true);
             matrix.setBounds (area); matrix.setVisible (true);
         }
-        if (! mod)
+        if (! mod && ! seqa)
         {
             auto s = impl->stripRect;
             impl->stripToggle->setBounds (s.getRight() - 26, s.getY() + 3, 22, 18);
@@ -290,7 +291,7 @@ namespace njo
         g.setGradientFill (juce::ColourGradient (red, hz.getCentreX(), 0, juce::Colours::transparentBlack, hz.getRight(), 0, false));
         g.fillRect (hz.withTrimmedLeft (hz.getWidth() * 0.5f));
         // bottom strip frame
-        if (currentGroup != Modulation && ! NJOHRR_FX_ONLY)
+        if (currentGroup != Modulation && currentGroup != Sequencer && ! NJOHRR_FX_ONLY)
         {
             auto s = impl->stripRect.toFloat();
             g.setGradientFill (vertical (juce::Colour (0xff25282c), juce::Colour (0xff1a1c1f), s));
