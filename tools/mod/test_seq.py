@@ -64,4 +64,19 @@ a = render(["wt 0 sine", (L.pid(0, K["fon"]), 0), (307, 34), (308, 3), (309, -0.
 check("A sequencer reaches any destination (Pan)", rms(a[int(0.3 * RATE):int(1.0 * RATE), 0]) > 1.4 * rms(a[int(0.3 * RATE):int(1.0 * RATE), 1]))
 a = render(BASE + seq(0, ST, retrig=0) + route(34) + [("wt 0 sine"), ] if False else BASE + seq(0, ST, retrig=0) + route(34), tag="fin", hold=0.6, tail=1.0)
 check("Output stays finite and silent after the note", np.isfinite(a).all())
+def slot_base(sl): return 307 + 3 * sl if sl < 10 else (472 + 3 * (sl - 10) if sl < 20 else 4000 + 3 * (sl - 20))
+def route2(src, sl, dest=1, amt=1.0, osc=0):
+    b = slot_base(sl); return [(b, src), (b + 1, L.dst_index(osc, dest)), (b + 2, amt)]
+for sl in (10, 19, 20, 120, 255):
+    a = render(BASE + seq(0, ST) + route2(34, sl), tag="slot%d" % sl)
+    lq = [rms(win(a, k)) for k in range(4)]
+    check("Matrix slot %d: Seq 1 drives the level" % (sl + 1), lq[0] < 0.01 and lq[0] < lq[1] < lq[2] < lq[3], str(["%.3f" % v for v in lq]))
+# two sequencers on two slots: the level follows the sum (Seq 1 steps 0 0.25 0 0.25 + Seq 2 steps 0 0 0.5 0.5 with amount 0.5 each)
+a = render(BASE + seq(0, [0.0, 0.5, 0.0, 0.5], length=4) + seq(1, [0.0, 0.0, 0.5, 0.5], length=4) + route2(34, 0, amt=1.0) + route2(35, 1, amt=1.0), tag="two")
+l2 = [rms(win(a, k)) for k in range(4)]
+check("Two sequencers add up in the matrix (0, 0.5, 0.5, 1.0)", l2[0] < 0.01 and abs(l2[1] - l2[2]) < 0.03 and l2[3] > l2[1] * 1.6, str(["%.3f" % v for v in l2]))
+# a global destination (Amp, index 2)
+a = render(["wt 0 sine", (L.pid(0, K["fon"]), 0)] + seq(0, [1.0, 0.0, 1.0, 0.0], bip=0) + [(307, 34), (308, 2), (309, -1.0)], tag="amp")
+la = [rms(win(a, k)) for k in range(4)]
+check("Global destination Amp: Seq 1 at full amount (negative) mutes the high steps", la[1] > 3 * max(la[0], 0.001), str(["%.3f" % v for v in la]))
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

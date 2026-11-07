@@ -120618,6 +120618,10 @@ namespace performer
                                 _Eisenpuls_Synth___writeEvent_seqPos (_state, intrinsics::add (intrinsics::multiply (m, int32_t {16}), sp));
                             }
                         }
+                        else
+                        {
+                            _state.seqLastPos[std__intrinsics___wrap_16 (m)] = int32_t {-1};
+                        }
                         {
                             intrinsics::addTo (m, 1);
                         }

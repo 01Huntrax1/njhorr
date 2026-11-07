@@ -17245,6 +17245,8 @@ processor Eisenpuls_Synth
                         seqPos <- m * 16 + sp;
                     }
                 }
+                else
+                    seqLastPos.at (m) = -1;
             updateFrqGlobal (dt);
             rollEnvMax();
             computeGlobalMod();

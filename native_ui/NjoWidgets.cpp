@@ -51,7 +51,7 @@ namespace njo
         int src = d.description.toString().fromFirstOccurrenceOf (kModDrag, false, false).getIntValue();
         auto t = modTarget().at (paramNum);
         int slot = ctx.modAssign (src, t.first, 0.5f);
-        if (slot < 0) ctx.status ("MOD MATRIX FULL (20 SLOTS)");
+        if (slot < 0) ctx.status ("MOD MATRIX FULL (256 SLOTS)");
         else if (onModDropped) onModDropped (*this);
         repaint();
     }

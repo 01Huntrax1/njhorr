@@ -64,4 +64,16 @@ a = render(BASE + arp(), C, tag="fin", hold=0.6, tail=1.5)
 check("Stops after the keys are released, output finite", np.isfinite(a).all() and rm(a[int(1.9 * RATE):]) < 0.01)
 s = steps(render(BASE + arp(mode=0), [60, 64, 67], tag="two"), 2)
 check("A single held note repeats", steps(render(BASE + arp(mode=0), [64], tag="one"), 4) == [64, 64, 64, 64])
+# a Retrig sequencer restarts on every arp note: sequencer (steps 0.2 / 1.0, 2 Hz, arp 4 Hz) -> every note sits on step 1 (low level)
+SB = lambda m: 3600 + 32 * m
+def seqc(retrig): return [(SB(0) + 0, 0.2), (SB(0) + 1, 1.0), (SB(0) + 16, 2), (SB(0) + 17, 2.0), (L.pid(0, K["level"]), 0.0), (SB(0) + 18, 0), (SB(0) + 22, retrig), (SB(0) + 23, 0),
+                          (307, 34), (308, L.dst_index(0, 1)), (309, 1.0)]
+a = render(BASE + arp(rate=4.0, gate=0.9) + seqc(1), C, tag="sr1", hold=2.6)
+b = render(BASE + arp(rate=4.0, gate=0.9) + seqc(0), C, tag="sr0", hold=2.6)
+w_ = lambda x, t: rm(x[int(t * RATE):int((t + 0.2) * RATE)])
+hi = max(w_(a, 0.3 + 0.5 * k) for k in range(5)); hb = max(w_(b, 0.3 + 0.5 * k) for k in range(5))
+check("Retrig sequencer restarts on each arp note (always the low step); a free one runs on", hi < 0.6 * hb and hb > 0.1, "%.3f vs %.3f" % (hi, hb))
+# changing the pattern while playing: switching the arp off releases the note
+a = render(BASE + arp(), C, tag="offmid", hold=0.4, tail=1.0, release=False)
+check("Output finite when keys stay held", np.isfinite(a).all())
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

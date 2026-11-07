@@ -226,8 +226,8 @@ namespace njo
             // ---- drop of a modulation source (LFO / ENV / VEL / KEY / RND handle) onto a cell ----
             bool isInterestedInDragSource (const SourceDetails& d) override
             {
-                auto t = d.description.toString();   // Freq modulators only reach the cutoff and Frequency knobs
-                return t.startsWith (kModDrag) && t.fromFirstOccurrenceOf (kModDrag, false, false).getIntValue() < 24;
+                auto t = d.description.toString();   // Freq modulators (24..33) only reach the cutoff and Frequency knobs
+                return t.startsWith (kModDrag) && t.fromFirstOccurrenceOf (kModDrag, false, false).getIntValue() < 24 || t.fromFirstOccurrenceOf (kModDrag, false, false).getIntValue() >= 34;
             }
             void setModHover (juce::Point<int> p)
             {
@@ -246,7 +246,7 @@ namespace njo
                 int id = im.pid (h.k, h.s, h.d);
                 if (! im.ctx.isModTarget (id)) return;
                 int src = d.description.toString().fromFirstOccurrenceOf (kModDrag, false, false).getIntValue();
-                if (im.ctx.modAssign (src, modTarget().at (id).first, 0.5f) < 0) { im.ctx.status ("MOD MATRIX FULL (20 SLOTS)"); return; }
+                if (im.ctx.modAssign (src, modTarget().at (id).first, 0.5f) < 0) { im.ctx.status ("MOD MATRIX FULL (256 SLOTS)"); return; }
                 openPopup (h);
             }
             void openPopup (const FmPage::Impl::Hit& h)

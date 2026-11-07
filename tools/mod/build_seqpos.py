@@ -31,6 +31,8 @@ rep('            updateSeqGlobal (dt);\n            updateFrqGlobal (dt);\n',
                         seqPos <- m * 16 + sp;
                     }
                 }
+                else
+                    seqLastPos.at (m) = -1;
             updateFrqGlobal (dt);
 ''')
 open(P, 'w').write(src)
