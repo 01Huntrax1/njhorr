@@ -139,6 +139,9 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 `tools/rack/dsp_host.cpp`) and `tests/fxrack.test.js`.
 
 ## Native UI (JUCE C++) and the WebView fallback
+
+Look: a hunter-tech theme (bronze plates with cut corners, rivets, etched marks, plasma-green light, hexagonal knobs with blade pointers) defined in `native_ui/NjoTheme.cpp`; the colours are in `NjoTheme.h` (the accent is still called `red` in the code).
+
 The plugin window is now a native JUCE editor written in C++ (`native_ui/`, see `native_ui/README_UI.md`). It is the default
 (`-DNJOHRR_NATIVE_UI=ON`). The old WebView UI (`patch/index.js`) is still in the repo as a fallback: configure with
 `-DNJOHRR_NATIVE_UI=OFF` to build the plugin with it. The native UI needs `juce_audio_formats` (already linked by CMake) and

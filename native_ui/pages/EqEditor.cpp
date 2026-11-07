@@ -270,7 +270,7 @@ namespace njo
             juce::Path fill (total); fill.lineTo (p.getRight(), yOf (0)); fill.lineTo (p.getX(), yOf (0)); fill.closeSubPath();
             g.setColour (red.withAlpha (0.13f)); g.fillPath (fill);
             g.setColour (red.withAlpha (0.28f)); g.strokePath (total, juce::PathStrokeType (5.0f));
-            g.setColour (juce::Colour (0xffff7864)); g.strokePath (total, juce::PathStrokeType (1.8f));
+            g.setColour (juce::Colour (0xffbaff6c)); g.strokePath (total, juce::PathStrokeType (1.8f));
             // harmonic markers of the selected band
             if (valid() && eq::hasHarmonics (b().type) && b().harm > 0 && b().on)
             {

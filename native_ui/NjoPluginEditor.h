@@ -48,7 +48,7 @@ namespace njo
             content.setTransform (juce::AffineTransform::scale (s));
         }
 
-        void paint (juce::Graphics& g) override { g.fillAll (juce::Colour (0xff0b0b0d)); }
+        void paint (juce::Graphics& g) override { g.fillAll (juce::Colour (0xff0e0c09)); }
 
     private:
         static constexpr float logicalW = (float) BASE_W, logicalH = (float) BASE_H;

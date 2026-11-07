@@ -20,7 +20,7 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff555555, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xffc86060, 0xffe07050, 0xff50c0b0, 0xffd09040, 0xffb08050, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffd07080, 0xff80b0e0 };
+            static const juce::uint32 c[] = { 0xff5d5444, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xffb08050, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0 };
             return juce::Colour (c[juce::jlimit (0, 27, type)]);
         }
 
@@ -46,10 +46,10 @@ namespace njo
             {
                 auto r = getLocalBounds().toFloat().reduced (0.5f);
                 paintButton (g, r, on, over, false, 2.0f);
-                g.setColour (on ? juce::Colour (0xff111111) : ink); g.setFont (font (9.5f, true));
+                g.setColour (on ? juce::Colour (0xff14110e) : ink); g.setFont (font (9.5f, true));
                 g.drawText (text.toUpperCase(), r.withTrimmedRight (12).toNearestInt(), juce::Justification::centred);
                 auto d = juce::Rectangle<float> (r.getRight() - 12, r.getCentreY() - 3, 6, 6);
-                g.setColour (used ? (on ? juce::Colour (0xff111111) : orange) : juce::Colour (0xff3a1f1c)); g.fillEllipse (d);
+                g.setColour (used ? (on ? juce::Colour (0xff14110e) : orange) : juce::Colour (0xff2d3a1d)); g.fillEllipse (d);
             }
             void mouseEnter (const juce::MouseEvent&) override { over = true; repaint(); }
             void mouseExit (const juce::MouseEvent&) override { over = false; repaint(); }
@@ -94,12 +94,12 @@ namespace njo
                     int sl = used[(size_t) i], gi = fxG (im.current, sl), ty = im.ctx.fxSlotTypes()[gi];
                     bool on = im.ctx.get (im.slotBase (gi) + 1) > 0.5f, selected = im.sel[im.current] == sl && ! im.adding;
                     auto r = itemR (i).toFloat().reduced (0, 1.5f);
-                    g.setColour (dragIdx == i ? juce::Colour (0xff3a1815) : (selected ? juce::Colour (0xff2a2020) : juce::Colour (0xff131415))); g.fillRoundedRectangle (r, 3.0f);
+                    g.setColour (dragIdx == i ? juce::Colour (0xff2a3a17) : (selected ? juce::Colour (0xff2a2020) : juce::Colour (0xff171410))); g.fillRoundedRectangle (r, 3.0f);
                     if (selected) { g.setColour (red.withAlpha (0.8f)); g.drawRoundedRectangle (r.reduced (0.5f), 3.0f, 1.0f); }
                     g.setColour (fxColour (ty).withAlpha (on ? 1.0f : 0.3f)); g.fillRect (r.getX() + 1, r.getY() + 3, 3.0f, r.getHeight() - 6);
                     // on / off dot
                     auto dot = juce::Rectangle<float> (r.getX() + 12, r.getCentreY() - 4, 8, 8);
-                    g.setColour (on ? fxColour (ty) : juce::Colour (0xff3a3a3d)); g.fillEllipse (dot);
+                    g.setColour (on ? fxColour (ty) : juce::Colour (0xff413a2f)); g.fillEllipse (dot);
                     g.setColour (on ? ink : dim); g.setFont (font (11.0f, true));
                     g.drawText (fxTypes()[(size_t) ty].name, juce::Rectangle<int> (30, (int) r.getY(), getWidth() - 30 - 44, (int) r.getHeight()), juce::Justification::centredLeft, true);
                     // arrows
@@ -172,7 +172,7 @@ namespace njo
                 {
                     auto r = cell (i).toFloat();
                     if (r.getBottom() < headH - 4 || r.getY() > getHeight()) continue;
-                    g.setColour (juce::Colour (over == i && ! full ? 0xff2a2c2f : 0xff17181a)); g.fillRoundedRectangle (r, 3.0f);
+                    g.setColour (juce::Colour (over == i && ! full ? 0xff312c23 : 0xff1c1813)); g.fillRoundedRectangle (r, 3.0f);
                     g.setColour (fxColour (i + 1).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
                     g.setColour (full ? dim : ink); g.setFont (font (12.0f, true));
                     g.drawText (fxTypes()[(size_t) i + 1].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);

@@ -18,44 +18,93 @@ namespace njo::theme
         return juce::ColourGradient (top, r.getX(), r.getY(), bottom, r.getX(), r.getBottom(), false);
     }
 
-    void paintCard (juce::Graphics& g, juce::Rectangle<float> r, float cornerTL)
+    // a plate with cut (chamfered) corners: tl, tr, br, bl = size of the cut
+    juce::Path chamfer (juce::Rectangle<float> r, float tl, float tr, float br, float bl)
     {
         juce::Path p;
-        p.addRoundedRectangle (r.getX(), r.getY(), r.getWidth(), r.getHeight(), cornerTL, 2.0f, true, false, false, true);
-        p.setUsingNonZeroWinding (true);
-        g.setGradientFill (vertical (juce::Colour (0xff292c31), juce::Colour (0xff1f2225), r));
+        p.startNewSubPath (r.getX() + tl, r.getY());
+        p.lineTo (r.getRight() - tr, r.getY());
+        p.lineTo (r.getRight(), r.getY() + tr);
+        p.lineTo (r.getRight(), r.getBottom() - br);
+        p.lineTo (r.getRight() - br, r.getBottom());
+        p.lineTo (r.getX() + bl, r.getBottom());
+        p.lineTo (r.getX(), r.getBottom() - bl);
+        p.lineTo (r.getX(), r.getY() + tl);
+        p.closeSubPath();
+        return p;
+    }
+
+    void paintCard (juce::Graphics& g, juce::Rectangle<float> r, float cornerTL)
+    {
+        const float cut = juce::jlimit (6.0f, 16.0f, cornerTL * 1.3f);
+        auto p = chamfer (r, cut, 3.0f, cut, 3.0f);
+        // hammered bronze plate
+        g.setGradientFill (vertical (juce::Colour (0xff2a251c), juce::Colour (0xff1b1812), r));
         g.fillPath (p);
-        g.setColour (line);
-        g.strokePath (p, juce::PathStrokeType (1.0f));
-        // red top hairline
-        g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, r.getX(), 0, juce::Colour (0xff7a100c), r.getX() + r.getWidth() * 0.12f, 0, false));
-        g.fillRect (juce::Rectangle<float> (r.getX() + 6, r.getY(), r.getWidth() * 0.12f, 3.0f));
-        g.setColour (red.withAlpha (0.8f));
-        g.fillRect (juce::Rectangle<float> (r.getX() + r.getWidth() * 0.12f, r.getY(), r.getWidth() * 0.76f, 2.0f));
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff7a100c), r.getX() + r.getWidth() * 0.88f, 0, juce::Colours::transparentBlack, r.getRight() - 6, 0, false));
-        g.fillRect (juce::Rectangle<float> (r.getX() + r.getWidth() * 0.88f, r.getY(), r.getWidth() * 0.12f - 6, 3.0f));
-        // screws
-        for (float sx : { r.getX() + 6.0f, r.getRight() - 6.0f })
+        g.setColour (juce::Colour (0xff0c0b08));   // shadow line inside the frame
+        g.strokePath (chamfer (r.reduced (3.0f), cut - 2.0f, 2.0f, cut - 2.0f, 2.0f), juce::PathStrokeType (1.0f));
+        g.setColour (juce::Colour (0xff6d5c3a));   // bronze frame
+        g.strokePath (p, juce::PathStrokeType (1.3f));
+        g.setColour (juce::Colours::white.withAlpha (0.05f));
+        g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + cut, r.getRight() - 4.0f);
+
+        // plasma line along the top, with a stepped notch like a claw cut
+        float w = r.getWidth();
+        g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, r.getX() + cut, 0, redDark, r.getX() + w * 0.14f, 0, false));
+        g.fillRect (juce::Rectangle<float> (r.getX() + cut, r.getY(), w * 0.14f - cut + 2.0f, 2.0f));
+        g.setColour (red.withAlpha (0.85f));
+        g.fillRect (juce::Rectangle<float> (r.getX() + w * 0.14f, r.getY(), w * 0.5f, 2.0f));
+        juce::Path claw;   // three descending steps
+        float cx = r.getX() + w * 0.64f;
+        claw.startNewSubPath (cx, r.getY()); claw.lineTo (cx + 10.0f, r.getY()); claw.lineTo (cx + 14.0f, r.getY() + 3.0f);
+        claw.lineTo (cx + 24.0f, r.getY() + 3.0f); claw.lineTo (cx + 28.0f, r.getY() + 6.0f); claw.lineTo (cx + 42.0f, r.getY() + 6.0f);
+        g.setColour (red.withAlpha (0.8f)); g.strokePath (claw, juce::PathStrokeType (1.4f));
+        g.setGradientFill (juce::ColourGradient (redDark, cx + 42.0f, 0, juce::Colours::transparentBlack, r.getRight() - 6.0f, 0, false));
+        g.fillRect (juce::Rectangle<float> (cx + 42.0f, r.getY() + 5.0f, juce::jmax (0.0f, r.getRight() - 6.0f - (cx + 42.0f)), 2.0f));
+
+        // etched cut on the chamfer
+        g.setColour (red.withAlpha (0.55f));
+        g.drawLine (r.getX() + 1.5f, r.getY() + cut + 5.0f, r.getX() + cut + 5.0f, r.getY() + 1.5f, 1.0f);
+
+        // row of glyph marks along the bottom edge (decoration: short bars of varying length in groups)
+        if (r.getHeight() > 200.0f)
         {
-            g.setColour (juce::Colour (0xff17181a)); g.fillEllipse (sx - 2.6f, r.getBottom() - 8.6f, 5.2f, 5.2f);
-            g.setColour (juce::Colour (0xff9aa0a8)); g.fillEllipse (sx - 1.4f, r.getBottom() - 7.4f, 2.8f, 2.8f);
+            float x0 = juce::jmax (r.getX() + 22.0f, r.getRight() - 150.0f), x = x0, y = r.getBottom() - 5.0f; unsigned seed = (unsigned) (w * 7.0f) + 13u;
+            g.setColour (juce::Colour (0xff6d5c3a).withAlpha (0.55f));
+            while (x < r.getRight() - 22.0f && (x - x0) < 126.0f)
+            {
+                seed = seed * 1664525u + 1013904223u;
+                float len = 2.0f + (float) ((seed >> 24) % 4) * 2.0f;
+                g.fillRect (x, y - (((seed >> 20) & 1) ? 2.0f : 0.0f), 1.6f, ((seed >> 20) & 1) ? 4.0f : 2.0f);
+                g.fillRect (x + 2.4f, y, len, 1.2f);
+                x += len + 6.0f + (float) ((seed >> 16) % 3) * 2.0f;
+            }
+        }
+        // rivets
+        for (float sx : { r.getX() + 7.0f + 0.0f * cut, r.getRight() - 7.0f })
+        {
+            g.setColour (juce::Colour (0xff0c0b08)); g.fillEllipse (sx - 3.0f, r.getBottom() - 10.0f, 6.0f, 6.0f);
+            g.setGradientFill (juce::ColourGradient (juce::Colour (0xffb59a62), sx - 1.0f, r.getBottom() - 8.5f, juce::Colour (0xff4a3d24), sx + 1.5f, r.getBottom() - 5.5f, true));
+            g.fillEllipse (sx - 2.0f, r.getBottom() - 9.0f, 4.0f, 4.0f);
         }
     }
 
-    void paintButton (juce::Graphics& g, juce::Rectangle<float> r, bool on, bool hover, bool down, float corner)
+    void paintButton (juce::Graphics& g, juce::Rectangle<float> r, bool on, bool hover, bool down, float)
     {
-        juce::Path p; p.addRoundedRectangle (r.getX(), r.getY(), r.getWidth(), r.getHeight(), corner, 1.0f, true, false, true, false);
+        const float c = juce::jlimit (2.0f, 6.0f, r.getHeight() * 0.28f);
+        auto p = chamfer (r, c, 0.0f, c, 0.0f);
         if (on)
         {
-            g.setGradientFill (vertical (juce::Colour (0xffff4a3a), juce::Colour (0xffa3140c), r)); g.fillPath (p);
-            g.setColour (juce::Colour (0xffff6a5c)); g.strokePath (p, juce::PathStrokeType (1.0f));
-            g.setColour (juce::Colours::white.withAlpha (0.3f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + 3, r.getRight() - 3);
+            g.setGradientFill (vertical (juce::Colour (0xffb8ff5a), juce::Colour (0xff3f7f10), r)); g.fillPath (p);
+            g.setColour (juce::Colour (0xffd6ff9a)); g.strokePath (p, juce::PathStrokeType (1.0f));
+            g.setColour (juce::Colours::white.withAlpha (0.35f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
+            g.setColour (red.withAlpha (0.18f)); g.strokePath (p, juce::PathStrokeType (3.5f));   // plasma glow
         }
         else
         {
-            g.setGradientFill (vertical (down ? juce::Colour (0xff202124) : juce::Colour (0xff303134), juce::Colour (0xff17181a), r)); g.fillPath (p);
-            g.setColour (hover ? red : juce::Colour (0xff4c4d51)); g.strokePath (p, juce::PathStrokeType (1.0f));
-            g.setColour (juce::Colours::white.withAlpha (0.1f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + 3, r.getRight() - 3);
+            g.setGradientFill (vertical (down ? juce::Colour (0xff1c1913) : juce::Colour (0xff342e22), juce::Colour (0xff15130e), r)); g.fillPath (p);
+            g.setColour (hover ? red : juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.0f));
+            g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
         }
     }
 
@@ -64,50 +113,72 @@ namespace njo::theme
         auto c = r.getCentre();
         float rad = juce::jmin (r.getWidth(), r.getHeight()) * 0.5f;
         float a0 = juce::MathConstants<float>::pi * 1.25f, span = juce::MathConstants<float>::pi * 1.5f;
-        // dotted ring
-        g.setColour (juce::Colour (0xff4a3a38));
+        // etched scale: radial dashes, longer every fifth
         for (int i = 0; i <= 20; ++i)
         {
-            float a = a0 + span * (float) i / 20.0f;
-            float x = c.x + std::sin (a) * (rad - 1.2f), y = c.y - std::cos (a) * (rad - 1.2f);
-            g.fillEllipse (x - 0.9f, y - 0.9f, 1.8f, 1.8f);
+            float a = a0 + span * (float) i / 20.0f, len = (i % 5 == 0) ? 3.4f : 1.8f;
+            float s = std::sin (a), co = -std::cos (a), ro = rad - 0.4f, ri = ro - len;
+            g.setColour (juce::Colour (0xff6d5c3a).withAlpha (i % 5 == 0 ? 0.95f : 0.6f));
+            g.drawLine (c.x + s * ri, c.y + co * ri, c.x + s * ro, c.y + co * ro, 1.0f);
         }
-        // value arc
-        float rr = rad - 1.2f;
+        // value arc (plasma, with a soft glow)
+        float rr = rad - 5.2f;
         float z = bipolar ? 0.5f : 0.0f;
         juce::Path arc;
         float aA = juce::jmin (z, n), aB = juce::jmax (z, n);
         if (aB - aA > 0.002f)
         {
             arc.addCentredArc (c.x, c.y, rr, rr, 0.0f, a0 + span * aA, a0 + span * aB, true);
-            g.setColour (red.withAlpha (0.9f));
-            g.strokePath (arc, juce::PathStrokeType (2.2f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+            g.setColour (red.withAlpha (0.18f));
+            g.strokePath (arc, juce::PathStrokeType (4.6f, juce::PathStrokeType::curved, juce::PathStrokeType::butt));
+            g.setColour (red.withAlpha (0.95f));
+            g.strokePath (arc, juce::PathStrokeType (1.8f, juce::PathStrokeType::curved, juce::PathStrokeType::butt));
         }
-        // body
-        auto body = r.reduced (rad * 0.2f);
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff5b5d62), body.getCentreX() - body.getWidth() * 0.2f, body.getY() + body.getHeight() * 0.1f, juce::Colour (0xff1a1b1e), body.getCentreX() + body.getWidth() * 0.2f, body.getBottom(), true));
-        g.fillEllipse (body);
-        g.setColour (dragging ? red : (hover ? juce::Colour (0xff8a2a24) : juce::Colour (0xff060606)));
-        g.drawEllipse (body, 1.2f);
-        g.setColour (juce::Colours::white.withAlpha (0.18f));
-        g.drawEllipse (body.reduced (1.2f), 0.8f);
-        // indicator
+        // body: a hexagonal bronze bezel with a dark dished centre
+        auto body = r.reduced (rad * 0.26f);
+        float br = body.getWidth() * 0.5f;
+        juce::Path hex;
+        for (int i = 0; i < 6; ++i)
+        {
+            float a = juce::MathConstants<float>::pi / 6.0f + (float) i * juce::MathConstants<float>::pi / 3.0f;
+            float x = c.x + std::sin (a) * br * 1.08f, y = c.y - std::cos (a) * br * 1.08f;
+            if (i == 0) hex.startNewSubPath (x, y); else hex.lineTo (x, y);
+        }
+        hex.closeSubPath();
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff8a7648), c.x - br * 0.6f, c.y - br, juce::Colour (0xff2a2316), c.x + br * 0.6f, c.y + br, false));
+        g.fillPath (hex);
+        g.setColour (dragging ? red : (hover ? juce::Colour (0xff9fd44a) : juce::Colour (0xff0a0906)));
+        g.strokePath (hex, juce::PathStrokeType (1.2f));
+        auto dish = body.reduced (br * 0.28f);
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff1d1a12), dish.getCentreX() - dish.getWidth() * 0.2f, dish.getY(), juce::Colour (0xff050504), dish.getCentreX() + dish.getWidth() * 0.2f, dish.getBottom(), false));
+        g.fillEllipse (dish);
+        g.setColour (juce::Colours::white.withAlpha (0.10f)); g.drawEllipse (dish, 0.8f);
+        // indicator: a blade from the dish towards the rim
         float a = a0 + span * n;
-        float x0 = c.x + std::sin (a) * body.getWidth() * 0.2f, y0 = c.y - std::cos (a) * body.getWidth() * 0.2f;
-        float x1 = c.x + std::sin (a) * body.getWidth() * 0.46f, y1 = c.y - std::cos (a) * body.getWidth() * 0.46f;
-        g.setColour (red);
-        g.drawLine (x0, y0, x1, y1, 2.4f);
+        float s = std::sin (a), co = -std::cos (a);
+        juce::Path blade;
+        float r0 = br * 0.18f, r1 = br * 1.02f, hw = 1.7f;
+        blade.startNewSubPath (c.x + s * r1, c.y + co * r1);
+        blade.lineTo (c.x + s * r0 + co * hw, c.y + co * r0 - s * hw);
+        blade.lineTo (c.x + s * r0 - co * hw, c.y + co * r0 + s * hw);
+        blade.closeSubPath();
+        g.setColour (red); g.fillPath (blade);
     }
 
     void paintLcdBox (juce::Graphics& g, juce::Rectangle<float> r)
     {
-        g.setColour (juce::Colour (0xff110505)); g.fillRoundedRectangle (r, 2.0f);
-        g.setColour (line); g.drawRoundedRectangle (r, 2.0f, 1.0f);
+        auto p = chamfer (r, 6.0f, 0.0f, 6.0f, 0.0f);
+        g.setColour (juce::Colour (0xff050a03)); g.fillPath (p);
+        g.setColour (juce::Colours::black.withAlpha (0.35f));   // scan lines
+        for (float y = r.getY() + 2.0f; y < r.getBottom(); y += 3.0f) g.drawHorizontalLine ((int) y, r.getX() + 4.0f, r.getRight() - 4.0f);
+        g.setColour (juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.2f));
     }
 
     void paintInset (juce::Graphics& g, juce::Rectangle<float> r, float corner)
     {
-        g.setColour (juce::Colour (0xff0d0404)); g.fillRoundedRectangle (r, corner);
-        g.setColour (juce::Colour (0xff7a1d18)); g.drawRoundedRectangle (r.reduced (0.5f), corner, 1.0f);
+        const float c = juce::jlimit (2.0f, 6.0f, corner + 1.0f);
+        auto p = chamfer (r, c, 0.0f, c, 0.0f);
+        g.setColour (juce::Colour (0xff070905)); g.fillPath (p);
+        g.setColour (juce::Colour (0xff3f6a1c)); g.strokePath (chamfer (r.reduced (0.5f), c, 0.0f, c, 0.0f), juce::PathStrokeType (1.0f));
     }
 }

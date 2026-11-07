@@ -186,11 +186,11 @@ namespace njo
                 }
                 return p;
             };
-            if (cur > 0) { g.setColour (juce::Colour (0xffa0968f).withAlpha (0.28f)); g.strokePath (path (cur - 1), juce::PathStrokeType (1.0f)); }
-            if (cur < frames() - 1) { g.setColour (juce::Colour (0xffa0968f).withAlpha (0.28f)); g.strokePath (path (cur + 1), juce::PathStrokeType (1.0f)); }
+            if (cur > 0) { g.setColour (juce::Colour (0xffa49579).withAlpha (0.28f)); g.strokePath (path (cur - 1), juce::PathStrokeType (1.0f)); }
+            if (cur < frames() - 1) { g.setColour (juce::Colour (0xffa49579).withAlpha (0.28f)); g.strokePath (path (cur + 1), juce::PathStrokeType (1.0f)); }
             auto p = path (cur);
-            g.setColour (juce::Colour (0xffff3b30).withAlpha (0.25f)); g.strokePath (p, juce::PathStrokeType (6.0f));
-            g.setColour (juce::Colour (0xffff7864)); g.strokePath (p, juce::PathStrokeType (2.0f));
+            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.25f)); g.strokePath (p, juce::PathStrokeType (6.0f));
+            g.setColour (juce::Colour (0xffbaff6c)); g.strokePath (p, juce::PathStrokeType (2.0f));
             g.setColour (dim); g.setFont (mono (8.5f, false));
             if (filter)
             {
@@ -390,8 +390,8 @@ namespace njo
                 {
                     const float fe = b.f[i] * v[(size_t) i * 3], ge = b.a[i] * v[(size_t) i * 3 + 1];
                     const float hmax = (float) spec.getHeight() - 30.0f;
-                    if (b.f[i] < 18000.0f) { g.setColour (juce::Colour (0xffa0968f).withAlpha (0.35f)); g.drawLine (xOf (b.f[i]), (float) spec.getBottom() - 6, xOf (b.f[i]), (float) spec.getBottom() - 6 - hmax * b.a[i], 2.0f); }
-                    if (fe < 18000.0f) { g.setColour (juce::Colour (0xffff3b30)); g.drawLine (xOf (fe), (float) spec.getBottom() - 6, xOf (fe), (float) spec.getBottom() - 6 - hmax * juce::jmin (1.0f, ge * 0.5f + 0.0f) , 3.0f); }
+                    if (b.f[i] < 18000.0f) { g.setColour (juce::Colour (0xffa49579).withAlpha (0.35f)); g.drawLine (xOf (b.f[i]), (float) spec.getBottom() - 6, xOf (b.f[i]), (float) spec.getBottom() - 6 - hmax * b.a[i], 2.0f); }
+                    if (fe < 18000.0f) { g.setColour (juce::Colour (0xffa3ff3a)); g.drawLine (xOf (fe), (float) spec.getBottom() - 6, xOf (fe), (float) spec.getBottom() - 6 - hmax * juce::jmin (1.0f, ge * 0.5f + 0.0f) , 3.0f); }
                 }
             }
             static const char* rowName[3] = { "FREQUENCY\nx0.5 .. x2", "GAIN\n0 .. 2", "DECAY\nx0.1 .. x10" };
@@ -410,7 +410,7 @@ namespace njo
                     const float val = v[(size_t) i * 3 + (size_t) r];
                     const float y = (float) rc.getBottom() - toPos (r, val) * (float) rc.getHeight();
                     const bool edited = std::abs (val - 1.0f) > 1.0e-3f;
-                    g.setColour (edited ? juce::Colour (0xffff3b30).withAlpha (0.85f) : juce::Colour (0xff8a817c).withAlpha (0.65f));
+                    g.setColour (edited ? juce::Colour (0xffa3ff3a).withAlpha (0.85f) : juce::Colour (0xff8d8168).withAlpha (0.65f));
                     if (r == 1) g.fillRect (juce::Rectangle<float> (x - w * 0.5f, y, w, (float) rc.getBottom() - y));
                     else g.fillRect (juce::Rectangle<float> (x - w * 0.5f, juce::jmin (y, y1), w, juce::jmax (2.0f, std::abs (y - y1))));
                     g.setColour (juce::Colours::white.withAlpha (0.85f)); g.fillRect (juce::Rectangle<float> (x - w * 0.5f, y - 1.0f, w, 2.0f));

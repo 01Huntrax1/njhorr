@@ -139,8 +139,8 @@ namespace njo
         g.setFont (mono (8.5f, true)); g.setColour (orange);
         g.drawText (valueString(), b.withHeight (11).toNearestInt(), juce::Justification::topRight, true);
         auto t = trackRect();
-        g.setColour (juce::Colour (0xff090303)); g.fillRoundedRectangle (t, 2.0f);
-        g.setColour (juce::Colour (0xff3a1a17)); g.drawRoundedRectangle (t, 2.0f, 1.0f);
+        g.setColour (juce::Colour (0xff060903)); g.fillRoundedRectangle (t, 2.0f);
+        g.setColour (juce::Colour (0xff2a3a19)); g.drawRoundedRectangle (t, 2.0f, 1.0f);
         float n = (float) sp->toNorm (val);
         float z = (sp->min < 0 && sp->max > 0) ? (float) (-sp->min / (sp->max - sp->min)) : 0.0f;
         float x0 = t.getX() + t.getWidth() * juce::jmin (n, z), x1 = t.getX() + t.getWidth() * juce::jmax (n, z);
@@ -159,7 +159,7 @@ namespace njo
             if (modHover) { g.setColour (red.withAlpha (0.3f)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 3.0f); }
         }
         float tx = t.getX() + t.getWidth() * n;
-        g.setColour (juce::Colour (0xff85868b)); g.fillRoundedRectangle (tx - 3.0f, t.getY() - 3.0f, 6.0f, t.getHeight() + 6.0f, 1.5f);
+        g.setColour (juce::Colour (0xff93866c)); g.fillRoundedRectangle (tx - 3.0f, t.getY() - 3.0f, 6.0f, t.getHeight() + 6.0f, 1.5f);
         g.setColour (red); g.fillRect (tx - 3.0f, t.getY() + t.getHeight() * 0.36f, 6.0f, 2.0f);
     }
 

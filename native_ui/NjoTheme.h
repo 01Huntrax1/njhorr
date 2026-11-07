@@ -4,9 +4,9 @@
 
 namespace njo::theme
 {
-    inline const juce::Colour bg    { 0xff0a0c0d }, panel { 0xff1b1c1e }, panel2 { 0xff26272a }, steel { 0xff3a3b3e };
-    inline const juce::Colour ink   { 0xffddd6d2 }, dim { 0xff8f8886 }, line { 0xff4a4a4d }, deep { 0xff0b0404 };
-    inline const juce::Colour red   { 0xffff3b30 }, orange { 0xffff7a45 }, glow { 0x8cff3b30 }, redDark { 0xffa3140c };
+    inline const juce::Colour bg    { 0xff0a0c0d }, panel { 0xff201c17 }, panel2 { 0xff2c2720 }, steel { 0xff423b30 };
+    inline const juce::Colour ink   { 0xffddd6d2 }, dim { 0xff95886e }, line { 0xff524a3c }, deep { 0xff080b04 };
+    inline const juce::Colour red   { 0xffa3ff3a }, orange { 0xffff7a45 }, glow { 0x8ca3ff3a }, redDark { 0xff60a314 };
     inline const juce::Colour blue  { 0xff59b7ff };
 
     juce::Font font (float height, bool bold = false);
@@ -14,6 +14,7 @@ namespace njo::theme
     juce::Font mono (float height, bool bold = false);
 
     // draws the dark rounded "card" panel background with the red hairline on top and two screws at the bottom
+    juce::Path chamfer (juce::Rectangle<float> r, float tl, float tr, float br, float bl);   // plate with cut corners
     void paintCard (juce::Graphics&, juce::Rectangle<float> r, float cornerTopLeft = 10.0f);
     // the red/grey pill button background used by tabs and segment buttons
     void paintButton (juce::Graphics&, juce::Rectangle<float> r, bool on, bool hover, bool down, float corner = 3.0f);

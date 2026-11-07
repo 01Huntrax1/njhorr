@@ -61,7 +61,7 @@ namespace njo
 
     MatrixPanel::MatrixPanel (Ctx& c) : impl (new Impl (c, *this))
     {
-        for (auto* b : { &impl->prev, &impl->next }) { addAndMakeVisible (b); b->setColour (juce::TextButton::buttonColourId, juce::Colour (0xff202124)); b->setColour (juce::TextButton::textColourOffId, theme::dim); }
+        for (auto* b : { &impl->prev, &impl->next }) { addAndMakeVisible (b); b->setColour (juce::TextButton::buttonColourId, juce::Colour (0xff26211b)); b->setColour (juce::TextButton::textColourOffId, theme::dim); }
         impl->prev.onClick = [this] { impl->showPage (impl->page - 1); };
         impl->next.onClick = [this] { impl->showPage (impl->page + 1); };
         impl->showPage (0);
@@ -148,10 +148,10 @@ namespace njo
                 g.setColour (srcColour (src)); g.fillRoundedRectangle (pill, 9.0f);
                 g.setColour (juce::Colours::black); g.setFont (font (9.0f, true)); g.drawText (srcShort (src), pill.toNearestInt(), juce::Justification::centred);
                 auto t = track();
-                g.setColour (juce::Colour (0xff090303)); g.fillRoundedRectangle (t, 2.0f);
+                g.setColour (juce::Colour (0xff060903)); g.fillRoundedRectangle (t, 2.0f);
                 float n = (amt() + 1.0f) * 0.5f;
                 g.setColour (red.withAlpha (0.85f)); g.fillRect (juce::jmin (n, 0.5f) * t.getWidth() + t.getX(), t.getY(), std::abs (n - 0.5f) * t.getWidth(), t.getHeight());
-                g.setColour (juce::Colour (0xff85868b)); g.fillRoundedRectangle (t.getX() + n * t.getWidth() - 3, t.getY() - 4, 6, t.getHeight() + 8, 1.5f);
+                g.setColour (juce::Colour (0xff93866c)); g.fillRoundedRectangle (t.getX() + n * t.getWidth() - 3, t.getY() - 4, 6, t.getHeight() + 8, 1.5f);
                 g.setColour (orange); g.setFont (mono (10.0f, true));
                 g.drawText (juce::String (juce::roundToInt (amt() * 100)) + "%", juce::Rectangle<int> (getWidth() - 72, 0, 48, getHeight()), juce::Justification::centredRight);
                 g.setColour (dim); g.setFont (font (15.0f, true));
@@ -181,7 +181,7 @@ namespace njo
                 juce::String title; juce::OwnedArray<PopRow> rows;
                 void paint (juce::Graphics& g) override
                 {
-                    g.setColour (juce::Colour (0xff17181a)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 6.0f);
+                    g.setColour (juce::Colour (0xff1c1813)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 6.0f);
                     g.setColour (red.withAlpha (0.7f)); g.drawRoundedRectangle (getLocalBounds().toFloat().reduced (0.5f), 6.0f, 1.0f);
                     g.setColour (red); g.setFont (font (9.0f, true));
                     g.drawText (title.toUpperCase(), 10, 4, getWidth() - 20, 16, juce::Justification::centredLeft);

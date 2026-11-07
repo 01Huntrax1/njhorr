@@ -77,7 +77,7 @@ namespace njo
 
     juce::Colour srcColour (int n)
     {
-        if (n >= 1 && n <= 10) return juce::Colour (0xffff6a4d);
+        if (n >= 1 && n <= 10) return juce::Colour (0xffb0ff56);
         if (n >= 11 && n <= 20) return juce::Colour (0xff4db8ff);
         if (n >= 34) return juce::Colour (0xff5be08a);
         if (n >= 24) return juce::Colour (0xffb57bff);

@@ -27,9 +27,15 @@ namespace njo
                 }
                 else
                 {
-                    if (on) { g.setColour (style == Tab ? panel2 : red); g.fillRoundedRectangle (r, 1.5f); g.setColour (red); g.drawRoundedRectangle (r, 1.5f, 1.0f); }
-                    else { g.setColour (panel); g.fillRoundedRectangle (r, 1.5f); g.setColour (over ? red : line); g.drawRoundedRectangle (r, 1.5f, 1.0f); }
-                    g.setColour (on ? (style == Tab ? red : juce::Colour (0xff111111)) : (over ? ink : dim)); g.setFont (font (9.0f, true));
+                    if (style == Tab && on)
+                    {
+                        auto cp = chamfer (r, 4.0f, 0.0f, 4.0f, 0.0f);
+                        g.setGradientFill (vertical (juce::Colour (0xff2e3a1c), juce::Colour (0xff171a0e), r)); g.fillPath (cp);
+                        g.setColour (red); g.strokePath (cp, juce::PathStrokeType (1.0f));
+                        g.fillRect (r.getX() + 4.0f, r.getBottom() - 2.5f, r.getWidth() - 8.0f, 2.0f);
+                    }
+                    else paintButton (g, r, on, over, false);
+                    g.setColour (on ? (style == Tab ? red : juce::Colour (0xff14110e)) : (over ? ink : dim)); g.setFont (font (9.0f, true));
                     g.drawText (text, r.toNearestInt(), juce::Justification::centred);
                 }
             }
@@ -258,14 +264,18 @@ namespace njo
         for (int i = -BASE_H; i < BASE_W; i += 7) g.drawLine ((float) i, (float) BASE_H, (float) (i + BASE_H), 0.0f, 1.0f);
         // top bar
         auto t = impl->topBar.toFloat();
-        g.setGradientFill (vertical (juce::Colour (0xff2c3035), juce::Colour (0xff1b1d20), t));
-        g.fillRoundedRectangle (t, 22.0f);
-        g.setColour (juce::Colour (0xff55565a)); g.drawRoundedRectangle (t.reduced (1), 22.0f, 2.0f);
+        g.setGradientFill (vertical (juce::Colour (0xff363027), juce::Colour (0xff211d17), t));
+        auto tp = chamfer (t, 26.0f, 8.0f, 26.0f, 8.0f);
+        g.fillPath (tp);
+        g.setColour (juce::Colour (0xff0c0b08)); g.strokePath (chamfer (t.reduced (3), 23.0f, 6.0f, 23.0f, 6.0f), juce::PathStrokeType (1.0f));
+        g.setColour (juce::Colour (0xff7a6740)); g.strokePath (tp, juce::PathStrokeType (2.0f));
+        g.setColour (red.withAlpha (0.5f)); g.drawLine (t.getX() + 3.0f, t.getY() + 26.0f, t.getX() + 26.0f, t.getY() + 3.0f, 1.2f);    // etched cut
+        g.drawLine (t.getRight() - 26.0f - 3.0f, t.getBottom() - 3.0f, t.getRight() - 3.0f, t.getBottom() - 26.0f - 3.0f, 1.2f);
         g.setColour (red); g.setFont (impact (21.0f));
         g.drawText ("NJOHRR", juce::Rectangle<int> (impl->topBar.getX() + 16, impl->topBar.getY(), 130, impl->topBar.getHeight()), juce::Justification::centredLeft);
         auto model = juce::Rectangle<float> (t.getX() + 138, t.getY() + 13, 72, 18);
         g.setColour (red); g.fillRoundedRectangle (model, 1.5f);
-        g.setColour (juce::Colour (0xff111111)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : "SYNTH", model.toNearestInt(), juce::Justification::centred);
+        g.setColour (juce::Colour (0xff14110e)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : "SYNTH", model.toNearestInt(), juce::Justification::centred);
         auto ver = juce::Rectangle<float> (t.getX() + 220, t.getY() + 14, 46, 16);
         g.setColour (line); g.drawRoundedRectangle (ver, 2.0f, 1.0f); g.setColour (dim); g.setFont (mono (8.0f, true)); g.drawText ("V1.0.0", ver.toNearestInt(), juce::Justification::centred);
         // VU
@@ -283,7 +293,7 @@ namespace njo
             g.setColour (red); g.drawText (lcdName, l.removeFromLeft (110), juce::Justification::centredLeft, true);
             g.setColour (orange); g.setFont (mono (12.0f, true)); g.drawText (lcdValue, l, juce::Justification::centredRight, true);
         }
-        g.setColour (juce::Colour (0xff4a0f0b)); g.fillEllipse ((float) impl->lcdRect.getRight() + 12, (float) impl->topBar.getCentreY() - 6, 12, 12);
+        g.setColour (juce::Colour (0xff2e4a0e)); g.fillEllipse ((float) impl->lcdRect.getRight() + 12, (float) impl->topBar.getCentreY() - 6, 12, 12);
         // red hairline under the bar
         auto hz = juce::Rectangle<float> (10.0f, (float) impl->topBar.getBottom() + 3, (float) getWidth() - 20.0f, 3.0f);
         g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, hz.getX(), 0, red, hz.getCentreX(), 0, false));
@@ -294,8 +304,8 @@ namespace njo
         if (currentGroup != Modulation && currentGroup != Sequencer && ! NJOHRR_FX_ONLY)
         {
             auto s = impl->stripRect.toFloat();
-            g.setGradientFill (vertical (juce::Colour (0xff25282c), juce::Colour (0xff1a1c1f), s));
-            g.fillRoundedRectangle (s, 2.0f); g.setColour (line); g.drawRoundedRectangle (s, 2.0f, 1.0f);
+            g.setGradientFill (vertical (juce::Colour (0xff2d2820), juce::Colour (0xff201c17), s));
+            paintCard (g, s);
             auto h = s.removeFromTop (26).reduced (8, 4);
             h.removeFromLeft (46 + 3 + 46 + 3 + 46);
             g.setColour (dim); g.setFont (font (8.5f));
