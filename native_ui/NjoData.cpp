@@ -71,6 +71,7 @@ namespace njo
         if (n >= 11 && n <= 20) return "ENV " + juce::String (n - 10);
         if (n == 21) return "VEL"; if (n == 22) return "KEY"; if (n == 23) return "RND";
         if (n >= 24 && n <= 33) return "FRQ " + juce::String (n - 23);
+        if (n >= 34 && n <= 43) return "SEQ " + juce::String (n - 33);
         return {};
     }
 
@@ -78,13 +79,14 @@ namespace njo
     {
         if (n >= 1 && n <= 10) return juce::Colour (0xffff6a4d);
         if (n >= 11 && n <= 20) return juce::Colour (0xff4db8ff);
+        if (n >= 34) return juce::Colour (0xff5be08a);
         if (n >= 24) return juce::Colour (0xffb57bff);
         return juce::Colour (0xffc9c24a);
     }
 
     bool modSourceAllowed (int src, int num)
     {
-        if (src < 24) return true;
+        if (src < 24 || src >= 34) return true;
         if (num < OSC_BASE || num >= OSC_BASE + OSC_STRIDE * OSC_N) return false;
         int k = (num - OSC_BASE) % OSC_STRIDE;
         return k == oscKey ("fcut") || k == oscKey ("freq");

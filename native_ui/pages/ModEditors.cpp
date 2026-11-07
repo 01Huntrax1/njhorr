@@ -657,4 +657,145 @@ namespace njo
             for (int k = 0; k < 2; ++k) I.knobs[i * 2 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
         }
     }
+
+    // ------------------------------------------------------------------ step sequencer
+    struct SeqRefresh { virtual ~SeqRefresh() = default; virtual void refreshAll() = 0; };
+    static std::vector<SeqRefresh*> gSeqAll;
+
+    struct SeqCanvas : juce::Component
+    {
+        Ctx& ctx; int lastStep = -1; bool dragging = false;
+        explicit SeqCanvas (Ctx& c) : ctx (c) {}
+        int lenOf() const { return juce::jlimit (1, 16, juce::roundToInt (ctx.get (seqParam (ctx.selectedSeq, 16)))); }
+        juce::Rectangle<float> area() const { return getLocalBounds().toFloat().reduced (4.0f, 4.0f); }
+        void paint (juce::Graphics& g) override
+        {
+            auto a = area(); int m = ctx.selectedSeq, len = lenOf();
+            bool bip = ctx.get (seqParam (m, 23)) > 0.5f;
+            auto col = srcColour (34 + m);
+            g.setColour (juce::Colour (0xff0c0d0f)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
+            float sw = a.getWidth() / 16.0f;
+            if (bip) { g.setColour (dim.withAlpha (0.5f)); g.drawHorizontalLine ((int) a.getCentreY(), a.getX(), a.getRight()); }
+            for (int k = 0; k < 16; ++k)
+            {
+                float v = ctx.get (seqParam (m, k));
+                auto cell = juce::Rectangle<float> (a.getX() + k * sw + 1.5f, a.getY(), sw - 3.0f, a.getHeight());
+                bool act = k < len;
+                g.setColour (juce::Colour (act ? 0xff1a1c20 : 0xff121316)); g.fillRoundedRectangle (cell, 2.0f);
+                float y = cell.getBottom() - v * cell.getHeight();
+                juce::Rectangle<float> bar = bip ? juce::Rectangle<float> (cell.getX(), juce::jmin (y, cell.getCentreY()), cell.getWidth(), std::abs (y - cell.getCentreY()))
+                                                 : juce::Rectangle<float> (cell.getX(), y, cell.getWidth(), cell.getBottom() - y);
+                g.setColour (col.withAlpha (act ? 0.95f : 0.25f)); g.fillRoundedRectangle (bar.withHeight (juce::jmax (bar.getHeight(), 2.0f)), 2.0f);
+                g.setColour (dim.withAlpha (act ? 0.9f : 0.4f)); g.setFont (font (8.0f));
+                g.drawText (juce::String (k + 1), cell.toNearestInt().removeFromTop (10), juce::Justification::centred);
+            }
+        }
+        void setFromMouse (const juce::MouseEvent& e)
+        {
+            auto a = area(); int m = ctx.selectedSeq;
+            int k = juce::jlimit (0, 15, (int) ((e.position.x - a.getX()) / (a.getWidth() / 16.0f)));
+            float v = juce::jlimit (0.0f, 1.0f, 1.0f - (e.position.y - a.getY()) / a.getHeight());
+            if (e.mods.isShiftDown()) v = std::round (v * 16.0f) / 16.0f;   // shift: snap to 1/16
+            if (k != lastStep && lastStep >= 0) ctx.end (seqParam (m, lastStep));
+            if (k != lastStep) ctx.begin (seqParam (m, k));
+            lastStep = k; ctx.set (seqParam (m, k), v); repaint();
+        }
+        void mouseDown (const juce::MouseEvent& e) override { dragging = true; lastStep = -1; setFromMouse (e); }
+        void mouseDrag (const juce::MouseEvent& e) override { if (dragging) setFromMouse (e); }
+        void mouseUp (const juce::MouseEvent&) override { if (lastStep >= 0) ctx.end (seqParam (ctx.selectedSeq, lastStep)); lastStep = -1; dragging = false; }
+        void mouseDoubleClick (const juce::MouseEvent& e) override   // double-click: reset the step to the middle
+        {
+            auto a = area(); int k = juce::jlimit (0, 15, (int) ((e.position.x - a.getX()) / (a.getWidth() / 16.0f)));
+            int id = seqParam (ctx.selectedSeq, k); ctx.begin (id); ctx.set (id, 0.5f); ctx.end (id); repaint();
+        }
+    };
+
+    struct SeqEditor::Impl : Ctx::Listener, SeqRefresh
+    {
+        Ctx& ctx; SeqEditor& owner;
+        juce::OwnedArray<SourceChip> chips;
+        SeqCanvas cv;
+        // per sequencer: [0..2] buttons (Sync, Retrig, Polarity), [3..4] selects (Direction, Division), [5..7] knobs (Rate, Glide, Length)
+        juce::OwnedArray<ParamWidget> w;
+        bool full = false; juce::Rectangle<int> helpRect;
+
+        Impl (Ctx& c, SeqEditor& o) : ctx (c), owner (o), cv (c)
+        {
+            ctx.addListener (this); gSeqAll.push_back (this);
+            const int ids[8] = { 18, 22, 23, 21, 19, 17, 20, 16 };
+            const bool knob[8] = { false, false, false, false, false, true, true, true };
+            for (int i = 0; i < 10; ++i)
+            {
+                auto* ch = chips.add (new SourceChip (34 + i)); ch->onClick = [this, i] { ctx.selectedSeq = i; for (auto* a : gSeqAll) a->refreshAll(); };
+                owner.addAndMakeVisible (ch);
+                for (int k = 0; k < 8; ++k)
+                {
+                    auto* x = w.add (makeWidget (ctx, seqParam (i, ids[k]), knob[k]).release());
+                    if (knob[k]) x->setLook (true);
+                    owner.addChildComponent (x);
+                }
+            }
+            owner.addAndMakeVisible (cv);
+            refreshAll();
+        }
+        ~Impl() override { ctx.removeListener (this); gSeqAll.erase (std::remove (gSeqAll.begin(), gSeqAll.end(), this), gSeqAll.end()); }
+
+        void paramChanged (int n, float) override
+        {
+            int b = seqParam (ctx.selectedSeq, 0);
+            if (n >= b && n < b + 32) cv.repaint();
+        }
+        void refreshAll() override
+        {
+            int s = ctx.selectedSeq;
+            for (int i = 0; i < 10; ++i)
+            {
+                chips[i]->on = i == s; chips[i]->repaint();
+                for (int k = 0; k < 8; ++k) w[i * 8 + k]->setVisible (i == s);
+            }
+            cv.repaint();
+        }
+    };
+
+    SeqEditor::SeqEditor (Ctx& c) : impl (new Impl (c, *this)) {}
+    SeqEditor::~SeqEditor() = default;
+
+    void SeqEditor::paint (juce::Graphics& g)
+    {
+        auto& I = *impl;
+        if (I.full)
+        {
+            paintCard (g, getLocalBounds().toFloat());
+            g.setColour (red); g.setFont (impact (11.0f));
+            g.drawText ("STEP SEQUENCERS", 10, 4, 260, 16, juce::Justification::centredLeft);
+        }
+        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+        g.drawText (juce::String (juce::CharPointer_UTF8 ("click / drag: set steps \xc2\xb7 shift: snap \xc2\xb7 dbl-click: reset step \xc2\xb7 drag the chip onto any knob")), I.helpRect, juce::Justification::centredLeft, true);
+    }
+
+    void SeqEditor::resized()
+    {
+        auto& I = *impl;
+        I.full = getHeight() > 230;
+        auto b = getLocalBounds().reduced (10, I.full ? 6 : 2);
+        if (I.full) b.removeFromTop (16);
+        const int ch = 18, cg = 3;
+        auto row = b.removeFromTop (ch); b.removeFromTop (4);
+        int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
+        for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
+        auto right = b.removeFromRight (230); b.removeFromRight (10);
+        I.helpRect = b.removeFromBottom (12);
+        I.cv.setBounds (b.withTrimmedBottom (2));
+        auto c = right;
+        auto r1 = c.removeFromTop (20); c.removeFromTop (3);
+        auto r2 = c.removeFromTop (20); c.removeFromTop (4);
+        auto kn = c.removeFromBottom (juce::jmin (c.getHeight(), 60));
+        int bw = r1.getWidth() / 3, sw = r2.getWidth() / 2, kw = kn.getWidth() / 3;
+        for (int i = 0; i < 10; ++i)
+        {
+            for (int k = 0; k < 3; ++k) I.w[i * 8 + k]->setBounds (r1.getX() + k * bw + 1, r1.getY(), bw - 2, r1.getHeight());
+            for (int k = 0; k < 2; ++k) I.w[i * 8 + 3 + k]->setBounds (r2.getX() + k * sw + 1, r2.getY(), sw - 2, r2.getHeight());
+            for (int k = 0; k < 3; ++k) I.w[i * 8 + 5 + k]->setBounds (kn.getX() + k * kw, kn.getY(), kw, kn.getHeight());
+        }
+    }
 }

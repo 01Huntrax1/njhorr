@@ -124,6 +124,7 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f); cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f); cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
     }
     ed.setSynthPage (0); ed.setStripTab (1); pump (); save (ed, dir.getChildFile ("frq_strip.png"), scale); ed.setStripTab (0);
+    ed.setStripTab (2); pump (); save (ed, dir.getChildFile ("seq_strip.png"), scale); ed.setStripTab (0);
     {
         // FX page: empty rack (type grid), a chain of three effects, and one screenshot per effect type
         auto& cx = ed.context();
@@ -193,5 +194,6 @@ int main (int argc, char** argv)
         ed.setMatrixPage (1); pump(); save (ed, dir.getChildFile ("mod_p2.png"), scale); ed.setMatrixPage (0);
     }
     ed.setModTab (1); pump(); save (ed, dir.getChildFile ("frq_mod.png"), scale);
+    ed.setModTab (2); pump(); save (ed, dir.getChildFile ("seq_mod.png"), scale);
     return 0;
 }

@@ -3029,6 +3029,246 @@ processor Eisenpuls_Synth
     input event float param3118 [[ name: "Mod LFO 8 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3119 [[ name: "Mod LFO 9 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3120 [[ name: "Mod LFO 10 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
+    input event float param3600 [[ name: "Seq 1 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3601 [[ name: "Seq 1 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3602 [[ name: "Seq 1 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3603 [[ name: "Seq 1 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3604 [[ name: "Seq 1 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3605 [[ name: "Seq 1 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3606 [[ name: "Seq 1 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3607 [[ name: "Seq 1 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3608 [[ name: "Seq 1 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3609 [[ name: "Seq 1 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3610 [[ name: "Seq 1 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3611 [[ name: "Seq 1 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3612 [[ name: "Seq 1 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3613 [[ name: "Seq 1 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3614 [[ name: "Seq 1 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3615 [[ name: "Seq 1 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3616 [[ name: "Seq 1 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3617 [[ name: "Seq 1 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3618 [[ name: "Seq 1 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3619 [[ name: "Seq 1 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3620 [[ name: "Seq 1 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3621 [[ name: "Seq 1 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3622 [[ name: "Seq 1 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3623 [[ name: "Seq 1 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3632 [[ name: "Seq 2 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3633 [[ name: "Seq 2 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3634 [[ name: "Seq 2 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3635 [[ name: "Seq 2 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3636 [[ name: "Seq 2 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3637 [[ name: "Seq 2 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3638 [[ name: "Seq 2 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3639 [[ name: "Seq 2 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3640 [[ name: "Seq 2 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3641 [[ name: "Seq 2 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3642 [[ name: "Seq 2 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3643 [[ name: "Seq 2 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3644 [[ name: "Seq 2 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3645 [[ name: "Seq 2 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3646 [[ name: "Seq 2 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3647 [[ name: "Seq 2 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3648 [[ name: "Seq 2 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3649 [[ name: "Seq 2 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3650 [[ name: "Seq 2 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3651 [[ name: "Seq 2 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3652 [[ name: "Seq 2 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3653 [[ name: "Seq 2 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3654 [[ name: "Seq 2 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3655 [[ name: "Seq 2 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3664 [[ name: "Seq 3 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3665 [[ name: "Seq 3 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3666 [[ name: "Seq 3 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3667 [[ name: "Seq 3 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3668 [[ name: "Seq 3 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3669 [[ name: "Seq 3 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3670 [[ name: "Seq 3 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3671 [[ name: "Seq 3 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3672 [[ name: "Seq 3 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3673 [[ name: "Seq 3 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3674 [[ name: "Seq 3 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3675 [[ name: "Seq 3 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3676 [[ name: "Seq 3 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3677 [[ name: "Seq 3 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3678 [[ name: "Seq 3 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3679 [[ name: "Seq 3 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3680 [[ name: "Seq 3 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3681 [[ name: "Seq 3 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3682 [[ name: "Seq 3 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3683 [[ name: "Seq 3 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3684 [[ name: "Seq 3 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3685 [[ name: "Seq 3 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3686 [[ name: "Seq 3 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3687 [[ name: "Seq 3 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3696 [[ name: "Seq 4 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3697 [[ name: "Seq 4 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3698 [[ name: "Seq 4 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3699 [[ name: "Seq 4 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3700 [[ name: "Seq 4 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3701 [[ name: "Seq 4 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3702 [[ name: "Seq 4 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3703 [[ name: "Seq 4 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3704 [[ name: "Seq 4 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3705 [[ name: "Seq 4 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3706 [[ name: "Seq 4 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3707 [[ name: "Seq 4 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3708 [[ name: "Seq 4 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3709 [[ name: "Seq 4 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3710 [[ name: "Seq 4 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3711 [[ name: "Seq 4 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3712 [[ name: "Seq 4 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3713 [[ name: "Seq 4 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3714 [[ name: "Seq 4 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3715 [[ name: "Seq 4 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3716 [[ name: "Seq 4 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3717 [[ name: "Seq 4 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3718 [[ name: "Seq 4 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3719 [[ name: "Seq 4 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3728 [[ name: "Seq 5 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3729 [[ name: "Seq 5 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3730 [[ name: "Seq 5 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3731 [[ name: "Seq 5 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3732 [[ name: "Seq 5 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3733 [[ name: "Seq 5 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3734 [[ name: "Seq 5 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3735 [[ name: "Seq 5 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3736 [[ name: "Seq 5 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3737 [[ name: "Seq 5 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3738 [[ name: "Seq 5 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3739 [[ name: "Seq 5 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3740 [[ name: "Seq 5 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3741 [[ name: "Seq 5 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3742 [[ name: "Seq 5 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3743 [[ name: "Seq 5 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3744 [[ name: "Seq 5 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3745 [[ name: "Seq 5 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3746 [[ name: "Seq 5 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3747 [[ name: "Seq 5 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3748 [[ name: "Seq 5 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3749 [[ name: "Seq 5 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3750 [[ name: "Seq 5 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3751 [[ name: "Seq 5 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3760 [[ name: "Seq 6 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3761 [[ name: "Seq 6 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3762 [[ name: "Seq 6 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3763 [[ name: "Seq 6 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3764 [[ name: "Seq 6 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3765 [[ name: "Seq 6 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3766 [[ name: "Seq 6 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3767 [[ name: "Seq 6 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3768 [[ name: "Seq 6 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3769 [[ name: "Seq 6 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3770 [[ name: "Seq 6 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3771 [[ name: "Seq 6 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3772 [[ name: "Seq 6 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3773 [[ name: "Seq 6 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3774 [[ name: "Seq 6 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3775 [[ name: "Seq 6 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3776 [[ name: "Seq 6 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3777 [[ name: "Seq 6 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3778 [[ name: "Seq 6 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3779 [[ name: "Seq 6 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3780 [[ name: "Seq 6 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3781 [[ name: "Seq 6 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3782 [[ name: "Seq 6 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3783 [[ name: "Seq 6 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3792 [[ name: "Seq 7 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3793 [[ name: "Seq 7 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3794 [[ name: "Seq 7 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3795 [[ name: "Seq 7 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3796 [[ name: "Seq 7 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3797 [[ name: "Seq 7 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3798 [[ name: "Seq 7 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3799 [[ name: "Seq 7 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3800 [[ name: "Seq 7 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3801 [[ name: "Seq 7 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3802 [[ name: "Seq 7 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3803 [[ name: "Seq 7 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3804 [[ name: "Seq 7 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3805 [[ name: "Seq 7 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3806 [[ name: "Seq 7 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3807 [[ name: "Seq 7 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3808 [[ name: "Seq 7 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3809 [[ name: "Seq 7 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3810 [[ name: "Seq 7 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3811 [[ name: "Seq 7 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3812 [[ name: "Seq 7 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3813 [[ name: "Seq 7 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3814 [[ name: "Seq 7 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3815 [[ name: "Seq 7 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3824 [[ name: "Seq 8 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3825 [[ name: "Seq 8 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3826 [[ name: "Seq 8 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3827 [[ name: "Seq 8 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3828 [[ name: "Seq 8 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3829 [[ name: "Seq 8 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3830 [[ name: "Seq 8 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3831 [[ name: "Seq 8 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3832 [[ name: "Seq 8 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3833 [[ name: "Seq 8 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3834 [[ name: "Seq 8 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3835 [[ name: "Seq 8 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3836 [[ name: "Seq 8 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3837 [[ name: "Seq 8 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3838 [[ name: "Seq 8 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3839 [[ name: "Seq 8 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3840 [[ name: "Seq 8 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3841 [[ name: "Seq 8 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3842 [[ name: "Seq 8 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3843 [[ name: "Seq 8 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3844 [[ name: "Seq 8 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3845 [[ name: "Seq 8 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3846 [[ name: "Seq 8 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3847 [[ name: "Seq 8 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3856 [[ name: "Seq 9 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3857 [[ name: "Seq 9 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3858 [[ name: "Seq 9 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3859 [[ name: "Seq 9 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3860 [[ name: "Seq 9 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3861 [[ name: "Seq 9 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3862 [[ name: "Seq 9 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3863 [[ name: "Seq 9 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3864 [[ name: "Seq 9 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3865 [[ name: "Seq 9 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3866 [[ name: "Seq 9 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3867 [[ name: "Seq 9 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3868 [[ name: "Seq 9 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3869 [[ name: "Seq 9 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3870 [[ name: "Seq 9 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3871 [[ name: "Seq 9 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3872 [[ name: "Seq 9 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3873 [[ name: "Seq 9 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3874 [[ name: "Seq 9 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3875 [[ name: "Seq 9 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3876 [[ name: "Seq 9 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3877 [[ name: "Seq 9 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3878 [[ name: "Seq 9 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3879 [[ name: "Seq 9 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3888 [[ name: "Seq 10 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3889 [[ name: "Seq 10 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3890 [[ name: "Seq 10 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3891 [[ name: "Seq 10 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3892 [[ name: "Seq 10 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3893 [[ name: "Seq 10 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3894 [[ name: "Seq 10 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3895 [[ name: "Seq 10 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3896 [[ name: "Seq 10 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3897 [[ name: "Seq 10 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3898 [[ name: "Seq 10 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3899 [[ name: "Seq 10 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3900 [[ name: "Seq 10 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3901 [[ name: "Seq 10 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3902 [[ name: "Seq 10 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3903 [[ name: "Seq 10 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3904 [[ name: "Seq 10 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3905 [[ name: "Seq 10 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
+    input event float param3906 [[ name: "Seq 10 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3907 [[ name: "Seq 10 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3908 [[ name: "Seq 10 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3909 [[ name: "Seq 10 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3910 [[ name: "Seq 10 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3911 [[ name: "Seq 10 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3200 [[ name: "Main FX 11 Type", min: 0.0, max: 27.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
     input event float param3201 [[ name: "Main FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param3202 [[ name: "Main FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
@@ -3505,6 +3745,16 @@ processor Eisenpuls_Synth
     float[16]   mEnvR;  // padded to a power of two (cheap index wrap)
     float[16]   envMax;  // padded to a power of two (cheap index wrap)
     float[16]   lfoUni;  // MOD-LFOBIP
+    float[256]  seqStep;   // MOD-SEQ: 16 steps of each sequencer (0..1)
+    float[16]   seqLen;
+    float[16]   seqRate;
+    float[16]   seqSync;
+    float[16]   seqDiv;
+    float[16]   seqGlide;
+    float[16]   seqDir;
+    float[16]   seqRetrig;
+    float[16]   seqPol;    // 1 = bipolar
+    int         seqMask = 0;   // bit m: sequencer m is used by the matrix
     float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
     float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
@@ -3515,6 +3765,7 @@ processor Eisenpuls_Synth
 
     // Freq modulators
     float[2560] frqTab;
+    SeqS[16]    seqG;      // MOD-SEQ: global sequencers (Retrig off)
     float[16]   frqRate;  // padded to a power of two (cheap index wrap)
     float[16]   frqTrans;  // padded to a power of two (cheap index wrap)
     float[16]   frqRetrig;  // padded to a power of two (cheap index wrap)
@@ -4904,712 +5155,712 @@ processor Eisenpuls_Synth
     event param2594 (float v) { adSet (5, 14, v); }
     // AD-HAND-END
     // MODX-HAND-BEGIN
-    event param4000 (float v) { mmSrcI.at (20) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4000 (float v) { mmSrcI.at (20) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4001 (float v) { mmDstI.at (20) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4002 (float v) { mmAmt.at (20)  = v; }
-    event param4003 (float v) { mmSrcI.at (21) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4003 (float v) { mmSrcI.at (21) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4004 (float v) { mmDstI.at (21) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4005 (float v) { mmAmt.at (21)  = v; }
-    event param4006 (float v) { mmSrcI.at (22) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4006 (float v) { mmSrcI.at (22) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4007 (float v) { mmDstI.at (22) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4008 (float v) { mmAmt.at (22)  = v; }
-    event param4009 (float v) { mmSrcI.at (23) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4009 (float v) { mmSrcI.at (23) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4010 (float v) { mmDstI.at (23) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4011 (float v) { mmAmt.at (23)  = v; }
-    event param4012 (float v) { mmSrcI.at (24) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4012 (float v) { mmSrcI.at (24) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4013 (float v) { mmDstI.at (24) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4014 (float v) { mmAmt.at (24)  = v; }
-    event param4015 (float v) { mmSrcI.at (25) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4015 (float v) { mmSrcI.at (25) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4016 (float v) { mmDstI.at (25) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4017 (float v) { mmAmt.at (25)  = v; }
-    event param4018 (float v) { mmSrcI.at (26) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4018 (float v) { mmSrcI.at (26) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4019 (float v) { mmDstI.at (26) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4020 (float v) { mmAmt.at (26)  = v; }
-    event param4021 (float v) { mmSrcI.at (27) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4021 (float v) { mmSrcI.at (27) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4022 (float v) { mmDstI.at (27) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4023 (float v) { mmAmt.at (27)  = v; }
-    event param4024 (float v) { mmSrcI.at (28) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4024 (float v) { mmSrcI.at (28) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4025 (float v) { mmDstI.at (28) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4026 (float v) { mmAmt.at (28)  = v; }
-    event param4027 (float v) { mmSrcI.at (29) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4027 (float v) { mmSrcI.at (29) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4028 (float v) { mmDstI.at (29) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4029 (float v) { mmAmt.at (29)  = v; }
-    event param4030 (float v) { mmSrcI.at (30) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4030 (float v) { mmSrcI.at (30) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4031 (float v) { mmDstI.at (30) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4032 (float v) { mmAmt.at (30)  = v; }
-    event param4033 (float v) { mmSrcI.at (31) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4033 (float v) { mmSrcI.at (31) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4034 (float v) { mmDstI.at (31) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4035 (float v) { mmAmt.at (31)  = v; }
-    event param4036 (float v) { mmSrcI.at (32) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4036 (float v) { mmSrcI.at (32) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4037 (float v) { mmDstI.at (32) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4038 (float v) { mmAmt.at (32)  = v; }
-    event param4039 (float v) { mmSrcI.at (33) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4039 (float v) { mmSrcI.at (33) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4040 (float v) { mmDstI.at (33) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4041 (float v) { mmAmt.at (33)  = v; }
-    event param4042 (float v) { mmSrcI.at (34) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4042 (float v) { mmSrcI.at (34) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4043 (float v) { mmDstI.at (34) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4044 (float v) { mmAmt.at (34)  = v; }
-    event param4045 (float v) { mmSrcI.at (35) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4045 (float v) { mmSrcI.at (35) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4046 (float v) { mmDstI.at (35) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4047 (float v) { mmAmt.at (35)  = v; }
-    event param4048 (float v) { mmSrcI.at (36) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4048 (float v) { mmSrcI.at (36) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4049 (float v) { mmDstI.at (36) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4050 (float v) { mmAmt.at (36)  = v; }
-    event param4051 (float v) { mmSrcI.at (37) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4051 (float v) { mmSrcI.at (37) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4052 (float v) { mmDstI.at (37) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4053 (float v) { mmAmt.at (37)  = v; }
-    event param4054 (float v) { mmSrcI.at (38) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4054 (float v) { mmSrcI.at (38) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4055 (float v) { mmDstI.at (38) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4056 (float v) { mmAmt.at (38)  = v; }
-    event param4057 (float v) { mmSrcI.at (39) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4057 (float v) { mmSrcI.at (39) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4058 (float v) { mmDstI.at (39) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4059 (float v) { mmAmt.at (39)  = v; }
-    event param4060 (float v) { mmSrcI.at (40) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4060 (float v) { mmSrcI.at (40) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4061 (float v) { mmDstI.at (40) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4062 (float v) { mmAmt.at (40)  = v; }
-    event param4063 (float v) { mmSrcI.at (41) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4063 (float v) { mmSrcI.at (41) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4064 (float v) { mmDstI.at (41) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4065 (float v) { mmAmt.at (41)  = v; }
-    event param4066 (float v) { mmSrcI.at (42) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4066 (float v) { mmSrcI.at (42) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4067 (float v) { mmDstI.at (42) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4068 (float v) { mmAmt.at (42)  = v; }
-    event param4069 (float v) { mmSrcI.at (43) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4069 (float v) { mmSrcI.at (43) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4070 (float v) { mmDstI.at (43) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4071 (float v) { mmAmt.at (43)  = v; }
-    event param4072 (float v) { mmSrcI.at (44) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4072 (float v) { mmSrcI.at (44) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4073 (float v) { mmDstI.at (44) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4074 (float v) { mmAmt.at (44)  = v; }
-    event param4075 (float v) { mmSrcI.at (45) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4075 (float v) { mmSrcI.at (45) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4076 (float v) { mmDstI.at (45) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4077 (float v) { mmAmt.at (45)  = v; }
-    event param4078 (float v) { mmSrcI.at (46) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4078 (float v) { mmSrcI.at (46) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4079 (float v) { mmDstI.at (46) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4080 (float v) { mmAmt.at (46)  = v; }
-    event param4081 (float v) { mmSrcI.at (47) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4081 (float v) { mmSrcI.at (47) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4082 (float v) { mmDstI.at (47) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4083 (float v) { mmAmt.at (47)  = v; }
-    event param4084 (float v) { mmSrcI.at (48) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4084 (float v) { mmSrcI.at (48) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4085 (float v) { mmDstI.at (48) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4086 (float v) { mmAmt.at (48)  = v; }
-    event param4087 (float v) { mmSrcI.at (49) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4087 (float v) { mmSrcI.at (49) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4088 (float v) { mmDstI.at (49) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4089 (float v) { mmAmt.at (49)  = v; }
-    event param4090 (float v) { mmSrcI.at (50) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4090 (float v) { mmSrcI.at (50) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4091 (float v) { mmDstI.at (50) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4092 (float v) { mmAmt.at (50)  = v; }
-    event param4093 (float v) { mmSrcI.at (51) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4093 (float v) { mmSrcI.at (51) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4094 (float v) { mmDstI.at (51) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4095 (float v) { mmAmt.at (51)  = v; }
-    event param4096 (float v) { mmSrcI.at (52) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4096 (float v) { mmSrcI.at (52) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4097 (float v) { mmDstI.at (52) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4098 (float v) { mmAmt.at (52)  = v; }
-    event param4099 (float v) { mmSrcI.at (53) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4099 (float v) { mmSrcI.at (53) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4100 (float v) { mmDstI.at (53) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4101 (float v) { mmAmt.at (53)  = v; }
-    event param4102 (float v) { mmSrcI.at (54) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4102 (float v) { mmSrcI.at (54) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4103 (float v) { mmDstI.at (54) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4104 (float v) { mmAmt.at (54)  = v; }
-    event param4105 (float v) { mmSrcI.at (55) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4105 (float v) { mmSrcI.at (55) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4106 (float v) { mmDstI.at (55) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4107 (float v) { mmAmt.at (55)  = v; }
-    event param4108 (float v) { mmSrcI.at (56) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4108 (float v) { mmSrcI.at (56) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4109 (float v) { mmDstI.at (56) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4110 (float v) { mmAmt.at (56)  = v; }
-    event param4111 (float v) { mmSrcI.at (57) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4111 (float v) { mmSrcI.at (57) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4112 (float v) { mmDstI.at (57) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4113 (float v) { mmAmt.at (57)  = v; }
-    event param4114 (float v) { mmSrcI.at (58) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4114 (float v) { mmSrcI.at (58) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4115 (float v) { mmDstI.at (58) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4116 (float v) { mmAmt.at (58)  = v; }
-    event param4117 (float v) { mmSrcI.at (59) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4117 (float v) { mmSrcI.at (59) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4118 (float v) { mmDstI.at (59) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4119 (float v) { mmAmt.at (59)  = v; }
-    event param4120 (float v) { mmSrcI.at (60) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4120 (float v) { mmSrcI.at (60) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4121 (float v) { mmDstI.at (60) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4122 (float v) { mmAmt.at (60)  = v; }
-    event param4123 (float v) { mmSrcI.at (61) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4123 (float v) { mmSrcI.at (61) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4124 (float v) { mmDstI.at (61) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4125 (float v) { mmAmt.at (61)  = v; }
-    event param4126 (float v) { mmSrcI.at (62) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4126 (float v) { mmSrcI.at (62) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4127 (float v) { mmDstI.at (62) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4128 (float v) { mmAmt.at (62)  = v; }
-    event param4129 (float v) { mmSrcI.at (63) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4129 (float v) { mmSrcI.at (63) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4130 (float v) { mmDstI.at (63) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4131 (float v) { mmAmt.at (63)  = v; }
-    event param4132 (float v) { mmSrcI.at (64) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4132 (float v) { mmSrcI.at (64) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4133 (float v) { mmDstI.at (64) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4134 (float v) { mmAmt.at (64)  = v; }
-    event param4135 (float v) { mmSrcI.at (65) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4135 (float v) { mmSrcI.at (65) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4136 (float v) { mmDstI.at (65) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4137 (float v) { mmAmt.at (65)  = v; }
-    event param4138 (float v) { mmSrcI.at (66) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4138 (float v) { mmSrcI.at (66) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4139 (float v) { mmDstI.at (66) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4140 (float v) { mmAmt.at (66)  = v; }
-    event param4141 (float v) { mmSrcI.at (67) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4141 (float v) { mmSrcI.at (67) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4142 (float v) { mmDstI.at (67) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4143 (float v) { mmAmt.at (67)  = v; }
-    event param4144 (float v) { mmSrcI.at (68) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4144 (float v) { mmSrcI.at (68) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4145 (float v) { mmDstI.at (68) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4146 (float v) { mmAmt.at (68)  = v; }
-    event param4147 (float v) { mmSrcI.at (69) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4147 (float v) { mmSrcI.at (69) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4148 (float v) { mmDstI.at (69) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4149 (float v) { mmAmt.at (69)  = v; }
-    event param4150 (float v) { mmSrcI.at (70) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4150 (float v) { mmSrcI.at (70) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4151 (float v) { mmDstI.at (70) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4152 (float v) { mmAmt.at (70)  = v; }
-    event param4153 (float v) { mmSrcI.at (71) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4153 (float v) { mmSrcI.at (71) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4154 (float v) { mmDstI.at (71) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4155 (float v) { mmAmt.at (71)  = v; }
-    event param4156 (float v) { mmSrcI.at (72) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4156 (float v) { mmSrcI.at (72) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4157 (float v) { mmDstI.at (72) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4158 (float v) { mmAmt.at (72)  = v; }
-    event param4159 (float v) { mmSrcI.at (73) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4159 (float v) { mmSrcI.at (73) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4160 (float v) { mmDstI.at (73) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4161 (float v) { mmAmt.at (73)  = v; }
-    event param4162 (float v) { mmSrcI.at (74) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4162 (float v) { mmSrcI.at (74) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4163 (float v) { mmDstI.at (74) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4164 (float v) { mmAmt.at (74)  = v; }
-    event param4165 (float v) { mmSrcI.at (75) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4165 (float v) { mmSrcI.at (75) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4166 (float v) { mmDstI.at (75) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4167 (float v) { mmAmt.at (75)  = v; }
-    event param4168 (float v) { mmSrcI.at (76) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4168 (float v) { mmSrcI.at (76) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4169 (float v) { mmDstI.at (76) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4170 (float v) { mmAmt.at (76)  = v; }
-    event param4171 (float v) { mmSrcI.at (77) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4171 (float v) { mmSrcI.at (77) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4172 (float v) { mmDstI.at (77) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4173 (float v) { mmAmt.at (77)  = v; }
-    event param4174 (float v) { mmSrcI.at (78) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4174 (float v) { mmSrcI.at (78) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4175 (float v) { mmDstI.at (78) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4176 (float v) { mmAmt.at (78)  = v; }
-    event param4177 (float v) { mmSrcI.at (79) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4177 (float v) { mmSrcI.at (79) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4178 (float v) { mmDstI.at (79) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4179 (float v) { mmAmt.at (79)  = v; }
-    event param4180 (float v) { mmSrcI.at (80) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4180 (float v) { mmSrcI.at (80) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4181 (float v) { mmDstI.at (80) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4182 (float v) { mmAmt.at (80)  = v; }
-    event param4183 (float v) { mmSrcI.at (81) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4183 (float v) { mmSrcI.at (81) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4184 (float v) { mmDstI.at (81) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4185 (float v) { mmAmt.at (81)  = v; }
-    event param4186 (float v) { mmSrcI.at (82) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4186 (float v) { mmSrcI.at (82) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4187 (float v) { mmDstI.at (82) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4188 (float v) { mmAmt.at (82)  = v; }
-    event param4189 (float v) { mmSrcI.at (83) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4189 (float v) { mmSrcI.at (83) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4190 (float v) { mmDstI.at (83) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4191 (float v) { mmAmt.at (83)  = v; }
-    event param4192 (float v) { mmSrcI.at (84) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4192 (float v) { mmSrcI.at (84) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4193 (float v) { mmDstI.at (84) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4194 (float v) { mmAmt.at (84)  = v; }
-    event param4195 (float v) { mmSrcI.at (85) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4195 (float v) { mmSrcI.at (85) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4196 (float v) { mmDstI.at (85) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4197 (float v) { mmAmt.at (85)  = v; }
-    event param4198 (float v) { mmSrcI.at (86) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4198 (float v) { mmSrcI.at (86) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4199 (float v) { mmDstI.at (86) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4200 (float v) { mmAmt.at (86)  = v; }
-    event param4201 (float v) { mmSrcI.at (87) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4201 (float v) { mmSrcI.at (87) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4202 (float v) { mmDstI.at (87) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4203 (float v) { mmAmt.at (87)  = v; }
-    event param4204 (float v) { mmSrcI.at (88) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4204 (float v) { mmSrcI.at (88) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4205 (float v) { mmDstI.at (88) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4206 (float v) { mmAmt.at (88)  = v; }
-    event param4207 (float v) { mmSrcI.at (89) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4207 (float v) { mmSrcI.at (89) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4208 (float v) { mmDstI.at (89) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4209 (float v) { mmAmt.at (89)  = v; }
-    event param4210 (float v) { mmSrcI.at (90) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4210 (float v) { mmSrcI.at (90) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4211 (float v) { mmDstI.at (90) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4212 (float v) { mmAmt.at (90)  = v; }
-    event param4213 (float v) { mmSrcI.at (91) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4213 (float v) { mmSrcI.at (91) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4214 (float v) { mmDstI.at (91) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4215 (float v) { mmAmt.at (91)  = v; }
-    event param4216 (float v) { mmSrcI.at (92) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4216 (float v) { mmSrcI.at (92) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4217 (float v) { mmDstI.at (92) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4218 (float v) { mmAmt.at (92)  = v; }
-    event param4219 (float v) { mmSrcI.at (93) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4219 (float v) { mmSrcI.at (93) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4220 (float v) { mmDstI.at (93) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4221 (float v) { mmAmt.at (93)  = v; }
-    event param4222 (float v) { mmSrcI.at (94) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4222 (float v) { mmSrcI.at (94) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4223 (float v) { mmDstI.at (94) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4224 (float v) { mmAmt.at (94)  = v; }
-    event param4225 (float v) { mmSrcI.at (95) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4225 (float v) { mmSrcI.at (95) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4226 (float v) { mmDstI.at (95) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4227 (float v) { mmAmt.at (95)  = v; }
-    event param4228 (float v) { mmSrcI.at (96) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4228 (float v) { mmSrcI.at (96) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4229 (float v) { mmDstI.at (96) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4230 (float v) { mmAmt.at (96)  = v; }
-    event param4231 (float v) { mmSrcI.at (97) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4231 (float v) { mmSrcI.at (97) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4232 (float v) { mmDstI.at (97) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4233 (float v) { mmAmt.at (97)  = v; }
-    event param4234 (float v) { mmSrcI.at (98) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4234 (float v) { mmSrcI.at (98) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4235 (float v) { mmDstI.at (98) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4236 (float v) { mmAmt.at (98)  = v; }
-    event param4237 (float v) { mmSrcI.at (99) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4237 (float v) { mmSrcI.at (99) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4238 (float v) { mmDstI.at (99) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4239 (float v) { mmAmt.at (99)  = v; }
-    event param4240 (float v) { mmSrcI.at (100) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4240 (float v) { mmSrcI.at (100) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4241 (float v) { mmDstI.at (100) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4242 (float v) { mmAmt.at (100)  = v; }
-    event param4243 (float v) { mmSrcI.at (101) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4243 (float v) { mmSrcI.at (101) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4244 (float v) { mmDstI.at (101) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4245 (float v) { mmAmt.at (101)  = v; }
-    event param4246 (float v) { mmSrcI.at (102) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4246 (float v) { mmSrcI.at (102) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4247 (float v) { mmDstI.at (102) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4248 (float v) { mmAmt.at (102)  = v; }
-    event param4249 (float v) { mmSrcI.at (103) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4249 (float v) { mmSrcI.at (103) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4250 (float v) { mmDstI.at (103) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4251 (float v) { mmAmt.at (103)  = v; }
-    event param4252 (float v) { mmSrcI.at (104) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4252 (float v) { mmSrcI.at (104) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4253 (float v) { mmDstI.at (104) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4254 (float v) { mmAmt.at (104)  = v; }
-    event param4255 (float v) { mmSrcI.at (105) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4255 (float v) { mmSrcI.at (105) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4256 (float v) { mmDstI.at (105) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4257 (float v) { mmAmt.at (105)  = v; }
-    event param4258 (float v) { mmSrcI.at (106) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4258 (float v) { mmSrcI.at (106) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4259 (float v) { mmDstI.at (106) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4260 (float v) { mmAmt.at (106)  = v; }
-    event param4261 (float v) { mmSrcI.at (107) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4261 (float v) { mmSrcI.at (107) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4262 (float v) { mmDstI.at (107) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4263 (float v) { mmAmt.at (107)  = v; }
-    event param4264 (float v) { mmSrcI.at (108) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4264 (float v) { mmSrcI.at (108) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4265 (float v) { mmDstI.at (108) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4266 (float v) { mmAmt.at (108)  = v; }
-    event param4267 (float v) { mmSrcI.at (109) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4267 (float v) { mmSrcI.at (109) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4268 (float v) { mmDstI.at (109) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4269 (float v) { mmAmt.at (109)  = v; }
-    event param4270 (float v) { mmSrcI.at (110) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4270 (float v) { mmSrcI.at (110) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4271 (float v) { mmDstI.at (110) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4272 (float v) { mmAmt.at (110)  = v; }
-    event param4273 (float v) { mmSrcI.at (111) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4273 (float v) { mmSrcI.at (111) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4274 (float v) { mmDstI.at (111) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4275 (float v) { mmAmt.at (111)  = v; }
-    event param4276 (float v) { mmSrcI.at (112) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4276 (float v) { mmSrcI.at (112) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4277 (float v) { mmDstI.at (112) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4278 (float v) { mmAmt.at (112)  = v; }
-    event param4279 (float v) { mmSrcI.at (113) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4279 (float v) { mmSrcI.at (113) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4280 (float v) { mmDstI.at (113) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4281 (float v) { mmAmt.at (113)  = v; }
-    event param4282 (float v) { mmSrcI.at (114) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4282 (float v) { mmSrcI.at (114) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4283 (float v) { mmDstI.at (114) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4284 (float v) { mmAmt.at (114)  = v; }
-    event param4285 (float v) { mmSrcI.at (115) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4285 (float v) { mmSrcI.at (115) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4286 (float v) { mmDstI.at (115) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4287 (float v) { mmAmt.at (115)  = v; }
-    event param4288 (float v) { mmSrcI.at (116) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4288 (float v) { mmSrcI.at (116) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4289 (float v) { mmDstI.at (116) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4290 (float v) { mmAmt.at (116)  = v; }
-    event param4291 (float v) { mmSrcI.at (117) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4291 (float v) { mmSrcI.at (117) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4292 (float v) { mmDstI.at (117) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4293 (float v) { mmAmt.at (117)  = v; }
-    event param4294 (float v) { mmSrcI.at (118) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4294 (float v) { mmSrcI.at (118) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4295 (float v) { mmDstI.at (118) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4296 (float v) { mmAmt.at (118)  = v; }
-    event param4297 (float v) { mmSrcI.at (119) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4297 (float v) { mmSrcI.at (119) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4298 (float v) { mmDstI.at (119) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4299 (float v) { mmAmt.at (119)  = v; }
-    event param4300 (float v) { mmSrcI.at (120) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4300 (float v) { mmSrcI.at (120) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4301 (float v) { mmDstI.at (120) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4302 (float v) { mmAmt.at (120)  = v; }
-    event param4303 (float v) { mmSrcI.at (121) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4303 (float v) { mmSrcI.at (121) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4304 (float v) { mmDstI.at (121) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4305 (float v) { mmAmt.at (121)  = v; }
-    event param4306 (float v) { mmSrcI.at (122) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4306 (float v) { mmSrcI.at (122) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4307 (float v) { mmDstI.at (122) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4308 (float v) { mmAmt.at (122)  = v; }
-    event param4309 (float v) { mmSrcI.at (123) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4309 (float v) { mmSrcI.at (123) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4310 (float v) { mmDstI.at (123) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4311 (float v) { mmAmt.at (123)  = v; }
-    event param4312 (float v) { mmSrcI.at (124) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4312 (float v) { mmSrcI.at (124) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4313 (float v) { mmDstI.at (124) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4314 (float v) { mmAmt.at (124)  = v; }
-    event param4315 (float v) { mmSrcI.at (125) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4315 (float v) { mmSrcI.at (125) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4316 (float v) { mmDstI.at (125) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4317 (float v) { mmAmt.at (125)  = v; }
-    event param4318 (float v) { mmSrcI.at (126) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4318 (float v) { mmSrcI.at (126) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4319 (float v) { mmDstI.at (126) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4320 (float v) { mmAmt.at (126)  = v; }
-    event param4321 (float v) { mmSrcI.at (127) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4321 (float v) { mmSrcI.at (127) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4322 (float v) { mmDstI.at (127) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4323 (float v) { mmAmt.at (127)  = v; }
-    event param4324 (float v) { mmSrcI.at (128) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4324 (float v) { mmSrcI.at (128) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4325 (float v) { mmDstI.at (128) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4326 (float v) { mmAmt.at (128)  = v; }
-    event param4327 (float v) { mmSrcI.at (129) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4327 (float v) { mmSrcI.at (129) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4328 (float v) { mmDstI.at (129) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4329 (float v) { mmAmt.at (129)  = v; }
-    event param4330 (float v) { mmSrcI.at (130) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4330 (float v) { mmSrcI.at (130) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4331 (float v) { mmDstI.at (130) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4332 (float v) { mmAmt.at (130)  = v; }
-    event param4333 (float v) { mmSrcI.at (131) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4333 (float v) { mmSrcI.at (131) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4334 (float v) { mmDstI.at (131) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4335 (float v) { mmAmt.at (131)  = v; }
-    event param4336 (float v) { mmSrcI.at (132) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4336 (float v) { mmSrcI.at (132) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4337 (float v) { mmDstI.at (132) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4338 (float v) { mmAmt.at (132)  = v; }
-    event param4339 (float v) { mmSrcI.at (133) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4339 (float v) { mmSrcI.at (133) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4340 (float v) { mmDstI.at (133) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4341 (float v) { mmAmt.at (133)  = v; }
-    event param4342 (float v) { mmSrcI.at (134) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4342 (float v) { mmSrcI.at (134) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4343 (float v) { mmDstI.at (134) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4344 (float v) { mmAmt.at (134)  = v; }
-    event param4345 (float v) { mmSrcI.at (135) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4345 (float v) { mmSrcI.at (135) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4346 (float v) { mmDstI.at (135) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4347 (float v) { mmAmt.at (135)  = v; }
-    event param4348 (float v) { mmSrcI.at (136) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4348 (float v) { mmSrcI.at (136) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4349 (float v) { mmDstI.at (136) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4350 (float v) { mmAmt.at (136)  = v; }
-    event param4351 (float v) { mmSrcI.at (137) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4351 (float v) { mmSrcI.at (137) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4352 (float v) { mmDstI.at (137) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4353 (float v) { mmAmt.at (137)  = v; }
-    event param4354 (float v) { mmSrcI.at (138) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4354 (float v) { mmSrcI.at (138) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4355 (float v) { mmDstI.at (138) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4356 (float v) { mmAmt.at (138)  = v; }
-    event param4357 (float v) { mmSrcI.at (139) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4357 (float v) { mmSrcI.at (139) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4358 (float v) { mmDstI.at (139) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4359 (float v) { mmAmt.at (139)  = v; }
-    event param4360 (float v) { mmSrcI.at (140) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4360 (float v) { mmSrcI.at (140) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4361 (float v) { mmDstI.at (140) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4362 (float v) { mmAmt.at (140)  = v; }
-    event param4363 (float v) { mmSrcI.at (141) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4363 (float v) { mmSrcI.at (141) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4364 (float v) { mmDstI.at (141) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4365 (float v) { mmAmt.at (141)  = v; }
-    event param4366 (float v) { mmSrcI.at (142) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4366 (float v) { mmSrcI.at (142) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4367 (float v) { mmDstI.at (142) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4368 (float v) { mmAmt.at (142)  = v; }
-    event param4369 (float v) { mmSrcI.at (143) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4369 (float v) { mmSrcI.at (143) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4370 (float v) { mmDstI.at (143) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4371 (float v) { mmAmt.at (143)  = v; }
-    event param4372 (float v) { mmSrcI.at (144) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4372 (float v) { mmSrcI.at (144) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4373 (float v) { mmDstI.at (144) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4374 (float v) { mmAmt.at (144)  = v; }
-    event param4375 (float v) { mmSrcI.at (145) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4375 (float v) { mmSrcI.at (145) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4376 (float v) { mmDstI.at (145) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4377 (float v) { mmAmt.at (145)  = v; }
-    event param4378 (float v) { mmSrcI.at (146) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4378 (float v) { mmSrcI.at (146) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4379 (float v) { mmDstI.at (146) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4380 (float v) { mmAmt.at (146)  = v; }
-    event param4381 (float v) { mmSrcI.at (147) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4381 (float v) { mmSrcI.at (147) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4382 (float v) { mmDstI.at (147) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4383 (float v) { mmAmt.at (147)  = v; }
-    event param4384 (float v) { mmSrcI.at (148) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4384 (float v) { mmSrcI.at (148) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4385 (float v) { mmDstI.at (148) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4386 (float v) { mmAmt.at (148)  = v; }
-    event param4387 (float v) { mmSrcI.at (149) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4387 (float v) { mmSrcI.at (149) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4388 (float v) { mmDstI.at (149) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4389 (float v) { mmAmt.at (149)  = v; }
-    event param4390 (float v) { mmSrcI.at (150) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4390 (float v) { mmSrcI.at (150) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4391 (float v) { mmDstI.at (150) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4392 (float v) { mmAmt.at (150)  = v; }
-    event param4393 (float v) { mmSrcI.at (151) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4393 (float v) { mmSrcI.at (151) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4394 (float v) { mmDstI.at (151) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4395 (float v) { mmAmt.at (151)  = v; }
-    event param4396 (float v) { mmSrcI.at (152) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4396 (float v) { mmSrcI.at (152) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4397 (float v) { mmDstI.at (152) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4398 (float v) { mmAmt.at (152)  = v; }
-    event param4399 (float v) { mmSrcI.at (153) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4399 (float v) { mmSrcI.at (153) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4400 (float v) { mmDstI.at (153) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4401 (float v) { mmAmt.at (153)  = v; }
-    event param4402 (float v) { mmSrcI.at (154) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4402 (float v) { mmSrcI.at (154) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4403 (float v) { mmDstI.at (154) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4404 (float v) { mmAmt.at (154)  = v; }
-    event param4405 (float v) { mmSrcI.at (155) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4405 (float v) { mmSrcI.at (155) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4406 (float v) { mmDstI.at (155) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4407 (float v) { mmAmt.at (155)  = v; }
-    event param4408 (float v) { mmSrcI.at (156) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4408 (float v) { mmSrcI.at (156) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4409 (float v) { mmDstI.at (156) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4410 (float v) { mmAmt.at (156)  = v; }
-    event param4411 (float v) { mmSrcI.at (157) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4411 (float v) { mmSrcI.at (157) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4412 (float v) { mmDstI.at (157) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4413 (float v) { mmAmt.at (157)  = v; }
-    event param4414 (float v) { mmSrcI.at (158) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4414 (float v) { mmSrcI.at (158) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4415 (float v) { mmDstI.at (158) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4416 (float v) { mmAmt.at (158)  = v; }
-    event param4417 (float v) { mmSrcI.at (159) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4417 (float v) { mmSrcI.at (159) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4418 (float v) { mmDstI.at (159) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4419 (float v) { mmAmt.at (159)  = v; }
-    event param4420 (float v) { mmSrcI.at (160) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4420 (float v) { mmSrcI.at (160) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4421 (float v) { mmDstI.at (160) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4422 (float v) { mmAmt.at (160)  = v; }
-    event param4423 (float v) { mmSrcI.at (161) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4423 (float v) { mmSrcI.at (161) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4424 (float v) { mmDstI.at (161) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4425 (float v) { mmAmt.at (161)  = v; }
-    event param4426 (float v) { mmSrcI.at (162) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4426 (float v) { mmSrcI.at (162) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4427 (float v) { mmDstI.at (162) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4428 (float v) { mmAmt.at (162)  = v; }
-    event param4429 (float v) { mmSrcI.at (163) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4429 (float v) { mmSrcI.at (163) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4430 (float v) { mmDstI.at (163) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4431 (float v) { mmAmt.at (163)  = v; }
-    event param4432 (float v) { mmSrcI.at (164) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4432 (float v) { mmSrcI.at (164) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4433 (float v) { mmDstI.at (164) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4434 (float v) { mmAmt.at (164)  = v; }
-    event param4435 (float v) { mmSrcI.at (165) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4435 (float v) { mmSrcI.at (165) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4436 (float v) { mmDstI.at (165) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4437 (float v) { mmAmt.at (165)  = v; }
-    event param4438 (float v) { mmSrcI.at (166) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4438 (float v) { mmSrcI.at (166) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4439 (float v) { mmDstI.at (166) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4440 (float v) { mmAmt.at (166)  = v; }
-    event param4441 (float v) { mmSrcI.at (167) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4441 (float v) { mmSrcI.at (167) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4442 (float v) { mmDstI.at (167) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4443 (float v) { mmAmt.at (167)  = v; }
-    event param4444 (float v) { mmSrcI.at (168) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4444 (float v) { mmSrcI.at (168) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4445 (float v) { mmDstI.at (168) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4446 (float v) { mmAmt.at (168)  = v; }
-    event param4447 (float v) { mmSrcI.at (169) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4447 (float v) { mmSrcI.at (169) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4448 (float v) { mmDstI.at (169) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4449 (float v) { mmAmt.at (169)  = v; }
-    event param4450 (float v) { mmSrcI.at (170) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4450 (float v) { mmSrcI.at (170) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4451 (float v) { mmDstI.at (170) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4452 (float v) { mmAmt.at (170)  = v; }
-    event param4453 (float v) { mmSrcI.at (171) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4453 (float v) { mmSrcI.at (171) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4454 (float v) { mmDstI.at (171) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4455 (float v) { mmAmt.at (171)  = v; }
-    event param4456 (float v) { mmSrcI.at (172) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4456 (float v) { mmSrcI.at (172) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4457 (float v) { mmDstI.at (172) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4458 (float v) { mmAmt.at (172)  = v; }
-    event param4459 (float v) { mmSrcI.at (173) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4459 (float v) { mmSrcI.at (173) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4460 (float v) { mmDstI.at (173) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4461 (float v) { mmAmt.at (173)  = v; }
-    event param4462 (float v) { mmSrcI.at (174) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4462 (float v) { mmSrcI.at (174) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4463 (float v) { mmDstI.at (174) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4464 (float v) { mmAmt.at (174)  = v; }
-    event param4465 (float v) { mmSrcI.at (175) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4465 (float v) { mmSrcI.at (175) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4466 (float v) { mmDstI.at (175) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4467 (float v) { mmAmt.at (175)  = v; }
-    event param4468 (float v) { mmSrcI.at (176) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4468 (float v) { mmSrcI.at (176) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4469 (float v) { mmDstI.at (176) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4470 (float v) { mmAmt.at (176)  = v; }
-    event param4471 (float v) { mmSrcI.at (177) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4471 (float v) { mmSrcI.at (177) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4472 (float v) { mmDstI.at (177) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4473 (float v) { mmAmt.at (177)  = v; }
-    event param4474 (float v) { mmSrcI.at (178) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4474 (float v) { mmSrcI.at (178) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4475 (float v) { mmDstI.at (178) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4476 (float v) { mmAmt.at (178)  = v; }
-    event param4477 (float v) { mmSrcI.at (179) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4477 (float v) { mmSrcI.at (179) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4478 (float v) { mmDstI.at (179) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4479 (float v) { mmAmt.at (179)  = v; }
-    event param4480 (float v) { mmSrcI.at (180) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4480 (float v) { mmSrcI.at (180) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4481 (float v) { mmDstI.at (180) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4482 (float v) { mmAmt.at (180)  = v; }
-    event param4483 (float v) { mmSrcI.at (181) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4483 (float v) { mmSrcI.at (181) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4484 (float v) { mmDstI.at (181) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4485 (float v) { mmAmt.at (181)  = v; }
-    event param4486 (float v) { mmSrcI.at (182) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4486 (float v) { mmSrcI.at (182) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4487 (float v) { mmDstI.at (182) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4488 (float v) { mmAmt.at (182)  = v; }
-    event param4489 (float v) { mmSrcI.at (183) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4489 (float v) { mmSrcI.at (183) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4490 (float v) { mmDstI.at (183) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4491 (float v) { mmAmt.at (183)  = v; }
-    event param4492 (float v) { mmSrcI.at (184) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4492 (float v) { mmSrcI.at (184) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4493 (float v) { mmDstI.at (184) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4494 (float v) { mmAmt.at (184)  = v; }
-    event param4495 (float v) { mmSrcI.at (185) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4495 (float v) { mmSrcI.at (185) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4496 (float v) { mmDstI.at (185) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4497 (float v) { mmAmt.at (185)  = v; }
-    event param4498 (float v) { mmSrcI.at (186) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4498 (float v) { mmSrcI.at (186) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4499 (float v) { mmDstI.at (186) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4500 (float v) { mmAmt.at (186)  = v; }
-    event param4501 (float v) { mmSrcI.at (187) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4501 (float v) { mmSrcI.at (187) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4502 (float v) { mmDstI.at (187) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4503 (float v) { mmAmt.at (187)  = v; }
-    event param4504 (float v) { mmSrcI.at (188) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4504 (float v) { mmSrcI.at (188) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4505 (float v) { mmDstI.at (188) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4506 (float v) { mmAmt.at (188)  = v; }
-    event param4507 (float v) { mmSrcI.at (189) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4507 (float v) { mmSrcI.at (189) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4508 (float v) { mmDstI.at (189) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4509 (float v) { mmAmt.at (189)  = v; }
-    event param4510 (float v) { mmSrcI.at (190) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4510 (float v) { mmSrcI.at (190) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4511 (float v) { mmDstI.at (190) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4512 (float v) { mmAmt.at (190)  = v; }
-    event param4513 (float v) { mmSrcI.at (191) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4513 (float v) { mmSrcI.at (191) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4514 (float v) { mmDstI.at (191) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4515 (float v) { mmAmt.at (191)  = v; }
-    event param4516 (float v) { mmSrcI.at (192) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4516 (float v) { mmSrcI.at (192) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4517 (float v) { mmDstI.at (192) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4518 (float v) { mmAmt.at (192)  = v; }
-    event param4519 (float v) { mmSrcI.at (193) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4519 (float v) { mmSrcI.at (193) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4520 (float v) { mmDstI.at (193) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4521 (float v) { mmAmt.at (193)  = v; }
-    event param4522 (float v) { mmSrcI.at (194) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4522 (float v) { mmSrcI.at (194) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4523 (float v) { mmDstI.at (194) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4524 (float v) { mmAmt.at (194)  = v; }
-    event param4525 (float v) { mmSrcI.at (195) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4525 (float v) { mmSrcI.at (195) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4526 (float v) { mmDstI.at (195) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4527 (float v) { mmAmt.at (195)  = v; }
-    event param4528 (float v) { mmSrcI.at (196) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4528 (float v) { mmSrcI.at (196) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4529 (float v) { mmDstI.at (196) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4530 (float v) { mmAmt.at (196)  = v; }
-    event param4531 (float v) { mmSrcI.at (197) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4531 (float v) { mmSrcI.at (197) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4532 (float v) { mmDstI.at (197) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4533 (float v) { mmAmt.at (197)  = v; }
-    event param4534 (float v) { mmSrcI.at (198) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4534 (float v) { mmSrcI.at (198) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4535 (float v) { mmDstI.at (198) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4536 (float v) { mmAmt.at (198)  = v; }
-    event param4537 (float v) { mmSrcI.at (199) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4537 (float v) { mmSrcI.at (199) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4538 (float v) { mmDstI.at (199) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4539 (float v) { mmAmt.at (199)  = v; }
-    event param4540 (float v) { mmSrcI.at (200) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4540 (float v) { mmSrcI.at (200) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4541 (float v) { mmDstI.at (200) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4542 (float v) { mmAmt.at (200)  = v; }
-    event param4543 (float v) { mmSrcI.at (201) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4543 (float v) { mmSrcI.at (201) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4544 (float v) { mmDstI.at (201) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4545 (float v) { mmAmt.at (201)  = v; }
-    event param4546 (float v) { mmSrcI.at (202) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4546 (float v) { mmSrcI.at (202) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4547 (float v) { mmDstI.at (202) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4548 (float v) { mmAmt.at (202)  = v; }
-    event param4549 (float v) { mmSrcI.at (203) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4549 (float v) { mmSrcI.at (203) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4550 (float v) { mmDstI.at (203) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4551 (float v) { mmAmt.at (203)  = v; }
-    event param4552 (float v) { mmSrcI.at (204) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4552 (float v) { mmSrcI.at (204) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4553 (float v) { mmDstI.at (204) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4554 (float v) { mmAmt.at (204)  = v; }
-    event param4555 (float v) { mmSrcI.at (205) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4555 (float v) { mmSrcI.at (205) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4556 (float v) { mmDstI.at (205) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4557 (float v) { mmAmt.at (205)  = v; }
-    event param4558 (float v) { mmSrcI.at (206) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4558 (float v) { mmSrcI.at (206) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4559 (float v) { mmDstI.at (206) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4560 (float v) { mmAmt.at (206)  = v; }
-    event param4561 (float v) { mmSrcI.at (207) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4561 (float v) { mmSrcI.at (207) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4562 (float v) { mmDstI.at (207) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4563 (float v) { mmAmt.at (207)  = v; }
-    event param4564 (float v) { mmSrcI.at (208) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4564 (float v) { mmSrcI.at (208) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4565 (float v) { mmDstI.at (208) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4566 (float v) { mmAmt.at (208)  = v; }
-    event param4567 (float v) { mmSrcI.at (209) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4567 (float v) { mmSrcI.at (209) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4568 (float v) { mmDstI.at (209) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4569 (float v) { mmAmt.at (209)  = v; }
-    event param4570 (float v) { mmSrcI.at (210) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4570 (float v) { mmSrcI.at (210) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4571 (float v) { mmDstI.at (210) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4572 (float v) { mmAmt.at (210)  = v; }
-    event param4573 (float v) { mmSrcI.at (211) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4573 (float v) { mmSrcI.at (211) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4574 (float v) { mmDstI.at (211) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4575 (float v) { mmAmt.at (211)  = v; }
-    event param4576 (float v) { mmSrcI.at (212) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4576 (float v) { mmSrcI.at (212) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4577 (float v) { mmDstI.at (212) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4578 (float v) { mmAmt.at (212)  = v; }
-    event param4579 (float v) { mmSrcI.at (213) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4579 (float v) { mmSrcI.at (213) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4580 (float v) { mmDstI.at (213) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4581 (float v) { mmAmt.at (213)  = v; }
-    event param4582 (float v) { mmSrcI.at (214) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4582 (float v) { mmSrcI.at (214) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4583 (float v) { mmDstI.at (214) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4584 (float v) { mmAmt.at (214)  = v; }
-    event param4585 (float v) { mmSrcI.at (215) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4585 (float v) { mmSrcI.at (215) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4586 (float v) { mmDstI.at (215) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4587 (float v) { mmAmt.at (215)  = v; }
-    event param4588 (float v) { mmSrcI.at (216) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4588 (float v) { mmSrcI.at (216) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4589 (float v) { mmDstI.at (216) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4590 (float v) { mmAmt.at (216)  = v; }
-    event param4591 (float v) { mmSrcI.at (217) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4591 (float v) { mmSrcI.at (217) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4592 (float v) { mmDstI.at (217) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4593 (float v) { mmAmt.at (217)  = v; }
-    event param4594 (float v) { mmSrcI.at (218) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4594 (float v) { mmSrcI.at (218) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4595 (float v) { mmDstI.at (218) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4596 (float v) { mmAmt.at (218)  = v; }
-    event param4597 (float v) { mmSrcI.at (219) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4597 (float v) { mmSrcI.at (219) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4598 (float v) { mmDstI.at (219) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4599 (float v) { mmAmt.at (219)  = v; }
-    event param4600 (float v) { mmSrcI.at (220) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4600 (float v) { mmSrcI.at (220) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4601 (float v) { mmDstI.at (220) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4602 (float v) { mmAmt.at (220)  = v; }
-    event param4603 (float v) { mmSrcI.at (221) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4603 (float v) { mmSrcI.at (221) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4604 (float v) { mmDstI.at (221) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4605 (float v) { mmAmt.at (221)  = v; }
-    event param4606 (float v) { mmSrcI.at (222) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4606 (float v) { mmSrcI.at (222) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4607 (float v) { mmDstI.at (222) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4608 (float v) { mmAmt.at (222)  = v; }
-    event param4609 (float v) { mmSrcI.at (223) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4609 (float v) { mmSrcI.at (223) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4610 (float v) { mmDstI.at (223) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4611 (float v) { mmAmt.at (223)  = v; }
-    event param4612 (float v) { mmSrcI.at (224) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4612 (float v) { mmSrcI.at (224) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4613 (float v) { mmDstI.at (224) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4614 (float v) { mmAmt.at (224)  = v; }
-    event param4615 (float v) { mmSrcI.at (225) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4615 (float v) { mmSrcI.at (225) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4616 (float v) { mmDstI.at (225) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4617 (float v) { mmAmt.at (225)  = v; }
-    event param4618 (float v) { mmSrcI.at (226) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4618 (float v) { mmSrcI.at (226) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4619 (float v) { mmDstI.at (226) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4620 (float v) { mmAmt.at (226)  = v; }
-    event param4621 (float v) { mmSrcI.at (227) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4621 (float v) { mmSrcI.at (227) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4622 (float v) { mmDstI.at (227) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4623 (float v) { mmAmt.at (227)  = v; }
-    event param4624 (float v) { mmSrcI.at (228) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4624 (float v) { mmSrcI.at (228) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4625 (float v) { mmDstI.at (228) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4626 (float v) { mmAmt.at (228)  = v; }
-    event param4627 (float v) { mmSrcI.at (229) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4627 (float v) { mmSrcI.at (229) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4628 (float v) { mmDstI.at (229) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4629 (float v) { mmAmt.at (229)  = v; }
-    event param4630 (float v) { mmSrcI.at (230) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4630 (float v) { mmSrcI.at (230) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4631 (float v) { mmDstI.at (230) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4632 (float v) { mmAmt.at (230)  = v; }
-    event param4633 (float v) { mmSrcI.at (231) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4633 (float v) { mmSrcI.at (231) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4634 (float v) { mmDstI.at (231) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4635 (float v) { mmAmt.at (231)  = v; }
-    event param4636 (float v) { mmSrcI.at (232) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4636 (float v) { mmSrcI.at (232) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4637 (float v) { mmDstI.at (232) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4638 (float v) { mmAmt.at (232)  = v; }
-    event param4639 (float v) { mmSrcI.at (233) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4639 (float v) { mmSrcI.at (233) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4640 (float v) { mmDstI.at (233) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4641 (float v) { mmAmt.at (233)  = v; }
-    event param4642 (float v) { mmSrcI.at (234) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4642 (float v) { mmSrcI.at (234) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4643 (float v) { mmDstI.at (234) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4644 (float v) { mmAmt.at (234)  = v; }
-    event param4645 (float v) { mmSrcI.at (235) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4645 (float v) { mmSrcI.at (235) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4646 (float v) { mmDstI.at (235) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4647 (float v) { mmAmt.at (235)  = v; }
-    event param4648 (float v) { mmSrcI.at (236) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4648 (float v) { mmSrcI.at (236) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4649 (float v) { mmDstI.at (236) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4650 (float v) { mmAmt.at (236)  = v; }
-    event param4651 (float v) { mmSrcI.at (237) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4651 (float v) { mmSrcI.at (237) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4652 (float v) { mmDstI.at (237) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4653 (float v) { mmAmt.at (237)  = v; }
-    event param4654 (float v) { mmSrcI.at (238) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4654 (float v) { mmSrcI.at (238) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4655 (float v) { mmDstI.at (238) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4656 (float v) { mmAmt.at (238)  = v; }
-    event param4657 (float v) { mmSrcI.at (239) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4657 (float v) { mmSrcI.at (239) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4658 (float v) { mmDstI.at (239) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4659 (float v) { mmAmt.at (239)  = v; }
-    event param4660 (float v) { mmSrcI.at (240) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4660 (float v) { mmSrcI.at (240) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4661 (float v) { mmDstI.at (240) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4662 (float v) { mmAmt.at (240)  = v; }
-    event param4663 (float v) { mmSrcI.at (241) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4663 (float v) { mmSrcI.at (241) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4664 (float v) { mmDstI.at (241) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4665 (float v) { mmAmt.at (241)  = v; }
-    event param4666 (float v) { mmSrcI.at (242) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4666 (float v) { mmSrcI.at (242) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4667 (float v) { mmDstI.at (242) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4668 (float v) { mmAmt.at (242)  = v; }
-    event param4669 (float v) { mmSrcI.at (243) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4669 (float v) { mmSrcI.at (243) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4670 (float v) { mmDstI.at (243) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4671 (float v) { mmAmt.at (243)  = v; }
-    event param4672 (float v) { mmSrcI.at (244) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4672 (float v) { mmSrcI.at (244) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4673 (float v) { mmDstI.at (244) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4674 (float v) { mmAmt.at (244)  = v; }
-    event param4675 (float v) { mmSrcI.at (245) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4675 (float v) { mmSrcI.at (245) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4676 (float v) { mmDstI.at (245) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4677 (float v) { mmAmt.at (245)  = v; }
-    event param4678 (float v) { mmSrcI.at (246) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4678 (float v) { mmSrcI.at (246) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4679 (float v) { mmDstI.at (246) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4680 (float v) { mmAmt.at (246)  = v; }
-    event param4681 (float v) { mmSrcI.at (247) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4681 (float v) { mmSrcI.at (247) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4682 (float v) { mmDstI.at (247) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4683 (float v) { mmAmt.at (247)  = v; }
-    event param4684 (float v) { mmSrcI.at (248) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4684 (float v) { mmSrcI.at (248) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4685 (float v) { mmDstI.at (248) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4686 (float v) { mmAmt.at (248)  = v; }
-    event param4687 (float v) { mmSrcI.at (249) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4687 (float v) { mmSrcI.at (249) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4688 (float v) { mmDstI.at (249) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4689 (float v) { mmAmt.at (249)  = v; }
-    event param4690 (float v) { mmSrcI.at (250) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4690 (float v) { mmSrcI.at (250) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4691 (float v) { mmDstI.at (250) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4692 (float v) { mmAmt.at (250)  = v; }
-    event param4693 (float v) { mmSrcI.at (251) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4693 (float v) { mmSrcI.at (251) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4694 (float v) { mmDstI.at (251) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4695 (float v) { mmAmt.at (251)  = v; }
-    event param4696 (float v) { mmSrcI.at (252) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4696 (float v) { mmSrcI.at (252) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4697 (float v) { mmDstI.at (252) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4698 (float v) { mmAmt.at (252)  = v; }
-    event param4699 (float v) { mmSrcI.at (253) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4699 (float v) { mmSrcI.at (253) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4700 (float v) { mmDstI.at (253) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4701 (float v) { mmAmt.at (253)  = v; }
-    event param4702 (float v) { mmSrcI.at (254) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4702 (float v) { mmSrcI.at (254) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4703 (float v) { mmDstI.at (254) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4704 (float v) { mmAmt.at (254)  = v; }
-    event param4705 (float v) { mmSrcI.at (255) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param4705 (float v) { mmSrcI.at (255) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param4706 (float v) { mmDstI.at (255) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param4707 (float v) { mmAmt.at (255)  = v; }
     // MODX-HAND-END
@@ -5969,6 +6220,247 @@ processor Eisenpuls_Synth
     event param2888 (float v) { sfSet (5, 8, v); }
     event param2889 (float v) { sfSet (5, 9, v); }
     // SF-HAND-END
+    event param3600 (float v) { seqStep.at (0) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3601 (float v) { seqStep.at (1) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3602 (float v) { seqStep.at (2) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3603 (float v) { seqStep.at (3) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3604 (float v) { seqStep.at (4) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3605 (float v) { seqStep.at (5) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3606 (float v) { seqStep.at (6) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3607 (float v) { seqStep.at (7) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3608 (float v) { seqStep.at (8) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3609 (float v) { seqStep.at (9) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3610 (float v) { seqStep.at (10) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3611 (float v) { seqStep.at (11) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3612 (float v) { seqStep.at (12) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3613 (float v) { seqStep.at (13) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3614 (float v) { seqStep.at (14) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3615 (float v) { seqStep.at (15) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3616 (float v) { seqLen.at (0) = clamp (v, 1.0f, 16.0f); }
+    event param3617 (float v) { seqRate.at (0) = v; }
+    event param3618 (float v) { seqSync.at (0) = v; }
+    event param3619 (float v) { seqDiv.at (0) = v; }
+    event param3620 (float v) { seqGlide.at (0) = v; }
+    event param3621 (float v) { seqDir.at (0) = v; }
+    event param3622 (float v) { seqRetrig.at (0) = v; }
+    event param3623 (float v) { seqPol.at (0) = v; }
+    event param3632 (float v) { seqStep.at (16) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3633 (float v) { seqStep.at (17) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3634 (float v) { seqStep.at (18) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3635 (float v) { seqStep.at (19) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3636 (float v) { seqStep.at (20) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3637 (float v) { seqStep.at (21) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3638 (float v) { seqStep.at (22) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3639 (float v) { seqStep.at (23) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3640 (float v) { seqStep.at (24) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3641 (float v) { seqStep.at (25) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3642 (float v) { seqStep.at (26) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3643 (float v) { seqStep.at (27) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3644 (float v) { seqStep.at (28) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3645 (float v) { seqStep.at (29) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3646 (float v) { seqStep.at (30) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3647 (float v) { seqStep.at (31) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3648 (float v) { seqLen.at (1) = clamp (v, 1.0f, 16.0f); }
+    event param3649 (float v) { seqRate.at (1) = v; }
+    event param3650 (float v) { seqSync.at (1) = v; }
+    event param3651 (float v) { seqDiv.at (1) = v; }
+    event param3652 (float v) { seqGlide.at (1) = v; }
+    event param3653 (float v) { seqDir.at (1) = v; }
+    event param3654 (float v) { seqRetrig.at (1) = v; }
+    event param3655 (float v) { seqPol.at (1) = v; }
+    event param3664 (float v) { seqStep.at (32) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3665 (float v) { seqStep.at (33) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3666 (float v) { seqStep.at (34) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3667 (float v) { seqStep.at (35) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3668 (float v) { seqStep.at (36) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3669 (float v) { seqStep.at (37) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3670 (float v) { seqStep.at (38) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3671 (float v) { seqStep.at (39) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3672 (float v) { seqStep.at (40) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3673 (float v) { seqStep.at (41) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3674 (float v) { seqStep.at (42) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3675 (float v) { seqStep.at (43) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3676 (float v) { seqStep.at (44) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3677 (float v) { seqStep.at (45) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3678 (float v) { seqStep.at (46) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3679 (float v) { seqStep.at (47) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3680 (float v) { seqLen.at (2) = clamp (v, 1.0f, 16.0f); }
+    event param3681 (float v) { seqRate.at (2) = v; }
+    event param3682 (float v) { seqSync.at (2) = v; }
+    event param3683 (float v) { seqDiv.at (2) = v; }
+    event param3684 (float v) { seqGlide.at (2) = v; }
+    event param3685 (float v) { seqDir.at (2) = v; }
+    event param3686 (float v) { seqRetrig.at (2) = v; }
+    event param3687 (float v) { seqPol.at (2) = v; }
+    event param3696 (float v) { seqStep.at (48) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3697 (float v) { seqStep.at (49) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3698 (float v) { seqStep.at (50) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3699 (float v) { seqStep.at (51) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3700 (float v) { seqStep.at (52) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3701 (float v) { seqStep.at (53) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3702 (float v) { seqStep.at (54) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3703 (float v) { seqStep.at (55) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3704 (float v) { seqStep.at (56) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3705 (float v) { seqStep.at (57) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3706 (float v) { seqStep.at (58) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3707 (float v) { seqStep.at (59) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3708 (float v) { seqStep.at (60) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3709 (float v) { seqStep.at (61) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3710 (float v) { seqStep.at (62) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3711 (float v) { seqStep.at (63) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3712 (float v) { seqLen.at (3) = clamp (v, 1.0f, 16.0f); }
+    event param3713 (float v) { seqRate.at (3) = v; }
+    event param3714 (float v) { seqSync.at (3) = v; }
+    event param3715 (float v) { seqDiv.at (3) = v; }
+    event param3716 (float v) { seqGlide.at (3) = v; }
+    event param3717 (float v) { seqDir.at (3) = v; }
+    event param3718 (float v) { seqRetrig.at (3) = v; }
+    event param3719 (float v) { seqPol.at (3) = v; }
+    event param3728 (float v) { seqStep.at (64) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3729 (float v) { seqStep.at (65) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3730 (float v) { seqStep.at (66) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3731 (float v) { seqStep.at (67) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3732 (float v) { seqStep.at (68) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3733 (float v) { seqStep.at (69) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3734 (float v) { seqStep.at (70) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3735 (float v) { seqStep.at (71) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3736 (float v) { seqStep.at (72) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3737 (float v) { seqStep.at (73) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3738 (float v) { seqStep.at (74) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3739 (float v) { seqStep.at (75) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3740 (float v) { seqStep.at (76) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3741 (float v) { seqStep.at (77) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3742 (float v) { seqStep.at (78) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3743 (float v) { seqStep.at (79) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3744 (float v) { seqLen.at (4) = clamp (v, 1.0f, 16.0f); }
+    event param3745 (float v) { seqRate.at (4) = v; }
+    event param3746 (float v) { seqSync.at (4) = v; }
+    event param3747 (float v) { seqDiv.at (4) = v; }
+    event param3748 (float v) { seqGlide.at (4) = v; }
+    event param3749 (float v) { seqDir.at (4) = v; }
+    event param3750 (float v) { seqRetrig.at (4) = v; }
+    event param3751 (float v) { seqPol.at (4) = v; }
+    event param3760 (float v) { seqStep.at (80) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3761 (float v) { seqStep.at (81) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3762 (float v) { seqStep.at (82) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3763 (float v) { seqStep.at (83) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3764 (float v) { seqStep.at (84) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3765 (float v) { seqStep.at (85) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3766 (float v) { seqStep.at (86) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3767 (float v) { seqStep.at (87) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3768 (float v) { seqStep.at (88) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3769 (float v) { seqStep.at (89) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3770 (float v) { seqStep.at (90) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3771 (float v) { seqStep.at (91) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3772 (float v) { seqStep.at (92) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3773 (float v) { seqStep.at (93) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3774 (float v) { seqStep.at (94) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3775 (float v) { seqStep.at (95) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3776 (float v) { seqLen.at (5) = clamp (v, 1.0f, 16.0f); }
+    event param3777 (float v) { seqRate.at (5) = v; }
+    event param3778 (float v) { seqSync.at (5) = v; }
+    event param3779 (float v) { seqDiv.at (5) = v; }
+    event param3780 (float v) { seqGlide.at (5) = v; }
+    event param3781 (float v) { seqDir.at (5) = v; }
+    event param3782 (float v) { seqRetrig.at (5) = v; }
+    event param3783 (float v) { seqPol.at (5) = v; }
+    event param3792 (float v) { seqStep.at (96) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3793 (float v) { seqStep.at (97) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3794 (float v) { seqStep.at (98) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3795 (float v) { seqStep.at (99) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3796 (float v) { seqStep.at (100) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3797 (float v) { seqStep.at (101) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3798 (float v) { seqStep.at (102) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3799 (float v) { seqStep.at (103) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3800 (float v) { seqStep.at (104) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3801 (float v) { seqStep.at (105) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3802 (float v) { seqStep.at (106) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3803 (float v) { seqStep.at (107) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3804 (float v) { seqStep.at (108) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3805 (float v) { seqStep.at (109) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3806 (float v) { seqStep.at (110) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3807 (float v) { seqStep.at (111) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3808 (float v) { seqLen.at (6) = clamp (v, 1.0f, 16.0f); }
+    event param3809 (float v) { seqRate.at (6) = v; }
+    event param3810 (float v) { seqSync.at (6) = v; }
+    event param3811 (float v) { seqDiv.at (6) = v; }
+    event param3812 (float v) { seqGlide.at (6) = v; }
+    event param3813 (float v) { seqDir.at (6) = v; }
+    event param3814 (float v) { seqRetrig.at (6) = v; }
+    event param3815 (float v) { seqPol.at (6) = v; }
+    event param3824 (float v) { seqStep.at (112) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3825 (float v) { seqStep.at (113) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3826 (float v) { seqStep.at (114) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3827 (float v) { seqStep.at (115) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3828 (float v) { seqStep.at (116) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3829 (float v) { seqStep.at (117) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3830 (float v) { seqStep.at (118) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3831 (float v) { seqStep.at (119) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3832 (float v) { seqStep.at (120) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3833 (float v) { seqStep.at (121) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3834 (float v) { seqStep.at (122) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3835 (float v) { seqStep.at (123) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3836 (float v) { seqStep.at (124) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3837 (float v) { seqStep.at (125) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3838 (float v) { seqStep.at (126) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3839 (float v) { seqStep.at (127) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3840 (float v) { seqLen.at (7) = clamp (v, 1.0f, 16.0f); }
+    event param3841 (float v) { seqRate.at (7) = v; }
+    event param3842 (float v) { seqSync.at (7) = v; }
+    event param3843 (float v) { seqDiv.at (7) = v; }
+    event param3844 (float v) { seqGlide.at (7) = v; }
+    event param3845 (float v) { seqDir.at (7) = v; }
+    event param3846 (float v) { seqRetrig.at (7) = v; }
+    event param3847 (float v) { seqPol.at (7) = v; }
+    event param3856 (float v) { seqStep.at (128) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3857 (float v) { seqStep.at (129) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3858 (float v) { seqStep.at (130) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3859 (float v) { seqStep.at (131) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3860 (float v) { seqStep.at (132) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3861 (float v) { seqStep.at (133) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3862 (float v) { seqStep.at (134) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3863 (float v) { seqStep.at (135) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3864 (float v) { seqStep.at (136) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3865 (float v) { seqStep.at (137) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3866 (float v) { seqStep.at (138) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3867 (float v) { seqStep.at (139) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3868 (float v) { seqStep.at (140) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3869 (float v) { seqStep.at (141) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3870 (float v) { seqStep.at (142) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3871 (float v) { seqStep.at (143) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3872 (float v) { seqLen.at (8) = clamp (v, 1.0f, 16.0f); }
+    event param3873 (float v) { seqRate.at (8) = v; }
+    event param3874 (float v) { seqSync.at (8) = v; }
+    event param3875 (float v) { seqDiv.at (8) = v; }
+    event param3876 (float v) { seqGlide.at (8) = v; }
+    event param3877 (float v) { seqDir.at (8) = v; }
+    event param3878 (float v) { seqRetrig.at (8) = v; }
+    event param3879 (float v) { seqPol.at (8) = v; }
+    event param3888 (float v) { seqStep.at (144) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3889 (float v) { seqStep.at (145) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3890 (float v) { seqStep.at (146) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3891 (float v) { seqStep.at (147) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3892 (float v) { seqStep.at (148) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3893 (float v) { seqStep.at (149) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3894 (float v) { seqStep.at (150) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3895 (float v) { seqStep.at (151) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3896 (float v) { seqStep.at (152) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3897 (float v) { seqStep.at (153) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3898 (float v) { seqStep.at (154) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3899 (float v) { seqStep.at (155) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3900 (float v) { seqStep.at (156) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3901 (float v) { seqStep.at (157) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3902 (float v) { seqStep.at (158) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3903 (float v) { seqStep.at (159) = clamp (v, 0.0f, 1.0f); }   // MOD-SEQ
+    event param3904 (float v) { seqLen.at (9) = clamp (v, 1.0f, 16.0f); }
+    event param3905 (float v) { seqRate.at (9) = v; }
+    event param3906 (float v) { seqSync.at (9) = v; }
+    event param3907 (float v) { seqDiv.at (9) = v; }
+    event param3908 (float v) { seqGlide.at (9) = v; }
+    event param3909 (float v) { seqDir.at (9) = v; }
+    event param3910 (float v) { seqRetrig.at (9) = v; }
+    event param3911 (float v) { seqPol.at (9) = v; }
+
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -6019,64 +6511,64 @@ processor Eisenpuls_Synth
     }
 
     // Mod matrix handlers (source, destination, amount)
-    event param307 (float v) { mmSrcI.at (0) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param307 (float v) { mmSrcI.at (0) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param308 (float v) { mmDstI.at (0) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param309 (float v) { mmAmt.at (0)  = v; }
-    event param310 (float v) { mmSrcI.at (1) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param310 (float v) { mmSrcI.at (1) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param311 (float v) { mmDstI.at (1) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param312 (float v) { mmAmt.at (1)  = v; }
-    event param313 (float v) { mmSrcI.at (2) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param313 (float v) { mmSrcI.at (2) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param314 (float v) { mmDstI.at (2) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param315 (float v) { mmAmt.at (2)  = v; }
-    event param316 (float v) { mmSrcI.at (3) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param316 (float v) { mmSrcI.at (3) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param317 (float v) { mmDstI.at (3) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param318 (float v) { mmAmt.at (3)  = v; }
-    event param319 (float v) { mmSrcI.at (4) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param319 (float v) { mmSrcI.at (4) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param320 (float v) { mmDstI.at (4) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param321 (float v) { mmAmt.at (4)  = v; }
-    event param322 (float v) { mmSrcI.at (5) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param322 (float v) { mmSrcI.at (5) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param323 (float v) { mmDstI.at (5) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param324 (float v) { mmAmt.at (5)  = v; }
-    event param325 (float v) { mmSrcI.at (6) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param325 (float v) { mmSrcI.at (6) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param326 (float v) { mmDstI.at (6) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param327 (float v) { mmAmt.at (6)  = v; }
-    event param328 (float v) { mmSrcI.at (7) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param328 (float v) { mmSrcI.at (7) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param329 (float v) { mmDstI.at (7) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param330 (float v) { mmAmt.at (7)  = v; }
-    event param331 (float v) { mmSrcI.at (8) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param331 (float v) { mmSrcI.at (8) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param332 (float v) { mmDstI.at (8) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param333 (float v) { mmAmt.at (8)  = v; }
-    event param334 (float v) { mmSrcI.at (9) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param334 (float v) { mmSrcI.at (9) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param335 (float v) { mmDstI.at (9) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param336 (float v) { mmAmt.at (9)  = v; }
-    event param472 (float v) { mmSrcI.at (10) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param472 (float v) { mmSrcI.at (10) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param473 (float v) { mmDstI.at (10) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param474 (float v) { mmAmt.at (10)  = v; }
-    event param475 (float v) { mmSrcI.at (11) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param475 (float v) { mmSrcI.at (11) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param476 (float v) { mmDstI.at (11) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param477 (float v) { mmAmt.at (11)  = v; }
-    event param478 (float v) { mmSrcI.at (12) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param478 (float v) { mmSrcI.at (12) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param479 (float v) { mmDstI.at (12) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param480 (float v) { mmAmt.at (12)  = v; }
-    event param481 (float v) { mmSrcI.at (13) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param481 (float v) { mmSrcI.at (13) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param482 (float v) { mmDstI.at (13) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param483 (float v) { mmAmt.at (13)  = v; }
-    event param484 (float v) { mmSrcI.at (14) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param484 (float v) { mmSrcI.at (14) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param485 (float v) { mmDstI.at (14) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param486 (float v) { mmAmt.at (14)  = v; }
-    event param487 (float v) { mmSrcI.at (15) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param487 (float v) { mmSrcI.at (15) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param488 (float v) { mmDstI.at (15) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param489 (float v) { mmAmt.at (15)  = v; }
-    event param490 (float v) { mmSrcI.at (16) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param490 (float v) { mmSrcI.at (16) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param491 (float v) { mmDstI.at (16) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param492 (float v) { mmAmt.at (16)  = v; }
-    event param493 (float v) { mmSrcI.at (17) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param493 (float v) { mmSrcI.at (17) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param494 (float v) { mmDstI.at (17) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param495 (float v) { mmAmt.at (17)  = v; }
-    event param496 (float v) { mmSrcI.at (18) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param496 (float v) { mmSrcI.at (18) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param497 (float v) { mmDstI.at (18) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param498 (float v) { mmAmt.at (18)  = v; }
-    event param499 (float v) { mmSrcI.at (19) = clamp (int (v + 0.5f), 0, 33); mmScan(); }
+    event param499 (float v) { mmSrcI.at (19) = clamp (int (v + 0.5f), 0, 43); mmScan(); }
     event param500 (float v) { mmDstI.at (19) = clamp (int (v + 0.5f), 0, 1307); mmScan(); }
     event param501 (float v) { mmAmt.at (19)  = v; }
     event param502 (float v) { mLfoSync.at (0) = v; }
@@ -6853,6 +7345,14 @@ processor Eisenpuls_Synth
     // channel 8 (Wavetable 3)
     // Wavetable unison handlers
     // ---------------- VOICES ----------------
+    struct SeqS   // MOD-SEQ: state of one sequencer
+    {
+        float ph;     // position inside the step (0..1)
+        float idx;    // current step
+        float dir;    // +1 / -1 (ping-pong)
+        float v;      // output 0..1 (after glide)
+    }
+
     struct Voice
     {
         int     noteNumber;
@@ -6874,6 +7374,7 @@ processor Eisenpuls_Synth
         float[16] lfoAge;     // seconds since note-on, -1 before the first update
         float[16] frqT;       // Freq modulators: seconds since note-on
         float[16] frqV;       // Freq modulators: output (units of 4 octaves)
+        SeqS[16]  seqS;       // MOD-SEQ: per-voice sequencers (Retrig on)
         float[16] lfoSh;      // per-voice sample & hold values
         float[16] lfoSm;      // per-voice smoothing state
         int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
@@ -6947,6 +7448,18 @@ processor Eisenpuls_Synth
         {
             fxEnvSus.at (ei) = 1.0f;
             fxEnvRel.at (ei) = 0.3f;
+        }
+
+        for (int sm = 0; sm < 10; ++sm)   // MOD-SEQ
+        {
+            seqLen.at (sm)  = 8.0f;
+            seqRate.at (sm) = 4.0f;
+            seqDiv.at (sm)  = 11.0f;
+            seqPol.at (sm)  = 1.0f;
+            seqG.at (sm)    = SeqS (0.0f, 0.0f, 1.0f, 0.5f);
+
+            for (int si = 0; si < 16; ++si)
+                seqStep.at (sm * 16 + si) = 0.5f;
         }
 
         for (int fm = 0; fm < 10; ++fm)
@@ -11804,6 +12317,77 @@ processor Eisenpuls_Synth
         }
     }
 
+    // ---------------- MOD-SEQ: step sequencers (sources 34..43) ----------------
+    float seqStepHz (int m)
+    {
+        return seqSync.at (m) > 0.5f ? syncHz (seqDiv.at (m)) : seqRate.at (m);
+    }
+
+    // advances sequencer m by dt seconds
+    SeqS seqRun (int m, float dt, SeqS s)
+    {
+        int   len = clamp (int (seqLen.at (m) + 0.5f), 1, 16);
+        int   idx = clamp (int (s.idx + 0.5f), 0, len - 1);
+        float hz  = max (seqStepHz (m), 0.01f);
+        float ph  = s.ph + hz * dt;
+        float dir = s.dir;
+        int   md  = int (seqDir.at (m) + 0.5f);
+
+        for (int k = 0; k < 4 && ph >= 1.0f; ++k)
+        {
+            ph -= 1.0f;
+
+            if (md == 0)
+                idx = (idx + 1) % len;
+            else if (md == 1)
+                idx = (idx + len - 1) % len;
+            else if (md == 2)
+            {
+                int nx = idx + int (dir);
+
+                if (nx >= len || nx < 0)
+                    dir = -dir;
+
+                idx = clamp (idx + int (dir), 0, len - 1);
+            }
+            else
+                idx = clamp (int (abs (nextNoise()) * float (len)), 0, len - 1);
+        }
+
+        if (ph >= 1.0f)
+            ph = 0.0f;
+
+        float tv = seqStep.at (m * 16 + idx);
+        float g  = seqGlide.at (m);
+        float v  = s.v;
+
+        if (g < 0.002f)
+            v = tv;
+        else
+            v += (tv - v) * (1.0f - float (exp (-dt / max (g * 0.6f / hz, 0.00005f))));
+
+        return SeqS (ph, float (idx), dir, v);
+    }
+
+    void updateSeqGlobal (float dt)
+    {
+        for (int m = 0; m < 10; ++m)
+            if ((seqMask & (1 << m)) != 0)
+                seqG.at (m) = seqRun (m, dt, seqG.at (m));
+    }
+
+    void updateVoiceSeq (int vi, float dt)
+    {
+        for (int m = 0; m < 10; ++m)
+            if ((seqMask & (1 << m)) != 0 && seqRetrig.at (m) > 0.5f)
+                voices.at (vi).seqS.at (m) = seqRun (m, dt, voices.at (vi).seqS.at (m));
+    }
+
+    float seqPolar (int m, float v)
+    {
+        return seqPol.at (m) > 0.5f ? v * 2.0f - 1.0f : v;
+    }
+
     // Mod source value for a voice (1-10 LFO, 11-20 envelope, 21 velocity, 22 key, 23 random)
     // MOD-BIP: unipolar 0..1 -> bipolar -1..1 when the modulator's Bipolar switch is on
     float bipMap (float v, int i)
@@ -11835,6 +12419,8 @@ processor Eisenpuls_Synth
             return voices.at (vi).modRand;
         if (src >= 24 && src <= 33)
             return frqRetrig.at (src - 24) > 0.5f ? voices.at (vi).frqV.at (src - 24) : frqGV.at (src - 24);
+        if (src >= 34 && src <= 43)   // MOD-SEQ
+            return seqPolar (src - 34, seqRetrig.at (src - 34) > 0.5f ? voices.at (vi).seqS.at (src - 34).v : seqG.at (src - 34).v);
         return 0.0f;
     }
 
@@ -11857,6 +12443,8 @@ processor Eisenpuls_Synth
             return lastRandV;
         if (src >= 24 && src <= 33)
             return frqGV.at (src - 24);
+        if (src >= 34 && src <= 43)   // MOD-SEQ
+            return seqPolar (src - 34, seqG.at (src - 34).v);
         return 0.0f;
     }
 
@@ -11889,7 +12477,7 @@ processor Eisenpuls_Synth
             int ss = mmSrcI.at (s);
             vmodDirty.at (s) = 0;
             // Freq modulators only act on the cutoffs (OSC n Cutoff) and the oscillator frequency knobs
-            if (ss >= 24 && ! ((dd >= 6 && dd < 60 && (dd - 6) % 9 == 6) || (dd >= 180 && dd < 258)))
+            if (ss >= 24 && ss <= 33 && ! ((dd >= 6 && dd < 60 && (dd - 6) % 9 == 6) || (dd >= 180 && dd < 258)))
                 continue;
             if (dd > 0 && ss > 0)
             {
@@ -16415,6 +17003,7 @@ processor Eisenpuls_Synth
                 voices.at (v).lfoV.at (lm)   = 0.0f;
                 voices.at (v).frqT.at (lm)   = 0.0f;
                 voices.at (v).frqV.at (lm)   = frqEval (lm, 0.0f);
+                voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ
             }
 
             lastVelV  = vel;
@@ -16459,8 +17048,13 @@ processor Eisenpuls_Synth
             updateModLfos (dt);
             frqMask = 0;
             for (int fs = 0; fs < mmTop; ++fs)
-                if (mmSrcI.at (fs) >= 24 && mmDstI.at (fs) > 0)
+                if (mmSrcI.at (fs) >= 24 && mmSrcI.at (fs) <= 33 && mmDstI.at (fs) > 0)
                     frqMask |= 1 << (mmSrcI.at (fs) - 24);
+            seqMask = 0;   // MOD-SEQ
+            for (int fs = 0; fs < mmTop; ++fs)
+                if (mmSrcI.at (fs) >= 34 && mmDstI.at (fs) > 0)
+                    seqMask |= 1 << (mmSrcI.at (fs) - 34);
+            updateSeqGlobal (dt);
             updateFrqGlobal (dt);
             rollEnvMax();
             computeGlobalMod();
@@ -16509,6 +17103,7 @@ processor Eisenpuls_Synth
                 updateModEnvs (i, dt);
                 updateVoiceLfos (i, dt);
                 updateVoiceFrq (i, dt);
+                updateVoiceSeq (i, dt);   // MOD-SEQ
                 computeVoiceMod (i);
 
                 // pitch envelope (+ matrix pitch, +/-12 semitones at full amount)

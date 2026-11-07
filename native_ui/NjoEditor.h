@@ -17,9 +17,9 @@ namespace njo
 
         enum Group { Synth = 0, Effects = 1, Modulation = 2 };
         void setGroup (Group);
-        void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ
+        void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ, 2 = SEQ
         void setMatrixPage (int p) { matrix.setPage (p); }
-        void setModTab (int t) { modTab = t; layoutAll(); }       // modulation page: 0 = ENV / LFO, 1 = FREQ
+        void setModTab (int t) { modTab = t; layoutAll(); }       // modulation page: 0 = ENV / LFO, 1 = FREQ, 2 = SEQ
         void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM / PD, 7 = RM / AM, 8 = Global, 9-14 = filter page of OSC 1-6, 15-20 = distortion page of OSC 1-6
         Group group() const { return currentGroup; }
         int synthPage() const { return currentSynthPage; }
@@ -42,8 +42,8 @@ namespace njo
         juce::OwnedArray<OscPage> osc, fltPages, distPages, resoPages;
         int fltOsc = 0, distOsc = 0, resoOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
         FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx;
-        ModEditors editors, editorsFull; FreqEditor freq, freqFull; MatrixPanel matrix;
-        int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators
+        ModEditors editors, editorsFull; FreqEditor freq, freqFull; SeqEditor seq, seqFull; MatrixPanel matrix;
+        int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators, 2 = step sequencers
         ManagerBar manager;
         juce::OwnedArray<juce::TextButton> railButtons, subButtons;   // plain buttons, painted by us
         struct Impl; std::unique_ptr<Impl> impl;

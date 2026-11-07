@@ -192,37 +192,37 @@ static void allSpecs_4 (std::vector<Spec>& v)
         Spec { 1637, NJ_S("Freq 10 Transpose"), -48.0, 48.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 1638, NJ_S("Freq 10 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
         Spec { 1639, NJ_S("Freq 10 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
-        Spec { 307, NJ_S("Slot 1 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 307, NJ_S("Slot 1 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 308, NJ_S("Slot 1 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 309, NJ_S("Slot 1 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 310, NJ_S("Slot 2 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 310, NJ_S("Slot 2 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 311, NJ_S("Slot 2 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 312, NJ_S("Slot 2 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 313, NJ_S("Slot 3 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 313, NJ_S("Slot 3 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 314, NJ_S("Slot 3 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 315, NJ_S("Slot 3 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 316, NJ_S("Slot 4 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 316, NJ_S("Slot 4 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 317, NJ_S("Slot 4 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 318, NJ_S("Slot 4 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 319, NJ_S("Slot 5 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 319, NJ_S("Slot 5 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 320, NJ_S("Slot 5 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 321, NJ_S("Slot 5 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 322, NJ_S("Slot 6 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 322, NJ_S("Slot 6 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 323, NJ_S("Slot 6 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 324, NJ_S("Slot 6 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 325, NJ_S("Slot 7 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 325, NJ_S("Slot 7 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 326, NJ_S("Slot 7 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 327, NJ_S("Slot 7 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 328, NJ_S("Slot 8 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 328, NJ_S("Slot 8 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 329, NJ_S("Slot 8 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 330, NJ_S("Slot 8 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 331, NJ_S("Slot 9 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 331, NJ_S("Slot 9 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 332, NJ_S("Slot 9 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 333, NJ_S("Slot 9 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 334, NJ_S("Slot 10 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 334, NJ_S("Slot 10 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 335, NJ_S("Slot 10 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 336, NJ_S("Slot 10 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 472, NJ_S("Slot 11 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 472, NJ_S("Slot 11 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 473, NJ_S("Slot 11 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 474, NJ_S("Slot 11 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -230,46 +230,46 @@ static void allSpecs_4 (std::vector<Spec>& v)
 static void allSpecs_5 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 475, NJ_S("Slot 12 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 475, NJ_S("Slot 12 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 476, NJ_S("Slot 12 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 477, NJ_S("Slot 12 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 478, NJ_S("Slot 13 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 478, NJ_S("Slot 13 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 479, NJ_S("Slot 13 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 480, NJ_S("Slot 13 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 481, NJ_S("Slot 14 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 481, NJ_S("Slot 14 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 482, NJ_S("Slot 14 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 483, NJ_S("Slot 14 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 484, NJ_S("Slot 15 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 484, NJ_S("Slot 15 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 485, NJ_S("Slot 15 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 486, NJ_S("Slot 15 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 487, NJ_S("Slot 16 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 487, NJ_S("Slot 16 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 488, NJ_S("Slot 16 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 489, NJ_S("Slot 16 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 490, NJ_S("Slot 17 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 490, NJ_S("Slot 17 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 491, NJ_S("Slot 17 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 492, NJ_S("Slot 17 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 493, NJ_S("Slot 18 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 493, NJ_S("Slot 18 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 494, NJ_S("Slot 18 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 495, NJ_S("Slot 18 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 496, NJ_S("Slot 19 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 496, NJ_S("Slot 19 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 497, NJ_S("Slot 19 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 498, NJ_S("Slot 19 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 499, NJ_S("Slot 20 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 499, NJ_S("Slot 20 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 500, NJ_S("Slot 20 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 501, NJ_S("Slot 20 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4000, NJ_S("Slot 21 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4000, NJ_S("Slot 21 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4001, NJ_S("Slot 21 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4002, NJ_S("Slot 21 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4003, NJ_S("Slot 22 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4003, NJ_S("Slot 22 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4004, NJ_S("Slot 22 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4005, NJ_S("Slot 22 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4006, NJ_S("Slot 23 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4006, NJ_S("Slot 23 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4007, NJ_S("Slot 23 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4008, NJ_S("Slot 23 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4009, NJ_S("Slot 24 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4009, NJ_S("Slot 24 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4010, NJ_S("Slot 24 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4011, NJ_S("Slot 24 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4012, NJ_S("Slot 25 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4012, NJ_S("Slot 25 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_6 (std::vector<Spec>& v)
@@ -277,43 +277,43 @@ static void allSpecs_6 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4013, NJ_S("Slot 25 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4014, NJ_S("Slot 25 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4015, NJ_S("Slot 26 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4015, NJ_S("Slot 26 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4016, NJ_S("Slot 26 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4017, NJ_S("Slot 26 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4018, NJ_S("Slot 27 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4018, NJ_S("Slot 27 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4019, NJ_S("Slot 27 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4020, NJ_S("Slot 27 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4021, NJ_S("Slot 28 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4021, NJ_S("Slot 28 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4022, NJ_S("Slot 28 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4023, NJ_S("Slot 28 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4024, NJ_S("Slot 29 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4024, NJ_S("Slot 29 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4025, NJ_S("Slot 29 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4026, NJ_S("Slot 29 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4027, NJ_S("Slot 30 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4027, NJ_S("Slot 30 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4028, NJ_S("Slot 30 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4029, NJ_S("Slot 30 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4030, NJ_S("Slot 31 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4030, NJ_S("Slot 31 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4031, NJ_S("Slot 31 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4032, NJ_S("Slot 31 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4033, NJ_S("Slot 32 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4033, NJ_S("Slot 32 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4034, NJ_S("Slot 32 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4035, NJ_S("Slot 32 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4036, NJ_S("Slot 33 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4036, NJ_S("Slot 33 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4037, NJ_S("Slot 33 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4038, NJ_S("Slot 33 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4039, NJ_S("Slot 34 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4039, NJ_S("Slot 34 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4040, NJ_S("Slot 34 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4041, NJ_S("Slot 34 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4042, NJ_S("Slot 35 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4042, NJ_S("Slot 35 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4043, NJ_S("Slot 35 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4044, NJ_S("Slot 35 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4045, NJ_S("Slot 36 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4045, NJ_S("Slot 36 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4046, NJ_S("Slot 36 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4047, NJ_S("Slot 36 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4048, NJ_S("Slot 37 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4048, NJ_S("Slot 37 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4049, NJ_S("Slot 37 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4050, NJ_S("Slot 37 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4051, NJ_S("Slot 38 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4051, NJ_S("Slot 38 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4052, NJ_S("Slot 38 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -321,43 +321,43 @@ static void allSpecs_7 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4053, NJ_S("Slot 38 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4054, NJ_S("Slot 39 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4054, NJ_S("Slot 39 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4055, NJ_S("Slot 39 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4056, NJ_S("Slot 39 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4057, NJ_S("Slot 40 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4057, NJ_S("Slot 40 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4058, NJ_S("Slot 40 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4059, NJ_S("Slot 40 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4060, NJ_S("Slot 41 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4060, NJ_S("Slot 41 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4061, NJ_S("Slot 41 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4062, NJ_S("Slot 41 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4063, NJ_S("Slot 42 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4063, NJ_S("Slot 42 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4064, NJ_S("Slot 42 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4065, NJ_S("Slot 42 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4066, NJ_S("Slot 43 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4066, NJ_S("Slot 43 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4067, NJ_S("Slot 43 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4068, NJ_S("Slot 43 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4069, NJ_S("Slot 44 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4069, NJ_S("Slot 44 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4070, NJ_S("Slot 44 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4071, NJ_S("Slot 44 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4072, NJ_S("Slot 45 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4072, NJ_S("Slot 45 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4073, NJ_S("Slot 45 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4074, NJ_S("Slot 45 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4075, NJ_S("Slot 46 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4075, NJ_S("Slot 46 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4076, NJ_S("Slot 46 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4077, NJ_S("Slot 46 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4078, NJ_S("Slot 47 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4078, NJ_S("Slot 47 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4079, NJ_S("Slot 47 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4080, NJ_S("Slot 47 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4081, NJ_S("Slot 48 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4081, NJ_S("Slot 48 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4082, NJ_S("Slot 48 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4083, NJ_S("Slot 48 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4084, NJ_S("Slot 49 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4084, NJ_S("Slot 49 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4085, NJ_S("Slot 49 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4086, NJ_S("Slot 49 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4087, NJ_S("Slot 50 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4087, NJ_S("Slot 50 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4088, NJ_S("Slot 50 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4089, NJ_S("Slot 50 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4090, NJ_S("Slot 51 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4090, NJ_S("Slot 51 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4091, NJ_S("Slot 51 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4092, NJ_S("Slot 51 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -365,46 +365,46 @@ static void allSpecs_7 (std::vector<Spec>& v)
 static void allSpecs_8 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4093, NJ_S("Slot 52 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4093, NJ_S("Slot 52 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4094, NJ_S("Slot 52 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4095, NJ_S("Slot 52 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4096, NJ_S("Slot 53 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4096, NJ_S("Slot 53 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4097, NJ_S("Slot 53 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4098, NJ_S("Slot 53 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4099, NJ_S("Slot 54 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4099, NJ_S("Slot 54 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4100, NJ_S("Slot 54 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4101, NJ_S("Slot 54 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4102, NJ_S("Slot 55 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4102, NJ_S("Slot 55 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4103, NJ_S("Slot 55 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4104, NJ_S("Slot 55 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4105, NJ_S("Slot 56 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4105, NJ_S("Slot 56 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4106, NJ_S("Slot 56 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4107, NJ_S("Slot 56 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4108, NJ_S("Slot 57 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4108, NJ_S("Slot 57 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4109, NJ_S("Slot 57 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4110, NJ_S("Slot 57 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4111, NJ_S("Slot 58 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4111, NJ_S("Slot 58 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4112, NJ_S("Slot 58 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4113, NJ_S("Slot 58 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4114, NJ_S("Slot 59 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4114, NJ_S("Slot 59 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4115, NJ_S("Slot 59 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4116, NJ_S("Slot 59 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4117, NJ_S("Slot 60 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4117, NJ_S("Slot 60 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4118, NJ_S("Slot 60 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4119, NJ_S("Slot 60 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4120, NJ_S("Slot 61 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4120, NJ_S("Slot 61 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4121, NJ_S("Slot 61 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4122, NJ_S("Slot 61 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4123, NJ_S("Slot 62 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4123, NJ_S("Slot 62 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4124, NJ_S("Slot 62 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4125, NJ_S("Slot 62 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4126, NJ_S("Slot 63 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4126, NJ_S("Slot 63 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4127, NJ_S("Slot 63 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4128, NJ_S("Slot 63 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4129, NJ_S("Slot 64 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4129, NJ_S("Slot 64 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4130, NJ_S("Slot 64 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4131, NJ_S("Slot 64 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4132, NJ_S("Slot 65 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4132, NJ_S("Slot 65 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_9 (std::vector<Spec>& v)
@@ -412,43 +412,43 @@ static void allSpecs_9 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4133, NJ_S("Slot 65 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4134, NJ_S("Slot 65 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4135, NJ_S("Slot 66 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4135, NJ_S("Slot 66 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4136, NJ_S("Slot 66 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4137, NJ_S("Slot 66 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4138, NJ_S("Slot 67 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4138, NJ_S("Slot 67 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4139, NJ_S("Slot 67 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4140, NJ_S("Slot 67 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4141, NJ_S("Slot 68 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4141, NJ_S("Slot 68 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4142, NJ_S("Slot 68 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4143, NJ_S("Slot 68 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4144, NJ_S("Slot 69 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4144, NJ_S("Slot 69 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4145, NJ_S("Slot 69 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4146, NJ_S("Slot 69 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4147, NJ_S("Slot 70 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4147, NJ_S("Slot 70 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4148, NJ_S("Slot 70 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4149, NJ_S("Slot 70 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4150, NJ_S("Slot 71 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4150, NJ_S("Slot 71 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4151, NJ_S("Slot 71 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4152, NJ_S("Slot 71 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4153, NJ_S("Slot 72 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4153, NJ_S("Slot 72 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4154, NJ_S("Slot 72 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4155, NJ_S("Slot 72 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4156, NJ_S("Slot 73 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4156, NJ_S("Slot 73 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4157, NJ_S("Slot 73 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4158, NJ_S("Slot 73 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4159, NJ_S("Slot 74 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4159, NJ_S("Slot 74 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4160, NJ_S("Slot 74 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4161, NJ_S("Slot 74 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4162, NJ_S("Slot 75 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4162, NJ_S("Slot 75 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4163, NJ_S("Slot 75 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4164, NJ_S("Slot 75 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4165, NJ_S("Slot 76 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4165, NJ_S("Slot 76 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4166, NJ_S("Slot 76 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4167, NJ_S("Slot 76 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4168, NJ_S("Slot 77 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4168, NJ_S("Slot 77 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4169, NJ_S("Slot 77 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4170, NJ_S("Slot 77 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4171, NJ_S("Slot 78 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4171, NJ_S("Slot 78 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4172, NJ_S("Slot 78 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -456,43 +456,43 @@ static void allSpecs_10 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4173, NJ_S("Slot 78 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4174, NJ_S("Slot 79 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4174, NJ_S("Slot 79 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4175, NJ_S("Slot 79 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4176, NJ_S("Slot 79 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4177, NJ_S("Slot 80 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4177, NJ_S("Slot 80 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4178, NJ_S("Slot 80 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4179, NJ_S("Slot 80 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4180, NJ_S("Slot 81 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4180, NJ_S("Slot 81 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4181, NJ_S("Slot 81 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4182, NJ_S("Slot 81 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4183, NJ_S("Slot 82 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4183, NJ_S("Slot 82 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4184, NJ_S("Slot 82 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4185, NJ_S("Slot 82 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4186, NJ_S("Slot 83 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4186, NJ_S("Slot 83 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4187, NJ_S("Slot 83 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4188, NJ_S("Slot 83 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4189, NJ_S("Slot 84 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4189, NJ_S("Slot 84 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4190, NJ_S("Slot 84 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4191, NJ_S("Slot 84 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4192, NJ_S("Slot 85 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4192, NJ_S("Slot 85 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4193, NJ_S("Slot 85 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4194, NJ_S("Slot 85 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4195, NJ_S("Slot 86 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4195, NJ_S("Slot 86 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4196, NJ_S("Slot 86 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4197, NJ_S("Slot 86 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4198, NJ_S("Slot 87 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4198, NJ_S("Slot 87 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4199, NJ_S("Slot 87 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4200, NJ_S("Slot 87 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4201, NJ_S("Slot 88 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4201, NJ_S("Slot 88 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4202, NJ_S("Slot 88 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4203, NJ_S("Slot 88 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4204, NJ_S("Slot 89 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4204, NJ_S("Slot 89 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4205, NJ_S("Slot 89 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4206, NJ_S("Slot 89 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4207, NJ_S("Slot 90 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4207, NJ_S("Slot 90 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4208, NJ_S("Slot 90 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4209, NJ_S("Slot 90 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4210, NJ_S("Slot 91 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4210, NJ_S("Slot 91 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4211, NJ_S("Slot 91 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4212, NJ_S("Slot 91 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -500,46 +500,46 @@ static void allSpecs_10 (std::vector<Spec>& v)
 static void allSpecs_11 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4213, NJ_S("Slot 92 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4213, NJ_S("Slot 92 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4214, NJ_S("Slot 92 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4215, NJ_S("Slot 92 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4216, NJ_S("Slot 93 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4216, NJ_S("Slot 93 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4217, NJ_S("Slot 93 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4218, NJ_S("Slot 93 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4219, NJ_S("Slot 94 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4219, NJ_S("Slot 94 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4220, NJ_S("Slot 94 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4221, NJ_S("Slot 94 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4222, NJ_S("Slot 95 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4222, NJ_S("Slot 95 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4223, NJ_S("Slot 95 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4224, NJ_S("Slot 95 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4225, NJ_S("Slot 96 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4225, NJ_S("Slot 96 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4226, NJ_S("Slot 96 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4227, NJ_S("Slot 96 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4228, NJ_S("Slot 97 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4228, NJ_S("Slot 97 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4229, NJ_S("Slot 97 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4230, NJ_S("Slot 97 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4231, NJ_S("Slot 98 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4231, NJ_S("Slot 98 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4232, NJ_S("Slot 98 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4233, NJ_S("Slot 98 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4234, NJ_S("Slot 99 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4234, NJ_S("Slot 99 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4235, NJ_S("Slot 99 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4236, NJ_S("Slot 99 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4237, NJ_S("Slot 100 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4237, NJ_S("Slot 100 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4238, NJ_S("Slot 100 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4239, NJ_S("Slot 100 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4240, NJ_S("Slot 101 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4240, NJ_S("Slot 101 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4241, NJ_S("Slot 101 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4242, NJ_S("Slot 101 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4243, NJ_S("Slot 102 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4243, NJ_S("Slot 102 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4244, NJ_S("Slot 102 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4245, NJ_S("Slot 102 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4246, NJ_S("Slot 103 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4246, NJ_S("Slot 103 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4247, NJ_S("Slot 103 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4248, NJ_S("Slot 103 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4249, NJ_S("Slot 104 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4249, NJ_S("Slot 104 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4250, NJ_S("Slot 104 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4251, NJ_S("Slot 104 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4252, NJ_S("Slot 105 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4252, NJ_S("Slot 105 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_12 (std::vector<Spec>& v)
@@ -547,43 +547,43 @@ static void allSpecs_12 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4253, NJ_S("Slot 105 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4254, NJ_S("Slot 105 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4255, NJ_S("Slot 106 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4255, NJ_S("Slot 106 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4256, NJ_S("Slot 106 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4257, NJ_S("Slot 106 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4258, NJ_S("Slot 107 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4258, NJ_S("Slot 107 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4259, NJ_S("Slot 107 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4260, NJ_S("Slot 107 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4261, NJ_S("Slot 108 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4261, NJ_S("Slot 108 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4262, NJ_S("Slot 108 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4263, NJ_S("Slot 108 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4264, NJ_S("Slot 109 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4264, NJ_S("Slot 109 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4265, NJ_S("Slot 109 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4266, NJ_S("Slot 109 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4267, NJ_S("Slot 110 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4267, NJ_S("Slot 110 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4268, NJ_S("Slot 110 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4269, NJ_S("Slot 110 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4270, NJ_S("Slot 111 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4270, NJ_S("Slot 111 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4271, NJ_S("Slot 111 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4272, NJ_S("Slot 111 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4273, NJ_S("Slot 112 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4273, NJ_S("Slot 112 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4274, NJ_S("Slot 112 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4275, NJ_S("Slot 112 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4276, NJ_S("Slot 113 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4276, NJ_S("Slot 113 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4277, NJ_S("Slot 113 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4278, NJ_S("Slot 113 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4279, NJ_S("Slot 114 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4279, NJ_S("Slot 114 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4280, NJ_S("Slot 114 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4281, NJ_S("Slot 114 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4282, NJ_S("Slot 115 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4282, NJ_S("Slot 115 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4283, NJ_S("Slot 115 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4284, NJ_S("Slot 115 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4285, NJ_S("Slot 116 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4285, NJ_S("Slot 116 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4286, NJ_S("Slot 116 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4287, NJ_S("Slot 116 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4288, NJ_S("Slot 117 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4288, NJ_S("Slot 117 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4289, NJ_S("Slot 117 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4290, NJ_S("Slot 117 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4291, NJ_S("Slot 118 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4291, NJ_S("Slot 118 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4292, NJ_S("Slot 118 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -591,43 +591,43 @@ static void allSpecs_13 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4293, NJ_S("Slot 118 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4294, NJ_S("Slot 119 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4294, NJ_S("Slot 119 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4295, NJ_S("Slot 119 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4296, NJ_S("Slot 119 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4297, NJ_S("Slot 120 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4297, NJ_S("Slot 120 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4298, NJ_S("Slot 120 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4299, NJ_S("Slot 120 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4300, NJ_S("Slot 121 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4300, NJ_S("Slot 121 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4301, NJ_S("Slot 121 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4302, NJ_S("Slot 121 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4303, NJ_S("Slot 122 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4303, NJ_S("Slot 122 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4304, NJ_S("Slot 122 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4305, NJ_S("Slot 122 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4306, NJ_S("Slot 123 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4306, NJ_S("Slot 123 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4307, NJ_S("Slot 123 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4308, NJ_S("Slot 123 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4309, NJ_S("Slot 124 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4309, NJ_S("Slot 124 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4310, NJ_S("Slot 124 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4311, NJ_S("Slot 124 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4312, NJ_S("Slot 125 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4312, NJ_S("Slot 125 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4313, NJ_S("Slot 125 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4314, NJ_S("Slot 125 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4315, NJ_S("Slot 126 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4315, NJ_S("Slot 126 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4316, NJ_S("Slot 126 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4317, NJ_S("Slot 126 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4318, NJ_S("Slot 127 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4318, NJ_S("Slot 127 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4319, NJ_S("Slot 127 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4320, NJ_S("Slot 127 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4321, NJ_S("Slot 128 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4321, NJ_S("Slot 128 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4322, NJ_S("Slot 128 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4323, NJ_S("Slot 128 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4324, NJ_S("Slot 129 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4324, NJ_S("Slot 129 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4325, NJ_S("Slot 129 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4326, NJ_S("Slot 129 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4327, NJ_S("Slot 130 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4327, NJ_S("Slot 130 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4328, NJ_S("Slot 130 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4329, NJ_S("Slot 130 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4330, NJ_S("Slot 131 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4330, NJ_S("Slot 131 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4331, NJ_S("Slot 131 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4332, NJ_S("Slot 131 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -635,46 +635,46 @@ static void allSpecs_13 (std::vector<Spec>& v)
 static void allSpecs_14 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4333, NJ_S("Slot 132 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4333, NJ_S("Slot 132 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4334, NJ_S("Slot 132 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4335, NJ_S("Slot 132 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4336, NJ_S("Slot 133 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4336, NJ_S("Slot 133 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4337, NJ_S("Slot 133 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4338, NJ_S("Slot 133 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4339, NJ_S("Slot 134 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4339, NJ_S("Slot 134 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4340, NJ_S("Slot 134 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4341, NJ_S("Slot 134 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4342, NJ_S("Slot 135 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4342, NJ_S("Slot 135 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4343, NJ_S("Slot 135 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4344, NJ_S("Slot 135 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4345, NJ_S("Slot 136 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4345, NJ_S("Slot 136 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4346, NJ_S("Slot 136 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4347, NJ_S("Slot 136 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4348, NJ_S("Slot 137 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4348, NJ_S("Slot 137 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4349, NJ_S("Slot 137 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4350, NJ_S("Slot 137 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4351, NJ_S("Slot 138 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4351, NJ_S("Slot 138 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4352, NJ_S("Slot 138 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4353, NJ_S("Slot 138 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4354, NJ_S("Slot 139 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4354, NJ_S("Slot 139 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4355, NJ_S("Slot 139 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4356, NJ_S("Slot 139 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4357, NJ_S("Slot 140 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4357, NJ_S("Slot 140 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4358, NJ_S("Slot 140 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4359, NJ_S("Slot 140 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4360, NJ_S("Slot 141 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4360, NJ_S("Slot 141 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4361, NJ_S("Slot 141 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4362, NJ_S("Slot 141 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4363, NJ_S("Slot 142 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4363, NJ_S("Slot 142 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4364, NJ_S("Slot 142 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4365, NJ_S("Slot 142 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4366, NJ_S("Slot 143 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4366, NJ_S("Slot 143 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4367, NJ_S("Slot 143 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4368, NJ_S("Slot 143 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4369, NJ_S("Slot 144 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4369, NJ_S("Slot 144 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4370, NJ_S("Slot 144 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4371, NJ_S("Slot 144 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4372, NJ_S("Slot 145 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4372, NJ_S("Slot 145 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_15 (std::vector<Spec>& v)
@@ -682,43 +682,43 @@ static void allSpecs_15 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4373, NJ_S("Slot 145 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4374, NJ_S("Slot 145 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4375, NJ_S("Slot 146 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4375, NJ_S("Slot 146 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4376, NJ_S("Slot 146 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4377, NJ_S("Slot 146 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4378, NJ_S("Slot 147 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4378, NJ_S("Slot 147 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4379, NJ_S("Slot 147 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4380, NJ_S("Slot 147 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4381, NJ_S("Slot 148 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4381, NJ_S("Slot 148 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4382, NJ_S("Slot 148 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4383, NJ_S("Slot 148 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4384, NJ_S("Slot 149 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4384, NJ_S("Slot 149 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4385, NJ_S("Slot 149 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4386, NJ_S("Slot 149 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4387, NJ_S("Slot 150 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4387, NJ_S("Slot 150 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4388, NJ_S("Slot 150 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4389, NJ_S("Slot 150 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4390, NJ_S("Slot 151 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4390, NJ_S("Slot 151 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4391, NJ_S("Slot 151 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4392, NJ_S("Slot 151 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4393, NJ_S("Slot 152 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4393, NJ_S("Slot 152 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4394, NJ_S("Slot 152 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4395, NJ_S("Slot 152 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4396, NJ_S("Slot 153 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4396, NJ_S("Slot 153 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4397, NJ_S("Slot 153 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4398, NJ_S("Slot 153 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4399, NJ_S("Slot 154 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4399, NJ_S("Slot 154 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4400, NJ_S("Slot 154 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4401, NJ_S("Slot 154 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4402, NJ_S("Slot 155 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4402, NJ_S("Slot 155 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4403, NJ_S("Slot 155 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4404, NJ_S("Slot 155 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4405, NJ_S("Slot 156 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4405, NJ_S("Slot 156 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4406, NJ_S("Slot 156 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4407, NJ_S("Slot 156 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4408, NJ_S("Slot 157 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4408, NJ_S("Slot 157 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4409, NJ_S("Slot 157 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4410, NJ_S("Slot 157 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4411, NJ_S("Slot 158 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4411, NJ_S("Slot 158 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4412, NJ_S("Slot 158 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -726,43 +726,43 @@ static void allSpecs_16 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4413, NJ_S("Slot 158 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4414, NJ_S("Slot 159 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4414, NJ_S("Slot 159 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4415, NJ_S("Slot 159 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4416, NJ_S("Slot 159 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4417, NJ_S("Slot 160 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4417, NJ_S("Slot 160 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4418, NJ_S("Slot 160 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4419, NJ_S("Slot 160 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4420, NJ_S("Slot 161 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4420, NJ_S("Slot 161 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4421, NJ_S("Slot 161 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4422, NJ_S("Slot 161 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4423, NJ_S("Slot 162 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4423, NJ_S("Slot 162 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4424, NJ_S("Slot 162 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4425, NJ_S("Slot 162 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4426, NJ_S("Slot 163 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4426, NJ_S("Slot 163 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4427, NJ_S("Slot 163 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4428, NJ_S("Slot 163 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4429, NJ_S("Slot 164 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4429, NJ_S("Slot 164 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4430, NJ_S("Slot 164 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4431, NJ_S("Slot 164 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4432, NJ_S("Slot 165 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4432, NJ_S("Slot 165 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4433, NJ_S("Slot 165 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4434, NJ_S("Slot 165 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4435, NJ_S("Slot 166 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4435, NJ_S("Slot 166 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4436, NJ_S("Slot 166 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4437, NJ_S("Slot 166 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4438, NJ_S("Slot 167 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4438, NJ_S("Slot 167 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4439, NJ_S("Slot 167 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4440, NJ_S("Slot 167 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4441, NJ_S("Slot 168 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4441, NJ_S("Slot 168 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4442, NJ_S("Slot 168 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4443, NJ_S("Slot 168 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4444, NJ_S("Slot 169 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4444, NJ_S("Slot 169 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4445, NJ_S("Slot 169 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4446, NJ_S("Slot 169 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4447, NJ_S("Slot 170 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4447, NJ_S("Slot 170 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4448, NJ_S("Slot 170 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4449, NJ_S("Slot 170 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4450, NJ_S("Slot 171 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4450, NJ_S("Slot 171 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4451, NJ_S("Slot 171 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4452, NJ_S("Slot 171 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -770,46 +770,46 @@ static void allSpecs_16 (std::vector<Spec>& v)
 static void allSpecs_17 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4453, NJ_S("Slot 172 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4453, NJ_S("Slot 172 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4454, NJ_S("Slot 172 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4455, NJ_S("Slot 172 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4456, NJ_S("Slot 173 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4456, NJ_S("Slot 173 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4457, NJ_S("Slot 173 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4458, NJ_S("Slot 173 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4459, NJ_S("Slot 174 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4459, NJ_S("Slot 174 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4460, NJ_S("Slot 174 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4461, NJ_S("Slot 174 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4462, NJ_S("Slot 175 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4462, NJ_S("Slot 175 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4463, NJ_S("Slot 175 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4464, NJ_S("Slot 175 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4465, NJ_S("Slot 176 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4465, NJ_S("Slot 176 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4466, NJ_S("Slot 176 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4467, NJ_S("Slot 176 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4468, NJ_S("Slot 177 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4468, NJ_S("Slot 177 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4469, NJ_S("Slot 177 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4470, NJ_S("Slot 177 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4471, NJ_S("Slot 178 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4471, NJ_S("Slot 178 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4472, NJ_S("Slot 178 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4473, NJ_S("Slot 178 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4474, NJ_S("Slot 179 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4474, NJ_S("Slot 179 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4475, NJ_S("Slot 179 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4476, NJ_S("Slot 179 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4477, NJ_S("Slot 180 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4477, NJ_S("Slot 180 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4478, NJ_S("Slot 180 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4479, NJ_S("Slot 180 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4480, NJ_S("Slot 181 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4480, NJ_S("Slot 181 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4481, NJ_S("Slot 181 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4482, NJ_S("Slot 181 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4483, NJ_S("Slot 182 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4483, NJ_S("Slot 182 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4484, NJ_S("Slot 182 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4485, NJ_S("Slot 182 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4486, NJ_S("Slot 183 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4486, NJ_S("Slot 183 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4487, NJ_S("Slot 183 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4488, NJ_S("Slot 183 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4489, NJ_S("Slot 184 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4489, NJ_S("Slot 184 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4490, NJ_S("Slot 184 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4491, NJ_S("Slot 184 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4492, NJ_S("Slot 185 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4492, NJ_S("Slot 185 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_18 (std::vector<Spec>& v)
@@ -817,43 +817,43 @@ static void allSpecs_18 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4493, NJ_S("Slot 185 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4494, NJ_S("Slot 185 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4495, NJ_S("Slot 186 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4495, NJ_S("Slot 186 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4496, NJ_S("Slot 186 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4497, NJ_S("Slot 186 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4498, NJ_S("Slot 187 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4498, NJ_S("Slot 187 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4499, NJ_S("Slot 187 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4500, NJ_S("Slot 187 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4501, NJ_S("Slot 188 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4501, NJ_S("Slot 188 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4502, NJ_S("Slot 188 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4503, NJ_S("Slot 188 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4504, NJ_S("Slot 189 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4504, NJ_S("Slot 189 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4505, NJ_S("Slot 189 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4506, NJ_S("Slot 189 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4507, NJ_S("Slot 190 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4507, NJ_S("Slot 190 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4508, NJ_S("Slot 190 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4509, NJ_S("Slot 190 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4510, NJ_S("Slot 191 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4510, NJ_S("Slot 191 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4511, NJ_S("Slot 191 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4512, NJ_S("Slot 191 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4513, NJ_S("Slot 192 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4513, NJ_S("Slot 192 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4514, NJ_S("Slot 192 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4515, NJ_S("Slot 192 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4516, NJ_S("Slot 193 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4516, NJ_S("Slot 193 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4517, NJ_S("Slot 193 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4518, NJ_S("Slot 193 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4519, NJ_S("Slot 194 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4519, NJ_S("Slot 194 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4520, NJ_S("Slot 194 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4521, NJ_S("Slot 194 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4522, NJ_S("Slot 195 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4522, NJ_S("Slot 195 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4523, NJ_S("Slot 195 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4524, NJ_S("Slot 195 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4525, NJ_S("Slot 196 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4525, NJ_S("Slot 196 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4526, NJ_S("Slot 196 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4527, NJ_S("Slot 196 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4528, NJ_S("Slot 197 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4528, NJ_S("Slot 197 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4529, NJ_S("Slot 197 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4530, NJ_S("Slot 197 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4531, NJ_S("Slot 198 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4531, NJ_S("Slot 198 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4532, NJ_S("Slot 198 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -861,43 +861,43 @@ static void allSpecs_19 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4533, NJ_S("Slot 198 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4534, NJ_S("Slot 199 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4534, NJ_S("Slot 199 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4535, NJ_S("Slot 199 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4536, NJ_S("Slot 199 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4537, NJ_S("Slot 200 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4537, NJ_S("Slot 200 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4538, NJ_S("Slot 200 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4539, NJ_S("Slot 200 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4540, NJ_S("Slot 201 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4540, NJ_S("Slot 201 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4541, NJ_S("Slot 201 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4542, NJ_S("Slot 201 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4543, NJ_S("Slot 202 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4543, NJ_S("Slot 202 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4544, NJ_S("Slot 202 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4545, NJ_S("Slot 202 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4546, NJ_S("Slot 203 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4546, NJ_S("Slot 203 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4547, NJ_S("Slot 203 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4548, NJ_S("Slot 203 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4549, NJ_S("Slot 204 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4549, NJ_S("Slot 204 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4550, NJ_S("Slot 204 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4551, NJ_S("Slot 204 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4552, NJ_S("Slot 205 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4552, NJ_S("Slot 205 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4553, NJ_S("Slot 205 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4554, NJ_S("Slot 205 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4555, NJ_S("Slot 206 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4555, NJ_S("Slot 206 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4556, NJ_S("Slot 206 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4557, NJ_S("Slot 206 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4558, NJ_S("Slot 207 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4558, NJ_S("Slot 207 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4559, NJ_S("Slot 207 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4560, NJ_S("Slot 207 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4561, NJ_S("Slot 208 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4561, NJ_S("Slot 208 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4562, NJ_S("Slot 208 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4563, NJ_S("Slot 208 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4564, NJ_S("Slot 209 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4564, NJ_S("Slot 209 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4565, NJ_S("Slot 209 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4566, NJ_S("Slot 209 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4567, NJ_S("Slot 210 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4567, NJ_S("Slot 210 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4568, NJ_S("Slot 210 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4569, NJ_S("Slot 210 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4570, NJ_S("Slot 211 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4570, NJ_S("Slot 211 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4571, NJ_S("Slot 211 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4572, NJ_S("Slot 211 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -905,46 +905,46 @@ static void allSpecs_19 (std::vector<Spec>& v)
 static void allSpecs_20 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4573, NJ_S("Slot 212 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4573, NJ_S("Slot 212 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4574, NJ_S("Slot 212 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4575, NJ_S("Slot 212 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4576, NJ_S("Slot 213 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4576, NJ_S("Slot 213 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4577, NJ_S("Slot 213 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4578, NJ_S("Slot 213 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4579, NJ_S("Slot 214 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4579, NJ_S("Slot 214 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4580, NJ_S("Slot 214 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4581, NJ_S("Slot 214 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4582, NJ_S("Slot 215 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4582, NJ_S("Slot 215 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4583, NJ_S("Slot 215 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4584, NJ_S("Slot 215 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4585, NJ_S("Slot 216 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4585, NJ_S("Slot 216 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4586, NJ_S("Slot 216 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4587, NJ_S("Slot 216 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4588, NJ_S("Slot 217 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4588, NJ_S("Slot 217 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4589, NJ_S("Slot 217 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4590, NJ_S("Slot 217 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4591, NJ_S("Slot 218 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4591, NJ_S("Slot 218 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4592, NJ_S("Slot 218 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4593, NJ_S("Slot 218 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4594, NJ_S("Slot 219 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4594, NJ_S("Slot 219 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4595, NJ_S("Slot 219 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4596, NJ_S("Slot 219 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4597, NJ_S("Slot 220 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4597, NJ_S("Slot 220 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4598, NJ_S("Slot 220 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4599, NJ_S("Slot 220 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4600, NJ_S("Slot 221 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4600, NJ_S("Slot 221 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4601, NJ_S("Slot 221 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4602, NJ_S("Slot 221 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4603, NJ_S("Slot 222 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4603, NJ_S("Slot 222 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4604, NJ_S("Slot 222 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4605, NJ_S("Slot 222 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4606, NJ_S("Slot 223 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4606, NJ_S("Slot 223 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4607, NJ_S("Slot 223 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4608, NJ_S("Slot 223 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4609, NJ_S("Slot 224 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4609, NJ_S("Slot 224 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4610, NJ_S("Slot 224 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4611, NJ_S("Slot 224 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4612, NJ_S("Slot 225 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4612, NJ_S("Slot 225 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
 }
 static void allSpecs_21 (std::vector<Spec>& v)
@@ -952,43 +952,43 @@ static void allSpecs_21 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4613, NJ_S("Slot 225 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4614, NJ_S("Slot 225 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4615, NJ_S("Slot 226 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4615, NJ_S("Slot 226 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4616, NJ_S("Slot 226 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4617, NJ_S("Slot 226 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4618, NJ_S("Slot 227 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4618, NJ_S("Slot 227 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4619, NJ_S("Slot 227 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4620, NJ_S("Slot 227 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4621, NJ_S("Slot 228 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4621, NJ_S("Slot 228 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4622, NJ_S("Slot 228 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4623, NJ_S("Slot 228 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4624, NJ_S("Slot 229 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4624, NJ_S("Slot 229 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4625, NJ_S("Slot 229 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4626, NJ_S("Slot 229 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4627, NJ_S("Slot 230 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4627, NJ_S("Slot 230 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4628, NJ_S("Slot 230 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4629, NJ_S("Slot 230 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4630, NJ_S("Slot 231 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4630, NJ_S("Slot 231 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4631, NJ_S("Slot 231 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4632, NJ_S("Slot 231 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4633, NJ_S("Slot 232 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4633, NJ_S("Slot 232 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4634, NJ_S("Slot 232 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4635, NJ_S("Slot 232 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4636, NJ_S("Slot 233 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4636, NJ_S("Slot 233 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4637, NJ_S("Slot 233 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4638, NJ_S("Slot 233 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4639, NJ_S("Slot 234 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4639, NJ_S("Slot 234 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4640, NJ_S("Slot 234 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4641, NJ_S("Slot 234 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4642, NJ_S("Slot 235 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4642, NJ_S("Slot 235 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4643, NJ_S("Slot 235 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4644, NJ_S("Slot 235 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4645, NJ_S("Slot 236 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4645, NJ_S("Slot 236 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4646, NJ_S("Slot 236 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4647, NJ_S("Slot 236 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4648, NJ_S("Slot 237 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4648, NJ_S("Slot 237 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4649, NJ_S("Slot 237 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4650, NJ_S("Slot 237 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4651, NJ_S("Slot 238 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4651, NJ_S("Slot 238 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4652, NJ_S("Slot 238 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
@@ -996,43 +996,43 @@ static void allSpecs_22 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4653, NJ_S("Slot 238 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4654, NJ_S("Slot 239 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4654, NJ_S("Slot 239 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4655, NJ_S("Slot 239 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4656, NJ_S("Slot 239 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4657, NJ_S("Slot 240 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4657, NJ_S("Slot 240 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4658, NJ_S("Slot 240 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4659, NJ_S("Slot 240 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4660, NJ_S("Slot 241 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4660, NJ_S("Slot 241 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4661, NJ_S("Slot 241 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4662, NJ_S("Slot 241 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4663, NJ_S("Slot 242 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4663, NJ_S("Slot 242 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4664, NJ_S("Slot 242 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4665, NJ_S("Slot 242 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4666, NJ_S("Slot 243 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4666, NJ_S("Slot 243 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4667, NJ_S("Slot 243 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4668, NJ_S("Slot 243 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4669, NJ_S("Slot 244 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4669, NJ_S("Slot 244 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4670, NJ_S("Slot 244 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4671, NJ_S("Slot 244 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4672, NJ_S("Slot 245 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4672, NJ_S("Slot 245 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4673, NJ_S("Slot 245 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4674, NJ_S("Slot 245 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4675, NJ_S("Slot 246 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4675, NJ_S("Slot 246 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4676, NJ_S("Slot 246 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4677, NJ_S("Slot 246 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4678, NJ_S("Slot 247 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4678, NJ_S("Slot 247 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4679, NJ_S("Slot 247 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4680, NJ_S("Slot 247 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4681, NJ_S("Slot 248 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4681, NJ_S("Slot 248 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4682, NJ_S("Slot 248 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4683, NJ_S("Slot 248 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4684, NJ_S("Slot 249 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4684, NJ_S("Slot 249 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4685, NJ_S("Slot 249 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4686, NJ_S("Slot 249 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4687, NJ_S("Slot 250 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4687, NJ_S("Slot 250 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4688, NJ_S("Slot 250 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4689, NJ_S("Slot 250 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4690, NJ_S("Slot 251 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4690, NJ_S("Slot 251 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4691, NJ_S("Slot 251 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4692, NJ_S("Slot 251 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
@@ -1040,19 +1040,19 @@ static void allSpecs_22 (std::vector<Spec>& v)
 static void allSpecs_23 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4693, NJ_S("Slot 252 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4693, NJ_S("Slot 252 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4694, NJ_S("Slot 252 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4695, NJ_S("Slot 252 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4696, NJ_S("Slot 253 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4696, NJ_S("Slot 253 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4697, NJ_S("Slot 253 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4698, NJ_S("Slot 253 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4699, NJ_S("Slot 254 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4699, NJ_S("Slot 254 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4700, NJ_S("Slot 254 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4701, NJ_S("Slot 254 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4702, NJ_S("Slot 255 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4702, NJ_S("Slot 255 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4703, NJ_S("Slot 255 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4704, NJ_S("Slot 255 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
-        Spec { 4705, NJ_S("Slot 256 Source"), 0.0, 33.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
+        Spec { 4705, NJ_S("Slot 256 Source"), 0.0, 43.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
         Spec { 4706, NJ_S("Slot 256 Dest"), 0.0, 1307.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4707, NJ_S("Slot 256 Amount"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 502, NJ_S("LFO 1 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
@@ -1821,6 +1821,276 @@ static void allSpecs_40 (std::vector<Spec>& v)
         Spec { 3118, NJ_S("LFO 8 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
         Spec { 3119, NJ_S("LFO 9 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
         Spec { 3120, NJ_S("LFO 10 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3600, NJ_S("Seq 1 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3601, NJ_S("Seq 1 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3602, NJ_S("Seq 1 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3603, NJ_S("Seq 1 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3604, NJ_S("Seq 1 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3605, NJ_S("Seq 1 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3606, NJ_S("Seq 1 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3607, NJ_S("Seq 1 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3608, NJ_S("Seq 1 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3609, NJ_S("Seq 1 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3610, NJ_S("Seq 1 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3611, NJ_S("Seq 1 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3612, NJ_S("Seq 1 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3613, NJ_S("Seq 1 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3614, NJ_S("Seq 1 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3615, NJ_S("Seq 1 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3616, NJ_S("Seq 1 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3617, NJ_S("Seq 1 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3618, NJ_S("Seq 1 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3619, NJ_S("Seq 1 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3620, NJ_S("Seq 1 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3621, NJ_S("Seq 1 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3622, NJ_S("Seq 1 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3623, NJ_S("Seq 1 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+    });
+}
+static void allSpecs_41 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3632, NJ_S("Seq 2 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3633, NJ_S("Seq 2 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3634, NJ_S("Seq 2 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3635, NJ_S("Seq 2 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3636, NJ_S("Seq 2 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3637, NJ_S("Seq 2 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3638, NJ_S("Seq 2 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3639, NJ_S("Seq 2 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3640, NJ_S("Seq 2 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3641, NJ_S("Seq 2 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3642, NJ_S("Seq 2 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3643, NJ_S("Seq 2 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3644, NJ_S("Seq 2 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3645, NJ_S("Seq 2 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3646, NJ_S("Seq 2 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3647, NJ_S("Seq 2 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3648, NJ_S("Seq 2 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3649, NJ_S("Seq 2 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3650, NJ_S("Seq 2 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3651, NJ_S("Seq 2 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3652, NJ_S("Seq 2 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3653, NJ_S("Seq 2 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3654, NJ_S("Seq 2 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3655, NJ_S("Seq 2 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3664, NJ_S("Seq 3 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3665, NJ_S("Seq 3 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3666, NJ_S("Seq 3 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3667, NJ_S("Seq 3 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3668, NJ_S("Seq 3 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3669, NJ_S("Seq 3 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3670, NJ_S("Seq 3 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3671, NJ_S("Seq 3 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3672, NJ_S("Seq 3 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3673, NJ_S("Seq 3 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3674, NJ_S("Seq 3 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3675, NJ_S("Seq 3 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3676, NJ_S("Seq 3 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3677, NJ_S("Seq 3 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3678, NJ_S("Seq 3 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3679, NJ_S("Seq 3 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+    });
+}
+static void allSpecs_42 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3680, NJ_S("Seq 3 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3681, NJ_S("Seq 3 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3682, NJ_S("Seq 3 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3683, NJ_S("Seq 3 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3684, NJ_S("Seq 3 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3685, NJ_S("Seq 3 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3686, NJ_S("Seq 3 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3687, NJ_S("Seq 3 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3696, NJ_S("Seq 4 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3697, NJ_S("Seq 4 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3698, NJ_S("Seq 4 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3699, NJ_S("Seq 4 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3700, NJ_S("Seq 4 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3701, NJ_S("Seq 4 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3702, NJ_S("Seq 4 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3703, NJ_S("Seq 4 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3704, NJ_S("Seq 4 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3705, NJ_S("Seq 4 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3706, NJ_S("Seq 4 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3707, NJ_S("Seq 4 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3708, NJ_S("Seq 4 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3709, NJ_S("Seq 4 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3710, NJ_S("Seq 4 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3711, NJ_S("Seq 4 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3712, NJ_S("Seq 4 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3713, NJ_S("Seq 4 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3714, NJ_S("Seq 4 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3715, NJ_S("Seq 4 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3716, NJ_S("Seq 4 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3717, NJ_S("Seq 4 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3718, NJ_S("Seq 4 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3719, NJ_S("Seq 4 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3728, NJ_S("Seq 5 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3729, NJ_S("Seq 5 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3730, NJ_S("Seq 5 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3731, NJ_S("Seq 5 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3732, NJ_S("Seq 5 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3733, NJ_S("Seq 5 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3734, NJ_S("Seq 5 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3735, NJ_S("Seq 5 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+    });
+}
+static void allSpecs_43 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3736, NJ_S("Seq 5 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3737, NJ_S("Seq 5 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3738, NJ_S("Seq 5 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3739, NJ_S("Seq 5 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3740, NJ_S("Seq 5 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3741, NJ_S("Seq 5 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3742, NJ_S("Seq 5 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3743, NJ_S("Seq 5 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3744, NJ_S("Seq 5 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3745, NJ_S("Seq 5 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3746, NJ_S("Seq 5 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3747, NJ_S("Seq 5 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3748, NJ_S("Seq 5 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3749, NJ_S("Seq 5 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3750, NJ_S("Seq 5 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3751, NJ_S("Seq 5 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3760, NJ_S("Seq 6 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3761, NJ_S("Seq 6 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3762, NJ_S("Seq 6 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3763, NJ_S("Seq 6 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3764, NJ_S("Seq 6 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3765, NJ_S("Seq 6 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3766, NJ_S("Seq 6 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3767, NJ_S("Seq 6 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3768, NJ_S("Seq 6 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3769, NJ_S("Seq 6 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3770, NJ_S("Seq 6 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3771, NJ_S("Seq 6 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3772, NJ_S("Seq 6 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3773, NJ_S("Seq 6 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3774, NJ_S("Seq 6 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3775, NJ_S("Seq 6 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3776, NJ_S("Seq 6 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3777, NJ_S("Seq 6 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3778, NJ_S("Seq 6 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3779, NJ_S("Seq 6 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3780, NJ_S("Seq 6 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3781, NJ_S("Seq 6 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3782, NJ_S("Seq 6 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3783, NJ_S("Seq 6 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+    });
+}
+static void allSpecs_44 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3792, NJ_S("Seq 7 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3793, NJ_S("Seq 7 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3794, NJ_S("Seq 7 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3795, NJ_S("Seq 7 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3796, NJ_S("Seq 7 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3797, NJ_S("Seq 7 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3798, NJ_S("Seq 7 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3799, NJ_S("Seq 7 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3800, NJ_S("Seq 7 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3801, NJ_S("Seq 7 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3802, NJ_S("Seq 7 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3803, NJ_S("Seq 7 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3804, NJ_S("Seq 7 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3805, NJ_S("Seq 7 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3806, NJ_S("Seq 7 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3807, NJ_S("Seq 7 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3808, NJ_S("Seq 7 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3809, NJ_S("Seq 7 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3810, NJ_S("Seq 7 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3811, NJ_S("Seq 7 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3812, NJ_S("Seq 7 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3813, NJ_S("Seq 7 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3814, NJ_S("Seq 7 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3815, NJ_S("Seq 7 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3824, NJ_S("Seq 8 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3825, NJ_S("Seq 8 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3826, NJ_S("Seq 8 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3827, NJ_S("Seq 8 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3828, NJ_S("Seq 8 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3829, NJ_S("Seq 8 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3830, NJ_S("Seq 8 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3831, NJ_S("Seq 8 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3832, NJ_S("Seq 8 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3833, NJ_S("Seq 8 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3834, NJ_S("Seq 8 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3835, NJ_S("Seq 8 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3836, NJ_S("Seq 8 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3837, NJ_S("Seq 8 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3838, NJ_S("Seq 8 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3839, NJ_S("Seq 8 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+    });
+}
+static void allSpecs_45 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3840, NJ_S("Seq 8 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3841, NJ_S("Seq 8 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3842, NJ_S("Seq 8 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3843, NJ_S("Seq 8 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3844, NJ_S("Seq 8 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3845, NJ_S("Seq 8 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3846, NJ_S("Seq 8 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3847, NJ_S("Seq 8 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3856, NJ_S("Seq 9 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3857, NJ_S("Seq 9 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3858, NJ_S("Seq 9 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3859, NJ_S("Seq 9 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3860, NJ_S("Seq 9 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3861, NJ_S("Seq 9 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3862, NJ_S("Seq 9 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3863, NJ_S("Seq 9 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+        Spec { 3864, NJ_S("Seq 9 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3865, NJ_S("Seq 9 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3866, NJ_S("Seq 9 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3867, NJ_S("Seq 9 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3868, NJ_S("Seq 9 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3869, NJ_S("Seq 9 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3870, NJ_S("Seq 9 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3871, NJ_S("Seq 9 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3872, NJ_S("Seq 9 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3873, NJ_S("Seq 9 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3874, NJ_S("Seq 9 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3875, NJ_S("Seq 9 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3876, NJ_S("Seq 9 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3877, NJ_S("Seq 9 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3878, NJ_S("Seq 9 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3879, NJ_S("Seq 9 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
+        Spec { 3888, NJ_S("Seq 10 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
+        Spec { 3889, NJ_S("Seq 10 Step 2"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
+        Spec { 3890, NJ_S("Seq 10 Step 3"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
+        Spec { 3891, NJ_S("Seq 10 Step 4"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
+        Spec { 3892, NJ_S("Seq 10 Step 5"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
+        Spec { 3893, NJ_S("Seq 10 Step 6"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
+        Spec { 3894, NJ_S("Seq 10 Step 7"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
+        Spec { 3895, NJ_S("Seq 10 Step 8"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
+    });
+}
+static void allSpecs_46 (std::vector<Spec>& v)
+{
+    v.insert (v.end(), {
+        Spec { 3896, NJ_S("Seq 10 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
+        Spec { 3897, NJ_S("Seq 10 Step 10"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
+        Spec { 3898, NJ_S("Seq 10 Step 11"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
+        Spec { 3899, NJ_S("Seq 10 Step 12"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
+        Spec { 3900, NJ_S("Seq 10 Step 13"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
+        Spec { 3901, NJ_S("Seq 10 Step 14"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
+        Spec { 3902, NJ_S("Seq 10 Step 15"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
+        Spec { 3903, NJ_S("Seq 10 Step 16"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
+        Spec { 3904, NJ_S("Seq 10 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
+        Spec { 3905, NJ_S("Seq 10 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
+        Spec { 3906, NJ_S("Seq 10 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
+        Spec { 3907, NJ_S("Seq 10 Division"), 0.0, 17.0, 11.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
+        Spec { 3908, NJ_S("Seq 10 Glide"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Glide"), {  } },
+        Spec { 3909, NJ_S("Seq 10 Direction"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Forward"), NJ_S("Backward"), NJ_S("Ping-Pong"), NJ_S("Random") }, 1, NJ_S("Direction"), {  } },
+        Spec { 3910, NJ_S("Seq 10 Retrig"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Note") }, 1, NJ_S("Retrig"), {  } },
+        Spec { 3911, NJ_S("Seq 10 Bipolar"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
         Spec { 880, NJ_S("Bus 1 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 1"), {  } },
         Spec { 881, NJ_S("Bus 2 Level"), 0.0, 1.5, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bus 2"), {  } },
         Spec { 1000, NJ_S("OSC 1 Source"), 0.0, 12.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick"), NJ_S("Waveguide"), NJ_S("JP-8080"), NJ_S("Granular"), NJ_S("Additive"), NJ_S("Modal Drum"), NJ_S("Spectral"), NJ_S("SoundFont") }, 1, NJ_S("Source"), {  } },
@@ -1847,7 +2117,7 @@ static void allSpecs_40 (std::vector<Spec>& v)
         Spec { 1019, NJ_S("OSC 1 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
     });
 }
-static void allSpecs_41 (std::vector<Spec>& v)
+static void allSpecs_47 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1020, NJ_S("OSC 1 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
@@ -1892,7 +2162,7 @@ static void allSpecs_41 (std::vector<Spec>& v)
         Spec { 1061, NJ_S("OSC 1 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
     });
 }
-static void allSpecs_42 (std::vector<Spec>& v)
+static void allSpecs_48 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1062, NJ_S("OSC 1 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
@@ -1937,7 +2207,7 @@ static void allSpecs_42 (std::vector<Spec>& v)
         Spec { 1101, NJ_S("OSC 2 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
     });
 }
-static void allSpecs_43 (std::vector<Spec>& v)
+static void allSpecs_49 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1102, NJ_S("OSC 2 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
@@ -1982,7 +2252,7 @@ static void allSpecs_43 (std::vector<Spec>& v)
         Spec { 1141, NJ_S("OSC 3 Unison Voices"), 1.0, 16.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
     });
 }
-static void allSpecs_44 (std::vector<Spec>& v)
+static void allSpecs_50 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1142, NJ_S("OSC 3 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
@@ -2027,7 +2297,7 @@ static void allSpecs_44 (std::vector<Spec>& v)
         Spec { 1182, NJ_S("OSC 3 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
     });
 }
-static void allSpecs_45 (std::vector<Spec>& v)
+static void allSpecs_51 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1183, NJ_S("OSC 3 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
@@ -2072,7 +2342,7 @@ static void allSpecs_45 (std::vector<Spec>& v)
         Spec { 1219, NJ_S("OSC 4 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
     });
 }
-static void allSpecs_46 (std::vector<Spec>& v)
+static void allSpecs_52 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1222, NJ_S("OSC 4 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
@@ -2117,7 +2387,7 @@ static void allSpecs_46 (std::vector<Spec>& v)
         Spec { 1261, NJ_S("OSC 5 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
     });
 }
-static void allSpecs_47 (std::vector<Spec>& v)
+static void allSpecs_53 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1262, NJ_S("OSC 5 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
@@ -2162,7 +2432,7 @@ static void allSpecs_47 (std::vector<Spec>& v)
         Spec { 1304, NJ_S("OSC 5 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
     });
 }
-static void allSpecs_48 (std::vector<Spec>& v)
+static void allSpecs_54 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1302, NJ_S("OSC 5 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
@@ -2207,7 +2477,7 @@ static void allSpecs_48 (std::vector<Spec>& v)
         Spec { 1339, NJ_S("OSC 6 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
     });
 }
-static void allSpecs_49 (std::vector<Spec>& v)
+static void allSpecs_55 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1340, NJ_S("OSC 6 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
@@ -2252,7 +2522,7 @@ static void allSpecs_49 (std::vector<Spec>& v)
         Spec { 1381, NJ_S("OSC 6 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
     });
 }
-static void allSpecs_50 (std::vector<Spec>& v)
+static void allSpecs_56 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1382, NJ_S("OSC 6 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
@@ -2297,7 +2567,7 @@ static void allSpecs_50 (std::vector<Spec>& v)
         Spec { 1487, NJ_S("PD 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
     });
 }
-static void allSpecs_51 (std::vector<Spec>& v)
+static void allSpecs_57 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1527, NJ_S("RM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
@@ -2342,7 +2612,7 @@ static void allSpecs_51 (std::vector<Spec>& v)
         Spec { 1495, NJ_S("PD 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
     });
 }
-static void allSpecs_52 (std::vector<Spec>& v)
+static void allSpecs_58 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1535, NJ_S("RM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
@@ -2387,7 +2657,7 @@ static void allSpecs_52 (std::vector<Spec>& v)
         Spec { 1503, NJ_S("PD 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
     });
 }
-static void allSpecs_53 (std::vector<Spec>& v)
+static void allSpecs_59 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1543, NJ_S("RM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
@@ -2432,7 +2702,7 @@ static void allSpecs_53 (std::vector<Spec>& v)
         Spec { 1511, NJ_S("PD 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
     });
 }
-static void allSpecs_54 (std::vector<Spec>& v)
+static void allSpecs_60 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1551, NJ_S("RM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
@@ -2477,7 +2747,7 @@ static void allSpecs_54 (std::vector<Spec>& v)
         Spec { 2917, NJ_S("TZFM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
     });
 }
-static void allSpecs_55 (std::vector<Spec>& v)
+static void allSpecs_61 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2918, NJ_S("TZFM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
@@ -2522,7 +2792,7 @@ static void allSpecs_55 (std::vector<Spec>& v)
         Spec { 1737, NJ_S("OSC 2 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
     });
 }
-static void allSpecs_56 (std::vector<Spec>& v)
+static void allSpecs_62 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1738, NJ_S("OSC 2 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
@@ -2567,7 +2837,7 @@ static void allSpecs_56 (std::vector<Spec>& v)
         Spec { 1809, NJ_S("OSC 4 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
     });
 }
-static void allSpecs_57 (std::vector<Spec>& v)
+static void allSpecs_63 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1810, NJ_S("OSC 4 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
@@ -2612,7 +2882,7 @@ static void allSpecs_57 (std::vector<Spec>& v)
         Spec { 1721, NJ_S("OSC 1 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
     });
 }
-static void allSpecs_58 (std::vector<Spec>& v)
+static void allSpecs_64 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1722, NJ_S("OSC 1 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
@@ -2657,7 +2927,7 @@ static void allSpecs_58 (std::vector<Spec>& v)
         Spec { 1849, NJ_S("OSC 5 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
     });
 }
-static void allSpecs_59 (std::vector<Spec>& v)
+static void allSpecs_65 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1850, NJ_S("OSC 5 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
@@ -2702,7 +2972,7 @@ static void allSpecs_59 (std::vector<Spec>& v)
         Spec { 1886, NJ_S("OSC 6 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
     });
 }
-static void allSpecs_60 (std::vector<Spec>& v)
+static void allSpecs_66 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1887, NJ_S("OSC 6 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
@@ -2747,7 +3017,7 @@ static void allSpecs_60 (std::vector<Spec>& v)
         Spec { 1935, NJ_S("OSC 3 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
     });
 }
-static void allSpecs_61 (std::vector<Spec>& v)
+static void allSpecs_67 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1936, NJ_S("OSC 3 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
@@ -2792,7 +3062,7 @@ static void allSpecs_61 (std::vector<Spec>& v)
         Spec { 1975, NJ_S("OSC 5 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
     });
 }
-static void allSpecs_62 (std::vector<Spec>& v)
+static void allSpecs_68 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 1976, NJ_S("OSC 5 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
@@ -2837,7 +3107,7 @@ static void allSpecs_62 (std::vector<Spec>& v)
         Spec { 2113, NJ_S("OSC 1 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
     });
 }
-static void allSpecs_63 (std::vector<Spec>& v)
+static void allSpecs_69 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2114, NJ_S("OSC 1 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
@@ -2882,7 +3152,7 @@ static void allSpecs_63 (std::vector<Spec>& v)
         Spec { 2153, NJ_S("OSC 4 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
     });
 }
-static void allSpecs_64 (std::vector<Spec>& v)
+static void allSpecs_70 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2154, NJ_S("OSC 4 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
@@ -2927,7 +3197,7 @@ static void allSpecs_64 (std::vector<Spec>& v)
         Spec { 2193, NJ_S("OSC 6 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
     });
 }
-static void allSpecs_65 (std::vector<Spec>& v)
+static void allSpecs_71 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2194, NJ_S("OSC 6 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
@@ -2972,7 +3242,7 @@ static void allSpecs_65 (std::vector<Spec>& v)
         Spec { 2237, NJ_S("OSC 3 Waveguide Noise"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
     });
 }
-static void allSpecs_66 (std::vector<Spec>& v)
+static void allSpecs_72 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2238, NJ_S("OSC 3 Waveguide Nonlinear"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Nonlinear"), {  } },
@@ -3017,7 +3287,7 @@ static void allSpecs_66 (std::vector<Spec>& v)
         Spec { 2277, NJ_S("OSC 5 Waveguide Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
     });
 }
-static void allSpecs_67 (std::vector<Spec>& v)
+static void allSpecs_73 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2278, NJ_S("OSC 5 Waveguide Tension"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tension"), {  } },
@@ -3062,7 +3332,7 @@ static void allSpecs_67 (std::vector<Spec>& v)
         Spec { 2321, NJ_S("OSC 2 JP Super Saw Mix"), 0.0, 1.0, 0.7, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
     });
 }
-static void allSpecs_68 (std::vector<Spec>& v)
+static void allSpecs_74 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2322, NJ_S("OSC 2 JP Stereo Width"), 0.0, 1.0, 0.7, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
@@ -3107,7 +3377,7 @@ static void allSpecs_68 (std::vector<Spec>& v)
         Spec { 2361, NJ_S("OSC 4 JP Noise Mix"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
     });
 }
-static void allSpecs_69 (std::vector<Spec>& v)
+static void allSpecs_75 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2362, NJ_S("OSC 4 JP Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
@@ -3152,7 +3422,7 @@ static void allSpecs_69 (std::vector<Spec>& v)
         Spec { 2405, NJ_S("OSC 1 Granular Pan Spread"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan Spread"), {  } },
     });
 }
-static void allSpecs_70 (std::vector<Spec>& v)
+static void allSpecs_76 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2406, NJ_S("OSC 1 Granular Window"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Window"), {  } },
@@ -3197,7 +3467,7 @@ static void allSpecs_70 (std::vector<Spec>& v)
         Spec { 2457, NJ_S("OSC 4 Granular Timing"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Timing Jitter"), {  } },
     });
 }
-static void allSpecs_71 (std::vector<Spec>& v)
+static void allSpecs_77 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2458, NJ_S("OSC 4 Granular Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
@@ -3242,7 +3512,7 @@ static void allSpecs_71 (std::vector<Spec>& v)
         Spec { 2513, NJ_S("OSC 1 Additive Stereo Spread"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
     });
 }
-static void allSpecs_72 (std::vector<Spec>& v)
+static void allSpecs_78 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2514, NJ_S("OSC 1 Additive Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Bright"), {  } },
@@ -3287,7 +3557,7 @@ static void allSpecs_72 (std::vector<Spec>& v)
         Spec { 2556, NJ_S("OSC 4 Additive Formant Gain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Form. Gain"), {  } },
     });
 }
-static void allSpecs_73 (std::vector<Spec>& v)
+static void allSpecs_79 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2557, NJ_S("OSC 4 Additive Shimmer"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shimmer"), {  } },
@@ -3332,7 +3602,7 @@ static void allSpecs_73 (std::vector<Spec>& v)
         Spec { 2603, NJ_S("OSC 1 Drum Stick"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stick"), {  } },
     });
 }
-static void allSpecs_74 (std::vector<Spec>& v)
+static void allSpecs_80 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2604, NJ_S("OSC 1 Drum Edge"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Edge"), {  } },
@@ -3377,7 +3647,7 @@ static void allSpecs_74 (std::vector<Spec>& v)
         Spec { 2643, NJ_S("OSC 3 Drum Sympathetic"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sympathetic"), {  } },
     });
 }
-static void allSpecs_75 (std::vector<Spec>& v)
+static void allSpecs_81 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2644, NJ_S("OSC 3 Drum Tension"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tension"), {  } },
@@ -3422,7 +3692,7 @@ static void allSpecs_75 (std::vector<Spec>& v)
         Spec { 2683, NJ_S("OSC 6 Drum Stick"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stick"), {  } },
     });
 }
-static void allSpecs_76 (std::vector<Spec>& v)
+static void allSpecs_82 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2684, NJ_S("OSC 6 Drum Edge"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Edge"), {  } },
@@ -3467,7 +3737,7 @@ static void allSpecs_76 (std::vector<Spec>& v)
         Spec { 2727, NJ_S("OSC 2 Spectral Contrast"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
     });
 }
-static void allSpecs_77 (std::vector<Spec>& v)
+static void allSpecs_83 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2728, NJ_S("OSC 2 Spectral Jitter"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Jitter"), {  } },
@@ -3512,7 +3782,7 @@ static void allSpecs_77 (std::vector<Spec>& v)
         Spec { 2767, NJ_S("OSC 5 Spectral Morph"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
     });
 }
-static void allSpecs_78 (std::vector<Spec>& v)
+static void allSpecs_84 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2768, NJ_S("OSC 5 Spectral Scan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scan"), {  } },
@@ -3557,7 +3827,7 @@ static void allSpecs_78 (std::vector<Spec>& v)
         Spec { 2817, NJ_S("OSC 2 SoundFont Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel Sens"), {  } },
     });
 }
-static void allSpecs_79 (std::vector<Spec>& v)
+static void allSpecs_85 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2818, NJ_S("OSC 2 SoundFont Attack"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
@@ -3602,7 +3872,7 @@ static void allSpecs_79 (std::vector<Spec>& v)
         Spec { 2881, NJ_S("OSC 6 SoundFont Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel Sens"), {  } },
     });
 }
-static void allSpecs_80 (std::vector<Spec>& v)
+static void allSpecs_86 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 2882, NJ_S("OSC 6 SoundFont Attack"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
@@ -3617,7 +3887,7 @@ static void allSpecs_80 (std::vector<Spec>& v)
 }
 const std::vector<Spec>& allSpecs()
 {
-    static const std::vector<Spec> v = [] { std::vector<Spec> r; allSpecs_0 (r); allSpecs_1 (r); allSpecs_2 (r); allSpecs_3 (r); allSpecs_4 (r); allSpecs_5 (r); allSpecs_6 (r); allSpecs_7 (r); allSpecs_8 (r); allSpecs_9 (r); allSpecs_10 (r); allSpecs_11 (r); allSpecs_12 (r); allSpecs_13 (r); allSpecs_14 (r); allSpecs_15 (r); allSpecs_16 (r); allSpecs_17 (r); allSpecs_18 (r); allSpecs_19 (r); allSpecs_20 (r); allSpecs_21 (r); allSpecs_22 (r); allSpecs_23 (r); allSpecs_24 (r); allSpecs_25 (r); allSpecs_26 (r); allSpecs_27 (r); allSpecs_28 (r); allSpecs_29 (r); allSpecs_30 (r); allSpecs_31 (r); allSpecs_32 (r); allSpecs_33 (r); allSpecs_34 (r); allSpecs_35 (r); allSpecs_36 (r); allSpecs_37 (r); allSpecs_38 (r); allSpecs_39 (r); allSpecs_40 (r); allSpecs_41 (r); allSpecs_42 (r); allSpecs_43 (r); allSpecs_44 (r); allSpecs_45 (r); allSpecs_46 (r); allSpecs_47 (r); allSpecs_48 (r); allSpecs_49 (r); allSpecs_50 (r); allSpecs_51 (r); allSpecs_52 (r); allSpecs_53 (r); allSpecs_54 (r); allSpecs_55 (r); allSpecs_56 (r); allSpecs_57 (r); allSpecs_58 (r); allSpecs_59 (r); allSpecs_60 (r); allSpecs_61 (r); allSpecs_62 (r); allSpecs_63 (r); allSpecs_64 (r); allSpecs_65 (r); allSpecs_66 (r); allSpecs_67 (r); allSpecs_68 (r); allSpecs_69 (r); allSpecs_70 (r); allSpecs_71 (r); allSpecs_72 (r); allSpecs_73 (r); allSpecs_74 (r); allSpecs_75 (r); allSpecs_76 (r); allSpecs_77 (r); allSpecs_78 (r); allSpecs_79 (r); allSpecs_80 (r); return r; }();
+    static const std::vector<Spec> v = [] { std::vector<Spec> r; allSpecs_0 (r); allSpecs_1 (r); allSpecs_2 (r); allSpecs_3 (r); allSpecs_4 (r); allSpecs_5 (r); allSpecs_6 (r); allSpecs_7 (r); allSpecs_8 (r); allSpecs_9 (r); allSpecs_10 (r); allSpecs_11 (r); allSpecs_12 (r); allSpecs_13 (r); allSpecs_14 (r); allSpecs_15 (r); allSpecs_16 (r); allSpecs_17 (r); allSpecs_18 (r); allSpecs_19 (r); allSpecs_20 (r); allSpecs_21 (r); allSpecs_22 (r); allSpecs_23 (r); allSpecs_24 (r); allSpecs_25 (r); allSpecs_26 (r); allSpecs_27 (r); allSpecs_28 (r); allSpecs_29 (r); allSpecs_30 (r); allSpecs_31 (r); allSpecs_32 (r); allSpecs_33 (r); allSpecs_34 (r); allSpecs_35 (r); allSpecs_36 (r); allSpecs_37 (r); allSpecs_38 (r); allSpecs_39 (r); allSpecs_40 (r); allSpecs_41 (r); allSpecs_42 (r); allSpecs_43 (r); allSpecs_44 (r); allSpecs_45 (r); allSpecs_46 (r); allSpecs_47 (r); allSpecs_48 (r); allSpecs_49 (r); allSpecs_50 (r); allSpecs_51 (r); allSpecs_52 (r); allSpecs_53 (r); allSpecs_54 (r); allSpecs_55 (r); allSpecs_56 (r); allSpecs_57 (r); allSpecs_58 (r); allSpecs_59 (r); allSpecs_60 (r); allSpecs_61 (r); allSpecs_62 (r); allSpecs_63 (r); allSpecs_64 (r); allSpecs_65 (r); allSpecs_66 (r); allSpecs_67 (r); allSpecs_68 (r); allSpecs_69 (r); allSpecs_70 (r); allSpecs_71 (r); allSpecs_72 (r); allSpecs_73 (r); allSpecs_74 (r); allSpecs_75 (r); allSpecs_76 (r); allSpecs_77 (r); allSpecs_78 (r); allSpecs_79 (r); allSpecs_80 (r); allSpecs_81 (r); allSpecs_82 (r); allSpecs_83 (r); allSpecs_84 (r); allSpecs_85 (r); allSpecs_86 (r); return r; }();
     return v;
 }
 static void filterTypes_0 (juce::StringArray& v)
@@ -3735,6 +4005,16 @@ static void modSrc_0 (juce::StringArray& v)
     v.add (NJ_S("Freq 8"));
     v.add (NJ_S("Freq 9"));
     v.add (NJ_S("Freq 10"));
+    v.add (NJ_S("Seq 1"));
+    v.add (NJ_S("Seq 2"));
+    v.add (NJ_S("Seq 3"));
+    v.add (NJ_S("Seq 4"));
+    v.add (NJ_S("Seq 5"));
+    v.add (NJ_S("Seq 6"));
+    v.add (NJ_S("Seq 7"));
+    v.add (NJ_S("Seq 8"));
+    v.add (NJ_S("Seq 9"));
+    v.add (NJ_S("Seq 10"));
 }
 const juce::StringArray& modSrc()
 {
@@ -5213,7 +5493,7 @@ const std::vector<std::pair<int, juce::String>>& filterGroups()
 }
 const std::vector<std::pair<int, juce::String>>& modSrcGroups()
 {
-    static const std::vector<std::pair<int, juce::String>> v = { { 0, NJ_S("") }, { 1, NJ_S("LFO") }, { 11, NJ_S("Envelope") }, { 21, NJ_S("Note") }, { 24, NJ_S("Freq") } };
+    static const std::vector<std::pair<int, juce::String>> v = { { 0, NJ_S("") }, { 1, NJ_S("LFO") }, { 11, NJ_S("Envelope") }, { 21, NJ_S("Note") }, { 24, NJ_S("Freq") }, { 34, NJ_S("Sequencer") } };
     return v;
 }
 const std::vector<std::pair<int, juce::String>>& modDstGroups()
