@@ -1819,6 +1819,7 @@ static void allSpecs_40 (std::vector<Spec>& v)
         Spec { 3925, NJ_S("Arp Rate"), 0.25, 30.0, 6.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
         Spec { 3926, NJ_S("Arp Gate"), 0.05, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Gate"), {  } },
         Spec { 3927, NJ_S("Arp Latch"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Latch"), {  } },
+        Spec { 3928, NJ_S("Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)"), 0.0, 10.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Monitor"), {  } },
         Spec { 3111, NJ_S("LFO 1 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
         Spec { 3112, NJ_S("LFO 2 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
         Spec { 3113, NJ_S("LFO 3 Polarity"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Unipolar"), NJ_S("Bipolar") }, 1, NJ_S("Polarity"), {  } },
@@ -1844,12 +1845,12 @@ static void allSpecs_40 (std::vector<Spec>& v)
         Spec { 3612, NJ_S("Seq 1 Step 13"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
         Spec { 3613, NJ_S("Seq 1 Step 14"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
         Spec { 3614, NJ_S("Seq 1 Step 15"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
-        Spec { 3615, NJ_S("Seq 1 Step 16"), 0.0, 1.0, 0.9, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
     });
 }
 static void allSpecs_41 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3615, NJ_S("Seq 1 Step 16"), 0.0, 1.0, 0.9, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
         Spec { 3616, NJ_S("Seq 1 Length"), 1.0, 16.0, 8.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Length"), {  } },
         Spec { 3617, NJ_S("Seq 1 Rate"), 0.05, 40.0, 4.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Rate"), {  } },
         Spec { 3618, NJ_S("Seq 1 Sync"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Free"), NJ_S("Sync"), NJ_S("Spos") }, 1, NJ_S("Sync"), {  } },
@@ -1889,12 +1890,12 @@ static void allSpecs_41 (std::vector<Spec>& v)
         Spec { 3641, NJ_S("Seq 2 Step 10"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
         Spec { 3642, NJ_S("Seq 2 Step 11"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
         Spec { 3643, NJ_S("Seq 2 Step 12"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
-        Spec { 3644, NJ_S("Seq 2 Step 13"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
     });
 }
 static void allSpecs_42 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3644, NJ_S("Seq 2 Step 13"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
         Spec { 3645, NJ_S("Seq 2 Step 14"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 14"), {  } },
         Spec { 3646, NJ_S("Seq 2 Step 15"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 15"), {  } },
         Spec { 3647, NJ_S("Seq 2 Step 16"), 0.0, 1.0, 0.9, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 16"), {  } },
@@ -1934,12 +1935,12 @@ static void allSpecs_42 (std::vector<Spec>& v)
         Spec { 3670, NJ_S("Seq 3 Step 7"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
         Spec { 3671, NJ_S("Seq 3 Step 8"), 0.0, 1.0, 0.9, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
         Spec { 3672, NJ_S("Seq 3 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
-        Spec { 3673, NJ_S("Seq 3 Step 10"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
     });
 }
 static void allSpecs_43 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3673, NJ_S("Seq 3 Step 10"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
         Spec { 3674, NJ_S("Seq 3 Step 11"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 11"), {  } },
         Spec { 3675, NJ_S("Seq 3 Step 12"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 12"), {  } },
         Spec { 3676, NJ_S("Seq 3 Step 13"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 13"), {  } },
@@ -1979,12 +1980,12 @@ static void allSpecs_43 (std::vector<Spec>& v)
         Spec { 3699, NJ_S("Seq 4 Step 4"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
         Spec { 3700, NJ_S("Seq 4 Step 5"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
         Spec { 3701, NJ_S("Seq 4 Step 6"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
-        Spec { 3702, NJ_S("Seq 4 Step 7"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
     });
 }
 static void allSpecs_44 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3702, NJ_S("Seq 4 Step 7"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
         Spec { 3703, NJ_S("Seq 4 Step 8"), 0.0, 1.0, 0.9, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 8"), {  } },
         Spec { 3704, NJ_S("Seq 4 Step 9"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 9"), {  } },
         Spec { 3705, NJ_S("Seq 4 Step 10"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 10"), {  } },
@@ -2024,12 +2025,12 @@ static void allSpecs_44 (std::vector<Spec>& v)
         Spec { 3728, NJ_S("Seq 5 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
         Spec { 3729, NJ_S("Seq 5 Step 2"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
         Spec { 3730, NJ_S("Seq 5 Step 3"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
-        Spec { 3731, NJ_S("Seq 5 Step 4"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
     });
 }
 static void allSpecs_45 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3731, NJ_S("Seq 5 Step 4"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
         Spec { 3732, NJ_S("Seq 5 Step 5"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 5"), {  } },
         Spec { 3733, NJ_S("Seq 5 Step 6"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 6"), {  } },
         Spec { 3734, NJ_S("Seq 5 Step 7"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 7"), {  } },
@@ -2069,12 +2070,12 @@ static void allSpecs_45 (std::vector<Spec>& v)
         Spec { 5077, NJ_S("Seq 5 Step 14 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5078, NJ_S("Seq 5 Step 15 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5079, NJ_S("Seq 5 Step 16 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 3760, NJ_S("Seq 6 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
     });
 }
 static void allSpecs_46 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 3760, NJ_S("Seq 6 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
         Spec { 3761, NJ_S("Seq 6 Step 2"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 2"), {  } },
         Spec { 3762, NJ_S("Seq 6 Step 3"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 3"), {  } },
         Spec { 3763, NJ_S("Seq 6 Step 4"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 4"), {  } },
@@ -2114,12 +2115,12 @@ static void allSpecs_46 (std::vector<Spec>& v)
         Spec { 5090, NJ_S("Seq 6 Step 11 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5091, NJ_S("Seq 6 Step 12 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5092, NJ_S("Seq 6 Step 13 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 5093, NJ_S("Seq 6 Step 14 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_47 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 5093, NJ_S("Seq 6 Step 14 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5094, NJ_S("Seq 6 Step 15 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5095, NJ_S("Seq 6 Step 16 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 3792, NJ_S("Seq 7 Step 1"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Step 1"), {  } },
@@ -2159,12 +2160,12 @@ static void allSpecs_47 (std::vector<Spec>& v)
         Spec { 5103, NJ_S("Seq 7 Step 8 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5104, NJ_S("Seq 7 Step 9 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5105, NJ_S("Seq 7 Step 10 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 5106, NJ_S("Seq 7 Step 11 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_48 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 5106, NJ_S("Seq 7 Step 11 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5107, NJ_S("Seq 7 Step 12 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5108, NJ_S("Seq 7 Step 13 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5109, NJ_S("Seq 7 Step 14 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
@@ -2204,12 +2205,12 @@ static void allSpecs_48 (std::vector<Spec>& v)
         Spec { 5116, NJ_S("Seq 8 Step 5 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5117, NJ_S("Seq 8 Step 6 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5118, NJ_S("Seq 8 Step 7 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 5119, NJ_S("Seq 8 Step 8 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_49 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 5119, NJ_S("Seq 8 Step 8 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5120, NJ_S("Seq 8 Step 9 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5121, NJ_S("Seq 8 Step 10 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5122, NJ_S("Seq 8 Step 11 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
@@ -2249,12 +2250,12 @@ static void allSpecs_49 (std::vector<Spec>& v)
         Spec { 5129, NJ_S("Seq 9 Step 2 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5130, NJ_S("Seq 9 Step 3 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5131, NJ_S("Seq 9 Step 4 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 5132, NJ_S("Seq 9 Step 5 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_50 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 5132, NJ_S("Seq 9 Step 5 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5133, NJ_S("Seq 9 Step 6 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5134, NJ_S("Seq 9 Step 7 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5135, NJ_S("Seq 9 Step 8 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
@@ -2294,12 +2295,12 @@ static void allSpecs_50 (std::vector<Spec>& v)
         Spec { 3913, NJ_S("Seq 10 Loop"), 1.0, 16.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Loop"), {  } },
         Spec { 3914, NJ_S("Seq 10 Hold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Hold"), {  } },
         Spec { 5144, NJ_S("Seq 10 Step 1 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
-        Spec { 5145, NJ_S("Seq 10 Step 2 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_51 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 5145, NJ_S("Seq 10 Step 2 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5146, NJ_S("Seq 10 Step 3 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5147, NJ_S("Seq 10 Step 4 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
         Spec { 5148, NJ_S("Seq 10 Step 5 Shape"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Flat"), NJ_S("Ramp down"), NJ_S("Ramp up"), NJ_S("Triangle"), NJ_S("Half sine"), NJ_S("Gate 50%"), NJ_S("Gate 25%"), NJ_S("Decay") }, 1, NJ_S("Shape"), {  } },
@@ -2339,12 +2340,12 @@ static void allSpecs_51 (std::vector<Spec>& v)
         Spec { 1018, NJ_S("OSC 1 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
         Spec { 1019, NJ_S("OSC 1 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
         Spec { 1020, NJ_S("OSC 1 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        Spec { 1021, NJ_S("OSC 1 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
     });
 }
 static void allSpecs_52 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1021, NJ_S("OSC 1 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
         Spec { 1022, NJ_S("OSC 1 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
         Spec { 1023, NJ_S("OSC 1 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
         Spec { 1024, NJ_S("OSC 1 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
@@ -2384,12 +2385,12 @@ static void allSpecs_52 (std::vector<Spec>& v)
         Spec { 1060, NJ_S("OSC 1 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
         Spec { 1061, NJ_S("OSC 1 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
         Spec { 1062, NJ_S("OSC 1 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        Spec { 1063, NJ_S("OSC 1 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
     });
 }
 static void allSpecs_53 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1063, NJ_S("OSC 1 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
         Spec { 1064, NJ_S("OSC 2 Source"), 0.0, 12.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Wavetable"), NJ_S("Sampler"), NJ_S("Wave Terrain"), NJ_S("Physical"), NJ_S("Alpha Juno"), NJ_S("Kick"), NJ_S("Waveguide"), NJ_S("JP-8080"), NJ_S("Granular"), NJ_S("Additive"), NJ_S("Modal Drum"), NJ_S("Spectral"), NJ_S("SoundFont") }, 1, NJ_S("Source"), {  } },
         Spec { 1065, NJ_S("OSC 2 Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Level"), {  } },
         Spec { 1066, NJ_S("OSC 2 Pan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan"), {  } },
@@ -2429,12 +2430,12 @@ static void allSpecs_53 (std::vector<Spec>& v)
         Spec { 1100, NJ_S("OSC 2 Filter EG Int"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("EG Int"), {  } },
         Spec { 1101, NJ_S("OSC 2 Filter Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Velocity"), {  } },
         Spec { 1102, NJ_S("OSC 2 Filter EG Attack"), 0.0, 5000.0, 0.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        Spec { 1103, NJ_S("OSC 2 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
     });
 }
 static void allSpecs_54 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1103, NJ_S("OSC 2 Filter EG Decay"), 10.0, 5000.0, 300.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 1104, NJ_S("OSC 2 Filter EG Sustain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
         Spec { 1105, NJ_S("OSC 2 Filter EG Release"), 5.0, 5000.0, 250.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
         Spec { 1106, NJ_S("OSC 2 Distortion Type"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Soft"), NJ_S("Tube"), NJ_S("Hard"), NJ_S("Fold"), NJ_S("Sine"), NJ_S("Crunch"), NJ_S("Wavedistortion") }, 1, NJ_S("Type"), {  } },
@@ -2474,12 +2475,12 @@ static void allSpecs_54 (std::vector<Spec>& v)
         Spec { 1140, NJ_S("OSC 3 Root Note"), 0.0, 127.0, 60.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Root Note"), {  } },
         Spec { 1141, NJ_S("OSC 3 Unison Voices"), 1.0, 16.0, 1.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Voices"), {  } },
         Spec { 1142, NJ_S("OSC 3 Unison Detune"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
-        Spec { 1143, NJ_S("OSC 3 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
     });
 }
 static void allSpecs_55 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1143, NJ_S("OSC 3 Unison Blend"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blend"), {  } },
         Spec { 1144, NJ_S("OSC 3 Unison Width"), 0.0, 1.0, 0.75, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
         Spec { 1145, NJ_S("OSC 3 Unison Style"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Lin"), NJ_S("Exp"), NJ_S("Inv"), NJ_S("Rnd"), NJ_S("Super"), NJ_S("Hyper") }, 1, NJ_S("Detune Curve"), {  } },
         Spec { 1156, NJ_S("OSC 3 Unison Drift"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
@@ -2519,12 +2520,12 @@ static void allSpecs_55 (std::vector<Spec>& v)
         Spec { 1181, NJ_S("OSC 3 Wavefilter Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
         Spec { 1182, NJ_S("OSC 3 Wavefilter Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
         Spec { 1183, NJ_S("OSC 3 Wavefilter Gain Law"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Linear"), NJ_S("Bipolar"), NJ_S("dB") }, 1, NJ_S("Gain Law"), {  } },
-        Spec { 1173, NJ_S("OSC 3 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
     });
 }
 static void allSpecs_56 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1173, NJ_S("OSC 3 Pre-Matrix Order"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Filter > Dist > Reso"), NJ_S("Dist > Filter > Reso"), NJ_S("Filter > Reso > Dist"), NJ_S("Reso > Filter > Dist"), NJ_S("Dist > Reso > Filter"), NJ_S("Reso > Dist > Filter") }, 1, NJ_S("Order"), {  } },
         Spec { 1184, NJ_S("OSC 3 Resonator On"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("On"), {  } },
         Spec { 1185, NJ_S("OSC 3 Resonator Model"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
         Spec { 1186, NJ_S("OSC 3 Resonator Decay"), 0.02, 20.0, 1.0, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
@@ -2564,12 +2565,12 @@ static void allSpecs_56 (std::vector<Spec>& v)
         Spec { 1218, NJ_S("OSC 4 Terrain Warp"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
         Spec { 1219, NJ_S("OSC 4 Terrain Fold"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Fold"), {  } },
         Spec { 1222, NJ_S("OSC 4 Filter On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Filter"), {  } },
-        Spec { 1223, NJ_S("OSC 4 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
     });
 }
 static void allSpecs_57 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1223, NJ_S("OSC 4 Filter Type"), 0.0, 30.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("LP24"), NJ_S("LP12"), NJ_S("HP12"), NJ_S("BP12"), NJ_S("LP6"), NJ_S("LP18"), NJ_S("HP6"), NJ_S("HP18"), NJ_S("HP24"), NJ_S("BP24"), NJ_S("Notch12"), NJ_S("Notch24"), NJ_S("Peak"), NJ_S("LowShelf"), NJ_S("HighShelf"), NJ_S("Allpass"), NJ_S("Ladder"), NJ_S("Diode"), NJ_S("Acid"), NJ_S("Dirty LP"), NJ_S("Comb+"), NJ_S("Comb-"), NJ_S("Phaser"), NJ_S("Vowel"), NJ_S("MG Low 6"), NJ_S("MG Low 12"), NJ_S("MG Low 18"), NJ_S("MG Low 24"), NJ_S("Flange+"), NJ_S("Flange-"), NJ_S("Wavefilter") }, 1, NJ_S("Type"), { { 0, NJ_S("Basic") }, { 4, NJ_S("6 / 18 dB") }, { 8, NJ_S("24 dB / Notch") }, { 12, NJ_S("Peak / Shelf / Allpass") }, { 16, NJ_S("Ladder / Dirty") }, { 20, NJ_S("Comb / Phaser / Vowel") }, { 24, NJ_S("MG Low") }, { 28, NJ_S("Flange") }, { 30, NJ_S("Table") } } },
         Spec { 1224, NJ_S("OSC 4 Filter Cutoff"), 20.0, 18000.0, 8000.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Cutoff"), {  } },
         Spec { 1225, NJ_S("OSC 4 Filter Resonance"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Resonance"), {  } },
         Spec { 1226, NJ_S("OSC 4 Filter Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
@@ -2609,12 +2610,12 @@ static void allSpecs_57 (std::vector<Spec>& v)
         Spec { 1260, NJ_S("OSC 5 Octave"), -4.0, 4.0, 0.0, NJ_S("oct"), NJ_S("stp"), {  }, 1, NJ_S("Octave"), {  } },
         Spec { 1261, NJ_S("OSC 5 Semi"), -12.0, 12.0, 0.0, NJ_S(""), NJ_S("stp"), {  }, 1, NJ_S("Semi"), {  } },
         Spec { 1262, NJ_S("OSC 5 Fine"), -100.0, 100.0, 0.0, NJ_S("ct"), NJ_S("sld"), {  }, 1, NJ_S("Fine"), {  } },
-        Spec { 1263, NJ_S("OSC 5 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
     });
 }
 static void allSpecs_58 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1263, NJ_S("OSC 5 Key Track"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Key Track"), {  } },
         Spec { 1264, NJ_S("OSC 5 Start Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
         Spec { 1265, NJ_S("OSC 5 Random Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Rand Phase"), {  } },
         Spec { 1266, NJ_S("OSC 5 WT Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
@@ -2654,12 +2655,12 @@ static void allSpecs_58 (std::vector<Spec>& v)
         Spec { 1300, NJ_S("OSC 5 Distortion Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
         Spec { 1304, NJ_S("OSC 5 Frequency"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Frequency"), {  } },
         Spec { 1302, NJ_S("OSC 5 Wavefilter Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
-        Spec { 1303, NJ_S("OSC 5 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
     });
 }
 static void allSpecs_59 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1303, NJ_S("OSC 5 Wavedistortion Position"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Table Pos"), {  } },
         Spec { 1305, NJ_S("OSC 5 Wavefilter Mix"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
         Spec { 1306, NJ_S("OSC 5 Wavefilter Range"), 2.0, 14.0, 8.0, NJ_S("oct"), NJ_S("sld"), {  }, 1, NJ_S("Range"), {  } },
         Spec { 1307, NJ_S("OSC 5 Wavefilter Warp"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp"), {  } },
@@ -2699,12 +2700,12 @@ static void allSpecs_59 (std::vector<Spec>& v)
         Spec { 1338, NJ_S("OSC 6 Warp 1 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 1"), {  } },
         Spec { 1339, NJ_S("OSC 6 Warp 1 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 1 Amt"), {  } },
         Spec { 1340, NJ_S("OSC 6 Warp 2 Mode"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Bend +"), NJ_S("Bend −"), NJ_S("Sync"), NJ_S("PWM"), NJ_S("Mirror"), NJ_S("Flip"), NJ_S("Quantize"), NJ_S("Fold") }, 1, NJ_S("Warp 2"), {  } },
-        Spec { 1341, NJ_S("OSC 6 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
     });
 }
 static void allSpecs_60 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1341, NJ_S("OSC 6 Warp 2 Amount"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Warp 2 Amt"), {  } },
         Spec { 1342, NJ_S("OSC 6 Sample Start"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Start"), {  } },
         Spec { 1343, NJ_S("OSC 6 Sample Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
         Spec { 1344, NJ_S("OSC 6 Terrain A"), 0.0, 11.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain"), {  } },
@@ -2744,12 +2745,12 @@ static void allSpecs_60 (std::vector<Spec>& v)
         Spec { 1380, NJ_S("OSC 6 Resonator Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
         Spec { 1381, NJ_S("OSC 6 Resonator Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
         Spec { 1382, NJ_S("OSC 6 Resonator Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
-        Spec { 1383, NJ_S("OSC 6 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
     });
 }
 static void allSpecs_61 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1383, NJ_S("OSC 6 Resonator Mix"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
         Spec { 1400, NJ_S("FM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
         Spec { 1440, NJ_S("PM 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
         Spec { 1480, NJ_S("PD 1 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("1→1"), {  } },
@@ -2789,12 +2790,12 @@ static void allSpecs_61 (std::vector<Spec>& v)
         Spec { 1447, NJ_S("PM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
         Spec { 1487, NJ_S("PD 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
         Spec { 1527, NJ_S("RM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
-        Spec { 1567, NJ_S("AM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
     });
 }
 static void allSpecs_62 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1567, NJ_S("AM 2 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→2"), {  } },
         Spec { 1408, NJ_S("FM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
         Spec { 1448, NJ_S("PM 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
         Spec { 1488, NJ_S("PD 2 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("2→3"), {  } },
@@ -2834,12 +2835,12 @@ static void allSpecs_62 (std::vector<Spec>& v)
         Spec { 1455, NJ_S("PM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
         Spec { 1495, NJ_S("PD 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
         Spec { 1535, NJ_S("RM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
-        Spec { 1575, NJ_S("AM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
     });
 }
 static void allSpecs_63 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1575, NJ_S("AM 3 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→4"), {  } },
         Spec { 1416, NJ_S("FM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
         Spec { 1456, NJ_S("PM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
         Spec { 1496, NJ_S("PD 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
@@ -2879,12 +2880,12 @@ static void allSpecs_63 (std::vector<Spec>& v)
         Spec { 1463, NJ_S("PM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
         Spec { 1503, NJ_S("PD 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
         Spec { 1543, NJ_S("RM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
-        Spec { 1583, NJ_S("AM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
     });
 }
 static void allSpecs_64 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1583, NJ_S("AM 4 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→6"), {  } },
         Spec { 1424, NJ_S("FM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
         Spec { 1464, NJ_S("PM 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
         Spec { 1504, NJ_S("PD 5 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("5→1"), {  } },
@@ -2924,12 +2925,12 @@ static void allSpecs_64 (std::vector<Spec>& v)
         Spec { 1471, NJ_S("PM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
         Spec { 1511, NJ_S("PD 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
         Spec { 1551, NJ_S("RM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
-        Spec { 1591, NJ_S("AM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
     });
 }
 static void allSpecs_65 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1591, NJ_S("AM 6 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→2"), {  } },
         Spec { 1432, NJ_S("FM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
         Spec { 1472, NJ_S("PM 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
         Spec { 1512, NJ_S("PD 6 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("6→3"), {  } },
@@ -2969,12 +2970,12 @@ static void allSpecs_65 (std::vector<Spec>& v)
         Spec { 2916, NJ_S("TZFM 3 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→5"), {  } },
         Spec { 2917, NJ_S("TZFM 3 to 6"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("3→6"), {  } },
         Spec { 2918, NJ_S("TZFM 4 to 1"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→1"), {  } },
-        Spec { 2919, NJ_S("TZFM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
     });
 }
 static void allSpecs_66 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2919, NJ_S("TZFM 4 to 2"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→2"), {  } },
         Spec { 2920, NJ_S("TZFM 4 to 3"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→3"), {  } },
         Spec { 2921, NJ_S("TZFM 4 to 4"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→4"), {  } },
         Spec { 2922, NJ_S("TZFM 4 to 5"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("4→5"), {  } },
@@ -3014,12 +3015,12 @@ static void allSpecs_66 (std::vector<Spec>& v)
         Spec { 1736, NJ_S("OSC 2 Physical A Decay"), 0.02, 20.0, 2.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 1737, NJ_S("OSC 2 Physical A Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
         Spec { 1738, NJ_S("OSC 2 Physical A Hit Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit"), {  } },
-        Spec { 1739, NJ_S("OSC 2 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
     });
 }
 static void allSpecs_67 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1739, NJ_S("OSC 2 Physical A Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
         Spec { 1740, NJ_S("OSC 2 Physical B Model"), 0.0, 8.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("String"), NJ_S("Beam"), NJ_S("Squared"), NJ_S("Membrane"), NJ_S("Plate"), NJ_S("Drumhead"), NJ_S("Marimba"), NJ_S("Open Tube"), NJ_S("Closed Tube") }, 1, NJ_S("Model"), {  } },
         Spec { 1741, NJ_S("OSC 2 Physical B Decay"), 0.02, 20.0, 1.5, NJ_S("s"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 1742, NJ_S("OSC 2 Physical B Material"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Material"), {  } },
@@ -3059,12 +3060,12 @@ static void allSpecs_67 (std::vector<Spec>& v)
         Spec { 1808, NJ_S("OSC 4 Physical B Inharmonicity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Inharm"), {  } },
         Spec { 1809, NJ_S("OSC 4 Physical B Tune"), -24.0, 24.0, 12.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
         Spec { 1810, NJ_S("OSC 4 Physical A / B Balance"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("A / B"), {  } },
-        Spec { 1811, NJ_S("OSC 4 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
     });
 }
 static void allSpecs_68 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1811, NJ_S("OSC 4 Physical Coupling"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Parallel"), NJ_S("Serial") }, 1, NJ_S("Coupling"), {  } },
         Spec { 1828, NJ_S("OSC 5 Physical Noise vs Mallet"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
         Spec { 1829, NJ_S("OSC 5 Physical Mallet Hardness"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hardness"), {  } },
         Spec { 1830, NJ_S("OSC 5 Physical Noise Time"), 2.0, 3000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Noise Time"), {  } },
@@ -3104,12 +3105,12 @@ static void allSpecs_68 (std::vector<Spec>& v)
         Spec { 1720, NJ_S("OSC 1 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
         Spec { 1721, NJ_S("OSC 1 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
         Spec { 1722, NJ_S("OSC 1 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        Spec { 1723, NJ_S("OSC 1 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
     });
 }
 static void allSpecs_69 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1723, NJ_S("OSC 1 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
         Spec { 1724, NJ_S("OSC 1 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
         Spec { 1725, NJ_S("OSC 1 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
         Spec { 1748, NJ_S("OSC 2 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
@@ -3149,12 +3150,12 @@ static void allSpecs_69 (std::vector<Spec>& v)
         Spec { 1848, NJ_S("OSC 5 Juno PWM Rate"), 0.1, 20.0, 1.5, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("PWM Rate"), {  } },
         Spec { 1849, NJ_S("OSC 5 Juno Sub Level"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
         Spec { 1850, NJ_S("OSC 5 Juno Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
-        Spec { 1851, NJ_S("OSC 5 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
     });
 }
 static void allSpecs_70 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1851, NJ_S("OSC 5 Juno Range"), 0.0, 2.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("16'"), NJ_S("8'"), NJ_S("4'") }, 1, NJ_S("Range"), {  } },
         Spec { 1852, NJ_S("OSC 5 Juno Drift"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drift"), {  } },
         Spec { 1853, NJ_S("OSC 5 Juno Saw Curve"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
         Spec { 1876, NJ_S("OSC 6 Juno Saw Level"), 0.0, 1.0, 0.8, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Saw"), {  } },
@@ -3194,12 +3195,12 @@ static void allSpecs_70 (std::vector<Spec>& v)
         Spec { 1858, NJ_S("OSC 5 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
         Spec { 1886, NJ_S("OSC 6 Juno Pulse Wave"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Pulse 1"), NJ_S("Pulse 2"), NJ_S("Pulse 3") }, 1, NJ_S("Pulse Wave"), {  } },
         Spec { 1887, NJ_S("OSC 6 Juno Saw Wave"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw 1"), NJ_S("Saw 2"), NJ_S("Saw 3"), NJ_S("Saw 4"), NJ_S("Saw 5") }, 1, NJ_S("Saw Wave"), {  } },
-        Spec { 1888, NJ_S("OSC 6 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
     });
 }
 static void allSpecs_71 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1888, NJ_S("OSC 6 Juno Sub Wave"), 0.0, 5.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sub 1"), NJ_S("Sub 2"), NJ_S("Sub 3"), NJ_S("Sub 4"), NJ_S("Sub 5"), NJ_S("Sub 6") }, 1, NJ_S("Sub Wave"), {  } },
         Spec { 1889, NJ_S("OSC 6 Juno PWM Source"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("LFO"), NJ_S("Env"), NJ_S("Manual") }, 1, NJ_S("PWM Source"), {  } },
         Spec { 1890, NJ_S("OSC 6 Juno Vibrato"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vibrato"), {  } },
         Spec { 1900, NJ_S("OSC 1 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
@@ -3239,12 +3240,12 @@ static void allSpecs_71 (std::vector<Spec>& v)
         Spec { 1934, NJ_S("OSC 3 Kick Sweep Time"), 5.0, 1000.0, 60.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Sweep Time"), {  } },
         Spec { 1935, NJ_S("OSC 3 Kick Sweep Curve"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Curve"), {  } },
         Spec { 1936, NJ_S("OSC 3 Kick Decay"), 20.0, 3000.0, 450.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
-        Spec { 1937, NJ_S("OSC 3 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
     });
 }
 static void allSpecs_72 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1937, NJ_S("OSC 3 Kick Tone"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
         Spec { 1938, NJ_S("OSC 3 Kick Click Level"), 0.0, 1.0, 0.35, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click"), {  } },
         Spec { 1939, NJ_S("OSC 3 Kick Click Tone"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Click Tone"), {  } },
         Spec { 1940, NJ_S("OSC 3 Kick Noise Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
@@ -3284,12 +3285,12 @@ static void allSpecs_72 (std::vector<Spec>& v)
         Spec { 1974, NJ_S("OSC 5 Kick Drive Curve"), 0.0, 5.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Hard Clip"), NJ_S("Tanh"), NJ_S("Atan"), NJ_S("Log"), NJ_S("Exp"), NJ_S("Poly") }, 1, NJ_S("Curve"), {  } },
         Spec { 1975, NJ_S("OSC 5 Kick Sub Level"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
         Spec { 1976, NJ_S("OSC 5 Kick Punch"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Punch"), {  } },
-        Spec { 1977, NJ_S("OSC 5 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
     });
 }
 static void allSpecs_73 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 1977, NJ_S("OSC 5 Kick Tune"), -24.0, 24.0, 0.0, NJ_S("st"), NJ_S("sld"), {  }, 1, NJ_S("Tune"), {  } },
         Spec { 1978, NJ_S("OSC 5 Kick Click Decay"), 1.0, 40.0, 6.0, NJ_S("ms"), NJ_S("sld"), {  }, 1, NJ_S("Click Decay"), {  } },
         Spec { 1979, NJ_S("OSC 5 Kick Character"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Character"), {  } },
         Spec { 1980, NJ_S("OSC 6 Kick Mode"), 0.0, 3.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("808"), NJ_S("Punch"), NJ_S("Hardstyle") }, 1, NJ_S("Mode"), {  } },
@@ -3329,12 +3330,12 @@ static void allSpecs_73 (std::vector<Spec>& v)
         Spec { 2112, NJ_S("OSC 1 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
         Spec { 2113, NJ_S("OSC 1 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2114, NJ_S("OSC 1 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        Spec { 2115, NJ_S("OSC 1 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
     });
 }
 static void allSpecs_74 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2115, NJ_S("OSC 1 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
         Spec { 2116, NJ_S("OSC 2 Terrain Orbit Center X"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center X"), {  } },
         Spec { 2117, NJ_S("OSC 2 Terrain Orbit Center Y"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Center Y"), {  } },
         Spec { 2118, NJ_S("OSC 2 Terrain Orbit Radius X"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Radius X"), {  } },
@@ -3374,12 +3375,12 @@ static void allSpecs_74 (std::vector<Spec>& v)
         Spec { 2152, NJ_S("OSC 4 Terrain Orbit Rotation"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Rotation"), {  } },
         Spec { 2153, NJ_S("OSC 4 Terrain Orbit Ratio"), 0.25, 8.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Y : X"), {  } },
         Spec { 2154, NJ_S("OSC 4 Terrain Orbit Phase"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Phase"), {  } },
-        Spec { 2155, NJ_S("OSC 4 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
     });
 }
 static void allSpecs_75 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2155, NJ_S("OSC 4 Terrain Orbit Shape"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shape"), {  } },
         Spec { 2156, NJ_S("OSC 4 Terrain Move Rate"), 0.05, 20.0, 1.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Move Rate"), {  } },
         Spec { 2157, NJ_S("OSC 4 Terrain Move Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Move Depth"), {  } },
         Spec { 2158, NJ_S("OSC 4 Terrain B"), 0.0, 11.0, 1.0, NJ_S(""), NJ_S("sel"), { NJ_S("Sine Product"), NJ_S("Ripples"), NJ_S("Saddle"), NJ_S("Chebyshev"), NJ_S("Checker"), NJ_S("Spiral"), NJ_S("Diamond"), NJ_S("Interference"), NJ_S("Lattice"), NJ_S("Bumps"), NJ_S("Fractal"), NJ_S("Twist") }, 1, NJ_S("Terrain B"), {  } },
@@ -3419,12 +3420,12 @@ static void allSpecs_75 (std::vector<Spec>& v)
         Spec { 2192, NJ_S("OSC 6 Terrain Smooth"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Smooth"), {  } },
         Spec { 2193, NJ_S("OSC 6 Terrain Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2194, NJ_S("OSC 6 Terrain Bit Depth"), 2.0, 16.0, 16.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Bits"), {  } },
-        Spec { 2195, NJ_S("OSC 6 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
     });
 }
 static void allSpecs_76 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2195, NJ_S("OSC 6 Terrain Velocity to Radius"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Radius"), {  } },
         Spec { 2200, NJ_S("OSC 1 Waveguide Model"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Karplus-Strong"), NJ_S("Bowed String"), NJ_S("Clarinet"), NJ_S("Banded Waveguide"), NJ_S("Drum") }, 1, NJ_S("Model"), {  } },
         Spec { 2201, NJ_S("OSC 1 Waveguide Decay"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 2202, NJ_S("OSC 1 Waveguide Tone"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
@@ -3464,12 +3465,12 @@ static void allSpecs_76 (std::vector<Spec>& v)
         Spec { 2236, NJ_S("OSC 3 Waveguide Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
         Spec { 2237, NJ_S("OSC 3 Waveguide Noise"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
         Spec { 2238, NJ_S("OSC 3 Waveguide Nonlinear"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Nonlinear"), {  } },
-        Spec { 2239, NJ_S("OSC 3 Waveguide Stretch"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stretch"), {  } },
     });
 }
 static void allSpecs_77 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2239, NJ_S("OSC 3 Waveguide Stretch"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stretch"), {  } },
         Spec { 2240, NJ_S("OSC 3 Waveguide Attack"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
         Spec { 2241, NJ_S("OSC 3 Waveguide Snare"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Snare"), {  } },
         Spec { 2242, NJ_S("OSC 3 Waveguide Body"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Body"), {  } },
@@ -3509,12 +3510,12 @@ static void allSpecs_77 (std::vector<Spec>& v)
         Spec { 2276, NJ_S("OSC 5 Waveguide Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Excite"), {  } },
         Spec { 2277, NJ_S("OSC 5 Waveguide Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2278, NJ_S("OSC 5 Waveguide Tension"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tension"), {  } },
-        Spec { 2279, NJ_S("OSC 5 Waveguide Key Decay"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Decay"), {  } },
     });
 }
 static void allSpecs_78 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2279, NJ_S("OSC 5 Waveguide Key Decay"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Key Decay"), {  } },
         Spec { 2280, NJ_S("OSC 6 Waveguide Model"), 0.0, 4.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Karplus-Strong"), NJ_S("Bowed String"), NJ_S("Clarinet"), NJ_S("Banded Waveguide"), NJ_S("Drum") }, 1, NJ_S("Model"), {  } },
         Spec { 2281, NJ_S("OSC 6 Waveguide Decay"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 2282, NJ_S("OSC 6 Waveguide Tone"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tone"), {  } },
@@ -3554,12 +3555,12 @@ static void allSpecs_78 (std::vector<Spec>& v)
         Spec { 2320, NJ_S("OSC 2 JP Super Saw Detune"), 0.0, 1.0, 0.4, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Detune"), {  } },
         Spec { 2321, NJ_S("OSC 2 JP Super Saw Mix"), 0.0, 1.0, 0.7, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mix"), {  } },
         Spec { 2322, NJ_S("OSC 2 JP Stereo Width"), 0.0, 1.0, 0.7, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
-        Spec { 2323, NJ_S("OSC 2 JP Feedback"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Feedback"), {  } },
     });
 }
 static void allSpecs_79 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2323, NJ_S("OSC 2 JP Feedback"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Feedback"), {  } },
         Spec { 2324, NJ_S("OSC 2 JP Feedback Color"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Color"), {  } },
         Spec { 2325, NJ_S("OSC 2 JP Tri Mod Depth"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mod Depth"), {  } },
         Spec { 2326, NJ_S("OSC 2 JP Tri Mod Ratio"), 0.0, 1.0, 0.2, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Mod Ratio"), {  } },
@@ -3599,12 +3600,12 @@ static void allSpecs_79 (std::vector<Spec>& v)
         Spec { 2360, NJ_S("OSC 4 JP Spectrum Peak"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Peak"), {  } },
         Spec { 2361, NJ_S("OSC 4 JP Noise Mix"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Noise"), {  } },
         Spec { 2362, NJ_S("OSC 4 JP Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        Spec { 2363, NJ_S("OSC 4 JP Sub Oscillator"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
     });
 }
 static void allSpecs_80 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2363, NJ_S("OSC 4 JP Sub Oscillator"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sub"), {  } },
         Spec { 2364, NJ_S("OSC 5 JP Waveform"), 0.0, 8.0, 6.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw"), NJ_S("Square"), NJ_S("Triangle"), NJ_S("Sine"), NJ_S("Noise"), NJ_S("Spectrum"), NJ_S("Super Saw"), NJ_S("Feedback Osc"), NJ_S("Tri Mod") }, 1, NJ_S("Waveform"), {  } },
         Spec { 2365, NJ_S("OSC 5 JP Pulse Width"), 0.05, 0.95, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pulse Width"), {  } },
         Spec { 2366, NJ_S("OSC 5 JP PWM Depth"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("PWM Depth"), {  } },
@@ -3644,12 +3645,12 @@ static void allSpecs_80 (std::vector<Spec>& v)
         Spec { 2404, NJ_S("OSC 1 Granular Pitch Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pitch Spread"), {  } },
         Spec { 2405, NJ_S("OSC 1 Granular Pan Spread"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Pan Spread"), {  } },
         Spec { 2406, NJ_S("OSC 1 Granular Window"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Window"), {  } },
-        Spec { 2407, NJ_S("OSC 1 Granular Reverse"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reverse"), {  } },
     });
 }
 static void allSpecs_81 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2407, NJ_S("OSC 1 Granular Reverse"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reverse"), {  } },
         Spec { 2408, NJ_S("OSC 1 Granular Scan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scan"), {  } },
         Spec { 2409, NJ_S("OSC 1 Granular Timing"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Timing Jitter"), {  } },
         Spec { 2410, NJ_S("OSC 1 Granular Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
@@ -3689,12 +3690,12 @@ static void allSpecs_81 (std::vector<Spec>& v)
         Spec { 2456, NJ_S("OSC 4 Granular Scan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scan"), {  } },
         Spec { 2457, NJ_S("OSC 4 Granular Timing"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Timing Jitter"), {  } },
         Spec { 2458, NJ_S("OSC 4 Granular Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
-        Spec { 2459, NJ_S("OSC 4 Granular Velocity"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Position"), {  } },
     });
 }
 static void allSpecs_82 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2459, NJ_S("OSC 4 Granular Velocity"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Position"), {  } },
         Spec { 2464, NJ_S("OSC 5 Granular Position"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position"), {  } },
         Spec { 2465, NJ_S("OSC 5 Granular Grain Size"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Size"), {  } },
         Spec { 2466, NJ_S("OSC 5 Granular Density"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Density"), {  } },
@@ -3734,12 +3735,12 @@ static void allSpecs_82 (std::vector<Spec>& v)
         Spec { 2512, NJ_S("OSC 1 Additive Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2513, NJ_S("OSC 1 Additive Stereo Spread"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
         Spec { 2514, NJ_S("OSC 1 Additive Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Bright"), {  } },
-        Spec { 2516, NJ_S("OSC 2 Additive Spectrum A"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw"), NJ_S("Square"), NJ_S("Triangle"), NJ_S("Organ"), NJ_S("Bell"), NJ_S("Vowel"), NJ_S("Brass"), NJ_S("Hollow") }, 1, NJ_S("Spectrum A"), {  } },
     });
 }
 static void allSpecs_83 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2516, NJ_S("OSC 2 Additive Spectrum A"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw"), NJ_S("Square"), NJ_S("Triangle"), NJ_S("Organ"), NJ_S("Bell"), NJ_S("Vowel"), NJ_S("Brass"), NJ_S("Hollow") }, 1, NJ_S("Spectrum A"), {  } },
         Spec { 2517, NJ_S("OSC 2 Additive Spectrum B"), 0.0, 7.0, 3.0, NJ_S(""), NJ_S("sel"), { NJ_S("Saw"), NJ_S("Square"), NJ_S("Triangle"), NJ_S("Organ"), NJ_S("Bell"), NJ_S("Vowel"), NJ_S("Brass"), NJ_S("Hollow") }, 1, NJ_S("Spectrum B"), {  } },
         Spec { 2518, NJ_S("OSC 2 Additive Morph"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
         Spec { 2519, NJ_S("OSC 2 Additive Partials"), 1.0, 64.0, 32.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Partials"), {  } },
@@ -3779,12 +3780,12 @@ static void allSpecs_83 (std::vector<Spec>& v)
         Spec { 2555, NJ_S("OSC 4 Additive Formant"), 0.0, 1.0, 0.4, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Formant"), {  } },
         Spec { 2556, NJ_S("OSC 4 Additive Formant Gain"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Form. Gain"), {  } },
         Spec { 2557, NJ_S("OSC 4 Additive Shimmer"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shimmer"), {  } },
-        Spec { 2558, NJ_S("OSC 4 Additive Shimmer Rate"), 0.1, 20.0, 2.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Shim. Rate"), {  } },
     });
 }
 static void allSpecs_84 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2558, NJ_S("OSC 4 Additive Shimmer Rate"), 0.1, 20.0, 2.0, NJ_S("Hz"), NJ_S("sld"), {  }, 1, NJ_S("Shim. Rate"), {  } },
         Spec { 2559, NJ_S("OSC 4 Additive Partial Decay"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Partial Decay"), {  } },
         Spec { 2560, NJ_S("OSC 4 Additive Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2561, NJ_S("OSC 4 Additive Stereo Spread"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
@@ -3824,12 +3825,12 @@ static void allSpecs_84 (std::vector<Spec>& v)
         Spec { 2602, NJ_S("OSC 1 Drum Hit Position"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit Position"), {  } },
         Spec { 2603, NJ_S("OSC 1 Drum Stick"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stick"), {  } },
         Spec { 2604, NJ_S("OSC 1 Drum Edge"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Edge"), {  } },
-        Spec { 2605, NJ_S("OSC 1 Drum Reso Head"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Head"), {  } },
     });
 }
 static void allSpecs_85 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2605, NJ_S("OSC 1 Drum Reso Head"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Head"), {  } },
         Spec { 2606, NJ_S("OSC 1 Drum Reso Tune"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Tune"), {  } },
         Spec { 2607, NJ_S("OSC 1 Drum Shell"), 0.0, 1.0, 0.4, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shell"), {  } },
         Spec { 2608, NJ_S("OSC 1 Drum Shell Depth"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shell Depth"), {  } },
@@ -3869,12 +3870,12 @@ static void allSpecs_85 (std::vector<Spec>& v)
         Spec { 2642, NJ_S("OSC 3 Drum Snare Tension"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Snare Tension"), {  } },
         Spec { 2643, NJ_S("OSC 3 Drum Sympathetic"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sympathetic"), {  } },
         Spec { 2644, NJ_S("OSC 3 Drum Tension"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tension"), {  } },
-        Spec { 2645, NJ_S("OSC 3 Drum Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Stick"), {  } },
     });
 }
 static void allSpecs_86 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2645, NJ_S("OSC 3 Drum Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Stick"), {  } },
         Spec { 2646, NJ_S("OSC 3 Drum Drive"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Drive"), {  } },
         Spec { 2647, NJ_S("OSC 3 Drum Size"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Size"), {  } },
         Spec { 2648, NJ_S("OSC 4 Drum Decay"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
@@ -3914,12 +3915,12 @@ static void allSpecs_86 (std::vector<Spec>& v)
         Spec { 2682, NJ_S("OSC 6 Drum Hit Position"), 0.0, 1.0, 0.25, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Hit Position"), {  } },
         Spec { 2683, NJ_S("OSC 6 Drum Stick"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Stick"), {  } },
         Spec { 2684, NJ_S("OSC 6 Drum Edge"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Edge"), {  } },
-        Spec { 2685, NJ_S("OSC 6 Drum Reso Head"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Head"), {  } },
     });
 }
 static void allSpecs_87 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2685, NJ_S("OSC 6 Drum Reso Head"), 0.0, 1.0, 0.6, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Head"), {  } },
         Spec { 2686, NJ_S("OSC 6 Drum Reso Tune"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Reso Tune"), {  } },
         Spec { 2687, NJ_S("OSC 6 Drum Shell"), 0.0, 1.0, 0.4, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shell"), {  } },
         Spec { 2688, NJ_S("OSC 6 Drum Shell Depth"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shell Depth"), {  } },
@@ -3959,12 +3960,12 @@ static void allSpecs_87 (std::vector<Spec>& v)
         Spec { 2726, NJ_S("OSC 2 Spectral Comb"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Comb"), {  } },
         Spec { 2727, NJ_S("OSC 2 Spectral Contrast"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Contrast"), {  } },
         Spec { 2728, NJ_S("OSC 2 Spectral Jitter"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Jitter"), {  } },
-        Spec { 2729, NJ_S("OSC 2 Spectral Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
     });
 }
 static void allSpecs_88 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2729, NJ_S("OSC 2 Spectral Spread"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Spread"), {  } },
         Spec { 2730, NJ_S("OSC 2 Spectral Width"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Width"), {  } },
         Spec { 2731, NJ_S("OSC 2 Spectral Velocity"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel > Pos"), {  } },
         Spec { 2732, NJ_S("OSC 3 Spectral Mode"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Resynth"), NJ_S("Spectrum") }, 1, NJ_S("Mode"), {  } },
@@ -4004,12 +4005,12 @@ static void allSpecs_88 (std::vector<Spec>& v)
         Spec { 2766, NJ_S("OSC 5 Spectral Position B"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Position B"), {  } },
         Spec { 2767, NJ_S("OSC 5 Spectral Morph"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Morph"), {  } },
         Spec { 2768, NJ_S("OSC 5 Spectral Scan"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Scan"), {  } },
-        Spec { 2769, NJ_S("OSC 5 Spectral Blur"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blur"), {  } },
     });
 }
 static void allSpecs_89 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2769, NJ_S("OSC 5 Spectral Blur"), 0.0, 1.0, 0.3, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Blur"), {  } },
         Spec { 2770, NJ_S("OSC 5 Spectral Shift"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Shift"), {  } },
         Spec { 2771, NJ_S("OSC 5 Spectral Tilt"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Tilt"), {  } },
         Spec { 2772, NJ_S("OSC 5 Spectral Harmonics"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Harmonics"), {  } },
@@ -4049,12 +4050,12 @@ static void allSpecs_89 (std::vector<Spec>& v)
         Spec { 2816, NJ_S("OSC 2 SoundFont Gain"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Gain"), {  } },
         Spec { 2817, NJ_S("OSC 2 SoundFont Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel Sens"), {  } },
         Spec { 2818, NJ_S("OSC 2 SoundFont Attack"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        Spec { 2819, NJ_S("OSC 2 SoundFont Decay"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
     });
 }
 static void allSpecs_90 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2819, NJ_S("OSC 2 SoundFont Decay"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 2820, NJ_S("OSC 2 SoundFont Sustain"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
         Spec { 2821, NJ_S("OSC 2 SoundFont Release"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
         Spec { 2822, NJ_S("OSC 2 SoundFont Loop"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Zone"), NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },
@@ -4094,12 +4095,12 @@ static void allSpecs_90 (std::vector<Spec>& v)
         Spec { 2880, NJ_S("OSC 6 SoundFont Gain"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Gain"), {  } },
         Spec { 2881, NJ_S("OSC 6 SoundFont Velocity"), 0.0, 1.0, 0.5, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Vel Sens"), {  } },
         Spec { 2882, NJ_S("OSC 6 SoundFont Attack"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Attack"), {  } },
-        Spec { 2883, NJ_S("OSC 6 SoundFont Decay"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
     });
 }
 static void allSpecs_91 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
+        Spec { 2883, NJ_S("OSC 6 SoundFont Decay"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Decay"), {  } },
         Spec { 2884, NJ_S("OSC 6 SoundFont Sustain"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Sustain"), {  } },
         Spec { 2885, NJ_S("OSC 6 SoundFont Release"), -1.0, 1.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S("Release"), {  } },
         Spec { 2886, NJ_S("OSC 6 SoundFont Loop"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Zone"), NJ_S("Off"), NJ_S("On") }, 1, NJ_S("Loop"), {  } },

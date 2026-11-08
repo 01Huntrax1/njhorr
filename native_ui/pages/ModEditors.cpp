@@ -780,7 +780,7 @@ namespace njo
     struct SeqEditor::Impl : Ctx::Listener, SeqRefresh, private juce::Timer
     {
         static constexpr int NW = 11;   // widgets per sequencer
-        int lastHead[10];
+        int lastHead[10]; int monSent = -1;
         Ctx& ctx; SeqEditor& owner;
         juce::OwnedArray<SourceChip> chips;
         SeqCanvas cv;
@@ -812,9 +812,11 @@ namespace njo
         void timerCallback() override
         {
             int m = ctx.selectedSeq;
+            int want = owner.isShowing() ? m + 1 : 0;   // the DSP only runs/reports the sequencer the editor shows
+            if (want != monSent) { monSent = want; ctx.be.setParam (3928, (float) want); }
             if (owner.isShowing() && ctx.be.seqStepPos[m] != lastHead[m]) { lastHead[m] = ctx.be.seqStepPos[m]; cv.repaint(); }
         }
-        ~Impl() override { stopTimer(); ctx.removeListener (this); gSeqAll.erase (std::remove (gSeqAll.begin(), gSeqAll.end(), this), gSeqAll.end()); }
+        ~Impl() override { stopTimer(); if (monSent > 0) ctx.be.setParam (3928, 0.0f); ctx.removeListener (this); gSeqAll.erase (std::remove (gSeqAll.begin(), gSeqAll.end(), this), gSeqAll.end()); }
 
         void paramChanged (int n, float) override
         {
