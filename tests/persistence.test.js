@@ -101,7 +101,11 @@ const gather = (pc, ep, bank, total) => {
         const w2 = makeWebView();
         pc.sent.length = 0;
         const R = mount(w2, pc);
-        await sleep(7000);
+        // the restore streams the banks in small chunks: wait until all four arrived (a slow machine needs more than a fixed pause)
+        const streamed = () => maxErr(gather(pc, EP.sm, 0, s1.length), s1) < 1 / 32767 + 1e-6 && maxErr(gather(pc, EP.sm, 3, s2.length), s2) < 1 / 32767 + 1e-6
+                            && maxErr(gather(pc, EP.wt, 1, wt.length), wt) < 1 / 32767 + 1e-6 && maxErr(gather(pc, EP.wt, 5, wt2.length), wt2) < 1 / 32767 + 1e-6;
+        for (let t = 0; t < 240 && ! streamed(); ++t) await sleep(250);
+        await sleep(500);
         check("restored sample names", R._mem.sm[0].name === "KICK" && R._mem.sm[3].name === "HAT");
         check("restored wavetable names", R._mem.wt[1].name === "SAW" && R._mem.wt[5].name === "PAD");
         check("sample audio round-trips within 1/32767", maxErr(R._mem.sm[0].data, s1) < 1 / 32767 + 1e-6);
