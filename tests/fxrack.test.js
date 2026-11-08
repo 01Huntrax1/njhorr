@@ -74,9 +74,9 @@ const ctl = (v, n) => v._controls.get("param" + n);
     check("tremolo lists the trance gate mode", A.querySelector('.fxrow[data-g="2"] .fxmd select').options[5].textContent === "Trance Gate");
     check("bit-crush has four knobs", (ctl(A, 561).setValue(2, true), A.querySelectorAll('.fxrow[data-g="2"] .fxps .nop').length === 2));
 
-    // ---- the Filter effect offers all 30 filter types of the Filter page
+    // ---- the Filter effect offers the 30 filter types of the Filter page plus Korg35 LP / HP and Scream
     ctl(A, 561).setValue(9, true);
-    check("filter effect lists all 30 filter types", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 30);
+    check("filter effect lists all 33 filter types", A.querySelector('.fxrow[data-g="2"] .fxmd select').options.length === 33);
     ctl(A, 564).setValue(23, true);
     check("filter type 23 (Vowel) selectable and sent", last(pcA, "param564") === 23 && A.querySelector('.fxrow[data-g="2"] .fxmd select').selectedIndex === 23);
     ctl(A, 561).setValue(2, true);
