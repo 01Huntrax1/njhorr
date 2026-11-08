@@ -100,12 +100,12 @@ namespace njo
             void paint (juce::Graphics& g) override
             {
                 auto r = getLocalBounds().toFloat();
-                juce::Colour border = juce::Colour (0xff3c5a19), txt = dim, fill = juce::Colour (0xff090d04);
+                juce::Colour border = juce::Colour (0xff5a1a16), txt = dim, fill = juce::Colour (0xff0d0404);
                 bool solid = false;
-                if (state == Loaded) { border = red; txt = red; fill = juce::Colour (0xff121a08); solid = true; }
+                if (state == Loaded) { border = red; txt = red; fill = juce::Colour (0xff1a0807); solid = true; }
                 else if (state == Busy) { border = orange; txt = orange; solid = true; }
-                else if (state == Err) { border = red; txt = juce::Colour (0xffbbff6e); solid = true; }
-                if (over || hover) { border = red; txt = red; fill = juce::Colour (0xff131c08); }
+                else if (state == Err) { border = red; txt = juce::Colour (0xffff7167); solid = true; }
+                if (over || hover) { border = red; txt = red; fill = juce::Colour (0xff1c0807); }
                 g.setColour (fill); g.fillRoundedRectangle (r, 1.0f);
                 juce::Path p; p.addRectangle (r.reduced (1.0f));
                 g.setColour (border);

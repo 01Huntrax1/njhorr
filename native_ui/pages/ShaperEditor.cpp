@@ -110,7 +110,7 @@ namespace njo
         for (int i = 0; i < (int) I.nodes.size(); ++i)
         {
             const float x = I.px (I.nodes[(size_t) i].x), y = I.py (I.nodes[(size_t) i].y); const bool hi = I.hot == i || I.drag == i;
-            g.setColour (juce::Colour (0xff171410)); g.fillEllipse (x - 6, y - 6, 12, 12);
+            g.setColour (juce::Colour (0xff121315)); g.fillEllipse (x - 6, y - 6, 12, 12);
             g.setColour (hi ? juce::Colours::white : col); g.drawEllipse (x - 6, y - 6, 12, 12, 2.0f);
         }
     }

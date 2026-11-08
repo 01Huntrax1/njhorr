@@ -104,8 +104,8 @@ namespace njo
 
         void drawValueBox (juce::Graphics& g, juce::Rectangle<float> r, const juce::String& t, bool neg, bool lit)
         {
-            juce::Colour fill = lit ? (neg ? juce::Colour (0xff163e66) : juce::Colour (0xff4e7d19)) : juce::Colours::black.withAlpha (0.5f);
-            juce::Colour edge = lit ? (neg ? blue : juce::Colour (0xffafff53)) : juce::Colour (0xff554d3e);
+            juce::Colour fill = lit ? (neg ? juce::Colour (0xff163e66) : juce::Colour (0xff7d1b14)) : juce::Colours::black.withAlpha (0.5f);
+            juce::Colour edge = lit ? (neg ? blue : juce::Colour (0xffff564a)) : juce::Colour (0xff474a4f);
             if (lit) { g.setColour (edge.withAlpha (0.18f)); g.fillRoundedRectangle (r.expanded (3), 6.0f); }
             g.setColour (fill); g.fillRoundedRectangle (r, 4.0f);
             g.setColour (edge); g.drawRoundedRectangle (r.reduced (0.5f), 4.0f, 1.0f);
@@ -125,7 +125,7 @@ namespace njo
 
             // matrix background
             auto in = inset[k];
-            g.setGradientFill (juce::ColourGradient (juce::Colour (0xff141c0b), in.getCentre(), juce::Colour (0xff080b04), in.getTopLeft(), true));
+            g.setGradientFill (juce::ColourGradient (juce::Colour (0xff1c0b0a), in.getCentre(), juce::Colour (0xff0b0404), in.getTopLeft(), true));
             g.fillRoundedRectangle (in, 4.0f);
             g.setColour (line); g.drawRoundedRectangle (in.reduced (0.5f), 4.0f, 1.0f);
 
@@ -144,7 +144,7 @@ namespace njo
                     if (! on (v)) continue;
                     auto a = nodeRect (k, s).getCentre(), m = cellRect (k, s, d).getCentre(), z = nodeRect (k, d).getCentre();
                     juce::Path p; p.startNewSubPath (a); p.lineTo (m); p.lineTo (z);
-                    juce::Colour col = juce::Colour (0xffafff53);
+                    juce::Colour col = juce::Colour (0xffff564a);
                     float a1 = 0.45f + 0.5f * v / 100.0f, w = 1.2f + 2.2f * v / 100.0f;
                     juce::PathStrokeType glow (w + 4.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded);
                     g.setColour (col.withAlpha (0.10f)); g.strokePath (p, glow);
@@ -161,7 +161,7 @@ namespace njo
                     if (s != d)
                     {
                         if (on (v)) { float w = juce::jmax (22.0f, 8.0f + pct (v).length() * 6.0f); drawValueBox (g, juce::Rectangle<float> (w, 15).withCentre (c.getCentre()), pct (v), false, true); }
-                        else { g.setColour (juce::Colour (0xff000000)); g.fillEllipse (juce::Rectangle<float> (7, 7).withCentre (c.getCentre())); g.setColour (juce::Colour (0xff435a29)); g.fillEllipse (juce::Rectangle<float> (5, 5).withCentre (c.getCentre())); }
+                        else { g.setColour (juce::Colour (0xff000000)); g.fillEllipse (juce::Rectangle<float> (7, 7).withCentre (c.getCentre())); g.setColour (juce::Colour (0xff5a2a27)); g.fillEllipse (juce::Rectangle<float> (5, 5).withCentre (c.getCentre())); }
                     }
                     else
                     {
@@ -170,10 +170,10 @@ namespace njo
                         auto n = nodeRect (k, s);
                         bool hv = hover.k == k && hover.s == s && hover.part == Node;
                         if (act) { g.setColour (glow); g.fillRoundedRectangle (n.expanded (4), 9.0f); }
-                        g.setGradientFill (act ? juce::ColourGradient (juce::Colour (0xffa8ff44), n.getX(), n.getY(), juce::Colour (0xff60a314), n.getX(), n.getBottom(), false)
-                                               : juce::ColourGradient (juce::Colour (hv ? 0xff443d32 : 0xff373128), n.getX(), n.getY(), juce::Colour (0xff1c1813), n.getX(), n.getBottom(), false));
+                        g.setGradientFill (act ? juce::ColourGradient (juce::Colour (0xffff483b), n.getX(), n.getY(), juce::Colour (0xffa3170d), n.getX(), n.getBottom(), false)
+                                               : juce::ColourGradient (juce::Colour (hv ? 0xff393b3f : 0xff2e3033), n.getX(), n.getY(), juce::Colour (0xff161719), n.getX(), n.getBottom(), false));
                         g.fillRoundedRectangle (n, 6.0f);
-                        g.setColour (act ? juce::Colour (0xffb7ff64) : (hv ? red : juce::Colour (0xff554d3e))); g.drawRoundedRectangle (n.reduced (0.5f), 6.0f, 1.0f);
+                        g.setColour (act ? juce::Colour (0xffff675c) : (hv ? red : juce::Colour (0xff474a4f))); g.drawRoundedRectangle (n.reduced (0.5f), 6.0f, 1.0f);
                         g.setColour (act ? juce::Colours::white : dim); g.setFont (impact (n.getHeight() * 0.55f));
                         g.drawText (juce::String::charToString ((juce::juce_wchar) L[s]), n.toNearestInt(), juce::Justification::centred);
 

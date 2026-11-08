@@ -149,7 +149,7 @@ namespace njo
         // path of a trace with a soft glow underneath
         void glowStroke (juce::Graphics& g, const juce::Path& p, juce::Colour c, float lw, bool glow)
         {
-            if (glow) { g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.22f)); g.strokePath (p, juce::PathStrokeType (lw + 5.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded)); }
+            if (glow) { g.setColour (juce::Colour (0xffff3e30).withAlpha (0.22f)); g.strokePath (p, juce::PathStrokeType (lw + 5.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded)); }
             g.setColour (c);
             g.strokePath (p, juce::PathStrokeType (lw, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
         }
@@ -162,21 +162,21 @@ namespace njo
             p.startNewSubPath (W - bm - bl, bm); p.lineTo (W - bm, bm); p.lineTo (W - bm, bm + bl);
             p.startNewSubPath (bm, H - bm - bl); p.lineTo (bm, H - bm); p.lineTo (bm + bl, H - bm);
             p.startNewSubPath (W - bm - bl, H - bm); p.lineTo (W - bm, H - bm); p.lineTo (W - bm, H - bm - bl);
-            g.setColour (juce::Colour (0xffabff4b).withAlpha (0.85f));
+            g.setColour (juce::Colour (0xffff4f42).withAlpha (0.85f));
             g.strokePath (p, juce::PathStrokeType (2.0f));
         }
 
         // the dark recessed display box shared by both pictures
         void displayBox (juce::Graphics& g, juce::Rectangle<float> r)
         {
-            g.setColour (juce::Colour (0xff090d04)); g.fillRoundedRectangle (r, 4.0f);
+            g.setColour (juce::Colour (0xff0d0404)); g.fillRoundedRectangle (r, 4.0f);
         }
         void displayBorder (juce::Graphics& g, juce::Rectangle<float> r)
         {
             // inner shadow + outer glow, then the border
-            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.10f)); g.drawRoundedRectangle (r.expanded (1.5f), 5.0f, 2.0f);
+            g.setColour (juce::Colour (0xffff3e30).withAlpha (0.10f)); g.drawRoundedRectangle (r.expanded (1.5f), 5.0f, 2.0f);
             g.setColour (juce::Colours::black.withAlpha (0.55f)); g.drawRoundedRectangle (r.reduced (1.5f), 3.0f, 3.0f);
-            g.setColour (juce::Colour (0xff4f7a1d)); g.drawRoundedRectangle (r.reduced (0.5f), 4.0f, 1.0f);
+            g.setColour (juce::Colour (0xff7a1f18)); g.drawRoundedRectangle (r.reduced (0.5f), 4.0f, 1.0f);
         }
     }
 
@@ -220,9 +220,9 @@ namespace njo
                 juce::Path grid;
                 for (float gx = 0; gx <= W + 0.5f; gx += W / 16.0f) { grid.startNewSubPath (gx, 0); grid.lineTo (gx, H); }
                 for (float gy = 0; gy <= H + 0.5f; gy += H / 4.0f) { grid.startNewSubPath (0, gy); grid.lineTo (W, gy); }
-                g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.10f));
+                g.setColour (juce::Colour (0xffff3e30).withAlpha (0.10f));
                 g.strokePath (grid, juce::PathStrokeType (1.0f));
-                g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.38f));
+                g.setColour (juce::Colour (0xffff3e30).withAlpha (0.38f));
                 g.drawLine (0, H / 2, W, H / 2, 1.0f);
             }
 
@@ -288,10 +288,10 @@ namespace njo
                         if (m1 > 0) used.add (warpModes()[juce::jlimit (0, warpModes().size() - 1, m1)]);
                         if (m2 > 0) used.add (warpModes()[juce::jlimit (0, warpModes().size() - 1, m2)]);
                         if (used.size()) tag = " / WARP " + used.joinIntoString (" + ");
-                        glowStroke (g, traceOf (cyc), juce::Colour (0xffccff92).withAlpha (0.40f), 1.0f, false);
+                        glowStroke (g, traceOf (cyc), juce::Colour (0xffff948d).withAlpha (0.40f), 1.0f, false);
                         glowStroke (g, traceOf (w), juce::Colour (0xffff7a45), 2.0f, true);
                     }
-                    else glowStroke (g, traceOf (cyc), juce::Colour (0xffa3ff3a), 2.0f, true);
+                    else glowStroke (g, traceOf (cyc), juce::Colour (0xffff3e30), 2.0f, true);
                     info = s->name + " / FRAME " + juce::String (p + 1.0f, 1) + " OF " + juce::String (nF) + tag;
                 }
             }
@@ -304,7 +304,7 @@ namespace njo
                     const int n = (int) s->data.size(), Wp = (int) W;
                     int step = juce::jmax (1, n / Wp);
                     float start = juce::jlimit (0.0f, 1.0f, type == 8 ? ctx.get (gr::grId (o, gr::key ("gpos"))) : (type == 11 ? ctx.get (sp::spId (o, sp::key ("spos"))) : pv ("sstart")));
-                    g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.12f));
+                    g.setColour (juce::Colour (0xffff3e30).withAlpha (0.12f));
                     g.fillRect (0.0f, 0.0f, W * start, H);
                     juce::Path p;
                     for (int x = 0; x < Wp; ++x)
@@ -315,7 +315,7 @@ namespace njo
                         if (mx < mn) mn = mx = 0;
                         p.startNewSubPath ((float) x, H / 2 - mx * (H / 2 - 4)); p.lineTo ((float) x, H / 2 - mn * (H / 2 - 4));
                     }
-                    g.setColour (juce::Colour (0xffa3ff3a));
+                    g.setColour (juce::Colour (0xffff3e30));
                     g.strokePath (p, juce::PathStrokeType (1.5f));
                     juce::Path sl; sl.startNewSubPath (W * start, 0); sl.lineTo (W * start, H);
                     g.setColour (juce::Colour (0xffffc8be).withAlpha (0.7f));
@@ -343,8 +343,8 @@ namespace njo
                     {
                         const float* r = s->data.data() + 8 + z * sf2::kSfZf;
                         const float x0 = r[sf2::KeyLo] * kx, x1 = (r[sf2::KeyHi] + 1.0f) * kx, y0 = H - 4 - (r[sf2::VelHi] + 1.0f) / 128.0f * (H - 8), y1 = H - 4 - r[sf2::VelLo] / 128.0f * (H - 8);
-                        g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.16f)); g.fillRect (x0, y0, x1 - x0, y1 - y0);
-                        g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.7f)); g.drawRect (x0, y0, x1 - x0, y1 - y0, 1.0f);
+                        g.setColour (juce::Colour (0xffff3e30).withAlpha (0.16f)); g.fillRect (x0, y0, x1 - x0, y1 - y0);
+                        g.setColour (juce::Colour (0xffff3e30).withAlpha (0.7f)); g.drawRect (x0, y0, x1 - x0, y1 - y0, 1.0f);
                         const float rx = r[sf2::Root] * kx + kx * 0.5f;
                         g.setColour (juce::Colour (0xffffc8be).withAlpha (0.55f)); g.drawLine (rx, y0, rx, y1, 1.0f);
                     }
@@ -365,8 +365,8 @@ namespace njo
                     if (x == 0) { p.startNewSubPath ((float) x, py); fillP.startNewSubPath ((float) x, H); fillP.lineTo ((float) x, py); } else { p.lineTo ((float) x, py); fillP.lineTo ((float) x, py); }
                 }
                 fillP.lineTo (W, H); fillP.closeSubPath();
-                g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.12f)); g.fillPath (fillP);
-                g.setColour (juce::Colour (0xffa3ff3a)); g.strokePath (p, juce::PathStrokeType (1.5f));
+                g.setColour (juce::Colour (0xffff3e30).withAlpha (0.12f)); g.fillPath (fillP);
+                g.setColour (juce::Colour (0xffff3e30)); g.strokePath (p, juce::PathStrokeType (1.5f));
                 info = juce::String ("SPECTRUM / ") + juce::String (juce::roundToInt (c1)) + " HZ" + (m > 0.01 ? " > " + juce::String (juce::roundToInt (c2)) + " HZ" : juce::String());
             }
             else if (type == 10)
@@ -385,7 +385,7 @@ namespace njo
                     const float py = H / 2 - (float) y * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
                 }
-                g.setColour (juce::Colour (0xffa3ff3a));
+                g.setColour (juce::Colour (0xffff3e30));
                 g.strokePath (p, juce::PathStrokeType (1.5f));
                 info = juce::String ("MODAL DRUM / T60 ") + juce::String (t60, 2) + " S" + (V ("dsnare") > 0.01f ? " / SNARE" : "") + (V ("dsym") > 0.01f ? " / SYMPATHETIC" : "");
             }
@@ -434,7 +434,7 @@ namespace njo
                     const float py = H / 2 - (float) y * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
                 }
-                g.setColour (juce::Colour (0xffa3ff3a));
+                g.setColour (juce::Colour (0xffff3e30));
                 g.strokePath (p, juce::PathStrokeType (1.5f));
                 static const char* names[] = { "SAW", "SQUARE", "TRIANGLE", "ORGAN", "BELL", "VOWEL", "BRASS", "HOLLOW" };
                 info = juce::String ("ADDITIVE / ") + names[sa] + (mo > 0.001 ? juce::String (" > ") + names[sb] : juce::String()) + " / " + juce::String (cnt) + " PARTIALS";
@@ -484,7 +484,7 @@ namespace njo
                     const float py = H / 2 - (float) y * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
                 }
-                g.setColour (juce::Colour (0xffa3ff3a));
+                g.setColour (juce::Colour (0xffff3e30));
                 g.strokePath (p, juce::PathStrokeType (1.5f));
                 static const char* names[] = { "SAW", "SQUARE", "TRIANGLE", "SINE", "NOISE", "SPECTRUM", "SUPER SAW", "FEEDBACK OSC", "TRI MOD" };
                 info = juce::String ("JP-8080 / ") + names[wv];
@@ -508,9 +508,9 @@ namespace njo
                     const float py = H / 2 - y * (H / 2 - 4), ey = H / 2 - a * 0.7f * (H / 2 - 4);
                     if (x == 0) { p.startNewSubPath ((float) x, py); env.startNewSubPath ((float) x, ey); } else { p.lineTo ((float) x, py); env.lineTo ((float) x, ey); }
                 }
-                g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.35f));
+                g.setColour (juce::Colour (0xffff3e30).withAlpha (0.35f));
                 g.strokePath (env, juce::PathStrokeType (1.0f));
-                g.setColour (juce::Colour (0xffa3ff3a));
+                g.setColour (juce::Colour (0xffff3e30));
                 g.strokePath (p, juce::PathStrokeType (1.5f));
                 static const char* names[] = { "KARPLUS-STRONG", "BOWED STRING", "CLARINET", "BANDED WAVEGUIDE", "DRUM" };
                 info = juce::String ("WAVEGUIDE / ") + names[md] + " / T60 " + juce::String (t60, 2) + " S";
@@ -538,7 +538,7 @@ namespace njo
                     if (x == 0) { p.startNewSubPath ((float) x, py); env.startNewSubPath ((float) x, ey); } else { p.lineTo ((float) x, py); env.lineTo ((float) x, ey); }
                 }
                 g.setColour (juce::Colour (0xffffa040).withAlpha (0.4f)); g.strokePath (env, juce::PathStrokeType (1.2f));
-                g.setColour (juce::Colour (0xffa3ff3a)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                g.setColour (juce::Colour (0xffff3e30)); g.strokePath (p, juce::PathStrokeType (2.0f));
                 static const char* const kn[4] = { "CLASSIC", "808", "PUNCH", "HARDSTYLE" };
                 info = juce::String ("KICK / ") + kn[md] + " / SWEEP " + juce::String (sw, 1) + " OCT / DECAY " + juce::String (juce::roundToInt (dec * 1000.0f)) + " MS";
             }
@@ -568,7 +568,7 @@ namespace njo
                     const float py = H / 2 - juce::jlimit (-1.2f, 1.2f, y) * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, py); else p.lineTo ((float) x, py);
                 }
-                g.setColour (juce::Colour (0xffa3ff3a)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                g.setColour (juce::Colour (0xffff3e30)); g.strokePath (p, juce::PathStrokeType (2.0f));
                 const float nz = V ("jnoise") * (H - 12);
                 g.setColour (juce::Colour (0xffffa040).withAlpha (0.5f)); g.fillRect (W - 14, H - 6 - nz, 8.0f, nz);
                 info = juce::String ("ALPHA JUNO / SAW ") + juce::String (stp + 1) + " + PULSE " + juce::String (ptp + 1) + " + SUB " + juce::String (btp + 1) + " / " + (range == 0 ? "16'" : (range == 1 ? "8'" : "4'")) + " / WIDTH " + juce::String (juce::roundToInt (wd * 100)) + " %"
@@ -596,7 +596,7 @@ namespace njo
                     float am[16], sum = 0;
                     for (int i = 0; i < 16; ++i) { am[i] = std::abs (std::sin (juce::MathConstants<float>::pi * hit * (float) (i + 1))) / std::pow ((float) (i + 1), phys::AEXP[md]); sum += am[i] * am[i]; }
                     const float nr = 1.0f / std::sqrt (juce::jmax (sum, 0.05f));
-                    g.setColour ((res == 0 ? juce::Colour (0xffa3ff3a) : juce::Colour (0xffffa040)).withAlpha (0.35f + 0.65f * juce::jmin (1.0f, vol * 1.5f)));
+                    g.setColour ((res == 0 ? juce::Colour (0xffff3e30) : juce::Colour (0xffffa040)).withAlpha (0.35f + 0.65f * juce::jmin (1.0f, vol * 1.5f)));
                     for (int i = 0; i < 16; ++i)
                     {
                         const float r = phys::RAT[md][i] * (1.0f + inh * 0.004f * (float) (i * i)) * mul;
@@ -635,7 +635,7 @@ namespace njo
                     const float y = H / 2 - juce::jlimit (-1.2f, 1.2f, arr[(size_t) x] - (float) mean) * (H / 2 - 4);
                     if (x == 0) p.startNewSubPath ((float) x, y); else p.lineTo ((float) x, y);
                 }
-                g.setColour (juce::Colour (0xffa3ff3a)); g.strokePath (p, juce::PathStrokeType (2.0f));
+                g.setColour (juce::Colour (0xffff3e30)); g.strokePath (p, juce::PathStrokeType (2.0f));
                 const auto& tn = findSpec (oscId (o, oscKey ("tterr")))->labels;
                 info = "WAVE TERRAIN / " + tn[tt].toUpperCase() + (mo > 0.001 ? " > " + tn[tb].toUpperCase() : juce::String()) + " / SCALE " + juce::String (sc, 2);
             }
@@ -706,9 +706,9 @@ namespace njo
             juce::Path grid;
             for (double fx : { 100.0, 1000.0, 10000.0 }) { grid.startNewSubPath (xOf (fx), 0); grid.lineTo (xOf (fx), H); }
             for (double d : { -36.0, -24.0, -12.0, 12.0 }) { grid.startNewSubPath (0, yOf (d)); grid.lineTo (W, yOf (d)); }
-            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.10f)); g.strokePath (grid, juce::PathStrokeType (1.0f));
-            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.40f)); g.drawLine (0, yOf (0), W, yOf (0), 1.0f);
-            g.setColour (juce::Colour (0xffbaff6c).withAlpha (0.55f));
+            g.setColour (juce::Colour (0xffff3e30).withAlpha (0.10f)); g.strokePath (grid, juce::PathStrokeType (1.0f));
+            g.setColour (juce::Colour (0xffff3e30).withAlpha (0.40f)); g.drawLine (0, yOf (0), W, yOf (0), 1.0f);
+            g.setColour (juce::Colour (0xffff6f65).withAlpha (0.55f));
             g.setFont (font (15.0f, true));
             auto txt = [&] (const juce::String& t, float x, float baseY) { g.drawText (t, juce::Rectangle<float> (x, baseY - 15, 80, 18), juce::Justification::bottomLeft, false); };
             txt ("100", xOf (100) + 4, H - 6); txt ("1k", xOf (1000) + 4, H - 6); txt ("10k", xOf (10000) + 4, H - 6);
@@ -755,7 +755,7 @@ namespace njo
                 if (fill)
                 {
                     juce::Path a (p); a.lineTo (W, H); a.lineTo (0, H); a.closeSubPath ();
-                    g.setGradientFill (juce::ColourGradient (juce::Colour (0xffa3ff3a).withAlpha (0.38f), 0, 0, juce::Colour (0xffa3ff3a).withAlpha (0.02f), 0, H, false));
+                    g.setGradientFill (juce::ColourGradient (juce::Colour (0xffff3e30).withAlpha (0.38f), 0, 0, juce::Colour (0xffff3e30).withAlpha (0.02f), 0, H, false));
                     g.fillPath (a);
                 }
                 glowStroke (g, p, col, lw, glow);
@@ -766,10 +766,10 @@ namespace njo
             {
                 if (ft == 28 || ft == 29)
                 {
-                    curve (0.5, false, juce::Colour (0xffc8ff88).withAlpha (0.35f), 1.0f, false);
-                    curve (1.5, false, juce::Colour (0xffc8ff88).withAlpha (0.35f), 1.0f, false);
+                    curve (0.5, false, juce::Colour (0xffff8a82).withAlpha (0.35f), 1.0f, false);
+                    curve (1.5, false, juce::Colour (0xffff8a82).withAlpha (0.35f), 1.0f, false);
                 }
-                curve (1.0, true, juce::Colour (0xffa3ff3a), 2.5f, true);
+                curve (1.0, true, juce::Colour (0xffff3e30), 2.5f, true);
                 float x = xOf (juce::jmax (20.0, fc));
                 juce::Path m; m.startNewSubPath (x, 0); m.lineTo (x, H);
                 g.setColour (juce::Colour (0xffffc8be).withAlpha (0.55f));
@@ -826,7 +826,7 @@ namespace njo
             juce::Graphics::ScopedSaveState ss (g);
             g.reduceClipRegion (getLocalBounds());
             const float W = box.getWidth(), H = box.getHeight();
-            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.10f));
+            g.setColour (juce::Colour (0xffff3e30).withAlpha (0.10f));
             g.drawLine (0, H / 2, W, H / 2, 1.0f); g.drawLine (W / 2, 0, W / 2, H, 1.0f);
             g.setColour (juce::Colour (0xffffc8be).withAlpha (0.22f)); g.drawLine (0, H, W, 0, 1.0f);
             cornerBrackets (g, W, H, 14.0f);
@@ -838,7 +838,7 @@ namespace njo
                 float px = (float) i * W / (N - 1), py = H * 0.5f - y * (H * 0.5f - 4.0f);
                 if (i == 0) p.startNewSubPath (px, py); else p.lineTo (px, py);
             }
-            glowStroke (g, p, on ? juce::Colour (0xffa3ff3a) : juce::Colour (0xffbaaa89).withAlpha (0.45f), 2.5f, on);
+            glowStroke (g, p, on ? juce::Colour (0xffff3e30) : juce::Colour (0xffbaaa89).withAlpha (0.45f), 2.5f, on);
         }
         displayBorder (g, box);
     }
@@ -869,7 +869,7 @@ namespace njo
             const float fLo = 30.0f, fHi = 16000.0f;
             auto xOf = [&] (float f) { return std::log (f / fLo) / std::log (fHi / fLo) * W; };
             // grid: octaves of 100 Hz .. 10 kHz
-            g.setColour (juce::Colour (0xffa3ff3a).withAlpha (0.08f));
+            g.setColour (juce::Colour (0xffff3e30).withAlpha (0.08f));
             for (float f : { 100.0f, 1000.0f, 10000.0f }) g.drawLine (xOf (f), 0, xOf (f), H, 1.0f);
             for (int d = 1; d < 4; ++d) g.drawLine (0, H * d / 4.0f, W, H * d / 4.0f, 1.0f);
             cornerBrackets (g, W, H, 14.0f);
@@ -899,7 +899,7 @@ namespace njo
                 float y = H - 6.0f - juce::jlimit (0.0f, 1.0f, (db + 18.0f) / 40.0f) * (H - 14.0f);
                 if (i == 0) p.startNewSubPath (0.0f, y); else p.lineTo ((float) i * W / (N - 1), y);
             }
-            glowStroke (g, p, on ? juce::Colour (0xffa3ff3a) : juce::Colour (0xffbaaa89).withAlpha (0.45f), 2.5f, on);
+            glowStroke (g, p, on ? juce::Colour (0xffff3e30) : juce::Colour (0xffbaaa89).withAlpha (0.45f), 2.5f, on);
             g.setColour (juce::Colour (0xffffc8be).withAlpha (0.55f)); g.setFont (mono (8.5f, false));
             g.drawText ("modes tuned to A3 (220 Hz) + Tune", getLocalBounds().reduced (8, 4), juce::Justification::topRight);
         }
@@ -947,11 +947,11 @@ namespace njo
             {
                 int f = show == 1 ? 0 : juce::roundToInt ((float) k * (float) (nF - 1) / (float) (show - 1));
                 float t = nF == 1 ? 0.0f : (float) f / (float) (nF - 1);
-                auto col = on ? juce::Colour (0xffbaff6c).withAlpha (0.18f + 0.30f * (1.0f - (float) k / (float) show)) : juce::Colour (0xffa49579).withAlpha (0.22f);
+                auto col = on ? juce::Colour (0xffff6f65).withAlpha (0.18f + 0.30f * (1.0f - (float) k / (float) show)) : juce::Colour (0xff8a909a).withAlpha (0.22f);
                 g.setColour (col); g.strokePath (curve ([&] (int i) { return at (f, i); }, t), juce::PathStrokeType (1.0f));
             }
             float cur[512]; oscmodel::tblFrame (data, isFilter, pos, cur);
-            glowStroke (g, curve ([&] (int i) { return cur[i]; }, pos), on ? juce::Colour (0xffa3ff3a) : juce::Colour (0xffcfbe99).withAlpha (0.6f), 2.5f, on);
+            glowStroke (g, curve ([&] (int i) { return cur[i]; }, pos), on ? juce::Colour (0xffff3e30) : juce::Colour (0xffcfbe99).withAlpha (0.6f), 2.5f, on);
             cornerBrackets (g, W, H, 14.0f);
         }
         displayBorder (g, box);

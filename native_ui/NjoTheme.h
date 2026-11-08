@@ -4,9 +4,9 @@
 
 namespace njo::theme
 {
-    inline const juce::Colour bg    { 0xff0a0c0d }, panel { 0xff201c17 }, panel2 { 0xff2c2720 }, steel { 0xff423b30 };
-    inline const juce::Colour ink   { 0xffddd6d2 }, dim { 0xff95886e }, line { 0xff524a3c }, deep { 0xff080b04 };
-    inline const juce::Colour red   { 0xffa3ff3a }, orange { 0xffff7a45 }, glow { 0x8ca3ff3a }, redDark { 0xff60a314 };
+    inline const juce::Colour bg    { 0xff0a0c0d }, panel { 0xff1a1b1d }, panel2 { 0xff242629 }, steel { 0xff37393d };
+    inline const juce::Colour ink   { 0xffddd6d2 }, dim { 0xff7e838c }, line { 0xff45484d }, deep { 0xff0b0404 };
+    inline const juce::Colour red   { 0xffff3e30 }, orange { 0xffff7a45 }, glow { 0x8cff3e30 }, redDark { 0xffa3170d };
     inline const juce::Colour blue  { 0xff59b7ff };
 
     juce::Font font (float height, bool bold = false);

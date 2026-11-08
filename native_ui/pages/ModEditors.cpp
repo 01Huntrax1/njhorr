@@ -38,9 +38,9 @@ namespace njo
             auto r = getLocalBounds().toFloat().reduced (0.5f);
             auto col = srcColour (src);
             bool misc = src > 20;
-            g.setColour (on ? col : juce::Colour (0xff16120f)); g.fillRoundedRectangle (r, r.getHeight() / 2);
+            g.setColour (on ? col : juce::Colour (0xff111213)); g.fillRoundedRectangle (r, r.getHeight() / 2);
             g.setColour (col.withAlpha (on ? 1.0f : 0.8f)); g.drawRoundedRectangle (r, r.getHeight() / 2, 1.2f);
-            g.setColour (on ? juce::Colour (0xff14110e) : (misc ? col : ink)); g.setFont (font (9.0f, true));
+            g.setColour (on ? juce::Colour (0xff101112) : (misc ? col : ink)); g.setFont (font (9.0f, true));
             g.drawText (srcShort (src), getLocalBounds(), juce::Justification::centred);
         }
         void mouseUp (const juce::MouseEvent& e) override { if (! dragged && e.getDistanceFromDragStart() < 4 && onClick) onClick(); dragged = false; }
@@ -75,7 +75,7 @@ namespace njo
             float tot = seg[0] + seg[1] + seg[2] + seg[3];
             auto X = [&] (float f) { return pad + f / tot * (W - 2 * pad); };
             auto Y = [&] (float a) { return H - pad - a * (H - 2 * pad); };
-            g.setColour (juce::Colour (0xff080b04)); g.fillRoundedRectangle (bnd, 2.0f);
+            g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (bnd, 2.0f);
             g.setColour (juce::Colours::white.withAlpha (0.06f));
             for (int k = 1; k < 4; ++k) g.drawHorizontalLine ((int) Y (k / 4.0f), pad, W - pad);
             float x1 = seg[0], x2 = x1 + seg[1], x3 = x2 + seg[2], x4 = x3 + seg[3];
@@ -119,7 +119,7 @@ namespace njo
             float W = (float) getWidth(), H = (float) getHeight();
             int i = lfo(), w = wave(); bool dr = drawn();
             const std::vector<LfoPoint>* P = dr ? &shapes (ctx).points (i) : nullptr;
-            g.setColour (juce::Colour (0xff080b04)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
+            g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
             int grid = kGrids[gGrid], xs = grid ? grid : 8, ys = grid ? juce::jmax (2, grid / 2) : 4;
             for (int k = 0; k <= xs; ++k)
             {
@@ -136,7 +136,7 @@ namespace njo
             for (int k = 0; k <= 400; ++k) { float p = k / 400.0f; if (k == 0) line.startNewSubPath (px (p), py (fn (p))); else line.lineTo (px (p), py (fn (p))); }
             juce::Path fill (line); fill.lineTo (px (1), py (0)); fill.lineTo (px (0), py (0)); fill.closeSubPath();
             g.setColour (dr ? juce::Colour::fromFloatRGBA (1, 0.35f, 0.24f, 0.16f) : juce::Colour::fromFloatRGBA (0.63f, 0.63f, 0.67f, 0.10f)); g.fillPath (fill);
-            g.setColour (dr ? juce::Colour (0xffb0ff56) : juce::Colour (0xffaa9b7d)); g.strokePath (line, juce::PathStrokeType (2.0f));
+            g.setColour (dr ? juce::Colour (0xffff594e) : juce::Colour (0xff9096a0)); g.strokePath (line, juce::PathStrokeType (2.0f));
             if (P)
             {
                 for (size_t k = 0; k + 1 < P->size(); ++k)
@@ -146,14 +146,14 @@ namespace njo
                     float mx = (a.x + b.x) / 2, my = LfoShapes::curve (a.y, b.y, a.c, 0.5f);
                     juce::Path d; d.addRectangle (-4.0f, -4.0f, 8.0f, 8.0f);
                     d.applyTransform (juce::AffineTransform::rotation (juce::MathConstants<float>::pi / 4).translated (px (mx), py (my)));
-                    g.setColour (juce::Colour (0xff1e2a11)); g.fillPath (d);
-                    g.setColour (juce::Colour (0xffd4ffa3)); g.strokePath (d, juce::PathStrokeType (1.5f));
+                    g.setColour (juce::Colour (0xff2a1110)); g.fillPath (d);
+                    g.setColour (juce::Colour (0xffffa59e)); g.strokePath (d, juce::PathStrokeType (1.5f));
                 }
                 for (auto& q : *P)
                 {
                     auto e = juce::Rectangle<float> (11, 11).withCentre ({ px (q.x), py (q.y) });
                     g.setColour (juce::Colour (0xffffd9cf)); g.fillEllipse (e);
-                    g.setColour (juce::Colour (0xffa3ff3a)); g.drawEllipse (e, 2.0f);
+                    g.setColour (juce::Colour (0xffff3e30)); g.drawEllipse (e, 2.0f);
                 }
             }
             else
@@ -464,7 +464,7 @@ namespace njo
             float W = (float) getWidth(), H = (float) getHeight();
             auto& P = freqShapes (ctx).points (sel());
             const float rate = ctx.get (frqParam (sel()));
-            g.setColour (juce::Colour (0xff080b04)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
+            g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 2.0f);
             g.setFont (font (9.0f));
             for (int k = 0; k < 10; ++k)
             {
@@ -485,19 +485,19 @@ namespace njo
             for (int k = 0; k <= 400; ++k) { float p = k / 400.0f, y = LfoShapes::sampleAt (P, p); if (k == 0) line.startNewSubPath (px (p), py (y)); else line.lineTo (px (p), py (y)); }
             juce::Path fill (line); fill.lineTo (px (1), py (0)); fill.lineTo (px (0), py (0)); fill.closeSubPath();
             g.setColour (juce::Colour::fromFloatRGBA (1, 0.35f, 0.24f, 0.16f)); g.fillPath (fill);
-            g.setColour (juce::Colour (0xffb0ff56)); g.strokePath (line, juce::PathStrokeType (2.0f));
+            g.setColour (juce::Colour (0xffff594e)); g.strokePath (line, juce::PathStrokeType (2.0f));
             for (size_t k = 0; k + 1 < P.size(); ++k)
             {
                 auto& a = P[k]; auto& b = P[k + 1];
                 if (b.x - a.x < 0.02f) continue;
                 auto e = juce::Rectangle<float> (7, 7).withCentre ({ px ((a.x + b.x) / 2), py (LfoShapes::curve (a.y, b.y, a.c, 0.5f)) });
-                g.setColour (juce::Colour (0xff1e2a11)); g.fillEllipse (e);
-                g.setColour (juce::Colour (0xffd4ffa3)); g.drawEllipse (e, 1.2f);
+                g.setColour (juce::Colour (0xff2a1110)); g.fillEllipse (e);
+                g.setColour (juce::Colour (0xffffa59e)); g.drawEllipse (e, 1.2f);
             }
             for (auto& q : P)
             {
                 auto e = juce::Rectangle<float> (10, 10).withCentre ({ px (q.x), py (q.y) });
-                g.setColour (juce::Colour (0xffbcff70)); g.fillEllipse (e);
+                g.setColour (juce::Colour (0xffff7369)); g.fillEllipse (e);
                 g.setColour (juce::Colour (0xffffd9cf)); g.drawEllipse (e, 1.5f);
             }
         }
@@ -673,7 +673,7 @@ namespace njo
             auto a = area(); int m = ctx.selectedSeq, len = lenOf();
             bool bip = ctx.get (seqParam (m, 23)) > 0.5f;
             auto col = srcColour (34 + m);
-            g.setColour (juce::Colour (0xff100d0b)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
+            g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
             float sw = a.getWidth() / 16.0f;
             if (bip) { g.setColour (dim.withAlpha (0.5f)); g.drawHorizontalLine ((int) a.getCentreY(), a.getX(), a.getRight()); }
             int head = ctx.be.seqStepPos[m];
@@ -682,7 +682,7 @@ namespace njo
                 float v = ctx.get (seqParam (m, k));
                 auto cell = juce::Rectangle<float> (a.getX() + k * sw + 1.5f, a.getY(), sw - 3.0f, a.getHeight());
                 bool act = k < len;
-                g.setColour (juce::Colour (act ? 0xff211c17 : 0xff171310)); g.fillRoundedRectangle (cell, 2.0f);
+                g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (cell, 2.0f);
                 float y = cell.getBottom() - v * cell.getHeight();
                 juce::Rectangle<float> bar = bip ? juce::Rectangle<float> (cell.getX(), juce::jmin (y, cell.getCentreY()), cell.getWidth(), std::abs (y - cell.getCentreY()))
                                                  : juce::Rectangle<float> (cell.getX(), y, cell.getWidth(), cell.getBottom() - y);

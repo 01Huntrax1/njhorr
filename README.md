@@ -140,7 +140,7 @@ Sources: `tools/rack/rack_dsp.cmajor.part` (DSP), `tools/rack/apply_rack_patch.p
 
 ## Native UI (JUCE C++) and the WebView fallback
 
-Look: a hunter-tech theme (bronze plates with cut corners, rivets, etched marks, plasma-green light, hexagonal knobs with blade pointers) defined in `native_ui/NjoTheme.cpp`; the colours are in `NjoTheme.h` (the accent is still called `red` in the code). Surfaces are procedural textures generated at start-up (brushed bronze plates, dragon-scale background, plasma veins on active elements, grained glass for displays), so there are no image files to ship.
+Look: a hunter-tech theme defined in `native_ui/NjoTheme.cpp` (plates with cut corners, rivets, etched marks, hexagonal knobs with blade pointers). Surfaces are procedural textures generated at start-up (brushed steel plates and window background, red plasma veins on active elements, grained glass for displays), so there are no image files to ship. The colours are in `NjoTheme.h`.
 
 The plugin window is now a native JUCE editor written in C++ (`native_ui/`, see `native_ui/README_UI.md`). It is the default
 (`-DNJOHRR_NATIVE_UI=ON`). The old WebView UI (`patch/index.js`) is still in the repo as a fallback: configure with

@@ -41,7 +41,7 @@ namespace njo::theme
         {
             const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true);
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
-            const juce::Colour dark (0xff0e0c07), mid (0xff231e13), brass (0xff54462a);
+            const juce::Colour dark (0xff0a0b0b), mid (0xff1a1c1d), brass (0xff3e4145);
             for (int y = 0; y < N; ++y)
                 for (int x = 0; x < N; ++x)
                 {
@@ -61,25 +61,24 @@ namespace njo::theme
         return img;
     }
 
-    const juce::Image& texScales()
+    const juce::Image& texScales()   // brushed steel / aluminium (the name is kept: it is the window background texture)
     {
         static juce::Image img = []
         {
-            const int W = 48, H = 32; juce::Image im (juce::Image::ARGB, W, H, true);
+            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true);
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
-            const juce::Colour dark (0xff050504), lo (0xff100e0a), hi (0xff2a2418);
-            for (int y = 0; y < H; ++y)
-                for (int x = 0; x < W; ++x)
+            const juce::Colour lo (0xff2a2d31), mid (0xff4a4f55), hi (0xff868c94);
+            for (int y = 0; y < N; ++y)
+                for (int x = 0; x < N; ++x)
                 {
-                    int row = y / 16; int xo = (row & 1) * 12;
-                    float u = (float) (((x + xo) % 24)) / 24.0f, v = (float) (y % 16) / 16.0f;
-                    float bulge = 1.0f - std::abs (2.0f * u - 1.0f);                 // pointed scale: ridge along the middle
-                    float tip = v - 0.55f * (1.0f - bulge);                           // lower edge is a V
-                    bool groove = u < 0.07f || u > 0.93f || tip > 0.80f || v < 0.05f;
-                    float lit = 0.55f * (1.0f - v) + 0.45f * bulge;
-                    float n = hash2 (x, y, 21) * 0.18f;
-                    auto col = groove ? dark : mix (lo, hi, lit * 0.9f + n);
-                    bd.setPixelColour (x, y, col);
+                    float u = (float) x / N, v = (float) y / N;
+                    float f1 = vnoise (u * 2.0f, v * 200.0f, 2, 200, 51);    // long horizontal brushing
+                    float f2 = vnoise (u * 6.0f, v * 100.0f, 6, 100, 52);
+                    float f3 = vnoise (u * 24.0f, v * 220.0f, 24, 220, 53);
+                    float cloud = vnoise (u * 3.0f, v * 3.0f, 3, 3, 54);     // soft sheen
+                    float L = 0.45f + 0.20f * (f1 - 0.5f) + 0.16f * (f2 - 0.5f) + 0.12f * (f3 - 0.5f) + 0.22f * (cloud - 0.5f) + 0.05f * (hash2 (x, y, 55) - 0.5f);
+                    L = juce::jlimit (0.0f, 1.0f, L);
+                    bd.setPixelColour (x, y, L < 0.5f ? mix (lo, mid, L * 2.0f) : mix (mid, hi, (L - 0.5f) * 2.0f));
                 }
             return im;
         }();
@@ -92,7 +91,7 @@ namespace njo::theme
         {
             const int N = 128; juce::Image im (juce::Image::ARGB, N, N, true);
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
-            const juce::Colour deepG (0xff1f5208), midG (0xff5fc41c), hotG (0xffd2ff7a);
+            const juce::Colour deepG (0xff520904), midG (0xffc41f14), hotG (0xffff7d73);
             for (int y = 0; y < N; ++y)
                 for (int x = 0; x < N; ++x)
                 {
@@ -120,7 +119,7 @@ namespace njo::theme
                 {
                     float n = vnoise ((float) x / 8.0f, (float) y / 8.0f, 8, 8, 41) * 0.6f + hash2 (x, y, 42) * 0.4f;
                     bool line = (y % 4) == 0;
-                    bd.setPixelColour (x, y, mix (juce::Colour (0xff040703), juce::Colour (0xff10200a), n * (line ? 0.5f : 1.0f)));
+                    bd.setPixelColour (x, y, mix (juce::Colour (0xff070303), juce::Colour (0xff200a09), n * (line ? 0.5f : 1.0f)));
                 }
             return im;
         }();
@@ -141,7 +140,7 @@ namespace njo::theme
     {
         g.setTiledImageFill (texScales(), 0, 0, 1.0f);
         g.fillRect (r);
-        g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, r.getCentreX() * 1.0f, r.getCentreY() * 1.0f, juce::Colours::black.withAlpha (0.6f), 0.0f, 0.0f, true));   // vignette
+        g.setGradientFill (juce::ColourGradient (juce::Colours::transparentBlack, r.getCentreX() * 1.0f, r.getCentreY() * 1.0f, juce::Colours::black.withAlpha (0.45f), 0.0f, 0.0f, true));   // vignette
         g.fillRect (r);
     }
 
@@ -172,9 +171,9 @@ namespace njo::theme
         auto p = chamfer (r, cut, 3.0f, cut, 3.0f);
         // hammered bronze plate
         fillPlate (g, p, r);
-        g.setColour (juce::Colour (0xff0c0b08));   // shadow line inside the frame
+        g.setColour (juce::Colour (0xff090a0b));   // shadow line inside the frame
         g.strokePath (chamfer (r.reduced (3.0f), cut - 2.0f, 2.0f, cut - 2.0f, 2.0f), juce::PathStrokeType (1.0f));
-        g.setColour (juce::Colour (0xff6d5c3a));   // bronze frame
+        g.setColour (juce::Colour (0xff52565c));   // bronze frame
         g.strokePath (p, juce::PathStrokeType (1.3f));
         g.setColour (juce::Colours::white.withAlpha (0.05f));
         g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + cut, r.getRight() - 4.0f);
@@ -201,7 +200,7 @@ namespace njo::theme
         if (r.getHeight() > 200.0f)
         {
             float x0 = juce::jmax (r.getX() + 22.0f, r.getRight() - 150.0f), x = x0, y = r.getBottom() - 5.0f; unsigned seed = (unsigned) (w * 7.0f) + 13u;
-            g.setColour (juce::Colour (0xff6d5c3a).withAlpha (0.55f));
+            g.setColour (juce::Colour (0xff52565c).withAlpha (0.55f));
             while (x < r.getRight() - 22.0f && (x - x0) < 126.0f)
             {
                 seed = seed * 1664525u + 1013904223u;
@@ -214,8 +213,8 @@ namespace njo::theme
         // rivets
         for (float sx : { r.getX() + 7.0f + 0.0f * cut, r.getRight() - 7.0f })
         {
-            g.setColour (juce::Colour (0xff0c0b08)); g.fillEllipse (sx - 3.0f, r.getBottom() - 10.0f, 6.0f, 6.0f);
-            g.setGradientFill (juce::ColourGradient (juce::Colour (0xffb59a62), sx - 1.0f, r.getBottom() - 8.5f, juce::Colour (0xff4a3d24), sx + 1.5f, r.getBottom() - 5.5f, true));
+            g.setColour (juce::Colour (0xff090a0b)); g.fillEllipse (sx - 3.0f, r.getBottom() - 10.0f, 6.0f, 6.0f);
+            g.setGradientFill (juce::ColourGradient (juce::Colour (0xffb59a62), sx - 1.0f, r.getBottom() - 8.5f, juce::Colour (0xff36393c), sx + 1.5f, r.getBottom() - 5.5f, true));
             g.fillEllipse (sx - 2.0f, r.getBottom() - 9.0f, 4.0f, 4.0f);
         }
     }
@@ -228,14 +227,14 @@ namespace njo::theme
         {
             g.setTiledImageFill (texPlasma(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
             g.setGradientFill (vertical (juce::Colours::white.withAlpha (0.10f), juce::Colours::black.withAlpha (0.45f), r)); g.fillPath (p);
-            g.setColour (juce::Colour (0xffd6ff9a)); g.strokePath (p, juce::PathStrokeType (1.0f));
+            g.setColour (juce::Colour (0xffff9c95)); g.strokePath (p, juce::PathStrokeType (1.0f));
             g.setColour (juce::Colours::white.withAlpha (0.35f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
             g.setColour (red.withAlpha (0.18f)); g.strokePath (p, juce::PathStrokeType (3.5f));   // plasma glow
         }
         else
         {
             fillPlate (g, p, r, down ? 0.8f : 0.2f);
-            g.setColour (hover ? red : juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.0f));
+            g.setColour (hover ? red : juce::Colour (0xff52565c)); g.strokePath (p, juce::PathStrokeType (1.0f));
             g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawHorizontalLine ((int) r.getY() + 1, r.getX() + c, r.getRight() - 2);
         }
     }
@@ -250,7 +249,7 @@ namespace njo::theme
         {
             float a = a0 + span * (float) i / 20.0f, len = (i % 5 == 0) ? 3.4f : 1.8f;
             float s = std::sin (a), co = -std::cos (a), ro = rad - 0.4f, ri = ro - len;
-            g.setColour (juce::Colour (0xff6d5c3a).withAlpha (i % 5 == 0 ? 0.95f : 0.6f));
+            g.setColour (juce::Colour (0xff52565c).withAlpha (i % 5 == 0 ? 0.95f : 0.6f));
             g.drawLine (c.x + s * ri, c.y + co * ri, c.x + s * ro, c.y + co * ro, 1.0f);
         }
         // value arc (plasma, with a soft glow)
@@ -278,12 +277,12 @@ namespace njo::theme
         }
         hex.closeSubPath();
         g.setTiledImageFill (texPlate(), (int) c.x * 7, (int) c.y * 3, 1.0f); g.fillPath (hex);
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff9a8450).withAlpha (0.55f), c.x - br * 0.8f, c.y - br, juce::Colours::black.withAlpha (0.4f), c.x + br * 0.6f, c.y + br, false));
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff757a82).withAlpha (0.55f), c.x - br * 0.8f, c.y - br, juce::Colours::black.withAlpha (0.4f), c.x + br * 0.6f, c.y + br, false));
         g.fillPath (hex);
-        g.setColour (dragging ? red : (hover ? juce::Colour (0xff9fd44a) : juce::Colour (0xff0a0906)));
+        g.setColour (dragging ? red : (hover ? juce::Colour (0xffd44d43) : juce::Colour (0xff080808)));
         g.strokePath (hex, juce::PathStrokeType (1.2f));
         auto dish = body.reduced (br * 0.28f);
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff1d1a12), dish.getCentreX() - dish.getWidth() * 0.2f, dish.getY(), juce::Colour (0xff050504), dish.getCentreX() + dish.getWidth() * 0.2f, dish.getBottom(), false));
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff17181a), dish.getCentreX() - dish.getWidth() * 0.2f, dish.getY(), juce::Colour (0xff040404), dish.getCentreX() + dish.getWidth() * 0.2f, dish.getBottom(), false));
         g.fillEllipse (dish);
         g.setColour (juce::Colours::white.withAlpha (0.10f)); g.drawEllipse (dish, 0.8f);
         // indicator: a blade from the dish towards the rim
@@ -304,7 +303,7 @@ namespace njo::theme
         g.setTiledImageFill (texGlass(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
         g.setColour (juce::Colours::black.withAlpha (0.35f));   // scan lines
         for (float y = r.getY() + 2.0f; y < r.getBottom(); y += 3.0f) g.drawHorizontalLine ((int) y, r.getX() + 4.0f, r.getRight() - 4.0f);
-        g.setColour (juce::Colour (0xff6d5c3a)); g.strokePath (p, juce::PathStrokeType (1.2f));
+        g.setColour (juce::Colour (0xff52565c)); g.strokePath (p, juce::PathStrokeType (1.2f));
     }
 
     void paintInset (juce::Graphics& g, juce::Rectangle<float> r, float corner)
@@ -312,6 +311,6 @@ namespace njo::theme
         const float c = juce::jlimit (2.0f, 6.0f, corner + 1.0f);
         auto p = chamfer (r, c, 0.0f, c, 0.0f);
         g.setTiledImageFill (texGlass(), (int) r.getX(), (int) r.getY(), 1.0f); g.fillPath (p);
-        g.setColour (juce::Colour (0xff3f6a1c)); g.strokePath (chamfer (r.reduced (0.5f), c, 0.0f, c, 0.0f), juce::PathStrokeType (1.0f));
+        g.setColour (juce::Colour (0xff6a1e18)); g.strokePath (chamfer (r.reduced (0.5f), c, 0.0f, c, 0.0f), juce::PathStrokeType (1.0f));
     }
 }
