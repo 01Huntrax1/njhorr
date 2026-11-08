@@ -76,4 +76,10 @@ check("Retrig sequencer restarts on each arp note (always the low step); a free 
 # changing the pattern while playing: switching the arp off releases the note
 a = render(BASE + arp(), C, tag="offmid", hold=0.4, tail=1.0, release=False)
 check("Output finite when keys stay held", np.isfinite(a).all())
+# latch switched off after the keys are up: the held notes go
+script = os.path.join(TMP, "lo.txt"); out = os.path.join(TMP, "lo.f32")
+open(script, "w").write("\n".join(["wt 0 sine", "p %d 0" % (A + 7), "p %d 1" % A, "p %d 6" % (A + 5), "p %d 0" % (A + 3), "p %d 0.8" % (A + 6), "p %d 1" % (A + 7), "run 0.05"] + ["on %d 100" % k for k in C] + ["run 0.6"] + ["off %d" % k for k in C] + ["run 0.6", "p %d 0" % (A + 7), "run 1.0"]) + "\n")
+subprocess.run([args.host, script, out], check=True)
+a_ = np.fromfile(out, dtype=np.float32).reshape(-1, 2)[:, 0]
+check("Latch switched off after the keys are up stops the arp", rm(a_[int(0.8 * RATE):int(1.2 * RATE)]) > 0.05 and rm(a_[int(1.9 * RATE):]) < 0.01, "%.3f / %.4f" % (rm(a_[int(0.8 * RATE):int(1.2 * RATE)]), rm(a_[int(1.9 * RATE):])))
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

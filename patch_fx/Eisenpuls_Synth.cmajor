@@ -130,7 +130,7 @@ processor Eisenpuls_Synth
     input event float param1106 [[ name: "OSC 2 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1107 [[ name: "OSC 2 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1108 [[ name: "OSC 2 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1109 [[ name: "OSC 2 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1109 [[ name: "OSC 2 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1110 [[ name: "OSC 2 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1111 [[ name: "OSC 2 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1112 [[ name: "OSC 2 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -184,7 +184,7 @@ processor Eisenpuls_Synth
     input event float param1170 [[ name: "OSC 3 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1171 [[ name: "OSC 3 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1172 [[ name: "OSC 3 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1173 [[ name: "OSC 3 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1173 [[ name: "OSC 3 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1174 [[ name: "OSC 3 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1175 [[ name: "OSC 3 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1176 [[ name: "OSC 3 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -238,7 +238,7 @@ processor Eisenpuls_Synth
     input event float param1234 [[ name: "OSC 4 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1235 [[ name: "OSC 4 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1236 [[ name: "OSC 4 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1237 [[ name: "OSC 4 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1237 [[ name: "OSC 4 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1238 [[ name: "OSC 4 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1239 [[ name: "OSC 4 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1240 [[ name: "OSC 4 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -292,7 +292,7 @@ processor Eisenpuls_Synth
     input event float param1298 [[ name: "OSC 5 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1299 [[ name: "OSC 5 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1300 [[ name: "OSC 5 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1301 [[ name: "OSC 5 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1301 [[ name: "OSC 5 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1302 [[ name: "OSC 5 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1303 [[ name: "OSC 5 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1304 [[ name: "OSC 5 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -346,7 +346,7 @@ processor Eisenpuls_Synth
     input event float param1362 [[ name: "OSC 6 Distortion Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
     input event float param1363 [[ name: "OSC 6 Distortion Drive", min: 0.0, max: 1.0, init: 0.3 ]];
     input event float param1364 [[ name: "OSC 6 Distortion Mix", min: 0.0, max: 1.0, init: 1.0 ]];
-    input event float param1365 [[ name: "OSC 6 Distortion Position", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param1365 [[ name: "OSC 6 Pre-Matrix Order (0-5, see Order list)", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
     input event float param1366 [[ name: "OSC 6 Wavefilter Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1367 [[ name: "OSC 6 Wavedistortion Position", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1368 [[ name: "OSC 6 Frequency (0 = Off: key pitch, else 20 Hz - 20 kHz)", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -17151,6 +17151,9 @@ processor Eisenpuls_Synth
 
     void arpTick (float dt)
     {
+        if (arpLatch < 0.5f && arpKeys <= 0)   // latch switched off while no key is down: the held notes go
+            arpN = 0;
+
         if (arpOn < 0.5f || arpN == 0)
         {
             if (arpCur >= 0)

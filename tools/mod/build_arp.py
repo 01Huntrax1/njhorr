@@ -146,6 +146,9 @@ new = '''    // MOD-ARP: the voice start / release code of the MIDI handler, sha
 
     void arpTick (float dt)
     {
+        if (arpLatch < 0.5f && arpKeys <= 0)   // latch switched off while no key is down: the held notes go
+            arpN = 0;
+
         if (arpOn < 0.5f || arpN == 0)
         {
             if (arpCur >= 0)
