@@ -85,7 +85,7 @@ public:
         patch->stopPlayback  = [this] { suspendProcessing (true); };
         patch->startPlayback = [this] { suspendProcessing (false); };
 
-        patch->patchChanged = [this]
+        patch->patchChanged = [this, alive = aliveFlag]
         {
             const auto executeOrDeferToMessageThread = [] (auto&& fn) -> void
             {
@@ -95,7 +95,8 @@ public:
                 juce::MessageManager::callAsync (std::forward<decltype (fn)> (fn));
             };
 
-            executeOrDeferToMessageThread ([this] { handlePatchChange(); });
+            // the deferred call can run after the host closed the plugin: only touch `this` while it is alive
+            executeOrDeferToMessageThread ([this, alive] { if (alive->load()) handlePatchChange(); });
         };
 
         patch->statusChanged = [this] (const auto& s) { setStatusMessage (s.statusMessage, s.messageList.hasErrors()); };
@@ -114,10 +115,18 @@ public:
 
     ~JUCEPluginBase() override
     {
+        // closing the host (FL Studio ...): first stop every callback into this object, then tear the rest down
+        aliveFlag->store (false);
+        patch->patchChanged = [] {};
+        patch->handleOutputEvent = [] (uint64_t, std::string_view, const choc::value::ValueView&) {};
+        patch->statusChanged = [] (const auto&) {};
+        patch->stopPlayback = [] {};
+        patch->startPlayback = [] {};
+        handleConsoleMessage = nullptr;
+        patchChangeCallback = nullptr;
        #if NJOHRR_NATIVE_UI
         njoBridge.reset();
        #endif
-        patch->patchChanged = [] {};
         patch->unload();
         patch.reset();
     }
@@ -371,6 +380,7 @@ public:
     std::shared_ptr<Patch> patch;
    #if NJOHRR_NATIVE_UI
     std::unique_ptr<njo::Bridge> njoBridge;
+    std::shared_ptr<std::atomic<bool>> aliveFlag = std::make_shared<std::atomic<bool>> (true);
    #endif
     std::string statusMessage;
     bool isStatusMessageError = false;
