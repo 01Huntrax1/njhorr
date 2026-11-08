@@ -921,13 +921,23 @@ protected:
 
             for (auto& p : patch->getParameterList())
             {
+                // parameters declared `automatable: false` (sequencer steps, step shapes, matrix slots ...) are not given to the host at all:
+                // thousands of host parameters make hosts like FL Studio very slow (they hang for a long time when the plugin is closed).
+                // They stay in the patch, in the UI and in the saved state; only the host's parameter list does not have them.
+                if (! p->properties.automatable)
+                {
+                    parameters.push_back (nullptr);
+                    continue;
+                }
+
                 auto param = builder.add (p);
                 parameters.push_back (param);
                 param->setPatchParam (p);
             }
 
             for (auto p : parameters)
-                p->forceValueChanged();
+                if (p != nullptr)
+                    p->forceValueChanged();
 
             setHostedParameterTree (std::move (builder.tree));
         }
@@ -949,7 +959,8 @@ protected:
         ensureNumParameters (params.size());
 
         for (size_t i = 0; i < params.size(); ++i)
-            changed = parameters[i]->setPatchParam (params[i]) || changed;
+            if (parameters[i] != nullptr)
+                changed = parameters[i]->setPatchParam (params[i]) || changed;
 
         return changed;
     }

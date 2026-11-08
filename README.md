@@ -257,6 +257,7 @@ The fourth page on the left rail, SEQ / ARP, holds the step sequencer editor (se
 
 ### Host load (Seq Monitor)
 * The sequencer steps, the step shapes and the matrix slots 21-256 are `automatable: false`: they stay in the saved state and in the UI, but the host's automation list only shows the other parameters.
+* Parameters with `automatable: false` are not handed to the host at all (cmaj_JUCEPlugin.h, createParameterTree): they stay in the patch, the UI and the saved state, but the host sees about 1,100 parameters fewer. Thousands of host parameters made FL Studio hang when the plugin was closed.
 * Only sequencers used in the matrix run, plus the one the editor shows. The editor tells the DSP which one through the hidden parameter 3928 `Seq Monitor` (0 = none); only that sequencer sends playhead events, so a closed editor costs no CPU and no events (and the 32-events-per-block limit cannot be hit).
 * The Web UI (patch/index.js view) is only the fallback view of the patch; the sequencer editor exists in the native UI only.
 
