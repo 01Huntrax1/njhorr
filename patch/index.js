@@ -2665,7 +2665,7 @@ const SPECS = (() => {
     // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k
     for (let m = 0; m < 10; m++) {
         const b = 3600 + 32 * m, n = "Seq " + (m + 1);
-        for (let k = 0; k < 16; k++) L.push([b + k, n + " Step " + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "Step " + (k + 1)]);
+        for (let k = 0; k < 16; k++) L.push([b + k, n + " Step " + (k + 1), 0, 1, [0.5, 1, 0.25, 0.75, 0, 0.6, 0.3, 0.9][k % 8], "", "sld", null, 1, "Step " + (k + 1)]);
         L.push([b + 16, n + " Length",    1, 16, 8, "", "stp", null, 1, "Length"]);
         L.push([b + 17, n + " Rate",      0.05, 40, 4, "Hz", "sld", null, 1, "Rate"]);
         L.push([b + 18, n + " Sync",      0, 1, 0, "", "btn", ["Free", "Sync"], 1, "Sync"]);

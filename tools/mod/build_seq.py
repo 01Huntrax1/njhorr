@@ -21,7 +21,7 @@ decl = '\n'.join(sorted(set()))
 lines = []
 for m in range(10):
     for k in range(16):
-        lines.append('    input event float param%d [[ name: "Seq %d Step %d", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ' % (BASE + 32 * m + k, m + 1, k + 1))
+        lines.append('    input event float param%d [[ name: "Seq %d Step %d", min: 0.0, max: 1.0, init: %s ]];   // MOD-SEQ' % (BASE + 32 * m + k, m + 1, k + 1, [0.5, 1.0, 0.25, 0.75, 0.0, 0.6, 0.3, 0.9][k % 8]))
     b = BASE + 32 * m
     lines += [
         '    input event float param%d [[ name: "Seq %d Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ' % (b + 16, m + 1),
@@ -95,8 +95,8 @@ rep('''        for (int fm = 0; fm < 10; ++fm)
             seqPol.at (sm)  = 1.0f;
             seqG.at (sm)    = SeqS (0.0f, 0.0f, 1.0f, 0.5f);
 
-            for (int si = 0; si < 16; ++si)
-                seqStep.at (sm * 16 + si) = 0.5f;
+            for (int sk = 0; sk < 16; ++sk)   // default pattern (same as the parameter defaults)
+                seqStep.at (sm * 16 + sk) = seqDefault (sk);
         }
 
         for (int fm = 0; fm < 10; ++fm)
@@ -104,6 +104,12 @@ rep('''        for (int fm = 0; fm < 10; ++fm)
             frqRate.at (fm)   = 300.0f;''')
 # functions + source values
 FUNCS = r'''    // ---------------- MOD-SEQ: step sequencers (sources 34..43) ----------------
+    float seqDefault (int k)   // default step pattern
+    {
+        float[16] d = (0.5f, 1.0f, 0.25f, 0.75f, 0.0f, 0.6f, 0.3f, 0.9f, 0.5f, 1.0f, 0.25f, 0.75f, 0.0f, 0.6f, 0.3f, 0.9f);
+        return d.at (k);
+    }
+
     float seqStepHz (int m)
     {
         return seqSync.at (m) > 0.5f ? syncHz (seqDiv.at (m)) : seqRate.at (m);
@@ -216,7 +222,7 @@ jrep('n >= 24 ? "#b57bff" : "#c9c24a"', 'n >= 34 ? "#5be08a" : n >= 24 ? "#b57bf
 specs = '''    // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k
     for (let m = 0; m < 10; m++) {
         const b = 3600 + 32 * m, n = "Seq " + (m + 1);
-        for (let k = 0; k < 16; k++) L.push([b + k, n + " Step " + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "Step " + (k + 1)]);
+        for (let k = 0; k < 16; k++) L.push([b + k, n + " Step " + (k + 1), 0, 1, [0.5, 1, 0.25, 0.75, 0, 0.6, 0.3, 0.9][k % 8], "", "sld", null, 1, "Step " + (k + 1)]);
         L.push([b + 16, n + " Length",    1, 16, 8, "", "stp", null, 1, "Length"]);
         L.push([b + 17, n + " Rate",      0.05, 40, 4, "Hz", "sld", null, 1, "Rate"]);
         L.push([b + 18, n + " Sync",      0, 1, 0, "", "btn", ["Free", "Sync"], 1, "Sync"]);

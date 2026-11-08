@@ -3031,21 +3031,21 @@ processor Eisenpuls_Synth
     input event float param3119 [[ name: "Mod LFO 9 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3120 [[ name: "Mod LFO 10 Bipolar", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-LFOBIP
     input event float param3600 [[ name: "Seq 1 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3601 [[ name: "Seq 1 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3602 [[ name: "Seq 1 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3603 [[ name: "Seq 1 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3604 [[ name: "Seq 1 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3605 [[ name: "Seq 1 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3606 [[ name: "Seq 1 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3607 [[ name: "Seq 1 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3601 [[ name: "Seq 1 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3602 [[ name: "Seq 1 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3603 [[ name: "Seq 1 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3604 [[ name: "Seq 1 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3605 [[ name: "Seq 1 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3606 [[ name: "Seq 1 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3607 [[ name: "Seq 1 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3608 [[ name: "Seq 1 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3609 [[ name: "Seq 1 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3610 [[ name: "Seq 1 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3611 [[ name: "Seq 1 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3612 [[ name: "Seq 1 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3613 [[ name: "Seq 1 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3614 [[ name: "Seq 1 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3615 [[ name: "Seq 1 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3609 [[ name: "Seq 1 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3610 [[ name: "Seq 1 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3611 [[ name: "Seq 1 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3612 [[ name: "Seq 1 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3613 [[ name: "Seq 1 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3614 [[ name: "Seq 1 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3615 [[ name: "Seq 1 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3616 [[ name: "Seq 1 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3617 [[ name: "Seq 1 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3618 [[ name: "Seq 1 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3055,21 +3055,21 @@ processor Eisenpuls_Synth
     input event float param3622 [[ name: "Seq 1 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3623 [[ name: "Seq 1 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3632 [[ name: "Seq 2 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3633 [[ name: "Seq 2 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3634 [[ name: "Seq 2 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3635 [[ name: "Seq 2 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3636 [[ name: "Seq 2 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3637 [[ name: "Seq 2 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3638 [[ name: "Seq 2 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3639 [[ name: "Seq 2 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3633 [[ name: "Seq 2 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3634 [[ name: "Seq 2 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3635 [[ name: "Seq 2 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3636 [[ name: "Seq 2 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3637 [[ name: "Seq 2 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3638 [[ name: "Seq 2 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3639 [[ name: "Seq 2 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3640 [[ name: "Seq 2 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3641 [[ name: "Seq 2 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3642 [[ name: "Seq 2 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3643 [[ name: "Seq 2 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3644 [[ name: "Seq 2 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3645 [[ name: "Seq 2 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3646 [[ name: "Seq 2 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3647 [[ name: "Seq 2 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3641 [[ name: "Seq 2 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3642 [[ name: "Seq 2 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3643 [[ name: "Seq 2 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3644 [[ name: "Seq 2 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3645 [[ name: "Seq 2 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3646 [[ name: "Seq 2 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3647 [[ name: "Seq 2 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3648 [[ name: "Seq 2 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3649 [[ name: "Seq 2 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3650 [[ name: "Seq 2 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3079,21 +3079,21 @@ processor Eisenpuls_Synth
     input event float param3654 [[ name: "Seq 2 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3655 [[ name: "Seq 2 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3664 [[ name: "Seq 3 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3665 [[ name: "Seq 3 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3666 [[ name: "Seq 3 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3667 [[ name: "Seq 3 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3668 [[ name: "Seq 3 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3669 [[ name: "Seq 3 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3670 [[ name: "Seq 3 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3671 [[ name: "Seq 3 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3665 [[ name: "Seq 3 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3666 [[ name: "Seq 3 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3667 [[ name: "Seq 3 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3668 [[ name: "Seq 3 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3669 [[ name: "Seq 3 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3670 [[ name: "Seq 3 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3671 [[ name: "Seq 3 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3672 [[ name: "Seq 3 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3673 [[ name: "Seq 3 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3674 [[ name: "Seq 3 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3675 [[ name: "Seq 3 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3676 [[ name: "Seq 3 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3677 [[ name: "Seq 3 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3678 [[ name: "Seq 3 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3679 [[ name: "Seq 3 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3673 [[ name: "Seq 3 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3674 [[ name: "Seq 3 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3675 [[ name: "Seq 3 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3676 [[ name: "Seq 3 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3677 [[ name: "Seq 3 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3678 [[ name: "Seq 3 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3679 [[ name: "Seq 3 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3680 [[ name: "Seq 3 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3681 [[ name: "Seq 3 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3682 [[ name: "Seq 3 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3103,21 +3103,21 @@ processor Eisenpuls_Synth
     input event float param3686 [[ name: "Seq 3 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3687 [[ name: "Seq 3 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3696 [[ name: "Seq 4 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3697 [[ name: "Seq 4 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3698 [[ name: "Seq 4 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3699 [[ name: "Seq 4 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3700 [[ name: "Seq 4 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3701 [[ name: "Seq 4 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3702 [[ name: "Seq 4 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3703 [[ name: "Seq 4 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3697 [[ name: "Seq 4 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3698 [[ name: "Seq 4 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3699 [[ name: "Seq 4 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3700 [[ name: "Seq 4 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3701 [[ name: "Seq 4 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3702 [[ name: "Seq 4 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3703 [[ name: "Seq 4 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3704 [[ name: "Seq 4 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3705 [[ name: "Seq 4 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3706 [[ name: "Seq 4 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3707 [[ name: "Seq 4 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3708 [[ name: "Seq 4 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3709 [[ name: "Seq 4 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3710 [[ name: "Seq 4 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3711 [[ name: "Seq 4 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3705 [[ name: "Seq 4 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3706 [[ name: "Seq 4 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3707 [[ name: "Seq 4 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3708 [[ name: "Seq 4 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3709 [[ name: "Seq 4 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3710 [[ name: "Seq 4 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3711 [[ name: "Seq 4 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3712 [[ name: "Seq 4 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3713 [[ name: "Seq 4 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3714 [[ name: "Seq 4 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3127,21 +3127,21 @@ processor Eisenpuls_Synth
     input event float param3718 [[ name: "Seq 4 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3719 [[ name: "Seq 4 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3728 [[ name: "Seq 5 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3729 [[ name: "Seq 5 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3730 [[ name: "Seq 5 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3731 [[ name: "Seq 5 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3732 [[ name: "Seq 5 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3733 [[ name: "Seq 5 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3734 [[ name: "Seq 5 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3735 [[ name: "Seq 5 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3729 [[ name: "Seq 5 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3730 [[ name: "Seq 5 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3731 [[ name: "Seq 5 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3732 [[ name: "Seq 5 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3733 [[ name: "Seq 5 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3734 [[ name: "Seq 5 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3735 [[ name: "Seq 5 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3736 [[ name: "Seq 5 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3737 [[ name: "Seq 5 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3738 [[ name: "Seq 5 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3739 [[ name: "Seq 5 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3740 [[ name: "Seq 5 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3741 [[ name: "Seq 5 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3742 [[ name: "Seq 5 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3743 [[ name: "Seq 5 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3737 [[ name: "Seq 5 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3738 [[ name: "Seq 5 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3739 [[ name: "Seq 5 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3740 [[ name: "Seq 5 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3741 [[ name: "Seq 5 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3742 [[ name: "Seq 5 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3743 [[ name: "Seq 5 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3744 [[ name: "Seq 5 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3745 [[ name: "Seq 5 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3746 [[ name: "Seq 5 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3151,21 +3151,21 @@ processor Eisenpuls_Synth
     input event float param3750 [[ name: "Seq 5 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3751 [[ name: "Seq 5 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3760 [[ name: "Seq 6 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3761 [[ name: "Seq 6 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3762 [[ name: "Seq 6 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3763 [[ name: "Seq 6 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3764 [[ name: "Seq 6 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3765 [[ name: "Seq 6 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3766 [[ name: "Seq 6 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3767 [[ name: "Seq 6 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3761 [[ name: "Seq 6 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3762 [[ name: "Seq 6 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3763 [[ name: "Seq 6 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3764 [[ name: "Seq 6 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3765 [[ name: "Seq 6 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3766 [[ name: "Seq 6 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3767 [[ name: "Seq 6 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3768 [[ name: "Seq 6 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3769 [[ name: "Seq 6 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3770 [[ name: "Seq 6 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3771 [[ name: "Seq 6 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3772 [[ name: "Seq 6 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3773 [[ name: "Seq 6 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3774 [[ name: "Seq 6 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3775 [[ name: "Seq 6 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3769 [[ name: "Seq 6 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3770 [[ name: "Seq 6 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3771 [[ name: "Seq 6 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3772 [[ name: "Seq 6 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3773 [[ name: "Seq 6 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3774 [[ name: "Seq 6 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3775 [[ name: "Seq 6 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3776 [[ name: "Seq 6 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3777 [[ name: "Seq 6 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3778 [[ name: "Seq 6 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3175,21 +3175,21 @@ processor Eisenpuls_Synth
     input event float param3782 [[ name: "Seq 6 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3783 [[ name: "Seq 6 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3792 [[ name: "Seq 7 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3793 [[ name: "Seq 7 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3794 [[ name: "Seq 7 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3795 [[ name: "Seq 7 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3796 [[ name: "Seq 7 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3797 [[ name: "Seq 7 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3798 [[ name: "Seq 7 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3799 [[ name: "Seq 7 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3793 [[ name: "Seq 7 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3794 [[ name: "Seq 7 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3795 [[ name: "Seq 7 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3796 [[ name: "Seq 7 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3797 [[ name: "Seq 7 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3798 [[ name: "Seq 7 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3799 [[ name: "Seq 7 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3800 [[ name: "Seq 7 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3801 [[ name: "Seq 7 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3802 [[ name: "Seq 7 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3803 [[ name: "Seq 7 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3804 [[ name: "Seq 7 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3805 [[ name: "Seq 7 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3806 [[ name: "Seq 7 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3807 [[ name: "Seq 7 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3801 [[ name: "Seq 7 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3802 [[ name: "Seq 7 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3803 [[ name: "Seq 7 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3804 [[ name: "Seq 7 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3805 [[ name: "Seq 7 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3806 [[ name: "Seq 7 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3807 [[ name: "Seq 7 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3808 [[ name: "Seq 7 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3809 [[ name: "Seq 7 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3810 [[ name: "Seq 7 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3199,21 +3199,21 @@ processor Eisenpuls_Synth
     input event float param3814 [[ name: "Seq 7 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3815 [[ name: "Seq 7 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3824 [[ name: "Seq 8 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3825 [[ name: "Seq 8 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3826 [[ name: "Seq 8 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3827 [[ name: "Seq 8 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3828 [[ name: "Seq 8 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3829 [[ name: "Seq 8 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3830 [[ name: "Seq 8 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3831 [[ name: "Seq 8 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3825 [[ name: "Seq 8 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3826 [[ name: "Seq 8 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3827 [[ name: "Seq 8 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3828 [[ name: "Seq 8 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3829 [[ name: "Seq 8 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3830 [[ name: "Seq 8 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3831 [[ name: "Seq 8 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3832 [[ name: "Seq 8 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3833 [[ name: "Seq 8 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3834 [[ name: "Seq 8 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3835 [[ name: "Seq 8 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3836 [[ name: "Seq 8 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3837 [[ name: "Seq 8 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3838 [[ name: "Seq 8 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3839 [[ name: "Seq 8 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3833 [[ name: "Seq 8 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3834 [[ name: "Seq 8 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3835 [[ name: "Seq 8 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3836 [[ name: "Seq 8 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3837 [[ name: "Seq 8 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3838 [[ name: "Seq 8 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3839 [[ name: "Seq 8 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3840 [[ name: "Seq 8 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3841 [[ name: "Seq 8 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3842 [[ name: "Seq 8 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3223,21 +3223,21 @@ processor Eisenpuls_Synth
     input event float param3846 [[ name: "Seq 8 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3847 [[ name: "Seq 8 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3856 [[ name: "Seq 9 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3857 [[ name: "Seq 9 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3858 [[ name: "Seq 9 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3859 [[ name: "Seq 9 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3860 [[ name: "Seq 9 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3861 [[ name: "Seq 9 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3862 [[ name: "Seq 9 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3863 [[ name: "Seq 9 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3857 [[ name: "Seq 9 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3858 [[ name: "Seq 9 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3859 [[ name: "Seq 9 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3860 [[ name: "Seq 9 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3861 [[ name: "Seq 9 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3862 [[ name: "Seq 9 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3863 [[ name: "Seq 9 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3864 [[ name: "Seq 9 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3865 [[ name: "Seq 9 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3866 [[ name: "Seq 9 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3867 [[ name: "Seq 9 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3868 [[ name: "Seq 9 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3869 [[ name: "Seq 9 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3870 [[ name: "Seq 9 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3871 [[ name: "Seq 9 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3865 [[ name: "Seq 9 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3866 [[ name: "Seq 9 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3867 [[ name: "Seq 9 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3868 [[ name: "Seq 9 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3869 [[ name: "Seq 9 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3870 [[ name: "Seq 9 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3871 [[ name: "Seq 9 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3872 [[ name: "Seq 9 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3873 [[ name: "Seq 9 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3874 [[ name: "Seq 9 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3247,21 +3247,21 @@ processor Eisenpuls_Synth
     input event float param3878 [[ name: "Seq 9 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3879 [[ name: "Seq 9 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3888 [[ name: "Seq 10 Step 1", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3889 [[ name: "Seq 10 Step 2", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3890 [[ name: "Seq 10 Step 3", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3891 [[ name: "Seq 10 Step 4", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3892 [[ name: "Seq 10 Step 5", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3893 [[ name: "Seq 10 Step 6", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3894 [[ name: "Seq 10 Step 7", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3895 [[ name: "Seq 10 Step 8", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3889 [[ name: "Seq 10 Step 2", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3890 [[ name: "Seq 10 Step 3", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3891 [[ name: "Seq 10 Step 4", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3892 [[ name: "Seq 10 Step 5", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3893 [[ name: "Seq 10 Step 6", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3894 [[ name: "Seq 10 Step 7", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3895 [[ name: "Seq 10 Step 8", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3896 [[ name: "Seq 10 Step 9", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3897 [[ name: "Seq 10 Step 10", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3898 [[ name: "Seq 10 Step 11", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3899 [[ name: "Seq 10 Step 12", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3900 [[ name: "Seq 10 Step 13", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3901 [[ name: "Seq 10 Step 14", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3902 [[ name: "Seq 10 Step 15", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
-    input event float param3903 [[ name: "Seq 10 Step 16", min: 0.0, max: 1.0, init: 0.5 ]];   // MOD-SEQ
+    input event float param3897 [[ name: "Seq 10 Step 10", min: 0.0, max: 1.0, init: 1.0 ]];   // MOD-SEQ
+    input event float param3898 [[ name: "Seq 10 Step 11", min: 0.0, max: 1.0, init: 0.25 ]];   // MOD-SEQ
+    input event float param3899 [[ name: "Seq 10 Step 12", min: 0.0, max: 1.0, init: 0.75 ]];   // MOD-SEQ
+    input event float param3900 [[ name: "Seq 10 Step 13", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
+    input event float param3901 [[ name: "Seq 10 Step 14", min: 0.0, max: 1.0, init: 0.6 ]];   // MOD-SEQ
+    input event float param3902 [[ name: "Seq 10 Step 15", min: 0.0, max: 1.0, init: 0.3 ]];   // MOD-SEQ
+    input event float param3903 [[ name: "Seq 10 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3904 [[ name: "Seq 10 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3905 [[ name: "Seq 10 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
     input event float param3906 [[ name: "Seq 10 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -7488,9 +7488,8 @@ processor Eisenpuls_Synth
             seqDiv.at (sm)  = 11.0f;
             seqPol.at (sm)  = 1.0f;
             seqG.at (sm)    = SeqS (0.0f, 0.0f, 1.0f, 0.5f);
-
-            for (int si = 0; si < 16; ++si)
-                seqStep.at (sm * 16 + si) = 0.5f;
+            for (int sk = 0; sk < 16; ++sk)   // default pattern (same as the parameter defaults)
+                seqStep.at (sm * 16 + sk) = seqDefault (sk);
         }
 
         for (int fm = 0; fm < 10; ++fm)
@@ -12349,6 +12348,12 @@ processor Eisenpuls_Synth
     }
 
     // ---------------- MOD-SEQ: step sequencers (sources 34..43) ----------------
+    float seqDefault (int k)
+    {
+        float[16] d = (0.5f, 1.0f, 0.25f, 0.75f, 0.0f, 0.6f, 0.3f, 0.9f, 0.5f, 1.0f, 0.25f, 0.75f, 0.0f, 0.6f, 0.3f, 0.9f);
+        return d.at (k);
+    }
+
     float seqStepHz (int m)
     {
         return seqSync.at (m) > 0.5f ? syncHz (seqDiv.at (m)) : seqRate.at (m);
