@@ -113,8 +113,20 @@ public:
        #endif
     }
 
+    // shutdown trace: <temp folder>/njohrr_shutdown.log (one line per step, written at once) - shows where a host hangs when it closes the plugin
+    static void shutdownTrace (const char* step)
+    {
+        try
+        {
+            auto f = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njohrr_shutdown.log");
+            f.appendText (juce::Time::getCurrentTime().formatted ("%H:%M:%S ") + step + "\n");
+        }
+        catch (...) {}
+    }
+
     ~JUCEPluginBase() override
     {
+        shutdownTrace ("plugin destructor: start");
         // closing the host (FL Studio ...): first stop every callback into this object, then tear the rest down
         aliveFlag->store (false);
         patch->patchChanged = [] {};
@@ -125,10 +137,14 @@ public:
         handleConsoleMessage = nullptr;
         patchChangeCallback = nullptr;
        #if NJOHRR_NATIVE_UI
+        shutdownTrace ("callbacks cleared");
         njoBridge.reset();
        #endif
+        shutdownTrace ("bridge released");
         patch->unload();
+        shutdownTrace ("patch unloaded");
         patch.reset();
+        shutdownTrace ("plugin destructor: done");
     }
 
     //==============================================================================

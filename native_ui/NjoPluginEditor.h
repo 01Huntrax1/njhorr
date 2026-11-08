@@ -39,7 +39,17 @@ namespace njo
             setSize (w, juce::roundToInt (w * logicalH / logicalW));
         }
 
-        ~PluginEditor() override { bridge.backend.setActive (false); }
+        ~PluginEditor() override
+        {
+            traceFile ("editor destructor: start");
+            bridge.backend.setActive (false);
+        }
+        static void traceFile (const char* step)
+        {
+            try { juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njohrr_shutdown.log")
+                      .appendText (juce::Time::getCurrentTime().formatted ("%H:%M:%S ") + step + "\n"); }
+            catch (...) {}
+        }
 
         void resized() override
         {
