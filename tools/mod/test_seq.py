@@ -79,4 +79,9 @@ check("Two sequencers add up in the matrix (0, 0.5, 0.5, 1.0)", l2[0] < 0.01 and
 a = render(["wt 0 sine", (L.pid(0, K["fon"]), 0)] + seq(0, [1.0, 0.0, 1.0, 0.0], bip=0) + [(307, 34), (308, 2), (309, -1.0)], tag="amp")
 la = [rms(win(a, k)) for k in range(4)]
 check("Global destination Amp: Seq 1 at full amount (negative) mutes the high steps", la[1] > 3 * max(la[0], 0.001), str(["%.3f" % v for v in la]))
+# the declared range of every matrix source parameter must reach 43 (the host clamps values to it)
+import re
+decl = open(os.path.join(os.path.dirname(__file__), '..', '..', 'patch', 'Eisenpuls_Synth.cmajor')).read()
+mx = [float(m) for m in re.findall(r'name: "Mod Slot \d+ Source[^"]*", min: 0\.0, max: ([\d.]+)', decl)]
+check("All 256 matrix source parameters accept Seq 1-10 (declared max 43)", len(mx) == 256 and min(mx) >= 43.0, "%d params, min max %s" % (len(mx), min(mx) if mx else None))
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

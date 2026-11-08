@@ -202,6 +202,10 @@ rep('''                if (mmSrcI.at (fs) >= 24 && mmDstI.at (fs) > 0)
             updateSeqGlobal (dt);
             updateFrqGlobal (dt);''')
 rep('                updateVoiceFrq (i, dt);\n', '                updateVoiceFrq (i, dt);\n                updateVoiceSeq (i, dt);   // MOD-SEQ\n')
+# declared range of the 256 matrix source parameters: the host clamps to it (without this Seq 1-10 snap back to Freq 10)
+import re as _re
+src, _n = _re.subn(r'(name: "Mod Slot \d+ Source \(Off/LFO1-10/Env1-10/Vel/Key/Rand/Freq1-10)\)", min: 0\.0, max: 33\.0', r'\1/Seq1-10)", min: 0.0, max: 43.0', src)
+assert _n in (0, 256), _n
 open(P, 'w').write(src)
 
 # ---- index.js
