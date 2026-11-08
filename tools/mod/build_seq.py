@@ -164,8 +164,7 @@ FUNCS = r'''    // ---------------- MOD-SEQ: step sequencers (sources 34..43) --
     void updateSeqGlobal (float dt)
     {
         for (int m = 0; m < 10; ++m)
-            if ((seqMask & (1 << m)) != 0)
-                seqG.at (m) = seqRun (m, dt, seqG.at (m));
+            seqG.at (m) = seqRun (m, dt, seqG.at (m));   // all of them run, so the editor's playhead moves even before a sequencer is routed
     }
 
     void updateVoiceSeq (int vi, float dt)

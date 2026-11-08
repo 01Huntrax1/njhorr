@@ -36,6 +36,7 @@ struct Host
     Eisenpuls_Synth dsp;
     FILE* out = nullptr;
     int queued = 0;
+    uint64_t totalFrames = 0;   // for the seqPos log
     std::vector<float> block;
 
     Host() { dsp.initialise (1, kRate); block.resize (512 * 2); }
@@ -75,6 +76,18 @@ struct Host
             fillInput (n);
 #endif
             dsp.advance (n);
+#ifdef SEQPOS_LOG   // prints the sequencer playhead events (output event seqPos = sequencer * 16 + step) to stderr
+            {
+                auto hd = (Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::seqPos;
+                for (uint32_t i = 0; i < dsp.getNumOutputEvents (hd); ++i)
+                {
+                    int32_t v = 0; unsigned char buf[8] = {}; uint32_t fr = dsp.readOutputEvent (hd, i, buf); memcpy (&v, buf, 4);
+                    fprintf (stderr, "seqPos t=%.4f seq=%d step=%d\n", (double) (totalFrames + fr) / kRate, v / 16, v % 16);
+                }
+                dsp.resetOutputEventCount (hd);
+                totalFrames += (uint64_t) n;
+            }
+#endif
             dsp.copyOutputFrames ((Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::out, block.data(), (uint32_t) n);
             if (out) fwrite (block.data(), sizeof (float), (size_t) n * 2, out);
             frames -= n;

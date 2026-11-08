@@ -35732,6 +35732,7 @@ namespace performer
             float arpCurVel = {};
             int32_t seqRepVoice = {};
             Array<int32_t, 16> seqLastPos;
+            float seqRefresh = {};
             Array<float, 16> modBip;
             Array<float, 16> envMaxNext;
             Array<int32_t, 256> mmSrcI;
@@ -119682,6 +119683,7 @@ namespace performer
             _state.arpCur = int32_t {-1};
             _state.arpPh = 1.0f;
             _state.arpStep = int32_t {0};
+            _state.seqRefresh = 0.0f;
             _state.toneStL = 0.0f;
             _state.toneStR = 0.0f;
             _state.dcYL = 0.0f;
@@ -120410,7 +120412,9 @@ namespace performer
             float  sr;
             int32_t  fs;
             int32_t  fs_0;
+            bool  seqForce;
             int32_t  m;
+            bool  useVoice;
             int32_t  sp;
             Array<float, 3>  mixSynthL;
             Array<float, 3>  mixSynthR;
@@ -120609,6 +120613,12 @@ namespace performer
                     }
                 }
                 _Eisenpuls_Synth__updateSeqGlobal (_state, dt);
+                _state.seqRefresh = (_state.seqRefresh + dt);
+                seqForce = _state.seqRefresh > 0.3f;
+                if (seqForce)
+                {
+                    _state.seqRefresh = 0.0f;
+                }
                 {
                     m = int32_t {0};
                     for (;;)
@@ -120617,18 +120627,12 @@ namespace performer
                         {
                             break;
                         }
-                        if ((_state.seqMask & intrinsics::leftShift (int32_t {1}, m)) != int32_t {0})
+                        useVoice = (_state.seqRetrig[std__intrinsics___wrap_16 (m)] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (_state.seqRepVoice)].active : false;
+                        sp = static_cast<int32_t> ((useVoice ? _state.voices[std__intrinsics___wrap_8 (_state.seqRepVoice)].seqS[std__intrinsics___wrap_16 (m)].idx : _state.seqG[std__intrinsics___wrap_16 (m)].idx) + 0.5f);
+                        if ((sp != _state.seqLastPos[std__intrinsics___wrap_16 (m)]) || seqForce)
                         {
-                            sp = static_cast<int32_t> (((_state.seqRetrig[std__intrinsics___wrap_16 (m)] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (_state.seqRepVoice)].seqS[std__intrinsics___wrap_16 (m)].idx : _state.seqG[std__intrinsics___wrap_16 (m)].idx) + 0.5f);
-                            if (sp != _state.seqLastPos[std__intrinsics___wrap_16 (m)])
-                            {
-                                _state.seqLastPos[std__intrinsics___wrap_16 (m)] = sp;
-                                _Eisenpuls_Synth___writeEvent_seqPos (_state, intrinsics::add (intrinsics::multiply (m, int32_t {16}), sp));
-                            }
-                        }
-                        else
-                        {
-                            _state.seqLastPos[std__intrinsics___wrap_16 (m)] = int32_t {-1};
+                            _state.seqLastPos[std__intrinsics___wrap_16 (m)] = sp;
+                            _Eisenpuls_Synth___writeEvent_seqPos (_state, intrinsics::add (intrinsics::multiply (m, int32_t {16}), sp));
                         }
                         {
                             intrinsics::addTo (m, 1);
@@ -121867,10 +121871,7 @@ namespace performer
                     {
                         break;
                     }
-                    if ((_state.seqMask & intrinsics::leftShift (int32_t {1}, m)) != int32_t {0})
-                    {
-                        _state.seqG[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__seqRun (_state, m, dt, _state.seqG[std__intrinsics___wrap_16 (m)]);
-                    }
+                    _state.seqG[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__seqRun (_state, m, dt, _state.seqG[std__intrinsics___wrap_16 (m)]);
                     {
                         intrinsics::addTo (m, 1);
                     }

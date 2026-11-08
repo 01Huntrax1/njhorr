@@ -679,7 +679,13 @@ protected:
        #if NJOHRR_NATIVE_UI
         if (endpointID == "seqPos")   // playhead of the step sequencers (message thread)
         {
-            if (njoBridge && value.isInt32()) njoBridge->backend.setSeqPos (value.getInt32());
+            if (njoBridge)
+            {
+                if (value.isInt32())        njoBridge->backend.setSeqPos (value.getInt32());
+                else if (value.isInt64())   njoBridge->backend.setSeqPos ((int) value.getInt64());
+                else if (value.isFloat64()) njoBridge->backend.setSeqPos ((int) value.getFloat64());
+                else if (value.isFloat32()) njoBridge->backend.setSeqPos ((int) value.getFloat32());
+            }
             return;
         }
        #endif

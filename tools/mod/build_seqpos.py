@@ -15,25 +15,30 @@ def rep(old, new):
 rep('    input event std::timeline::Position positionIn;   // FX-SYNC\n',
     '    input event std::timeline::Position positionIn;   // FX-SYNC\n    output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)\n')
 rep('    int         seqMask = 0;   // bit m: sequencer m is used by the matrix\n',
-    '    int         seqMask = 0;   // bit m: sequencer m is used by the matrix\n    int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig\n    int[16]     seqLastPos;        // MOD-SEQPOS\n')
+    '    int         seqMask = 0;   // bit m: sequencer m is used by the matrix\n    int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig\n    int[16]     seqLastPos;        // MOD-SEQPOS\n    float       seqRefresh = 0.0f;\n')
 rep('                voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ\n            }\n',
     '                voices.at (v).seqS.at (lm)   = SeqS (0.0f, 0.0f, 1.0f, seqStep.at (lm * 16));   // MOD-SEQ\n            }\n\n            seqRepVoice = v;   // MOD-SEQPOS\n')
 rep('            updateSeqGlobal (dt);\n            updateFrqGlobal (dt);\n',
     '''            updateSeqGlobal (dt);
-            for (int m = 0; m < 10; ++m)   // MOD-SEQPOS
-                if ((seqMask & (1 << m)) != 0)
-                {
-                    int sp = int ((seqRetrig.at (m) > 0.5f ? voices.at (seqRepVoice).seqS.at (m).idx : seqG.at (m).idx) + 0.5f);
+            seqRefresh += dt;
+            bool seqForce = seqRefresh > 0.3f;   // every 0.3 s all positions are sent again (an editor opened later, or a slow sequencer, shows its playhead at once)
 
-                    if (sp != seqLastPos.at (m))
-                    {
-                        seqLastPos.at (m) = sp;
-                        seqPos <- m * 16 + sp;
-                    }
+            if (seqForce)
+                seqRefresh = 0.0f;
+
+            for (int m = 0; m < 10; ++m)   // MOD-SEQPOS
+            {
+                bool useVoice = seqRetrig.at (m) > 0.5f && voices.at (seqRepVoice).active;
+                int  sp = int ((useVoice ? voices.at (seqRepVoice).seqS.at (m).idx : seqG.at (m).idx) + 0.5f);
+
+                if (sp != seqLastPos.at (m) || seqForce)
+                {
+                    seqLastPos.at (m) = sp;
+                    seqPos <- m * 16 + sp;
                 }
-                else
-                    seqLastPos.at (m) = -1;
+            }
             updateFrqGlobal (dt);
 ''')
+
 open(P, 'w').write(src)
 print('applied')

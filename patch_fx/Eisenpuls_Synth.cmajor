@@ -3778,6 +3778,7 @@ processor Eisenpuls_Synth
     float       arpCurVel = 1.0f;
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
+    float       seqRefresh = 0.0f;
     float[16]   modBip;  // MOD-BIP: 1 = the source is mapped to -1..1 (ENV 1-10 at 0..9, Velocity at 10)
     float[16]   envMaxNext;  // padded to a power of two (cheap index wrap)
 
@@ -12407,9 +12408,8 @@ processor Eisenpuls_Synth
 
     void updateSeqGlobal (float dt)
     {
-        for (int m = 0; m < 10; ++m)
-            if ((seqMask & (1 << m)) != 0)
-                seqG.at (m) = seqRun (m, dt, seqG.at (m));
+        for (int m = 0; m < 10; ++m)   // all of them run, so the editor's playhead moves even before a sequencer is routed
+            seqG.at (m) = seqRun (m, dt, seqG.at (m));
     }
 
     void updateVoiceSeq (int vi, float dt)
@@ -17239,19 +17239,23 @@ processor Eisenpuls_Synth
                 if (mmSrcI.at (fs) >= 34 && mmDstI.at (fs) > 0)
                     seqMask |= 1 << (mmSrcI.at (fs) - 34);
             updateSeqGlobal (dt);
-            for (int m = 0; m < 10; ++m)   // MOD-SEQPOS
-                if ((seqMask & (1 << m)) != 0)
-                {
-                    int sp = int ((seqRetrig.at (m) > 0.5f ? voices.at (seqRepVoice).seqS.at (m).idx : seqG.at (m).idx) + 0.5f);
+            seqRefresh += dt;
+            bool seqForce = seqRefresh > 0.3f;   // every 0.3 s all positions are sent again (an editor opened later, or a slow sequencer, shows its playhead at once)
 
-                    if (sp != seqLastPos.at (m))
-                    {
-                        seqLastPos.at (m) = sp;
-                        seqPos <- m * 16 + sp;
-                    }
+            if (seqForce)
+                seqRefresh = 0.0f;
+
+            for (int m = 0; m < 10; ++m)   // MOD-SEQPOS
+            {
+                bool useVoice = seqRetrig.at (m) > 0.5f && voices.at (seqRepVoice).active;
+                int  sp = int ((useVoice ? voices.at (seqRepVoice).seqS.at (m).idx : seqG.at (m).idx) + 0.5f);
+
+                if (sp != seqLastPos.at (m) || seqForce)
+                {
+                    seqLastPos.at (m) = sp;
+                    seqPos <- m * 16 + sp;
                 }
-                else
-                    seqLastPos.at (m) = -1;
+            }
             updateFrqGlobal (dt);
             rollEnvMax();
             computeGlobalMod();
