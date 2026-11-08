@@ -79,6 +79,46 @@ check("Two sequencers add up in the matrix (0, 0.5, 0.5, 1.0)", l2[0] < 0.01 and
 a = render(["wt 0 sine", (L.pid(0, K["fon"]), 0)] + seq(0, [1.0, 0.0, 1.0, 0.0], bip=0) + [(307, 34), (308, 2), (309, -1.0)], tag="amp")
 la = [rms(win(a, k)) for k in range(4)]
 check("Global destination Amp: Seq 1 at full amount (negative) mutes the high steps", la[1] > 3 * max(la[0], 0.001), str(["%.3f" % v for v in la]))
+# ---- Spire-style stepper features: step shapes, Hold, Loop, Time x1-x4, Spos
+SH = lambda m, k: 5000 + 16 * m + k
+def ext(m, time=0, loop=1, hold=0, shapes=None):
+    out = [(SB(m) + 24, time), (SB(m) + 25, loop), (SB(m) + 26, hold)]
+    for k, v in (shapes or {}).items(): out.append((SH(m, k), v))
+    return out
+ev_ = lambda a, t0, t1: rms(a[int(t0 * RATE):int(t1 * RATE)])
+one = lambda **kw: BASE + seq(0, [1.0], length=1, rate=1.0, **kw)
+a = render(one(retrig=1) + ext(0, shapes={0: 2}) + route(34), tag="rampup", hold=1.3)   # step 1 s long, level ramps 0 -> 1
+e_, l_ = ev_(a, 0.15, 0.30), ev_(a, 0.80, 0.95)
+check("Step shape Ramp up: the level rises over the step", l_ > 3.0 * e_ and l_ > 0.1, "%.3f -> %.3f" % (e_, l_))
+a = render(one(retrig=1) + ext(0, shapes={0: 1}) + route(34), tag="rampdn", hold=1.3)
+e_, l_ = ev_(a, 0.15, 0.30), ev_(a, 0.80, 0.95)
+check("Step shape Ramp down: the level falls over the step", e_ > 3.0 * l_ and e_ > 0.1, "%.3f -> %.3f" % (e_, l_))
+a = render(one(retrig=1) + ext(0, shapes={0: 5}) + route(34), tag="gate", hold=1.3)
+e_, l_ = ev_(a, 0.15, 0.40), ev_(a, 0.65, 0.95)
+check("Step shape Gate 50%: the first half is on, the second half is off", e_ > 0.1 and l_ < 0.02, "%.3f / %.3f" % (e_, l_))
+a = render(one(retrig=1) + ext(0, shapes={0: 3}) + route(34), tag="tri", hold=1.3)
+m_ = ev_(a, 0.45, 0.60); e_ = ev_(a, 0.08, 0.14); l_ = ev_(a, 0.90, 0.96)
+check("Step shape Triangle: highest in the middle of the step", m_ > 2.0 * e_ and m_ > 2.0 * l_, "%.3f / %.3f / %.3f" % (e_, m_, l_))
+a = render(one(retrig=1) + ext(0, hold=1, shapes={0: 2}) + route(34), tag="holdon", hold=1.3)
+e_, l_ = ev_(a, 0.15, 0.30), ev_(a, 0.80, 0.95)
+check("Hold switches the step shapes off (flat step)", abs(e_ - l_) < 0.02 and e_ > 0.1, "%.3f / %.3f" % (e_, l_))
+a = render(BASE + seq(0, ST) + ext(0, loop=3) + route(34), tag="loop", hold=2.2)
+lq = [rms(win(a, k)) for k in range(8)]
+check("Loop start 3: 1 2 3 4, then the loop repeats 3 4 3 4", abs(lq[4] - lq[2]) < 0.02 and abs(lq[5] - lq[3]) < 0.02 and abs(lq[6] - lq[2]) < 0.02 and abs(lq[7] - lq[3]) < 0.02 and lq[2] != lq[3], str(["%.3f" % v for v in lq]))
+a = render(BASE + seq(0, ST, rate=2.0) + ext(0, time=1) + route(34), tag="x2")
+lx = [rms(win(a, k)) for k in range(4)]
+check("Time x2 doubles the speed (2 Hz x2 = steps every 0.25 s)", lx[0] < 0.01 and lx[0] < lx[1] < lx[2] < lx[3], str(["%.3f" % v for v in lx]))
+a = render(BASE + seq(0, ST, rate=1.0) + ext(0, time=3) + route(34), tag="x4")
+check("Time x4 (1 Hz x4 = 4 steps / s)", abs(rms(win(a, 3)) - lv[3]) < 0.03 and abs(rms(win(a, 2)) - lv[2]) < 0.03)
+a = render(BASE + seq(0, ST, sync=2, div=8) + route(34), tag="spos", hold=2.4)   # 1/4 at 120 bpm = 0.5 s, locked to the host beat
+ls_ = [rms(win(a, k, dur=0.5)) for k in range(4)]
+check("Spos: 1/4 steps follow the host position", ls_[0] < 0.01 and ls_[0] < ls_[1] < ls_[2] < ls_[3], str(["%.3f" % v for v in ls_]))
+a = render(BASE + seq(0, ST, sync=2, div=8, direction=1) + route(34), tag="spos_b", hold=2.4)
+lsb = [rms(win(a, k, dur=0.5)) for k in range(4)]
+check("Spos backward runs the other way round", lsb[0] > lsb[1] > lsb[2] and lsb[3] < 0.01, str(["%.3f" % v for v in lsb]))
+a = render(BASE + seq(0, ST, sync=1, div=8) + ext(0, time=1) + route(34), tag="synct", hold=1.4)   # 1/4 sync x2 = 0.25 s
+lt = [rms(win(a, k)) for k in range(4)]
+check("Sync with Time x2: 1/4 x2 = 0.25 s per step", lt[0] < 0.01 and lt[0] < lt[1] < lt[2] < lt[3], str(["%.3f" % v for v in lt]))
 # the declared range of every matrix source parameter must reach 43 (the host clamps values to it)
 import re
 decl = open(os.path.join(os.path.dirname(__file__), '..', '..', 'patch', 'Eisenpuls_Synth.cmajor')).read()

@@ -262,6 +262,7 @@ const FX_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Korg / Scream"]]);
 const OSC_FILTER_TYPES = FILTER_TYPES.concat(["Wavefilter"]);
 const OSC_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Table"]]);
 // LFO sync divisions, in the order of the DSP table
+const SEQ_SHAPES = ["Flat", "Ramp down", "Ramp up", "Triangle", "Half sine", "Gate 50%", "Gate 25%", "Decay"];   // MOD-SEQ2
 const SYNC_DIVS = ["8/1", "4/1", "2/1", "1/1", "1/2.", "1/2", "1/2T", "1/4.", "1/4", "1/4T", "1/8.", "1/8", "1/8T", "1/16.", "1/16", "1/16T", "1/32", "1/32T"];
 
 const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn", "Drawn"];
@@ -2668,12 +2669,16 @@ const SPECS = (() => {
         for (let k = 0; k < 16; k++) L.push([b + k, n + " Step " + (k + 1), 0, 1, [0.5, 1, 0.25, 0.75, 0, 0.6, 0.3, 0.9][k % 8], "", "sld", null, 1, "Step " + (k + 1)]);
         L.push([b + 16, n + " Length",    1, 16, 8, "", "stp", null, 1, "Length"]);
         L.push([b + 17, n + " Rate",      0.05, 40, 4, "Hz", "sld", null, 1, "Rate"]);
-        L.push([b + 18, n + " Sync",      0, 1, 0, "", "btn", ["Free", "Sync"], 1, "Sync"]);
+        L.push([b + 18, n + " Sync",      0, 2, 0, "", "sel", ["Free", "Sync", "Spos"], 1, "Sync"]);
         L.push([b + 19, n + " Division",  0, 17, 11, "", "sel", SYNC_DIVS, 1, "Division"]);
         L.push([b + 20, n + " Glide",     0, 1, 0, "", "sld", null, 1, "Glide"]);
         L.push([b + 21, n + " Direction", 0, 3, 0, "", "sel", ["Forward", "Backward", "Ping-Pong", "Random"], 1, "Direction"]);
         L.push([b + 22, n + " Retrig",    0, 1, 0, "", "btn", ["Free", "Note"], 1, "Retrig"]);
         L.push([b + 23, n + " Bipolar",    0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity"]);
+        L.push([b + 24, n + " Time",      0, 3, 0, "", "sel", ["x1", "x2", "x3", "x4"], 1, "Time"]);   // MOD-SEQ2
+        L.push([b + 25, n + " Loop",      1, 16, 1, "", "stp", null, 1, "Loop"]);
+        L.push([b + 26, n + " Hold",      0, 1, 0, "", "btn", ["Off", "On"], 1, "Hold"]);
+        for (let k = 0; k < 16; k++) L.push([5000 + 16 * m + k, n + " Step " + (k + 1) + " Shape", 0, 7, 0, "", "sel", SEQ_SHAPES, 1, "Shape"]);
     }
     L.push([880, "Bus 1 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 1"]);
     L.push([881, "Bus 2 Level", 0, 1.5, 1, "", "sld", null, 1, "Bus 2"]);

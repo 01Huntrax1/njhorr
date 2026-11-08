@@ -186,6 +186,7 @@ int main (int argc, char** argv)
         pump();
     }
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);
+    for (int k = 0; k < 8; ++k) be.setParam (5000 + k, (float) k);   // every step shape once
     be.seqStepPos[0] = 2; ed.setGroup (njo::EditorContent::Sequencer); pump(); save (ed, dir.getChildFile ("seqarp.png"), scale);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix

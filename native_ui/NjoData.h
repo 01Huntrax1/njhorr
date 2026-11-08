@@ -93,6 +93,7 @@ namespace njo
     inline int envParam (int i) { return 267 + 4 * i; }           // +0 attack +1 decay +2 sustain +3 release
     constexpr int ARP_BASE = 3920;   // arpeggiator: +0 On, +1 Mode, +2 Octaves, +3 Sync, +4 Division, +5 Rate, +6 Gate, +7 Latch
     constexpr int SEQ_BASE = 3600;   // sequencer m: steps 0..15, +16 length, +17 rate, +18 sync, +19 division, +20 glide, +21 direction, +22 retrig, +23 bipolar (ids SEQ_BASE + 32 * m + k)
+    inline int seqShapeParam (int m, int k) { return 5000 + 16 * m + k; }   // wave shape of step k (0 flat, 1 ramp down, 2 ramp up, 3 triangle, 4 half sine, 5 gate 50 %, 6 gate 25 %, 7 decay)
     inline int seqParam (int m, int k) { return SEQ_BASE + 32 * m + k; }
     inline int frqParam (int i) { return FRQ_BASE + 4 * i; }      // Freq modulator i: +0 rate (ms) +1 transpose (st) +2 retrig +3 loop
     bool modSourceAllowed (int src, int paramNum);                 // Freq modulators (24..33) only reach the cutoff and Frequency knobs

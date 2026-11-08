@@ -3048,7 +3048,7 @@ processor Eisenpuls_Synth
     input event float param3615 [[ name: "Seq 1 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3616 [[ name: "Seq 1 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3617 [[ name: "Seq 1 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3618 [[ name: "Seq 1 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3618 [[ name: "Seq 1 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3619 [[ name: "Seq 1 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3620 [[ name: "Seq 1 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3621 [[ name: "Seq 1 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3072,7 +3072,7 @@ processor Eisenpuls_Synth
     input event float param3647 [[ name: "Seq 2 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3648 [[ name: "Seq 2 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3649 [[ name: "Seq 2 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3650 [[ name: "Seq 2 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3650 [[ name: "Seq 2 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3651 [[ name: "Seq 2 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3652 [[ name: "Seq 2 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3653 [[ name: "Seq 2 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3096,7 +3096,7 @@ processor Eisenpuls_Synth
     input event float param3679 [[ name: "Seq 3 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3680 [[ name: "Seq 3 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3681 [[ name: "Seq 3 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3682 [[ name: "Seq 3 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3682 [[ name: "Seq 3 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3683 [[ name: "Seq 3 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3684 [[ name: "Seq 3 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3685 [[ name: "Seq 3 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3120,7 +3120,7 @@ processor Eisenpuls_Synth
     input event float param3711 [[ name: "Seq 4 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3712 [[ name: "Seq 4 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3713 [[ name: "Seq 4 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3714 [[ name: "Seq 4 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3714 [[ name: "Seq 4 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3715 [[ name: "Seq 4 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3716 [[ name: "Seq 4 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3717 [[ name: "Seq 4 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3144,7 +3144,7 @@ processor Eisenpuls_Synth
     input event float param3743 [[ name: "Seq 5 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3744 [[ name: "Seq 5 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3745 [[ name: "Seq 5 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3746 [[ name: "Seq 5 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3746 [[ name: "Seq 5 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3747 [[ name: "Seq 5 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3748 [[ name: "Seq 5 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3749 [[ name: "Seq 5 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3168,7 +3168,7 @@ processor Eisenpuls_Synth
     input event float param3775 [[ name: "Seq 6 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3776 [[ name: "Seq 6 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3777 [[ name: "Seq 6 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3778 [[ name: "Seq 6 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3778 [[ name: "Seq 6 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3779 [[ name: "Seq 6 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3780 [[ name: "Seq 6 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3781 [[ name: "Seq 6 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3192,7 +3192,7 @@ processor Eisenpuls_Synth
     input event float param3807 [[ name: "Seq 7 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3808 [[ name: "Seq 7 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3809 [[ name: "Seq 7 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3810 [[ name: "Seq 7 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3810 [[ name: "Seq 7 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3811 [[ name: "Seq 7 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3812 [[ name: "Seq 7 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3813 [[ name: "Seq 7 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3216,7 +3216,7 @@ processor Eisenpuls_Synth
     input event float param3839 [[ name: "Seq 8 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3840 [[ name: "Seq 8 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3841 [[ name: "Seq 8 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3842 [[ name: "Seq 8 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3842 [[ name: "Seq 8 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3843 [[ name: "Seq 8 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3844 [[ name: "Seq 8 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3845 [[ name: "Seq 8 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3240,7 +3240,7 @@ processor Eisenpuls_Synth
     input event float param3871 [[ name: "Seq 9 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3872 [[ name: "Seq 9 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3873 [[ name: "Seq 9 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3874 [[ name: "Seq 9 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3874 [[ name: "Seq 9 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3875 [[ name: "Seq 9 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3876 [[ name: "Seq 9 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3877 [[ name: "Seq 9 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
@@ -3264,12 +3264,202 @@ processor Eisenpuls_Synth
     input event float param3903 [[ name: "Seq 10 Step 16", min: 0.0, max: 1.0, init: 0.9 ]];   // MOD-SEQ
     input event float param3904 [[ name: "Seq 10 Length", min: 1.0, max: 16.0, init: 8.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3905 [[ name: "Seq 10 Rate", min: 0.05, max: 40.0, init: 4.0, unit: "Hz" ]];   // MOD-SEQ
-    input event float param3906 [[ name: "Seq 10 Sync", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3906 [[ name: "Seq 10 Sync", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3907 [[ name: "Seq 10 Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3908 [[ name: "Seq 10 Glide", min: 0.0, max: 1.0, init: 0.0 ]];   // MOD-SEQ
     input event float param3909 [[ name: "Seq 10 Direction", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3910 [[ name: "Seq 10 Retrig", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ
     input event float param3911 [[ name: "Seq 10 Bipolar", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ
+    input event float param3624 [[ name: "Seq 1 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3625 [[ name: "Seq 1 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3626 [[ name: "Seq 1 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3656 [[ name: "Seq 2 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3657 [[ name: "Seq 2 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3658 [[ name: "Seq 2 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3688 [[ name: "Seq 3 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3689 [[ name: "Seq 3 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3690 [[ name: "Seq 3 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3720 [[ name: "Seq 4 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3721 [[ name: "Seq 4 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3722 [[ name: "Seq 4 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3752 [[ name: "Seq 5 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3753 [[ name: "Seq 5 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3754 [[ name: "Seq 5 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3784 [[ name: "Seq 6 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3785 [[ name: "Seq 6 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3786 [[ name: "Seq 6 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3816 [[ name: "Seq 7 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3817 [[ name: "Seq 7 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3818 [[ name: "Seq 7 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3848 [[ name: "Seq 8 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3849 [[ name: "Seq 8 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3850 [[ name: "Seq 8 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3880 [[ name: "Seq 9 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3881 [[ name: "Seq 9 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3882 [[ name: "Seq 9 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3912 [[ name: "Seq 10 Time", min: 0.0, max: 3.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3913 [[ name: "Seq 10 Loop", min: 1.0, max: 16.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param3914 [[ name: "Seq 10 Hold", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5000 [[ name: "Seq 1 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5001 [[ name: "Seq 1 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5002 [[ name: "Seq 1 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5003 [[ name: "Seq 1 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5004 [[ name: "Seq 1 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5005 [[ name: "Seq 1 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5006 [[ name: "Seq 1 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5007 [[ name: "Seq 1 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5008 [[ name: "Seq 1 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5009 [[ name: "Seq 1 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5010 [[ name: "Seq 1 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5011 [[ name: "Seq 1 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5012 [[ name: "Seq 1 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5013 [[ name: "Seq 1 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5014 [[ name: "Seq 1 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5015 [[ name: "Seq 1 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5016 [[ name: "Seq 2 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5017 [[ name: "Seq 2 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5018 [[ name: "Seq 2 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5019 [[ name: "Seq 2 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5020 [[ name: "Seq 2 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5021 [[ name: "Seq 2 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5022 [[ name: "Seq 2 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5023 [[ name: "Seq 2 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5024 [[ name: "Seq 2 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5025 [[ name: "Seq 2 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5026 [[ name: "Seq 2 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5027 [[ name: "Seq 2 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5028 [[ name: "Seq 2 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5029 [[ name: "Seq 2 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5030 [[ name: "Seq 2 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5031 [[ name: "Seq 2 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5032 [[ name: "Seq 3 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5033 [[ name: "Seq 3 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5034 [[ name: "Seq 3 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5035 [[ name: "Seq 3 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5036 [[ name: "Seq 3 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5037 [[ name: "Seq 3 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5038 [[ name: "Seq 3 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5039 [[ name: "Seq 3 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5040 [[ name: "Seq 3 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5041 [[ name: "Seq 3 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5042 [[ name: "Seq 3 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5043 [[ name: "Seq 3 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5044 [[ name: "Seq 3 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5045 [[ name: "Seq 3 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5046 [[ name: "Seq 3 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5047 [[ name: "Seq 3 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5048 [[ name: "Seq 4 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5049 [[ name: "Seq 4 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5050 [[ name: "Seq 4 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5051 [[ name: "Seq 4 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5052 [[ name: "Seq 4 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5053 [[ name: "Seq 4 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5054 [[ name: "Seq 4 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5055 [[ name: "Seq 4 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5056 [[ name: "Seq 4 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5057 [[ name: "Seq 4 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5058 [[ name: "Seq 4 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5059 [[ name: "Seq 4 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5060 [[ name: "Seq 4 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5061 [[ name: "Seq 4 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5062 [[ name: "Seq 4 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5063 [[ name: "Seq 4 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5064 [[ name: "Seq 5 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5065 [[ name: "Seq 5 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5066 [[ name: "Seq 5 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5067 [[ name: "Seq 5 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5068 [[ name: "Seq 5 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5069 [[ name: "Seq 5 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5070 [[ name: "Seq 5 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5071 [[ name: "Seq 5 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5072 [[ name: "Seq 5 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5073 [[ name: "Seq 5 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5074 [[ name: "Seq 5 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5075 [[ name: "Seq 5 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5076 [[ name: "Seq 5 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5077 [[ name: "Seq 5 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5078 [[ name: "Seq 5 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5079 [[ name: "Seq 5 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5080 [[ name: "Seq 6 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5081 [[ name: "Seq 6 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5082 [[ name: "Seq 6 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5083 [[ name: "Seq 6 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5084 [[ name: "Seq 6 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5085 [[ name: "Seq 6 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5086 [[ name: "Seq 6 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5087 [[ name: "Seq 6 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5088 [[ name: "Seq 6 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5089 [[ name: "Seq 6 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5090 [[ name: "Seq 6 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5091 [[ name: "Seq 6 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5092 [[ name: "Seq 6 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5093 [[ name: "Seq 6 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5094 [[ name: "Seq 6 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5095 [[ name: "Seq 6 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5096 [[ name: "Seq 7 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5097 [[ name: "Seq 7 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5098 [[ name: "Seq 7 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5099 [[ name: "Seq 7 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5100 [[ name: "Seq 7 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5101 [[ name: "Seq 7 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5102 [[ name: "Seq 7 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5103 [[ name: "Seq 7 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5104 [[ name: "Seq 7 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5105 [[ name: "Seq 7 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5106 [[ name: "Seq 7 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5107 [[ name: "Seq 7 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5108 [[ name: "Seq 7 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5109 [[ name: "Seq 7 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5110 [[ name: "Seq 7 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5111 [[ name: "Seq 7 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5112 [[ name: "Seq 8 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5113 [[ name: "Seq 8 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5114 [[ name: "Seq 8 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5115 [[ name: "Seq 8 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5116 [[ name: "Seq 8 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5117 [[ name: "Seq 8 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5118 [[ name: "Seq 8 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5119 [[ name: "Seq 8 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5120 [[ name: "Seq 8 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5121 [[ name: "Seq 8 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5122 [[ name: "Seq 8 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5123 [[ name: "Seq 8 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5124 [[ name: "Seq 8 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5125 [[ name: "Seq 8 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5126 [[ name: "Seq 8 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5127 [[ name: "Seq 8 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5128 [[ name: "Seq 9 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5129 [[ name: "Seq 9 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5130 [[ name: "Seq 9 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5131 [[ name: "Seq 9 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5132 [[ name: "Seq 9 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5133 [[ name: "Seq 9 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5134 [[ name: "Seq 9 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5135 [[ name: "Seq 9 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5136 [[ name: "Seq 9 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5137 [[ name: "Seq 9 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5138 [[ name: "Seq 9 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5139 [[ name: "Seq 9 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5140 [[ name: "Seq 9 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5141 [[ name: "Seq 9 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5142 [[ name: "Seq 9 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5143 [[ name: "Seq 9 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5144 [[ name: "Seq 10 Step 1 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5145 [[ name: "Seq 10 Step 2 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5146 [[ name: "Seq 10 Step 3 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5147 [[ name: "Seq 10 Step 4 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5148 [[ name: "Seq 10 Step 5 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5149 [[ name: "Seq 10 Step 6 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5150 [[ name: "Seq 10 Step 7 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5151 [[ name: "Seq 10 Step 8 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5152 [[ name: "Seq 10 Step 9 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5153 [[ name: "Seq 10 Step 10 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5154 [[ name: "Seq 10 Step 11 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5155 [[ name: "Seq 10 Step 12 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5156 [[ name: "Seq 10 Step 13 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5157 [[ name: "Seq 10 Step 14 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
+    input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
@@ -3763,6 +3953,10 @@ processor Eisenpuls_Synth
     float[16]   seqDir;
     float[16]   seqRetrig;
     float[16]   seqPol;    // 1 = bipolar
+    float[16]   seqTime;   // MOD-SEQ2: rate multiplier 0..3 = x1..x4
+    float[16]   seqLoop;   // MOD-SEQ2: first step of the loop (1..16)
+    float[16]   seqHold;   // MOD-SEQ2: 1 = step shapes off (flat steps)
+    float[160]  seqShape;  // MOD-SEQ2: wave shape of every step
     int         seqMask = 0;   // bit m: sequencer m is used by the matrix
     // ---------------- MOD-ARP: arpeggiator ----------------
     float       arpOn = 0.0f, arpMode = 0.0f, arpOct = 1.0f, arpSync = 1.0f, arpDiv = 11.0f, arpRate = 6.0f, arpGate = 0.6f, arpLatch = 0.0f;
@@ -6493,6 +6687,196 @@ processor Eisenpuls_Synth
     event param3925 (float v) { arpRate = v; }   // MOD-ARP
     event param3926 (float v) { arpGate = v; }   // MOD-ARP
     event param3927 (float v) { arpLatch = v; }   // MOD-ARP
+    event param3624 (float v) { seqTime.at (0) = v; }   // MOD-SEQ2
+    event param3625 (float v) { seqLoop.at (0) = v; }   // MOD-SEQ2
+    event param3626 (float v) { seqHold.at (0) = v; }   // MOD-SEQ2
+    event param3656 (float v) { seqTime.at (1) = v; }   // MOD-SEQ2
+    event param3657 (float v) { seqLoop.at (1) = v; }   // MOD-SEQ2
+    event param3658 (float v) { seqHold.at (1) = v; }   // MOD-SEQ2
+    event param3688 (float v) { seqTime.at (2) = v; }   // MOD-SEQ2
+    event param3689 (float v) { seqLoop.at (2) = v; }   // MOD-SEQ2
+    event param3690 (float v) { seqHold.at (2) = v; }   // MOD-SEQ2
+    event param3720 (float v) { seqTime.at (3) = v; }   // MOD-SEQ2
+    event param3721 (float v) { seqLoop.at (3) = v; }   // MOD-SEQ2
+    event param3722 (float v) { seqHold.at (3) = v; }   // MOD-SEQ2
+    event param3752 (float v) { seqTime.at (4) = v; }   // MOD-SEQ2
+    event param3753 (float v) { seqLoop.at (4) = v; }   // MOD-SEQ2
+    event param3754 (float v) { seqHold.at (4) = v; }   // MOD-SEQ2
+    event param3784 (float v) { seqTime.at (5) = v; }   // MOD-SEQ2
+    event param3785 (float v) { seqLoop.at (5) = v; }   // MOD-SEQ2
+    event param3786 (float v) { seqHold.at (5) = v; }   // MOD-SEQ2
+    event param3816 (float v) { seqTime.at (6) = v; }   // MOD-SEQ2
+    event param3817 (float v) { seqLoop.at (6) = v; }   // MOD-SEQ2
+    event param3818 (float v) { seqHold.at (6) = v; }   // MOD-SEQ2
+    event param3848 (float v) { seqTime.at (7) = v; }   // MOD-SEQ2
+    event param3849 (float v) { seqLoop.at (7) = v; }   // MOD-SEQ2
+    event param3850 (float v) { seqHold.at (7) = v; }   // MOD-SEQ2
+    event param3880 (float v) { seqTime.at (8) = v; }   // MOD-SEQ2
+    event param3881 (float v) { seqLoop.at (8) = v; }   // MOD-SEQ2
+    event param3882 (float v) { seqHold.at (8) = v; }   // MOD-SEQ2
+    event param3912 (float v) { seqTime.at (9) = v; }   // MOD-SEQ2
+    event param3913 (float v) { seqLoop.at (9) = v; }   // MOD-SEQ2
+    event param3914 (float v) { seqHold.at (9) = v; }   // MOD-SEQ2
+    event param5000 (float v) { seqShape.at (0) = v; }   // MOD-SEQ2
+    event param5001 (float v) { seqShape.at (1) = v; }   // MOD-SEQ2
+    event param5002 (float v) { seqShape.at (2) = v; }   // MOD-SEQ2
+    event param5003 (float v) { seqShape.at (3) = v; }   // MOD-SEQ2
+    event param5004 (float v) { seqShape.at (4) = v; }   // MOD-SEQ2
+    event param5005 (float v) { seqShape.at (5) = v; }   // MOD-SEQ2
+    event param5006 (float v) { seqShape.at (6) = v; }   // MOD-SEQ2
+    event param5007 (float v) { seqShape.at (7) = v; }   // MOD-SEQ2
+    event param5008 (float v) { seqShape.at (8) = v; }   // MOD-SEQ2
+    event param5009 (float v) { seqShape.at (9) = v; }   // MOD-SEQ2
+    event param5010 (float v) { seqShape.at (10) = v; }   // MOD-SEQ2
+    event param5011 (float v) { seqShape.at (11) = v; }   // MOD-SEQ2
+    event param5012 (float v) { seqShape.at (12) = v; }   // MOD-SEQ2
+    event param5013 (float v) { seqShape.at (13) = v; }   // MOD-SEQ2
+    event param5014 (float v) { seqShape.at (14) = v; }   // MOD-SEQ2
+    event param5015 (float v) { seqShape.at (15) = v; }   // MOD-SEQ2
+    event param5016 (float v) { seqShape.at (16) = v; }   // MOD-SEQ2
+    event param5017 (float v) { seqShape.at (17) = v; }   // MOD-SEQ2
+    event param5018 (float v) { seqShape.at (18) = v; }   // MOD-SEQ2
+    event param5019 (float v) { seqShape.at (19) = v; }   // MOD-SEQ2
+    event param5020 (float v) { seqShape.at (20) = v; }   // MOD-SEQ2
+    event param5021 (float v) { seqShape.at (21) = v; }   // MOD-SEQ2
+    event param5022 (float v) { seqShape.at (22) = v; }   // MOD-SEQ2
+    event param5023 (float v) { seqShape.at (23) = v; }   // MOD-SEQ2
+    event param5024 (float v) { seqShape.at (24) = v; }   // MOD-SEQ2
+    event param5025 (float v) { seqShape.at (25) = v; }   // MOD-SEQ2
+    event param5026 (float v) { seqShape.at (26) = v; }   // MOD-SEQ2
+    event param5027 (float v) { seqShape.at (27) = v; }   // MOD-SEQ2
+    event param5028 (float v) { seqShape.at (28) = v; }   // MOD-SEQ2
+    event param5029 (float v) { seqShape.at (29) = v; }   // MOD-SEQ2
+    event param5030 (float v) { seqShape.at (30) = v; }   // MOD-SEQ2
+    event param5031 (float v) { seqShape.at (31) = v; }   // MOD-SEQ2
+    event param5032 (float v) { seqShape.at (32) = v; }   // MOD-SEQ2
+    event param5033 (float v) { seqShape.at (33) = v; }   // MOD-SEQ2
+    event param5034 (float v) { seqShape.at (34) = v; }   // MOD-SEQ2
+    event param5035 (float v) { seqShape.at (35) = v; }   // MOD-SEQ2
+    event param5036 (float v) { seqShape.at (36) = v; }   // MOD-SEQ2
+    event param5037 (float v) { seqShape.at (37) = v; }   // MOD-SEQ2
+    event param5038 (float v) { seqShape.at (38) = v; }   // MOD-SEQ2
+    event param5039 (float v) { seqShape.at (39) = v; }   // MOD-SEQ2
+    event param5040 (float v) { seqShape.at (40) = v; }   // MOD-SEQ2
+    event param5041 (float v) { seqShape.at (41) = v; }   // MOD-SEQ2
+    event param5042 (float v) { seqShape.at (42) = v; }   // MOD-SEQ2
+    event param5043 (float v) { seqShape.at (43) = v; }   // MOD-SEQ2
+    event param5044 (float v) { seqShape.at (44) = v; }   // MOD-SEQ2
+    event param5045 (float v) { seqShape.at (45) = v; }   // MOD-SEQ2
+    event param5046 (float v) { seqShape.at (46) = v; }   // MOD-SEQ2
+    event param5047 (float v) { seqShape.at (47) = v; }   // MOD-SEQ2
+    event param5048 (float v) { seqShape.at (48) = v; }   // MOD-SEQ2
+    event param5049 (float v) { seqShape.at (49) = v; }   // MOD-SEQ2
+    event param5050 (float v) { seqShape.at (50) = v; }   // MOD-SEQ2
+    event param5051 (float v) { seqShape.at (51) = v; }   // MOD-SEQ2
+    event param5052 (float v) { seqShape.at (52) = v; }   // MOD-SEQ2
+    event param5053 (float v) { seqShape.at (53) = v; }   // MOD-SEQ2
+    event param5054 (float v) { seqShape.at (54) = v; }   // MOD-SEQ2
+    event param5055 (float v) { seqShape.at (55) = v; }   // MOD-SEQ2
+    event param5056 (float v) { seqShape.at (56) = v; }   // MOD-SEQ2
+    event param5057 (float v) { seqShape.at (57) = v; }   // MOD-SEQ2
+    event param5058 (float v) { seqShape.at (58) = v; }   // MOD-SEQ2
+    event param5059 (float v) { seqShape.at (59) = v; }   // MOD-SEQ2
+    event param5060 (float v) { seqShape.at (60) = v; }   // MOD-SEQ2
+    event param5061 (float v) { seqShape.at (61) = v; }   // MOD-SEQ2
+    event param5062 (float v) { seqShape.at (62) = v; }   // MOD-SEQ2
+    event param5063 (float v) { seqShape.at (63) = v; }   // MOD-SEQ2
+    event param5064 (float v) { seqShape.at (64) = v; }   // MOD-SEQ2
+    event param5065 (float v) { seqShape.at (65) = v; }   // MOD-SEQ2
+    event param5066 (float v) { seqShape.at (66) = v; }   // MOD-SEQ2
+    event param5067 (float v) { seqShape.at (67) = v; }   // MOD-SEQ2
+    event param5068 (float v) { seqShape.at (68) = v; }   // MOD-SEQ2
+    event param5069 (float v) { seqShape.at (69) = v; }   // MOD-SEQ2
+    event param5070 (float v) { seqShape.at (70) = v; }   // MOD-SEQ2
+    event param5071 (float v) { seqShape.at (71) = v; }   // MOD-SEQ2
+    event param5072 (float v) { seqShape.at (72) = v; }   // MOD-SEQ2
+    event param5073 (float v) { seqShape.at (73) = v; }   // MOD-SEQ2
+    event param5074 (float v) { seqShape.at (74) = v; }   // MOD-SEQ2
+    event param5075 (float v) { seqShape.at (75) = v; }   // MOD-SEQ2
+    event param5076 (float v) { seqShape.at (76) = v; }   // MOD-SEQ2
+    event param5077 (float v) { seqShape.at (77) = v; }   // MOD-SEQ2
+    event param5078 (float v) { seqShape.at (78) = v; }   // MOD-SEQ2
+    event param5079 (float v) { seqShape.at (79) = v; }   // MOD-SEQ2
+    event param5080 (float v) { seqShape.at (80) = v; }   // MOD-SEQ2
+    event param5081 (float v) { seqShape.at (81) = v; }   // MOD-SEQ2
+    event param5082 (float v) { seqShape.at (82) = v; }   // MOD-SEQ2
+    event param5083 (float v) { seqShape.at (83) = v; }   // MOD-SEQ2
+    event param5084 (float v) { seqShape.at (84) = v; }   // MOD-SEQ2
+    event param5085 (float v) { seqShape.at (85) = v; }   // MOD-SEQ2
+    event param5086 (float v) { seqShape.at (86) = v; }   // MOD-SEQ2
+    event param5087 (float v) { seqShape.at (87) = v; }   // MOD-SEQ2
+    event param5088 (float v) { seqShape.at (88) = v; }   // MOD-SEQ2
+    event param5089 (float v) { seqShape.at (89) = v; }   // MOD-SEQ2
+    event param5090 (float v) { seqShape.at (90) = v; }   // MOD-SEQ2
+    event param5091 (float v) { seqShape.at (91) = v; }   // MOD-SEQ2
+    event param5092 (float v) { seqShape.at (92) = v; }   // MOD-SEQ2
+    event param5093 (float v) { seqShape.at (93) = v; }   // MOD-SEQ2
+    event param5094 (float v) { seqShape.at (94) = v; }   // MOD-SEQ2
+    event param5095 (float v) { seqShape.at (95) = v; }   // MOD-SEQ2
+    event param5096 (float v) { seqShape.at (96) = v; }   // MOD-SEQ2
+    event param5097 (float v) { seqShape.at (97) = v; }   // MOD-SEQ2
+    event param5098 (float v) { seqShape.at (98) = v; }   // MOD-SEQ2
+    event param5099 (float v) { seqShape.at (99) = v; }   // MOD-SEQ2
+    event param5100 (float v) { seqShape.at (100) = v; }   // MOD-SEQ2
+    event param5101 (float v) { seqShape.at (101) = v; }   // MOD-SEQ2
+    event param5102 (float v) { seqShape.at (102) = v; }   // MOD-SEQ2
+    event param5103 (float v) { seqShape.at (103) = v; }   // MOD-SEQ2
+    event param5104 (float v) { seqShape.at (104) = v; }   // MOD-SEQ2
+    event param5105 (float v) { seqShape.at (105) = v; }   // MOD-SEQ2
+    event param5106 (float v) { seqShape.at (106) = v; }   // MOD-SEQ2
+    event param5107 (float v) { seqShape.at (107) = v; }   // MOD-SEQ2
+    event param5108 (float v) { seqShape.at (108) = v; }   // MOD-SEQ2
+    event param5109 (float v) { seqShape.at (109) = v; }   // MOD-SEQ2
+    event param5110 (float v) { seqShape.at (110) = v; }   // MOD-SEQ2
+    event param5111 (float v) { seqShape.at (111) = v; }   // MOD-SEQ2
+    event param5112 (float v) { seqShape.at (112) = v; }   // MOD-SEQ2
+    event param5113 (float v) { seqShape.at (113) = v; }   // MOD-SEQ2
+    event param5114 (float v) { seqShape.at (114) = v; }   // MOD-SEQ2
+    event param5115 (float v) { seqShape.at (115) = v; }   // MOD-SEQ2
+    event param5116 (float v) { seqShape.at (116) = v; }   // MOD-SEQ2
+    event param5117 (float v) { seqShape.at (117) = v; }   // MOD-SEQ2
+    event param5118 (float v) { seqShape.at (118) = v; }   // MOD-SEQ2
+    event param5119 (float v) { seqShape.at (119) = v; }   // MOD-SEQ2
+    event param5120 (float v) { seqShape.at (120) = v; }   // MOD-SEQ2
+    event param5121 (float v) { seqShape.at (121) = v; }   // MOD-SEQ2
+    event param5122 (float v) { seqShape.at (122) = v; }   // MOD-SEQ2
+    event param5123 (float v) { seqShape.at (123) = v; }   // MOD-SEQ2
+    event param5124 (float v) { seqShape.at (124) = v; }   // MOD-SEQ2
+    event param5125 (float v) { seqShape.at (125) = v; }   // MOD-SEQ2
+    event param5126 (float v) { seqShape.at (126) = v; }   // MOD-SEQ2
+    event param5127 (float v) { seqShape.at (127) = v; }   // MOD-SEQ2
+    event param5128 (float v) { seqShape.at (128) = v; }   // MOD-SEQ2
+    event param5129 (float v) { seqShape.at (129) = v; }   // MOD-SEQ2
+    event param5130 (float v) { seqShape.at (130) = v; }   // MOD-SEQ2
+    event param5131 (float v) { seqShape.at (131) = v; }   // MOD-SEQ2
+    event param5132 (float v) { seqShape.at (132) = v; }   // MOD-SEQ2
+    event param5133 (float v) { seqShape.at (133) = v; }   // MOD-SEQ2
+    event param5134 (float v) { seqShape.at (134) = v; }   // MOD-SEQ2
+    event param5135 (float v) { seqShape.at (135) = v; }   // MOD-SEQ2
+    event param5136 (float v) { seqShape.at (136) = v; }   // MOD-SEQ2
+    event param5137 (float v) { seqShape.at (137) = v; }   // MOD-SEQ2
+    event param5138 (float v) { seqShape.at (138) = v; }   // MOD-SEQ2
+    event param5139 (float v) { seqShape.at (139) = v; }   // MOD-SEQ2
+    event param5140 (float v) { seqShape.at (140) = v; }   // MOD-SEQ2
+    event param5141 (float v) { seqShape.at (141) = v; }   // MOD-SEQ2
+    event param5142 (float v) { seqShape.at (142) = v; }   // MOD-SEQ2
+    event param5143 (float v) { seqShape.at (143) = v; }   // MOD-SEQ2
+    event param5144 (float v) { seqShape.at (144) = v; }   // MOD-SEQ2
+    event param5145 (float v) { seqShape.at (145) = v; }   // MOD-SEQ2
+    event param5146 (float v) { seqShape.at (146) = v; }   // MOD-SEQ2
+    event param5147 (float v) { seqShape.at (147) = v; }   // MOD-SEQ2
+    event param5148 (float v) { seqShape.at (148) = v; }   // MOD-SEQ2
+    event param5149 (float v) { seqShape.at (149) = v; }   // MOD-SEQ2
+    event param5150 (float v) { seqShape.at (150) = v; }   // MOD-SEQ2
+    event param5151 (float v) { seqShape.at (151) = v; }   // MOD-SEQ2
+    event param5152 (float v) { seqShape.at (152) = v; }   // MOD-SEQ2
+    event param5153 (float v) { seqShape.at (153) = v; }   // MOD-SEQ2
+    event param5154 (float v) { seqShape.at (154) = v; }   // MOD-SEQ2
+    event param5155 (float v) { seqShape.at (155) = v; }   // MOD-SEQ2
+    event param5156 (float v) { seqShape.at (156) = v; }   // MOD-SEQ2
+    event param5157 (float v) { seqShape.at (157) = v; }   // MOD-SEQ2
+    event param5158 (float v) { seqShape.at (158) = v; }   // MOD-SEQ2
+    event param5159 (float v) { seqShape.at (159) = v; }   // MOD-SEQ2
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -7488,6 +7872,7 @@ processor Eisenpuls_Synth
             seqRate.at (sm) = 4.0f;
             seqDiv.at (sm)  = 11.0f;
             seqPol.at (sm)  = 1.0f;
+            seqLoop.at (sm) = 1.0f;   // MOD-SEQ2
             seqG.at (sm)    = SeqS (0.0f, 0.0f, 1.0f, 0.5f);
             for (int sk = 0; sk < 16; ++sk)   // default pattern (same as the parameter defaults)
                 seqStep.at (sm * 16 + sk) = seqDefault (sk);
@@ -12355,48 +12740,94 @@ processor Eisenpuls_Synth
         return d.at (k);
     }
 
+    float seqMult (int m)   // MOD-SEQ2: Time x1..x4
+    {
+        return float (clamp (int (seqTime.at (m) + 0.5f), 0, 3) + 1);
+    }
+
     float seqStepHz (int m)
     {
-        return seqSync.at (m) > 0.5f ? syncHz (seqDiv.at (m)) : seqRate.at (m);
+        return (seqSync.at (m) > 0.5f ? syncHz (seqDiv.at (m)) : seqRate.at (m)) * seqMult (m);
+    }
+
+    // shape of one step over its length (ph 0..1): 0 flat, 1 ramp down, 2 ramp up, 3 triangle, 4 half sine, 5 gate 50 %, 6 gate 25 %, 7 decay
+    float seqShapeVal (int sh, float ph)
+    {
+        if (sh == 1) return 1.0f - ph;
+        if (sh == 2) return ph;
+        if (sh == 3) return 1.0f - abs (2.0f * ph - 1.0f);
+        if (sh == 4) return float (sin (3.14159265f * ph));
+        if (sh == 5) return ph < 0.5f ? 1.0f : 0.0f;
+        if (sh == 6) return ph < 0.25f ? 1.0f : 0.0f;
+        if (sh == 7) return float (exp (-4.0f * ph));
+        return 1.0f;
     }
 
     // advances sequencer m by dt seconds
     SeqS seqRun (int m, float dt, SeqS s)
     {
         int   len = clamp (int (seqLen.at (m) + 0.5f), 1, 16);
+        int   lp  = clamp (int (seqLoop.at (m) + 0.5f) - 1, 0, len - 1);   // MOD-SEQ2: first step of the loop
         int   idx = clamp (int (s.idx + 0.5f), 0, len - 1);
         float hz  = max (seqStepHz (m), 0.01f);
         float ph  = s.ph + hz * dt;
         float dir = s.dir;
         int   md  = int (seqDir.at (m) + 0.5f);
 
-        for (int k = 0; k < 4 && ph >= 1.0f; ++k)
+        if (seqSync.at (m) > 1.5f)   // MOD-SEQ2: Spos, the position follows the host (loop region only)
         {
-            ph -= 1.0f;
+            float64 sb  = float64 (divBeats.at (clamp (int (seqDiv.at (m) + 0.5f), 0, 17))) / float64 (seqMult (m));
+            float64 pos = fxBeat / sb;
+            int     n   = int (floor (pos));
+            int     reg = len - lp;
+            int     per = max (2 * reg - 2, 1);
+            int     k   = ((n % reg) + reg) % reg;
 
-            if (md == 0)
-                idx = (idx + 1) % len;
-            else if (md == 1)
-                idx = (idx + len - 1) % len;
+            ph = float (pos - float64 (n));
+
+            if (md == 1)
+                idx = len - 1 - k;
             else if (md == 2)
             {
-                int nx = idx + int (dir);
-
-                if (nx >= len || nx < 0)
-                    dir = -dir;
-
-                idx = clamp (idx + int (dir), 0, len - 1);
+                int p = ((n % per) + per) % per;
+                idx = lp + (p < reg ? p : per - p);
             }
             else
-                idx = clamp (int (abs (nextNoise()) * float (len)), 0, len - 1);
+                idx = lp + k;
+        }
+        else
+        {
+            for (int k = 0; k < 4 && ph >= 1.0f; ++k)
+            {
+                ph -= 1.0f;
+
+                if (md == 0)
+                    idx = idx + 1 >= len ? lp : idx + 1;
+                else if (md == 1)
+                    idx = idx - 1 < lp ? len - 1 : idx - 1;
+                else if (md == 2)
+                {
+                    int nx = idx + int (dir);
+
+                    if (nx >= len || nx < lp)
+                        dir = -dir;
+
+                    idx = clamp (idx + int (dir), lp, len - 1);
+                }
+                else
+                    idx = lp + clamp (int (abs (nextNoise()) * float (len - lp)), 0, len - lp - 1);
+            }
+
+            if (ph >= 1.0f)
+                ph = 0.0f;
         }
 
-        if (ph >= 1.0f)
-            ph = 0.0f;
-
-        float tv = seqStep.at (m * 16 + idx);
-        float g  = seqGlide.at (m);
-        float v  = s.v;
+        float lvl = seqStep.at (m * 16 + idx);
+        int   sh  = seqHold.at (m) > 0.5f ? 0 : int (seqShape.at (m * 16 + idx) + 0.5f);
+        float shp = seqShapeVal (sh, ph);
+        float tv  = seqPol.at (m) > 0.5f ? 0.5f + (lvl - 0.5f) * shp : lvl * shp;
+        float g   = seqGlide.at (m);
+        float v   = s.v;
 
         if (g < 0.002f)
             v = tv;

@@ -662,15 +662,34 @@ namespace njo
     struct SeqRefresh { virtual ~SeqRefresh() = default; virtual void refreshAll() = 0; };
     static std::vector<SeqRefresh*> gSeqAll;
 
+    // value of a step shape at phase ph (0..1), the same curves as the DSP (seqShapeVal)
+    static float seqShapeAt (int sh, float ph)
+    {
+        switch (sh)
+        {
+            case 1: return 1.0f - ph;
+            case 2: return ph;
+            case 3: return 1.0f - std::abs (2.0f * ph - 1.0f);
+            case 4: return std::sin (juce::MathConstants<float>::pi * ph);
+            case 5: return ph < 0.5f ? 1.0f : 0.0f;
+            case 6: return ph < 0.25f ? 1.0f : 0.0f;
+            case 7: return std::exp (-4.0f * ph);
+            default: return 1.0f;
+        }
+    }
+
     struct SeqCanvas : juce::Component
     {
         Ctx& ctx; int lastStep = -1; bool dragging = false;
         explicit SeqCanvas (Ctx& c) : ctx (c) {}
         int lenOf() const { return juce::jlimit (1, 16, juce::roundToInt (ctx.get (seqParam (ctx.selectedSeq, 16)))); }
-        juce::Rectangle<float> area() const { return getLocalBounds().toFloat().reduced (4.0f, 4.0f); }
+        static constexpr float iconH = 20.0f;
+        juce::Rectangle<float> area() const { return getLocalBounds().toFloat().reduced (4.0f, 4.0f).withTrimmedBottom (iconH + 3.0f); }
+        juce::Rectangle<float> iconRow() const { auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); return r.removeFromBottom (iconH); }
         void paint (juce::Graphics& g) override
         {
             auto a = area(); int m = ctx.selectedSeq, len = lenOf();
+            bool hold = ctx.get (seqParam (m, 26)) > 0.5f; int loopS = juce::jlimit (1, 16, juce::roundToInt (ctx.get (seqParam (m, 25)))) - 1;
             bool bip = ctx.get (seqParam (m, 23)) > 0.5f;
             auto col = srcColour (34 + m);
             g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
@@ -686,7 +705,19 @@ namespace njo
                 float y = cell.getBottom() - v * cell.getHeight();
                 juce::Rectangle<float> bar = bip ? juce::Rectangle<float> (cell.getX(), juce::jmin (y, cell.getCentreY()), cell.getWidth(), std::abs (y - cell.getCentreY()))
                                                  : juce::Rectangle<float> (cell.getX(), y, cell.getWidth(), cell.getBottom() - y);
-                g.setColour (col.withAlpha (act ? 0.95f : 0.25f)); g.fillRoundedRectangle (bar.withHeight (juce::jmax (bar.getHeight(), 2.0f)), 2.0f);
+                int sh = hold ? 0 : juce::jlimit (0, 7, juce::roundToInt (ctx.get (seqShapeParam (m, k))));
+                g.setColour (col.withAlpha (act ? (sh ? 0.38f : 0.95f) : 0.25f)); g.fillRoundedRectangle (bar.withHeight (juce::jmax (bar.getHeight(), 2.0f)), 2.0f);
+                if (sh && act)   // the shape of the step over its length, scaled by its level
+                {
+                    juce::Path sp; float zero = bip ? 0.5f : 0.0f;
+                    for (int i = 0; i <= 16; ++i)
+                    {
+                        float ph = (float) i / 16.0f, val = zero + (v - zero) * seqShapeAt (sh, ph);
+                        float px = cell.getX() + cell.getWidth() * ph, py = cell.getBottom() - val * cell.getHeight();
+                        if (i == 0) sp.startNewSubPath (px, py); else sp.lineTo (px, py);
+                    }
+                    g.setColour (col.brighter (0.5f)); g.strokePath (sp, juce::PathStrokeType (1.6f));
+                }
                 g.setColour (dim.withAlpha (act ? 0.9f : 0.4f)); g.setFont (font (8.0f));
                 g.drawText (juce::String (k + 1), cell.toNearestInt().removeFromTop (10), juce::Justification::centred);
                 if (k == head && act)   // playhead
@@ -694,6 +725,24 @@ namespace njo
                     g.setColour (col.withAlpha (0.18f)); g.fillRoundedRectangle (cell, 2.0f);
                     g.setColour (juce::Colours::white.withAlpha (0.9f)); g.drawRoundedRectangle (cell, 2.0f, 1.4f);
                 }
+            }
+            // loop start marker
+            { float lx = a.getX() + (float) loopS * sw + 1.5f; g.setColour (juce::Colours::white.withAlpha (loopS > 0 ? 0.55f : 0.0f)); g.fillRect (lx, a.getY(), 1.5f, a.getHeight()); }
+            // icon row: the wave shape of every step (click = next, right click = previous)
+            auto ir = iconRow();
+            for (int k = 0; k < 16; ++k)
+            {
+                auto c = juce::Rectangle<float> (ir.getX() + k * sw + 1.5f, ir.getY(), sw - 3.0f, ir.getHeight());
+                bool act = k < len; int sh = juce::jlimit (0, 7, juce::roundToInt (ctx.get (seqShapeParam (m, k))));
+                g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (c, 2.0f);
+                juce::Path ip; auto in = c.reduced (4.0f, 4.0f);
+                for (int i = 0; i <= 12; ++i)
+                {
+                    float ph = (float) i / 12.0f, vv = seqShapeAt (sh, ph);
+                    float px = in.getX() + in.getWidth() * ph, py = in.getBottom() - vv * in.getHeight();
+                    if (i == 0) ip.startNewSubPath (px, py); else ip.lineTo (px, py);
+                }
+                g.setColour ((hold ? dim : col).withAlpha (act ? (sh ? 1.0f : 0.55f) : 0.3f)); g.strokePath (ip, juce::PathStrokeType (1.3f));
             }
         }
         void setFromMouse (const juce::MouseEvent& e)
@@ -706,7 +755,19 @@ namespace njo
             if (k != lastStep) ctx.begin (seqParam (m, k));
             lastStep = k; ctx.set (seqParam (m, k), v); repaint();
         }
-        void mouseDown (const juce::MouseEvent& e) override { dragging = true; lastStep = -1; setFromMouse (e); }
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            if (iconRow().expanded (0.0f, 3.0f).contains (e.position))   // wave shape of a step
+            {
+                auto a = area(); int m = ctx.selectedSeq;
+                int k = juce::jlimit (0, 15, (int) ((e.position.x - a.getX()) / (a.getWidth() / 16.0f)));
+                int id = seqShapeParam (m, k), cur = juce::roundToInt (ctx.get (id));
+                int nx = (cur + (e.mods.isRightButtonDown() ? 7 : 1)) % 8;
+                ctx.begin (id); ctx.set (id, (float) nx); ctx.end (id); repaint();
+                dragging = false; return;
+            }
+            dragging = true; lastStep = -1; setFromMouse (e);
+        }
         void mouseDrag (const juce::MouseEvent& e) override { if (dragging) setFromMouse (e); }
         void mouseUp (const juce::MouseEvent&) override { if (lastStep >= 0) ctx.end (seqParam (ctx.selectedSeq, lastStep)); lastStep = -1; dragging = false; }
         void mouseDoubleClick (const juce::MouseEvent& e) override   // double-click: reset the step to the middle
@@ -718,6 +779,7 @@ namespace njo
 
     struct SeqEditor::Impl : Ctx::Listener, SeqRefresh, private juce::Timer
     {
+        static constexpr int NW = 11;   // widgets per sequencer
         int lastHead[10];
         Ctx& ctx; SeqEditor& owner;
         juce::OwnedArray<SourceChip> chips;
@@ -729,13 +791,13 @@ namespace njo
         Impl (Ctx& c, SeqEditor& o) : ctx (c), owner (o), cv (c)
         {
             ctx.addListener (this); gSeqAll.push_back (this);
-            const int ids[8] = { 18, 22, 23, 21, 19, 17, 20, 16 };
-            const bool knob[8] = { false, false, false, false, false, true, true, true };
+            const int ids[NW] = { 18, 22, 23, 26, 21, 19, 24, 17, 20, 16, 25 };   // Sync, Retrig, Polarity, Hold | Direction, Division, Time | Rate, Glide, Length, Loop
+            const bool knob[NW] = { false, false, false, false, false, false, false, true, true, true, true };
             for (int i = 0; i < 10; ++i)
             {
                 auto* ch = chips.add (new SourceChip (34 + i)); ch->onClick = [this, i] { ctx.selectedSeq = i; for (auto* a : gSeqAll) a->refreshAll(); };
                 owner.addAndMakeVisible (ch);
-                for (int k = 0; k < 8; ++k)
+                for (int k = 0; k < NW; ++k)
                 {
                     auto* x = w.add (makeWidget (ctx, seqParam (i, ids[k]), knob[k]).release());
                     if (knob[k]) x->setLook (true);
@@ -757,7 +819,7 @@ namespace njo
         void paramChanged (int n, float) override
         {
             int b = seqParam (ctx.selectedSeq, 0);
-            if (n >= b && n < b + 32) cv.repaint();
+            if ((n >= b && n < b + 32) || (n >= seqShapeParam (ctx.selectedSeq, 0) && n < seqShapeParam (ctx.selectedSeq, 0) + 16)) cv.repaint();
         }
         void refreshAll() override
         {
@@ -765,7 +827,7 @@ namespace njo
             for (int i = 0; i < 10; ++i)
             {
                 chips[i]->on = i == s; chips[i]->repaint();
-                for (int k = 0; k < 8; ++k) w[i * 8 + k]->setVisible (i == s);
+                for (int k = 0; k < NW; ++k) w[i * NW + k]->setVisible (i == s);
             }
             cv.repaint();
         }
@@ -784,7 +846,7 @@ namespace njo
             g.drawText ("STEP SEQUENCERS", 10, 4, 260, 16, juce::Justification::centredLeft);
         }
         g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
-        g.drawText (juce::String (juce::CharPointer_UTF8 ("click / drag: set steps \xc2\xb7 shift: snap \xc2\xb7 dbl-click: reset step \xc2\xb7 drag the chip onto any knob")), I.helpRect, juce::Justification::centredLeft, true);
+        g.drawText (juce::String (juce::CharPointer_UTF8 ("click / drag: set steps \xc2\xb7 shift: snap \xc2\xb7 dbl-click: reset step \xc2\xb7 symbols below: step wave shape (click = next, right click = back) \xc2\xb7 drag the chip onto any knob")), I.helpRect, juce::Justification::centredLeft, true);
     }
 
     void SeqEditor::resized()
@@ -797,7 +859,7 @@ namespace njo
         auto row = b.removeFromTop (ch); b.removeFromTop (4);
         int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
         for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
-        auto right = b.removeFromRight (230); b.removeFromRight (10);
+        auto right = b.removeFromRight (290); b.removeFromRight (10);
         I.helpRect = b.removeFromBottom (12);
         I.cv.setBounds (b.withTrimmedBottom (2));
         auto c = right;
@@ -805,12 +867,12 @@ namespace njo
         auto r2 = c.removeFromTop (20); c.removeFromTop (4);
         if (I.full) c.removeFromTop (10);
         auto kn = I.full ? c.removeFromTop (juce::jmin (c.getHeight(), 80)) : c.removeFromBottom (juce::jmin (c.getHeight(), 60));
-        int bw = r1.getWidth() / 3, sw = r2.getWidth() / 2, kw = kn.getWidth() / 3;
+        int b1 = r1.getWidth() / 4, b2 = r2.getWidth() / 3, kw = kn.getWidth() / 4;
         for (int i = 0; i < 10; ++i)
         {
-            for (int k = 0; k < 3; ++k) I.w[i * 8 + k]->setBounds (r1.getX() + k * bw + 1, r1.getY(), bw - 2, r1.getHeight());
-            for (int k = 0; k < 2; ++k) I.w[i * 8 + 3 + k]->setBounds (r2.getX() + k * sw + 1, r2.getY(), sw - 2, r2.getHeight());
-            for (int k = 0; k < 3; ++k) I.w[i * 8 + 5 + k]->setBounds (kn.getX() + k * kw, kn.getY(), kw, kn.getHeight());
+            for (int k = 0; k < 4; ++k) I.w[i * SeqEditor::Impl::NW + k]->setBounds (r1.getX() + k * b1 + 1, r1.getY(), b1 - 2, r1.getHeight());
+            for (int k = 0; k < 3; ++k) I.w[i * SeqEditor::Impl::NW + 4 + k]->setBounds (r2.getX() + k * b2 + 1, r2.getY(), b2 - 2, r2.getHeight());
+            for (int k = 0; k < 4; ++k) I.w[i * SeqEditor::Impl::NW + 7 + k]->setBounds (kn.getX() + k * kw, kn.getY(), kw, kn.getHeight());
         }
     }
 
