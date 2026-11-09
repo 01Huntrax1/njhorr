@@ -573,5 +573,67 @@ f1 = note_hz(98); harm = np.zeros(len(X), bool)
 for k in range(1, int(RATE / 2 / f1) + 1): harm |= np.abs(fr - k * f1) < 60
 check("Plasma ADAA keeps most energy on the harmonics", float((X[harm] ** 2).sum() / (X ** 2).sum()) > 0.9, "%.3f" % float((X[harm] ** 2).sum() / (X ** 2).sum()))
 
+# ---- FX-MUTABLE: Granular (type 29) and Warp (type 30)
+def peaks(a, lo=0.7, hi=1.2, n=3, minhz=30):
+    seg = a[int(lo * RATE):int(hi * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))); fr = np.fft.rfftfreq(len(seg), 1.0 / RATE)
+    X[fr < minhz] = 0; idx = []
+    for _ in range(n):
+        i = int(np.argmax(X)); idx.append(float(fr[i])); X[max(0, i - 15):i + 15] = 0
+    return idx
+def near(vals, f, tol=12): return any(abs(v - f) < tol for v in vals)
+GRN = ["Granular", "Freeze", "Pitch Shifter", "Looping Delay"]
+for m, nm in enumerate(GRN):
+    for pn, pv in (("default", (0.3, 0.45, 0.5, 0.5, 0.5, 0.0)), ("max", (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)), ("min", (0.0, 0.0, 0.0, 0.0, 0.0, 0.0))):
+        a = render(fx(0, 29, m, 1.0, pv), tag="gr%d%s" % (m, pn), hold=1.0, tail=1.0)
+        check("Granular %s (%s): finite and bounded" % (nm, pn), bool(np.isfinite(a).all()) and np.abs(a).max() < 8.0, "peak %.2f" % np.abs(a).max())
+a = render(fx(0, 29, 0, 1.0, (0.2, 0.4, 0.5, 0.6, 0.3, 0.0)), tag="grain", hold=1.0, tail=0.5)
+check("Granular makes sound from the recorded input", rms(a[int(0.8 * RATE):int(1.4 * RATE)]) > 0.01, "%.4f" % rms(a[int(0.8 * RATE):int(1.4 * RATE)]))
+# pitch shifter: +12 st doubles, -12 st halves the pitch of the 440 Hz note
+up = render(fx(0, 29, 2, 1.0, (0.0, 0.3, 0.75, 0.5, 0.5, 0.0)), tag="psup", hold=1.0)
+dn = render(fx(0, 29, 2, 1.0, (0.0, 0.3, 0.25, 0.5, 0.5, 0.0)), tag="psdn", hold=1.0)
+check("Pitch Shifter +12 st: 880 Hz", near(peaks(up, 0.9, 1.3), 880, 25), str(peaks(up, 0.9, 1.3)))
+check("Pitch Shifter -12 st: 220 Hz", near(peaks(dn, 0.9, 1.3), 220, 15), str(peaks(dn, 0.9, 1.3)))
+# freeze: the recording stops, the sound goes on after the note is released; Looping Delay with feedback keeps looping
+# Freeze: switch to Freeze while the note plays; after the release the frozen recording keeps sounding
+def render_script(lines, tag):
+    script = os.path.join(TMP, tag + ".txt"); out = os.path.join(TMP, tag + ".f32")
+    open(script, "w").write("wt 0 sine\np %d 0\n" % L.pid(0, L.K["fon"]) + "\n".join(lines) + "\n")
+    subprocess.run([args.host, script, out], check=True)
+    return np.fromfile(out, dtype=np.float32).reshape(-1, 2)
+fzc = fx(0, 29, 0, 1.0, (0.1, 0.5, 0.5, 0.7, 0.2, 0.0))
+fz = render_script(fzc + ["run 0.2", "on 69 110", "run 0.8", "p %d 1" % (base(0) + 3), "run 0.1", "off 69", "run 2.0"], "frz")
+nf = render_script(fzc + ["run 0.2", "on 69 110", "run 0.9", "off 69", "run 2.0"], "nofrz")
+tf = int(1.2 * RATE)
+check("Granular Freeze keeps sounding after the note is released", rms(fz[tf + int(1.0 * RATE):tf + int(1.8 * RATE)]) > 0.02 and rms(nf[tf + int(1.0 * RATE):tf + int(1.8 * RATE)]) < 0.005, "%.4f vs %.4f" % (rms(fz[tf + int(1.0 * RATE):tf + int(1.8 * RATE)]), rms(nf[tf + int(1.0 * RATE):tf + int(1.8 * RATE)])))
+gp = render(fx(0, 29, 0, 1.0, (0.1, 0.5, 0.5, 0.7, 0.2, 0.0)), tag="grnofrz", hold=0.4, tail=1.5)
+check("without Freeze the grains die out after the note", rms(gp[T0 + int(1.2 * RATE):T0 + int(1.6 * RATE)]) < 0.02, "%.5f" % rms(gp[T0 + int(1.2 * RATE):T0 + int(1.6 * RATE)]))
+ld = render(fx(0, 29, 3, 1.0, (0.3, 0.45, 0.5, 0.5, 0.5, 1.0)), tag="loop", hold=0.5, tail=2.5)
+ld0 = render(fx(0, 29, 3, 1.0, (0.3, 0.45, 0.5, 0.5, 0.5, 0.0)), tag="loop0", hold=0.5, tail=2.5)
+check("Looping Delay with feedback keeps looping, without it the loop is one repeat", rms(ld[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]) > 5 * rms(ld0[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]) + 1e-4, "%.4f vs %.4f" % (rms(ld[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]), rms(ld0[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)])))
+
+WPN = ["Crossfade", "Fold", "Analog RM", "Digital RM", "XOR", "Comparator", "Vocoder", "Freq Shift"]
+for m, nm in enumerate(WPN):
+    for pn, pv in (("default", (0.5, 0.5, 0.511, 0.0, 0.5, 0.3)), ("max", (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)), ("min", (0.0, 0.0, 0.0, 0.0, 0.0, 0.0))):
+        a = render(fx(0, 30, m, 1.0, pv), tag="wp%d%s" % (m, pn))
+        check("Warp %s (%s): finite and bounded" % (nm, pn), bool(np.isfinite(a).all()) and np.abs(a).max() < 8.0, "peak %.2f" % np.abs(a).max())
+# the carrier is 300 Hz (P3 = 0.511), the modulator the 440 Hz note
+cf = render(fx(0, 30, 0, 1.0, (0.0, 0.5, 0.511, 0.0, 0.5, 0.3)), tag="wpx0"); mf = render(fx(0, 30, 0, 1.0, (1.0, 0.5, 0.511, 0.0, 0.5, 0.3)), tag="wpx1")
+check("Warp Crossfade 0: the carrier (300 Hz)", near(peaks(cf, n=1), 300, 15), str(peaks(cf, n=1)))
+check("Warp Crossfade 1: the modulator (440 Hz)", near(peaks(mf, n=1), 440, 15), str(peaks(mf, n=1)))
+rm = render(fx(0, 30, 3, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wprm"); pk = peaks(rm, n=2)
+check("Warp Digital RM: sidebands 140 and 740 Hz, no 440", near(pk, 140, 15) and near(pk, 740, 15), str(pk))
+ar = render(fx(0, 30, 2, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wpar"); pk = peaks(ar, n=4)
+check("Warp Analog RM: sidebands 140 and 740 Hz", near(pk, 140, 15) and near(pk, 740, 15), str(pk))
+# frequency shifter: +100 Hz / -100 Hz (P3 = 0.3038), the note is 440 Hz
+fu = render(fx(0, 30, 7, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 1.0)), tag="fsup"); fd = render(fx(0, 30, 7, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 0.0)), tag="fsdn")
+check("Warp Freq Shift up by 100 Hz: 540 Hz", near(peaks(fu, n=1), 540, 12), str(peaks(fu, n=1)))
+check("Warp Freq Shift down by 100 Hz: 340 Hz", near(peaks(fd, n=1), 340, 12), str(peaks(fd, n=1)))
+sup = np.fft.rfft(fu[int(0.7 * RATE):int(1.2 * RATE), 0].astype(np.float64) * np.hanning(int(0.5 * RATE))); fq = np.fft.rfftfreq(int(0.5 * RATE), 1.0 / RATE)
+check("Warp Freq Shift rejects the image side band (-100 Hz: 340 Hz) by 20 dB", np.abs(sup[np.argmin(np.abs(fq - 540))]) > 10 * np.abs(sup[np.argmin(np.abs(fq - 340))]), "%.1f dB" % (20 * np.log10(np.abs(sup[np.argmin(np.abs(fq - 540))]) / np.abs(sup[np.argmin(np.abs(fq - 340))]))))
+# vocoder: silent without input, audible with it
+vc = render(fx(0, 30, 6, 1.0, (0.5, 0.5, 0.45, 0.66, 0.5, 0.3)), tag="wpvoc")
+check("Warp Vocoder is audible while the note plays", rms(vc[int(0.7 * RATE):T0]) > 0.01, "%.4f" % rms(vc[int(0.7 * RATE):T0]))
+check("Warp Vocoder is silent without input", rms(vc[:int(0.5 * RATE)]) < 1e-3 and rms(vc[T0 + int(1.2 * RATE):]) < 5e-3, "%.5f / %.5f" % (rms(vc[:int(0.5 * RATE)]), rms(vc[T0 + int(1.2 * RATE):])))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

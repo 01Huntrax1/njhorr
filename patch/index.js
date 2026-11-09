@@ -2439,7 +2439,12 @@ const FX_TYPES = [
       p: [["Trim", fxPct, 0.1], ["Hi", fxPct, 0.5], ["Lo", fxPct, 0.5], ["Gain", fxPct, 1]] },
     // FX-PLASMA: asymmetric distortion in the style of Dimethoxy's Plasma (own implementation): 12 styles, bias, girth noise, resonant filter after the shaper
     { n: "Plasma", mix: 1, modes: ["Soft", "Hard", "Fold", "Half", "Fuzz", "Diode", "Arctan", "Rational", "Soft Exp", "Ripple", "Tri Fold", "Cubic"],
-      p: [["Drive", fxLin(0, 40, 1, "dB"), 0.4], ["Asym", fxLin(-100, 100, 0, "%"), 0.5], ["Girth", fxPct, 0], ["Filter", n => ["HP", "LP", "Dual", "Peak"][Math.min(3, Math.floor(n * 4))], 0.375], ["Freq", fxHz(20, 20000), 1], ["Reso", fxPct, 0]] }
+      p: [["Drive", fxLin(0, 40, 1, "dB"), 0.4], ["Asym", fxLin(-100, 100, 0, "%"), 0.5], ["Girth", fxPct, 0], ["Filter", n => ["HP", "LP", "Dual", "Peak"][Math.min(3, Math.floor(n * 4))], 0.375], ["Freq", fxHz(20, 20000), 1], ["Reso", fxPct, 0]] },
+    // FX-MUTABLE: two effects in the spirit of Mutable Instruments Clouds and Warps (own implementations after the manuals)
+    { n: "Granular", mix: 0.5, modes: ["Granular", "Freeze", "Pitch Shifter", "Looping Delay"],
+      p: [["Position", fxPct, 0.3], ["Size", fxMs(20, 600), fxExpN(150, 20, 600)], ["Pitch", fxLin(-24, 24, 1, "st"), 0.5], ["Density", fxPct, 0.5], ["Texture", fxPct, 0.5], ["Feedback", fxPct, 0]] },
+    { n: "Warp", mix: 1, modes: ["Crossfade", "Fold", "Analog RM", "Digital RM", "XOR", "Comparator", "Vocoder", "Freq Shift"],
+      p: [["Amount", fxPct, 0.5], ["Level", n => (n * 2).toFixed(2) + "x", 0.5], ["Pitch", fxHz(20, 4000), fxExpN(220, 20, 4000)], ["Shape", fxPct, 0], ["Drive", fxDb(-12, 12), 0.5], ["Release", fxPct, 0.3]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
