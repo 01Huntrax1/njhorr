@@ -2662,6 +2662,7 @@ const SPECS = (() => {
     L.push([3926, "Arp Gate",     0.05, 1, 0.6, "", "sld", null, 1, "Gate"]);
     L.push([3927, "Arp Latch",    0, 1, 0, "", "btn", ["Off", "On"], 1, "Latch"]);
     L.push([3928, "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", 0, 10, 0, "", "stp", null, 1, "Monitor"]);   // MOD-SEQ3
+    L.push([3929, "Seq Key Start (1 = the sequencers only run while a note sounds)", 0, 1, 1, "", "btn", ["Free", "Key"], 1, "Start"]);   // MOD-SEQ4
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k

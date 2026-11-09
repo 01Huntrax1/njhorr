@@ -786,6 +786,7 @@ namespace njo
         SeqCanvas cv;
         // per sequencer: [0..2] buttons (Sync, Retrig, Polarity), [3..4] selects (Direction, Division), [5..7] knobs (Rate, Glide, Length)
         juce::OwnedArray<ParamWidget> w;
+        std::unique_ptr<ParamWidget> keyStart;   // global: sequencers run only while a note sounds
         bool full = false; juce::Rectangle<int> helpRect;
 
         Impl (Ctx& c, SeqEditor& o) : ctx (c), owner (o), cv (c)
@@ -804,6 +805,7 @@ namespace njo
                     owner.addChildComponent (x);
                 }
             }
+            keyStart = makeWidget (ctx, 3929, false); owner.addAndMakeVisible (*keyStart);
             owner.addAndMakeVisible (cv);
             for (int& h : lastHead) h = -2;
             startTimerHz (30);   // playhead
@@ -861,6 +863,7 @@ namespace njo
         auto row = b.removeFromTop (ch); b.removeFromTop (4);
         int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
         for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
+        { int x0 = row.getX() + 10 * (cw + cg) + 8; int kw0 = juce::jmin (130, row.getRight() - x0); I.keyStart->setVisible (kw0 >= 60); I.keyStart->setBounds (x0, row.getY(), juce::jmax (kw0, 1), ch); }
         auto right = b.removeFromRight (290); b.removeFromRight (10);
         I.helpRect = b.removeFromBottom (12);
         I.cv.setBounds (b.withTrimmedBottom (2));
