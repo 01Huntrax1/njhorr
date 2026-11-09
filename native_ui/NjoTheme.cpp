@@ -37,9 +37,9 @@ namespace njo::theme
 
     const juce::Image& texPlate()
     {
-        static juce::Image img = []
+        static const juce::Image& img = *new juce::Image ([]
         {
-            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true);
+            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true, juce::SoftwareImageType());
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
             const juce::Colour dark (0xff0a0b0b), mid (0xff1a1c1d), brass (0xff3e4145);
             for (int y = 0; y < N; ++y)
@@ -57,15 +57,15 @@ namespace njo::theme
                     bd.setPixelColour (x, y, col);
                 }
             return im;
-        }();
+        }());   // software image, never freed: no GPU texture is released while the host unloads the DLL (FL Studio hung there)
         return img;
     }
 
     const juce::Image& texScales()   // brushed steel / aluminium (the name is kept: it is the window background texture)
     {
-        static juce::Image img = []
+        static const juce::Image& img = *new juce::Image ([]
         {
-            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true);
+            const int N = 256; juce::Image im (juce::Image::ARGB, N, N, true, juce::SoftwareImageType());
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
             const juce::Colour lo (0xff2a2d31), mid (0xff4a4f55), hi (0xff868c94);
             for (int y = 0; y < N; ++y)
@@ -81,15 +81,15 @@ namespace njo::theme
                     bd.setPixelColour (x, y, L < 0.5f ? mix (lo, mid, L * 2.0f) : mix (mid, hi, (L - 0.5f) * 2.0f));
                 }
             return im;
-        }();
+        }());   // software image, never freed: no GPU texture is released while the host unloads the DLL (FL Studio hung there)
         return img;
     }
 
     const juce::Image& texPlasma()
     {
-        static juce::Image img = []
+        static const juce::Image& img = *new juce::Image ([]
         {
-            const int N = 128; juce::Image im (juce::Image::ARGB, N, N, true);
+            const int N = 128; juce::Image im (juce::Image::ARGB, N, N, true, juce::SoftwareImageType());
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
             const juce::Colour deepG (0xff520904), midG (0xffc41f14), hotG (0xffff7d73);
             for (int y = 0; y < N; ++y)
@@ -104,15 +104,15 @@ namespace njo::theme
                     bd.setPixelColour (x, y, col);
                 }
             return im;
-        }();
+        }());   // software image, never freed: no GPU texture is released while the host unloads the DLL (FL Studio hung there)
         return img;
     }
 
     const juce::Image& texGlass()
     {
-        static juce::Image img = []
+        static const juce::Image& img = *new juce::Image ([]
         {
-            const int N = 64; juce::Image im (juce::Image::ARGB, N, N, true);
+            const int N = 64; juce::Image im (juce::Image::ARGB, N, N, true, juce::SoftwareImageType());
             juce::Image::BitmapData bd (im, juce::Image::BitmapData::writeOnly);
             for (int y = 0; y < N; ++y)
                 for (int x = 0; x < N; ++x)
@@ -122,7 +122,7 @@ namespace njo::theme
                     bd.setPixelColour (x, y, mix (juce::Colour (0xff070303), juce::Colour (0xff200a09), n * (line ? 0.5f : 1.0f)));
                 }
             return im;
-        }();
+        }());   // software image, never freed: no GPU texture is released while the host unloads the DLL (FL Studio hung there)
         return img;
     }
 

@@ -50,7 +50,7 @@ namespace njo
             auto* dc = juce::DragAndDropContainer::findParentDragContainerFor (this);
             if (dc == nullptr) return;
             dragged = true;
-            juce::Image img (juce::Image::ARGB, 58, 20, true);
+            juce::Image img (juce::Image::ARGB, 58, 20, true, juce::SoftwareImageType());
             { juce::Graphics g (img);
               g.setColour (srcColour (src)); g.fillRoundedRectangle (0, 0, 58, 20, 10.0f);
               g.setColour (juce::Colours::black); g.setFont (font (10.0f, true)); g.drawText (srcShort (src), 0, 0, 58, 20, juce::Justification::centred); }
