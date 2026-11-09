@@ -56,8 +56,31 @@ namespace cmaj::plugin
 /// See the cmaj::plugin::JITLoaderPlugin and cmaj::plugin::GeneratedPlugin
 /// types below for how to use it in these different modes.
 ///
+/// Shutdown trace for hosts that hang when they close the plugin: <temp folder>/njohrr_shutdown.log
+inline void njoShutdownTrace (const char* step)
+{
+    try
+    {
+        juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njohrr_shutdown.log")
+            .appendText (juce::Time::getCurrentTime().formatted ("%H:%M:%S ") + step + "\n");
+    }
+    catch (...) {}
+}
+
+/// Listed as the first base class, so it is destroyed last: its destructor shows that every base class (juce::AudioProcessor, the parameters ...) is gone
+struct ShutdownSentinel
+{
+    ShutdownSentinel()
+    {
+        struct AtUnload { ~AtUnload() { njoShutdownTrace ("DLL static destruction (the host unloads the plugin)"); } };
+        static AtUnload atUnload;
+    }
+    ~ShutdownSentinel() { njoShutdownTrace ("all base classes destroyed"); }
+};
+
 template <typename DerivedType>
-class JUCEPluginBase  : public juce::AudioPluginInstance,
+class JUCEPluginBase  : private ShutdownSentinel,
+                        public juce::AudioPluginInstance,
                         private juce::MessageListener
 {
 public:

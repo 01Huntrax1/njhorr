@@ -62,6 +62,7 @@ namespace njo
 
     private:
         static constexpr float logicalW = (float) BASE_W, logicalH = (float) BASE_H;
+        struct EndTrace { ~EndTrace() { traceFile ("editor destroyed completely"); } } endTrace;   // first member = destroyed last
         Bridge& bridge;
         EditorContent content;
     };
