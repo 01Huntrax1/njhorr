@@ -3,6 +3,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "NjoPatchBackend.h"
 #include "NjoEditor.h"
+#include "NjoFactory.h"
 
 namespace njo
 {
@@ -12,7 +13,20 @@ namespace njo
     {
         explicit Bridge (cmaj::Patch& p) : backend (p), memory (backend)
         {
-            backend.onReloaded = [this] { memory.reloadFromStored(); };   // new DSP (load, project state, sample rate): send the stored sounds again
+            backend.onReloaded = [this] { memory.reloadFromStored(); applyFirstRunDefaults(); };   // new DSP (load, project state, sample rate): send the stored sounds again
+        }
+        // the first time a plugin instance is loaded (no stored state has the marker yet) oscillator 1 gets the "Basic Shapes" wavetable
+        void applyFirstRunDefaults()
+        {
+           #if ! NJOHRR_FX_ONLY
+            if (backend.getStored ("njo.defaults1").isVoid())
+            {
+                backend.setStored ("njo.defaults1", juce::var (1));
+                if (memory.get (SoundMemory::Wavetable, 0) == nullptr)
+                    for (auto& t : makeFactoryWavetables())
+                        if (t.name == "Basic Shapes") { memory.set (SoundMemory::Wavetable, 0, t.name, {}, t.samples); break; }
+            }
+           #endif
         }
         void patchChanged() { backend.checkGeneration(); }
         PatchBackend backend;
