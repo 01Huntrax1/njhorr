@@ -91,13 +91,14 @@ namespace njo
     };
 
     // page "SEQ / ARP": the step sequencer editor on top, the arpeggiator below
-    class SeqArpPage : public juce::Component
+    class SeqArpPage : public juce::Component, private Ctx::Listener
     {
     public:
         explicit SeqArpPage (Ctx&);
         ~SeqArpPage() override;
         void paint (juce::Graphics&) override;
         void resized() override;
+        void paramChanged (int num, float v) override;   // Arp Mode 303 shows the pattern editor
         struct Impl; std::unique_ptr<Impl> impl;
     };
 

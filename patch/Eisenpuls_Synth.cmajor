@@ -3460,7 +3460,7 @@ processor Eisenpuls_Synth
     input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
-    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
@@ -3469,6 +3469,71 @@ processor Eisenpuls_Synth
     input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3928 [[ name: "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", min: 0.0, max: 10.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ3
     input event float param3929 [[ name: "Seq Key Start (1 = the sequencers only run while a note sounds)", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ4
+    input event float param5200 [[ name: "303 Step 1 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5201 [[ name: "303 Step 2 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5202 [[ name: "303 Step 3 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5203 [[ name: "303 Step 4 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5204 [[ name: "303 Step 5 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5205 [[ name: "303 Step 6 Note", min: -12.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5206 [[ name: "303 Step 7 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5207 [[ name: "303 Step 8 Note", min: -12.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5208 [[ name: "303 Step 9 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5209 [[ name: "303 Step 10 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5210 [[ name: "303 Step 11 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5211 [[ name: "303 Step 12 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5212 [[ name: "303 Step 13 Note", min: -12.0, max: 24.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5213 [[ name: "303 Step 14 Note", min: -12.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5214 [[ name: "303 Step 15 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5215 [[ name: "303 Step 16 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
+    input event float param5216 [[ name: "303 Step 1 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5217 [[ name: "303 Step 2 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5218 [[ name: "303 Step 3 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5219 [[ name: "303 Step 4 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5220 [[ name: "303 Step 5 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5221 [[ name: "303 Step 6 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5222 [[ name: "303 Step 7 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5223 [[ name: "303 Step 8 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5224 [[ name: "303 Step 9 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5225 [[ name: "303 Step 10 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5226 [[ name: "303 Step 11 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5227 [[ name: "303 Step 12 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5228 [[ name: "303 Step 13 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5229 [[ name: "303 Step 14 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5230 [[ name: "303 Step 15 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5231 [[ name: "303 Step 16 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5232 [[ name: "303 Step 1 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5233 [[ name: "303 Step 2 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5234 [[ name: "303 Step 3 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5235 [[ name: "303 Step 4 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5236 [[ name: "303 Step 5 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5237 [[ name: "303 Step 6 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5238 [[ name: "303 Step 7 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5239 [[ name: "303 Step 8 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5240 [[ name: "303 Step 9 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5241 [[ name: "303 Step 10 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5242 [[ name: "303 Step 11 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5243 [[ name: "303 Step 12 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5244 [[ name: "303 Step 13 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5245 [[ name: "303 Step 14 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5246 [[ name: "303 Step 15 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5247 [[ name: "303 Step 16 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5248 [[ name: "303 Step 1 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5249 [[ name: "303 Step 2 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5250 [[ name: "303 Step 3 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5251 [[ name: "303 Step 4 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5252 [[ name: "303 Step 5 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5253 [[ name: "303 Step 6 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5254 [[ name: "303 Step 7 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5255 [[ name: "303 Step 8 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5256 [[ name: "303 Step 9 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5257 [[ name: "303 Step 10 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5258 [[ name: "303 Step 11 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5259 [[ name: "303 Step 12 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5260 [[ name: "303 Step 13 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5261 [[ name: "303 Step 14 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5262 [[ name: "303 Step 15 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param5263 [[ name: "303 Step 16 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param5264 [[ name: "303 Length", min: 1.0, max: 16.0, init: 16.0, step: 1.0, automatable: false ]];
     input event float param3200 [[ name: "Main FX 11 Type", min: 0.0, max: 28.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
     input event float param3201 [[ name: "Main FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param3202 [[ name: "Main FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
@@ -3975,6 +4040,10 @@ processor Eisenpuls_Synth
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
+    float[16]   a3Note, a3Acc, a3Slide, a3Gate;   // MOD-ARP303
+    float       a3Len = 16.0f;
+    bool        a3Prev = false;   // the previous step slides into this one
+    bool        a3Hard = false;   // this note jumps to its pitch and restarts the oscillators
     float       seqKeyStart = 1.0f;   // MOD-SEQ4
     bool        seqGate = false;
     int         seqMon = 0;   // MOD-SEQ3: sequencer shown by the editor (1..10), 0 = none
@@ -6684,6 +6753,71 @@ processor Eisenpuls_Synth
     event param3910 (float v) { seqRetrig.at (9) = v; }
     event param3911 (float v) { seqPol.at (9) = v; }
 
+    event param5200 (float v) { a3Note.at (0) = v; }   // MOD-ARP303
+    event param5216 (float v) { a3Acc.at (0) = v; }
+    event param5232 (float v) { a3Slide.at (0) = v; }
+    event param5248 (float v) { a3Gate.at (0) = v; }
+    event param5201 (float v) { a3Note.at (1) = v; }   // MOD-ARP303
+    event param5217 (float v) { a3Acc.at (1) = v; }
+    event param5233 (float v) { a3Slide.at (1) = v; }
+    event param5249 (float v) { a3Gate.at (1) = v; }
+    event param5202 (float v) { a3Note.at (2) = v; }   // MOD-ARP303
+    event param5218 (float v) { a3Acc.at (2) = v; }
+    event param5234 (float v) { a3Slide.at (2) = v; }
+    event param5250 (float v) { a3Gate.at (2) = v; }
+    event param5203 (float v) { a3Note.at (3) = v; }   // MOD-ARP303
+    event param5219 (float v) { a3Acc.at (3) = v; }
+    event param5235 (float v) { a3Slide.at (3) = v; }
+    event param5251 (float v) { a3Gate.at (3) = v; }
+    event param5204 (float v) { a3Note.at (4) = v; }   // MOD-ARP303
+    event param5220 (float v) { a3Acc.at (4) = v; }
+    event param5236 (float v) { a3Slide.at (4) = v; }
+    event param5252 (float v) { a3Gate.at (4) = v; }
+    event param5205 (float v) { a3Note.at (5) = v; }   // MOD-ARP303
+    event param5221 (float v) { a3Acc.at (5) = v; }
+    event param5237 (float v) { a3Slide.at (5) = v; }
+    event param5253 (float v) { a3Gate.at (5) = v; }
+    event param5206 (float v) { a3Note.at (6) = v; }   // MOD-ARP303
+    event param5222 (float v) { a3Acc.at (6) = v; }
+    event param5238 (float v) { a3Slide.at (6) = v; }
+    event param5254 (float v) { a3Gate.at (6) = v; }
+    event param5207 (float v) { a3Note.at (7) = v; }   // MOD-ARP303
+    event param5223 (float v) { a3Acc.at (7) = v; }
+    event param5239 (float v) { a3Slide.at (7) = v; }
+    event param5255 (float v) { a3Gate.at (7) = v; }
+    event param5208 (float v) { a3Note.at (8) = v; }   // MOD-ARP303
+    event param5224 (float v) { a3Acc.at (8) = v; }
+    event param5240 (float v) { a3Slide.at (8) = v; }
+    event param5256 (float v) { a3Gate.at (8) = v; }
+    event param5209 (float v) { a3Note.at (9) = v; }   // MOD-ARP303
+    event param5225 (float v) { a3Acc.at (9) = v; }
+    event param5241 (float v) { a3Slide.at (9) = v; }
+    event param5257 (float v) { a3Gate.at (9) = v; }
+    event param5210 (float v) { a3Note.at (10) = v; }   // MOD-ARP303
+    event param5226 (float v) { a3Acc.at (10) = v; }
+    event param5242 (float v) { a3Slide.at (10) = v; }
+    event param5258 (float v) { a3Gate.at (10) = v; }
+    event param5211 (float v) { a3Note.at (11) = v; }   // MOD-ARP303
+    event param5227 (float v) { a3Acc.at (11) = v; }
+    event param5243 (float v) { a3Slide.at (11) = v; }
+    event param5259 (float v) { a3Gate.at (11) = v; }
+    event param5212 (float v) { a3Note.at (12) = v; }   // MOD-ARP303
+    event param5228 (float v) { a3Acc.at (12) = v; }
+    event param5244 (float v) { a3Slide.at (12) = v; }
+    event param5260 (float v) { a3Gate.at (12) = v; }
+    event param5213 (float v) { a3Note.at (13) = v; }   // MOD-ARP303
+    event param5229 (float v) { a3Acc.at (13) = v; }
+    event param5245 (float v) { a3Slide.at (13) = v; }
+    event param5261 (float v) { a3Gate.at (13) = v; }
+    event param5214 (float v) { a3Note.at (14) = v; }   // MOD-ARP303
+    event param5230 (float v) { a3Acc.at (14) = v; }
+    event param5246 (float v) { a3Slide.at (14) = v; }
+    event param5262 (float v) { a3Gate.at (14) = v; }
+    event param5215 (float v) { a3Note.at (15) = v; }   // MOD-ARP303
+    event param5231 (float v) { a3Acc.at (15) = v; }
+    event param5247 (float v) { a3Slide.at (15) = v; }
+    event param5263 (float v) { a3Gate.at (15) = v; }
+    event param5264 (float v) { a3Len = v; }
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -7872,6 +8006,33 @@ processor Eisenpuls_Synth
             fxEnvSus.at (ei) = 1.0f;
             fxEnvRel.at (ei) = 0.3f;
         }
+
+        // MOD-ARP303 defaults (same as the parameter defaults)
+        a3Note.at (2) = 12.0f;
+        a3Note.at (5) = 10.0f;
+        a3Note.at (7) = 7.0f;
+        a3Note.at (9) = 12.0f;
+        a3Note.at (12) = 3.0f;
+        a3Note.at (13) = 5.0f;
+        a3Acc.at (2) = 1.0f;
+        a3Acc.at (9) = 1.0f;
+        a3Acc.at (13) = 1.0f;
+        a3Slide.at (3) = 1.0f;
+        a3Slide.at (7) = 1.0f;
+        a3Slide.at (12) = 1.0f;
+        a3Gate.at (0) = 1.0f;
+        a3Gate.at (1) = 1.0f;
+        a3Gate.at (2) = 1.0f;
+        a3Gate.at (3) = 1.0f;
+        a3Gate.at (4) = 1.0f;
+        a3Gate.at (6) = 1.0f;
+        a3Gate.at (7) = 1.0f;
+        a3Gate.at (8) = 1.0f;
+        a3Gate.at (9) = 1.0f;
+        a3Gate.at (10) = 1.0f;
+        a3Gate.at (12) = 1.0f;
+        a3Gate.at (13) = 1.0f;
+        a3Gate.at (14) = 1.0f;
 
         for (int sm = 0; sm < 10; ++sm)   // MOD-SEQ
         {
@@ -17539,8 +17700,8 @@ processor Eisenpuls_Synth
 
         fxNoteSeq++;   // FX-FENV: retriggers the filter effect envelopes
         float velGainV = (1.0f - velSens) + velSens * vel;
-        bool  monoMode = voiceMode > 0.5f;
-        bool  legato   = monoMode && legatoOn > 0.5f;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)
+        bool  monoMode = voiceMode > 0.5f || (arpOn > 0.5f && int (arpMode + 0.5f) == 5);   // MOD-ARP303: the 303 pattern plays mono
+        bool  legato   = monoMode && legatoOn > 0.5f && ! a3Hard;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)
 
         int v = 0;
         if (! monoMode) v = findFreeVoice();
@@ -17551,7 +17712,7 @@ processor Eisenpuls_Synth
         voices.at (v).noteNumber = nn;
         voices.at (v).targetFreq = target;
 
-        if (! (monoMode && wasActive))
+        if (! (monoMode && wasActive) || a3Hard)
             voices.at (v).curFreq = target;
 
         // restart every slot on each non-legato note
@@ -17773,6 +17934,7 @@ processor Eisenpuls_Synth
 
             arpPh   = 1.0f;
             arpStep = 0;
+            a3Prev  = false;   // MOD-ARP303
             return;
         }
 
@@ -17786,6 +17948,52 @@ processor Eisenpuls_Synth
             if (arpPh >= 1.0f)
                 arpPh = 0.0f;
 
+            if (int (arpMode + 0.5f) == 5)   // MOD-ARP303
+            {
+                int   si    = arpStep % clamp (int (a3Len + 0.5f), 1, 16);
+                int   root  = arpHN.at (max (arpN - 1, 0));
+                bool  tied  = a3Prev && arpCur >= 0;   // the step before slid into this one
+                int   old   = arpCur;
+                arpStep++;
+
+                if (a3Gate.at (si) > 0.5f)
+                {
+                    int nn = clamp (root + int (a3Note.at (si)), 0, 127);
+
+                    if (tied)
+                    {
+                        if (nn != old)   // the new note starts before the old one ends: the voice glides
+                        {
+                            arpCur = nn;
+                            voiceNoteOn (nn, a3Acc.at (si) > 0.5f ? 1.0f : 0.6f);
+                            voiceNoteOff (old);
+                        }
+                    }
+                    else
+                    {
+                        if (old >= 0)
+                            voiceNoteOff (old);
+
+                        arpCur = nn;
+                        a3Hard = true;
+                        voiceNoteOn (nn, a3Acc.at (si) > 0.5f ? 1.0f : 0.6f);
+                        a3Hard = false;
+                    }
+
+                    a3Prev = a3Slide.at (si) > 0.5f;
+                }
+                else   // rest
+                {
+                    if (old >= 0)
+                        voiceNoteOff (old);
+
+                    arpCur = -1;
+                    a3Prev = false;
+                }
+
+                return;
+            }
+
             if (arpCur >= 0)
                 voiceNoteOff (arpCur);
 
@@ -17793,7 +18001,12 @@ processor Eisenpuls_Synth
             arpStep++;
             voiceNoteOn (arpCur, arpCurVel);
         }
-        else if (arpCur >= 0 && arpPh >= arpGate)
+        else if (int (arpMode + 0.5f) == 5 && arpCur >= 0 && ! a3Prev && arpPh >= arpGate)   // MOD-ARP303: a slide holds the note until the next step
+        {
+            voiceNoteOff (arpCur);
+            arpCur = -1;
+        }
+        else if (int (arpMode + 0.5f) != 5 && arpCur >= 0 && arpPh >= arpGate)
         {
             voiceNoteOff (arpCur);
             arpCur = -1;
@@ -17878,8 +18091,13 @@ processor Eisenpuls_Synth
 
                 // glide
                 float gc = 1.0f;
-                if (glideMs > 0.5f)
-                    gc = clamp (dt * 5.0f / (glideMs * 0.001f), 0.0f, 1.0f);
+                float gms = glideMs;
+
+                if (arpOn > 0.5f && int (arpMode + 0.5f) == 5)   // MOD-ARP303: a slide is at least 60 ms
+                    gms = max (gms, 60.0f);
+
+                if (gms > 0.5f)
+                    gc = clamp (dt * 5.0f / (gms * 0.001f), 0.0f, 1.0f);
                 voices.at (i).curFreq += (voices.at (i).targetFreq - voices.at (i).curFreq) * gc;
 
                 // amp envelope

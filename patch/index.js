@@ -2657,7 +2657,7 @@ const SPECS = (() => {
     L.push([3110, "Velocity Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Velocity Polarity", null]);
     // MOD-ARP: arpeggiator, ids 3920..3927
     L.push([3920, "Arp On",       0, 1, 0, "", "btn", ["Off", "On"], 1, "Arp"]);
-    L.push([3921, "Arp Mode",     0, 4, 0, "", "sel", ["Up", "Down", "Up / Down", "Random", "As played"], 1, "Mode"]);
+    L.push([3921, "Arp Mode",     0, 5, 0, "", "sel", ["Up", "Down", "Up / Down", "Random", "As played", "303"], 1, "Mode"]);
     L.push([3922, "Arp Octaves",  1, 4, 1, "", "stp", null, 1, "Octaves"]);
     L.push([3923, "Arp Sync",     0, 1, 1, "", "btn", ["Free", "Sync"], 1, "Sync"]);
     L.push([3924, "Arp Division", 0, 17, 11, "", "sel", SYNC_DIVS, 1, "Division"]);
@@ -2666,6 +2666,17 @@ const SPECS = (() => {
     L.push([3927, "Arp Latch",    0, 1, 0, "", "btn", ["Off", "On"], 1, "Latch"]);
     L.push([3928, "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", 0, 10, 0, "", "stp", null, 1, "Monitor"]);   // MOD-SEQ3
     L.push([3929, "Seq Key Start (1 = the sequencers only run while a note sounds)", 0, 1, 1, "", "btn", ["Free", "Key"], 1, "Start"]);   // MOD-SEQ4
+    // MOD-ARP303: 303 pattern of the arpeggiator
+    {
+        const N = [0, 0, 12, 0, 0, 10, 0, 7, 0, 12, 0, 0, 3, 5, 0, 0], AC = [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0], SL = [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0], GT = [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0];
+        for (let k = 0; k < 16; k++) {
+            L.push([5200 + k, "303 Step " + (k + 1) + " Note",   -12, 24, N[k], "st", "stp", null, 1, "Note"]);
+            L.push([5216 + k, "303 Step " + (k + 1) + " Accent", 0, 1, AC[k], "", "btn", ["Off", "On"], 1, "Accent"]);
+            L.push([5232 + k, "303 Step " + (k + 1) + " Slide",  0, 1, SL[k], "", "btn", ["Off", "On"], 1, "Slide"]);
+            L.push([5248 + k, "303 Step " + (k + 1) + " Gate",   0, 1, GT[k], "", "btn", ["Off", "On"], 1, "Gate"]);
+        }
+        L.push([5264, "303 Length", 1, 16, 16, "", "stp", null, 1, "Length"]);
+    }
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k

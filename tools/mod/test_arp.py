@@ -82,4 +82,23 @@ open(script, "w").write("\n".join(["wt 0 sine", "p %d 0" % (A + 7), "p %d 1" % A
 subprocess.run([args.host, script, out], check=True)
 a_ = np.fromfile(out, dtype=np.float32).reshape(-1, 2)[:, 0]
 check("Latch switched off after the keys are up stops the arp", rm(a_[int(0.8 * RATE):int(1.2 * RATE)]) > 0.05 and rm(a_[int(1.9 * RATE):]) < 0.01, "%.3f / %.4f" % (rm(a_[int(0.8 * RATE):int(1.2 * RATE)]), rm(a_[int(1.9 * RATE):])))
+# ---- 303 mode (Arp Mode 5): default pattern notes 0 0 12 0 0 10 0 7 0 12 0 0 3 5 0 0, rests on steps 6, 12, 16, slides on 4, 8, 13
+def seg(a, k, t0, t1, dur=0.5): return a[int((0.051 + k * dur + t0) * RATE):int((0.051 + k * dur + t1) * RATE)]
+rms = lambda x: float(np.sqrt(np.mean(np.asarray(x, np.float64) ** 2)))
+a = render(BASE + arp(mode=5, gate=0.5) + [(5264, 8)], [48], hold=5.3, tag="a303")
+s = steps(a, 8)
+exp = [48, 48, 60, 48, 48, None, 48, 55]
+check("303: notes of the default pattern (root = the key, rest = silence)", [x if x is not None else None for x in s[:5]] == exp[:5] and s[6:8] == exp[6:8], str(s))
+check("303: a rest is silent", rms(seg(a, 5, 0.15, 0.45)) < 0.2 * rms(seg(a, 4, 0.05, 0.2)), "%.4f vs %.4f" % (rms(seg(a, 5, 0.15, 0.45)), rms(seg(a, 4, 0.05, 0.2))))
+check("303: a slide holds the note to the end of the step", rms(seg(a, 3, 0.35, 0.48)) > 3 * rms(seg(a, 1, 0.35, 0.48)), "%.4f vs %.4f" % (rms(seg(a, 3, 0.35, 0.48)), rms(seg(a, 1, 0.35, 0.48))))
+check("303: Length 8 repeats the pattern after 8 steps", steps(a, 9)[8] == 48 and steps(a, 10)[9] == 48, str(steps(a, 10)))
+b = render(BASE + arp(mode=5, gate=0.5) + [(5264, 3)], [48], hold=3.0, tag="b303")
+sb = steps(b, 6)
+check("303: Length 3 plays 48 48 60 48 48 60", sb == [48, 48, 60, 48, 48, 60], str(sb))
+c = render(BASE + arp(mode=5, gate=0.5) + [(5200, 7), (5201, -5), (5264, 2)], [48], hold=2.5, tag="c303")
+sc = steps(c, 4)
+check("303: the step notes are editable (+7, -5)", sc == [55, 43, 55, 43], str(sc))
+d = render(BASE + arp(mode=5, gate=0.5) + [(5264, 2)], [48, 52], hold=2.0, tag="d303")
+check("303: the root is the last key pressed", steps(d, 2) == [52, 52], str(steps(d, 2)))
+
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)
