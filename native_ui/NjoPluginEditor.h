@@ -15,16 +15,21 @@ namespace njo
         {
             backend.onReloaded = [this] { memory.reloadFromStored(); applyFirstRunDefaults(); };   // new DSP (load, project state, sample rate): send the stored sounds again
         }
-        // the first time a plugin instance is loaded (no stored state has the marker yet) oscillator 1 gets the "Basic Shapes" wavetable
+        // the first time a plugin instance is loaded (no stored state has the marker yet) all six oscillators get the "Basic Shapes" wavetable
         void applyFirstRunDefaults()
         {
            #if ! NJOHRR_FX_ONLY
             if (backend.getStored ("njo.defaults1").isVoid())
             {
                 backend.setStored ("njo.defaults1", juce::var (1));
-                if (memory.get (SoundMemory::Wavetable, 0) == nullptr)
-                    for (auto& t : makeFactoryWavetables())
-                        if (t.name == "Basic Shapes") { memory.set (SoundMemory::Wavetable, 0, t.name, {}, t.samples); break; }
+                for (auto& t : makeFactoryWavetables())
+                    if (t.name == "Basic Shapes")
+                    {
+                        for (int o = 0; o < 6; ++o)   // all six oscillators
+                            if (memory.get (SoundMemory::Wavetable, o) == nullptr)
+                                memory.set (SoundMemory::Wavetable, o, t.name, {}, t.samples);
+                        break;
+                    }
             }
            #endif
         }
