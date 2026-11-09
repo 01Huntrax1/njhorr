@@ -2436,7 +2436,10 @@ const FX_TYPES = [
     { n: "AW ToTape", mix: 1, modes: [],
       p: [["Input", fxDb(-12, 12), 0.5], ["Soften", fxPct, 0.5], ["Head Bump", fxPct, 0.5], ["Flutter", fxPct, 0.5], ["Output", fxDb(-12, 12), 0.5]] },
     { n: "AW MackEQ", mix: 1, modes: [],
-      p: [["Trim", fxPct, 0.1], ["Hi", fxPct, 0.5], ["Lo", fxPct, 0.5], ["Gain", fxPct, 1]] }
+      p: [["Trim", fxPct, 0.1], ["Hi", fxPct, 0.5], ["Lo", fxPct, 0.5], ["Gain", fxPct, 1]] },
+    // FX-PLASMA: asymmetric distortion in the style of Dimethoxy's Plasma (own implementation): 12 styles, bias, girth noise, resonant filter after the shaper
+    { n: "Plasma", mix: 1, modes: ["Soft", "Hard", "Fold", "Half", "Fuzz", "Diode", "Arctan", "Rational", "Soft Exp", "Ripple", "Tri Fold", "Cubic"],
+      p: [["Drive", fxLin(0, 40, 1, "dB"), 0.4], ["Asym", fxLin(-100, 100, 0, "%"), 0.5], ["Girth", fxPct, 0], ["Filter", n => ["HP", "LP", "Dual", "Peak"][Math.min(3, Math.floor(n * 4))], 0.375], ["Freq", fxHz(20, 20000), 1], ["Reso", fxPct, 0]] }
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

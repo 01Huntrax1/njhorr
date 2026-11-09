@@ -534,5 +534,44 @@ for ty, nm in AWN.items():
 cm = [render(["wt 0 saw"] + fxb(base(0), 25, m, 1.0, (0.9, 1.0, 0.5, 0.5, 0.5, 0.5)), hold=0.5, tail=0.2, tag="awch%d" % m, note=57) for m in range(5)]
 check("AW Channel: the five console types differ", all(not np.allclose(cm[i], cm[j], atol=1e-6) for i in range(5) for j in range(i + 1, 5)))
 
+# ---- FX-PLASMA: Plasma (type 28): P1 Drive, P2 Asym, P3 Girth, P4 Filter (HP/LP/Dual/Peak = 0.125/0.375/0.625/0.875), P5 Freq, P6 Reso
+PLN = ["Soft", "Hard", "Fold", "Half", "Fuzz", "Diode", "Arctan", "Rational", "Soft Exp", "Ripple", "Tri Fold", "Cubic"]
+for m, nm in enumerate(PLN):
+    for pn, pv in (("default", (0.4, 0.5, 0.0, 0.375, 1.0, 0.0)), ("max", (1.0, 1.0, 1.0, 0.375, 1.0, 1.0)), ("min", (0.0, 0.0, 0.0, 0.125, 0.0, 0.0))):
+        a = render(fx(0, 28, m, 1.0, pv), tag="pl%d%s" % (m, pn))
+        check("Plasma %s (%s): finite and bounded" % (nm, pn), bool(np.isfinite(a).all()) and np.abs(a).max() < 6.0, "peak %.2f" % np.abs(a).max())
+    a = render(fx(0, 28, m, 1.0, (0.7, 0.5, 0.0, 0.375, 1.0, 0.0)), tag="plx%d" % m)
+    check("Plasma %s produces sound" % nm, rms(a[int(0.7 * RATE):T0]) > 0.01, "%.4f" % rms(a[int(0.7 * RATE):T0]))
+    check("Plasma %s adds harmonics" % nm, thd(a) > thd(dry) + 0.02, "%.3f vs %.3f" % (thd(a), thd(dry)))
+# Asym: an asymmetric shaper makes even harmonics, and the DC offset is blocked
+sy = render(fx(0, 28, 0, 1.0, (0.6, 0.5, 0.0, 0.375, 1.0, 0.0)), tag="plsym"); asy = render(fx(0, 28, 0, 1.0, (0.6, 0.95, 0.0, 0.375, 1.0, 0.0)), tag="plasym")
+def harm2(a):
+    seg = a[int(0.7 * RATE):T0, 0].astype(np.float64); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))); fr = np.fft.rfftfreq(len(seg), 1.0 / RATE)
+    f1 = note_hz(69); i1 = np.argmin(np.abs(fr - f1)); i2 = np.argmin(np.abs(fr - 2 * f1)); return X[i2] / X[i1]
+check("Plasma Asym creates even harmonics", harm2(asy) > 3 * harm2(sy) + 0.01, "%.4f vs %.4f" % (harm2(asy), harm2(sy)))
+check("Plasma Asym: DC blocked", abs(float(asy[int(0.7 * RATE):T0, 0].mean())) < 0.03)
+# filter: LP at a low frequency removes the highs, HP removes the lows
+hi = lambda a: rms(np.diff(a[int(0.7 * RATE):T0, 0].astype(np.float64)))
+f_off = render(fx(0, 28, 1, 1.0, (0.8, 0.5, 0.0, 0.375, 1.0, 0.0)), tag="plf0", note=81)
+f_lp = render(fx(0, 28, 1, 1.0, (0.8, 0.5, 0.0, 0.375, 0.3, 0.0)), tag="plf1", note=81)
+check("Plasma LP filter darkens the sound", hi(f_lp) < 0.5 * hi(f_off), "%.4f vs %.4f" % (hi(f_lp), hi(f_off)))
+l_off = render(fx(0, 28, 1, 1.0, (0.8, 0.5, 0.0, 0.125, 0.0, 0.0)), tag="plh0", note=45)
+l_hp = render(fx(0, 28, 1, 1.0, (0.8, 0.5, 0.0, 0.125, 0.8, 0.0)), tag="plh1", note=45)
+check("Plasma HP filter removes the lows", rms(l_hp[int(0.7 * RATE):T0]) < 0.5 * rms(l_off[int(0.7 * RATE):T0]), "%.4f vs %.4f" % (rms(l_hp[int(0.7 * RATE):T0]), rms(l_off[int(0.7 * RATE):T0])))
+pk = render(fx(0, 28, 1, 1.0, (0.3, 0.5, 0.0, 0.875, 0.55, 1.0)), tag="plpk"); pk0 = render(fx(0, 28, 1, 1.0, (0.3, 0.5, 0.0, 0.875, 0.55, 0.0)), tag="plpk0")
+check("Plasma Peak filter changes the sound with Reso", not np.allclose(pk, pk0, atol=1e-3))
+du = render(fx(0, 28, 1, 1.0, (0.3, 0.5, 0.0, 0.625, 0.5, 0.6)), tag="pldual")
+check("Plasma Dual filter finite", bool(np.isfinite(du).all()) and np.abs(du).max() < 6.0)
+# Girth: noise that follows the signal; silence stays silent
+gs = render(fx(0, 28, 0, 1.0, (0.6, 0.5, 1.0, 0.375, 1.0, 0.0)), tag="plgirth", note=57); g0 = render(fx(0, 28, 0, 1.0, (0.6, 0.5, 0.0, 0.375, 1.0, 0.0)), tag="plgirth0", note=57)
+check("Plasma Girth adds high-frequency noise", hi(gs) > 1.2 * hi(g0), "%.4f vs %.4f" % (hi(gs), hi(g0)))
+check("Plasma Girth: silence stays silent after the note", rms(gs[T0 + int(1.0 * RATE):]) < 1e-3, "%.6f" % rms(gs[T0 + int(1.0 * RATE):]))
+# aliasing: a hard-clipped 3.1 kHz sine keeps its energy on the harmonics (ADAA)
+hc = render(fx(0, 28, 1, 1.0, (0.9, 0.5, 0.0, 0.375, 1.0, 0.0)), tag="plalias", note=98)
+seg = hc[int(0.7 * RATE):int(0.85 * RATE), 0].astype(np.float64); X = np.abs(np.fft.rfft(seg * np.hanning(len(seg)))); fr = np.fft.rfftfreq(len(seg), 1.0 / RATE)
+f1 = note_hz(98); harm = np.zeros(len(X), bool)
+for k in range(1, int(RATE / 2 / f1) + 1): harm |= np.abs(fr - k * f1) < 60
+check("Plasma ADAA keeps most energy on the harmonics", float((X[harm] ** 2).sum() / (X ** 2).sum()) > 0.9, "%.3f" % float((X[harm] ** 2).sum() / (X ** 2).sum()))
+
 print("FAILURES: %d" % failures if failures else "ALL OK")
 raise SystemExit(1 if failures else 0)

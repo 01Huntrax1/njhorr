@@ -331,6 +331,13 @@ the sample-rate scaling of the originals is kept. Differences to the originals: 
 fixed 64-sample speed, ToTape's flutter uses its own random generator. Code: `tools/fx/build_aw.py`. Tests: `tools/fx/test_fx.py` (every type finite, bounded, audible, with default / maximum / minimum
 values) and `tools/fx/awref/compare.py`, which compiles the original Airwindows C++ with a small stub of the VST SDK and compares the output (relative RMS error below 1e-2; see the notes in the script).
 
+## Plasma effect (FX type 28)
+An asymmetric distortion in the style of Dimethoxy's free "Plasma" plugin (https://github.com/Dimethoxy/Plasma). Own implementation from the public feature description, no code of the original.
+* **Mode** = style: Soft, Hard, Fold, Half, Fuzz, Diode, Arctan, Rational, Soft Exp, Ripple, Tri Fold, Cubic. The shapers use first-order antiderivative anti-aliasing (ADAA), the level is compensated.
+* **Drive** 0-40 dB, **Asym** (bias in front of the shaper, makes even harmonics; its DC is removed), **Girth** (high-passed noise that follows the signal level erodes the sound; silence stays silent).
+* **Filter** HP / LP / Dual / Peak (four steps), **Freq** 20 Hz-20 kHz, **Reso** (Q up to 20 for HP / LP / Dual, boost for Peak) behind the shaper (TPT state variable filter).
+Code `tools/fx/build_plasma.py`, tests in `tools/fx/test_fx.py`.
+
 ## Tools
 * `tools/regen_plugin.sh` regenerates `cmajor_plugin.cpp`, `patch_fx/` and `cmajor_plugin_fx.cpp` (Cmajor target **juce**, never `cpp`: that one lacks `createPluginFilter()` and the plugin would not link) and the native UI tables; `--check` only reports whether both are up to date.
 * `tools/fx/test_fx.py` also checks that every effect type is wired everywhere (DSP parameter range and dispatch, generated UI tables, colours) and that no type is clamped to another.

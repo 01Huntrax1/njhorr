@@ -141,7 +141,7 @@ int main (int argc, char** argv)
                 for (size_t k = 0; k < t.params.size(); ++k) cx.set (b + 4 + (int) k, t.params[k].def);
             }
         };
-        for (int t = 1; t <= 27; ++t)
+        for (int t = 1; t <= 28; ++t)
         {
             setFx (0, t); if (t == 12) cx.set (base + 3, 8.0f); pump();
             save (ed, dir.getChildFile ("fx_type" + juce::String (t) + ".png"), scale);

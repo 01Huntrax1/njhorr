@@ -58,6 +58,7 @@ namespace njo
         if (k == "bits")  return juce::String (16 - 12 * n, 1) + " bit";
         if (k == "rate")  return "1/" + juce::String (1 + juce::roundToInt (n * 31));
         if (k == "pat")   { auto& pt = fxGatePatterns(); return pt[(size_t) juce::jlimit (0, (int) pt.size() - 1, (int) (n * (double) pt.size()))].first; }
+        if (k == "plfilt") { static const char* const nm[] = { "HP", "LP", "Dual", "Peak" }; return nm[juce::jlimit (0, 3, (int) (n * 4))]; }
         if (k == "qsc")   return "x" + juce::String (0.25 * std::pow (16.0, n), 2);
         if (k == "predly")return juce::String (juce::roundToInt (n * 100)) + " ms";
         if (k == "midq")  return "Q " + juce::String (0.3 * std::pow (4.0 / 0.3, n), 2);
