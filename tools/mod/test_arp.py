@@ -112,4 +112,66 @@ f = render(BASE + arp(mode=5, rate=8.0, gate=0.5) + [(5264, 20), (5500 + 3, 9)],
 sf = fast(f, 22)
 check("303 Length 20: step 20 plays its own note (+9), then it wraps to step 1", sf[19] == 57 and sf[20] == 48 and sf[21] == 48, str(sf))
 
+# ---- MOD-SQM: Euclid / Poly (6), Melodic (7), Generative (8) modes.  root = the key (48 = C3, 130.8 Hz)
+EU = lambda l, k: 5710 + 8 * l + k
+def stepwin(a, k, t0, t1, dur): return a[int((0.051 + k * dur + t0 * dur) * RATE):int((0.051 + k * dur + t1 * dur) * RATE)]
+def hits(a, n, dur, thr=0.05): return [int(rms(stepwin(a, k, 0.05, 0.4, dur)) > thr) for k in range(n)]
+def band_e(x, f0, f1):
+    sp = np.abs(np.fft.rfft(x.astype(np.float64) * np.hanning(len(x)), n=32768)); fq = np.fft.rfftfreq(32768, 1.0 / RATE)
+    return float(np.sum(sp[(fq >= f0) & (fq <= f1)]))
+def hz(n): return 440.0 * 2 ** ((n - 69) / 12.0)
+def eucl(len_, pul, rot, n): return [int(pul > 0 and (((i % len_) + rot) % len_ * pul) % len_ < pul) for i in range(n)]
+DUR = 0.25
+AR = lambda mode, **kw: arp(mode=mode, rate=4.0, gate=kw.pop("gate", 0.5), **kw)
+e1 = render(BASE + AR(6), [48], hold=8.3, tag="eu1")
+check("Euclid 16/5: the hit pattern of 32 steps", hits(e1, 32, DUR) == eucl(16, 5, 0, 32), str(hits(e1, 32, DUR)))
+e2 = render(BASE + AR(6) + [(EU(0, 3), 3)], [48], hold=4.3, tag="eu2")
+check("Euclid rotation 3 shifts the pattern", hits(e2, 16, DUR) == eucl(16, 5, 3, 16), str(hits(e2, 16, DUR)))
+e3 = render(BASE + AR(6) + [(EU(0, 2), 0)], [48], hold=2.3, tag="eu3")
+check("Euclid 0 pulses is silent", sum(hits(e3, 8, DUR)) == 0)
+e4 = render(BASE + AR(6) + [(EU(0, 5), 0)], [48], hold=2.3, tag="eu4")
+check("Euclid probability 0 is silent", sum(hits(e4, 8, DUR)) == 0)
+e5 = render(BASE + AR(6) + [(EU(0, 2), 16), (EU(0, 6), 2)], [48], hold=2.3, tag="eu5")
+e6 = render(BASE + AR(6) + [(EU(0, 2), 16)], [48], hold=2.3, tag="eu6")
+check("Euclid ratchet 2 plays a second hit inside the step", rms(stepwin(e5, 2, 0.55, 0.95, DUR)) > 1.6 * rms(stepwin(e6, 2, 0.55, 0.95, DUR)), "%.3f vs %.3f" % (rms(stepwin(e5, 2, 0.55, 0.95, DUR)), rms(stepwin(e6, 2, 0.55, 0.95, DUR))))
+# polyrhythm: lane 1 = 3 steps (C3), lane 2 = 4 steps (+12), every step 12 steps
+e7 = render(BASE + AR(6) + [(EU(0, 1), 3), (EU(0, 2), 1), (EU(1, 0), 1), (EU(1, 1), 4), (EU(1, 2), 1), (EU(1, 3), 0), (EU(1, 4), 12), (EU(1, 5), 100), (EU(1, 6), 1)], [48], hold=3.3, tag="eu7")
+lo = [int(rms(stepwin(e7, k, 0.05, 0.4, DUR)) > 0.05 and band_e(stepwin(e7, k, 0.05, 0.4, DUR), hz(48) * 0.97, hz(48) * 1.03) > 3 * band_e(stepwin(e7, k, 0.05, 0.4, DUR), hz(60) * 0.97, hz(60) * 1.03)) for k in range(12)]
+hi = [int(rms(stepwin(e7, k, 0.05, 0.4, DUR)) > 0.05 and band_e(stepwin(e7, k, 0.05, 0.4, DUR), hz(60) * 0.97, hz(60) * 1.03) > 3 * band_e(stepwin(e7, k, 0.05, 0.4, DUR), hz(48) * 0.97, hz(48) * 1.03)) for k in range(12)]
+check("Polyrhythm: lane 1 hits every 3rd step, lane 2 (octave up) every 4th", lo == [1 if k % 3 == 0 and k % 4 else 0 for k in range(12)] and hi == [1 if k % 4 == 0 and k % 3 else 0 for k in range(12)], "%s %s" % (lo, hi))
+# melodic: step 1 = major chord, length 400 %, step 2 off; notes of the default pattern
+MLN = lambda r, k: 5810 + 64 * r + k
+m1 = render(BASE + AR(7) + [(MLN(3, 0), 3)], [48], hold=1.3, tag="ml1")
+w = stepwin(m1, 0, 0.05, 0.4, DUR)
+ch = [band_e(w, hz(n) * 0.97, hz(n) * 1.03) for n in (48, 52, 55, 57)]
+check("Melodic: chord type 3 plays root, major third and fifth", ch[0] > 3 * ch[3] and ch[1] > 3 * ch[3] and ch[2] > 3 * ch[3], str([round(c, 1) for c in ch]))
+m2 = render(BASE + AR(7) + [(MLN(4, 0), 0)], [48], hold=1.3, tag="ml2")
+check("Melodic: probability 0 on a step makes it a rest", rms(stepwin(m2, 0, 0.05, 0.4, DUR)) < 0.01 and rms(stepwin(m2, 1, 0.05, 0.4, DUR)) > 0.02)
+m3 = render(BASE + AR(7) + [(MLN(1, 0), 127), (MLN(1, 1), 20)], [48], hold=1.3, tag="ml3")
+check("Melodic: velocity of a step changes its level", rms(stepwin(m3, 0, 0.05, 0.4, DUR)) > 1.4 * rms(stepwin(m3, 1, 0.05, 0.4, DUR)), "%.3f vs %.3f" % (rms(stepwin(m3, 0, 0.05, 0.4, DUR)), rms(stepwin(m3, 1, 0.05, 0.4, DUR))))
+m4 = render(BASE + AR(7) + [(MLN(2, 0), 400), (MLN(6, 1), 0)], [48], hold=1.3, tag="ml4")
+check("Melodic: a length of 400 % ties over the following (empty) step", rms(stepwin(m4, 1, 0.3, 0.9, DUR)) > 0.02 and rms(stepwin(m4, 3, 0.3, 0.9, DUR)) > 0.02 and rms(stepwin(m4, 5, 0.3, 0.9, DUR)) > 0.02)
+m5 = render(BASE + AR(7) + [(5800, 3)], [48], hold=3.3, tag="ml5")
+h5 = hits(m5, 9, DUR)
+check("Melodic length 3 repeats the first three steps (step 3 of the default pattern is a rest)", h5 == [1, 1, 0, 1, 1, 0, 1, 1, 0], str(h5))
+# generative: turing machine, loop 4, no mutation -> the 4 notes repeat; notes in the scale (minor) above the root
+gb = [(5750, 0), (5751, 2), (5752, 24), (5754, 4), (5755, 0), (5758, 0)]
+g1 = render(BASE + AR(8) + gb, [48], hold=3.3, tag="gn1")
+sg = [midi_of(stepwin(g1, k, 0.1, 0.45, DUR)) for k in range(12)]
+minor = {0, 2, 3, 5, 7, 8, 10}
+check("Turing machine: loop 4 with mutation 0 repeats every 4 steps", sg[:4] == sg[4:8] == sg[8:12] and None not in sg, str(sg))
+check("Turing machine: notes are in the minor scale within the 24 st range", all(n is not None and 0 <= n - 48 < 24 and (n - 48) % 12 in minor for n in sg), str(sg))
+g2 = render(BASE + AR(8) + [(5750, 0), (5751, 2), (5752, 24), (5754, 8), (5755, 100), (5758, 0)], [48], hold=6.3, tag="gn2")
+sg2 = [midi_of(stepwin(g2, k, 0.1, 0.45, DUR)) for k in range(24)]
+check("Turing machine: mutation 100 % does not repeat", sg2[:8] != sg2[8:16] or sg2[8:16] != sg2[16:24], str(sg2))
+g3 = render(BASE + AR(8) + [(5750, 1), (5751, 8), (5752, 24), (5756, 2), (5758, 0)], [48], hold=6.3, tag="gn3")
+sg3 = [midi_of(stepwin(g3, k, 0.1, 0.45, DUR)) for k in range(24)]
+pent = {0, 2, 4, 7, 9}
+check("Random walk: stays in the major pentatonic scale and the range, moves around", all(n is not None and 0 <= n - 48 < 24 and (n - 48) % 12 in pent for n in sg3) and len(set(sg3)) >= 3, str(sg3))
+g4 = render(BASE + AR(8) + [(5758, 100)], [48], hold=2.3, tag="gn4")
+check("Generative: rest 100 % is silent", rms(g4[int(0.2 * RATE):int(2.2 * RATE)]) < 0.01)
+# stopping: all keys up releases every sequencer note, switching the mode back to Up works
+st1 = render(BASE + AR(7) + [(MLN(2, 0), 400)], [48, 52], hold=1.0, tail=0.6, tag="sqstop")
+check("Melodic: releasing the keys silences the (tied) notes", rms(st1[int(1.4 * RATE):]) < 0.01)
+
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

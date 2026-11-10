@@ -2806,7 +2806,7 @@ const SPECS = (() => {
     L.push([3110, "Velocity Polarity", 0, 1, 0, "", "btn", ["Unipolar", "Bipolar"], 1, "Velocity Polarity", null]);
     // MOD-ARP: arpeggiator, ids 3920..3927
     L.push([3920, "Arp On",       0, 1, 0, "", "btn", ["Off", "On"], 1, "Arp"]);
-    L.push([3921, "Arp Mode",     0, 5, 0, "", "sel", ["Up", "Down", "Up / Down", "Random", "As played", "303"], 1, "Mode"]);
+    L.push([3921, "Arp Mode",     0, 8, 0, "", "sel", ["Up", "Down", "Up / Down", "Random", "As played", "303", "Euclid / Poly", "Melodic", "Generative"], 1, "Mode"]);
     L.push([3922, "Arp Octaves",  1, 4, 1, "", "stp", null, 1, "Octaves"]);
     L.push([3923, "Arp Sync",     0, 1, 1, "", "btn", ["Free", "Sync"], 1, "Sync"]);
     L.push([3924, "Arp Division", 0, 17, 11, "", "sel", SYNC_DIVS, 1, "Division"]);
@@ -2829,6 +2829,37 @@ const SPECS = (() => {
             for (let k = 16; k < 64; k++) L.push([r[0] + k - 16, "303 Step " + (k + 1) + " " + r[1], r[2], r[3], r[4][k % 16], r[5], r[6], r[7], 1, r[1]]);
         });
         L.push([5264, "303 Length", 1, 64, 16, "", "stp", null, 1, "Length"]);
+    }
+    // MOD-SQM: Euclid / Poly (4 lanes), Generative and Melodic modes of the arpeggiator
+    {
+        const LANES = [[1, 16, 5, 0, 0], [0, 12, 3, 0, 7], [0, 7, 2, 0, 12], [0, 5, 1, 0, -12]];
+        for (let l = 0; l < 4; l++) {
+            const b = 5710 + 8 * l, n = "Euclid Lane " + (l + 1) + " ", q = LANES[l];
+            L.push([b,     n + "On",          0, 1, q[0], "", "btn", ["Off", "On"], 1, "On"]);
+            L.push([b + 1, n + "Steps",       1, 64, q[1], "", "knb", null, 1, "Steps"]);
+            L.push([b + 2, n + "Pulses",      0, 64, q[2], "", "knb", null, 1, "Pulses"]);
+            L.push([b + 3, n + "Rotation",    0, 63, q[3], "", "knb", null, 1, "Rotation"]);
+            L.push([b + 4, n + "Offset",      -24, 24, q[4], "st", "knb", null, 1, "Offset"]);
+            L.push([b + 5, n + "Probability", 0, 100, 100, "%", "knb", null, 1, "Prob"]);
+            L.push([b + 6, n + "Ratchet",     1, 4, 1, "", "knb", null, 1, "Ratchet"]);
+        }
+        const SCALES = ["Chromatic", "Major", "Minor", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Harm. Minor", "Pent. Major", "Pent. Minor", "Blues", "Whole Tone"];
+        L.push([5750, "Generative Type",     0, 1, 0, "", "sel", ["Turing Machine", "Random Walk"], 1, "Type"]);
+        L.push([5751, "Generative Scale",    0, 11, 2, "", "sel", SCALES, 1, "Scale"]);
+        L.push([5752, "Generative Range",    12, 48, 24, "st", "knb", null, 1, "Range"]);
+        L.push([5753, "Generative Shift",    -24, 24, 0, "st", "knb", null, 1, "Shift"]);
+        L.push([5754, "Generative Loop",     2, 16, 8, "", "knb", null, 1, "Loop"]);
+        L.push([5755, "Generative Mutation", 0, 100, 20, "%", "knb", null, 1, "Mutation"]);
+        L.push([5756, "Generative Max Step", 1, 7, 2, "", "knb", null, 1, "Max Step"]);
+        L.push([5757, "Generative Bias",     -100, 100, 0, "%", "knb", null, 1, "Bias"]);
+        L.push([5758, "Generative Rest",     0, 100, 10, "%", "knb", null, 1, "Rest"]);
+        L.push([5759, "Generative Ratchet",  1, 4, 1, "", "knb", null, 1, "Ratchet"]);
+        L.push([5800, "Melodic Length",      1, 64, 16, "", "stp", null, 1, "Length"]);
+        const NOTE = [0, 0, 12, 0, 7, 0, 12, 0, 0, 0, 10, 0, 7, 0, 5, 0], GATE = [1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1];
+        const CHORDS = ["None", "Octave", "Fifth", "Major", "Minor", "Sus4", "Maj7", "Min7", "Dim"];
+        const ROWS = [["Note", -24, 24, i => NOTE[i % 16], "st", "stp", null], ["Velocity", 1, 127, () => 100, "", "stp", null], ["Length", 10, 400, () => 80, "%", "stp", null],
+                      ["Chord", 0, 8, () => 0, "", "sel", CHORDS], ["Probability", 0, 100, () => 100, "%", "stp", null], ["Ratchet", 1, 4, () => 1, "", "stp", null], ["Gate", 0, 1, i => GATE[i % 16], "", "btn", ["Off", "On"]]];
+        ROWS.forEach((r, ri) => { for (let k = 0; k < 64; k++) L.push([5810 + 64 * ri + k, "Melodic Step " + (k + 1) + " " + r[0], r[1], r[2], r[3](k), r[4], r[5], r[6], 1, r[0]]); });
     }
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);

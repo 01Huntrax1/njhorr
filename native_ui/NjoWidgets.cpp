@@ -31,7 +31,7 @@ namespace njo
     void ParamWidget::setValueFromUser (float v)
     {
         v = juce::jlimit ((float) sp->min, (float) sp->max, v);
-        if (sp->kind == "btn" || sp->kind == "sel" || sp->kind == "stp") v = (float) juce::roundToInt (v);
+        if (sp->kind == "btn" || sp->kind == "sel" || sp->kind == "stp" || (sp->kind == "knb" && sp->num >= 5710 && sp->num < 5760)) v = (float) juce::roundToInt (v);   // 5710..5759: whole-number knobs of the Euclid / Generative arp modes
         ctx.set (paramNum, v);
         val = ctx.get (paramNum);
         valueUpdated();

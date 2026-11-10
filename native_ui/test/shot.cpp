@@ -189,6 +189,11 @@ int main (int argc, char** argv)
     for (int k = 0; k < 8; ++k) be.setParam (5000 + k, (float) k);   // every step shape once
     be.seqStepPos[0] = 2; ed.setGroup (njo::EditorContent::Sequencer); pump(); save (ed, dir.getChildFile ("seqarp.png"), scale);
     be.setParam (njo::ARP_BASE + 1, 5.0f); be.setParam (njo::ARP_BASE, 1.0f); be.setParam (5264, 40.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp303.png"), scale);
+    be.setParam (5718, 1.0f); be.setParam (5726, 1.0f); be.setParam (5719, 7.0f); be.setParam (5720, 2.0f); be.setParam (5727, 3.0f);
+    be.setParam (njo::ARP_BASE + 1, 6.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_euclid.png"), scale);
+    be.setParam (5800, 24.0f); be.setParam (5816 + 64 * 3 + 0, 3.0f); be.setParam (5816 + 64 * 3 + 2, 7.0f);
+    be.setParam (njo::ARP_BASE + 1, 7.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_melodic.png"), scale);
+    be.setParam (njo::ARP_BASE + 1, 8.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_gen.png"), scale);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix
         auto& cx = ed.context();

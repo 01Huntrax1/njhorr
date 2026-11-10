@@ -136,6 +136,8 @@ namespace njo
         if (s.unit == "dB") return signedText (v, 1, " dB");
         if (s.unit == "x") return juce::String (v, 2) + "x";
         if (s.unit == "bit") return juce::String (v, 0) + " bit";
+        if (s.num >= 5710 && s.num < 5760) return juce::String (juce::roundToInt (v)) + (s.unit == "%" ? "%" : "");
+        if (s.kind == "stp") return juce::String (juce::roundToInt (v));
         if (s.kind == "knb") return juce::String (v, 2);
         if (s.min >= -1 && s.max <= 1) return juce::String (juce::roundToInt (v * 100)) + "%";
         return juce::String (v, 2);

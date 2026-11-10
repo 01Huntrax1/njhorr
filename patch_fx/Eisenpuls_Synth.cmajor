@@ -3606,7 +3606,7 @@ processor Eisenpuls_Synth
     input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
-    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
@@ -3615,6 +3615,493 @@ processor Eisenpuls_Synth
     input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3928 [[ name: "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", min: 0.0, max: 10.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ3
     input event float param3929 [[ name: "Seq Key Start (1 = the sequencers only run while a note sounds)", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ4
+    input event float param5710 [[ name: "Euclid Lane 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5711 [[ name: "Euclid Lane 1 Steps", min: 1.0, max: 64.0, init: 16.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5712 [[ name: "Euclid Lane 1 Pulses", min: 0.0, max: 64.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5713 [[ name: "Euclid Lane 1 Rotation", min: 0.0, max: 63.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5714 [[ name: "Euclid Lane 1 Offset", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5715 [[ name: "Euclid Lane 1 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5716 [[ name: "Euclid Lane 1 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5718 [[ name: "Euclid Lane 2 On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5719 [[ name: "Euclid Lane 2 Steps", min: 1.0, max: 64.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5720 [[ name: "Euclid Lane 2 Pulses", min: 0.0, max: 64.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5721 [[ name: "Euclid Lane 2 Rotation", min: 0.0, max: 63.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5722 [[ name: "Euclid Lane 2 Offset", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5723 [[ name: "Euclid Lane 2 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5724 [[ name: "Euclid Lane 2 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5726 [[ name: "Euclid Lane 3 On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5727 [[ name: "Euclid Lane 3 Steps", min: 1.0, max: 64.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5728 [[ name: "Euclid Lane 3 Pulses", min: 0.0, max: 64.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5729 [[ name: "Euclid Lane 3 Rotation", min: 0.0, max: 63.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5730 [[ name: "Euclid Lane 3 Offset", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5731 [[ name: "Euclid Lane 3 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5732 [[ name: "Euclid Lane 3 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5734 [[ name: "Euclid Lane 4 On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5735 [[ name: "Euclid Lane 4 Steps", min: 1.0, max: 64.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5736 [[ name: "Euclid Lane 4 Pulses", min: 0.0, max: 64.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5737 [[ name: "Euclid Lane 4 Rotation", min: 0.0, max: 63.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5738 [[ name: "Euclid Lane 4 Offset", min: -24.0, max: 24.0, init: -12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5739 [[ name: "Euclid Lane 4 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5740 [[ name: "Euclid Lane 4 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5750 [[ name: "Generative Type", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5751 [[ name: "Generative Scale", min: 0.0, max: 11.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5752 [[ name: "Generative Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5753 [[ name: "Generative Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5754 [[ name: "Generative Loop", min: 2.0, max: 16.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5755 [[ name: "Generative Mutation", min: 0.0, max: 100.0, init: 20.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5756 [[ name: "Generative Max Step", min: 1.0, max: 7.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5757 [[ name: "Generative Bias", min: -100.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5758 [[ name: "Generative Rest", min: 0.0, max: 100.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5759 [[ name: "Generative Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5800 [[ name: "Melodic Length", min: 1.0, max: 64.0, init: 16.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5810 [[ name: "Melodic Step 1 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5811 [[ name: "Melodic Step 2 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5812 [[ name: "Melodic Step 3 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5813 [[ name: "Melodic Step 4 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5814 [[ name: "Melodic Step 5 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5815 [[ name: "Melodic Step 6 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5816 [[ name: "Melodic Step 7 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5817 [[ name: "Melodic Step 8 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5818 [[ name: "Melodic Step 9 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5819 [[ name: "Melodic Step 10 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5820 [[ name: "Melodic Step 11 Note", min: -24.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5821 [[ name: "Melodic Step 12 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5822 [[ name: "Melodic Step 13 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5823 [[ name: "Melodic Step 14 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5824 [[ name: "Melodic Step 15 Note", min: -24.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5825 [[ name: "Melodic Step 16 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5826 [[ name: "Melodic Step 17 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5827 [[ name: "Melodic Step 18 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5828 [[ name: "Melodic Step 19 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5829 [[ name: "Melodic Step 20 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5830 [[ name: "Melodic Step 21 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5831 [[ name: "Melodic Step 22 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5832 [[ name: "Melodic Step 23 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5833 [[ name: "Melodic Step 24 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5834 [[ name: "Melodic Step 25 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5835 [[ name: "Melodic Step 26 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5836 [[ name: "Melodic Step 27 Note", min: -24.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5837 [[ name: "Melodic Step 28 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5838 [[ name: "Melodic Step 29 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5839 [[ name: "Melodic Step 30 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5840 [[ name: "Melodic Step 31 Note", min: -24.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5841 [[ name: "Melodic Step 32 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5842 [[ name: "Melodic Step 33 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5843 [[ name: "Melodic Step 34 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5844 [[ name: "Melodic Step 35 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5845 [[ name: "Melodic Step 36 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5846 [[ name: "Melodic Step 37 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5847 [[ name: "Melodic Step 38 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5848 [[ name: "Melodic Step 39 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5849 [[ name: "Melodic Step 40 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5850 [[ name: "Melodic Step 41 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5851 [[ name: "Melodic Step 42 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5852 [[ name: "Melodic Step 43 Note", min: -24.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5853 [[ name: "Melodic Step 44 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5854 [[ name: "Melodic Step 45 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5855 [[ name: "Melodic Step 46 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5856 [[ name: "Melodic Step 47 Note", min: -24.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5857 [[ name: "Melodic Step 48 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5858 [[ name: "Melodic Step 49 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5859 [[ name: "Melodic Step 50 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5860 [[ name: "Melodic Step 51 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5861 [[ name: "Melodic Step 52 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5862 [[ name: "Melodic Step 53 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5863 [[ name: "Melodic Step 54 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5864 [[ name: "Melodic Step 55 Note", min: -24.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5865 [[ name: "Melodic Step 56 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5866 [[ name: "Melodic Step 57 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5867 [[ name: "Melodic Step 58 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5868 [[ name: "Melodic Step 59 Note", min: -24.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5869 [[ name: "Melodic Step 60 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5870 [[ name: "Melodic Step 61 Note", min: -24.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5871 [[ name: "Melodic Step 62 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5872 [[ name: "Melodic Step 63 Note", min: -24.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5873 [[ name: "Melodic Step 64 Note", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5874 [[ name: "Melodic Step 1 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5875 [[ name: "Melodic Step 2 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5876 [[ name: "Melodic Step 3 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5877 [[ name: "Melodic Step 4 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5878 [[ name: "Melodic Step 5 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5879 [[ name: "Melodic Step 6 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5880 [[ name: "Melodic Step 7 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5881 [[ name: "Melodic Step 8 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5882 [[ name: "Melodic Step 9 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5883 [[ name: "Melodic Step 10 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5884 [[ name: "Melodic Step 11 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5885 [[ name: "Melodic Step 12 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5886 [[ name: "Melodic Step 13 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5887 [[ name: "Melodic Step 14 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5888 [[ name: "Melodic Step 15 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5889 [[ name: "Melodic Step 16 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5890 [[ name: "Melodic Step 17 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5891 [[ name: "Melodic Step 18 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5892 [[ name: "Melodic Step 19 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5893 [[ name: "Melodic Step 20 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5894 [[ name: "Melodic Step 21 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5895 [[ name: "Melodic Step 22 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5896 [[ name: "Melodic Step 23 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5897 [[ name: "Melodic Step 24 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5898 [[ name: "Melodic Step 25 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5899 [[ name: "Melodic Step 26 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5900 [[ name: "Melodic Step 27 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5901 [[ name: "Melodic Step 28 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5902 [[ name: "Melodic Step 29 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5903 [[ name: "Melodic Step 30 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5904 [[ name: "Melodic Step 31 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5905 [[ name: "Melodic Step 32 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5906 [[ name: "Melodic Step 33 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5907 [[ name: "Melodic Step 34 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5908 [[ name: "Melodic Step 35 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5909 [[ name: "Melodic Step 36 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5910 [[ name: "Melodic Step 37 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5911 [[ name: "Melodic Step 38 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5912 [[ name: "Melodic Step 39 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5913 [[ name: "Melodic Step 40 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5914 [[ name: "Melodic Step 41 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5915 [[ name: "Melodic Step 42 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5916 [[ name: "Melodic Step 43 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5917 [[ name: "Melodic Step 44 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5918 [[ name: "Melodic Step 45 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5919 [[ name: "Melodic Step 46 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5920 [[ name: "Melodic Step 47 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5921 [[ name: "Melodic Step 48 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5922 [[ name: "Melodic Step 49 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5923 [[ name: "Melodic Step 50 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5924 [[ name: "Melodic Step 51 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5925 [[ name: "Melodic Step 52 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5926 [[ name: "Melodic Step 53 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5927 [[ name: "Melodic Step 54 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5928 [[ name: "Melodic Step 55 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5929 [[ name: "Melodic Step 56 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5930 [[ name: "Melodic Step 57 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5931 [[ name: "Melodic Step 58 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5932 [[ name: "Melodic Step 59 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5933 [[ name: "Melodic Step 60 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5934 [[ name: "Melodic Step 61 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5935 [[ name: "Melodic Step 62 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5936 [[ name: "Melodic Step 63 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5937 [[ name: "Melodic Step 64 Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5938 [[ name: "Melodic Step 1 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5939 [[ name: "Melodic Step 2 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5940 [[ name: "Melodic Step 3 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5941 [[ name: "Melodic Step 4 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5942 [[ name: "Melodic Step 5 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5943 [[ name: "Melodic Step 6 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5944 [[ name: "Melodic Step 7 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5945 [[ name: "Melodic Step 8 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5946 [[ name: "Melodic Step 9 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5947 [[ name: "Melodic Step 10 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5948 [[ name: "Melodic Step 11 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5949 [[ name: "Melodic Step 12 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5950 [[ name: "Melodic Step 13 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5951 [[ name: "Melodic Step 14 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5952 [[ name: "Melodic Step 15 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5953 [[ name: "Melodic Step 16 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5954 [[ name: "Melodic Step 17 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5955 [[ name: "Melodic Step 18 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5956 [[ name: "Melodic Step 19 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5957 [[ name: "Melodic Step 20 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5958 [[ name: "Melodic Step 21 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5959 [[ name: "Melodic Step 22 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5960 [[ name: "Melodic Step 23 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5961 [[ name: "Melodic Step 24 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5962 [[ name: "Melodic Step 25 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5963 [[ name: "Melodic Step 26 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5964 [[ name: "Melodic Step 27 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5965 [[ name: "Melodic Step 28 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5966 [[ name: "Melodic Step 29 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5967 [[ name: "Melodic Step 30 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5968 [[ name: "Melodic Step 31 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5969 [[ name: "Melodic Step 32 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5970 [[ name: "Melodic Step 33 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5971 [[ name: "Melodic Step 34 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5972 [[ name: "Melodic Step 35 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5973 [[ name: "Melodic Step 36 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5974 [[ name: "Melodic Step 37 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5975 [[ name: "Melodic Step 38 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5976 [[ name: "Melodic Step 39 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5977 [[ name: "Melodic Step 40 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5978 [[ name: "Melodic Step 41 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5979 [[ name: "Melodic Step 42 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5980 [[ name: "Melodic Step 43 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5981 [[ name: "Melodic Step 44 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5982 [[ name: "Melodic Step 45 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5983 [[ name: "Melodic Step 46 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5984 [[ name: "Melodic Step 47 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5985 [[ name: "Melodic Step 48 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5986 [[ name: "Melodic Step 49 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5987 [[ name: "Melodic Step 50 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5988 [[ name: "Melodic Step 51 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5989 [[ name: "Melodic Step 52 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5990 [[ name: "Melodic Step 53 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5991 [[ name: "Melodic Step 54 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5992 [[ name: "Melodic Step 55 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5993 [[ name: "Melodic Step 56 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5994 [[ name: "Melodic Step 57 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5995 [[ name: "Melodic Step 58 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5996 [[ name: "Melodic Step 59 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5997 [[ name: "Melodic Step 60 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5998 [[ name: "Melodic Step 61 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param5999 [[ name: "Melodic Step 62 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6000 [[ name: "Melodic Step 63 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6001 [[ name: "Melodic Step 64 Length", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6002 [[ name: "Melodic Step 1 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6003 [[ name: "Melodic Step 2 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6004 [[ name: "Melodic Step 3 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6005 [[ name: "Melodic Step 4 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6006 [[ name: "Melodic Step 5 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6007 [[ name: "Melodic Step 6 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6008 [[ name: "Melodic Step 7 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6009 [[ name: "Melodic Step 8 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6010 [[ name: "Melodic Step 9 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6011 [[ name: "Melodic Step 10 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6012 [[ name: "Melodic Step 11 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6013 [[ name: "Melodic Step 12 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6014 [[ name: "Melodic Step 13 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6015 [[ name: "Melodic Step 14 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6016 [[ name: "Melodic Step 15 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6017 [[ name: "Melodic Step 16 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6018 [[ name: "Melodic Step 17 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6019 [[ name: "Melodic Step 18 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6020 [[ name: "Melodic Step 19 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6021 [[ name: "Melodic Step 20 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6022 [[ name: "Melodic Step 21 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6023 [[ name: "Melodic Step 22 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6024 [[ name: "Melodic Step 23 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6025 [[ name: "Melodic Step 24 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6026 [[ name: "Melodic Step 25 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6027 [[ name: "Melodic Step 26 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6028 [[ name: "Melodic Step 27 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6029 [[ name: "Melodic Step 28 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6030 [[ name: "Melodic Step 29 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6031 [[ name: "Melodic Step 30 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6032 [[ name: "Melodic Step 31 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6033 [[ name: "Melodic Step 32 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6034 [[ name: "Melodic Step 33 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6035 [[ name: "Melodic Step 34 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6036 [[ name: "Melodic Step 35 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6037 [[ name: "Melodic Step 36 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6038 [[ name: "Melodic Step 37 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6039 [[ name: "Melodic Step 38 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6040 [[ name: "Melodic Step 39 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6041 [[ name: "Melodic Step 40 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6042 [[ name: "Melodic Step 41 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6043 [[ name: "Melodic Step 42 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6044 [[ name: "Melodic Step 43 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6045 [[ name: "Melodic Step 44 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6046 [[ name: "Melodic Step 45 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6047 [[ name: "Melodic Step 46 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6048 [[ name: "Melodic Step 47 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6049 [[ name: "Melodic Step 48 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6050 [[ name: "Melodic Step 49 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6051 [[ name: "Melodic Step 50 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6052 [[ name: "Melodic Step 51 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6053 [[ name: "Melodic Step 52 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6054 [[ name: "Melodic Step 53 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6055 [[ name: "Melodic Step 54 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6056 [[ name: "Melodic Step 55 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6057 [[ name: "Melodic Step 56 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6058 [[ name: "Melodic Step 57 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6059 [[ name: "Melodic Step 58 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6060 [[ name: "Melodic Step 59 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6061 [[ name: "Melodic Step 60 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6062 [[ name: "Melodic Step 61 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6063 [[ name: "Melodic Step 62 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6064 [[ name: "Melodic Step 63 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6065 [[ name: "Melodic Step 64 Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6066 [[ name: "Melodic Step 1 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6067 [[ name: "Melodic Step 2 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6068 [[ name: "Melodic Step 3 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6069 [[ name: "Melodic Step 4 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6070 [[ name: "Melodic Step 5 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6071 [[ name: "Melodic Step 6 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6072 [[ name: "Melodic Step 7 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6073 [[ name: "Melodic Step 8 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6074 [[ name: "Melodic Step 9 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6075 [[ name: "Melodic Step 10 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6076 [[ name: "Melodic Step 11 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6077 [[ name: "Melodic Step 12 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6078 [[ name: "Melodic Step 13 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6079 [[ name: "Melodic Step 14 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6080 [[ name: "Melodic Step 15 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6081 [[ name: "Melodic Step 16 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6082 [[ name: "Melodic Step 17 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6083 [[ name: "Melodic Step 18 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6084 [[ name: "Melodic Step 19 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6085 [[ name: "Melodic Step 20 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6086 [[ name: "Melodic Step 21 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6087 [[ name: "Melodic Step 22 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6088 [[ name: "Melodic Step 23 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6089 [[ name: "Melodic Step 24 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6090 [[ name: "Melodic Step 25 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6091 [[ name: "Melodic Step 26 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6092 [[ name: "Melodic Step 27 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6093 [[ name: "Melodic Step 28 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6094 [[ name: "Melodic Step 29 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6095 [[ name: "Melodic Step 30 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6096 [[ name: "Melodic Step 31 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6097 [[ name: "Melodic Step 32 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6098 [[ name: "Melodic Step 33 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6099 [[ name: "Melodic Step 34 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6100 [[ name: "Melodic Step 35 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6101 [[ name: "Melodic Step 36 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6102 [[ name: "Melodic Step 37 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6103 [[ name: "Melodic Step 38 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6104 [[ name: "Melodic Step 39 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6105 [[ name: "Melodic Step 40 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6106 [[ name: "Melodic Step 41 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6107 [[ name: "Melodic Step 42 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6108 [[ name: "Melodic Step 43 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6109 [[ name: "Melodic Step 44 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6110 [[ name: "Melodic Step 45 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6111 [[ name: "Melodic Step 46 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6112 [[ name: "Melodic Step 47 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6113 [[ name: "Melodic Step 48 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6114 [[ name: "Melodic Step 49 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6115 [[ name: "Melodic Step 50 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6116 [[ name: "Melodic Step 51 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6117 [[ name: "Melodic Step 52 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6118 [[ name: "Melodic Step 53 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6119 [[ name: "Melodic Step 54 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6120 [[ name: "Melodic Step 55 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6121 [[ name: "Melodic Step 56 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6122 [[ name: "Melodic Step 57 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6123 [[ name: "Melodic Step 58 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6124 [[ name: "Melodic Step 59 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6125 [[ name: "Melodic Step 60 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6126 [[ name: "Melodic Step 61 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6127 [[ name: "Melodic Step 62 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6128 [[ name: "Melodic Step 63 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6129 [[ name: "Melodic Step 64 Probability", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6130 [[ name: "Melodic Step 1 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6131 [[ name: "Melodic Step 2 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6132 [[ name: "Melodic Step 3 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6133 [[ name: "Melodic Step 4 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6134 [[ name: "Melodic Step 5 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6135 [[ name: "Melodic Step 6 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6136 [[ name: "Melodic Step 7 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6137 [[ name: "Melodic Step 8 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6138 [[ name: "Melodic Step 9 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6139 [[ name: "Melodic Step 10 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6140 [[ name: "Melodic Step 11 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6141 [[ name: "Melodic Step 12 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6142 [[ name: "Melodic Step 13 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6143 [[ name: "Melodic Step 14 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6144 [[ name: "Melodic Step 15 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6145 [[ name: "Melodic Step 16 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6146 [[ name: "Melodic Step 17 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6147 [[ name: "Melodic Step 18 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6148 [[ name: "Melodic Step 19 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6149 [[ name: "Melodic Step 20 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6150 [[ name: "Melodic Step 21 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6151 [[ name: "Melodic Step 22 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6152 [[ name: "Melodic Step 23 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6153 [[ name: "Melodic Step 24 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6154 [[ name: "Melodic Step 25 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6155 [[ name: "Melodic Step 26 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6156 [[ name: "Melodic Step 27 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6157 [[ name: "Melodic Step 28 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6158 [[ name: "Melodic Step 29 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6159 [[ name: "Melodic Step 30 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6160 [[ name: "Melodic Step 31 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6161 [[ name: "Melodic Step 32 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6162 [[ name: "Melodic Step 33 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6163 [[ name: "Melodic Step 34 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6164 [[ name: "Melodic Step 35 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6165 [[ name: "Melodic Step 36 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6166 [[ name: "Melodic Step 37 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6167 [[ name: "Melodic Step 38 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6168 [[ name: "Melodic Step 39 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6169 [[ name: "Melodic Step 40 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6170 [[ name: "Melodic Step 41 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6171 [[ name: "Melodic Step 42 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6172 [[ name: "Melodic Step 43 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6173 [[ name: "Melodic Step 44 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6174 [[ name: "Melodic Step 45 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6175 [[ name: "Melodic Step 46 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6176 [[ name: "Melodic Step 47 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6177 [[ name: "Melodic Step 48 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6178 [[ name: "Melodic Step 49 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6179 [[ name: "Melodic Step 50 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6180 [[ name: "Melodic Step 51 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6181 [[ name: "Melodic Step 52 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6182 [[ name: "Melodic Step 53 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6183 [[ name: "Melodic Step 54 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6184 [[ name: "Melodic Step 55 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6185 [[ name: "Melodic Step 56 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6186 [[ name: "Melodic Step 57 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6187 [[ name: "Melodic Step 58 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6188 [[ name: "Melodic Step 59 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6189 [[ name: "Melodic Step 60 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6190 [[ name: "Melodic Step 61 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6191 [[ name: "Melodic Step 62 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6192 [[ name: "Melodic Step 63 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6193 [[ name: "Melodic Step 64 Ratchet", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6194 [[ name: "Melodic Step 1 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6195 [[ name: "Melodic Step 2 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6196 [[ name: "Melodic Step 3 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6197 [[ name: "Melodic Step 4 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6198 [[ name: "Melodic Step 5 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6199 [[ name: "Melodic Step 6 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6200 [[ name: "Melodic Step 7 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6201 [[ name: "Melodic Step 8 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6202 [[ name: "Melodic Step 9 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6203 [[ name: "Melodic Step 10 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6204 [[ name: "Melodic Step 11 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6205 [[ name: "Melodic Step 12 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6206 [[ name: "Melodic Step 13 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6207 [[ name: "Melodic Step 14 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6208 [[ name: "Melodic Step 15 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6209 [[ name: "Melodic Step 16 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6210 [[ name: "Melodic Step 17 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6211 [[ name: "Melodic Step 18 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6212 [[ name: "Melodic Step 19 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6213 [[ name: "Melodic Step 20 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6214 [[ name: "Melodic Step 21 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6215 [[ name: "Melodic Step 22 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6216 [[ name: "Melodic Step 23 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6217 [[ name: "Melodic Step 24 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6218 [[ name: "Melodic Step 25 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6219 [[ name: "Melodic Step 26 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6220 [[ name: "Melodic Step 27 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6221 [[ name: "Melodic Step 28 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6222 [[ name: "Melodic Step 29 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6223 [[ name: "Melodic Step 30 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6224 [[ name: "Melodic Step 31 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6225 [[ name: "Melodic Step 32 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6226 [[ name: "Melodic Step 33 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6227 [[ name: "Melodic Step 34 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6228 [[ name: "Melodic Step 35 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6229 [[ name: "Melodic Step 36 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6230 [[ name: "Melodic Step 37 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6231 [[ name: "Melodic Step 38 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6232 [[ name: "Melodic Step 39 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6233 [[ name: "Melodic Step 40 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6234 [[ name: "Melodic Step 41 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6235 [[ name: "Melodic Step 42 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6236 [[ name: "Melodic Step 43 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6237 [[ name: "Melodic Step 44 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6238 [[ name: "Melodic Step 45 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6239 [[ name: "Melodic Step 46 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6240 [[ name: "Melodic Step 47 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6241 [[ name: "Melodic Step 48 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6242 [[ name: "Melodic Step 49 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6243 [[ name: "Melodic Step 50 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6244 [[ name: "Melodic Step 51 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6245 [[ name: "Melodic Step 52 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6246 [[ name: "Melodic Step 53 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6247 [[ name: "Melodic Step 54 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6248 [[ name: "Melodic Step 55 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6249 [[ name: "Melodic Step 56 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6250 [[ name: "Melodic Step 57 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6251 [[ name: "Melodic Step 58 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6252 [[ name: "Melodic Step 59 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6253 [[ name: "Melodic Step 60 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6254 [[ name: "Melodic Step 61 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6255 [[ name: "Melodic Step 62 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6256 [[ name: "Melodic Step 63 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
+    input event float param6257 [[ name: "Melodic Step 64 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
     input event float param5200 [[ name: "303 Step 1 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
     input event float param5201 [[ name: "303 Step 2 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP303
     input event float param5202 [[ name: "303 Step 3 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP303
@@ -4377,6 +4864,21 @@ processor Eisenpuls_Synth
     int         arpStep = 0;
     float       arpPh = 1.0f;
     float       arpCurVel = 1.0f;
+    // ---------------- MOD-SQM: Euclid / Melodic / Generative arpeggiator modes ----------------
+    float[32]   sqEu;                 // 4 lanes x 8: on, steps, pulses, rotation, offset, probability, ratchet
+    float[16]   sqGn;                 // generative: type, scale, range, shift, loop, mutation, max step, bias, rest, ratchet
+    float       sqMlLen = 16.0f;
+    float[448]  sqMl;                 // melodic: 7 rows x 64 steps (note, velocity, length, chord, probability, ratchet, gate)
+    int[16]     sqN;                  // sounding notes
+    float64[16] sqEnd;                // ... and the time (in steps) at which they end
+    int         sqCnt = 0;
+    int[32]     evN;                  // pending note starts
+    float[32]   evV;
+    float64[32] evT;                  // start time in steps
+    float[32]   evL;                  // length in steps
+    int         evCnt = 0;
+    int         gnReg = 0;            // turing machine shift register
+    int         gnDeg = -1;           // random walk position (degree index)
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
@@ -7494,6 +7996,493 @@ processor Eisenpuls_Synth
     event param5689 (float v) { a3Gate.at (61) = v; }   // MOD-ARP64
     event param5690 (float v) { a3Gate.at (62) = v; }   // MOD-ARP64
     event param5691 (float v) { a3Gate.at (63) = v; }   // MOD-ARP64
+    event param5710 (float v) { sqEu.at (0) = v; }   // MOD-SQM
+    event param5711 (float v) { sqEu.at (1) = v; }   // MOD-SQM
+    event param5712 (float v) { sqEu.at (2) = v; }   // MOD-SQM
+    event param5713 (float v) { sqEu.at (3) = v; }   // MOD-SQM
+    event param5714 (float v) { sqEu.at (4) = v; }   // MOD-SQM
+    event param5715 (float v) { sqEu.at (5) = v; }   // MOD-SQM
+    event param5716 (float v) { sqEu.at (6) = v; }   // MOD-SQM
+    event param5718 (float v) { sqEu.at (8) = v; }   // MOD-SQM
+    event param5719 (float v) { sqEu.at (9) = v; }   // MOD-SQM
+    event param5720 (float v) { sqEu.at (10) = v; }   // MOD-SQM
+    event param5721 (float v) { sqEu.at (11) = v; }   // MOD-SQM
+    event param5722 (float v) { sqEu.at (12) = v; }   // MOD-SQM
+    event param5723 (float v) { sqEu.at (13) = v; }   // MOD-SQM
+    event param5724 (float v) { sqEu.at (14) = v; }   // MOD-SQM
+    event param5726 (float v) { sqEu.at (16) = v; }   // MOD-SQM
+    event param5727 (float v) { sqEu.at (17) = v; }   // MOD-SQM
+    event param5728 (float v) { sqEu.at (18) = v; }   // MOD-SQM
+    event param5729 (float v) { sqEu.at (19) = v; }   // MOD-SQM
+    event param5730 (float v) { sqEu.at (20) = v; }   // MOD-SQM
+    event param5731 (float v) { sqEu.at (21) = v; }   // MOD-SQM
+    event param5732 (float v) { sqEu.at (22) = v; }   // MOD-SQM
+    event param5734 (float v) { sqEu.at (24) = v; }   // MOD-SQM
+    event param5735 (float v) { sqEu.at (25) = v; }   // MOD-SQM
+    event param5736 (float v) { sqEu.at (26) = v; }   // MOD-SQM
+    event param5737 (float v) { sqEu.at (27) = v; }   // MOD-SQM
+    event param5738 (float v) { sqEu.at (28) = v; }   // MOD-SQM
+    event param5739 (float v) { sqEu.at (29) = v; }   // MOD-SQM
+    event param5740 (float v) { sqEu.at (30) = v; }   // MOD-SQM
+    event param5750 (float v) { sqGn.at (0) = v; }
+    event param5751 (float v) { sqGn.at (1) = v; }
+    event param5752 (float v) { sqGn.at (2) = v; }
+    event param5753 (float v) { sqGn.at (3) = v; }
+    event param5754 (float v) { sqGn.at (4) = v; }
+    event param5755 (float v) { sqGn.at (5) = v; }
+    event param5756 (float v) { sqGn.at (6) = v; }
+    event param5757 (float v) { sqGn.at (7) = v; }
+    event param5758 (float v) { sqGn.at (8) = v; }
+    event param5759 (float v) { sqGn.at (9) = v; }
+    event param5800 (float v) { sqMlLen = v; }
+    event param5810 (float v) { sqMl.at (0) = v; }
+    event param5811 (float v) { sqMl.at (1) = v; }
+    event param5812 (float v) { sqMl.at (2) = v; }
+    event param5813 (float v) { sqMl.at (3) = v; }
+    event param5814 (float v) { sqMl.at (4) = v; }
+    event param5815 (float v) { sqMl.at (5) = v; }
+    event param5816 (float v) { sqMl.at (6) = v; }
+    event param5817 (float v) { sqMl.at (7) = v; }
+    event param5818 (float v) { sqMl.at (8) = v; }
+    event param5819 (float v) { sqMl.at (9) = v; }
+    event param5820 (float v) { sqMl.at (10) = v; }
+    event param5821 (float v) { sqMl.at (11) = v; }
+    event param5822 (float v) { sqMl.at (12) = v; }
+    event param5823 (float v) { sqMl.at (13) = v; }
+    event param5824 (float v) { sqMl.at (14) = v; }
+    event param5825 (float v) { sqMl.at (15) = v; }
+    event param5826 (float v) { sqMl.at (16) = v; }
+    event param5827 (float v) { sqMl.at (17) = v; }
+    event param5828 (float v) { sqMl.at (18) = v; }
+    event param5829 (float v) { sqMl.at (19) = v; }
+    event param5830 (float v) { sqMl.at (20) = v; }
+    event param5831 (float v) { sqMl.at (21) = v; }
+    event param5832 (float v) { sqMl.at (22) = v; }
+    event param5833 (float v) { sqMl.at (23) = v; }
+    event param5834 (float v) { sqMl.at (24) = v; }
+    event param5835 (float v) { sqMl.at (25) = v; }
+    event param5836 (float v) { sqMl.at (26) = v; }
+    event param5837 (float v) { sqMl.at (27) = v; }
+    event param5838 (float v) { sqMl.at (28) = v; }
+    event param5839 (float v) { sqMl.at (29) = v; }
+    event param5840 (float v) { sqMl.at (30) = v; }
+    event param5841 (float v) { sqMl.at (31) = v; }
+    event param5842 (float v) { sqMl.at (32) = v; }
+    event param5843 (float v) { sqMl.at (33) = v; }
+    event param5844 (float v) { sqMl.at (34) = v; }
+    event param5845 (float v) { sqMl.at (35) = v; }
+    event param5846 (float v) { sqMl.at (36) = v; }
+    event param5847 (float v) { sqMl.at (37) = v; }
+    event param5848 (float v) { sqMl.at (38) = v; }
+    event param5849 (float v) { sqMl.at (39) = v; }
+    event param5850 (float v) { sqMl.at (40) = v; }
+    event param5851 (float v) { sqMl.at (41) = v; }
+    event param5852 (float v) { sqMl.at (42) = v; }
+    event param5853 (float v) { sqMl.at (43) = v; }
+    event param5854 (float v) { sqMl.at (44) = v; }
+    event param5855 (float v) { sqMl.at (45) = v; }
+    event param5856 (float v) { sqMl.at (46) = v; }
+    event param5857 (float v) { sqMl.at (47) = v; }
+    event param5858 (float v) { sqMl.at (48) = v; }
+    event param5859 (float v) { sqMl.at (49) = v; }
+    event param5860 (float v) { sqMl.at (50) = v; }
+    event param5861 (float v) { sqMl.at (51) = v; }
+    event param5862 (float v) { sqMl.at (52) = v; }
+    event param5863 (float v) { sqMl.at (53) = v; }
+    event param5864 (float v) { sqMl.at (54) = v; }
+    event param5865 (float v) { sqMl.at (55) = v; }
+    event param5866 (float v) { sqMl.at (56) = v; }
+    event param5867 (float v) { sqMl.at (57) = v; }
+    event param5868 (float v) { sqMl.at (58) = v; }
+    event param5869 (float v) { sqMl.at (59) = v; }
+    event param5870 (float v) { sqMl.at (60) = v; }
+    event param5871 (float v) { sqMl.at (61) = v; }
+    event param5872 (float v) { sqMl.at (62) = v; }
+    event param5873 (float v) { sqMl.at (63) = v; }
+    event param5874 (float v) { sqMl.at (64) = v; }
+    event param5875 (float v) { sqMl.at (65) = v; }
+    event param5876 (float v) { sqMl.at (66) = v; }
+    event param5877 (float v) { sqMl.at (67) = v; }
+    event param5878 (float v) { sqMl.at (68) = v; }
+    event param5879 (float v) { sqMl.at (69) = v; }
+    event param5880 (float v) { sqMl.at (70) = v; }
+    event param5881 (float v) { sqMl.at (71) = v; }
+    event param5882 (float v) { sqMl.at (72) = v; }
+    event param5883 (float v) { sqMl.at (73) = v; }
+    event param5884 (float v) { sqMl.at (74) = v; }
+    event param5885 (float v) { sqMl.at (75) = v; }
+    event param5886 (float v) { sqMl.at (76) = v; }
+    event param5887 (float v) { sqMl.at (77) = v; }
+    event param5888 (float v) { sqMl.at (78) = v; }
+    event param5889 (float v) { sqMl.at (79) = v; }
+    event param5890 (float v) { sqMl.at (80) = v; }
+    event param5891 (float v) { sqMl.at (81) = v; }
+    event param5892 (float v) { sqMl.at (82) = v; }
+    event param5893 (float v) { sqMl.at (83) = v; }
+    event param5894 (float v) { sqMl.at (84) = v; }
+    event param5895 (float v) { sqMl.at (85) = v; }
+    event param5896 (float v) { sqMl.at (86) = v; }
+    event param5897 (float v) { sqMl.at (87) = v; }
+    event param5898 (float v) { sqMl.at (88) = v; }
+    event param5899 (float v) { sqMl.at (89) = v; }
+    event param5900 (float v) { sqMl.at (90) = v; }
+    event param5901 (float v) { sqMl.at (91) = v; }
+    event param5902 (float v) { sqMl.at (92) = v; }
+    event param5903 (float v) { sqMl.at (93) = v; }
+    event param5904 (float v) { sqMl.at (94) = v; }
+    event param5905 (float v) { sqMl.at (95) = v; }
+    event param5906 (float v) { sqMl.at (96) = v; }
+    event param5907 (float v) { sqMl.at (97) = v; }
+    event param5908 (float v) { sqMl.at (98) = v; }
+    event param5909 (float v) { sqMl.at (99) = v; }
+    event param5910 (float v) { sqMl.at (100) = v; }
+    event param5911 (float v) { sqMl.at (101) = v; }
+    event param5912 (float v) { sqMl.at (102) = v; }
+    event param5913 (float v) { sqMl.at (103) = v; }
+    event param5914 (float v) { sqMl.at (104) = v; }
+    event param5915 (float v) { sqMl.at (105) = v; }
+    event param5916 (float v) { sqMl.at (106) = v; }
+    event param5917 (float v) { sqMl.at (107) = v; }
+    event param5918 (float v) { sqMl.at (108) = v; }
+    event param5919 (float v) { sqMl.at (109) = v; }
+    event param5920 (float v) { sqMl.at (110) = v; }
+    event param5921 (float v) { sqMl.at (111) = v; }
+    event param5922 (float v) { sqMl.at (112) = v; }
+    event param5923 (float v) { sqMl.at (113) = v; }
+    event param5924 (float v) { sqMl.at (114) = v; }
+    event param5925 (float v) { sqMl.at (115) = v; }
+    event param5926 (float v) { sqMl.at (116) = v; }
+    event param5927 (float v) { sqMl.at (117) = v; }
+    event param5928 (float v) { sqMl.at (118) = v; }
+    event param5929 (float v) { sqMl.at (119) = v; }
+    event param5930 (float v) { sqMl.at (120) = v; }
+    event param5931 (float v) { sqMl.at (121) = v; }
+    event param5932 (float v) { sqMl.at (122) = v; }
+    event param5933 (float v) { sqMl.at (123) = v; }
+    event param5934 (float v) { sqMl.at (124) = v; }
+    event param5935 (float v) { sqMl.at (125) = v; }
+    event param5936 (float v) { sqMl.at (126) = v; }
+    event param5937 (float v) { sqMl.at (127) = v; }
+    event param5938 (float v) { sqMl.at (128) = v; }
+    event param5939 (float v) { sqMl.at (129) = v; }
+    event param5940 (float v) { sqMl.at (130) = v; }
+    event param5941 (float v) { sqMl.at (131) = v; }
+    event param5942 (float v) { sqMl.at (132) = v; }
+    event param5943 (float v) { sqMl.at (133) = v; }
+    event param5944 (float v) { sqMl.at (134) = v; }
+    event param5945 (float v) { sqMl.at (135) = v; }
+    event param5946 (float v) { sqMl.at (136) = v; }
+    event param5947 (float v) { sqMl.at (137) = v; }
+    event param5948 (float v) { sqMl.at (138) = v; }
+    event param5949 (float v) { sqMl.at (139) = v; }
+    event param5950 (float v) { sqMl.at (140) = v; }
+    event param5951 (float v) { sqMl.at (141) = v; }
+    event param5952 (float v) { sqMl.at (142) = v; }
+    event param5953 (float v) { sqMl.at (143) = v; }
+    event param5954 (float v) { sqMl.at (144) = v; }
+    event param5955 (float v) { sqMl.at (145) = v; }
+    event param5956 (float v) { sqMl.at (146) = v; }
+    event param5957 (float v) { sqMl.at (147) = v; }
+    event param5958 (float v) { sqMl.at (148) = v; }
+    event param5959 (float v) { sqMl.at (149) = v; }
+    event param5960 (float v) { sqMl.at (150) = v; }
+    event param5961 (float v) { sqMl.at (151) = v; }
+    event param5962 (float v) { sqMl.at (152) = v; }
+    event param5963 (float v) { sqMl.at (153) = v; }
+    event param5964 (float v) { sqMl.at (154) = v; }
+    event param5965 (float v) { sqMl.at (155) = v; }
+    event param5966 (float v) { sqMl.at (156) = v; }
+    event param5967 (float v) { sqMl.at (157) = v; }
+    event param5968 (float v) { sqMl.at (158) = v; }
+    event param5969 (float v) { sqMl.at (159) = v; }
+    event param5970 (float v) { sqMl.at (160) = v; }
+    event param5971 (float v) { sqMl.at (161) = v; }
+    event param5972 (float v) { sqMl.at (162) = v; }
+    event param5973 (float v) { sqMl.at (163) = v; }
+    event param5974 (float v) { sqMl.at (164) = v; }
+    event param5975 (float v) { sqMl.at (165) = v; }
+    event param5976 (float v) { sqMl.at (166) = v; }
+    event param5977 (float v) { sqMl.at (167) = v; }
+    event param5978 (float v) { sqMl.at (168) = v; }
+    event param5979 (float v) { sqMl.at (169) = v; }
+    event param5980 (float v) { sqMl.at (170) = v; }
+    event param5981 (float v) { sqMl.at (171) = v; }
+    event param5982 (float v) { sqMl.at (172) = v; }
+    event param5983 (float v) { sqMl.at (173) = v; }
+    event param5984 (float v) { sqMl.at (174) = v; }
+    event param5985 (float v) { sqMl.at (175) = v; }
+    event param5986 (float v) { sqMl.at (176) = v; }
+    event param5987 (float v) { sqMl.at (177) = v; }
+    event param5988 (float v) { sqMl.at (178) = v; }
+    event param5989 (float v) { sqMl.at (179) = v; }
+    event param5990 (float v) { sqMl.at (180) = v; }
+    event param5991 (float v) { sqMl.at (181) = v; }
+    event param5992 (float v) { sqMl.at (182) = v; }
+    event param5993 (float v) { sqMl.at (183) = v; }
+    event param5994 (float v) { sqMl.at (184) = v; }
+    event param5995 (float v) { sqMl.at (185) = v; }
+    event param5996 (float v) { sqMl.at (186) = v; }
+    event param5997 (float v) { sqMl.at (187) = v; }
+    event param5998 (float v) { sqMl.at (188) = v; }
+    event param5999 (float v) { sqMl.at (189) = v; }
+    event param6000 (float v) { sqMl.at (190) = v; }
+    event param6001 (float v) { sqMl.at (191) = v; }
+    event param6002 (float v) { sqMl.at (192) = v; }
+    event param6003 (float v) { sqMl.at (193) = v; }
+    event param6004 (float v) { sqMl.at (194) = v; }
+    event param6005 (float v) { sqMl.at (195) = v; }
+    event param6006 (float v) { sqMl.at (196) = v; }
+    event param6007 (float v) { sqMl.at (197) = v; }
+    event param6008 (float v) { sqMl.at (198) = v; }
+    event param6009 (float v) { sqMl.at (199) = v; }
+    event param6010 (float v) { sqMl.at (200) = v; }
+    event param6011 (float v) { sqMl.at (201) = v; }
+    event param6012 (float v) { sqMl.at (202) = v; }
+    event param6013 (float v) { sqMl.at (203) = v; }
+    event param6014 (float v) { sqMl.at (204) = v; }
+    event param6015 (float v) { sqMl.at (205) = v; }
+    event param6016 (float v) { sqMl.at (206) = v; }
+    event param6017 (float v) { sqMl.at (207) = v; }
+    event param6018 (float v) { sqMl.at (208) = v; }
+    event param6019 (float v) { sqMl.at (209) = v; }
+    event param6020 (float v) { sqMl.at (210) = v; }
+    event param6021 (float v) { sqMl.at (211) = v; }
+    event param6022 (float v) { sqMl.at (212) = v; }
+    event param6023 (float v) { sqMl.at (213) = v; }
+    event param6024 (float v) { sqMl.at (214) = v; }
+    event param6025 (float v) { sqMl.at (215) = v; }
+    event param6026 (float v) { sqMl.at (216) = v; }
+    event param6027 (float v) { sqMl.at (217) = v; }
+    event param6028 (float v) { sqMl.at (218) = v; }
+    event param6029 (float v) { sqMl.at (219) = v; }
+    event param6030 (float v) { sqMl.at (220) = v; }
+    event param6031 (float v) { sqMl.at (221) = v; }
+    event param6032 (float v) { sqMl.at (222) = v; }
+    event param6033 (float v) { sqMl.at (223) = v; }
+    event param6034 (float v) { sqMl.at (224) = v; }
+    event param6035 (float v) { sqMl.at (225) = v; }
+    event param6036 (float v) { sqMl.at (226) = v; }
+    event param6037 (float v) { sqMl.at (227) = v; }
+    event param6038 (float v) { sqMl.at (228) = v; }
+    event param6039 (float v) { sqMl.at (229) = v; }
+    event param6040 (float v) { sqMl.at (230) = v; }
+    event param6041 (float v) { sqMl.at (231) = v; }
+    event param6042 (float v) { sqMl.at (232) = v; }
+    event param6043 (float v) { sqMl.at (233) = v; }
+    event param6044 (float v) { sqMl.at (234) = v; }
+    event param6045 (float v) { sqMl.at (235) = v; }
+    event param6046 (float v) { sqMl.at (236) = v; }
+    event param6047 (float v) { sqMl.at (237) = v; }
+    event param6048 (float v) { sqMl.at (238) = v; }
+    event param6049 (float v) { sqMl.at (239) = v; }
+    event param6050 (float v) { sqMl.at (240) = v; }
+    event param6051 (float v) { sqMl.at (241) = v; }
+    event param6052 (float v) { sqMl.at (242) = v; }
+    event param6053 (float v) { sqMl.at (243) = v; }
+    event param6054 (float v) { sqMl.at (244) = v; }
+    event param6055 (float v) { sqMl.at (245) = v; }
+    event param6056 (float v) { sqMl.at (246) = v; }
+    event param6057 (float v) { sqMl.at (247) = v; }
+    event param6058 (float v) { sqMl.at (248) = v; }
+    event param6059 (float v) { sqMl.at (249) = v; }
+    event param6060 (float v) { sqMl.at (250) = v; }
+    event param6061 (float v) { sqMl.at (251) = v; }
+    event param6062 (float v) { sqMl.at (252) = v; }
+    event param6063 (float v) { sqMl.at (253) = v; }
+    event param6064 (float v) { sqMl.at (254) = v; }
+    event param6065 (float v) { sqMl.at (255) = v; }
+    event param6066 (float v) { sqMl.at (256) = v; }
+    event param6067 (float v) { sqMl.at (257) = v; }
+    event param6068 (float v) { sqMl.at (258) = v; }
+    event param6069 (float v) { sqMl.at (259) = v; }
+    event param6070 (float v) { sqMl.at (260) = v; }
+    event param6071 (float v) { sqMl.at (261) = v; }
+    event param6072 (float v) { sqMl.at (262) = v; }
+    event param6073 (float v) { sqMl.at (263) = v; }
+    event param6074 (float v) { sqMl.at (264) = v; }
+    event param6075 (float v) { sqMl.at (265) = v; }
+    event param6076 (float v) { sqMl.at (266) = v; }
+    event param6077 (float v) { sqMl.at (267) = v; }
+    event param6078 (float v) { sqMl.at (268) = v; }
+    event param6079 (float v) { sqMl.at (269) = v; }
+    event param6080 (float v) { sqMl.at (270) = v; }
+    event param6081 (float v) { sqMl.at (271) = v; }
+    event param6082 (float v) { sqMl.at (272) = v; }
+    event param6083 (float v) { sqMl.at (273) = v; }
+    event param6084 (float v) { sqMl.at (274) = v; }
+    event param6085 (float v) { sqMl.at (275) = v; }
+    event param6086 (float v) { sqMl.at (276) = v; }
+    event param6087 (float v) { sqMl.at (277) = v; }
+    event param6088 (float v) { sqMl.at (278) = v; }
+    event param6089 (float v) { sqMl.at (279) = v; }
+    event param6090 (float v) { sqMl.at (280) = v; }
+    event param6091 (float v) { sqMl.at (281) = v; }
+    event param6092 (float v) { sqMl.at (282) = v; }
+    event param6093 (float v) { sqMl.at (283) = v; }
+    event param6094 (float v) { sqMl.at (284) = v; }
+    event param6095 (float v) { sqMl.at (285) = v; }
+    event param6096 (float v) { sqMl.at (286) = v; }
+    event param6097 (float v) { sqMl.at (287) = v; }
+    event param6098 (float v) { sqMl.at (288) = v; }
+    event param6099 (float v) { sqMl.at (289) = v; }
+    event param6100 (float v) { sqMl.at (290) = v; }
+    event param6101 (float v) { sqMl.at (291) = v; }
+    event param6102 (float v) { sqMl.at (292) = v; }
+    event param6103 (float v) { sqMl.at (293) = v; }
+    event param6104 (float v) { sqMl.at (294) = v; }
+    event param6105 (float v) { sqMl.at (295) = v; }
+    event param6106 (float v) { sqMl.at (296) = v; }
+    event param6107 (float v) { sqMl.at (297) = v; }
+    event param6108 (float v) { sqMl.at (298) = v; }
+    event param6109 (float v) { sqMl.at (299) = v; }
+    event param6110 (float v) { sqMl.at (300) = v; }
+    event param6111 (float v) { sqMl.at (301) = v; }
+    event param6112 (float v) { sqMl.at (302) = v; }
+    event param6113 (float v) { sqMl.at (303) = v; }
+    event param6114 (float v) { sqMl.at (304) = v; }
+    event param6115 (float v) { sqMl.at (305) = v; }
+    event param6116 (float v) { sqMl.at (306) = v; }
+    event param6117 (float v) { sqMl.at (307) = v; }
+    event param6118 (float v) { sqMl.at (308) = v; }
+    event param6119 (float v) { sqMl.at (309) = v; }
+    event param6120 (float v) { sqMl.at (310) = v; }
+    event param6121 (float v) { sqMl.at (311) = v; }
+    event param6122 (float v) { sqMl.at (312) = v; }
+    event param6123 (float v) { sqMl.at (313) = v; }
+    event param6124 (float v) { sqMl.at (314) = v; }
+    event param6125 (float v) { sqMl.at (315) = v; }
+    event param6126 (float v) { sqMl.at (316) = v; }
+    event param6127 (float v) { sqMl.at (317) = v; }
+    event param6128 (float v) { sqMl.at (318) = v; }
+    event param6129 (float v) { sqMl.at (319) = v; }
+    event param6130 (float v) { sqMl.at (320) = v; }
+    event param6131 (float v) { sqMl.at (321) = v; }
+    event param6132 (float v) { sqMl.at (322) = v; }
+    event param6133 (float v) { sqMl.at (323) = v; }
+    event param6134 (float v) { sqMl.at (324) = v; }
+    event param6135 (float v) { sqMl.at (325) = v; }
+    event param6136 (float v) { sqMl.at (326) = v; }
+    event param6137 (float v) { sqMl.at (327) = v; }
+    event param6138 (float v) { sqMl.at (328) = v; }
+    event param6139 (float v) { sqMl.at (329) = v; }
+    event param6140 (float v) { sqMl.at (330) = v; }
+    event param6141 (float v) { sqMl.at (331) = v; }
+    event param6142 (float v) { sqMl.at (332) = v; }
+    event param6143 (float v) { sqMl.at (333) = v; }
+    event param6144 (float v) { sqMl.at (334) = v; }
+    event param6145 (float v) { sqMl.at (335) = v; }
+    event param6146 (float v) { sqMl.at (336) = v; }
+    event param6147 (float v) { sqMl.at (337) = v; }
+    event param6148 (float v) { sqMl.at (338) = v; }
+    event param6149 (float v) { sqMl.at (339) = v; }
+    event param6150 (float v) { sqMl.at (340) = v; }
+    event param6151 (float v) { sqMl.at (341) = v; }
+    event param6152 (float v) { sqMl.at (342) = v; }
+    event param6153 (float v) { sqMl.at (343) = v; }
+    event param6154 (float v) { sqMl.at (344) = v; }
+    event param6155 (float v) { sqMl.at (345) = v; }
+    event param6156 (float v) { sqMl.at (346) = v; }
+    event param6157 (float v) { sqMl.at (347) = v; }
+    event param6158 (float v) { sqMl.at (348) = v; }
+    event param6159 (float v) { sqMl.at (349) = v; }
+    event param6160 (float v) { sqMl.at (350) = v; }
+    event param6161 (float v) { sqMl.at (351) = v; }
+    event param6162 (float v) { sqMl.at (352) = v; }
+    event param6163 (float v) { sqMl.at (353) = v; }
+    event param6164 (float v) { sqMl.at (354) = v; }
+    event param6165 (float v) { sqMl.at (355) = v; }
+    event param6166 (float v) { sqMl.at (356) = v; }
+    event param6167 (float v) { sqMl.at (357) = v; }
+    event param6168 (float v) { sqMl.at (358) = v; }
+    event param6169 (float v) { sqMl.at (359) = v; }
+    event param6170 (float v) { sqMl.at (360) = v; }
+    event param6171 (float v) { sqMl.at (361) = v; }
+    event param6172 (float v) { sqMl.at (362) = v; }
+    event param6173 (float v) { sqMl.at (363) = v; }
+    event param6174 (float v) { sqMl.at (364) = v; }
+    event param6175 (float v) { sqMl.at (365) = v; }
+    event param6176 (float v) { sqMl.at (366) = v; }
+    event param6177 (float v) { sqMl.at (367) = v; }
+    event param6178 (float v) { sqMl.at (368) = v; }
+    event param6179 (float v) { sqMl.at (369) = v; }
+    event param6180 (float v) { sqMl.at (370) = v; }
+    event param6181 (float v) { sqMl.at (371) = v; }
+    event param6182 (float v) { sqMl.at (372) = v; }
+    event param6183 (float v) { sqMl.at (373) = v; }
+    event param6184 (float v) { sqMl.at (374) = v; }
+    event param6185 (float v) { sqMl.at (375) = v; }
+    event param6186 (float v) { sqMl.at (376) = v; }
+    event param6187 (float v) { sqMl.at (377) = v; }
+    event param6188 (float v) { sqMl.at (378) = v; }
+    event param6189 (float v) { sqMl.at (379) = v; }
+    event param6190 (float v) { sqMl.at (380) = v; }
+    event param6191 (float v) { sqMl.at (381) = v; }
+    event param6192 (float v) { sqMl.at (382) = v; }
+    event param6193 (float v) { sqMl.at (383) = v; }
+    event param6194 (float v) { sqMl.at (384) = v; }
+    event param6195 (float v) { sqMl.at (385) = v; }
+    event param6196 (float v) { sqMl.at (386) = v; }
+    event param6197 (float v) { sqMl.at (387) = v; }
+    event param6198 (float v) { sqMl.at (388) = v; }
+    event param6199 (float v) { sqMl.at (389) = v; }
+    event param6200 (float v) { sqMl.at (390) = v; }
+    event param6201 (float v) { sqMl.at (391) = v; }
+    event param6202 (float v) { sqMl.at (392) = v; }
+    event param6203 (float v) { sqMl.at (393) = v; }
+    event param6204 (float v) { sqMl.at (394) = v; }
+    event param6205 (float v) { sqMl.at (395) = v; }
+    event param6206 (float v) { sqMl.at (396) = v; }
+    event param6207 (float v) { sqMl.at (397) = v; }
+    event param6208 (float v) { sqMl.at (398) = v; }
+    event param6209 (float v) { sqMl.at (399) = v; }
+    event param6210 (float v) { sqMl.at (400) = v; }
+    event param6211 (float v) { sqMl.at (401) = v; }
+    event param6212 (float v) { sqMl.at (402) = v; }
+    event param6213 (float v) { sqMl.at (403) = v; }
+    event param6214 (float v) { sqMl.at (404) = v; }
+    event param6215 (float v) { sqMl.at (405) = v; }
+    event param6216 (float v) { sqMl.at (406) = v; }
+    event param6217 (float v) { sqMl.at (407) = v; }
+    event param6218 (float v) { sqMl.at (408) = v; }
+    event param6219 (float v) { sqMl.at (409) = v; }
+    event param6220 (float v) { sqMl.at (410) = v; }
+    event param6221 (float v) { sqMl.at (411) = v; }
+    event param6222 (float v) { sqMl.at (412) = v; }
+    event param6223 (float v) { sqMl.at (413) = v; }
+    event param6224 (float v) { sqMl.at (414) = v; }
+    event param6225 (float v) { sqMl.at (415) = v; }
+    event param6226 (float v) { sqMl.at (416) = v; }
+    event param6227 (float v) { sqMl.at (417) = v; }
+    event param6228 (float v) { sqMl.at (418) = v; }
+    event param6229 (float v) { sqMl.at (419) = v; }
+    event param6230 (float v) { sqMl.at (420) = v; }
+    event param6231 (float v) { sqMl.at (421) = v; }
+    event param6232 (float v) { sqMl.at (422) = v; }
+    event param6233 (float v) { sqMl.at (423) = v; }
+    event param6234 (float v) { sqMl.at (424) = v; }
+    event param6235 (float v) { sqMl.at (425) = v; }
+    event param6236 (float v) { sqMl.at (426) = v; }
+    event param6237 (float v) { sqMl.at (427) = v; }
+    event param6238 (float v) { sqMl.at (428) = v; }
+    event param6239 (float v) { sqMl.at (429) = v; }
+    event param6240 (float v) { sqMl.at (430) = v; }
+    event param6241 (float v) { sqMl.at (431) = v; }
+    event param6242 (float v) { sqMl.at (432) = v; }
+    event param6243 (float v) { sqMl.at (433) = v; }
+    event param6244 (float v) { sqMl.at (434) = v; }
+    event param6245 (float v) { sqMl.at (435) = v; }
+    event param6246 (float v) { sqMl.at (436) = v; }
+    event param6247 (float v) { sqMl.at (437) = v; }
+    event param6248 (float v) { sqMl.at (438) = v; }
+    event param6249 (float v) { sqMl.at (439) = v; }
+    event param6250 (float v) { sqMl.at (440) = v; }
+    event param6251 (float v) { sqMl.at (441) = v; }
+    event param6252 (float v) { sqMl.at (442) = v; }
+    event param6253 (float v) { sqMl.at (443) = v; }
+    event param6254 (float v) { sqMl.at (444) = v; }
+    event param6255 (float v) { sqMl.at (445) = v; }
+    event param6256 (float v) { sqMl.at (446) = v; }
+    event param6257 (float v) { sqMl.at (447) = v; }
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -8786,6 +9775,115 @@ processor Eisenpuls_Synth
         a3Gate.at (60) = 1.0f;
         a3Gate.at (61) = 1.0f;
         a3Gate.at (62) = 1.0f;
+
+        // MOD-SQM defaults
+        sqEu.at (0) = 1.0f;
+        sqEu.at (1) = 16.0f;
+        sqEu.at (2) = 5.0f;
+        sqEu.at (5) = 100.0f;
+        sqEu.at (6) = 1.0f;
+        sqEu.at (9) = 12.0f;
+        sqEu.at (10) = 3.0f;
+        sqEu.at (12) = 7.0f;
+        sqEu.at (13) = 100.0f;
+        sqEu.at (14) = 1.0f;
+        sqEu.at (17) = 7.0f;
+        sqEu.at (18) = 2.0f;
+        sqEu.at (20) = 12.0f;
+        sqEu.at (21) = 100.0f;
+        sqEu.at (22) = 1.0f;
+        sqEu.at (25) = 5.0f;
+        sqEu.at (26) = 1.0f;
+        sqEu.at (28) = -12.0f;
+        sqEu.at (29) = 100.0f;
+        sqEu.at (30) = 1.0f;
+        sqGn.at (1) = 2.0f;
+        sqGn.at (2) = 24.0f;
+        sqGn.at (4) = 8.0f;
+        sqGn.at (5) = 20.0f;
+        sqGn.at (6) = 2.0f;
+        sqGn.at (8) = 10.0f;
+        sqGn.at (9) = 1.0f;
+        for (int mk = 0; mk < 64; ++mk)
+        {
+            sqMl.at (64 + mk)  = 100.0f;
+            sqMl.at (128 + mk) = 80.0f;
+            sqMl.at (256 + mk) = 100.0f;
+            sqMl.at (320 + mk) = 1.0f;
+        }
+
+        sqMl.at (384) = 1.0f;
+        sqMl.at (385) = 1.0f;
+        sqMl.at (2) = 12.0f;
+        sqMl.at (387) = 1.0f;
+        sqMl.at (4) = 7.0f;
+        sqMl.at (388) = 1.0f;
+        sqMl.at (389) = 1.0f;
+        sqMl.at (6) = 12.0f;
+        sqMl.at (391) = 1.0f;
+        sqMl.at (392) = 1.0f;
+        sqMl.at (393) = 1.0f;
+        sqMl.at (10) = 10.0f;
+        sqMl.at (395) = 1.0f;
+        sqMl.at (12) = 7.0f;
+        sqMl.at (396) = 1.0f;
+        sqMl.at (14) = 5.0f;
+        sqMl.at (398) = 1.0f;
+        sqMl.at (399) = 1.0f;
+        sqMl.at (400) = 1.0f;
+        sqMl.at (401) = 1.0f;
+        sqMl.at (18) = 12.0f;
+        sqMl.at (403) = 1.0f;
+        sqMl.at (20) = 7.0f;
+        sqMl.at (404) = 1.0f;
+        sqMl.at (405) = 1.0f;
+        sqMl.at (22) = 12.0f;
+        sqMl.at (407) = 1.0f;
+        sqMl.at (408) = 1.0f;
+        sqMl.at (409) = 1.0f;
+        sqMl.at (26) = 10.0f;
+        sqMl.at (411) = 1.0f;
+        sqMl.at (28) = 7.0f;
+        sqMl.at (412) = 1.0f;
+        sqMl.at (30) = 5.0f;
+        sqMl.at (414) = 1.0f;
+        sqMl.at (415) = 1.0f;
+        sqMl.at (416) = 1.0f;
+        sqMl.at (417) = 1.0f;
+        sqMl.at (34) = 12.0f;
+        sqMl.at (419) = 1.0f;
+        sqMl.at (36) = 7.0f;
+        sqMl.at (420) = 1.0f;
+        sqMl.at (421) = 1.0f;
+        sqMl.at (38) = 12.0f;
+        sqMl.at (423) = 1.0f;
+        sqMl.at (424) = 1.0f;
+        sqMl.at (425) = 1.0f;
+        sqMl.at (42) = 10.0f;
+        sqMl.at (427) = 1.0f;
+        sqMl.at (44) = 7.0f;
+        sqMl.at (428) = 1.0f;
+        sqMl.at (46) = 5.0f;
+        sqMl.at (430) = 1.0f;
+        sqMl.at (431) = 1.0f;
+        sqMl.at (432) = 1.0f;
+        sqMl.at (433) = 1.0f;
+        sqMl.at (50) = 12.0f;
+        sqMl.at (435) = 1.0f;
+        sqMl.at (52) = 7.0f;
+        sqMl.at (436) = 1.0f;
+        sqMl.at (437) = 1.0f;
+        sqMl.at (54) = 12.0f;
+        sqMl.at (439) = 1.0f;
+        sqMl.at (440) = 1.0f;
+        sqMl.at (441) = 1.0f;
+        sqMl.at (58) = 10.0f;
+        sqMl.at (443) = 1.0f;
+        sqMl.at (60) = 7.0f;
+        sqMl.at (444) = 1.0f;
+        sqMl.at (62) = 5.0f;
+        sqMl.at (446) = 1.0f;
+        sqMl.at (447) = 1.0f;
 
         for (int sm = 0; sm < 10; ++sm)   // MOD-SEQ
         {
@@ -19017,8 +20115,289 @@ processor Eisenpuls_Synth
         return clamp (arpSN.at (i % n) + 12 * (i / n), 0, 127);
     }
 
+    // ---- MOD-SQM: scheduled notes for the Euclid / Melodic / Generative modes ----
+    bool sqHas (int nn)
+    {
+        for (int i = 0; i < sqCnt; ++i)
+            if (sqN.at (i) == nn)
+                return true;
+
+        return false;
+    }
+
+    void sqAllOff()
+    {
+        for (int i = 0; i < sqCnt; ++i)
+            voiceNoteOff (sqN.at (i));
+
+        sqCnt = 0;
+        evCnt = 0;
+    }
+
+    void evAdd (int nn, float vel, float64 t, float len)
+    {
+        if (evCnt >= 32)
+            return;
+
+        evN.at (evCnt) = clamp (nn, 0, 127);
+        evV.at (evCnt) = vel;
+        evT.at (evCnt) = t;
+        evL.at (evCnt) = max (len, 0.02f);
+        evCnt++;
+    }
+
+    void sqFire (int nn, float vel, float64 endT)
+    {
+        for (int i = 0; i < sqCnt; ++i)
+            if (sqN.at (i) == nn)   // the same note again: restart it
+            {
+                voiceNoteOff (nn);
+                voiceNoteOn (nn, vel);
+                sqEnd.at (i) = endT;
+                return;
+            }
+
+        if (sqCnt >= 16)   // full: the oldest note makes room
+        {
+            voiceNoteOff (sqN.at (0));
+
+            for (int j = 0; j < 15; ++j)
+            {
+                sqN.at (j)   = sqN.at (j + 1);
+                sqEnd.at (j) = sqEnd.at (j + 1);
+            }
+
+            sqCnt = 15;
+        }
+
+        sqN.at (sqCnt)   = nn;
+        sqEnd.at (sqCnt) = endT;
+        sqCnt++;
+        voiceNoteOn (nn, vel);
+    }
+
+    void sqTick (float64 now)
+    {
+        for (int i = evCnt - 1; i >= 0; --i)
+            if (evT.at (i) <= now)
+            {
+                sqFire (evN.at (i), evV.at (i), evT.at (i) + float64 (evL.at (i)));
+                evCnt--;
+                evN.at (i) = evN.at (evCnt);
+                evV.at (i) = evV.at (evCnt);
+                evT.at (i) = evT.at (evCnt);
+                evL.at (i) = evL.at (evCnt);
+            }
+
+        for (int i = sqCnt - 1; i >= 0; --i)
+            if (sqEnd.at (i) <= now)
+            {
+                voiceNoteOff (sqN.at (i));
+                sqCnt--;
+                sqN.at (i)   = sqN.at (sqCnt);
+                sqEnd.at (i) = sqEnd.at (sqCnt);
+            }
+    }
+
+    float sqRand01()
+    {
+        return nextNoise() * 0.5f + 0.5f;
+    }
+
+    int sqChordCount (int t)
+    {
+        if (t == 0) return 1;
+        if (t <= 2 || t == 0) return 2;
+        if (t == 6 || t == 7) return 4;
+        return 3;
+    }
+
+    int sqChordInt (int t, int i)
+    {
+        if (i == 0) return 0;
+        if (t == 1) return 12;
+        if (t == 2) return 7;
+        if (t == 3) return i == 1 ? 4 : 7;
+        if (t == 4) return i == 1 ? 3 : 7;
+        if (t == 5) return i == 1 ? 5 : 7;
+        if (t == 6) return i == 1 ? 4 : (i == 2 ? 7 : 11);
+        if (t == 7) return i == 1 ? 3 : (i == 2 ? 7 : 10);
+        return i == 1 ? 3 : 6;
+    }
+
+    int sqScaleMask (int sc)
+    {
+        if (sc == 1)  return 2741;   // major
+        if (sc == 2)  return 1453;   // minor
+        if (sc == 3)  return 1709;   // dorian
+        if (sc == 4)  return 1451;   // phrygian
+        if (sc == 5)  return 2773;   // lydian
+        if (sc == 6)  return 1717;   // mixolydian
+        if (sc == 7)  return 2477;   // harmonic minor
+        if (sc == 8)  return 661;    // major pentatonic
+        if (sc == 9)  return 1193;   // minor pentatonic
+        if (sc == 10) return 1257;   // blues
+        if (sc == 11) return 1365;   // whole tone
+        return 4095;                 // chromatic
+    }
+
+    int sqScaleCount (int mask, int range)
+    {
+        int n = 0;
+
+        for (int s = 0; s < range; ++s)
+            if (((mask >> (s % 12)) & 1) != 0)
+                n++;
+
+        return max (n, 1);
+    }
+
+    int sqScaleNote (int mask, int range, int idx)
+    {
+        int n = 0;
+        int last = 0;
+
+        for (int s = 0; s < range; ++s)
+            if (((mask >> (s % 12)) & 1) != 0)
+            {
+                last = s;
+
+                if (n == idx)
+                    return s;
+
+                n++;
+            }
+
+        return last;
+    }
+
+    void sqEuclid (int st)
+    {
+        int root = arpHN.at (max (arpN - 1, 0));
+
+        for (int l = 0; l < 4; ++l)
+        {
+            int b = l * 8;
+
+            if (sqEu.at (b) < 0.5f)
+                continue;
+
+            int len = clamp (int (sqEu.at (b + 1) + 0.5f), 1, 64);
+            int pul = clamp (int (sqEu.at (b + 2) + 0.5f), 0, len);
+            int rot = max (int (sqEu.at (b + 3) + 0.5f), 0);
+            int idx = st % len;
+            int j   = (idx + rot) % len;
+
+            if (pul <= 0 || (j * pul) % len >= pul)
+                continue;
+
+            if (sqEu.at (b + 5) < 99.5f && sqRand01() * 100.0f >= sqEu.at (b + 5))
+                continue;
+
+            int   rat = clamp (int (sqEu.at (b + 6) + 0.5f), 1, 4);
+            int   nn  = root + int (sqEu.at (b + 4));
+            float vel = idx == 0 ? 1.0f : 0.7f;
+
+            for (int r = 0; r < rat; ++r)
+                evAdd (nn, vel, float64 (st) + float64 (r) / float64 (rat), arpGate / float (rat));
+        }
+    }
+
+    void sqMelodic (int st)
+    {
+        int si = st % clamp (int (sqMlLen + 0.5f), 1, 64);
+
+        if (sqMl.at (384 + si) < 0.5f)
+            return;
+
+        if (sqMl.at (256 + si) < 99.5f && sqRand01() * 100.0f >= sqMl.at (256 + si))
+            return;
+
+        int   root = arpHN.at (max (arpN - 1, 0));
+        int   nn   = root + int (sqMl.at (si));
+        float vel  = clamp (sqMl.at (64 + si) / 127.0f, 0.01f, 1.0f);
+        float len  = sqMl.at (128 + si) * 0.01f;
+        int   ct   = clamp (int (sqMl.at (192 + si) + 0.5f), 0, 8);
+        int   rat  = clamp (int (sqMl.at (320 + si) + 0.5f), 1, 4);
+        int   cn   = sqChordCount (ct);
+
+        for (int r = 0; r < rat; ++r)
+            for (int c = 0; c < cn; ++c)
+                evAdd (nn + sqChordInt (ct, c), vel, float64 (st) + float64 (r) / float64 (rat), len / float (rat));
+    }
+
+    void sqGenerative (int st)
+    {
+        int   root  = arpHN.at (max (arpN - 1, 0));
+        int   type  = int (sqGn.at (0) + 0.5f);
+        int   mask  = sqScaleMask (int (sqGn.at (1) + 0.5f));
+        int   range = clamp (int (sqGn.at (2) + 0.5f), 12, 48);
+        int   n     = sqScaleCount (mask, range);
+        int   idx   = 0;
+        float accent = 0.0f;
+
+        if (type == 0)   // turing machine
+        {
+            int ll   = clamp (int (sqGn.at (4) + 0.5f), 2, 16);
+            int msk  = (1 << ll) - 1;
+
+            if (gnReg == 0)
+                gnReg = (11354 & msk) | 1;
+
+            int bit = (gnReg >> (ll - 1)) & 1;
+
+            if (sqRand01() * 100.0f < sqGn.at (5))
+                bit = 1 - bit;
+
+            gnReg = ((gnReg << 1) | bit) & msk;
+            idx   = clamp (int (float (gnReg) / float (msk) * float (n)), 0, n - 1);
+            accent = float ((gnReg >> 1) & 1);
+        }
+        else   // random walk
+        {
+            int ms = clamp (int (sqGn.at (6) + 0.5f), 1, 7);
+
+            if (gnDeg < 0)
+                gnDeg = n / 2;
+
+            int d  = int (sqRand01() * float (2 * ms + 1)) - ms;
+            float bs = sqGn.at (7);
+
+            if (bs > 0.0f && sqRand01() * 100.0f < bs)
+                d = abs (d);
+            else if (bs < 0.0f && sqRand01() * 100.0f < -bs)
+                d = -abs (d);
+
+            gnDeg += d;
+
+            if (gnDeg < 0)
+                gnDeg = -gnDeg;
+
+            if (gnDeg > n - 1)
+                gnDeg = max (2 * (n - 1) - gnDeg, 0);
+
+            gnDeg  = clamp (gnDeg, 0, n - 1);
+            idx    = gnDeg;
+            accent = d != 0 && abs (d) >= ms ? 1.0f : 0.0f;
+        }
+
+        if (sqRand01() * 100.0f < sqGn.at (8))   // rest
+            return;
+
+        int nn  = root + int (sqGn.at (3)) + sqScaleNote (mask, range, idx);
+        int rat = clamp (int (sqGn.at (9) + 0.5f), 1, 4);
+
+        for (int r = 0; r < rat; ++r)
+            evAdd (nn, accent > 0.5f ? 1.0f : 0.65f, float64 (st) + float64 (r) / float64 (rat), arpGate / float (rat));
+    }
+
     void arpTick (float dt)
     {
+        int amd = int (arpMode + 0.5f);   // MOD-SQM
+
+        if (amd < 6 && (sqCnt > 0 || evCnt > 0))
+            sqAllOff();
+
         if (arpLatch < 0.5f && arpKeys <= 0)   // latch switched off while no key is down: the held notes go
             arpN = 0;
 
@@ -19039,11 +20418,41 @@ processor Eisenpuls_Synth
             arpPh   = 1.0f;
             arpStep = 0;
             a3Prev  = false;   // MOD-ARP303
+            gnReg   = 0;       // MOD-SQM
+            gnDeg   = -1;
+
+            if (sqCnt > 0 || evCnt > 0)
+                sqAllOff();
+
             return;
         }
 
         float hz = arpSync > 0.5f ? syncHz (arpDiv) : arpRate;
         arpPh += max (hz, 0.01f) * dt;
+
+        if (amd >= 6)   // MOD-SQM: Euclid / Melodic / Generative
+        {
+            if (arpPh >= 1.0f)
+            {
+                arpPh -= 1.0f;
+
+                if (arpPh >= 1.0f)
+                    arpPh = 0.0f;
+
+                int sn = arpStep;
+                arpStep++;
+
+                if (amd == 6)
+                    sqEuclid (sn);
+                else if (amd == 7)
+                    sqMelodic (sn);
+                else
+                    sqGenerative (sn);
+            }
+
+            sqTick (float64 (arpStep - 1) + float64 (arpPh));
+            return;
+        }
 
         if (arpPh >= 1.0f)
         {
@@ -19133,7 +20542,7 @@ processor Eisenpuls_Synth
             if (arpOn > 0.5f)
                 arpRelease (nn);
 
-            if (arpOn < 0.5f || arpCur != nn)
+            if (arpOn < 0.5f || (arpCur != nn && ! sqHas (nn)))   // MOD-SQM: a sequencer note with the same number keeps sounding
                 voiceNoteOff (nn);
         }
     }

@@ -1094,18 +1094,213 @@ namespace njo
         }
     };
 
+    // ------------------------------------------------------------------ Euclid / Poly mode: four lanes with their own length (polyrhythm)
+    struct EuclidEditor : juce::Component, Ctx::Listener
+    {
+        Ctx& ctx; juce::OwnedArray<ParamWidget> w;   // 4 lanes x 7 (On, Steps, Pulses, Rotation, Offset, Probability, Ratchet)
+        juce::Rectangle<float> pat[4];
+        explicit EuclidEditor (Ctx& c) : ctx (c)
+        {
+            ctx.addListener (this);
+            for (int l = 0; l < 4; ++l)
+                for (int k = 0; k < 7; ++k)
+                {
+                    auto* x = w.add (makeWidget (c, 5710 + 8 * l + k, k != 0).release());
+                    if (k != 0) x->setLook (true);
+                    addAndMakeVisible (x);
+                }
+        }
+        ~EuclidEditor() override { ctx.removeListener (this); }
+        void paramChanged (int n, float) override { if (n >= 5710 && n < 5742) repaint(); }
+        juce::Rectangle<int> laneRect (int l) const { auto r = getLocalBounds(); int h = r.getHeight() / 4; return r.withY (l * h).withHeight (h); }
+        void resized() override
+        {
+            for (int l = 0; l < 4; ++l)
+            {
+                auto r = laneRect (l).reduced (2, 1);
+                auto on = r.removeFromLeft (50); w[(size_t) (l * 7)]->setBounds (on.withSizeKeepingCentre (46, juce::jmin (40, on.getHeight())));
+                int kw = juce::jmin (64, r.getWidth() / 4);
+                auto kn = r.removeFromRight (kw * 6);
+                for (int k = 1; k < 7; ++k) w[(size_t) (l * 7 + k)]->setBounds (kn.removeFromLeft (kw));
+                pat[l] = r.reduced (8, 6).toFloat();
+            }
+        }
+        // the same rule as the DSP: step i of a lane hits when ((i + rotation) % steps * pulses) % steps < pulses
+        static bool hit (int i, int len, int pul, int rot) { return pul > 0 && (((i % len) + rot) % len * pul) % len < pul; }
+        void paint (juce::Graphics& g) override
+        {
+            const juce::Colour cols[4] = { juce::Colour (0xffe8b84a), juce::Colour (0xff4ad0e8), juce::Colour (0xffff5a3c), juce::Colour (0xff7ad87a) };
+            for (int l = 0; l < 4; ++l)
+            {
+                auto lr = laneRect (l).toFloat().reduced (2.0f, 1.0f);
+                bool on = ctx.get (5710 + 8 * l) > 0.5f;
+                g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (lr, 4.0f);
+                int len = juce::jlimit (1, 64, juce::roundToInt (ctx.get (5711 + 8 * l))), pul = juce::jlimit (0, len, juce::roundToInt (ctx.get (5712 + 8 * l))), rot = juce::roundToInt (ctx.get (5713 + 8 * l));
+                auto p = pat[l]; float cw = p.getWidth() / (float) len;
+                g.setColour (dim.withAlpha (on ? 0.9f : 0.4f)); g.setFont (font (8.5f, true));
+                g.drawText ("LANE " + juce::String (l + 1) + "   " + juce::String (pul) + " / " + juce::String (len), p.withHeight (12).toNearestInt(), juce::Justification::centredLeft);
+                auto strip = p.withTrimmedTop (16);
+                for (int i = 0; i < len; ++i)
+                {
+                    auto c = juce::Rectangle<float> (strip.getX() + i * cw + 1.0f, strip.getY(), juce::jmax (cw - 2.0f, 1.0f), strip.getHeight());
+                    bool h = hit (i, len, pul, rot);
+                    g.setColour (h ? cols[l].withAlpha (on ? 0.95f : 0.3f) : juce::Colour (0xff1a1c1d).withAlpha (on ? 1.0f : 0.6f)); g.fillRoundedRectangle (c, 2.0f);
+                    if (i == 0) { g.setColour (dim.withAlpha (0.6f)); g.drawRoundedRectangle (c.reduced (0.5f), 2.0f, 1.0f); }
+                }
+            }
+        }
+    };
+
+    // ------------------------------------------------------------------ Melodic mode: up to 64 steps with note, velocity, length, chord, probability, ratchet and gate
+    struct MelodicEditor : juce::Component, Ctx::Listener
+    {
+        static constexpr int ML_LEN = 5800, ML_BASE = 5810;
+        struct LaneInfo { const char* name; int lo, hi, dflt; };
+        static constexpr LaneInfo lanes[6] = { { "NOTE", -24, 24, 0 }, { "VELOCITY", 1, 127, 100 }, { "LENGTH", 10, 400, 80 }, { "CHORD", 0, 8, 0 }, { "PROB", 0, 100, 100 }, { "RATCHET", 1, 4, 1 } };
+        Ctx& ctx; int pageNo = 0, lane = 0, lastStep = -1, dragRow = -1, setTo = 0;
+        explicit MelodicEditor (Ctx& c) : ctx (c) { ctx.addListener (this); }
+        ~MelodicEditor() override { ctx.removeListener (this); }
+        void paramChanged (int n, float) override { if (n == ML_LEN || (n >= ML_BASE && n < ML_BASE + 448)) repaint(); }
+        static int idOf (int row, int k) { return ML_BASE + 64 * row + k; }
+        static constexpr float labW = 44.0f, rowH = 17.0f, tabH = 14.0f;
+        int lenOf() const { return juce::jlimit (1, 64, juce::roundToInt (ctx.get (ML_LEN))); }
+        juce::Rectangle<float> inner() const { auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); r.removeFromLeft (labW); return r; }
+        juce::Rectangle<float> chipRect (int i) const { auto r = inner(); return { r.getX() + i * 78.0f, r.getY(), 74.0f, 14.0f }; }
+        juce::Rectangle<float> bars() const { auto r = inner(); r.removeFromTop (18); return r.withTrimmedBottom (rowH + tabH + 8.0f); }
+        juce::Rectangle<float> gateRect() const { auto r = inner(); r.removeFromBottom (tabH + 3.0f); return r.removeFromBottom (rowH); }
+        juce::Rectangle<float> tabRect (int t) const { auto r = inner(); float w = juce::jmin (74.0f, r.getWidth() / 4.0f); return { r.getX() + t * (w + 3.0f), r.getBottom() - tabH, w, tabH }; }
+        int colOf (float x) const { auto a = bars(); return pageNo * 16 + juce::jlimit (0, 15, (int) ((x - a.getX()) / (a.getWidth() / 16.0f))); }
+        static juce::String chordName (int c) { static const char* n[9] = { "-", "Oct", "5th", "Maj", "Min", "Sus4", "Maj7", "Min7", "Dim" }; return n[juce::jlimit (0, 8, c)]; }
+        juce::String valText (int v) const
+        {
+            if (lane == 3) return chordName (v);
+            if (lane == 5) return "x" + juce::String (v);
+            return (lane == 0 && v > 0 ? "+" : "") + juce::String (v);
+        }
+        void paint (juce::Graphics& g) override
+        {
+            auto a = bars(); int len = lenOf(); float sw = a.getWidth() / 16.0f; const int off = pageNo * 16; const auto& li = lanes[lane];
+            g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
+            for (int i = 0; i < 6; ++i)
+            {
+                auto cr = chipRect (i); bool sel = i == lane;
+                g.setColour (sel ? red.withAlpha (0.85f) : juce::Colour (0xff1a1c1d)); g.fillRoundedRectangle (cr, 3.0f);
+                g.setColour (sel ? juce::Colours::white : dim); g.setFont (font (8.0f, true)); g.drawText (lanes[i].name, cr.toNearestInt(), juce::Justification::centred);
+            }
+            auto yOf = [&] (float v) { return a.getBottom() - (v - (float) li.lo) / (float) (li.hi - li.lo) * a.getHeight(); };
+            if (lane == 0) { g.setColour (dim.withAlpha (0.35f)); g.drawHorizontalLine ((int) yOf (0.0f), a.getX(), a.getRight()); g.drawHorizontalLine ((int) yOf (12.0f), a.getX(), a.getRight()); }
+            g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.0f));
+            g.drawText (lane == 0 ? "root" : juce::String (li.hi), 4, (int) (lane == 0 ? yOf (0.0f) : a.getY()) - 5, (int) labW - 4, 10, juce::Justification::centredRight);
+            g.drawText ("GATE", 4, (int) gateRect().getY(), (int) labW - 4, (int) gateRect().getHeight(), juce::Justification::centredRight);
+            for (int t = 0; t < 4; ++t)
+            {
+                auto tr = tabRect (t); bool sel = t == pageNo, used = t * 16 < len;
+                g.setColour (sel ? red.withAlpha (0.85f) : juce::Colour (0xff1a1c1d)); g.fillRoundedRectangle (tr, 3.0f);
+                g.setColour (sel ? juce::Colours::white : dim.withAlpha (used ? 0.95f : 0.4f)); g.setFont (font (8.0f, true));
+                g.drawText (juce::String (t * 16 + 1) + "-" + juce::String (t * 16 + 16), tr.toNearestInt(), juce::Justification::centred);
+            }
+            for (int kk = 0; kk < 16; ++kk)
+            {
+                const int k = kk + off; bool act = k < len, gate = ctx.get (idOf (6, k)) > 0.5f;
+                auto cell = juce::Rectangle<float> (a.getX() + kk * sw + 1.5f, a.getY(), sw - 3.0f, a.getHeight());
+                g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (cell, 2.0f);
+                float v = ctx.get (idOf (lane, k)), y = yOf (v), z = lane == 0 ? yOf (0.0f) : a.getBottom();
+                juce::Rectangle<float> bar (cell.getX(), juce::jmin (y, z), cell.getWidth(), juce::jmax (std::abs (y - z), 3.0f));
+                g.setColour (juce::Colour (0xffe8b84a).withAlpha (act ? (gate ? 0.95f : 0.25f) : 0.2f)); g.fillRoundedRectangle (bar, 2.0f);
+                g.setColour (dim.withAlpha (act ? 0.9f : 0.4f)); g.setFont (font (8.0f));
+                g.drawText (juce::String (k + 1), cell.toNearestInt().removeFromTop (10), juce::Justification::centred);
+                g.drawText (valText (juce::roundToInt (v)), cell.toNearestInt().removeFromBottom (11), juce::Justification::centred);
+                auto c = juce::Rectangle<float> (a.getX() + kk * sw + 1.5f, gateRect().getY() + 1.0f, sw - 3.0f, rowH - 2.0f);
+                g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (c, 2.0f);
+                if (gate) { g.setColour (juce::Colour (0xffe8b84a).withAlpha (act ? 0.95f : 0.3f)); g.fillRoundedRectangle (c.reduced (3.0f, 3.0f), 2.0f); }
+            }
+        }
+        void setStep (const juce::MouseEvent& e)
+        {
+            auto a = bars(); const auto& li = lanes[lane]; int k = colOf (e.position.x);
+            float v = (float) li.lo + juce::jlimit (0.0f, 1.0f, 1.0f - (e.position.y - a.getY()) / a.getHeight()) * (float) (li.hi - li.lo);
+            if (lane == 0 && e.mods.isShiftDown()) v = std::round (v / 12.0f) * 12.0f;
+            if (lane == 2) v = std::round (v / 5.0f) * 5.0f;
+            int id = idOf (lane, k); ctx.begin (id); ctx.set (id, juce::jlimit ((float) li.lo, (float) li.hi, std::round (v))); ctx.end (id); lastStep = k; repaint();
+        }
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            lastStep = -1; dragRow = -1;
+            for (int i = 0; i < 6; ++i) if (chipRect (i).contains (e.position)) { lane = i; repaint(); return; }
+            for (int t = 0; t < 4; ++t) if (tabRect (t).contains (e.position)) { pageNo = t; repaint(); return; }
+            if (gateRect().expanded (0.0f, 1.0f).contains (e.position))
+            {
+                int k = colOf (e.position.x), id = idOf (6, k); setTo = ctx.get (id) > 0.5f ? 0 : 1; dragRow = 6;
+                ctx.begin (id); ctx.set (id, (float) setTo); ctx.end (id); lastStep = k; repaint(); return;
+            }
+            if (bars().contains (e.position)) { dragRow = 7; setStep (e); }
+        }
+        void mouseDrag (const juce::MouseEvent& e) override
+        {
+            if (dragRow == 7) setStep (e);
+            else if (dragRow == 6) { int k = colOf (e.position.x); if (k != lastStep) { int id = idOf (6, k); ctx.begin (id); ctx.set (id, (float) setTo); ctx.end (id); lastStep = k; repaint(); } }
+        }
+        void mouseDoubleClick (const juce::MouseEvent& e) override
+        {
+            if (bars().contains (e.position)) { int id = idOf (lane, colOf (e.position.x)); ctx.begin (id); ctx.set (id, (float) lanes[lane].dflt); ctx.end (id); repaint(); }
+        }
+    };
+
+    // ------------------------------------------------------------------ Generative mode: turing machine / random walk in a scale
+    struct GenEditor : juce::Component, Ctx::Listener
+    {
+        Ctx& ctx; juce::OwnedArray<ParamWidget> w;   // 5750 .. 5759: Type, Scale, Range, Shift, Loop, Mutation, Max Step, Bias, Rest, Ratchet
+        explicit GenEditor (Ctx& c) : ctx (c)
+        {
+            ctx.addListener (this);
+            for (int k = 0; k < 10; ++k)
+            {
+                auto* x = w.add (makeWidget (c, 5750 + k, k >= 2).release());
+                if (k >= 2) x->setLook (true);
+                addAndMakeVisible (x);
+            }
+            refresh();
+        }
+        ~GenEditor() override { ctx.removeListener (this); }
+        void refresh()
+        {
+            bool turing = juce::roundToInt (ctx.get (5750)) == 0;
+            for (int k : { 4, 5 }) w[(size_t) k]->setAlpha (turing ? 1.0f : 0.35f);   // loop, mutation
+            for (int k : { 6, 7 }) w[(size_t) k]->setAlpha (turing ? 0.35f : 1.0f);   // max step, bias
+        }
+        void paramChanged (int n, float) override { if (n == 5750) refresh(); }
+        void resized() override
+        {
+            auto r = getLocalBounds().reduced (6, 4);
+            auto top = r.removeFromTop (46);
+            w[0]->setBounds (top.removeFromLeft (r.getWidth() / 4).reduced (4, 0)); w[1]->setBounds (top.removeFromLeft (r.getWidth() / 4).reduced (4, 0));
+            int kw = r.getWidth() / 8;
+            auto kr = r.removeFromTop (juce::jmin (r.getHeight() - 20, 110));
+            for (int k = 2; k < 10; ++k) w[(size_t) k]->setBounds (kr.removeFromLeft (kw));
+        }
+        void paint (juce::Graphics& g) override
+        {
+            g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
+            g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+            g.drawText (juce::roundToInt (ctx.get (5750)) == 0 ? "Turing machine: a shift register of Loop bits; Mutation flips the bit that wraps around (0 % = a fixed loop, 100 % = random)."
+                                                               : "Random walk: every step moves up to Max Step scale degrees, Bias pushes it up (+) or down (-).",
+                        getLocalBounds().withTrimmedTop (getHeight() - 16).reduced (10, 0), juce::Justification::centredLeft);
+        }
+    };
+
     // ------------------------------------------------------------------ page: sequencers + arpeggiator
     struct SeqArpPage::Impl
     {
         SeqEditor seq;
         Arp303Editor a3;
         std::unique_ptr<A3Bank> bank;
-        std::unique_ptr<ParamWidget> a3Len;
+        std::unique_ptr<ParamWidget> a3Len, mlLen;
+        EuclidEditor eu; MelodicEditor ml; GenEditor gn;
         Ctx* ctxp = nullptr;
         juce::OwnedArray<ParamWidget> w;     // On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
         juce::Rectangle<int> arpRect;
-        bool is303 = false;
-        explicit Impl (Ctx& c) : seq (c), a3 (c) {}
+        int mode = 0;   // arp mode: 5 = 303, 6 = Euclid / Poly, 7 = Melodic, 8 = Generative
+        explicit Impl (Ctx& c) : seq (c), a3 (c), eu (c), ml (c), gn (c) {}
     };
 
     SeqArpPage::SeqArpPage (Ctx& c) : impl (new Impl (c))
@@ -1115,6 +1310,8 @@ namespace njo
         addChildComponent (I.a3);
         I.a3Len = makeWidget (c, A3_LEN, true); I.a3Len->setLook (true); addChildComponent (*I.a3Len);
         I.bank.reset (new A3Bank (c, *this)); addChildComponent (*I.bank);
+        addChildComponent (I.eu); addChildComponent (I.ml); addChildComponent (I.gn);
+        I.mlLen = makeWidget (c, MelodicEditor::ML_LEN, true); I.mlLen->setLook (true); addChildComponent (*I.mlLen);
         c.addListener (this); I.ctxp = &c;
         const bool knob[8] = { false, false, false, false, false, true, true, false };
         for (int k = 0; k < 8; ++k)
@@ -1129,8 +1326,15 @@ namespace njo
     void SeqArpPage::paramChanged (int num, float v)
     {
         if (num != ARP_BASE + 1) return;
-        bool on = juce::roundToInt (v) == 5;
-        if (on != impl->is303) { impl->is303 = on; impl->a3.setVisible (on); impl->a3Len->setVisible (on); impl->bank->setVisible (on); resized(); repaint(); }
+        int m = juce::roundToInt (v);
+        if (m < 5 || m > 8) m = 0;
+        if (m != impl->mode)
+        {
+            auto& I = *impl; I.mode = m;
+            I.a3.setVisible (m == 5); I.a3Len->setVisible (m == 5); I.bank->setVisible (m == 5);
+            I.eu.setVisible (m == 6); I.ml.setVisible (m == 7); I.mlLen->setVisible (m == 7); I.gn.setVisible (m == 8);
+            resized(); repaint();
+        }
     }
 
     void SeqArpPage::paint (juce::Graphics& g)
@@ -1140,18 +1344,29 @@ namespace njo
         g.setColour (red); g.setFont (impact (11.0f));
         g.drawText ("ARPEGGIATOR", I.arpRect.getX() + 10, I.arpRect.getY() + 4, 260, 16, juce::Justification::centredLeft);
         g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
-        g.drawText ("plays the held keys one after the other instead of as a chord", I.arpRect.getX() + 10, I.arpRect.getBottom() - 16, 400, 12, juce::Justification::centredLeft);
+        static const char* hint[9] = { "plays the held keys one after the other instead of as a chord", "", "", "", "", "TB-303 style pattern, up to 64 steps; the root is the last key pressed",
+                                       "Euclidean rhythms: four lanes of different lengths play against each other (polyrhythm); the root is the last key pressed",
+                                       "step sequencer with chords, velocity, length (over 100 % ties), probability and ratchets; the root is the last key pressed",
+                                       "generative melodies in a scale (turing machine or random walk); the root is the last key pressed" };
+        g.drawText (hint[I.mode == 0 ? 0 : I.mode], I.arpRect.getX() + 10, I.arpRect.getBottom() - 16, 700, 12, juce::Justification::centredLeft);
     }
 
     void SeqArpPage::resized()
     {
         auto& I = *impl;
         auto b = getLocalBounds();
-        I.arpRect = b.removeFromBottom (I.is303 ? juce::jmin (330, b.getHeight() * 11 / 20) : juce::jmin (130, b.getHeight() / 3));
+        I.arpRect = b.removeFromBottom (I.mode >= 5 ? juce::jmin (330, b.getHeight() * 11 / 20) : juce::jmin (130, b.getHeight() / 3));
         b.removeFromBottom (6);
         I.seq.setBounds (b);
         auto r = I.arpRect.reduced (12, 4); r.removeFromTop (18); r.removeFromBottom (16);
-        if (I.is303)   // the pattern editor below the arpeggiator controls
+        if (I.mode >= 6)   // Euclid / Melodic / Generative editors below the arpeggiator controls
+        {
+            auto ed = r.removeFromBottom (r.getHeight() - 70); ed.removeFromTop (2);
+            if (I.mode == 7) { auto lk = ed.removeFromRight (80); ed.removeFromRight (6); I.ml.setBounds (ed); I.mlLen->setBounds (lk.removeFromTop (70)); }
+            else if (I.mode == 6) I.eu.setBounds (ed);
+            else I.gn.setBounds (ed);
+        }
+        if (I.mode == 5)   // the pattern editor below the arpeggiator controls
         {
             auto ed = r.removeFromBottom (r.getHeight() - 70); ed.removeFromTop (2);
             I.bank->setBounds (ed.removeFromTop (20)); ed.removeFromTop (3);
