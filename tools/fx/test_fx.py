@@ -611,27 +611,24 @@ ld = render(fx(0, 29, 3, 1.0, (0.3, 0.45, 0.5, 0.5, 0.5, 1.0)), tag="loop", hold
 ld0 = render(fx(0, 29, 3, 1.0, (0.3, 0.45, 0.5, 0.5, 0.5, 0.0)), tag="loop0", hold=0.5, tail=2.5)
 check("Looping Delay with feedback keeps looping, without it the loop is one repeat", rms(ld[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]) > 5 * rms(ld0[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]) + 1e-4, "%.4f vs %.4f" % (rms(ld[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)]), rms(ld0[T0 + int(1.6 * RATE):T0 + int(2.4 * RATE)])))
 
-WPN = ["Crossfade", "Fold", "Analog RM", "Digital RM", "XOR", "Comparator", "Vocoder", "Freq Shift"]
+WPN = ["Analog RM", "Digital RM", "Vocoder", "Freq Shift"]
 for m, nm in enumerate(WPN):
     for pn, pv in (("default", (0.5, 0.5, 0.511, 0.0, 0.5, 0.3)), ("max", (1.0, 1.0, 1.0, 1.0, 1.0, 1.0)), ("min", (0.0, 0.0, 0.0, 0.0, 0.0, 0.0))):
         a = render(fx(0, 30, m, 1.0, pv), tag="wp%d%s" % (m, pn))
         check("Warp %s (%s): finite and bounded" % (nm, pn), bool(np.isfinite(a).all()) and np.abs(a).max() < 8.0, "peak %.2f" % np.abs(a).max())
 # the carrier is 300 Hz (P3 = 0.511), the modulator the 440 Hz note
-cf = render(fx(0, 30, 0, 1.0, (0.0, 0.5, 0.511, 0.0, 0.5, 0.3)), tag="wpx0"); mf = render(fx(0, 30, 0, 1.0, (1.0, 0.5, 0.511, 0.0, 0.5, 0.3)), tag="wpx1")
-check("Warp Crossfade 0: the carrier (300 Hz)", near(peaks(cf, n=1), 300, 15), str(peaks(cf, n=1)))
-check("Warp Crossfade 1: the modulator (440 Hz)", near(peaks(mf, n=1), 440, 15), str(peaks(mf, n=1)))
-rm = render(fx(0, 30, 3, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wprm"); pk = peaks(rm, n=2)
+rm = render(fx(0, 30, 1, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wprm"); pk = peaks(rm, n=2)
 check("Warp Digital RM: sidebands 140 and 740 Hz, no 440", near(pk, 140, 15) and near(pk, 740, 15), str(pk))
-ar = render(fx(0, 30, 2, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wpar"); pk = peaks(ar, n=4)
+ar = render(fx(0, 30, 0, 1.0, (0.0, 1.0, 0.511, 0.0, 0.5, 0.3)), tag="wpar"); pk = peaks(ar, n=4)
 check("Warp Analog RM: sidebands 140 and 740 Hz", near(pk, 140, 15) and near(pk, 740, 15), str(pk))
 # frequency shifter: +100 Hz / -100 Hz (P3 = 0.3038), the note is 440 Hz
-fu = render(fx(0, 30, 7, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 1.0)), tag="fsup"); fd = render(fx(0, 30, 7, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 0.0)), tag="fsdn")
+fu = render(fx(0, 30, 3, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 1.0)), tag="fsup"); fd = render(fx(0, 30, 3, 1.0, (0.5, 0.5, 0.3038, 0.0, 0.5, 0.0)), tag="fsdn")
 check("Warp Freq Shift up by 100 Hz: 540 Hz", near(peaks(fu, n=1), 540, 12), str(peaks(fu, n=1)))
 check("Warp Freq Shift down by 100 Hz: 340 Hz", near(peaks(fd, n=1), 340, 12), str(peaks(fd, n=1)))
 sup = np.fft.rfft(fu[int(0.7 * RATE):int(1.2 * RATE), 0].astype(np.float64) * np.hanning(int(0.5 * RATE))); fq = np.fft.rfftfreq(int(0.5 * RATE), 1.0 / RATE)
 check("Warp Freq Shift rejects the image side band (-100 Hz: 340 Hz) by 20 dB", np.abs(sup[np.argmin(np.abs(fq - 540))]) > 10 * np.abs(sup[np.argmin(np.abs(fq - 340))]), "%.1f dB" % (20 * np.log10(np.abs(sup[np.argmin(np.abs(fq - 540))]) / np.abs(sup[np.argmin(np.abs(fq - 340))]))))
 # vocoder: silent without input, audible with it
-vc = render(fx(0, 30, 6, 1.0, (0.5, 0.5, 0.45, 0.66, 0.5, 0.3)), tag="wpvoc")
+vc = render(fx(0, 30, 2, 1.0, (0.5, 0.5, 0.45, 0.66, 0.5, 0.3)), tag="wpvoc")
 check("Warp Vocoder is audible while the note plays", rms(vc[int(0.7 * RATE):T0]) > 0.01, "%.4f" % rms(vc[int(0.7 * RATE):T0]))
 check("Warp Vocoder is silent without input", rms(vc[:int(0.5 * RATE)]) < 1e-3 and rms(vc[T0 + int(1.2 * RATE):]) < 5e-3, "%.5f / %.5f" % (rms(vc[:int(0.5 * RATE)]), rms(vc[T0 + int(1.2 * RATE):])))
 

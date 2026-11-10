@@ -254,16 +254,10 @@ CODE = r'''    // ================= FX-MUTABLE: Granular (FX type 29) and Warp (
         return v1 * k;
     }
 
-    // algorithms 0..5 (carrier c, modulator m, amount a)
+    // algorithms 0..1 (carrier c, modulator m, amount a); the crossfade / fold / xor / comparator modes live in the oscillator matrices now
     float wpAlg (int md, float a, float c, float m)
     {
-        if (md == 0)   // crossfade, equal power
-            return c * float (cos (a * 1.5707963f)) + m * float (sin (a * 1.5707963f));
-
-        if (md == 1)   // fold: the sum of both is folded harder with the amount
-            return float (sin ((c + m) * (0.4f + a * 3.5f) * 1.5707963f));
-
-        if (md == 2)   // analog ring modulator: the difference of two diode-like curves, the amount makes them harder (more saturation, harsher products)
+        if (md == 0)   // analog ring modulator: the difference of two diode-like curves, the amount makes them harder (more saturation, harsher products)
         {
             float k = 1.0f + 5.0f * a;
             float u = c + m;
@@ -271,27 +265,8 @@ CODE = r'''    // ================= FX-MUTABLE: Granular (FX type 29) and Warp (
             return 0.5f * (u * float (tanh (k * u)) - v * float (tanh (k * v))) / k;
         }
 
-        if (md == 3)   // digital ring modulator: the product, folded with the amount
-            return float (sin (c * m * (1.0f + a * 3.0f) * 1.5707963f * 2.0f));
-
-        if (md == 4)   // xor of the 16 bit values, the amount fades from the sum to the xor
-        {
-            int ci = int (clamp (c, -1.0f, 0.9999f) * 32768.0f);
-            int mi = int (clamp (m, -1.0f, 0.9999f) * 32768.0f);
-            float xr = float (ci ^ mi) / 32768.0f;
-            return (1.0f - a) * (c + m) * 0.5f + a * xr;
-        }
-
-        // comparator: modulator above / below the carrier: maximum, minimum, gate
-        float mx = m > c ? m : c;
-        float mn = m > c ? c : m;
-        float gt = m > c ? 0.7f : -0.7f;
-        float t  = a * 2.0f;
-
-        if (t < 1.0f)
-            return mx + (mn - mx) * t;
-
-        return mn + (gt - mn) * (t - 1.0f);
+        // digital ring modulator: the product, folded with the amount
+        return float (sin (c * m * (1.0f + a * 3.0f) * 1.5707963f * 2.0f));
     }
 
     float<2> fxWarp (int s, float<2> x)
@@ -299,7 +274,7 @@ CODE = r'''    // ================= FX-MUTABLE: Granular (FX type 29) and Warp (
         int   pb = s * 4;
         int   db = s * 16;
         int   wb = s * 128;
-        int   md = clamp (fxMode.at (s), 0, 7);
+        int   md = clamp (fxMode.at (s), 0, 3);
         float sr = float (processor.frequency);
         float f  = fxD.at (db);
         float a  = fxD.at (db + 1);
@@ -316,7 +291,7 @@ CODE = r'''    // ================= FX-MUTABLE: Granular (FX type 29) and Warp (
         float m0 = x[0] * gm;
         float m1 = x[1] * gm;
 
-        if (md == 7)   // frequency shifter: Hilbert pair and a quadrature oscillator at the shift frequency
+        if (md == 3)   // frequency shifter: Hilbert pair and a quadrature oscillator at the shift frequency
         {
             float64 sp = fxPh.at (pb + 1) + float64 ((p6 < 0.5f ? f : -f) / sr);
 
@@ -351,7 +326,7 @@ CODE = r'''    // ================= FX-MUTABLE: Granular (FX type 29) and Warp (
             return float<2> (yo0 * lv, yo1 * lv);
         }
 
-        if (md == 6)   // vocoder: ten bands, the envelopes of the input shape the same bands of the carrier
+        if (md == 2)   // vocoder: ten bands, the envelopes of the input shape the same bands of the carrier
         {
             float mm  = 0.5f * (m0 + m1);
             float rel = 1.0f - float (exp (-1.0f / (sr * (0.005f + p6 * p6 * 0.4f))));

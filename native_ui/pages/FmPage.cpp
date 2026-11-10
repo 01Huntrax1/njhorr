@@ -1,4 +1,5 @@
-// FM / PM / PD matrices (page 0) and RM / AM matrices (page 1): 6 x 6 node grids like the web UI. The letter of a row modulates the letter of the column it meets.
+// Oscillator matrices (FM, PM, PD, RM, AM, TZFM, crossfade, fold, xor, comparator): 6 x 6 node grids, three panels per page; the title of a panel is a dropdown that picks which matrix it shows.
+// The letter of a row modulates the letter of the column it meets.
 #include "../NjoPages.h"
 
 namespace njo
@@ -8,25 +9,30 @@ namespace njo
     struct FmPage::Impl : public Ctx::Listener
     {
         struct Kind { const char* title; const char* sub; int base; };
-        static constexpr Kind kindsFm[3] = { { "FM", "frequency modulation", FM_BASE }, { "PM", "phase modulation", PM_BASE }, { "PD", "phase distortion", PD_BASE } };
-        static constexpr Kind kindsRm[3] = { { "RM", "ring modulation", RM_BASE }, { "AM", "amplitude modulation", AM_BASE }, { "TZFM", "through-zero FM", TZ_BASE } };
-        const Kind* kinds; int nk;
+        static constexpr int NK = 10;
+        static constexpr Kind allKinds[NK] = { { "FM", "frequency modulation", FM_BASE }, { "PM", "phase modulation", PM_BASE }, { "PD", "phase distortion", PD_BASE },
+                                               { "RM", "ring modulation", RM_BASE }, { "AM", "amplitude modulation", AM_BASE }, { "TZFM", "through-zero FM", TZ_BASE },
+                                               { "XF", "crossfade", MX_BASE }, { "FD", "wave fold", MX_BASE + 36 }, { "XR", "xor", MX_BASE + 72 }, { "CP", "comparator", MX_BASE + 108 } };
+        Kind kinds[3];   // what the three panels show right now
+        int nk = 3;
         enum Part { None, Cell, Fb, Node };
         struct Hit { int k = -1, s = 0, d = 0; Part part = None; bool operator== (const Hit& o) const { return k == o.k && s == o.s && d == o.d && part == o.part; } };
 
-        Impl (FmPage& p, Ctx& c, int page) : kinds (page == 1 ? kindsRm : kindsFm), nk (3), owner (p), ctx (c) { ctx.addListener (this); }
+        Impl (FmPage& p, Ctx& c, int page) : owner (p), ctx (c) { for (int k = 0; k < 3; ++k) kinds[k] = allKinds[(page == 1 ? 3 : 0) + k]; ctx.addListener (this); }
         ~Impl() override { ctx.removeListener (this); }
 
         FmPage& owner; Ctx& ctx; int pageNo = 0;
         std::function<void (int)> openOsc;
         juce::Rectangle<float> panel[3], inset[3], grid[3];
+        juce::Rectangle<float> titleRect (int k) const { return panel[k].withHeight (20.0f); }
         juce::Rectangle<float> noteRect, headRect;
         std::unique_ptr<juce::Component> overlay;
+        int titleHover = -1;
         Hit hover, drag, modHover; bool dragMoved = false; float dragStartV = 0; int dragStartY = 0; bool dragging = false;
 
         void paramChanged (int n, float) override
         {
-            if ((n >= FM_BASE && n < AM_BASE + 36) || (n >= TZ_BASE && n < TZ_BASE + 36) || isModSlotParam (n)) owner.repaint();
+            if ((n >= FM_BASE && n < AM_BASE + 36) || (n >= TZ_BASE && n < TZ_BASE + 36) || (n >= MX_BASE && n < MX_BASE + 144) || isModSlotParam (n)) owner.repaint();
         }
 
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }
@@ -119,9 +125,14 @@ namespace njo
             auto tr = panel[k].withHeight (20.0f);
             g.setColour (red); g.setFont (impact (14.0f));
             const int tw = juce::String (kinds[k].title).length() > 2 ? 54 : 30;
+            if (titleHover == k) { g.setColour (juce::Colours::white.withAlpha (0.07f)); g.fillRoundedRectangle (tr, 3.0f); }
+            g.setColour (red);
             g.drawText (kinds[k].title, tr.withWidth (tw), juce::Justification::centredLeft);
             g.setColour (dim); g.setFont (font (8.5f));
-            g.drawText (juce::String (kinds[k].sub).toUpperCase(), tr.withTrimmedLeft (tw), juce::Justification::centredLeft);
+            g.drawText (juce::String (kinds[k].sub).toUpperCase(), tr.withTrimmedLeft (tw).withTrimmedRight (18), juce::Justification::centredLeft);
+            juce::Path tri; auto ar = juce::Rectangle<float> (8, 5).withCentre ({ tr.getRight() - 10, tr.getCentreY() });
+            tri.addTriangle (ar.getX(), ar.getY(), ar.getRight(), ar.getY(), ar.getCentreX(), ar.getBottom());
+            g.setColour (titleHover == k ? red : dim); g.fillPath (tri);
 
             // matrix background
             auto in = inset[k];
@@ -202,14 +213,16 @@ namespace njo
             }
         }
     };
-    constexpr FmPage::Impl::Kind FmPage::Impl::kindsFm[3];
-    constexpr FmPage::Impl::Kind FmPage::Impl::kindsRm[3];
+    constexpr FmPage::Impl::Kind FmPage::Impl::allKinds[FmPage::Impl::NK];
 
     static void refreshHover (FmPage& p, FmPage::Impl& i, juce::Point<float> pos)
     {
+        int th = -1;
+        for (int k = 0; k < i.nk; ++k) if (i.titleRect (k).contains (pos)) th = k;
+        if (th != i.titleHover) { i.titleHover = th; p.repaint(); }
         auto h = i.hitTest (pos);
         if (! (h == i.hover)) { i.hover = h; p.repaint(); i.describe (h); }
-        p.setMouseCursor (h.part == FmPage::Impl::Cell || h.part == FmPage::Impl::Fb ? juce::MouseCursor::UpDownResizeCursor
+        p.setMouseCursor (th >= 0 ? juce::MouseCursor::PointingHandCursor : h.part == FmPage::Impl::Cell || h.part == FmPage::Impl::Fb ? juce::MouseCursor::UpDownResizeCursor
                           : h.part == FmPage::Impl::Node ? juce::MouseCursor::PointingHandCursor : juce::MouseCursor::NormalCursor);
     }
 
@@ -256,9 +269,22 @@ namespace njo
             }
 
             void mouseMove (const juce::MouseEvent& e) override { refreshHover (page, im, e.position); }
-            void mouseExit (const juce::MouseEvent&) override { im.hover = {}; page.repaint(); }
+            void mouseExit (const juce::MouseEvent&) override { im.hover = {}; im.titleHover = -1; page.repaint(); }
             void mouseDown (const juce::MouseEvent& e) override
             {
+                for (int k = 0; k < im.nk; ++k)
+                    if (im.titleRect (k).contains (e.position))
+                    {
+                        im.drag = {};
+                        juce::PopupMenu m;
+                        for (int j = 0; j < FmPage::Impl::NK; ++j)
+                            m.addItem (j + 1, juce::String (FmPage::Impl::allKinds[j].title) + "  -  " + FmPage::Impl::allKinds[j].sub, true, juce::String (FmPage::Impl::allKinds[j].title) == im.kinds[k].title);
+                        juce::Component::SafePointer<FmPage> sp (&page); auto* imp = &im; int panelK = k;
+                        m.showMenuAsync (juce::PopupMenu::Options().withTargetScreenArea (page.localAreaToGlobal (im.titleRect (k).toNearestInt())),
+                                         [sp, imp, panelK] (int r)
+                                         { if (r > 0 && sp != nullptr) { imp->kinds[panelK] = FmPage::Impl::allKinds[r - 1]; imp->hover = {}; sp->repaint(); } });
+                        return;
+                    }
                 auto h = im.hitTest (e.position);
                 im.drag = h; im.dragMoved = false; im.dragging = false;
                 if (h.part == FmPage::Impl::None) return;
@@ -332,13 +358,10 @@ namespace njo
     {
         paintCard (g, getLocalBounds().toFloat());
         g.setColour (red); g.fillRect (juce::Rectangle<float> (12, 13, 7, 7));
-        g.setFont (impact (11.0f)); g.drawText (impl->pageNo == 1 ? "RING / AMPLITUDE / THROUGH-ZERO FM MATRIX" : "FM / PM / PD MATRIX", 24, 8, 320, 16, juce::Justification::centredLeft);
+        g.setFont (impact (11.0f)); g.drawText ("OSCILLATOR MATRICES", 24, 8, 320, 16, juce::Justification::centredLeft);
         g.setColour (dim); g.setFont (font (8.0f));
-        g.drawText (impl->pageNo == 1
-                        ? "The letter in a row modulates the letter in the column it meets. RM = ring modulation (carrier x modulator), AM = amplitude modulation (carrier x 0..1 modulator), TZFM = through-zero FM. "
-                          "0 = off, 100 = 100%. Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self mod. Click a letter to open that oscillator."
-                        : "The letter in a row modulates the letter in the column it meets. FM = carrier pitch (+-4 octaves at 100%), PM = phase shift, PD = phase distortion. 0 = off, 100 = 100%. "
-                          "Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self feedback. Click a letter to open that oscillator.",
+        g.drawText ("The letter in a row modulates the letter in the column it meets. Click a panel title to pick its matrix: FM / PM / PD / TZFM, RM (carrier x modulator), AM (carrier x 0..1 modulator), "
+                    "XF crossfade, FD wave fold, XR xor, CP comparator. 0 = off, 100 = 100%. Click a dot to connect, drag up / down (Shift = fine), double-click to clear. FB = self mod. Click a letter to open that oscillator.",
                     impl->noteRect.toNearestInt(), juce::Justification::centredLeft, 2);
         for (int k = 0; k < impl->nk; ++k) impl->paintPanel (g, k);
     }

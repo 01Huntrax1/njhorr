@@ -502,6 +502,151 @@ processor Eisenpuls_Synth
     input event float param2933 [[ name: "TZFM 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param2934 [[ name: "TZFM 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param2935 [[ name: "TZFM 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    // MXMAT-DSP: crossfade / fold / xor / comparator matrices
+    input event float param5300 [[ name: "XF 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5301 [[ name: "XF 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5302 [[ name: "XF 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5303 [[ name: "XF 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5304 [[ name: "XF 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5305 [[ name: "XF 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5306 [[ name: "XF 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5307 [[ name: "XF 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5308 [[ name: "XF 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5309 [[ name: "XF 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5310 [[ name: "XF 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5311 [[ name: "XF 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5312 [[ name: "XF 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5313 [[ name: "XF 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5314 [[ name: "XF 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5315 [[ name: "XF 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5316 [[ name: "XF 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5317 [[ name: "XF 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5318 [[ name: "XF 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5319 [[ name: "XF 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5320 [[ name: "XF 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5321 [[ name: "XF 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5322 [[ name: "XF 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5323 [[ name: "XF 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5324 [[ name: "XF 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5325 [[ name: "XF 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5326 [[ name: "XF 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5327 [[ name: "XF 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5328 [[ name: "XF 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5329 [[ name: "XF 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5330 [[ name: "XF 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5331 [[ name: "XF 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5332 [[ name: "XF 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5333 [[ name: "XF 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5334 [[ name: "XF 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5335 [[ name: "XF 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5336 [[ name: "FD 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5337 [[ name: "FD 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5338 [[ name: "FD 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5339 [[ name: "FD 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5340 [[ name: "FD 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5341 [[ name: "FD 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5342 [[ name: "FD 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5343 [[ name: "FD 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5344 [[ name: "FD 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5345 [[ name: "FD 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5346 [[ name: "FD 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5347 [[ name: "FD 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5348 [[ name: "FD 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5349 [[ name: "FD 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5350 [[ name: "FD 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5351 [[ name: "FD 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5352 [[ name: "FD 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5353 [[ name: "FD 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5354 [[ name: "FD 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5355 [[ name: "FD 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5356 [[ name: "FD 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5357 [[ name: "FD 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5358 [[ name: "FD 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5359 [[ name: "FD 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5360 [[ name: "FD 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5361 [[ name: "FD 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5362 [[ name: "FD 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5363 [[ name: "FD 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5364 [[ name: "FD 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5365 [[ name: "FD 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5366 [[ name: "FD 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5367 [[ name: "FD 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5368 [[ name: "FD 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5369 [[ name: "FD 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5370 [[ name: "FD 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5371 [[ name: "FD 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5372 [[ name: "XR 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5373 [[ name: "XR 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5374 [[ name: "XR 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5375 [[ name: "XR 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5376 [[ name: "XR 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5377 [[ name: "XR 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5378 [[ name: "XR 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5379 [[ name: "XR 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5380 [[ name: "XR 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5381 [[ name: "XR 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5382 [[ name: "XR 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5383 [[ name: "XR 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5384 [[ name: "XR 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5385 [[ name: "XR 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5386 [[ name: "XR 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5387 [[ name: "XR 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5388 [[ name: "XR 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5389 [[ name: "XR 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5390 [[ name: "XR 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5391 [[ name: "XR 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5392 [[ name: "XR 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5393 [[ name: "XR 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5394 [[ name: "XR 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5395 [[ name: "XR 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5396 [[ name: "XR 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5397 [[ name: "XR 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5398 [[ name: "XR 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5399 [[ name: "XR 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5400 [[ name: "XR 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5401 [[ name: "XR 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5402 [[ name: "XR 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5403 [[ name: "XR 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5404 [[ name: "XR 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5405 [[ name: "XR 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5406 [[ name: "XR 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5407 [[ name: "XR 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5408 [[ name: "CP 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5409 [[ name: "CP 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5410 [[ name: "CP 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5411 [[ name: "CP 1 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5412 [[ name: "CP 1 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5413 [[ name: "CP 1 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5414 [[ name: "CP 2 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5415 [[ name: "CP 2 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5416 [[ name: "CP 2 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5417 [[ name: "CP 2 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5418 [[ name: "CP 2 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5419 [[ name: "CP 2 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5420 [[ name: "CP 3 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5421 [[ name: "CP 3 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5422 [[ name: "CP 3 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5423 [[ name: "CP 3 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5424 [[ name: "CP 3 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5425 [[ name: "CP 3 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5426 [[ name: "CP 4 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5427 [[ name: "CP 4 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5428 [[ name: "CP 4 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5429 [[ name: "CP 4 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5430 [[ name: "CP 4 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5431 [[ name: "CP 4 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5432 [[ name: "CP 5 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5433 [[ name: "CP 5 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5434 [[ name: "CP 5 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5435 [[ name: "CP 5 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5436 [[ name: "CP 5 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5437 [[ name: "CP 5 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5438 [[ name: "CP 6 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5439 [[ name: "CP 6 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5440 [[ name: "CP 6 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5441 [[ name: "CP 6 to 4", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5442 [[ name: "CP 6 to 5", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param5443 [[ name: "CP 6 to 6", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1560 [[ name: "AM 1 to 1", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1561 [[ name: "AM 1 to 2", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
     input event float param1562 [[ name: "AM 1 to 3", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
@@ -4558,6 +4703,150 @@ processor Eisenpuls_Synth
     event param2933 (float v) { tzSet (5, 3, v * 0.01f); }
     event param2934 (float v) { tzSet (5, 4, v * 0.01f); }
     event param2935 (float v) { tzSet (5, 5, v * 0.01f); }
+    event param5300 (float v) { mxSet (0, 0, 0, v * 0.01f); }
+    event param5301 (float v) { mxSet (0, 0, 1, v * 0.01f); }
+    event param5302 (float v) { mxSet (0, 0, 2, v * 0.01f); }
+    event param5303 (float v) { mxSet (0, 0, 3, v * 0.01f); }
+    event param5304 (float v) { mxSet (0, 0, 4, v * 0.01f); }
+    event param5305 (float v) { mxSet (0, 0, 5, v * 0.01f); }
+    event param5306 (float v) { mxSet (0, 1, 0, v * 0.01f); }
+    event param5307 (float v) { mxSet (0, 1, 1, v * 0.01f); }
+    event param5308 (float v) { mxSet (0, 1, 2, v * 0.01f); }
+    event param5309 (float v) { mxSet (0, 1, 3, v * 0.01f); }
+    event param5310 (float v) { mxSet (0, 1, 4, v * 0.01f); }
+    event param5311 (float v) { mxSet (0, 1, 5, v * 0.01f); }
+    event param5312 (float v) { mxSet (0, 2, 0, v * 0.01f); }
+    event param5313 (float v) { mxSet (0, 2, 1, v * 0.01f); }
+    event param5314 (float v) { mxSet (0, 2, 2, v * 0.01f); }
+    event param5315 (float v) { mxSet (0, 2, 3, v * 0.01f); }
+    event param5316 (float v) { mxSet (0, 2, 4, v * 0.01f); }
+    event param5317 (float v) { mxSet (0, 2, 5, v * 0.01f); }
+    event param5318 (float v) { mxSet (0, 3, 0, v * 0.01f); }
+    event param5319 (float v) { mxSet (0, 3, 1, v * 0.01f); }
+    event param5320 (float v) { mxSet (0, 3, 2, v * 0.01f); }
+    event param5321 (float v) { mxSet (0, 3, 3, v * 0.01f); }
+    event param5322 (float v) { mxSet (0, 3, 4, v * 0.01f); }
+    event param5323 (float v) { mxSet (0, 3, 5, v * 0.01f); }
+    event param5324 (float v) { mxSet (0, 4, 0, v * 0.01f); }
+    event param5325 (float v) { mxSet (0, 4, 1, v * 0.01f); }
+    event param5326 (float v) { mxSet (0, 4, 2, v * 0.01f); }
+    event param5327 (float v) { mxSet (0, 4, 3, v * 0.01f); }
+    event param5328 (float v) { mxSet (0, 4, 4, v * 0.01f); }
+    event param5329 (float v) { mxSet (0, 4, 5, v * 0.01f); }
+    event param5330 (float v) { mxSet (0, 5, 0, v * 0.01f); }
+    event param5331 (float v) { mxSet (0, 5, 1, v * 0.01f); }
+    event param5332 (float v) { mxSet (0, 5, 2, v * 0.01f); }
+    event param5333 (float v) { mxSet (0, 5, 3, v * 0.01f); }
+    event param5334 (float v) { mxSet (0, 5, 4, v * 0.01f); }
+    event param5335 (float v) { mxSet (0, 5, 5, v * 0.01f); }
+    event param5336 (float v) { mxSet (1, 0, 0, v * 0.01f); }
+    event param5337 (float v) { mxSet (1, 0, 1, v * 0.01f); }
+    event param5338 (float v) { mxSet (1, 0, 2, v * 0.01f); }
+    event param5339 (float v) { mxSet (1, 0, 3, v * 0.01f); }
+    event param5340 (float v) { mxSet (1, 0, 4, v * 0.01f); }
+    event param5341 (float v) { mxSet (1, 0, 5, v * 0.01f); }
+    event param5342 (float v) { mxSet (1, 1, 0, v * 0.01f); }
+    event param5343 (float v) { mxSet (1, 1, 1, v * 0.01f); }
+    event param5344 (float v) { mxSet (1, 1, 2, v * 0.01f); }
+    event param5345 (float v) { mxSet (1, 1, 3, v * 0.01f); }
+    event param5346 (float v) { mxSet (1, 1, 4, v * 0.01f); }
+    event param5347 (float v) { mxSet (1, 1, 5, v * 0.01f); }
+    event param5348 (float v) { mxSet (1, 2, 0, v * 0.01f); }
+    event param5349 (float v) { mxSet (1, 2, 1, v * 0.01f); }
+    event param5350 (float v) { mxSet (1, 2, 2, v * 0.01f); }
+    event param5351 (float v) { mxSet (1, 2, 3, v * 0.01f); }
+    event param5352 (float v) { mxSet (1, 2, 4, v * 0.01f); }
+    event param5353 (float v) { mxSet (1, 2, 5, v * 0.01f); }
+    event param5354 (float v) { mxSet (1, 3, 0, v * 0.01f); }
+    event param5355 (float v) { mxSet (1, 3, 1, v * 0.01f); }
+    event param5356 (float v) { mxSet (1, 3, 2, v * 0.01f); }
+    event param5357 (float v) { mxSet (1, 3, 3, v * 0.01f); }
+    event param5358 (float v) { mxSet (1, 3, 4, v * 0.01f); }
+    event param5359 (float v) { mxSet (1, 3, 5, v * 0.01f); }
+    event param5360 (float v) { mxSet (1, 4, 0, v * 0.01f); }
+    event param5361 (float v) { mxSet (1, 4, 1, v * 0.01f); }
+    event param5362 (float v) { mxSet (1, 4, 2, v * 0.01f); }
+    event param5363 (float v) { mxSet (1, 4, 3, v * 0.01f); }
+    event param5364 (float v) { mxSet (1, 4, 4, v * 0.01f); }
+    event param5365 (float v) { mxSet (1, 4, 5, v * 0.01f); }
+    event param5366 (float v) { mxSet (1, 5, 0, v * 0.01f); }
+    event param5367 (float v) { mxSet (1, 5, 1, v * 0.01f); }
+    event param5368 (float v) { mxSet (1, 5, 2, v * 0.01f); }
+    event param5369 (float v) { mxSet (1, 5, 3, v * 0.01f); }
+    event param5370 (float v) { mxSet (1, 5, 4, v * 0.01f); }
+    event param5371 (float v) { mxSet (1, 5, 5, v * 0.01f); }
+    event param5372 (float v) { mxSet (2, 0, 0, v * 0.01f); }
+    event param5373 (float v) { mxSet (2, 0, 1, v * 0.01f); }
+    event param5374 (float v) { mxSet (2, 0, 2, v * 0.01f); }
+    event param5375 (float v) { mxSet (2, 0, 3, v * 0.01f); }
+    event param5376 (float v) { mxSet (2, 0, 4, v * 0.01f); }
+    event param5377 (float v) { mxSet (2, 0, 5, v * 0.01f); }
+    event param5378 (float v) { mxSet (2, 1, 0, v * 0.01f); }
+    event param5379 (float v) { mxSet (2, 1, 1, v * 0.01f); }
+    event param5380 (float v) { mxSet (2, 1, 2, v * 0.01f); }
+    event param5381 (float v) { mxSet (2, 1, 3, v * 0.01f); }
+    event param5382 (float v) { mxSet (2, 1, 4, v * 0.01f); }
+    event param5383 (float v) { mxSet (2, 1, 5, v * 0.01f); }
+    event param5384 (float v) { mxSet (2, 2, 0, v * 0.01f); }
+    event param5385 (float v) { mxSet (2, 2, 1, v * 0.01f); }
+    event param5386 (float v) { mxSet (2, 2, 2, v * 0.01f); }
+    event param5387 (float v) { mxSet (2, 2, 3, v * 0.01f); }
+    event param5388 (float v) { mxSet (2, 2, 4, v * 0.01f); }
+    event param5389 (float v) { mxSet (2, 2, 5, v * 0.01f); }
+    event param5390 (float v) { mxSet (2, 3, 0, v * 0.01f); }
+    event param5391 (float v) { mxSet (2, 3, 1, v * 0.01f); }
+    event param5392 (float v) { mxSet (2, 3, 2, v * 0.01f); }
+    event param5393 (float v) { mxSet (2, 3, 3, v * 0.01f); }
+    event param5394 (float v) { mxSet (2, 3, 4, v * 0.01f); }
+    event param5395 (float v) { mxSet (2, 3, 5, v * 0.01f); }
+    event param5396 (float v) { mxSet (2, 4, 0, v * 0.01f); }
+    event param5397 (float v) { mxSet (2, 4, 1, v * 0.01f); }
+    event param5398 (float v) { mxSet (2, 4, 2, v * 0.01f); }
+    event param5399 (float v) { mxSet (2, 4, 3, v * 0.01f); }
+    event param5400 (float v) { mxSet (2, 4, 4, v * 0.01f); }
+    event param5401 (float v) { mxSet (2, 4, 5, v * 0.01f); }
+    event param5402 (float v) { mxSet (2, 5, 0, v * 0.01f); }
+    event param5403 (float v) { mxSet (2, 5, 1, v * 0.01f); }
+    event param5404 (float v) { mxSet (2, 5, 2, v * 0.01f); }
+    event param5405 (float v) { mxSet (2, 5, 3, v * 0.01f); }
+    event param5406 (float v) { mxSet (2, 5, 4, v * 0.01f); }
+    event param5407 (float v) { mxSet (2, 5, 5, v * 0.01f); }
+    event param5408 (float v) { mxSet (3, 0, 0, v * 0.01f); }
+    event param5409 (float v) { mxSet (3, 0, 1, v * 0.01f); }
+    event param5410 (float v) { mxSet (3, 0, 2, v * 0.01f); }
+    event param5411 (float v) { mxSet (3, 0, 3, v * 0.01f); }
+    event param5412 (float v) { mxSet (3, 0, 4, v * 0.01f); }
+    event param5413 (float v) { mxSet (3, 0, 5, v * 0.01f); }
+    event param5414 (float v) { mxSet (3, 1, 0, v * 0.01f); }
+    event param5415 (float v) { mxSet (3, 1, 1, v * 0.01f); }
+    event param5416 (float v) { mxSet (3, 1, 2, v * 0.01f); }
+    event param5417 (float v) { mxSet (3, 1, 3, v * 0.01f); }
+    event param5418 (float v) { mxSet (3, 1, 4, v * 0.01f); }
+    event param5419 (float v) { mxSet (3, 1, 5, v * 0.01f); }
+    event param5420 (float v) { mxSet (3, 2, 0, v * 0.01f); }
+    event param5421 (float v) { mxSet (3, 2, 1, v * 0.01f); }
+    event param5422 (float v) { mxSet (3, 2, 2, v * 0.01f); }
+    event param5423 (float v) { mxSet (3, 2, 3, v * 0.01f); }
+    event param5424 (float v) { mxSet (3, 2, 4, v * 0.01f); }
+    event param5425 (float v) { mxSet (3, 2, 5, v * 0.01f); }
+    event param5426 (float v) { mxSet (3, 3, 0, v * 0.01f); }
+    event param5427 (float v) { mxSet (3, 3, 1, v * 0.01f); }
+    event param5428 (float v) { mxSet (3, 3, 2, v * 0.01f); }
+    event param5429 (float v) { mxSet (3, 3, 3, v * 0.01f); }
+    event param5430 (float v) { mxSet (3, 3, 4, v * 0.01f); }
+    event param5431 (float v) { mxSet (3, 3, 5, v * 0.01f); }
+    event param5432 (float v) { mxSet (3, 4, 0, v * 0.01f); }
+    event param5433 (float v) { mxSet (3, 4, 1, v * 0.01f); }
+    event param5434 (float v) { mxSet (3, 4, 2, v * 0.01f); }
+    event param5435 (float v) { mxSet (3, 4, 3, v * 0.01f); }
+    event param5436 (float v) { mxSet (3, 4, 4, v * 0.01f); }
+    event param5437 (float v) { mxSet (3, 4, 5, v * 0.01f); }
+    event param5438 (float v) { mxSet (3, 5, 0, v * 0.01f); }
+    event param5439 (float v) { mxSet (3, 5, 1, v * 0.01f); }
+    event param5440 (float v) { mxSet (3, 5, 2, v * 0.01f); }
+    event param5441 (float v) { mxSet (3, 5, 3, v * 0.01f); }
+    event param5442 (float v) { mxSet (3, 5, 4, v * 0.01f); }
+    event param5443 (float v) { mxSet (3, 5, 5, v * 0.01f); }
     event param1560 (float v) { amSet (0, 0, v * 0.01f); }
     event param1561 (float v) { amSet (0, 1, v * 0.01f); }
     event param1562 (float v) { amSet (0, 2, v * 0.01f); }
@@ -12853,16 +13142,10 @@ processor Eisenpuls_Synth
         return v1 * k;
     }
 
-    // algorithms 0..5 (carrier c, modulator m, amount a)
+    // algorithms 0..1 (carrier c, modulator m, amount a); the crossfade / fold / xor / comparator modes live in the oscillator matrices now
     float wpAlg (int md, float a, float c, float m)
     {
-        if (md == 0)   // crossfade, equal power
-            return c * float (cos (a * 1.5707963f)) + m * float (sin (a * 1.5707963f));
-
-        if (md == 1)   // fold: the sum of both is folded harder with the amount
-            return float (sin ((c + m) * (0.4f + a * 3.5f) * 1.5707963f));
-
-        if (md == 2)   // analog ring modulator: the difference of two diode-like curves, the amount makes them harder (more saturation, harsher products)
+        if (md == 0)   // analog ring modulator: the difference of two diode-like curves, the amount makes them harder (more saturation, harsher products)
         {
             float k = 1.0f + 5.0f * a;
             float u = c + m;
@@ -12870,27 +13153,8 @@ processor Eisenpuls_Synth
             return 0.5f * (u * float (tanh (k * u)) - v * float (tanh (k * v))) / k;
         }
 
-        if (md == 3)   // digital ring modulator: the product, folded with the amount
-            return float (sin (c * m * (1.0f + a * 3.0f) * 1.5707963f * 2.0f));
-
-        if (md == 4)   // xor of the 16 bit values, the amount fades from the sum to the xor
-        {
-            int ci = int (clamp (c, -1.0f, 0.9999f) * 32768.0f);
-            int mi = int (clamp (m, -1.0f, 0.9999f) * 32768.0f);
-            float xr = float (ci ^ mi) / 32768.0f;
-            return (1.0f - a) * (c + m) * 0.5f + a * xr;
-        }
-
-        // comparator: modulator above / below the carrier: maximum, minimum, gate
-        float mx = m > c ? m : c;
-        float mn = m > c ? c : m;
-        float gt = m > c ? 0.7f : -0.7f;
-        float t  = a * 2.0f;
-
-        if (t < 1.0f)
-            return mx + (mn - mx) * t;
-
-        return mn + (gt - mn) * (t - 1.0f);
+        // digital ring modulator: the product, folded with the amount
+        return float (sin (c * m * (1.0f + a * 3.0f) * 1.5707963f * 2.0f));
     }
 
     float<2> fxWarp (int s, float<2> x)
@@ -12898,7 +13162,7 @@ processor Eisenpuls_Synth
         int   pb = s * 4;
         int   db = s * 16;
         int   wb = s * 128;
-        int   md = clamp (fxMode.at (s), 0, 7);
+        int   md = clamp (fxMode.at (s), 0, 3);
         float sr = float (processor.frequency);
         float f  = fxD.at (db);
         float a  = fxD.at (db + 1);
@@ -12915,7 +13179,7 @@ processor Eisenpuls_Synth
         float m0 = x[0] * gm;
         float m1 = x[1] * gm;
 
-        if (md == 7)   // frequency shifter: Hilbert pair and a quadrature oscillator at the shift frequency
+        if (md == 3)   // frequency shifter: Hilbert pair and a quadrature oscillator at the shift frequency
         {
             float64 sp = fxPh.at (pb + 1) + float64 ((p6 < 0.5f ? f : -f) / sr);
 
@@ -12950,7 +13214,7 @@ processor Eisenpuls_Synth
             return float<2> (yo0 * lv, yo1 * lv);
         }
 
-        if (md == 6)   // vocoder: ten bands, the envelopes of the input shape the same bands of the carrier
+        if (md == 2)   // vocoder: ten bands, the envelopes of the input shape the same bands of the carrier
         {
             float mm  = 0.5f * (m0 + m1);
             float rel = 1.0f - float (exp (-1.0f / (sr * (0.005f + p6 * p6 * 0.4f))));
@@ -14025,6 +14289,7 @@ processor Eisenpuls_Synth
     float[64]     rmAmt;      // ring modulation (carrier x modulator)
     float[64]     amAmt;      // amplitude modulation (carrier x unipolar modulator)
     float[64]     tzAmt;      // through-zero FM (TZFM-DSP)
+    float[256]    mxAmt;      // MXMAT-DSP: 4 matrices (crossfade, fold, xor, comparator) x 64
     bool[8]       fmUsed;  // padded to a power of two (cheap index wrap)
     bool          fmAny;      // any FM / PM / PD / RM / AM amount is set
 
@@ -14096,7 +14361,8 @@ processor Eisenpuls_Synth
             bool u = false;
             for (int r = 0; r < 6; ++r)
                 if (fmAmt.at (q * 6 + r) != 0.0f || pmAmt.at (q * 6 + r) != 0.0f || pdAmt.at (q * 6 + r) != 0.0f
-                    || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f || tzAmt.at (q * 6 + r) != 0.0f) u = true;
+                    || rmAmt.at (q * 6 + r) != 0.0f || amAmt.at (q * 6 + r) != 0.0f || tzAmt.at (q * 6 + r) != 0.0f
+                    || mxAmt.at (q * 6 + r) != 0.0f || mxAmt.at (64 + q * 6 + r) != 0.0f || mxAmt.at (128 + q * 6 + r) != 0.0f || mxAmt.at (192 + q * 6 + r) != 0.0f) u = true;
             fmUsed.at (q) = u;
             if (u) any = true;
         }
@@ -14125,6 +14391,12 @@ processor Eisenpuls_Synth
     void rmSet (int s, int d, float v)
     {
         rmAmt.at (s * 6 + d) = v;
+        updateFmUsed();
+    }
+
+    void mxSet (int k, int s, int d, float v)
+    {
+        mxAmt.at (k * 64 + s * 6 + d) = v;
         updateFmUsed();
     }
 
@@ -18846,6 +19118,55 @@ processor Eisenpuls_Synth
                             float tg   = rg * ag;
                             sL *= tg;
                             sR *= tg;
+                        }
+                    }
+
+                    // ----- MXMAT-DSP: crossfade / fold / xor / comparator matrices (modulator = previous output of the source slot) -----
+                    if (fmAny)
+                    {
+                        for (int xs = 0; xs < 6; ++xs)
+                        {
+                            int   xi = xs * 6 + o;
+                            float axf = mxAmt.at (xi);
+                            float afd = mxAmt.at (64 + xi);
+                            float axr = mxAmt.at (128 + xi);
+                            float acp = mxAmt.at (192 + xi);
+
+                            if (axf == 0.0f && afd == 0.0f && axr == 0.0f && acp == 0.0f)
+                                continue;
+
+                            float xm = clamp (rmPrev.at (xs), -1.0f, 1.0f);
+
+                            for (int ch = 0; ch < 2; ++ch)
+                            {
+                                float c = ch == 0 ? sL : sR;
+
+                                if (axf != 0.0f)   // crossfade, equal power: 100 % = only the modulator
+                                    c = c * float (cos (axf * 1.5707963f)) + xm * float (sin (axf * 1.5707963f));
+
+                                if (afd != 0.0f)   // fold: the sum of both is folded harder with the amount
+                                    c += afd * (float (sin ((c + xm) * (0.4f + afd * 3.5f) * 1.5707963f)) - c);
+
+                                if (axr != 0.0f)   // xor of the 16 bit values, faded in with the amount
+                                {
+                                    int ci = int (clamp (c, -1.0f, 0.9999f) * 32768.0f);
+                                    int mi = int (clamp (xm, -1.0f, 0.9999f) * 32768.0f);
+                                    c += axr * (float (ci ^ mi) / 32768.0f - c);
+                                }
+
+                                if (acp != 0.0f)   // comparator: dry > maximum (first half) > gate (modulator above / below the carrier)
+                                {
+                                    float mx = xm > c ? xm : c;
+                                    float gt = xm > c ? 0.7f : -0.7f;
+                                    float t  = acp * 2.0f;
+                                    c = t < 1.0f ? c + (mx - c) * t : mx + (gt - mx) * (t - 1.0f);
+                                }
+
+                                if (ch == 0)
+                                    sL = c;
+                                else
+                                    sR = c;
+                            }
                         }
                     }
 

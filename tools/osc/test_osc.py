@@ -1074,5 +1074,27 @@ check("TZFM: the sideband series stays harmonic (energy at multiples of the pitc
 check("TZFM: full amount with feedback and a second matrix path stays finite and bounded", np.isfinite(tz2).all() and np.abs(tz2).max() < 2.0 and np.isfinite(tz3).all() and np.abs(tz3).max() < 2.0)
 check("TZFM: a slot that is not a modulator target is left alone", np.allclose(render(tzb + [(2900 + 6 * 1 + 0, 100)], note=60, hold=0.6, tail=0.05, tag="tz4")[:, 0], tz0, atol=1e-5))
 
+# ---------------------------------------------------------------- crossfade / fold / xor / comparator matrices (ids 5300 + 36 * kind + 6 * source + target)
+mxb = ["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), P(1, "semi", 12), FOFF(0), FOFF(1), P(0, "sloop", 1), P(1, "sloop", 1)]
+def mx(kind, v, tag): return render(mxb + [(5300 + 36 * kind + 1, v)], note=60, hold=0.6, tail=0.05, tag=tag)[:, 0]
+mx0 = render(mxb, note=60, hold=0.6, tail=0.05, tag="mx0")[:, 0]
+check("matrices off: the carrier sits an octave above the modulator (523 Hz)", band(seg(mx0), 500, 550) > 5 * band(seg(mx0), 240, 290), "%.4f vs %.4f" % (band(seg(mx0), 500, 550), band(seg(mx0), 240, 290)))
+xf = mx(0, 100, "xf1"); xh = mx(0, 50, "xf2")
+check("XF crossfade 100 %: only the modulator (262 Hz) is left", band(seg(xf), 240, 290) > 8 * band(seg(xf), 500, 550), "%.4f vs %.4f" % (band(seg(xf), 240, 290), band(seg(xf), 500, 550)))
+check("XF crossfade 50 %: both are audible", band(seg(xh), 240, 290) > 0.2 * band(seg(xh), 500, 550) and band(seg(xh), 500, 550) > 0.2 * band(seg(xh), 240, 290))
+fd = mx(1, 60, "fd1")
+check("FD fold: adds harmonics", band(seg(fd), 600, 6000) > 8 * band(seg(mx0), 600, 6000) + 1e-4, "%.4f vs %.4f" % (band(seg(fd), 600, 6000), band(seg(mx0), 600, 6000)))
+xr = mx(2, 100, "xr1")
+check("XR xor: changes the sound and adds noise-like harmonics", band(seg(xr), 600, 6000) > 8 * band(seg(mx0), 600, 6000) + 1e-4, "%.4f vs %.4f" % (band(seg(xr), 600, 6000), band(seg(mx0), 600, 6000)))
+cp = mx(3, 100, "cp1")
+check("CP comparator: gate at 100 % is a square-like signal with harmonics", band(seg(cp), 600, 6000) > 8 * band(seg(mx0), 600, 6000) + 1e-4 and np.abs(cp).max() < 1.5, "%.4f" % band(seg(cp), 600, 6000))
+okm = True
+for kind in range(4):
+    for v in (1, 50, 100):
+        a = render(mxb + [(5300 + 36 * kind + 6 * q + r, v) for q in range(6) for r in range(6)], note=60, hold=0.4, tail=0.05, tag="mxa%d%d" % (kind, v))[:, 0]
+        if not (np.isfinite(a).all() and np.abs(a).max() < 3.0): okm = False; print("   matrix", kind, v, np.abs(a).max())
+check("all cells of every new matrix at 1 / 50 / 100 % stay finite and bounded", okm)
+check("a slot that is not a target is left alone (cell 1 > 0)", np.allclose(render(mxb + [(5300 + 36 * 3 + 6 * 1 + 0, 100)], note=60, hold=0.6, tail=0.05, tag="mx4")[:, 0], mx0, atol=1e-5))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
