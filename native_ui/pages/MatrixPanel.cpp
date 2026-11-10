@@ -149,7 +149,7 @@ namespace njo
                 g.setColour (juce::Colours::black); g.setFont (font (9.0f, true)); g.drawText (srcShort (src), pill.toNearestInt(), juce::Justification::centred);
                 auto t = track();
                 g.setColour (juce::Colour (0xff090303)); g.fillRoundedRectangle (t, 2.0f);
-                float n = (amt() + 1.0f) * 0.5f;
+                float n = (std::copysign (std::sqrt (std::abs (amt()) / 4.0f), amt()) + 1.0f) * 0.5f;
                 g.setColour (red.withAlpha (0.85f)); g.fillRect (juce::jmin (n, 0.5f) * t.getWidth() + t.getX(), t.getY(), std::abs (n - 0.5f) * t.getWidth(), t.getHeight());
                 g.setColour (juce::Colour (0xff7c818a)); g.fillRoundedRectangle (t.getX() + n * t.getWidth() - 3, t.getY() - 4, 6, t.getHeight() + 8, 1.5f);
                 g.setColour (orange); g.setFont (mono (10.0f, true));
@@ -160,8 +160,8 @@ namespace njo
             void setFrom (float x)
             {
                 auto t = track();
-                float v = juce::jlimit (-1.0f, 1.0f, (x - t.getX()) / t.getWidth() * 2.0f - 1.0f);
-                v = std::round (v * 100.0f) / 100.0f;
+                float u = juce::jlimit (-1.0f, 1.0f, (x - t.getX()) / t.getWidth() * 2.0f - 1.0f);
+                float v = std::round (std::copysign (u * u * 4.0f, u) * 100.0f) / 100.0f;   // +-400 %, finer steps near 0
                 ctx.set (slotBase (slot) + 2, v); repaint();
             }
             void mouseDown (const juce::MouseEvent& e) override

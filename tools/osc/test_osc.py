@@ -1106,5 +1106,19 @@ for m_, nm_ in ((1, "XF"), (2, "FD"), (3, "XR"), (4, "CP")):
 qb = mdst(mxb, 1, 0.0, "mdxf0")
 check("mod destination at amount 0 leaves the matrix alone", np.allclose(qb, mx0, atol=1e-5))
 
+
+# ---------------------------------------------------------------- more strength: FM / PM / TZFM cells to 400 %, mod slot amounts to +-400 %
+fmb = ["smp 0 sine 261.6256", "smp 1 sine 261.6256", P(0, "type", 1), P(1, "type", 1), P(0, "level", 0), P(1, "level", 0.8), FOFF(0), FOFF(1), P(0, "sloop", 1), P(1, "sloop", 1)]
+for nm_, base_ in (("FM", 1400), ("PM", 1440), ("TZFM", 2900)):
+    f1 = render(fmb + [(base_ + 1, 100)], note=60, hold=0.6, tail=0.05, tag="r1" + nm_)[:, 0]
+    f4 = render(fmb + [(base_ + 1, 400)], note=60, hold=0.6, tail=0.05, tag="r4" + nm_)[:, 0]
+    check("%s cell at 400 %% is finite, bounded and differs from 100 %%" % nm_, np.isfinite(f4).all() and np.abs(f4).max() < 3.0 and rms(f4 - f1) > 0.1 * rms(f1), "%.3f" % rms(f4 - f1))
+full4 = render(fmb + [(base_ + 6 * q + r, 400) for base_ in (1400, 1440, 2900) for q in range(6) for r in range(6)], note=60, hold=0.4, tail=0.05, tag="r4all")[:, 0]
+check("the whole FM + PM + TZFM matrix at 400 % stays finite and bounded", np.isfinite(full4).all() and np.abs(full4).max() < 3.0, "%.2f" % np.abs(full4).max())
+# the mod slot amount: 4.0 = four times 100 % (FM A > B destination 60 + 1, +-50 % of the range at 100 %)
+def slotamt(v, tag): return render(fmb + [(307, 1), (308, 61), (309, v), ("shape", 0, "const", 1), (882, 1), (247, 6)], note=60, hold=0.6, tail=0.05, tag=tag)[:, 0]
+a1_ = slotamt(1.0, "sa1"); a4_ = slotamt(4.0, "sa4")
+check("mod slot amount 400 % opens the FM cell further than 100 % (different, more harmonics), still bounded", band(seg(a4_), 500, 6000) > 1.05 * band(seg(a1_), 500, 6000) and rms(a4_ - a1_) > 0.1 * rms(a1_) and np.isfinite(a4_).all() and np.abs(a4_).max() < 3.0, "%.1f vs %.1f" % (band(seg(a4_), 500, 6000), band(seg(a1_), 500, 6000)))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

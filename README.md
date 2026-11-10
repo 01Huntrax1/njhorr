@@ -442,3 +442,7 @@ In the native UI the title of every panel on the FM / PM / PD and RM / AM pages 
 
 ## 303 pattern bank
 The 303 pattern editor has a bar with a pattern dropdown, previous / next, **SAVE**, **SAVE AS** and **DEL**. A pattern (length plus note / accent / slide / gate of all 64 steps) is a small text file `<Documents>/Njohrr/303 Patterns/<name>.n303` (`native_ui/NjoA3Bank.h`, test `native_ui/test/a3bank_test.cpp`); the first time three patterns are written (Acid Classic, Octave Bounce, Slide Line 32), files the user deletes stay deleted. The pattern in use is part of the plugin state like any parameter; the name shown in the bar is remembered with the project.
+
+## More modulation strength
+* The FM, PM and TZFM matrix cells go to **400 %** (PD, RM, AM and the XF / FD / XR / CP matrices stay at 100 %, they saturate there). Exponential FM and TZFM accept up to eight times the full-scale modulator before they clamp.
+* The amount of every **mod matrix slot** goes to **+-400 %** (was +-100 %). The destinations scale with it as before, so presets made earlier sounds the same; the slider has a square taper (100 % at a quarter of the half track) so steps near zero stay fine. DSP: `tools/osc/build_mxrange.py`, tests in `tools/osc/test_osc.py`.

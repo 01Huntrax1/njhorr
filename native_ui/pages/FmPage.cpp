@@ -38,6 +38,7 @@ namespace njo
         int pid (int k, int s, int d) const { return kinds[k].base + 6 * s + d; }
         float val (int k, int s, int d) const { return ctx.get (pid (k, s, d)); }
         static bool on (float v) { return v >= 0.5f; }
+        float maxOf (int k) const { const char* t = kinds[k].title; return (! std::strcmp (t, "FM") || ! std::strcmp (t, "PM") || ! std::strcmp (t, "TZFM")) ? 400.0f : 100.0f; }
 
         juce::Rectangle<float> cellRect (int k, int s, int d) const
         {
@@ -94,7 +95,7 @@ namespace njo
 
         void setVal (const Hit& h, float v)
         {
-            v = juce::jlimit (0.0f, 100.0f, std::round (v));   // 0 = off, 100 = 100 %
+            v = juce::jlimit (0.0f, maxOf (h.k), std::round (v));   // 0 = off, 100 = 100 % (FM / PM / TZFM go to 400 %)
             ctx.set (pid (h.k, h.s, h.d), v);
         }
 
@@ -156,7 +157,7 @@ namespace njo
                     auto a = nodeRect (k, s).getCentre(), m = cellRect (k, s, d).getCentre(), z = nodeRect (k, d).getCentre();
                     juce::Path p; p.startNewSubPath (a); p.lineTo (m); p.lineTo (z);
                     juce::Colour col = juce::Colour (0xffff564a);
-                    float a1 = 0.45f + 0.5f * v / 100.0f, w = 1.2f + 2.2f * v / 100.0f;
+                    float vn = juce::jmin (1.0f, v / 100.0f); float a1 = 0.45f + 0.5f * vn, w = 1.2f + 2.2f * vn;
                     juce::PathStrokeType glow (w + 4.0f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded);
                     g.setColour (col.withAlpha (0.10f)); g.strokePath (p, glow);
                     g.setColour (col.withAlpha (a1));
@@ -170,7 +171,7 @@ namespace njo
                             dir = dir / len;
                             auto tip = z - dir * (nodeRect (k, d).getWidth() * 0.5f + 5.0f);
                             auto side = juce::Point<float> (-dir.y, dir.x);
-                            float sz = 6.0f + 3.0f * v / 100.0f;
+                            float sz = 6.0f + 3.0f * vn;
                             juce::Path ah; ah.addTriangle (tip, tip - dir * sz + side * (sz * 0.55f), tip - dir * sz - side * (sz * 0.55f));
                             g.setColour (col.withAlpha (juce::jmin (1.0f, a1 + 0.2f))); g.fillPath (ah);
                         }
@@ -314,7 +315,7 @@ namespace njo
             {
                 if (! im.dragging) return;
                 if (std::abs (e.y - im.dragStartY) > 3) im.dragMoved = true;
-                if (im.dragMoved) im.setVal (im.drag, im.dragStartV + (float) (im.dragStartY - e.y) * (e.mods.isShiftDown() ? 0.2f : 0.8f));
+                if (im.dragMoved) im.setVal (im.drag, im.dragStartV + (float) (im.dragStartY - e.y) * (e.mods.isShiftDown() ? 0.2f : 0.8f) * (im.maxOf (im.drag.k) > 100.0f ? 2.0f : 1.0f));
             }
             void mouseUp (const juce::MouseEvent& e) override
             {
@@ -343,7 +344,7 @@ namespace njo
                 auto h = im.hitTest (e.position);
                 if (h.part != FmPage::Impl::Cell && h.part != FmPage::Impl::Fb) return;
                 float d = w.deltaY > 0 ? 2.0f : (w.deltaY < 0 ? -2.0f : 0.0f);
-                if (d != 0.0f) im.setVal (h, im.val (h.k, h.s, h.d) + d);
+                if (d != 0.0f) im.setVal (h, im.val (h.k, h.s, h.d) + d * (im.maxOf (h.k) > 100.0f ? 2.0f : 1.0f));
             }
         };
 

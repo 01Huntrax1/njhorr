@@ -41,6 +41,7 @@ namespace njo
 
         juce::String name() const { return shortName.isNotEmpty() ? shortName : label; }
         bool isLog() const { return unit == "Hz" && min > 0; }
+        bool isSquared() const { return min == -4.0 && max == 4.0; }   // the +-400 % amount of a mod matrix slot: fine steps near 0
         double range() const { return max > min ? max - min : 1.0; }
         double toNorm (double v) const;      // 0..1 (log taper for Hz parameters)
         double fromNorm (double n) const;

@@ -6,6 +6,7 @@ namespace njo
     double Spec::toNorm (double v) const
     {
         if (isLog()) return std::log (juce::jmax (v, min) / min) / std::log (max / min);
+        if (isSquared()) { double u = std::copysign (std::sqrt (std::abs (juce::jlimit (min, max, v)) / max), v); return (u + 1.0) * 0.5; }
         return (v - min) / range();
     }
 
@@ -13,6 +14,7 @@ namespace njo
     {
         n = juce::jlimit (0.0, 1.0, n);
         if (isLog()) return min * std::pow (max / min, n);
+        if (isSquared()) { double u = n * 2.0 - 1.0; return std::copysign (u * u * max, u); }
         return min + n * range();
     }
 
