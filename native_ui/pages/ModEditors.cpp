@@ -2,6 +2,7 @@
 #include "ModUi.h"
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
+#include "../NjoA3Bank.h"
 
 namespace njo
 {
@@ -980,11 +981,125 @@ namespace njo
         }
     };
 
+    // ------------------------------------------------------------------ pattern bank of the 303 mode: files in <root>/303 Patterns (NjoA3Bank.h)
+    struct A3Bank : juce::Component
+    {
+        Ctx& ctx; juce::Component& host; juce::String current; int hover = -1;
+        A3Bank (Ctx& c, juce::Component& h) : ctx (c), host (h)
+        {
+            auto v = ctx.be.getStored ("a3Pattern"); if (v.isString()) current = v.toString();
+        }
+        enum { Name, Prev, Next, Save, SaveAs, Del, NB };
+        juce::Rectangle<float> btn (int i) const
+        {
+            auto r = getLocalBounds().toFloat().reduced (0.0f, 1.0f);
+            const float w[NB] = { 0, 22, 22, 46, 62, 40 };
+            float x = r.getRight();
+            for (int k = NB - 1; k >= 1; --k) { x -= w[k]; if (k == i) return { x, r.getY(), w[k], r.getHeight() }; x -= 3.0f; }
+            return { r.getX(), r.getY(), x - r.getX(), r.getHeight() };
+        }
+        juce::File root() const { return ctx.be.rootFolder(); }
+        juce::StringArray list() const { njo::a3::installFactory (root()); return njo::a3::names (root()); }
+        njo::a3::Pattern read() const
+        {
+            njo::a3::Pattern p; p.len = juce::roundToInt (ctx.get (A3_LEN));
+            for (int k = 0; k < njo::a3::STEPS; ++k)
+            { p.note[k] = juce::roundToInt (ctx.get (a3Id (0, k))); p.acc[k] = ctx.get (a3Id (1, k)) > 0.5f; p.slide[k] = ctx.get (a3Id (2, k)) > 0.5f; p.gate[k] = ctx.get (a3Id (3, k)) > 0.5f; }
+            return p;
+        }
+        void apply (const njo::a3::Pattern& p)
+        {
+            auto put = [&] (int id, float v) { if (std::abs (ctx.get (id) - v) > 0.001f) { ctx.begin (id); ctx.set (id, v); ctx.end (id); } };
+            put (A3_LEN, (float) p.len);
+            for (int k = 0; k < njo::a3::STEPS; ++k) { put (a3Id (0, k), (float) p.note[k]); put (a3Id (1, k), (float) p.acc[k]); put (a3Id (2, k), (float) p.slide[k]); put (a3Id (3, k), (float) p.gate[k]); }
+        }
+        void setCurrent (const juce::String& n) { current = n; ctx.be.setStored ("a3Pattern", n.isEmpty() ? juce::var() : juce::var (n)); repaint(); }
+        void loadNamed (const juce::String& n)
+        {
+            njo::a3::Pattern p;
+            if (njo::a3::load (root(), n, p)) { apply (p); setCurrent (n); ctx.status ("303 PATTERN: " + n.toUpperCase()); }
+            else ctx.status ("303 PATTERN NOT FOUND");
+        }
+        void step (int d)
+        {
+            auto l = list(); if (l.isEmpty()) return;
+            int i = l.indexOf (current); i = i < 0 ? (d > 0 ? 0 : l.size() - 1) : (i + d + l.size()) % l.size();
+            loadNamed (l[i]);
+        }
+        void doSave (const juce::String& n)
+        {
+            if (njo::a3::save (root(), n, read())) { setCurrent (njo::a3::safeName (n)); ctx.status ("303 PATTERN SAVED: " + njo::a3::safeName (n).toUpperCase()); }
+            else ctx.status ("303 PATTERN NOT SAVED");
+        }
+        void ask (const juce::String& title, const juce::String& msg, const juce::String& initial, const juce::String& okText, bool text, std::function<void (const juce::String&)> done)
+        {
+            auto* w = new juce::AlertWindow (title, msg, text ? juce::MessageBoxIconType::NoIcon : juce::MessageBoxIconType::WarningIcon);
+            if (text) { w->addTextEditor ("n", initial, {}); if (auto* te = w->getTextEditor ("n")) { te->setInputRestrictions (60); te->selectAll(); } }
+            w->addButton (okText, 1, juce::KeyPress (juce::KeyPress::returnKey));
+            w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+            host.addAndMakeVisible (w); w->setCentrePosition (host.getLocalBounds().getCentre());
+            juce::Component::SafePointer<juce::Component> sp (this);
+            w->enterModalState (true, juce::ModalCallbackFunction::create ([sp, w, done, text] (int r)
+            { if (sp != nullptr && r == 1 && done) done (text ? w->getTextEditorContents ("n") : juce::String()); }), true);
+        }
+        void saveAs() { ask ("Save 303 pattern", "Name of the pattern:", current.isEmpty() ? juce::String ("My pattern") : current, "Save", true, [this] (const juce::String& n) { if (njo::a3::safeName (n).isNotEmpty()) doSave (n); }); }
+        void paint (juce::Graphics& g) override
+        {
+            const char* lab[NB] = { "", "<", ">", "SAVE", "SAVE AS", "DEL" };
+            for (int i = 0; i < NB; ++i)
+            {
+                auto r = btn (i); bool hv = hover == i;
+                g.setColour (juce::Colour (hv ? 0xff2a2d30 : 0xff1a1c1d)); g.fillRoundedRectangle (r, 3.0f);
+                g.setColour (hv ? red : juce::Colour (0xff3a3d41)); g.drawRoundedRectangle (r.reduced (0.5f), 3.0f, 1.0f);
+                g.setColour (i == Name || hv ? juce::Colours::white : dim); g.setFont (font (i == Name ? 9.0f : 8.0f, true));
+                if (i == Name)
+                {
+                    g.drawText (current.isEmpty() ? juce::String ("303 PATTERN  -  (none)") : "303 PATTERN  -  " + current, r.reduced (8, 0).withTrimmedRight (14), juce::Justification::centredLeft);
+                    juce::Path tri; auto ar = juce::Rectangle<float> (8, 5).withCentre ({ r.getRight() - 10, r.getCentreY() });
+                    tri.addTriangle (ar.getX(), ar.getY(), ar.getRight(), ar.getY(), ar.getCentreX(), ar.getBottom()); g.setColour (red); g.fillPath (tri);
+                }
+                else g.drawText (lab[i], r.toNearestInt(), juce::Justification::centred);
+            }
+        }
+        int hit (juce::Point<float> p) const { for (int i = 0; i < NB; ++i) if (btn (i).contains (p)) return i; return -1; }
+        void mouseMove (const juce::MouseEvent& e) override { int h = hit (e.position); if (h != hover) { hover = h; repaint(); } }
+        void mouseExit (const juce::MouseEvent&) override { hover = -1; repaint(); }
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            switch (hit (e.position))
+            {
+                case Name:
+                {
+                    auto l = list(); juce::PopupMenu m;
+                    if (l.isEmpty()) m.addItem (1, "(no patterns saved)", false);
+                    for (int i = 0; i < l.size(); ++i) m.addItem (i + 1, l[i], true, l[i] == current);
+                    juce::Component::SafePointer<A3Bank> sp (this);
+                    m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (this), [sp, l] (int r) { if (sp != nullptr && r > 0 && r <= l.size()) sp->loadNamed (l[r - 1]); });
+                    break;
+                }
+                case Prev: step (-1); break;
+                case Next: step (1); break;
+                case Save: if (current.isEmpty()) saveAs(); else doSave (current); break;
+                case SaveAs: saveAs(); break;
+                case Del:
+                    if (current.isNotEmpty())
+                    {
+                        auto n = current;
+                        ask ("Delete 303 pattern", "Delete the pattern \"" + n + "\" from the pattern folder?", {}, "Delete", false, [this, n] (const juce::String&)
+                            { if (njo::a3::remove (root(), n)) { setCurrent ({}); ctx.status ("303 PATTERN DELETED"); } });
+                    }
+                    break;
+                default: break;
+            }
+        }
+    };
+
     // ------------------------------------------------------------------ page: sequencers + arpeggiator
     struct SeqArpPage::Impl
     {
         SeqEditor seq;
         Arp303Editor a3;
+        std::unique_ptr<A3Bank> bank;
         std::unique_ptr<ParamWidget> a3Len;
         Ctx* ctxp = nullptr;
         juce::OwnedArray<ParamWidget> w;     // On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
@@ -999,6 +1114,7 @@ namespace njo
         addAndMakeVisible (I.seq);
         addChildComponent (I.a3);
         I.a3Len = makeWidget (c, A3_LEN, true); I.a3Len->setLook (true); addChildComponent (*I.a3Len);
+        I.bank.reset (new A3Bank (c, *this)); addChildComponent (*I.bank);
         c.addListener (this); I.ctxp = &c;
         const bool knob[8] = { false, false, false, false, false, true, true, false };
         for (int k = 0; k < 8; ++k)
@@ -1014,7 +1130,7 @@ namespace njo
     {
         if (num != ARP_BASE + 1) return;
         bool on = juce::roundToInt (v) == 5;
-        if (on != impl->is303) { impl->is303 = on; impl->a3.setVisible (on); impl->a3Len->setVisible (on); resized(); repaint(); }
+        if (on != impl->is303) { impl->is303 = on; impl->a3.setVisible (on); impl->a3Len->setVisible (on); impl->bank->setVisible (on); resized(); repaint(); }
     }
 
     void SeqArpPage::paint (juce::Graphics& g)
@@ -1037,7 +1153,8 @@ namespace njo
         auto r = I.arpRect.reduced (12, 4); r.removeFromTop (18); r.removeFromBottom (16);
         if (I.is303)   // the pattern editor below the arpeggiator controls
         {
-            auto ed = r.removeFromBottom (r.getHeight() - 70); ed.removeFromTop (4);
+            auto ed = r.removeFromBottom (r.getHeight() - 70); ed.removeFromTop (2);
+            I.bank->setBounds (ed.removeFromTop (20)); ed.removeFromTop (3);
             auto lk = ed.removeFromRight (80); ed.removeFromRight (6);
             I.a3.setBounds (ed); I.a3Len->setBounds (lk.removeFromTop (70));
             r.removeFromBottom (0);

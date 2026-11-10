@@ -1096,5 +1096,15 @@ for kind in range(4):
 check("all cells of every new matrix at 1 / 50 / 100 % stay finite and bounded", okm)
 check("a slot that is not a target is left alone (cell 1 > 0)", np.allclose(render(mxb + [(5300 + 36 * 3 + 6 * 1 + 0, 100)], note=60, hold=0.6, tail=0.05, tag="mx4")[:, 0], mx0, atol=1e-5))
 
+# mod matrix destinations of the TZFM / XF / FD / XR / CP matrices (1308 + 36 * m + 6 * source + target)
+def mdst(base, m, v, tag): return render(base + [(307, 1), (308, 1308 + 36 * m + 1), (309, v), ("shape", 0, "const", 1), (882, 1), (247, 6)], note=60, hold=0.6, tail=0.05, tag=tag)[:, 0]
+tzq = mdst(tzb, 0, 1.0, "mdtz")
+check("mod destination 'TZFM A > B' opens the TZFM amount (harmonics appear)", band(seg(tzq), 500, 6000) > 5 * band(seg(tz0), 500, 6000) + 1e-3, "%.1f vs %.1f" % (band(seg(tzq), 500, 6000), band(seg(tz0), 500, 6000)))
+for m_, nm_ in ((1, "XF"), (2, "FD"), (3, "XR"), (4, "CP")):
+    q = mdst(mxb, m_, 1.0, "md" + nm_); ref = mx(m_ - 1, 100, "mdr" + nm_)
+    check("mod destination '%s A > B' acts like the matrix cell (differs from the dry signal, finite)" % nm_, np.isfinite(q).all() and rms(q - mx0) > 0.1 * rms(mx0) and np.abs(q).max() < 3.0 and abs(rms(q) / rms(ref) - 1) < 0.6, "%.3f %.3f %.3f" % (rms(q - mx0), rms(mx0), rms(q) / rms(ref)))
+qb = mdst(mxb, 1, 0.0, "mdxf0")
+check("mod destination at amount 0 leaves the matrix alone", np.allclose(qb, mx0, atol=1e-5))
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
