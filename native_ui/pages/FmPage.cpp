@@ -161,6 +161,20 @@ namespace njo
                     g.setColour (col.withAlpha (0.10f)); g.strokePath (p, glow);
                     g.setColour (col.withAlpha (a1));
                     g.strokePath (p, juce::PathStrokeType (w, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+
+                    // arrow head in front of the target node (the direction source > target), and a small one on the way out of the source
+                    {
+                        auto dir = z - m; float len = dir.getDistanceFromOrigin();
+                        if (len > 1.0f)
+                        {
+                            dir = dir / len;
+                            auto tip = z - dir * (nodeRect (k, d).getWidth() * 0.5f + 5.0f);
+                            auto side = juce::Point<float> (-dir.y, dir.x);
+                            float sz = 6.0f + 3.0f * v / 100.0f;
+                            juce::Path ah; ah.addTriangle (tip, tip - dir * sz + side * (sz * 0.55f), tip - dir * sz - side * (sz * 0.55f));
+                            g.setColour (col.withAlpha (juce::jmin (1.0f, a1 + 0.2f))); g.fillPath (ah);
+                        }
+                    }
                 }
 
             static const char* L = "ABCDEF";
