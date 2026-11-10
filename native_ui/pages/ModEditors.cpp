@@ -883,47 +883,59 @@ namespace njo
 
     // ------------------------------------------------------------------ 303 pattern of the arpeggiator (Arp Mode 303)
     constexpr int A3_NOTE = 5200, A3_ACC = 5216, A3_SLD = 5232, A3_GATE = 5248, A3_LEN = 5264;
+    // steps 1-16 sit at 5200.., steps 17-64 at 5500 + 48 * row + (step - 17); row 0 note, 1 accent, 2 slide, 3 gate
+    inline int a3Id (int row, int k) { static const int lo[4] = { A3_NOTE, A3_ACC, A3_SLD, A3_GATE }; return k < 16 ? lo[row] + k : 5500 + 48 * row + (k - 16); }
     struct Arp303Editor : juce::Component, Ctx::Listener
     {
-        Ctx& ctx; int lastStep = -1; int dragRow = -1; int setTo = 0;
+        Ctx& ctx; int lastStep = -1; int dragRow = -1; int setTo = 0; int pageNo = 0;   // pageNo: steps pageNo * 16 + 1 .. + 16
         explicit Arp303Editor (Ctx& c) : ctx (c) { ctx.addListener (this); }
         ~Arp303Editor() override { ctx.removeListener (this); }
-        void paramChanged (int n, float) override { if (n >= A3_NOTE && n <= A3_LEN) repaint(); }
+        void paramChanged (int n, float) override { if ((n >= A3_NOTE && n <= A3_LEN) || (n >= 5500 && n < 5692)) repaint(); }
         static constexpr float rowH = 17.0f, labW = 44.0f;
-        int lenOf() const { return juce::jlimit (1, 16, juce::roundToInt (ctx.get (A3_LEN))); }
-        juce::Rectangle<float> notes() const { auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); r.removeFromLeft (labW); return r.withTrimmedBottom (3 * rowH + 6.0f); }
+        int lenOf() const { return juce::jlimit (1, 64, juce::roundToInt (ctx.get (A3_LEN))); }
+        static constexpr float tabH = 14.0f;
+        juce::Rectangle<float> tabRect (int t) const { auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); r.removeFromLeft (labW); float w = juce::jmin (74.0f, r.getWidth() / 4.0f); return { r.getX() + t * (w + 3.0f), r.getBottom() - tabH, w, tabH }; }
+        juce::Rectangle<float> notes() const { auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); r.removeFromLeft (labW); return r.withTrimmedBottom (3 * rowH + 6.0f + tabH + 3.0f); }
         juce::Rectangle<float> rowRect (int row) const   // 0 gate, 1 accent, 2 slide
         {
             auto r = getLocalBounds().toFloat().reduced (4.0f, 4.0f); r.removeFromLeft (labW);
-            return r.removeFromBottom (3 * rowH).withTrimmedTop (row * rowH).withHeight (rowH);
+            return r.withTrimmedBottom (tabH + 3.0f).removeFromBottom (3 * rowH).withTrimmedTop (row * rowH).withHeight (rowH);
         }
-        int colOf (float x) const { auto a = notes(); return juce::jlimit (0, 15, (int) ((x - a.getX()) / (a.getWidth() / 16.0f))); }
+        int colOf (float x) const { auto a = notes(); return pageNo * 16 + juce::jlimit (0, 15, (int) ((x - a.getX()) / (a.getWidth() / 16.0f))); }
         void paint (juce::Graphics& g) override
         {
-            auto a = notes(); int len = lenOf(); float sw = a.getWidth() / 16.0f;
+            auto a = notes(); int len = lenOf(); float sw = a.getWidth() / 16.0f; const int off = pageNo * 16;
             g.setColour (juce::Colour (0xff0c0d0e)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
             const float lo = -12.0f, hi = 24.0f;
             auto yOf = [&] (float semi) { return a.getBottom() - (semi - lo) / (hi - lo) * a.getHeight(); };
             g.setColour (dim.withAlpha (0.35f)); g.drawHorizontalLine ((int) yOf (0.0f), a.getX(), a.getRight()); g.drawHorizontalLine ((int) yOf (12.0f), a.getX(), a.getRight());
             g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.0f));
             g.drawText ("+12", 4, (int) yOf (12.0f) - 5, (int) labW - 4, 10, juce::Justification::centredRight); g.drawText ("root", 4, (int) yOf (0.0f) - 5, (int) labW - 4, 10, juce::Justification::centredRight);
-            const char* names[3] = { "GATE", "ACCENT", "SLIDE" }; const int ids[3] = { A3_GATE, A3_ACC, A3_SLD };
+            const char* names[3] = { "GATE", "ACCENT", "SLIDE" }; const int rowOf[3] = { 3, 1, 2 };
             for (int r = 0; r < 3; ++r) { auto rr = rowRect (r); g.drawText (names[r], 4, (int) rr.getY(), (int) labW - 4, (int) rr.getHeight(), juce::Justification::centredRight); }
-            for (int k = 0; k < 16; ++k)
+            for (int t = 0; t < 4; ++t)   // page tabs: 1-16, 17-32, 33-48, 49-64 (dimmed when beyond the length)
             {
-                bool act = k < len, gate = ctx.get (A3_GATE + k) > 0.5f;
-                auto cell = juce::Rectangle<float> (a.getX() + k * sw + 1.5f, a.getY(), sw - 3.0f, a.getHeight());
+                auto tr = tabRect (t); bool sel = t == pageNo, used = t * 16 < len;
+                g.setColour (sel ? red.withAlpha (0.85f) : juce::Colour (0xff1a1c1d)); g.fillRoundedRectangle (tr, 3.0f);
+                g.setColour (sel ? juce::Colours::white : dim.withAlpha (used ? 0.95f : 0.4f)); g.setFont (font (8.0f, true));
+                g.drawText (juce::String (t * 16 + 1) + "-" + juce::String (t * 16 + 16), tr.toNearestInt(), juce::Justification::centred);
+            }
+            for (int kk = 0; kk < 16; ++kk)
+            {
+                const int k = kk + off;
+                bool act = k < len, gate = ctx.get (a3Id (3, k)) > 0.5f;
+                auto cell = juce::Rectangle<float> (a.getX() + kk * sw + 1.5f, a.getY(), sw - 3.0f, a.getHeight());
                 g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (cell, 2.0f);
-                float semi = ctx.get (A3_NOTE + k), y = yOf (semi), z = yOf (0.0f);
+                float semi = ctx.get (a3Id (0, k)), y = yOf (semi), z = yOf (0.0f);
                 juce::Rectangle<float> bar (cell.getX(), juce::jmin (y, z), cell.getWidth(), juce::jmax (std::abs (y - z), 3.0f));
-                bool acc = ctx.get (A3_ACC + k) > 0.5f;
+                bool acc = ctx.get (a3Id (1, k)) > 0.5f;
                 g.setColour ((acc ? juce::Colour (0xffff5a3c) : juce::Colour (0xffe8b84a)).withAlpha (act ? (gate ? 0.95f : 0.25f) : 0.2f)); g.fillRoundedRectangle (bar, 2.0f);
                 g.setColour (dim.withAlpha (act ? 0.9f : 0.4f)); g.setFont (font (8.0f)); g.drawText (juce::String (k + 1), cell.toNearestInt().removeFromTop (10), juce::Justification::centred);
                 g.drawText ((semi > 0 ? "+" : "") + juce::String (juce::roundToInt (semi)), cell.toNearestInt().removeFromBottom (11), juce::Justification::centred);
                 for (int r = 0; r < 3; ++r)
                 {
-                    auto c = juce::Rectangle<float> (a.getX() + k * sw + 1.5f, rowRect (r).getY() + 1.0f, sw - 3.0f, rowH - 2.0f);
-                    bool on = ctx.get (ids[r] + k) > 0.5f;
+                    auto c = juce::Rectangle<float> (a.getX() + kk * sw + 1.5f, rowRect (r).getY() + 1.0f, sw - 3.0f, rowH - 2.0f);
+                    bool on = ctx.get (a3Id (rowOf[r], k)) > 0.5f;
                     g.setColour (juce::Colour (act ? 0xff1a1c1d : 0xff121314)); g.fillRoundedRectangle (c, 2.0f);
                     if (on)
                     {
@@ -937,10 +949,11 @@ namespace njo
         void mouseDown (const juce::MouseEvent& e) override
         {
             auto a = notes(); lastStep = -1; dragRow = -1;
+            for (int t = 0; t < 4; ++t) if (tabRect (t).contains (e.position)) { pageNo = t; repaint(); return; }
             for (int r = 0; r < 3; ++r)
                 if (rowRect (r).expanded (0.0f, 1.0f).contains (e.position))
                 {
-                    const int ids[3] = { A3_GATE, A3_ACC, A3_SLD }; int k = colOf (e.position.x), id = ids[r] + k;
+                    const int rowOf[3] = { 3, 1, 2 }; int k = colOf (e.position.x), id = a3Id (rowOf[r], k);
                     setTo = ctx.get (id) > 0.5f ? 0 : 1; dragRow = r; ctx.begin (id); ctx.set (id, (float) setTo); ctx.end (id); lastStep = k; repaint(); return;
                 }
             if (a.contains (e.position) || e.position.y < a.getBottom()) { dragRow = 3; setNote (e); }
@@ -950,20 +963,20 @@ namespace njo
             auto a = notes(); int k = colOf (e.position.x);
             float semi = std::round (-12.0f + juce::jlimit (0.0f, 1.0f, 1.0f - (e.position.y - a.getY()) / a.getHeight()) * 36.0f);
             if (e.mods.isShiftDown()) semi = std::round (semi / 12.0f) * 12.0f;   // shift: octaves
-            int id = A3_NOTE + k; ctx.begin (id); ctx.set (id, juce::jlimit (-12.0f, 24.0f, semi)); ctx.end (id); lastStep = k; repaint();
+            int id = a3Id (0, k); ctx.begin (id); ctx.set (id, juce::jlimit (-12.0f, 24.0f, semi)); ctx.end (id); lastStep = k; repaint();
         }
         void mouseDrag (const juce::MouseEvent& e) override
         {
             if (dragRow == 3) setNote (e);
             else if (dragRow >= 0)   // paint the same state over the neighbouring steps
             {
-                const int ids[3] = { A3_GATE, A3_ACC, A3_SLD }; int k = colOf (e.position.x);
-                if (k != lastStep) { int id = ids[dragRow] + k; ctx.begin (id); ctx.set (id, (float) setTo); ctx.end (id); lastStep = k; repaint(); }
+                const int rowOf[3] = { 3, 1, 2 }; int k = colOf (e.position.x);
+                if (k != lastStep) { int id = a3Id (rowOf[dragRow], k); ctx.begin (id); ctx.set (id, (float) setTo); ctx.end (id); lastStep = k; repaint(); }
             }
         }
         void mouseDoubleClick (const juce::MouseEvent& e) override
         {
-            if (e.position.y < notes().getBottom()) { int id = A3_NOTE + colOf (e.position.x); ctx.begin (id); ctx.set (id, 0.0f); ctx.end (id); repaint(); }
+            if (e.position.y < notes().getBottom()) { int id = a3Id (0, colOf (e.position.x)); ctx.begin (id); ctx.set (id, 0.0f); ctx.end (id); repaint(); }
         }
     };
 

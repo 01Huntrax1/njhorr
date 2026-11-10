@@ -101,4 +101,15 @@ check("303: the step notes are editable (+7, -5)", sc == [55, 43, 55, 43], str(s
 d = render(BASE + arp(mode=5, gate=0.5) + [(5264, 2)], [48, 52], hold=2.0, tag="d303")
 check("303: the root is the last key pressed", steps(d, 2) == [52, 52], str(steps(d, 2)))
 
+# ---- 64 steps: steps 17-64 have their own ids (note 5500 + n - 17, gate 5644 + n - 17), Length goes up to 64; default = repeat of the 16 step pattern
+def fast(a, n, dur=0.125): return [midi_of(a[int((0.051 + k * dur + 0.03) * RATE):int((0.051 + k * dur + 0.1) * RATE)]) for k in range(n)]
+e = render(BASE + arp(mode=5, rate=8.0, gate=0.5) + [(5264, 64), (5500 + 47, 12), (5500, 7), (5644 + 63 - 16, 1)], [48], hold=8.4, tag="e303")
+se = fast(e, 64)
+check("303 64 steps: step 17 note (+7) and step 64 note (+12) play", se[16] == 55 and se[63] == 60, "%s %s" % (se[16], se[63]))
+check("303 64 steps: the pattern repeats by default (step 19 = step 3 = +12, step 33 = step 1)", se[18] == 60 and se[32] == 48, "%s %s" % (se[18], se[32]))
+check("303 64 steps: all 64 steps sound", all(x is not None for x in se[:5]) and se[63] is not None)
+f = render(BASE + arp(mode=5, rate=8.0, gate=0.5) + [(5264, 20), (5500 + 3, 9)], [48], hold=3.2, tag="f303")
+sf = fast(f, 22)
+check("303 Length 20: step 20 plays its own note (+9), then it wraps to step 1", sf[19] == 57 and sf[20] == 48 and sf[21] == 48, str(sf))
+
 print("FAILURES: %d" % failures if failures else "ALL OK"); sys.exit(1 if failures else 0)

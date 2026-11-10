@@ -3678,7 +3678,199 @@ processor Eisenpuls_Synth
     input event float param5261 [[ name: "303 Step 14 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
     input event float param5262 [[ name: "303 Step 15 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
     input event float param5263 [[ name: "303 Step 16 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
-    input event float param5264 [[ name: "303 Length", min: 1.0, max: 16.0, init: 16.0, step: 1.0, automatable: false ]];
+    input event float param5264 [[ name: "303 Length", min: 1.0, max: 64.0, init: 16.0, step: 1.0, automatable: false ]];
+    input event float param5500 [[ name: "303 Step 17 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5501 [[ name: "303 Step 18 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5502 [[ name: "303 Step 19 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5503 [[ name: "303 Step 20 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5504 [[ name: "303 Step 21 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5505 [[ name: "303 Step 22 Note", min: -12.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5506 [[ name: "303 Step 23 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5507 [[ name: "303 Step 24 Note", min: -12.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5508 [[ name: "303 Step 25 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5509 [[ name: "303 Step 26 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5510 [[ name: "303 Step 27 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5511 [[ name: "303 Step 28 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5512 [[ name: "303 Step 29 Note", min: -12.0, max: 24.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5513 [[ name: "303 Step 30 Note", min: -12.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5514 [[ name: "303 Step 31 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5515 [[ name: "303 Step 32 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5516 [[ name: "303 Step 33 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5517 [[ name: "303 Step 34 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5518 [[ name: "303 Step 35 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5519 [[ name: "303 Step 36 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5520 [[ name: "303 Step 37 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5521 [[ name: "303 Step 38 Note", min: -12.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5522 [[ name: "303 Step 39 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5523 [[ name: "303 Step 40 Note", min: -12.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5524 [[ name: "303 Step 41 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5525 [[ name: "303 Step 42 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5526 [[ name: "303 Step 43 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5527 [[ name: "303 Step 44 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5528 [[ name: "303 Step 45 Note", min: -12.0, max: 24.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5529 [[ name: "303 Step 46 Note", min: -12.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5530 [[ name: "303 Step 47 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5531 [[ name: "303 Step 48 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5532 [[ name: "303 Step 49 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5533 [[ name: "303 Step 50 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5534 [[ name: "303 Step 51 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5535 [[ name: "303 Step 52 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5536 [[ name: "303 Step 53 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5537 [[ name: "303 Step 54 Note", min: -12.0, max: 24.0, init: 10.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5538 [[ name: "303 Step 55 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5539 [[ name: "303 Step 56 Note", min: -12.0, max: 24.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5540 [[ name: "303 Step 57 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5541 [[ name: "303 Step 58 Note", min: -12.0, max: 24.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5542 [[ name: "303 Step 59 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5543 [[ name: "303 Step 60 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5544 [[ name: "303 Step 61 Note", min: -12.0, max: 24.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5545 [[ name: "303 Step 62 Note", min: -12.0, max: 24.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5546 [[ name: "303 Step 63 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5547 [[ name: "303 Step 64 Note", min: -12.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5548 [[ name: "303 Step 17 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5549 [[ name: "303 Step 18 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5550 [[ name: "303 Step 19 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5551 [[ name: "303 Step 20 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5552 [[ name: "303 Step 21 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5553 [[ name: "303 Step 22 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5554 [[ name: "303 Step 23 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5555 [[ name: "303 Step 24 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5556 [[ name: "303 Step 25 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5557 [[ name: "303 Step 26 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5558 [[ name: "303 Step 27 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5559 [[ name: "303 Step 28 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5560 [[ name: "303 Step 29 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5561 [[ name: "303 Step 30 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5562 [[ name: "303 Step 31 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5563 [[ name: "303 Step 32 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5564 [[ name: "303 Step 33 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5565 [[ name: "303 Step 34 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5566 [[ name: "303 Step 35 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5567 [[ name: "303 Step 36 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5568 [[ name: "303 Step 37 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5569 [[ name: "303 Step 38 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5570 [[ name: "303 Step 39 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5571 [[ name: "303 Step 40 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5572 [[ name: "303 Step 41 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5573 [[ name: "303 Step 42 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5574 [[ name: "303 Step 43 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5575 [[ name: "303 Step 44 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5576 [[ name: "303 Step 45 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5577 [[ name: "303 Step 46 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5578 [[ name: "303 Step 47 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5579 [[ name: "303 Step 48 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5580 [[ name: "303 Step 49 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5581 [[ name: "303 Step 50 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5582 [[ name: "303 Step 51 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5583 [[ name: "303 Step 52 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5584 [[ name: "303 Step 53 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5585 [[ name: "303 Step 54 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5586 [[ name: "303 Step 55 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5587 [[ name: "303 Step 56 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5588 [[ name: "303 Step 57 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5589 [[ name: "303 Step 58 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5590 [[ name: "303 Step 59 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5591 [[ name: "303 Step 60 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5592 [[ name: "303 Step 61 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5593 [[ name: "303 Step 62 Accent", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5594 [[ name: "303 Step 63 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5595 [[ name: "303 Step 64 Accent", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5596 [[ name: "303 Step 17 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5597 [[ name: "303 Step 18 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5598 [[ name: "303 Step 19 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5599 [[ name: "303 Step 20 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5600 [[ name: "303 Step 21 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5601 [[ name: "303 Step 22 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5602 [[ name: "303 Step 23 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5603 [[ name: "303 Step 24 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5604 [[ name: "303 Step 25 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5605 [[ name: "303 Step 26 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5606 [[ name: "303 Step 27 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5607 [[ name: "303 Step 28 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5608 [[ name: "303 Step 29 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5609 [[ name: "303 Step 30 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5610 [[ name: "303 Step 31 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5611 [[ name: "303 Step 32 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5612 [[ name: "303 Step 33 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5613 [[ name: "303 Step 34 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5614 [[ name: "303 Step 35 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5615 [[ name: "303 Step 36 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5616 [[ name: "303 Step 37 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5617 [[ name: "303 Step 38 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5618 [[ name: "303 Step 39 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5619 [[ name: "303 Step 40 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5620 [[ name: "303 Step 41 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5621 [[ name: "303 Step 42 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5622 [[ name: "303 Step 43 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5623 [[ name: "303 Step 44 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5624 [[ name: "303 Step 45 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5625 [[ name: "303 Step 46 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5626 [[ name: "303 Step 47 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5627 [[ name: "303 Step 48 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5628 [[ name: "303 Step 49 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5629 [[ name: "303 Step 50 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5630 [[ name: "303 Step 51 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5631 [[ name: "303 Step 52 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5632 [[ name: "303 Step 53 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5633 [[ name: "303 Step 54 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5634 [[ name: "303 Step 55 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5635 [[ name: "303 Step 56 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5636 [[ name: "303 Step 57 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5637 [[ name: "303 Step 58 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5638 [[ name: "303 Step 59 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5639 [[ name: "303 Step 60 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5640 [[ name: "303 Step 61 Slide", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5641 [[ name: "303 Step 62 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5642 [[ name: "303 Step 63 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5643 [[ name: "303 Step 64 Slide", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5644 [[ name: "303 Step 17 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5645 [[ name: "303 Step 18 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5646 [[ name: "303 Step 19 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5647 [[ name: "303 Step 20 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5648 [[ name: "303 Step 21 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5649 [[ name: "303 Step 22 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5650 [[ name: "303 Step 23 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5651 [[ name: "303 Step 24 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5652 [[ name: "303 Step 25 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5653 [[ name: "303 Step 26 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5654 [[ name: "303 Step 27 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5655 [[ name: "303 Step 28 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5656 [[ name: "303 Step 29 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5657 [[ name: "303 Step 30 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5658 [[ name: "303 Step 31 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5659 [[ name: "303 Step 32 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5660 [[ name: "303 Step 33 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5661 [[ name: "303 Step 34 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5662 [[ name: "303 Step 35 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5663 [[ name: "303 Step 36 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5664 [[ name: "303 Step 37 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5665 [[ name: "303 Step 38 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5666 [[ name: "303 Step 39 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5667 [[ name: "303 Step 40 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5668 [[ name: "303 Step 41 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5669 [[ name: "303 Step 42 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5670 [[ name: "303 Step 43 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5671 [[ name: "303 Step 44 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5672 [[ name: "303 Step 45 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5673 [[ name: "303 Step 46 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5674 [[ name: "303 Step 47 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5675 [[ name: "303 Step 48 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5676 [[ name: "303 Step 49 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5677 [[ name: "303 Step 50 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5678 [[ name: "303 Step 51 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5679 [[ name: "303 Step 52 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5680 [[ name: "303 Step 53 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5681 [[ name: "303 Step 54 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5682 [[ name: "303 Step 55 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5683 [[ name: "303 Step 56 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5684 [[ name: "303 Step 57 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5685 [[ name: "303 Step 58 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5686 [[ name: "303 Step 59 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5687 [[ name: "303 Step 60 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5688 [[ name: "303 Step 61 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5689 [[ name: "303 Step 62 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5690 [[ name: "303 Step 63 Gate", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-ARP64
+    input event float param5691 [[ name: "303 Step 64 Gate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-ARP64
     input event float param3200 [[ name: "Main FX 11 Type", min: 0.0, max: 30.0, init: 0.0, step: 1.0 ]];   // FX-SLOTS
     input event float param3201 [[ name: "Main FX 11 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param3202 [[ name: "Main FX 11 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
@@ -4187,7 +4379,7 @@ processor Eisenpuls_Synth
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
-    float[16]   a3Note, a3Acc, a3Slide, a3Gate;   // MOD-ARP303
+    float[64]   a3Note, a3Acc, a3Slide, a3Gate;   // MOD-ARP303 / MOD-ARP64
     float       a3Len = 16.0f;
     bool        a3Prev = false;   // the previous step slides into this one
     bool        a3Hard = false;   // this note jumps to its pitch and restarts the oscillators
@@ -7109,6 +7301,198 @@ processor Eisenpuls_Synth
     event param5247 (float v) { a3Slide.at (15) = v; }
     event param5263 (float v) { a3Gate.at (15) = v; }
     event param5264 (float v) { a3Len = v; }
+    event param5500 (float v) { a3Note.at (16) = v; }   // MOD-ARP64
+    event param5501 (float v) { a3Note.at (17) = v; }   // MOD-ARP64
+    event param5502 (float v) { a3Note.at (18) = v; }   // MOD-ARP64
+    event param5503 (float v) { a3Note.at (19) = v; }   // MOD-ARP64
+    event param5504 (float v) { a3Note.at (20) = v; }   // MOD-ARP64
+    event param5505 (float v) { a3Note.at (21) = v; }   // MOD-ARP64
+    event param5506 (float v) { a3Note.at (22) = v; }   // MOD-ARP64
+    event param5507 (float v) { a3Note.at (23) = v; }   // MOD-ARP64
+    event param5508 (float v) { a3Note.at (24) = v; }   // MOD-ARP64
+    event param5509 (float v) { a3Note.at (25) = v; }   // MOD-ARP64
+    event param5510 (float v) { a3Note.at (26) = v; }   // MOD-ARP64
+    event param5511 (float v) { a3Note.at (27) = v; }   // MOD-ARP64
+    event param5512 (float v) { a3Note.at (28) = v; }   // MOD-ARP64
+    event param5513 (float v) { a3Note.at (29) = v; }   // MOD-ARP64
+    event param5514 (float v) { a3Note.at (30) = v; }   // MOD-ARP64
+    event param5515 (float v) { a3Note.at (31) = v; }   // MOD-ARP64
+    event param5516 (float v) { a3Note.at (32) = v; }   // MOD-ARP64
+    event param5517 (float v) { a3Note.at (33) = v; }   // MOD-ARP64
+    event param5518 (float v) { a3Note.at (34) = v; }   // MOD-ARP64
+    event param5519 (float v) { a3Note.at (35) = v; }   // MOD-ARP64
+    event param5520 (float v) { a3Note.at (36) = v; }   // MOD-ARP64
+    event param5521 (float v) { a3Note.at (37) = v; }   // MOD-ARP64
+    event param5522 (float v) { a3Note.at (38) = v; }   // MOD-ARP64
+    event param5523 (float v) { a3Note.at (39) = v; }   // MOD-ARP64
+    event param5524 (float v) { a3Note.at (40) = v; }   // MOD-ARP64
+    event param5525 (float v) { a3Note.at (41) = v; }   // MOD-ARP64
+    event param5526 (float v) { a3Note.at (42) = v; }   // MOD-ARP64
+    event param5527 (float v) { a3Note.at (43) = v; }   // MOD-ARP64
+    event param5528 (float v) { a3Note.at (44) = v; }   // MOD-ARP64
+    event param5529 (float v) { a3Note.at (45) = v; }   // MOD-ARP64
+    event param5530 (float v) { a3Note.at (46) = v; }   // MOD-ARP64
+    event param5531 (float v) { a3Note.at (47) = v; }   // MOD-ARP64
+    event param5532 (float v) { a3Note.at (48) = v; }   // MOD-ARP64
+    event param5533 (float v) { a3Note.at (49) = v; }   // MOD-ARP64
+    event param5534 (float v) { a3Note.at (50) = v; }   // MOD-ARP64
+    event param5535 (float v) { a3Note.at (51) = v; }   // MOD-ARP64
+    event param5536 (float v) { a3Note.at (52) = v; }   // MOD-ARP64
+    event param5537 (float v) { a3Note.at (53) = v; }   // MOD-ARP64
+    event param5538 (float v) { a3Note.at (54) = v; }   // MOD-ARP64
+    event param5539 (float v) { a3Note.at (55) = v; }   // MOD-ARP64
+    event param5540 (float v) { a3Note.at (56) = v; }   // MOD-ARP64
+    event param5541 (float v) { a3Note.at (57) = v; }   // MOD-ARP64
+    event param5542 (float v) { a3Note.at (58) = v; }   // MOD-ARP64
+    event param5543 (float v) { a3Note.at (59) = v; }   // MOD-ARP64
+    event param5544 (float v) { a3Note.at (60) = v; }   // MOD-ARP64
+    event param5545 (float v) { a3Note.at (61) = v; }   // MOD-ARP64
+    event param5546 (float v) { a3Note.at (62) = v; }   // MOD-ARP64
+    event param5547 (float v) { a3Note.at (63) = v; }   // MOD-ARP64
+    event param5548 (float v) { a3Acc.at (16) = v; }   // MOD-ARP64
+    event param5549 (float v) { a3Acc.at (17) = v; }   // MOD-ARP64
+    event param5550 (float v) { a3Acc.at (18) = v; }   // MOD-ARP64
+    event param5551 (float v) { a3Acc.at (19) = v; }   // MOD-ARP64
+    event param5552 (float v) { a3Acc.at (20) = v; }   // MOD-ARP64
+    event param5553 (float v) { a3Acc.at (21) = v; }   // MOD-ARP64
+    event param5554 (float v) { a3Acc.at (22) = v; }   // MOD-ARP64
+    event param5555 (float v) { a3Acc.at (23) = v; }   // MOD-ARP64
+    event param5556 (float v) { a3Acc.at (24) = v; }   // MOD-ARP64
+    event param5557 (float v) { a3Acc.at (25) = v; }   // MOD-ARP64
+    event param5558 (float v) { a3Acc.at (26) = v; }   // MOD-ARP64
+    event param5559 (float v) { a3Acc.at (27) = v; }   // MOD-ARP64
+    event param5560 (float v) { a3Acc.at (28) = v; }   // MOD-ARP64
+    event param5561 (float v) { a3Acc.at (29) = v; }   // MOD-ARP64
+    event param5562 (float v) { a3Acc.at (30) = v; }   // MOD-ARP64
+    event param5563 (float v) { a3Acc.at (31) = v; }   // MOD-ARP64
+    event param5564 (float v) { a3Acc.at (32) = v; }   // MOD-ARP64
+    event param5565 (float v) { a3Acc.at (33) = v; }   // MOD-ARP64
+    event param5566 (float v) { a3Acc.at (34) = v; }   // MOD-ARP64
+    event param5567 (float v) { a3Acc.at (35) = v; }   // MOD-ARP64
+    event param5568 (float v) { a3Acc.at (36) = v; }   // MOD-ARP64
+    event param5569 (float v) { a3Acc.at (37) = v; }   // MOD-ARP64
+    event param5570 (float v) { a3Acc.at (38) = v; }   // MOD-ARP64
+    event param5571 (float v) { a3Acc.at (39) = v; }   // MOD-ARP64
+    event param5572 (float v) { a3Acc.at (40) = v; }   // MOD-ARP64
+    event param5573 (float v) { a3Acc.at (41) = v; }   // MOD-ARP64
+    event param5574 (float v) { a3Acc.at (42) = v; }   // MOD-ARP64
+    event param5575 (float v) { a3Acc.at (43) = v; }   // MOD-ARP64
+    event param5576 (float v) { a3Acc.at (44) = v; }   // MOD-ARP64
+    event param5577 (float v) { a3Acc.at (45) = v; }   // MOD-ARP64
+    event param5578 (float v) { a3Acc.at (46) = v; }   // MOD-ARP64
+    event param5579 (float v) { a3Acc.at (47) = v; }   // MOD-ARP64
+    event param5580 (float v) { a3Acc.at (48) = v; }   // MOD-ARP64
+    event param5581 (float v) { a3Acc.at (49) = v; }   // MOD-ARP64
+    event param5582 (float v) { a3Acc.at (50) = v; }   // MOD-ARP64
+    event param5583 (float v) { a3Acc.at (51) = v; }   // MOD-ARP64
+    event param5584 (float v) { a3Acc.at (52) = v; }   // MOD-ARP64
+    event param5585 (float v) { a3Acc.at (53) = v; }   // MOD-ARP64
+    event param5586 (float v) { a3Acc.at (54) = v; }   // MOD-ARP64
+    event param5587 (float v) { a3Acc.at (55) = v; }   // MOD-ARP64
+    event param5588 (float v) { a3Acc.at (56) = v; }   // MOD-ARP64
+    event param5589 (float v) { a3Acc.at (57) = v; }   // MOD-ARP64
+    event param5590 (float v) { a3Acc.at (58) = v; }   // MOD-ARP64
+    event param5591 (float v) { a3Acc.at (59) = v; }   // MOD-ARP64
+    event param5592 (float v) { a3Acc.at (60) = v; }   // MOD-ARP64
+    event param5593 (float v) { a3Acc.at (61) = v; }   // MOD-ARP64
+    event param5594 (float v) { a3Acc.at (62) = v; }   // MOD-ARP64
+    event param5595 (float v) { a3Acc.at (63) = v; }   // MOD-ARP64
+    event param5596 (float v) { a3Slide.at (16) = v; }   // MOD-ARP64
+    event param5597 (float v) { a3Slide.at (17) = v; }   // MOD-ARP64
+    event param5598 (float v) { a3Slide.at (18) = v; }   // MOD-ARP64
+    event param5599 (float v) { a3Slide.at (19) = v; }   // MOD-ARP64
+    event param5600 (float v) { a3Slide.at (20) = v; }   // MOD-ARP64
+    event param5601 (float v) { a3Slide.at (21) = v; }   // MOD-ARP64
+    event param5602 (float v) { a3Slide.at (22) = v; }   // MOD-ARP64
+    event param5603 (float v) { a3Slide.at (23) = v; }   // MOD-ARP64
+    event param5604 (float v) { a3Slide.at (24) = v; }   // MOD-ARP64
+    event param5605 (float v) { a3Slide.at (25) = v; }   // MOD-ARP64
+    event param5606 (float v) { a3Slide.at (26) = v; }   // MOD-ARP64
+    event param5607 (float v) { a3Slide.at (27) = v; }   // MOD-ARP64
+    event param5608 (float v) { a3Slide.at (28) = v; }   // MOD-ARP64
+    event param5609 (float v) { a3Slide.at (29) = v; }   // MOD-ARP64
+    event param5610 (float v) { a3Slide.at (30) = v; }   // MOD-ARP64
+    event param5611 (float v) { a3Slide.at (31) = v; }   // MOD-ARP64
+    event param5612 (float v) { a3Slide.at (32) = v; }   // MOD-ARP64
+    event param5613 (float v) { a3Slide.at (33) = v; }   // MOD-ARP64
+    event param5614 (float v) { a3Slide.at (34) = v; }   // MOD-ARP64
+    event param5615 (float v) { a3Slide.at (35) = v; }   // MOD-ARP64
+    event param5616 (float v) { a3Slide.at (36) = v; }   // MOD-ARP64
+    event param5617 (float v) { a3Slide.at (37) = v; }   // MOD-ARP64
+    event param5618 (float v) { a3Slide.at (38) = v; }   // MOD-ARP64
+    event param5619 (float v) { a3Slide.at (39) = v; }   // MOD-ARP64
+    event param5620 (float v) { a3Slide.at (40) = v; }   // MOD-ARP64
+    event param5621 (float v) { a3Slide.at (41) = v; }   // MOD-ARP64
+    event param5622 (float v) { a3Slide.at (42) = v; }   // MOD-ARP64
+    event param5623 (float v) { a3Slide.at (43) = v; }   // MOD-ARP64
+    event param5624 (float v) { a3Slide.at (44) = v; }   // MOD-ARP64
+    event param5625 (float v) { a3Slide.at (45) = v; }   // MOD-ARP64
+    event param5626 (float v) { a3Slide.at (46) = v; }   // MOD-ARP64
+    event param5627 (float v) { a3Slide.at (47) = v; }   // MOD-ARP64
+    event param5628 (float v) { a3Slide.at (48) = v; }   // MOD-ARP64
+    event param5629 (float v) { a3Slide.at (49) = v; }   // MOD-ARP64
+    event param5630 (float v) { a3Slide.at (50) = v; }   // MOD-ARP64
+    event param5631 (float v) { a3Slide.at (51) = v; }   // MOD-ARP64
+    event param5632 (float v) { a3Slide.at (52) = v; }   // MOD-ARP64
+    event param5633 (float v) { a3Slide.at (53) = v; }   // MOD-ARP64
+    event param5634 (float v) { a3Slide.at (54) = v; }   // MOD-ARP64
+    event param5635 (float v) { a3Slide.at (55) = v; }   // MOD-ARP64
+    event param5636 (float v) { a3Slide.at (56) = v; }   // MOD-ARP64
+    event param5637 (float v) { a3Slide.at (57) = v; }   // MOD-ARP64
+    event param5638 (float v) { a3Slide.at (58) = v; }   // MOD-ARP64
+    event param5639 (float v) { a3Slide.at (59) = v; }   // MOD-ARP64
+    event param5640 (float v) { a3Slide.at (60) = v; }   // MOD-ARP64
+    event param5641 (float v) { a3Slide.at (61) = v; }   // MOD-ARP64
+    event param5642 (float v) { a3Slide.at (62) = v; }   // MOD-ARP64
+    event param5643 (float v) { a3Slide.at (63) = v; }   // MOD-ARP64
+    event param5644 (float v) { a3Gate.at (16) = v; }   // MOD-ARP64
+    event param5645 (float v) { a3Gate.at (17) = v; }   // MOD-ARP64
+    event param5646 (float v) { a3Gate.at (18) = v; }   // MOD-ARP64
+    event param5647 (float v) { a3Gate.at (19) = v; }   // MOD-ARP64
+    event param5648 (float v) { a3Gate.at (20) = v; }   // MOD-ARP64
+    event param5649 (float v) { a3Gate.at (21) = v; }   // MOD-ARP64
+    event param5650 (float v) { a3Gate.at (22) = v; }   // MOD-ARP64
+    event param5651 (float v) { a3Gate.at (23) = v; }   // MOD-ARP64
+    event param5652 (float v) { a3Gate.at (24) = v; }   // MOD-ARP64
+    event param5653 (float v) { a3Gate.at (25) = v; }   // MOD-ARP64
+    event param5654 (float v) { a3Gate.at (26) = v; }   // MOD-ARP64
+    event param5655 (float v) { a3Gate.at (27) = v; }   // MOD-ARP64
+    event param5656 (float v) { a3Gate.at (28) = v; }   // MOD-ARP64
+    event param5657 (float v) { a3Gate.at (29) = v; }   // MOD-ARP64
+    event param5658 (float v) { a3Gate.at (30) = v; }   // MOD-ARP64
+    event param5659 (float v) { a3Gate.at (31) = v; }   // MOD-ARP64
+    event param5660 (float v) { a3Gate.at (32) = v; }   // MOD-ARP64
+    event param5661 (float v) { a3Gate.at (33) = v; }   // MOD-ARP64
+    event param5662 (float v) { a3Gate.at (34) = v; }   // MOD-ARP64
+    event param5663 (float v) { a3Gate.at (35) = v; }   // MOD-ARP64
+    event param5664 (float v) { a3Gate.at (36) = v; }   // MOD-ARP64
+    event param5665 (float v) { a3Gate.at (37) = v; }   // MOD-ARP64
+    event param5666 (float v) { a3Gate.at (38) = v; }   // MOD-ARP64
+    event param5667 (float v) { a3Gate.at (39) = v; }   // MOD-ARP64
+    event param5668 (float v) { a3Gate.at (40) = v; }   // MOD-ARP64
+    event param5669 (float v) { a3Gate.at (41) = v; }   // MOD-ARP64
+    event param5670 (float v) { a3Gate.at (42) = v; }   // MOD-ARP64
+    event param5671 (float v) { a3Gate.at (43) = v; }   // MOD-ARP64
+    event param5672 (float v) { a3Gate.at (44) = v; }   // MOD-ARP64
+    event param5673 (float v) { a3Gate.at (45) = v; }   // MOD-ARP64
+    event param5674 (float v) { a3Gate.at (46) = v; }   // MOD-ARP64
+    event param5675 (float v) { a3Gate.at (47) = v; }   // MOD-ARP64
+    event param5676 (float v) { a3Gate.at (48) = v; }   // MOD-ARP64
+    event param5677 (float v) { a3Gate.at (49) = v; }   // MOD-ARP64
+    event param5678 (float v) { a3Gate.at (50) = v; }   // MOD-ARP64
+    event param5679 (float v) { a3Gate.at (51) = v; }   // MOD-ARP64
+    event param5680 (float v) { a3Gate.at (52) = v; }   // MOD-ARP64
+    event param5681 (float v) { a3Gate.at (53) = v; }   // MOD-ARP64
+    event param5682 (float v) { a3Gate.at (54) = v; }   // MOD-ARP64
+    event param5683 (float v) { a3Gate.at (55) = v; }   // MOD-ARP64
+    event param5684 (float v) { a3Gate.at (56) = v; }   // MOD-ARP64
+    event param5685 (float v) { a3Gate.at (57) = v; }   // MOD-ARP64
+    event param5686 (float v) { a3Gate.at (58) = v; }   // MOD-ARP64
+    event param5687 (float v) { a3Gate.at (59) = v; }   // MOD-ARP64
+    event param5688 (float v) { a3Gate.at (60) = v; }   // MOD-ARP64
+    event param5689 (float v) { a3Gate.at (61) = v; }   // MOD-ARP64
+    event param5690 (float v) { a3Gate.at (62) = v; }   // MOD-ARP64
+    event param5691 (float v) { a3Gate.at (63) = v; }   // MOD-ARP64
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -8324,6 +8708,83 @@ processor Eisenpuls_Synth
         a3Gate.at (12) = 1.0f;
         a3Gate.at (13) = 1.0f;
         a3Gate.at (14) = 1.0f;
+
+        // MOD-ARP64: steps 17-64 repeat the default pattern
+        a3Note.at (18) = 12.0f;
+        a3Note.at (21) = 10.0f;
+        a3Note.at (23) = 7.0f;
+        a3Note.at (25) = 12.0f;
+        a3Note.at (28) = 3.0f;
+        a3Note.at (29) = 5.0f;
+        a3Note.at (34) = 12.0f;
+        a3Note.at (37) = 10.0f;
+        a3Note.at (39) = 7.0f;
+        a3Note.at (41) = 12.0f;
+        a3Note.at (44) = 3.0f;
+        a3Note.at (45) = 5.0f;
+        a3Note.at (50) = 12.0f;
+        a3Note.at (53) = 10.0f;
+        a3Note.at (55) = 7.0f;
+        a3Note.at (57) = 12.0f;
+        a3Note.at (60) = 3.0f;
+        a3Note.at (61) = 5.0f;
+        a3Acc.at (18) = 1.0f;
+        a3Acc.at (25) = 1.0f;
+        a3Acc.at (29) = 1.0f;
+        a3Acc.at (34) = 1.0f;
+        a3Acc.at (41) = 1.0f;
+        a3Acc.at (45) = 1.0f;
+        a3Acc.at (50) = 1.0f;
+        a3Acc.at (57) = 1.0f;
+        a3Acc.at (61) = 1.0f;
+        a3Slide.at (19) = 1.0f;
+        a3Slide.at (23) = 1.0f;
+        a3Slide.at (28) = 1.0f;
+        a3Slide.at (35) = 1.0f;
+        a3Slide.at (39) = 1.0f;
+        a3Slide.at (44) = 1.0f;
+        a3Slide.at (51) = 1.0f;
+        a3Slide.at (55) = 1.0f;
+        a3Slide.at (60) = 1.0f;
+        a3Gate.at (16) = 1.0f;
+        a3Gate.at (17) = 1.0f;
+        a3Gate.at (18) = 1.0f;
+        a3Gate.at (19) = 1.0f;
+        a3Gate.at (20) = 1.0f;
+        a3Gate.at (22) = 1.0f;
+        a3Gate.at (23) = 1.0f;
+        a3Gate.at (24) = 1.0f;
+        a3Gate.at (25) = 1.0f;
+        a3Gate.at (26) = 1.0f;
+        a3Gate.at (28) = 1.0f;
+        a3Gate.at (29) = 1.0f;
+        a3Gate.at (30) = 1.0f;
+        a3Gate.at (32) = 1.0f;
+        a3Gate.at (33) = 1.0f;
+        a3Gate.at (34) = 1.0f;
+        a3Gate.at (35) = 1.0f;
+        a3Gate.at (36) = 1.0f;
+        a3Gate.at (38) = 1.0f;
+        a3Gate.at (39) = 1.0f;
+        a3Gate.at (40) = 1.0f;
+        a3Gate.at (41) = 1.0f;
+        a3Gate.at (42) = 1.0f;
+        a3Gate.at (44) = 1.0f;
+        a3Gate.at (45) = 1.0f;
+        a3Gate.at (46) = 1.0f;
+        a3Gate.at (48) = 1.0f;
+        a3Gate.at (49) = 1.0f;
+        a3Gate.at (50) = 1.0f;
+        a3Gate.at (51) = 1.0f;
+        a3Gate.at (52) = 1.0f;
+        a3Gate.at (54) = 1.0f;
+        a3Gate.at (55) = 1.0f;
+        a3Gate.at (56) = 1.0f;
+        a3Gate.at (57) = 1.0f;
+        a3Gate.at (58) = 1.0f;
+        a3Gate.at (60) = 1.0f;
+        a3Gate.at (61) = 1.0f;
+        a3Gate.at (62) = 1.0f;
 
         for (int sm = 0; sm < 10; ++sm)   // MOD-SEQ
         {
@@ -18592,7 +19053,7 @@ processor Eisenpuls_Synth
 
             if (int (arpMode + 0.5f) == 5)   // MOD-ARP303
             {
-                int   si    = arpStep % clamp (int (a3Len + 0.5f), 1, 16);
+                int   si    = arpStep % clamp (int (a3Len + 0.5f), 1, 64);
                 int   root  = arpHN.at (max (arpN - 1, 0));
                 bool  tied  = a3Prev && arpCur >= 0;   // the step before slid into this one
                 int   old   = arpCur;

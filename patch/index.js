@@ -2824,7 +2824,11 @@ const SPECS = (() => {
             L.push([5232 + k, "303 Step " + (k + 1) + " Slide",  0, 1, SL[k], "", "btn", ["Off", "On"], 1, "Slide"]);
             L.push([5248 + k, "303 Step " + (k + 1) + " Gate",   0, 1, GT[k], "", "btn", ["Off", "On"], 1, "Gate"]);
         }
-        L.push([5264, "303 Length", 1, 16, 16, "", "stp", null, 1, "Length"]);
+        // MOD-ARP64: steps 17-64 (repeat of the default pattern)
+        [[5500, "Note", -12, 24, N, "st", "stp", null], [5548, "Accent", 0, 1, AC, "", "btn", ["Off", "On"]], [5596, "Slide", 0, 1, SL, "", "btn", ["Off", "On"]], [5644, "Gate", 0, 1, GT, "", "btn", ["Off", "On"]]].forEach(r => {
+            for (let k = 16; k < 64; k++) L.push([r[0] + k - 16, "303 Step " + (k + 1) + " " + r[1], r[2], r[3], r[4][k % 16], r[5], r[6], r[7], 1, r[1]]);
+        });
+        L.push([5264, "303 Length", 1, 64, 16, "", "stp", null, 1, "Length"]);
     }
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
