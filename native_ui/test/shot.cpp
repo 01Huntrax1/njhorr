@@ -60,6 +60,8 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f);
         ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("rson")), 1.0f); cx.set (njo::oscId (0, njo::oscKey ("rsmod")), 6.0f); cx.set (njo::oscId (0, njo::oscKey ("rsdec")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("dpos")), 3.0f); ed.setSynthPage (21); pump(); save (ed, dir.getChildFile ("reso.png"), scale);
+        cx.set (6300 + 24, 6.0f); cx.set (6300 + 24 + 2, 0.3f); njo::OscPage::fxSel (0) = 3; ed.setSynthPage (njo::OscPage::fxPageOf (cx, 0)); pump(); save (ed, dir.getChildFile ("oscfx_comb.png"), scale);
+        njo::OscPage::fxSel (0) = 0;
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f); ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist_wd.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
         // Physical source

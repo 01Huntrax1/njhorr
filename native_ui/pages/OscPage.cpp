@@ -154,14 +154,91 @@ namespace njo
         };
     }
 
+    int& OscPage::fxSel (int osc) { static int sel[OSC_N] = { 0, 0, 0, 0, 0, 0 }; return sel[juce::jlimit (0, OSC_N - 1, osc)]; }
+    int OscPage::fxPageOf (Ctx& c, int osc)
+    {
+        const int t = juce::jlimit (0, 7, juce::roundToInt (c.get (6300 + 32 * osc + 8 * fxSel (osc))));
+        return t == 1 ? 9 + osc : (t == 2 ? 15 + osc : (t == 3 ? 21 + osc : 27 + osc));
+    }
+
+    namespace
+    {
+        const char* const kFxTypes[8] = { "Off", "Filter", "Distortion", "Resonator", "Bitcrush", "Fold", "Comb", "Tilt" };
+
+        // OSCFX-UI: the four slots of an oscillator's FX rack as tiles; click selects, the arrow opens the type / move menu
+        struct RackBar : public juce::Component, private Ctx::Listener
+        {
+            RackBar (Ctx& c, int osc) : ctx (c), o (osc) { ctx.addListener (this); }
+            ~RackBar() override { ctx.removeListener (this); }
+            std::function<void()> onRoute;
+            int slotId (int s, int k) const { return 6300 + 32 * o + 8 * s + k; }
+            int typeOf (int s) const { return juce::jlimit (0, 7, juce::roundToInt (ctx.get (slotId (s, 0)))); }
+            juce::Rectangle<int> tile (int s) const { const int w = getWidth() / 4; return { s * w, 0, w - 6, getHeight() }; }
+            void paramChanged (int num, float) override { if (num >= 6300 + 32 * o && num < 6300 + 32 * (o + 1)) repaint(); }
+            void paint (juce::Graphics& g) override
+            {
+                for (int s = 0; s < 4; ++s)
+                {
+                    auto r = tile (s); const int t = typeOf (s); const bool sel = OscPage::fxSel (o) == s;
+                    paintButton (g, r.toFloat(), sel, hoverSlot == s, false, 3.0f);
+                    g.setColour (sel ? juce::Colour (0xff101112) : (t == 0 ? dim : ink)); g.setFont (font (9.0f, true));
+                    g.drawText (juce::String (s + 1) + "  " + juce::String (kFxTypes[t]).toUpperCase(), r.withTrimmedRight (22).withTrimmedLeft (8), juce::Justification::centredLeft);
+                    g.setFont (font (8.0f, false)); g.setColour (sel ? juce::Colour (0xff101112) : dim);
+                    g.drawText (t == 0 ? "empty" : "mix " + juce::String (juce::roundToInt (ctx.get (slotId (s, 1)) * 100.0f)) + " %", r.withTrimmedLeft (8).withTrimmedTop (30), juce::Justification::centredLeft);
+                    juce::Path a; const float ax = (float) r.getRight() - 14.0f, ay = (float) r.getY() + 12.0f;
+                    a.addTriangle (ax - 4, ay - 2, ax + 4, ay - 2, ax, ay + 3);
+                    g.setColour (sel ? juce::Colour (0xff101112) : orange); g.fillPath (a);
+                }
+            }
+            void mouseMove (const juce::MouseEvent& e) override { int h = slotAt (e.getPosition()); if (h != hoverSlot) { hoverSlot = h; repaint(); } }
+            void mouseExit (const juce::MouseEvent&) override { hoverSlot = -1; repaint(); }
+            int slotAt (juce::Point<int> p) const { for (int s = 0; s < 4; ++s) if (tile (s).contains (p)) return s; return -1; }
+            void mouseUp (const juce::MouseEvent& e) override
+            {
+                const int s = slotAt (e.getPosition());
+                if (s < 0) return;
+                const bool arrow = e.getPosition().x > tile (s).getRight() - 24 && e.getPosition().y < tile (s).getY() + 26;
+                if (arrow || e.mods.isPopupMenu()) { menu (s); return; }
+                OscPage::fxSel (o) = s; if (onRoute) onRoute();
+            }
+            void setSlot (int s, int k, float v) { const int n = slotId (s, k); ctx.begin (n); ctx.set (n, v); ctx.end (n); }
+            void swapSlots (int a, int b)
+            {
+                for (int k = 0; k < 5; ++k) { const float va = ctx.get (slotId (a, k)), vb = ctx.get (slotId (b, k)); setSlot (a, k, vb); setSlot (b, k, va); }
+            }
+            void menu (int s)
+            {
+                juce::PopupMenu m;
+                for (int t = 0; t < 8; ++t) m.addItem (1 + t, kFxTypes[t], true, typeOf (s) == t);
+                m.addSeparator();
+                m.addItem (100, "Move left", s > 0);
+                m.addItem (101, "Move right", s < 3);
+                juce::Component::SafePointer<RackBar> sp (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (this), [sp, s] (int r)
+                {
+                    if (sp == nullptr || r <= 0) return;
+                    auto& self = *sp;
+                    if (r <= 8) { self.setSlot (s, 0, (float) (r - 1)); OscPage::fxSel (self.o) = s; }
+                    else if (r == 100) { self.swapSlots (s, s - 1); OscPage::fxSel (self.o) = s - 1; }
+                    else if (r == 101) { self.swapSlots (s, s + 1); OscPage::fxSel (self.o) = s + 1; }
+                    if (self.onRoute) self.onRoute();
+                    self.repaint();
+                });
+            }
+            Ctx& ctx; int o; int hoverSlot = -1;
+        };
+    }
+
     // ============================================================================================ Impl
     struct OscPage::Impl : private Ctx::Listener, private juce::ChangeListener
     {
         Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc, int pageMode)
-            : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), rdisplay (c, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
+            : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), rack (c, osc), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), rdisplay (c, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
               modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER"), editBtn ("EDIT")
         {
             editBtn.onClick = [this] { openEditor(); };
+            rack.onRoute = [this] { if (owner.onFxRoute) owner.onFxRoute (o); };
+            owner.addChildComponent (rack);
             owner.addAndMakeVisible (editBtn);
             if (pageMode == 1 || pageMode == 2) tedit = std::make_unique<TableEditor> (c, m, osc, pageMode == 1);
             if (pageMode == 0 || pageMode == 3) medit = std::make_unique<ModeEditor> (c, m, osc);
@@ -324,6 +401,7 @@ namespace njo
 
         ~Impl() override { mem.removeChangeListener (this); ctx.removeListener (this); }
 
+        RackBar rack;
         ParamWidget* W (const char* key) { auto it = widgets.find (key); return it == widgets.end() ? nullptr : it->second.get(); }
         void openEditor()
         {
@@ -460,6 +538,14 @@ namespace njo
         }
 
         // Waveguide: each model names (and uses) its own parameters
+        static const char* rackHelp()
+        {
+            return "Every oscillator has its own effect rack with four slots, processed from 1 to 4 before the signal reaches the FM / PM matrices and the output. "
+                   "Click a tile to edit its effect; the arrow opens the menu with the effect type and Move left / right. Any effect can sit in any slot, also twice. "
+                   "Filter, Distortion and Resonator keep their own pages and parameters. Bitcrush (Bits, Rate), Fold (Drive, Bias), Comb (Time, Feedback, Damp) and Tilt (Freq, Tilt) "
+                   "use the three knobs of this page. Each slot has its own Mix. The effects run separately for every voice.";
+        }
+
         static const char* fxName (int sl, int k)
         {
             static char n[4][5][8];
@@ -557,7 +643,7 @@ namespace njo
             for (auto& kv : widgets) kv.second->setVisible (false);
             for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &rdisplay, (juce::Component*) &tdisplay,
                                         (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
-                                        (juce::Component*) &presetBtn, (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
+                                        (juce::Component*) &rack, (juce::Component*) &presetBtn, (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
@@ -566,7 +652,7 @@ namespace njo
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
             if (mode == 0) { cardSrc = span (0, 5); cardTune = span (5, 4); cardOut = span (9, 3); cardFlt = {}; }
-            else { cardSrc = cardTune = {}; cardFlt = span (0, 8); cardOut = span (8, 4); }
+            else { cardSrc = cardTune = {}; cardFlt = span (0, 8); cardOut = span (8, 4); }   // modes 1..4
 
             // ---- source ----
             if (mode == 0)
@@ -759,11 +845,30 @@ namespace njo
                 const int cl = 12 + (w - 24) / 4, cr = 12 + (w - 24) * 3 / 4;
                 knob ("level", cl, 60, c); knob ("pan", cr, 60, c);
             }
+            // ---- OSCFX-UI: the rack bar (all effect pages) with the mix knob of the selected slot ----
+            if (mode >= 1)
+            {
+                auto c = cardFlt; int w = c.getWidth();
+                rack.setBounds (c.getX() + 12, c.getY() + 32, w - 24 - 84, 58); rack.setVisible (true);
+                const int sel = OscPage::fxSel (o);
+                knob (fxName (sel, 1), w - 12 - 38, 36, c);
+                updateFxLabels();
+            }
+            if (mode == 4)
+            {
+                auto c = cardFlt; int w = c.getWidth();
+                const int sel = OscPage::fxSel (o);
+                const int ty = juce::jlimit (0, 7, juce::roundToInt (ctx.get (6300 + 32 * o + 8 * sel)));
+                if (ty != 0)
+                    for (int k = 0; k < 3; ++k) knob (fxName (sel, 2 + k), 12 + juce::roundToInt ((w - 24) * (2 * k + 1) / 6.0), 160, c);
+                const int cx0 = cardFlt.getX() + 190;
+                for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
+            }
             // ---- filter page: response, Filter / Wavefilter switch, controls; table card ----
             if (mode == 1)
             {
                 auto c = cardFlt; int w = c.getWidth();
-                fdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); fdisplay.setVisible (true);
+                fdisplay.setBounds (c.getX() + 12, c.getY() + 100, w - 24, 84); fdisplay.setVisible (true);
                 const int modeW = 100;
                 put ("fon", 12, 196, 162, 31, c);
                 const int tx = 12 + 162 + 12, tw = w - 12 - 2 * modeW - 12 - tx;
@@ -779,7 +884,7 @@ namespace njo
             if (mode == 2)
             {
                 auto c = cardFlt; int w = c.getWidth();
-                ddisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); ddisplay.setVisible (true);
+                ddisplay.setBounds (c.getX() + 12, c.getY() + 100, w - 24, 84); ddisplay.setVisible (true);
                 const int modeW = 118;
                 put ("dtype", 12, 195, 260, 36, c); strip ("dtype", 12, 195, 260, c, false);
                 modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
@@ -790,23 +895,13 @@ namespace njo
             if (mode == 3)
             {
                 auto c = cardFlt; int w = c.getWidth();
-                rdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); rdisplay.setVisible (true);
+                rdisplay.setBounds (c.getX() + 12, c.getY() + 100, w - 24, 84); rdisplay.setVisible (true);
                 put ("rson", 12, 196, 120, 31, c);
                 const int mw = w - 24 - 120 - 12;
                 put ("rsmod", 144, 195, mw, 36, c); strip ("rsmod", 144, 195, mw, c, false);
                 const double pitch = (w - 24) / 6.0;
                 const char* keys[6] = { "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix" };
                 for (int i = 0; i < 6; ++i) knob (keys[i], 12 + juce::roundToInt (pitch * i + pitch / 2), 262, c);
-                {   // OSCFX-UI: four effect slots (type, mix, three parameters) in the right card
-                    auto r = cardOut; const int rw = r.getWidth();
-                    for (int sl = 0; sl < 4; ++sl)
-                    {
-                        const int y0 = 40 + sl * 96;
-                        put (fxName (sl, 0), 12, y0, rw - 24, 34, r); strip (fxName (sl, 0), 12, y0, rw - 24, r, false);
-                        for (int k = 0; k < 4; ++k) knob (fxName (sl, 1 + k), 12 + juce::roundToInt ((rw - 24) * (2 * k + 1) / 8.0), y0 + 38, r);
-                    }
-                    updateFxLabels();
-                }
                 const int cx0 = cardFlt.getX() + 190;
                 for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
             }
@@ -879,10 +974,23 @@ namespace njo
                 g.setColour (dim); g.setFont (font (8.5f, false));
                 g.drawFittedText ("Filter and distortion of this oscillator have their own pages (FILTER, DIST).", cardOut.getX() + 14, 232, cardOut.getWidth() - 28, 40, juce::Justification::topLeft, 3);
             }
+            else if (mode == 4)
+            {
+                static const char* nm[8] = { "Empty slot", "Filter", "Distortion", "Resonator", "Bitcrush", "Fold", "Comb", "Tilt" };
+                const int ty = juce::jlimit (0, 7, juce::roundToInt (ctx.get (6300 + 32 * o + 8 * OscPage::fxSel (o))));
+                title (g, "OSC " + juce::String (o + 1) + " " + nm[ty], cardFlt.getX() + 14, 15, cardFlt.getX() + 186);
+                title (g, "FX rack", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                g.setColour (dim); g.setFont (font (8.5f, false));
+                g.drawFittedText (ty == 0 ? "This slot is empty. Open the arrow of a tile above and pick an effect: Filter, Distortion, Resonator, Bitcrush, Fold, Comb or Tilt."
+                                          : "Mix blends this slot with its input (top right).", cardFlt.getX() + 14, cardFlt.getY() + 100, cardFlt.getWidth() - 28, 40, juce::Justification::topLeft, 3);
+                g.drawFittedText (rackHelp(), cardOut.getX() + 14, 40, cardOut.getWidth() - 28, 300, juce::Justification::topLeft, 24);
+            }
             else if (mode == 3)
             {
                 title (g, "OSC " + juce::String (o + 1) + " Resonator", cardFlt.getX() + 14, 15, cardFlt.getX() + 186);
-                title (g, "OSC " + juce::String (o + 1) + " FX rack", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                title (g, "FX rack", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
+                g.setColour (dim); g.setFont (font (8.5f, false));
+                g.drawFittedText (rackHelp(), cardOut.getX() + 14, 40, cardOut.getWidth() - 28, 300, juce::Justification::topLeft, 24);
             }
             else
             {

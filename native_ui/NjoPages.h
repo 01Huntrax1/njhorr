@@ -10,13 +10,16 @@ namespace njo
     class OscPage : public juce::Component
     {
     public:
-        // mode 0 = source / tune / output, 1 = filter + Wavefilter table, 2 = distortion + Wavedistortion table (one page per oscillator and mode)
+        // mode 0 = source / tune / output, 1 = filter + Wavefilter table, 2 = distortion + Wavedistortion table, 3 = resonator, 4 = the other rack effects (one page per oscillator and mode)
         OscPage (Ctx&, SoundMemory&, int oscIndex, int mode = 0);
         ~OscPage() override;
         void paint (juce::Graphics&) override;
         void resized() override;
         std::function<void (ParamWidget&)> onModDropped;
         std::function<void (int)> onSelectOsc;     // chip A-F of the filter / distortion page
+        std::function<void (int)> onFxRoute;       // the selected slot of this oscillator's FX rack changed: open the page of its type
+        static int& fxSel (int osc);               // selected rack slot (0..3) per oscillator
+        static int fxPageOf (Ctx&, int osc);            // synth page of the selected slot: 9+o filter, 15+o dist, 21+o reso, 27+o the other types
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
