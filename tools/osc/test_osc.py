@@ -1137,5 +1137,13 @@ check("OSC FX all slots Off = unprocessed sound", np.abs(off[:int(0.5 * RATE)] -
 dup = render(SAW + [FX(0, 3, 0, 5), FX(0, 3, 2, 0.9), FX(0, 2, 0, 5), FX(0, 2, 2, 0.9)], note=45, hold=0.6, tail=0.1, tag="fxdup")[:, 0]
 check("OSC FX the same effect twice in a rack works (two folds) and stays bounded", np.isfinite(dup).all() and np.abs(dup).max() < 6.0)
 
+# OSCFX2-DSP: the extra Fold / Comb parameters (P4..P6 = k 5..7)
+def fxr(ty, extra, tag): return render(SAW + [FX(0, 3, 0, ty)] + extra, note=45, hold=0.6, tail=0.1, tag=tag)[:, 0]
+for ty, nm, ks in ((5, "Fold", ((5, "Shape"), (6, "Asym"), (7, "Attenuate"), (4, "Stage 2"))), (6, "Comb", ((5, "Polarity"), (6, "Key Track"), (7, "Mod"), (4, "Damp")))):
+    ref = fxr(ty, [FX(0, 3, 2, 0.4), FX(0, 3, 3, 0.7)] + ([FX(0, 3, 4, 0.0)] if ty == 5 else [FX(0, 3, 4, 0.2)]), "fx2r%d" % ty)
+    for k, lab in ks:
+        a = fxr(ty, [FX(0, 3, 2, 0.4), FX(0, 3, 3, 0.7), FX(0, 3, 4, 0.0 if ty == 5 else 0.2), FX(0, 3, k, 0.9)], "fx2%d%d" % (ty, k))
+        check("OSC FX %s %s changes the sound, finite and bounded" % (nm, lab), rms(a[:int(0.5 * RATE)] - ref[:int(0.5 * RATE)]) > 0.01 * rms(ref) and np.isfinite(a).all() and np.abs(a).max() < 8.0, "%.3f" % np.abs(a).max())
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

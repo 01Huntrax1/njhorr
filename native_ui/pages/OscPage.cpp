@@ -290,7 +290,7 @@ namespace njo
             }
             // OSCFX-UI: the effect rack of this oscillator, ids 6300 + 32 * osc + 8 * slot + k
             for (int sl = 0; sl < 4; ++sl)
-                for (int k = 0; k < 5; ++k)
+                for (int k = 0; k < 8; ++k)
                 {
                     auto w = makeWidget (ctx, 6300 + 32 * o + 8 * sl + k, true);
                     w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
@@ -542,26 +542,28 @@ namespace njo
         {
             return "Every oscillator has its own effect rack with four slots, processed from 1 to 4 before the signal reaches the FM / PM matrices and the output. "
                    "Click a tile to edit its effect; the arrow opens the menu with the effect type and Move left / right. Any effect can sit in any slot, also twice. "
-                   "Filter, Distortion and Resonator keep their own pages and parameters. Bitcrush (Bits, Rate), Fold (Drive, Bias), Comb (Time, Feedback, Damp) and Tilt (Freq, Tilt) "
-                   "use the three knobs of this page. Each slot has its own Mix. The effects run separately for every voice.";
+                   "Filter, Distortion and Resonator keep their own pages and parameters. Bitcrush (Bits, Rate), Fold (Drive, Bias, Stage 2, Shape, Asym, Attenuate), Comb (Time, Feedback, Damp, Polarity, Key Track, Mod) and Tilt (Freq, Tilt) "
+                   "use the knobs of this page (Fold and Comb have six). Each slot has its own Mix. The effects run separately for every voice.";
         }
 
         static const char* fxName (int sl, int k)
         {
-            static char n[4][5][8];
+            static char n[4][8][8];
             static bool init = false;
-            if (! init) { for (int a = 0; a < 4; ++a) for (int b = 0; b < 5; ++b) std::snprintf (n[a][b], 8, "fx%d_%d", a, b); init = true; }
+            if (! init) { for (int a = 0; a < 4; ++a) for (int b = 0; b < 8; ++b) std::snprintf (n[a][b], 8, "fx%d_%d", a, b); init = true; }
             return n[sl][k];
         }
 
         void updateFxLabels()
         {
-            static const char* names[8][3] = { { "", "", "" }, { "", "", "" }, { "", "", "" }, { "", "", "" }, { "Bits", "Rate", "" }, { "Drive", "Bias", "" }, { "Time", "Feedback", "Damp" }, { "Freq", "Tilt", "" } };
+            static const char* names[8][6] = { { "", "", "", "", "", "" }, { "", "", "", "", "", "" }, { "", "", "", "", "", "" }, { "", "", "", "", "", "" },
+                                               { "Bits", "Rate", "", "", "", "" }, { "Drive", "Bias", "Stage 2", "Shape", "Asym", "Attenuate" },
+                                               { "Time", "Feedback", "Damp", "Polarity", "Key Track", "Mod" }, { "Freq", "Tilt", "", "", "", "" } };
             for (int sl = 0; sl < 4; ++sl)
             {
                 const int ty = juce::jlimit (0, 7, juce::roundToInt (ctx.get (6300 + 32 * o + 8 * sl)));
                 if (auto* m = W (fxName (sl, 1))) { m->setAlpha (ty == 0 ? 0.3f : 1.0f); m->setEnabled (ty != 0); }
-                for (int k = 0; k < 3; ++k)
+                for (int k = 0; k < 6; ++k)
                     if (auto* w = W (fxName (sl, 2 + k)))
                     {
                         const juce::String lbl (names[ty][k]);
@@ -860,7 +862,8 @@ namespace njo
                 const int sel = OscPage::fxSel (o);
                 const int ty = juce::jlimit (0, 7, juce::roundToInt (ctx.get (6300 + 32 * o + 8 * sel)));
                 if (ty != 0)
-                    for (int k = 0; k < 3; ++k) knob (fxName (sel, 2 + k), 12 + juce::roundToInt ((w - 24) * (2 * k + 1) / 6.0), 160, c);
+                    for (int k = 0; k < 6; ++k)
+                        if (k < 3 || ty == 5 || ty == 6) knob (fxName (sel, 2 + k), 12 + juce::roundToInt ((w - 24) * (2 * (k % 3) + 1) / 6.0), 150 + 100 * (k / 3), c);
                 const int cx0 = cardFlt.getX() + 190;
                 for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
             }
