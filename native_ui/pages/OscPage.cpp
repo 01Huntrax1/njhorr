@@ -1,5 +1,6 @@
 // OSC 1-6 page: source panel (wavetable / sampler / Wave Terrain), tune + unison, filter, distortion + output.
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
+#include <cstdio>
 #include "../NjoPages.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
@@ -210,6 +211,15 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // OSCFX-UI: the effect rack of this oscillator, ids 6300 + 32 * osc + 8 * slot + k
+            for (int sl = 0; sl < 4; ++sl)
+                for (int k = 0; k < 5; ++k)
+                {
+                    auto w = makeWidget (ctx, 6300 + 32 * o + 8 * sl + k, true);
+                    w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                    owner.addAndMakeVisible (*w);
+                    widgets[fxName (sl, k)] = std::move (w);
+                }
             // Granular and Additive sources: their own id blocks (GR_BASE / AD_BASE + 16 * osc + j)
             for (auto key : grKeys)
             {
@@ -450,6 +460,32 @@ namespace njo
         }
 
         // Waveguide: each model names (and uses) its own parameters
+        static const char* fxName (int sl, int k)
+        {
+            static char n[4][5][8];
+            static bool init = false;
+            if (! init) { for (int a = 0; a < 4; ++a) for (int b = 0; b < 5; ++b) std::snprintf (n[a][b], 8, "fx%d_%d", a, b); init = true; }
+            return n[sl][k];
+        }
+
+        void updateFxLabels()
+        {
+            static const char* names[8][3] = { { "", "", "" }, { "", "", "" }, { "", "", "" }, { "", "", "" }, { "Bits", "Rate", "" }, { "Drive", "Bias", "" }, { "Time", "Feedback", "Damp" }, { "Freq", "Tilt", "" } };
+            for (int sl = 0; sl < 4; ++sl)
+            {
+                const int ty = juce::jlimit (0, 7, juce::roundToInt (ctx.get (6300 + 32 * o + 8 * sl)));
+                if (auto* m = W (fxName (sl, 1))) { m->setAlpha (ty == 0 ? 0.3f : 1.0f); m->setEnabled (ty != 0); }
+                for (int k = 0; k < 3; ++k)
+                    if (auto* w = W (fxName (sl, 2 + k)))
+                    {
+                        const juce::String lbl (names[ty][k]);
+                        w->setLabelOverride (lbl);
+                        w->setAlpha (lbl.isEmpty() ? 0.3f : 1.0f);
+                        w->setEnabled (lbl.isNotEmpty());
+                    }
+            }
+        }
+
         void updateJpLabels()
         {
             const int wave = juce::jlimit (0, 8, juce::roundToInt (ctx.get (jp::jpId (o, jp::key ("jpwave")))));
@@ -486,6 +522,7 @@ namespace njo
         void paramChanged (int num, float) override
         {
             if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1)) || (num >= sf::SF_BASE + sf::SF_STRIDE * o && num < sf::SF_BASE + sf::SF_STRIDE * (o + 1))) { owner.repaint(); return; }
+            if (num >= 6300 + 32 * o && num < 6300 + 32 * (o + 1)) { updateFxLabels(); owner.repaint(); return; }
             if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { updateJpLabels(); owner.repaint(); return; }
             if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { updateWgLabels(); owner.repaint(); return; }
             if (num >= phys::PHY_BASE + phys::PHY_STRIDE * o && num < phys::PHY_BASE + phys::PHY_STRIDE * (o + 1)) { owner.repaint(); return; }
@@ -744,8 +781,7 @@ namespace njo
                 auto c = cardFlt; int w = c.getWidth();
                 ddisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); ddisplay.setVisible (true);
                 const int modeW = 118;
-                put ("dtype", 12, 195, 220, 36, c); strip ("dtype", 12, 195, 220, c, false);
-                put ("dpos", 244, 195, 190, 36, c); strip ("dpos", 244, 195, 190, c, false);
+                put ("dtype", 12, 195, 260, 36, c); strip ("dtype", 12, 195, 260, c, false);
                 modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
                 modeA.setVisible (true); modeB.setVisible (true);
                 knob ("ddrv", 12 + (w - 24) / 3, 275, c); knob ("dmix", 12 + (w - 24) * 2 / 3, 275, c);
@@ -756,12 +792,21 @@ namespace njo
                 auto c = cardFlt; int w = c.getWidth();
                 rdisplay.setBounds (c.getX() + 12, c.getY() + 32, w - 24, 150); rdisplay.setVisible (true);
                 put ("rson", 12, 196, 120, 31, c);
-                const int mw = (w - 24 - 120 - 24) / 2;
+                const int mw = w - 24 - 120 - 12;
                 put ("rsmod", 144, 195, mw, 36, c); strip ("rsmod", 144, 195, mw, c, false);
-                put ("dpos", 144 + mw + 12, 195, mw, 36, c); strip ("dpos", 144 + mw + 12, 195, mw, c, false);
                 const double pitch = (w - 24) / 6.0;
                 const char* keys[6] = { "rsdec", "rsmat", "rshit", "rsinh", "rstune", "rsmix" };
                 for (int i = 0; i < 6; ++i) knob (keys[i], 12 + juce::roundToInt (pitch * i + pitch / 2), 262, c);
+                {   // OSCFX-UI: four effect slots (type, mix, three parameters) in the right card
+                    auto r = cardOut; const int rw = r.getWidth();
+                    for (int sl = 0; sl < 4; ++sl)
+                    {
+                        const int y0 = 40 + sl * 96;
+                        put (fxName (sl, 0), 12, y0, rw - 24, 34, r); strip (fxName (sl, 0), 12, y0, rw - 24, r, false);
+                        for (int k = 0; k < 4; ++k) knob (fxName (sl, 1 + k), 12 + juce::roundToInt ((rw - 24) * (2 * k + 1) / 8.0), y0 + 38, r);
+                    }
+                    updateFxLabels();
+                }
                 const int cx0 = cardFlt.getX() + 190;
                 for (int i = 0; i < OSC_N; ++i) { chips[(size_t) i]->setBounds (cx0 + i * 25, 6, 23, 18); chips[(size_t) i]->setOn (i == o); chips[(size_t) i]->setVisible (true); }
             }
@@ -837,13 +882,7 @@ namespace njo
             else if (mode == 3)
             {
                 title (g, "OSC " + juce::String (o + 1) + " Resonator", cardFlt.getX() + 14, 15, cardFlt.getX() + 186);
-                title (g, "Pre-matrix chain", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
-                g.setColour (dim); g.setFont (font (8.5f, false));
-                g.drawFittedText ("Every oscillator runs its signal through up to three stages before it reaches the FM / PM matrix and the output: the FILTER, the DISTORTION and this RESONATOR. "
-                                  "The Order list picks the sequence (also on the DIST page). The resonator is the modal bank of the Physical source (16 modes, 9 models) used as an effect: "
-                                  "it is tuned to the played key plus Tune, Decay sets the ring time, Material the damping of the upper modes, Position which modes are heard, "
-                                  "Inharm detunes them. Mix blends the dry signal.",
-                                  cardOut.getX() + 14, 40, cardOut.getWidth() - 28, 260, juce::Justification::topLeft, 20);
+                title (g, "OSC " + juce::String (o + 1) + " FX rack", cardOut.getX() + 14, 15, cardOut.getRight() - 12);
             }
             else
             {
