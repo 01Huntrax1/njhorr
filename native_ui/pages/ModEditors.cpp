@@ -1289,6 +1289,89 @@ namespace njo
     };
 
     // ------------------------------------------------------------------ page: sequencers + arpeggiator
+    // ------------------------------------------------------------------ INSPIRATOR: generative chords / lead / bass / arp / drums (params 7000-7128)
+    struct InspPanel : juce::Component, Ctx::Listener
+    {
+        Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
+        struct Row { std::vector<int> ids; int h; bool knobs; juce::String title; };
+        std::vector<Row> rows;
+        explicit InspPanel (Ctx& c) : ctx (c)
+        {
+            ctx.addListener (this);
+            for (int id = 7000; id <= 7128; ++id)
+            {
+                const bool knob = id >= 7044 ? true : (id == 7005 || id == 7006 || id == 7007 || id == 7009 || (id >= 7011 && id <= 7019));
+                auto* x = w.add (makeWidget (c, id, knob).release());
+                if (knob) x->setLook (true);
+                byId[id] = x; addChildComponent (x);
+            }
+            static const char* lanes[12] = { "Kick", "Snare", "Clap", "Hat", "Open Hat", "Rim", "Mid Tom", "Ride", "Pedal Hat", "Low Tom", "High Tom", "Crash" };
+            for (int l = 0; l < 12; ++l)
+            {
+                byId[7102 + l]->setLabelOverride (juce::String (lanes[l]) + " dens");
+                byId[(l < 8 ? 7036 + l : 7090 + l)]->setLabelOverride (juce::String (lanes[l]) + " rand");
+                byId[7115 + l]->setLabelOverride (juce::String (lanes[l]) + " note");
+            }
+            for (int b = 0; b < 8; ++b) byId[7012 + b]->setLabelOverride ("Chord " + juce::String (b + 1));
+            refresh();
+        }
+        ~InspPanel() override { ctx.removeListener (this); }
+        int mode() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (7001))); }
+        void refresh()
+        {
+            for (auto* x : w) x->setVisible (false);
+            rows.clear();
+            rows.push_back ({ { 7000, 7001, 7002, 7003, 7004 }, 46, false, "" });
+            rows.push_back ({ { 7008, 7010, 7127, 7128 }, 46, false, "" });
+            rows.push_back ({ { 7005, 7006, 7007, 7009, 7114, 7089 }, 60, true, "SONG" });
+            const int m = mode();
+            std::vector<int> ids;
+            if (m < 4) for (int k = 0; k < 9; ++k) ids.push_back (7044 + 9 * m + k);
+            else ids = { 7080, 7081, 7082, 7086, 7087 };
+            rows.push_back ({ ids, 60, true, m == 0 ? "CHORDS" : m == 1 ? "LEAD" : m == 2 ? "BASS" : m == 3 ? "ARP" : "DRUMS" });
+            if (m == 0) { std::vector<int> c = { 7011 }; for (int b = 0; b < 8; ++b) c.push_back (7012 + b); rows.push_back ({ c, 60, true, "PROGRESSION (0 = automatic, 1-8 chord degree, + 8 per chord shape)" }); }
+            if (m == 4)
+            {
+                std::vector<int> d, r, n;
+                for (int l = 0; l < 12; ++l) { d.push_back (7102 + l); r.push_back (l < 8 ? 7036 + l : 7090 + l); n.push_back (7115 + l); }
+                rows.push_back ({ d, 60, true, "LANE DENSITY (below 50 thins, above 50 adds hits)" });
+                rows.push_back ({ r, 60, true, "LANE RANDOM" });
+                rows.push_back ({ n, 60, true, "LANE NOTE" });
+            }
+            for (auto& r : rows) for (int id : r.ids) byId[id]->setVisible (true);
+            resized(); repaint();
+        }
+        void paramChanged (int n, float) override { if (n == 7001) refresh(); }
+        void paint (juce::Graphics& g) override
+        {
+            g.setColour (red); g.setFont (impact (11.0f));
+            g.drawText ("INSPIRATOR", 10, 2, 200, 16, juce::Justification::centredLeft);
+            int y = 22;
+            g.setColour (dim); g.setFont (font (8.5f, true));
+            for (auto& r : rows)
+            {
+                if (r.title.isNotEmpty()) g.drawText (r.title, 12, y - 1, getWidth() - 24, 11, juce::Justification::centredLeft);
+                y += r.h + (r.title.isNotEmpty() ? 18 : 4);
+            }
+            g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+            g.drawText ("generates chords, lead, bass, arpeggio or drums from a style, key, scale and seeds; runs with the host transport, or while a key is held (the key transposes, MIDI In = Off plays it normally)",
+                        10, getHeight() - 14, getWidth() - 20, 12, juce::Justification::centredLeft);
+        }
+        void resized() override
+        {
+            int y = 22;
+            for (auto& r : rows)
+            {
+                if (r.title.isNotEmpty()) y += 12;
+                const int n = (int) r.ids.size();
+                const int cw = r.knobs ? juce::jmin (96, (getWidth() - 20) / juce::jmax (1, n)) : juce::jmin (190, (getWidth() - 20) / juce::jmax (1, n));
+                int x = 10;
+                for (int id : r.ids) { byId[id]->setBounds (x + 2, y, cw - 4, r.h); x += cw; }
+                y += r.h + (r.title.isNotEmpty() ? 6 : 4);
+            }
+        }
+    };
+
     struct SeqArpPage::Impl
     {
         SeqEditor seq;
@@ -1296,11 +1379,15 @@ namespace njo
         std::unique_ptr<A3Bank> bank;
         std::unique_ptr<ParamWidget> a3Len, mlLen;
         EuclidEditor eu; MelodicEditor ml; GenEditor gn;
+        InspPanel insp;
+        struct Tab : juce::Component { juce::String text; bool on = false; std::function<void()> click; void paint (juce::Graphics& g) override { paintButton (g, getLocalBounds().toFloat().reduced (0.5f), on, false, false, 3.0f); g.setColour (on ? juce::Colour (0xff101112) : ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds(), juce::Justification::centred); } void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); } } tabSeq, tabInsp;
+        bool inspView = false;
+        std::function<void (bool)> showView;
         Ctx* ctxp = nullptr;
         juce::OwnedArray<ParamWidget> w;     // On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
         juce::Rectangle<int> arpRect;
         int mode = 0;   // arp mode: 5 = 303, 6 = Euclid / Poly, 7 = Melodic, 8 = Generative
-        explicit Impl (Ctx& c) : seq (c), a3 (c), eu (c), ml (c), gn (c) {}
+        explicit Impl (Ctx& c) : seq (c), a3 (c), eu (c), ml (c), gn (c), insp (c) {}
     };
 
     SeqArpPage::SeqArpPage (Ctx& c) : impl (new Impl (c))
@@ -1311,6 +1398,21 @@ namespace njo
         I.a3Len = makeWidget (c, A3_LEN, true); I.a3Len->setLook (true); addChildComponent (*I.a3Len);
         I.bank.reset (new A3Bank (c, *this)); addChildComponent (*I.bank);
         addChildComponent (I.eu); addChildComponent (I.ml); addChildComponent (I.gn);
+        addChildComponent (I.insp);
+        I.tabSeq.text = "SEQUENCER / ARP"; I.tabInsp.text = "INSPIRATOR"; I.tabSeq.on = true;
+        auto showView = [this] (bool insp)
+        {
+            auto& J = *impl; J.inspView = insp; J.tabSeq.on = ! insp; J.tabInsp.on = insp;
+            J.seq.setVisible (! insp); J.insp.setVisible (insp);
+            for (auto* x : J.w) x->setVisible (! insp);
+            const int m = J.mode;
+            J.a3.setVisible (! insp && m == 5); J.a3Len->setVisible (! insp && m == 5); J.bank->setVisible (! insp && m == 5);
+            J.eu.setVisible (! insp && m == 6); J.ml.setVisible (! insp && m == 7); J.mlLen->setVisible (! insp && m == 7); J.gn.setVisible (! insp && m == 8);
+            J.tabSeq.repaint(); J.tabInsp.repaint(); resized(); repaint();
+        };
+        I.showView = showView;
+        I.tabSeq.click = [showView] { showView (false); }; I.tabInsp.click = [showView] { showView (true); };
+        addAndMakeVisible (I.tabSeq); addAndMakeVisible (I.tabInsp);
         I.mlLen = makeWidget (c, MelodicEditor::ML_LEN, true); I.mlLen->setLook (true); addChildComponent (*I.mlLen);
         c.addListener (this); I.ctxp = &c;
         const bool knob[8] = { false, false, false, false, false, true, true, false };
@@ -1322,6 +1424,7 @@ namespace njo
         }
         paramChanged (ARP_BASE + 1, c.get (ARP_BASE + 1));
     }
+    void SeqArpPage::showInspirator (bool b) { if (impl->showView) impl->showView (b); }
     SeqArpPage::~SeqArpPage() { if (impl->ctxp) impl->ctxp->removeListener (this); }
     void SeqArpPage::paramChanged (int num, float v)
     {
@@ -1331,8 +1434,9 @@ namespace njo
         if (m != impl->mode)
         {
             auto& I = *impl; I.mode = m;
-            I.a3.setVisible (m == 5); I.a3Len->setVisible (m == 5); I.bank->setVisible (m == 5);
-            I.eu.setVisible (m == 6); I.ml.setVisible (m == 7); I.mlLen->setVisible (m == 7); I.gn.setVisible (m == 8);
+            const bool sv = ! I.inspView;
+            I.a3.setVisible (sv && m == 5); I.a3Len->setVisible (sv && m == 5); I.bank->setVisible (sv && m == 5);
+            I.eu.setVisible (sv && m == 6); I.ml.setVisible (sv && m == 7); I.mlLen->setVisible (sv && m == 7); I.gn.setVisible (sv && m == 8);
             resized(); repaint();
         }
     }
@@ -1340,6 +1444,7 @@ namespace njo
     void SeqArpPage::paint (juce::Graphics& g)
     {
         auto& I = *impl;
+        if (I.inspView) { paintCard (g, I.insp.getBounds().toFloat()); return; }
         paintCard (g, I.arpRect.toFloat());
         g.setColour (red); g.setFont (impact (11.0f));
         g.drawText ("ARPEGGIATOR", I.arpRect.getX() + 10, I.arpRect.getY() + 4, 260, 16, juce::Justification::centredLeft);
@@ -1355,6 +1460,11 @@ namespace njo
     {
         auto& I = *impl;
         auto b = getLocalBounds();
+        {
+            auto tb = b.removeFromTop (22); b.removeFromTop (4);
+            I.tabSeq.setBounds (tb.removeFromLeft (130)); tb.removeFromLeft (4); I.tabInsp.setBounds (tb.removeFromLeft (110));
+        }
+        if (I.inspView) { I.insp.setBounds (b); I.arpRect = {}; return; }
         I.arpRect = b.removeFromBottom (I.mode >= 5 ? juce::jmin (330, b.getHeight() * 11 / 20) : juce::jmin (130, b.getHeight() / 3));
         b.removeFromBottom (6);
         I.seq.setBounds (b);

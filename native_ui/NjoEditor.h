@@ -23,6 +23,7 @@ namespace njo
         void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM / PD, 7 = RM / AM, 8 = Global, 9-14 = filter page of OSC 1-6, 15-20 = distortion page of OSC 1-6
         Group group() const { return currentGroup; }
         int synthPage() const { return currentSynthPage; }
+        SeqArpPage& seqArpPage() { return seqArp; }
         Ctx& context() { return ctx; }
         SoundMemory& soundMemory() { return memory; }
         void restore() { memory.restore(); }   // once after the editor opens: stored sounds -> DSP

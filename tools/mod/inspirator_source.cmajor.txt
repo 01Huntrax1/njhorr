@@ -1,0 +1,2107 @@
+processor Inspirator
+{
+    output stream float<2> out;
+    input event std::midi::Message midiIn;
+    input event float transportIn;
+    output event std::midi::Message midiOut;
+    output event float patOut;
+    output event float posOut;
+
+    input event float param1  [[ name: "Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0, text: "Chords|Lead|Bass|Arp|Drums" ]];
+    input event float param2  [[ name: "Style", min: 0.0, max: 8.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul" ]];
+    input event float param3  [[ name: "Key", min: 0.0, max: 11.0, init: 0.0, step: 1.0, text: "C|C#|D|Eb|E|F|F#|G|Ab|A|Bb|B" ]];
+    input event float param4  [[ name: "Scale", min: 0.0, max: 6.0, init: 0.0, step: 1.0, text: "Major|Minor|Dorian|Mixolydian|Phrygian|Lydian|Harm Minor" ]];
+    input event float param5  [[ name: "Song Seed", min: 0.0, max: 9999.0, init: 1234.0, step: 1.0 ]];
+    input event float param6  [[ name: "Part Seed", min: 0.0, max: 9999.0, init: 1.0, step: 1.0 ]];
+    input event float param7  [[ name: "Variation", min: 0.0, max: 99.0, init: 0.0, step: 1.0 ]];
+    input event float param8  [[ name: "Bars", min: 0.0, max: 3.0, init: 2.0, step: 1.0, text: "1|2|4|8" ]];
+    input event float param9  [[ name: "Swing", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param10 [[ name: "MIDI In", min: 0.0, max: 2.0, init: 0.0, step: 1.0, text: "Transpose|Hold|Off" ]];
+    input event float param11 [[ name: "Lock Chords", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12 [[ name: "Chord Bar 1", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param13 [[ name: "Chord Bar 2", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param14 [[ name: "Chord Bar 3", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param15 [[ name: "Chord Bar 4", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param16 [[ name: "Chord Bar 5", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param17 [[ name: "Chord Bar 6", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param18 [[ name: "Chord Bar 7", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param19 [[ name: "Chord Bar 8", min: 0.0, max: 255.0, init: 0.0, step: 1.0 ]];
+    input event float param20 [[ name: "Edit Kick A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param21 [[ name: "Edit Kick B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param22 [[ name: "Edit Snare A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param23 [[ name: "Edit Snare B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param24 [[ name: "Edit Clap A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param25 [[ name: "Edit Clap B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param26 [[ name: "Edit Hat A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param27 [[ name: "Edit Hat B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param28 [[ name: "Edit Open Hat A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param29 [[ name: "Edit Open Hat B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param30 [[ name: "Edit Rim A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param31 [[ name: "Edit Rim B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param32 [[ name: "Edit Tom A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param33 [[ name: "Edit Tom B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param34 [[ name: "Edit Ride A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param35 [[ name: "Edit Ride B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param36 [[ name: "Kick Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param37 [[ name: "Snare Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param38 [[ name: "Clap Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param39 [[ name: "Hat Random", min: 0.0, max: 100.0, init: 35.0, step: 1.0 ]];
+    input event float param40 [[ name: "Open Hat Random", min: 0.0, max: 100.0, init: 15.0, step: 1.0 ]];
+    input event float param41 [[ name: "Rim Random", min: 0.0, max: 100.0, init: 20.0, step: 1.0 ]];
+    input event float param42 [[ name: "Tom Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param43 [[ name: "Ride Random", min: 0.0, max: 100.0, init: 30.0, step: 1.0 ]];
+
+    input event float param44 [[ name: "Chords Complexity", min: 0.0, max: 100.0, init: 40.0, step: 1.0 ]];
+    input event float param45 [[ name: "Chords Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param46 [[ name: "Chords Humanize", min: 0.0, max: 100.0, init: 15.0, step: 1.0 ]];
+    input event float param47 [[ name: "Chords Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param48 [[ name: "Chords Range", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param49 [[ name: "Chords Gate", min: 10.0, max: 100.0, init: 80.0, step: 1.0 ]];
+    input event float param50 [[ name: "Chords Velocity", min: 1.0, max: 127.0, init: 96.0, step: 1.0 ]];
+    input event float param51 [[ name: "Chords Vel Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param52 [[ name: "Chords Dur Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+
+    input event float param53 [[ name: "Lead Complexity", min: 0.0, max: 100.0, init: 40.0, step: 1.0 ]];
+    input event float param54 [[ name: "Lead Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param55 [[ name: "Lead Humanize", min: 0.0, max: 100.0, init: 15.0, step: 1.0 ]];
+    input event float param56 [[ name: "Lead Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param57 [[ name: "Lead Range", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param58 [[ name: "Lead Gate", min: 10.0, max: 100.0, init: 80.0, step: 1.0 ]];
+    input event float param59 [[ name: "Lead Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0 ]];
+    input event float param60 [[ name: "Lead Vel Random", min: 0.0, max: 100.0, init: 20.0, step: 1.0 ]];
+    input event float param61 [[ name: "Lead Dur Random", min: 0.0, max: 100.0, init: 15.0, step: 1.0 ]];
+
+    input event float param62 [[ name: "Bass Complexity", min: 0.0, max: 100.0, init: 40.0, step: 1.0 ]];
+    input event float param63 [[ name: "Bass Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param64 [[ name: "Bass Humanize", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param65 [[ name: "Bass Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param66 [[ name: "Bass Range", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param67 [[ name: "Bass Gate", min: 10.0, max: 100.0, init: 80.0, step: 1.0 ]];
+    input event float param68 [[ name: "Bass Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0 ]];
+    input event float param69 [[ name: "Bass Vel Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param70 [[ name: "Bass Dur Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+
+    input event float param71 [[ name: "Arp Complexity", min: 0.0, max: 100.0, init: 40.0, step: 1.0 ]];
+    input event float param72 [[ name: "Arp Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param73 [[ name: "Arp Humanize", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param74 [[ name: "Arp Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param75 [[ name: "Arp Range", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param76 [[ name: "Arp Gate", min: 10.0, max: 100.0, init: 70.0, step: 1.0 ]];
+    input event float param77 [[ name: "Arp Velocity", min: 1.0, max: 127.0, init: 92.0, step: 1.0 ]];
+    input event float param78 [[ name: "Arp Vel Random", min: 0.0, max: 100.0, init: 15.0, step: 1.0 ]];
+    input event float param79 [[ name: "Arp Dur Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+
+    input event float param80 [[ name: "Drums Complexity", min: 0.0, max: 100.0, init: 40.0, step: 1.0 ]];
+    input event float param81 [[ name: "Drums Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param82 [[ name: "Drums Humanize", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param83 [[ name: "Fill Edit 1", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param84 [[ name: "Fill Edit 2", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param85 [[ name: "Fill Edit 3", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param86 [[ name: "Drums Velocity", min: 1.0, max: 127.0, init: 96.0, step: 1.0 ]];
+    input event float param87 [[ name: "Drums Vel Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param88 [[ name: "Fill Edit 4", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param89 [[ name: "Timing Offset", min: -50.0, max: 50.0, init: 0.0, step: 1.0, unit: "ms" ]];
+    input event float param90 [[ name: "Edit Pedal Hat A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param91 [[ name: "Edit Pedal Hat B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param92 [[ name: "Edit Low Tom A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param93 [[ name: "Edit Low Tom B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param94 [[ name: "Edit High Tom A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param95 [[ name: "Edit High Tom B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param96 [[ name: "Edit Crash A", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param97 [[ name: "Edit Crash B", min: 0.0, max: 16777215.0, init: 0.0, step: 1.0 ]];
+    input event float param98 [[ name: "Pedal Hat Random", min: 0.0, max: 100.0, init: 20.0, step: 1.0 ]];
+    input event float param99 [[ name: "Low Tom Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param100 [[ name: "High Tom Random", min: 0.0, max: 100.0, init: 10.0, step: 1.0 ]];
+    input event float param101 [[ name: "Crash Random", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param102 [[ name: "Kick Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param103 [[ name: "Snare Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param104 [[ name: "Clap Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param105 [[ name: "Hat Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param106 [[ name: "Open Hat Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param107 [[ name: "Rim Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param108 [[ name: "Mid Tom Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param109 [[ name: "Ride Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param110 [[ name: "Pedal Hat Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param111 [[ name: "Low Tom Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param112 [[ name: "High Tom Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param113 [[ name: "Crash Density", min: 0.0, max: 100.0, init: 50.0, step: 1.0 ]];
+    input event float param114 [[ name: "Push", min: 0.0, max: 100.0, init: 0.0, step: 1.0 ]];
+    input event float param115 [[ name: "Kick Note", min: 0.0, max: 127.0, init: 36.0, step: 1.0 ]];
+    input event float param116 [[ name: "Snare Note", min: 0.0, max: 127.0, init: 38.0, step: 1.0 ]];
+    input event float param117 [[ name: "Clap Note", min: 0.0, max: 127.0, init: 39.0, step: 1.0 ]];
+    input event float param118 [[ name: "Hat Note", min: 0.0, max: 127.0, init: 42.0, step: 1.0 ]];
+    input event float param119 [[ name: "Open Hat Note", min: 0.0, max: 127.0, init: 46.0, step: 1.0 ]];
+    input event float param120 [[ name: "Rim Note", min: 0.0, max: 127.0, init: 37.0, step: 1.0 ]];
+    input event float param121 [[ name: "Mid Tom Note", min: 0.0, max: 127.0, init: 45.0, step: 1.0 ]];
+    input event float param122 [[ name: "Ride Note", min: 0.0, max: 127.0, init: 51.0, step: 1.0 ]];
+    input event float param123 [[ name: "Pedal Hat Note", min: 0.0, max: 127.0, init: 44.0, step: 1.0 ]];
+    input event float param124 [[ name: "Low Tom Note", min: 0.0, max: 127.0, init: 41.0, step: 1.0 ]];
+    input event float param125 [[ name: "High Tom Note", min: 0.0, max: 127.0, init: 50.0, step: 1.0 ]];
+    input event float param126 [[ name: "Crash Note", min: 0.0, max: 127.0, init: 49.0, step: 1.0 ]];
+    input event float param127 [[ name: "Chord Rate", min: 0.0, max: 2.0, init: 1.0, step: 1.0, text: "Half|Normal|Double" ]];
+    input event float param128 [[ name: "Fill Every", min: 0.0, max: 3.0, init: 2.0, step: 1.0, text: "Off|2 Bars|4 Bars|8 Bars" ]];
+
+    // ---- Parameter state -------------------------------------------------
+    int pMode = 0;
+    int pStyle = 0;
+    int pKey = 0;
+    int pScale = 0;
+    int pSong = 1234;
+    int pPart = 1;
+    int pVar = 0;
+    int pBarsIdx = 2;
+    int pSwing = 0;
+    int pInMode = 0;
+    int pLock = 0;
+    int pOffsetMs = 0;
+    int pPush = 0;
+    int pRate = 1;
+    int pChordStyle = 0;
+    int[12] fillEdit;
+    int pFill = 2;
+    int[8] pushed;
+    int[24] vPit;
+    int[8] chordOv;
+    int[24] drumEdit;
+    int[12] laneRand;
+    int[12] laneSet;
+    int[12] laneDens;
+    int[12] laneDensSet;
+    int[12] lanePitchSet;
+    int[12] dFill;
+    int[45] mp;
+    int[45] mpSet;
+
+    // Active-mode values (copied from mp on regenerate)
+    int pComplex = 40;
+    int pDensity = 50;
+    int pHuman = 15;
+    int pOctave = 0;
+    int pRange = 50;
+    int pGate = 80;
+    int pVel = 96;
+    int pRVel = 0;
+    int pRDur = 0;
+
+    bool dirty = true;
+    int cooldown = 0;
+
+    // ---- Meter -----------------------------------------------------------
+    int tsNum = 4;
+    int tsDen = 4;
+    int pendNum = 4;
+    int stepsBar = 16;
+    int beatSteps = 4;
+    bool compound = false;
+    int barTicks = 384;
+    int originOff = 0;
+
+    // ---- Tables ------------------------------------------------------------
+    int[49] scaleTab;
+    int[32] progMaj;
+    int[32] progMin;
+    int[36] selMaj;
+    int[36] selMin;
+    int[81] chordRh;
+    int[81] bassRh;
+    int[72] drumBase;
+    int[72] drumExtra;
+    int[12] lanePitch;
+    int[8] motifTab;
+
+    // ---- Generated pattern -------------------------------------------------
+    int[512] nTick;
+    int[512] nGrid;
+    int[512] nOff;
+    int[512] nLen;
+    int[512] nPitch;
+    int[512] nVel;
+    int nCount = 0;
+    int[8] cDeg;
+    int[8] cInfo;
+    int chordLevel = 0;
+    int numBars = 4;
+    int loopTicks = 1536;
+    int[24] dMask;
+    int[24] dGhost;
+    int[40] cInt;
+    int[8] cRoot;
+    int[8] cCnt;
+
+    // ---- Playback ------------------------------------------------------------
+    int[32] aPitch;
+    int[32] aRemain;
+    int[256] qS;
+    int[256] qA;
+    int[256] qB;
+    int qHead = 0;
+    int qCount = 0;
+    int heldCount = 0;
+    int transpose = 0;
+    int runState = 0;
+    int lastTick = -1000000;
+    int lastStep = -1;
+    float64 hostPpq = 0.0;
+    float64 freePpq = 0.0;
+    float bpm = 120.0f;
+    int transportEventCount = 0;
+    bool transportPlaying = false;
+    bool transportSeen = false;
+
+    // ---- UI dump -------------------------------------------------------------
+    int dumpIdx = 0;
+    int dumpTimer = 0;
+    int redump = 0;
+    int redumpPeriod = 66000;
+
+    // ========================================================================
+    int clampi (int v, int lo, int hi)
+    {
+        if (v < lo) return lo;
+        if (v > hi) return hi;
+        return v;
+    }
+
+    int maxi (int a, int b)
+    {
+        if (a > b) return a;
+        return b;
+    }
+
+    int mini (int a, int b)
+    {
+        if (a < b) return a;
+        return b;
+    }
+
+    int posMod (int v, int dv)
+    {
+        if (dv <= 0) return 0;
+        int r = v % dv;
+        if (r < 0) r += dv;
+        return r;
+    }
+
+    int floorDiv (int v, int dv)
+    {
+        if (dv <= 0) return 0;
+        int q = v / dv;
+        if ((v % dv) != 0 && v < 0) q -= 1;
+        return q;
+    }
+
+    int roundi (float v)
+    {
+        if (v >= 0.0f) return int (v + 0.5f);
+        return 0 - int (0.5f - v);
+    }
+
+    int hash3 (int a, int b, int c)
+    {
+        int h = a * 374761393 + b * 668265263 + c * 1274126177 + 362437;
+        h = (h ^ (h >> 13)) * 1274126177;
+        h = h ^ (h >> 16);
+        return h & 0x7fffffff;
+    }
+
+    // Part-level random (changes with Part Seed, partly with Variation)
+    int rv (int strm, int i)
+    {
+        int s = pPart;
+        if (pVar > 0)
+        {
+            if ((hash3 (pVar, strm, i) % 100) < 25) s = pPart + pVar * 7919;
+        }
+        return hash3 (s + pMode * 101, strm, i);
+    }
+
+    // Song-level random (shared by every instance with the same Song Seed)
+    int rs (int strm, int i)
+    {
+        return hash3 (pSong, strm, i);
+    }
+
+    int scaleSemi (int idx)
+    {
+        int o = floorDiv (idx, 7);
+        int d = idx - o * 7;
+        return o * 12 + scaleTab.at (pScale * 7 + d);
+    }
+
+    bool isMinorish()
+    {
+        return pScale == 1 || pScale == 2 || pScale == 4 || pScale == 6;
+    }
+
+    int keyOff()
+    {
+        if (pKey > 6) return pKey - 12;
+        return pKey;
+    }
+
+    // ---- Meter helpers -----------------------------------------------------------
+    void computeMeter()
+    {
+        int unit = 4;
+        if (tsDen == 2)       unit = 8;
+        else if (tsDen == 8)  unit = 2;
+        else if (tsDen == 16) unit = 1;
+        stepsBar = clampi (tsNum * unit, 2, 32);
+        compound = (tsDen == 8 && tsNum >= 6 && (tsNum % 3) == 0);
+        beatSteps = 4;
+        if (compound) beatSteps = 6;
+        barTicks = stepsBar * 24;
+    }
+
+    // Maps a step of the current bar onto the 16-step 4/4 template (-1 = no template step)
+    int tmpl (int s)
+    {
+        if (compound)
+        {
+            int b = s / 6;
+            int p = s % 6;
+            int tm = -1;
+            if (p == 0)      tm = 0;
+            else if (p == 2) tm = 1;
+            else if (p == 4) tm = 2;
+            else if (p == 5) tm = 3;
+            if (tm < 0) return -1;
+            return (b % 4) * 4 + tm;
+        }
+        return s % 16;
+    }
+
+    int expandMask (int mask16)
+    {
+        int res = 0;
+        for (int s = 0; s < stepsBar; ++s)
+        {
+            int t = tmpl (s);
+            if (t >= 0)
+            {
+                if (((mask16 >> t) & 1) != 0) res = res | (1 << s);
+            }
+        }
+        return res;
+    }
+
+    bool isBeat (int s)
+    {
+        return (s % maxi (1, beatSteps)) == 0;
+    }
+
+    int nextHit (int mask, int s)
+    {
+        for (int t = s + 1; t < stepsBar; ++t)
+        {
+            if (((mask >> t) & 1) != 0) return t;
+        }
+        return stepsBar;
+    }
+
+    // ---- Table setup -----------------------------------------------------------
+    void sc (int row, int a, int b, int c, int d, int e, int f, int g)
+    {
+        scaleTab.at (row * 7) = a;
+        scaleTab.at (row * 7 + 1) = b;
+        scaleTab.at (row * 7 + 2) = c;
+        scaleTab.at (row * 7 + 3) = d;
+        scaleTab.at (row * 7 + 4) = e;
+        scaleTab.at (row * 7 + 5) = f;
+        scaleTab.at (row * 7 + 6) = g;
+    }
+
+    void set4 (int which, int row, int a, int b, int c, int d)
+    {
+        int i = row * 4;
+        if (which == 0)      { progMaj.at (i) = a; progMaj.at (i + 1) = b; progMaj.at (i + 2) = c; progMaj.at (i + 3) = d; }
+        else if (which == 1) { progMin.at (i) = a; progMin.at (i + 1) = b; progMin.at (i + 2) = c; progMin.at (i + 3) = d; }
+        else if (which == 2) { selMaj.at (i) = a;  selMaj.at (i + 1) = b;  selMaj.at (i + 2) = c;  selMaj.at (i + 3) = d; }
+        else                 { selMin.at (i) = a;  selMin.at (i + 1) = b;  selMin.at (i + 2) = c;  selMin.at (i + 3) = d; }
+    }
+
+    void set3 (int which, int row, int a, int b, int c)
+    {
+        int i = row * 3;
+        if (which == 0) { chordRh.at (i) = a; chordRh.at (i + 1) = b; chordRh.at (i + 2) = c; }
+        else            { bassRh.at (i) = a;  bassRh.at (i + 1) = b;  bassRh.at (i + 2) = c; }
+    }
+
+    void dr (int which, int row, int k, int s, int cl, int ch, int oh, int rim, int tom, int ride)
+    {
+        int i = row * 8;
+        if (which == 0)
+        {
+            drumBase.at (i) = k; drumBase.at (i + 1) = s; drumBase.at (i + 2) = cl; drumBase.at (i + 3) = ch;
+            drumBase.at (i + 4) = oh; drumBase.at (i + 5) = rim; drumBase.at (i + 6) = tom; drumBase.at (i + 7) = ride;
+        }
+        else
+        {
+            drumExtra.at (i) = k; drumExtra.at (i + 1) = s; drumExtra.at (i + 2) = cl; drumExtra.at (i + 3) = ch;
+            drumExtra.at (i + 4) = oh; drumExtra.at (i + 5) = rim; drumExtra.at (i + 6) = tom; drumExtra.at (i + 7) = ride;
+        }
+    }
+
+    void mpDefault (int mode, int k, int v)
+    {
+        int i = mode * 9 + k;
+        if (mpSet.at (i) == 0) mp.at (i) = v;
+    }
+
+    void mpDefaults (int mode, int cx, int de, int hu, int ga, int ve, int rvel, int rdur)
+    {
+        mpDefault (mode, 0, cx);
+        mpDefault (mode, 1, de);
+        mpDefault (mode, 2, hu);
+        mpDefault (mode, 3, 0);
+        mpDefault (mode, 4, 50);
+        mpDefault (mode, 5, ga);
+        mpDefault (mode, 6, ve);
+        mpDefault (mode, 7, rvel);
+        mpDefault (mode, 8, rdur);
+    }
+
+    void laneDefault (int lane, int v)
+    {
+        if (laneSet.at (lane) == 0) laneRand.at (lane) = v;
+    }
+
+    void setupTables()
+    {
+        sc (0, 0, 2, 4, 5, 7, 9, 11);
+        sc (1, 0, 2, 3, 5, 7, 8, 10);
+        sc (2, 0, 2, 3, 5, 7, 9, 10);
+        sc (3, 0, 2, 4, 5, 7, 9, 10);
+        sc (4, 0, 1, 3, 5, 7, 8, 10);
+        sc (5, 0, 2, 4, 6, 7, 9, 11);
+        sc (6, 0, 2, 3, 5, 7, 8, 11);
+
+        set4 (0, 0, 0, 4, 5, 3);
+        set4 (0, 1, 5, 3, 0, 4);
+        set4 (0, 2, 0, 5, 3, 4);
+        set4 (0, 3, 0, 3, 4, 3);
+        set4 (0, 4, 0, 3, 5, 4);
+        set4 (0, 5, 1, 4, 0, 5);
+        set4 (0, 6, 0, 5, 1, 4);
+        set4 (0, 7, 3, 4, 2, 5);
+
+        set4 (1, 0, 0, 5, 2, 6);
+        set4 (1, 1, 0, 6, 5, 6);
+        set4 (1, 2, 0, 3, 5, 4);
+        set4 (1, 3, 0, 5, 3, 4);
+        set4 (1, 4, 0, 2, 6, 3);
+        set4 (1, 5, 1, 4, 0, 0);
+        set4 (1, 6, 0, 3, 6, 2);
+        set4 (1, 7, 5, 6, 0, 0);
+
+        set4 (2, 0, 0, 1, 2, 4);
+        set4 (2, 1, 3, 0, 4, 2);
+        set4 (2, 2, 1, 6, 7, 2);
+        set4 (2, 3, 1, 7, 2, 6);
+        set4 (2, 4, 5, 6, 7, 1);
+        set4 (2, 5, 1, 2, 7, 4);
+        set4 (2, 6, 3, 1, 2, 0);
+        set4 (2, 7, 5, 6, 5, 7);
+        set4 (2, 8, 6, 5, 7, 1);
+
+        set4 (3, 0, 0, 3, 4, 6);
+        set4 (3, 1, 1, 0, 7, 6);
+        set4 (3, 2, 0, 2, 3, 7);
+        set4 (3, 3, 1, 2, 7, 3);
+        set4 (3, 4, 5, 4, 2, 6);
+        set4 (3, 5, 0, 4, 6, 7);
+        set4 (3, 6, 1, 7, 2, 0);
+        set4 (3, 7, 5, 2, 5, 6);
+        set4 (3, 8, 4, 5, 6, 2);
+
+        set3 (0, 0, 0x0101, 0x1111, 0x5555);
+        set3 (0, 1, 0x0101, 0x1111, 0x5555);
+        set3 (0, 2, 0x0401, 0x0441, 0x4449);
+        set3 (0, 3, 0x0001, 0x0041, 0x4841);
+        set3 (0, 4, 0x0401, 0x0481, 0x4491);
+        set3 (0, 5, 0x4444, 0x2449, 0x4949);
+        set3 (0, 6, 0x0404, 0x4444, 0x5249);
+        set3 (0, 7, 0x0041, 0x0441, 0x4141);
+        set3 (0, 8, 0x0081, 0x0481, 0x4489);
+
+        set3 (1, 0, 0x0101, 0x4141, 0x5555);
+        set3 (1, 1, 0x1111, 0x5555, 0x5555);
+        set3 (1, 2, 0x0401, 0x0481, 0x4489);
+        set3 (1, 3, 0x0001, 0x0841, 0x4849);
+        set3 (1, 4, 0x0401, 0x0481, 0x44C1);
+        set3 (1, 5, 0x4444, 0x4C4C, 0x4949);
+        set3 (1, 6, 0x4444, 0xCCCC, 0xEEEE);
+        set3 (1, 7, 0x0101, 0x0101, 0x0101);
+        set3 (1, 8, 0x0401, 0x4409, 0x6489);
+
+        // Rhythm variants 2 and 3 (rows 9-17 and 18-26), picked by the Part seed
+        set3 (0, 9,  0x0041, 0x4141, 0x4949);
+        set3 (0, 10, 0x0041, 0x0141, 0x5151);
+        set3 (0, 11, 0x0081, 0x0481, 0x2491);
+        set3 (0, 12, 0x0101, 0x0109, 0x4909);
+        set3 (0, 13, 0x0041, 0x0841, 0x4849);
+        set3 (0, 14, 0x4848, 0x1249, 0x5249);
+        set3 (0, 15, 0x0808, 0x4848, 0x4949);
+        set3 (0, 16, 0x4040, 0x4041, 0x4441);
+        set3 (0, 17, 0x0041, 0x0409, 0x2449);
+        set3 (0, 18, 0x0401, 0x1411, 0x4545);
+        set3 (0, 19, 0x1001, 0x1049, 0x5549);
+        set3 (0, 20, 0x0801, 0x0809, 0x4909);
+        set3 (0, 21, 0x1001, 0x1041, 0x9441);
+        set3 (0, 22, 0x0101, 0x2121, 0x2525);
+        set3 (0, 23, 0x0441, 0x4924, 0x4925);
+        set3 (0, 24, 0x4040, 0x4141, 0x4C4C);
+        set3 (0, 25, 0x0401, 0x4104, 0x4451);
+        set3 (0, 26, 0x0801, 0x4881, 0x4C85);
+
+        set3 (1, 9,  0x0141, 0x0909, 0x5919);
+        set3 (1, 10, 0x0101, 0x5151, 0xF555);
+        set3 (1, 11, 0x0081, 0x0409, 0x2449);
+        set3 (1, 12, 0x0801, 0x0809, 0x4949);
+        set3 (1, 13, 0x0041, 0x0841, 0x4C49);
+        set3 (1, 14, 0x0049, 0x4449, 0xCCCC);
+        set3 (1, 15, 0x0101, 0xC444, 0xDDDD);
+        set3 (1, 16, 0x0101, 0x0141, 0x4141);
+        set3 (1, 17, 0x0081, 0x4481, 0x4989);
+        set3 (1, 18, 0x0401, 0x4441, 0x4545);
+        set3 (1, 19, 0x0141, 0x1515, 0x5D5D);
+        set3 (1, 20, 0x0101, 0x0141, 0x4941);
+        set3 (1, 21, 0x0101, 0x4181, 0x4985);
+        set3 (1, 22, 0x0101, 0x0121, 0x2521);
+        set3 (1, 23, 0x0404, 0x4544, 0x5555);
+        set3 (1, 24, 0x8888, 0x4C4C, 0xBBBB);
+        set3 (1, 25, 0x0401, 0x4101, 0x4111);
+        set3 (1, 26, 0x0041, 0x2441, 0x6445);
+
+        //            kick    snare   clap    c.hat   o.hat   rim     tom     ride
+        dr (0, 0, 0x0101, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 0, 0x4CC0, 0x8280, 0x1010, 0xAAAA, 0x4000, 0x0000, 0x0000, 0x0000);
+        dr (0, 1, 0x0101, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 1, 0x0C40, 0x8000, 0x0000, 0x0000, 0x4040, 0x0000, 0x0000, 0x0000);
+        dr (0, 2, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 2, 0x4888, 0x8080, 0x1010, 0x8888, 0x0040, 0x0200, 0x0000, 0x0000);
+        dr (0, 3, 0x0001, 0x0100, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 3, 0x4CC8, 0x8000, 0x0100, 0xAAAA, 0x4040, 0x0820, 0x0000, 0x0000);
+        dr (0, 4, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 4, 0x0880, 0x0080, 0x0000, 0x0808, 0x0040, 0x4004, 0x0000, 0x0000);
+        dr (0, 5, 0x1111, 0x0000, 0x1010, 0x0000, 0x4444, 0x0000, 0x0000, 0x0000);
+        dr (1, 5, 0x8000, 0x0000, 0x0000, 0xBBBB, 0x0000, 0x0848, 0x0000, 0x0000);
+        dr (0, 6, 0x1111, 0x0000, 0x0000, 0x0000, 0x4444, 0x0000, 0x0000, 0x0000);
+        dr (1, 6, 0x0000, 0x0000, 0x1010, 0xBBBB, 0x0000, 0x4248, 0x8880, 0x5555);
+        dr (0, 7, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x5151);
+        dr (1, 7, 0x4441, 0x4448, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0404);
+        dr (0, 8, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        dr (1, 8, 0x2888, 0x8280, 0x1010, 0xAAAA, 0x4000, 0x0804, 0x0000, 0x0000);
+
+        if (lanePitchSet.at (0) == 0) lanePitch.at (0) = 36;
+        if (lanePitchSet.at (1) == 0) lanePitch.at (1) = 38;
+        if (lanePitchSet.at (2) == 0) lanePitch.at (2) = 39;
+        if (lanePitchSet.at (3) == 0) lanePitch.at (3) = 42;
+        if (lanePitchSet.at (4) == 0) lanePitch.at (4) = 46;
+        if (lanePitchSet.at (5) == 0) lanePitch.at (5) = 37;
+        if (lanePitchSet.at (6) == 0) lanePitch.at (6) = 45;
+        if (lanePitchSet.at (7) == 0) lanePitch.at (7) = 51;
+
+        motifTab.at (0) = 0;
+        motifTab.at (1) = 1;
+        motifTab.at (2) = 0;
+        motifTab.at (3) = 2;
+        motifTab.at (4) = 0;
+        motifTab.at (5) = 1;
+        motifTab.at (6) = 0;
+        motifTab.at (7) = 3;
+
+        //          mode cx  de  hu  gate vel  rvel rdur
+        mpDefaults (0,  40, 50, 15, 80,  96,  10,  0);
+        mpDefaults (1,  40, 50, 15, 80,  100, 20,  15);
+        mpDefaults (2,  40, 50, 10, 80,  100, 10,  0);
+        mpDefaults (3,  40, 50, 10, 70,  92,  15,  0);
+        mpDefaults (4,  40, 50, 10, 80,  96,  0,   0);
+
+        laneDefault (0, 0);
+        laneDefault (1, 10);
+        laneDefault (2, 0);
+        laneDefault (3, 35);
+        laneDefault (4, 15);
+        laneDefault (5, 20);
+        laneDefault (6, 10);
+        laneDefault (7, 30);
+        laneDefault (8, 20);
+        laneDefault (9, 10);
+        laneDefault (10, 10);
+        laneDefault (11, 0);
+        if (lanePitchSet.at (8) == 0) lanePitch.at (8) = 44;
+        if (lanePitchSet.at (9) == 0) lanePitch.at (9) = 41;
+        if (lanePitchSet.at (10) == 0) lanePitch.at (10) = 50;
+        if (lanePitchSet.at (11) == 0) lanePitch.at (11) = 49;
+        for (int i = 0; i < 12; ++i)
+        {
+            if (laneDensSet.at (i) == 0) laneDens.at (i) = 50;
+        }
+    }
+
+    // ---- Harmony ---------------------------------------------------------------
+    // A chord is stored as a root (semitones above the key) plus intervals in semitones,
+    // so chords from outside the scale can be played too.
+    void setTones (int c, int root, int i1, int i2, int i3, int i4, int cn)
+    {
+        cRoot.at (c) = posMod (root, 12);
+        cInt.at (c * 5) = 0;
+        cInt.at (c * 5 + 1) = i1;
+        cInt.at (c * 5 + 2) = i2;
+        cInt.at (c * 5 + 3) = i3;
+        cInt.at (c * 5 + 4) = i4;
+        cCnt.at (c) = cn;
+    }
+
+    // Borrowed chords. Major keys: bVII, bVI, iv, bIII, V/vi, V/ii, V/V.
+    // Minor keys: V7, IV, bII, I (Picardy), V/V, V/iv, vii dim7.
+    void setBorrowed (int c, int idx)
+    {
+        if (isMinorish())
+        {
+            if (idx == 0)      setTones (c, 7, 4, 7, 10, 14, 4);
+            else if (idx == 1) setTones (c, 5, 4, 7, 11, 14, 3);
+            else if (idx == 2) setTones (c, 1, 4, 7, 11, 14, 3);
+            else if (idx == 3) setTones (c, 0, 4, 7, 11, 14, 3);
+            else if (idx == 4) setTones (c, 2, 4, 7, 10, 14, 4);
+            else if (idx == 5) setTones (c, 0, 4, 7, 10, 14, 4);
+            else               setTones (c, 11, 3, 6, 9, 14, 4);
+        }
+        else
+        {
+            if (idx == 0)      setTones (c, 10, 4, 7, 10, 14, 3);
+            else if (idx == 1) setTones (c, 8, 4, 7, 11, 14, 3);
+            else if (idx == 2) setTones (c, 5, 3, 7, 10, 14, 3);
+            else if (idx == 3) setTones (c, 3, 4, 7, 11, 14, 3);
+            else if (idx == 4) setTones (c, 4, 4, 7, 10, 14, 4);
+            else if (idx == 5) setTones (c, 9, 4, 7, 10, 14, 4);
+            else               setTones (c, 2, 4, 7, 10, 14, 4);
+        }
+    }
+
+    void computeChords()
+    {
+        int nbars = numBars;
+        bool minorish = isMinorish();
+        // With Chords locked the progression keeps its own style, whatever this part plays
+        int hs = pStyle;
+        if (pLock != 0) hs = pChordStyle;
+        int sel = rs (11, hs) % 4;
+        int row = 0;
+        if (minorish) row = selMin.at (hs * 4 + sel);
+        else          row = selMaj.at (hs * 4 + sel);
+
+        int lvl = 0;
+        if (hs == 4 || hs == 7 || hs == 8) lvl = 1;
+        if (hs == 5 && pComplex > 35) lvl = 1;
+        if (pComplex > 55) lvl += 1;
+        if (pComplex > 85) lvl += 1;
+        int cap = 2;
+        if (hs == 1 || hs == 3 || hs == 6) cap = 1;
+        chordLevel = clampi (lvl, 0, cap);
+
+        for (int b = 0; b < 8; ++b)
+        {
+            int j = b % 4;
+            if (nbars == 1)       j = 0;
+            else if (nbars == 2)  j = (b % 2) * 2;
+            else if (hs == 6)     j = ((b / 2) % 2) * 2;
+
+            int deg = 0;
+            if (minorish) deg = progMin.at (row * 4 + j);
+            else          deg = progMaj.at (row * 4 + j);
+
+            if (nbars >= 4 && (j == 1 || j == 2))
+            {
+                if ((rs (21, j) % 100) < 22) deg = (deg + 5) % 7;
+            }
+            if (nbars == 8 && b == 7)
+            {
+                if ((rs (31, 0) % 100) < 50) deg = 4;
+            }
+
+            int ov = chordOv.at (b) % 64;
+            int shape = 0;
+            if (ov > 0)
+            {
+                deg = mini (6, (ov - 1) % 8);
+                shape = (ov - 1) / 8;
+            }
+            cDeg.at (b) = deg;
+
+            // Chord shape: 0 follows Complexity, 1 triad, 2 seventh, 3 ninth, 4 sus2, 5 sus4, 6 add9, 7 borrowed
+            int lvlB = chordLevel;
+            int third = 0;
+            int fifth = 0;
+            int seventh = 0;
+            if (shape == 7)
+            {
+                setBorrowed (b, deg);
+                lvlB = 0;
+                if (cCnt.at (b) >= 4) lvlB = 1;
+                third = cInt.at (b * 5 + 1);
+                fifth = cInt.at (b * 5 + 2);
+                seventh = cInt.at (b * 5 + 3);
+            }
+            else
+            {
+                if (shape == 1)      lvlB = 0;
+                else if (shape == 2) lvlB = 1;
+                else if (shape == 3) lvlB = 2;
+                else if (shape >= 4) lvlB = 0;
+                int r0 = scaleSemi (deg);
+                int t1 = 2;
+                int t3 = 6;
+                int cn = 3 + lvlB;
+                if (shape == 4)      { t1 = 1; cn = 3; }
+                else if (shape == 5) { t1 = 3; cn = 3; }
+                else if (shape == 6) { t3 = 8; cn = 4; }
+                setTones (b, r0, scaleSemi (deg + t1) - r0, scaleSemi (deg + 4) - r0,
+                          scaleSemi (deg + t3) - r0, scaleSemi (deg + 8) - r0, cn);
+                third = scaleSemi (deg + 2) - r0;
+                fifth = scaleSemi (deg + 4) - r0;
+                seventh = scaleSemi (deg + 6) - r0;
+            }
+            cInfo.at (b) = posMod (pKey + cRoot.at (b), 12) + 16 * third + 256 * fifth + 4096 * seventh
+                            + 65536 * lvlB + 262144 * deg + 2097152 * mini (7, shape);
+        }
+
+        // Push: which chords arrive an eighth early (song-level, so every instance agrees)
+        for (int b = 0; b < 8; ++b)
+        {
+            int pb = (b + numBars - 1) % maxi (1, numBars);
+            pushed.at (b) = 0;
+            if (b < numBars && numBars > 1 && pPush > 0 && stepsBar >= 6)
+            {
+                if (cInfo.at (pb) != cInfo.at (b))
+                {
+                    if ((rs (41, b) % 100) < pPush) pushed.at (b) = 1;
+                }
+            }
+            // Per-chord choice stored above the chord value: 1 = always pushed, 2 = never
+            int ps = chordOv.at (b) / 64;
+            if (ps == 1 && b < numBars && numBars > 1 && stepsBar >= 6) pushed.at (b) = 1;
+            else if (ps == 2) pushed.at (b) = 0;
+        }
+    }
+
+    int pushMask()
+    {
+        int pm = 0;
+        for (int b = 0; b < 8; ++b)
+        {
+            if (pushed.at (b) != 0) pm = pm | (1 << b);
+        }
+        return pm;
+    }
+
+    // Which chord of the list sounds at a given bar and step (Chord Rate: half, normal, double)
+    int chordAt (int b, int s)
+    {
+        if (pRate == 2)
+        {
+            int h = 0;
+            if (s >= stepsBar / 2) h = 1;
+            return (2 * b + h) % maxi (1, numBars);
+        }
+        if (pRate == 0) return (b / 2) % maxi (1, numBars);
+        return b % maxi (1, numBars);
+    }
+
+    // True when the chord on the downbeat of bar b is anticipated
+    bool pushInto (int b)
+    {
+        int pb = (b + numBars - 1) % maxi (1, numBars);
+        int c2 = chordAt (b, 0);
+        int c1 = chordAt (pb, stepsBar - 1);
+        return c1 != c2 && pushed.at (c2) != 0;
+    }
+
+    bool inChord (int semi, int c)
+    {
+        int pc = posMod (semi - cRoot.at (c), 12);
+        for (int k = 0; k < cCnt.at (c); ++k)
+        {
+            if (posMod (cInt.at (c * 5 + k), 12) == pc) return true;
+        }
+        return false;
+    }
+
+    int nearestChordTone (int si, int c)
+    {
+        for (int i = 0; i < 7; ++i)
+        {
+            int o = (i + 1) / 2;
+            if ((i % 2) == 0) o = 0 - o;
+            if (inChord (scaleSemi (si + o), c)) return si + o;
+        }
+        return si;
+    }
+
+    // Semitones from a note up to the next scale note (1 to 3)
+    int stepAbove (int semi)
+    {
+        for (int d = 1; d <= 3; ++d)
+        {
+            int p = posMod (semi + d, 12);
+            for (int k = 0; k < 7; ++k)
+            {
+                if (scaleTab.at (pScale * 7 + k) == p) return d;
+            }
+        }
+        return 2;
+    }
+
+    // ---- Note helpers ------------------------------------------------------------
+    void addNote (int grid, int offs, int len, int pitch, int vel)
+    {
+        if (nCount >= 512) return;
+        int sw = 0;
+        if ((grid % 24) == 0 && ! compound)
+        {
+            int st = (grid / 24) % maxi (1, stepsBar);
+            if (pStyle == 7)
+            {
+                if ((st % 4) >= 2) sw = pSwing * 16 / 100;
+            }
+            else if ((st % 2) == 1)
+            {
+                sw = pSwing * 8 / 100;
+            }
+        }
+        int off = clampi (sw + offs, -60, 60);
+        nGrid.at (nCount) = grid;
+        nOff.at (nCount) = off;
+        nTick.at (nCount) = posMod (grid + off, loopTicks);
+        nLen.at (nCount) = clampi (len, 1, 1000);
+        nPitch.at (nCount) = clampi (pitch, 0, 127);
+        nVel.at (nCount) = clampi (vel, 1, 127);
+        nCount += 1;
+    }
+
+    int humanT (int key)
+    {
+        int h = pHuman * 5 / 100;
+        if (h <= 0) return 0;
+        return (rv (201, key) % (2 * h + 1)) - h;
+    }
+
+    int humanV (int key)
+    {
+        int h = pHuman * 18 / 100;
+        if (h <= 0) return 0;
+        return (rv (202, key) % (2 * h + 1)) - h;
+    }
+
+    // Coherent randomness: keyed on the position inside a 2-bar cycle, so it repeats like a groove
+    int velDev (int strm, int cyc, int amt)
+    {
+        if (amt <= 0) return 0;
+        // Musical shaping: strong beats vary little, off-beats more, plus a slow
+        // rise-and-fall across the bar; kick and snare stay the most stable.
+        int s = cyc % 32;
+        int wgt = 100;
+        if (isBeat (s))        wgt = 35;
+        else if ((s % 2) == 0) wgt = 70;
+        if (strm == 230 || strm == 231) wgt = wgt / 2;
+        int rnd = ((rv (strm, cyc) % 201) - 100) * wgt / 100;
+        int sb = maxi (1, stepsBar);
+        int ph = (s + (rv (strm + 40, 0) % sb)) % sb;
+        int tri = 2 * ph - sb;
+        if (tri < 0) tri = 0 - tri;
+        tri = tri * 200 / sb - 100;
+        return (rnd * 6 + tri * 4) * amt / 2500;
+    }
+
+    int durLen (int len, int cyc, int maxLen)
+    {
+        if (pRDur <= 0) return len;
+        int mul = 100 + ((rv (221, cyc) % 201) - 100) * pRDur * 6 / 1000;
+        return clampi (len * mul / 100, 4, maxi (4, maxLen));
+    }
+
+    // ---- Generators ------------------------------------------------------------
+    // Which of the three rhythm variants a bar uses: one main pattern per Part seed,
+    // an answer in the second bar about half the time, and a turnaround in every fourth bar.
+    int rhVar (int b, int strm)
+    {
+        int v = rv (strm, 0) % 3;
+        if ((b % 2) == 1)
+        {
+            if ((rv (strm + 1, 0) % 100) < 50) v = (v + 1 + (rv (strm + 1, 1) % 2)) % 3;
+        }
+        if ((b % 4) == 3)
+        {
+            if ((rv (strm + 2, 0) % 100) < 35) v = rv (strm + 2, 1) % 3;
+        }
+        return v;
+    }
+
+    // Pulls some hits a sixteenth early; more often as Complexity rises
+    int syncopate (int mask, int b, int strm)
+    {
+        int res = mask;
+        for (int s = 2; s < stepsBar; ++s)
+        {
+            if (((res >> s) & 1) != 0 && ((res >> (s - 1)) & 1) == 0)
+            {
+                if ((rv (strm, (b % 2) * 32 + s) % 100) < pComplex / 8)
+                    res = (res & (0 - 1 - (1 << s))) | (1 << (s - 1));
+            }
+        }
+        return res;
+    }
+
+    int voicing (int c, int slot)
+    {
+        int center = 60 + 12 * pOctave;
+        int cnt = cCnt.at (c);
+        int np = 0;
+        int lo = center - 5;
+        for (int k = 0; k < cnt; ++k)
+        {
+            int pc = posMod (pKey + cRoot.at (c) + cInt.at (c * 5 + k), 12);
+            vPit.at (slot * 8 + np) = lo + posMod (pc - lo, 12);
+            np += 1;
+        }
+        int rootPc = posMod (pKey + cRoot.at (c), 12);
+        if (pRange >= 34)
+        {
+            int lowBase = center - 22;
+            vPit.at (slot * 8 + np) = lowBase + posMod (rootPc - lowBase, 12);
+            np += 1;
+        }
+        if (pRange >= 67)
+        {
+            int hi = center + 7;
+            vPit.at (slot * 8 + np) = hi + posMod (rootPc - hi, 12);
+            np += 1;
+        }
+        return np;
+    }
+
+    void genChords()
+    {
+        int tier = -1;
+        if (pDensity >= 75)      tier = 2;
+        else if (pDensity >= 50) tier = 1;
+        else if (pDensity >= 25) tier = 0;
+        int half = stepsBar / 2;
+
+        for (int b = 0; b < numBars; ++b)
+        {
+            int nbar = (b + 1) % maxi (1, numBars);
+            bool pushNext = pushInto (nbar);
+            bool pushedHere = pushInto (b);
+            int cA = chordAt (b, 0);
+            int cB = chordAt (b, stepsBar - 1);
+            int cN = chordAt (nbar, 0);
+
+            int mask = 1;
+            if (tier >= 0) mask = expandMask (chordRh.at (rhVar (b, 300) * 27 + pStyle * 3 + tier));
+            if (tier >= 0) mask = syncopate (mask, b, 303);
+            if (tier >= 1)
+            {
+                for (int s = 1; s < stepsBar; ++s)
+                {
+                    if (((mask >> s) & 1) != 0)
+                    {
+                        if ((rv (30, (b % 2) * 32 + s) % 100) < 12) mask = mask & (0 - 1 - (1 << s));
+                    }
+                }
+            }
+            if (mask == 0) mask = 1;
+
+            // A chord change in the middle of the bar is always struck
+            if (cB != cA) mask = mask | 1 | (1 << half);
+
+            // A pushed chord is struck an eighth early and tied over the bar line
+            int tail = mini (nextHit (mask, 0), stepsBar - 2);
+            if (pushNext)   mask = (mask | (1 << (stepsBar - 2))) & (0 - 1 - (1 << (stepsBar - 1)));
+            if (pushedHere) mask = mask & (0 - 2);
+
+            int npA = voicing (cA, 0);
+            int npB = voicing (cB, 1);
+            int npN = voicing (cN, 2);
+
+            for (int s = 0; s < stepsBar; ++s)
+            {
+                if (((mask >> s) & 1) != 0)
+                {
+                    int cyc = (b % 2) * 32 + s;
+                    bool ant = pushNext && s == stepsBar - 2;
+                    int gap = nextHit (mask, s) - s;
+                    if (ant) gap = 2 + tail;
+                    int len = maxi (6, gap * 24 * pGate / 100);
+                    len = durLen (len, cyc, gap * 24);
+                    int acc = -8;
+                    if (s == 0)          acc = 8;
+                    else if (ant)        acc = 6;
+                    else if (isBeat (s)) acc = 0;
+                    int vel = pVel + acc + humanV (nCount) + velDev (210, cyc, pRVel);
+                    int ht = humanT (nCount);
+                    int np = npA;
+                    int slot = 0;
+                    if (s >= half && cB != cA)
+                    {
+                        np = npB;
+                        slot = 1;
+                    }
+                    if (ant)
+                    {
+                        np = npN;
+                        slot = 2;
+                    }
+                    for (int i = 0; i < np; ++i)
+                        addNote (b * barTicks + s * 24, ht + i * (pHuman / 25), len, vPit.at (slot * 8 + i), vel);
+                }
+            }
+        }
+    }
+
+    void genLead()
+    {
+        int centerSi = 7;
+        int basePitch = 60 + 12 * pOctave + keyOff();
+        int w = 3 + pRange * 6 / 100;
+        bool minorish = isMinorish();
+
+        for (int b = 0; b < numBars; ++b)
+        {
+            int nbar = (b + 1) % maxi (1, numBars);
+            bool pushNext = pushInto (nbar);
+            int mId = motifTab.at (b % 8);
+            int rk = 0;
+            if (mId >= 2 && pComplex > 30) rk = 1;
+
+            int mask = 0;
+            for (int s = 0; s < stepsBar; ++s)
+            {
+                int t = tmpl (s);
+                int wt = 0;
+                if (t >= 0 && (t % 8) == 0)      wt = 95;
+                else if (t >= 0 && (t % 4) == 0) wt = 75;
+                else if (t >= 0 && (t % 2) == 0) wt = 55;
+                else if (pStyle == 0 || pStyle == 1 || pStyle == 7) wt = pComplex / 5;
+                else wt = 14 + pComplex / 4;
+                int p = wt * (28 + pDensity) / 100;
+                if ((rv (40 + rk, s) % 100) < p) mask = mask | (1 << s);
+            }
+            if (mask == 0) mask = 1;
+
+            int lastC = chordAt (b, 0);
+            int cur = nearestChordTone (centerSi + (rv (70, mId) % 5) - 2, lastC);
+            int k = 0;
+            for (int s = 0; s < stepsBar; ++s)
+            {
+                if (((mask >> s) & 1) != 0)
+                {
+                    int t = tmpl (s);
+                    int c = chordAt (b, s);
+                    bool strong = (t >= 0 && (t % 8) == 0);
+                    if (c != lastC) strong = true;
+                    lastC = c;
+                    if (k > 0)
+                    {
+                        if (strong)
+                        {
+                            cur = nearestChordTone (cur + (rv (50 + mId, k) % 3) - 1, c);
+                        }
+                        else
+                        {
+                            int r = rv (60 + mId, k) % 100;
+                            int dir = 1;
+                            if ((rv (74 + mId, k) & 1) != 0) dir = -1;
+                            if (cur > centerSi + w) dir = -1;
+                            if (cur < centerSi - w) dir = 1;
+                            int leapP = 8 + pComplex / 4;
+                            int mv = 1;
+                            if (r < leapP)           mv = 2 + (r % 2);
+                            else if (r < leapP + 12) mv = 0;
+                            cur += dir * mv;
+                            if (pComplex < 50 && mv != 0)
+                            {
+                                int d7 = posMod (cur, 7);
+                                bool avoid = false;
+                                if (minorish) avoid = (d7 == 1 || d7 == 5);
+                                else          avoid = (d7 == 3 || d7 == 6);
+                                if (avoid) cur += dir;
+                            }
+                        }
+                    }
+                    cur = clampi (cur, centerSi - w - 2, centerSi + w + 2);
+                    if (pushNext && s >= stepsBar - 2) cur = nearestChordTone (cur, chordAt (nbar, 0));
+
+                    int cyc = (b % 2) * 32 + s;
+                    int gap = nextHit (mask, s) - s;
+                    if (gap > 8) gap = 8;
+                    int len = maxi (6, gap * 24 * pGate / 100);
+                    len = durLen (len, cyc, gap * 24);
+                    int acc = 0;
+                    if (strong)          acc = 10;
+                    else if (isBeat (s)) acc = 2;
+                    else                 acc = 0 - (rv (78, b * 32 + s) % 12);
+                    addNote (b * barTicks + s * 24, humanT (nCount), len,
+                             basePitch + scaleSemi (cur),
+                             pVel + acc + humanV (nCount) + velDev (211, cyc, pRVel));
+                    k += 1;
+                }
+            }
+        }
+    }
+
+    void genBass()
+    {
+        int lowBase = 36 + 12 * pOctave;
+        int nBeats = maxi (1, stepsBar / maxi (1, beatSteps));
+        int half = stepsBar / 2;
+
+        for (int b = 0; b < numBars; ++b)
+        {
+            int nbar = (b + 1) % maxi (1, numBars);
+            bool pushNext = pushInto (nbar);
+            int cA = chordAt (b, 0);
+            int cB = chordAt (b, stepsBar - 1);
+            int cN = chordAt (nbar, 0);
+            int nextRoot = lowBase + posMod (pKey + cRoot.at (cN), 12);
+            int g0 = b * barTicks;
+
+            if (pStyle == 7 && pDensity >= 25)
+            {
+                // Walking bass: one note per beat
+                int beatLen = beatSteps * 24;
+                int lastC = -1;
+                for (int bt = 0; bt < nBeats; ++bt)
+                {
+                    int s = bt * beatSteps;
+                    int c = chordAt (b, s);
+                    int rootP = lowBase + posMod (pKey + cRoot.at (c), 12);
+                    int thirdI = cInt.at (c * 5 + 1);
+                    int fifthI = cInt.at (c * 5 + 2);
+                    int cyc = (b % 2) * 32 + s;
+                    int pitch = rootP;
+                    int acc = 6;
+                    bool fresh = (c != lastC);
+                    lastC = c;
+                    if (! fresh)
+                    {
+                        if (bt == nBeats - 1)
+                        {
+                            acc = -4;
+                            pitch = rootP + fifthI;
+                            if (nextRoot != rootP)
+                            {
+                                pitch = nextRoot - 1;
+                                if ((rv (83, b) & 1) != 0) pitch = nextRoot + 1;
+                            }
+                        }
+                        else if ((bt % 2) == 1)
+                        {
+                            acc = -4;
+                            pitch = rootP + thirdI;
+                            if ((rv (81, b * 8 + bt) % 2) == 0) pitch = rootP + stepAbove (cRoot.at (c));
+                        }
+                        else
+                        {
+                            acc = 2;
+                            pitch = rootP + fifthI;
+                            if ((rv (82, b * 8 + bt) % 3) == 0) pitch = rootP + thirdI;
+                        }
+                    }
+                    int len = durLen (maxi (6, beatLen * pGate / 100), cyc, beatLen);
+                    addNote (g0 + s * 24, humanT (nCount), len, pitch,
+                             pVel + acc + humanV (nCount) + velDev (212, cyc, pRVel));
+                }
+                if (pDensity >= 70 && nBeats >= 2)
+                {
+                    if ((rv (84, b) % 100) < 50)
+                        addNote (g0 + beatLen + (beatSteps / 2) * 24, 0, 12,
+                                 lowBase + posMod (pKey + cRoot.at (cA), 12), pVel - 34);
+                }
+            }
+            else
+            {
+                int tier = 0;
+                if (pDensity >= 67)      tier = 2;
+                else if (pDensity >= 34) tier = 1;
+                int mask = expandMask (bassRh.at (rhVar (b, 310) * 27 + pStyle * 3 + tier));
+                mask = syncopate (mask, b, 313);
+                if (mask == 0) mask = 1;
+                if (cB != cA) mask = mask | 1 | (1 << half);
+                if (pushNext) mask = (mask | (1 << (stepsBar - 2))) & (0 - 1 - (1 << (stepsBar - 1)));
+                int nonRoot = 10 + pComplex / 2;
+                int lastC = -1;
+
+                for (int s = 0; s < stepsBar; ++s)
+                {
+                    if (((mask >> s) & 1) != 0)
+                    {
+                        int cyc = (b % 2) * 32 + s;
+                        int nh = nextHit (mask, s);
+                        int c = chordAt (b, s);
+                        int rootP = lowBase + posMod (pKey + cRoot.at (c), 12);
+                        int thirdI = cInt.at (c * 5 + 1);
+                        int fifthI = cInt.at (c * 5 + 2);
+                        bool first = (c != lastC);
+                        lastC = c;
+                        int pitch = rootP;
+                        if (! first)
+                        {
+                            int r = rv (80, cyc) % 100;
+                            if (r < nonRoot)
+                            {
+                                int q = r % 5;
+                                if (q < 2)      pitch = rootP + 12;
+                                else if (q < 4) pitch = rootP + fifthI;
+                                else            pitch = rootP + thirdI;
+                            }
+                            if (nh == stepsBar && s >= stepsBar - 4 && pComplex > 40 && nextRoot != rootP)
+                            {
+                                if (pStyle == 4 || pStyle == 7 || pStyle == 8) pitch = nextRoot - 1;
+                                else pitch = rootP + fifthI;
+                            }
+                        }
+                        if (pushNext && s == stepsBar - 2) pitch = nextRoot;
+                        int len = maxi (6, (nh - s) * 24 * pGate / 100);
+                        len = durLen (len, cyc, (nh - s) * 24);
+                        int acc = -4;
+                        if (isBeat (s)) acc = 6;
+                        addNote (g0 + s * 24, humanT (nCount), len, pitch,
+                                 pVel + acc + humanV (nCount) + velDev (212, cyc, pRVel));
+
+                        // Ghost (dead) note a sixteenth before the hit, on busier settings
+                        if (pComplex > 50 && s > 0 && ! first)
+                        {
+                            if (((mask >> (s - 1)) & 1) == 0)
+                            {
+                                if ((rv (85, cyc) % 100) < (pComplex - 50) / 2)
+                                    addNote (g0 + (s - 1) * 24, 0, 8, rootP, 28 + (rv (86, cyc) % 12));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void genArp()
+    {
+        int cnt = 3 + chordLevel;
+        int octs = clampi (1 + pRange / 40, 1, 3);
+        int total = maxi (1, cnt * octs);
+        int stepLen = 1;
+        if (pDensity < 40) stepLen = 2;
+        if (pStyle == 7 && pDensity < 70) stepLen = 2;
+        int pt = rv (90, 0) % 5;
+        int period = maxi (1, 2 * total - 2);
+        int baseLen = maxi (4, stepLen * 24 * pGate / 100);
+
+        for (int b = 0; b < numBars; ++b)
+        {
+            int nbar = (b + 1) % maxi (1, numBars);
+            bool pushNext = pushInto (nbar);
+            int cN = chordAt (nbar, 0);
+            int i = 0;
+
+            for (int s = 0; s < stepsBar; s += stepLen)
+            {
+                int idx = 0;
+                if (pt == 0)      idx = i % total;
+                else if (pt == 1) idx = total - 1 - (i % total);
+                else if (pt == 2)
+                {
+                    int ud = i % period;
+                    idx = ud;
+                    if (ud >= total) idx = period - ud;
+                }
+                else if (pt == 3) idx = rv (91, i % 8) % total;
+                else              idx = ((i / 2) + (i % 2) * 2) % total;
+
+                bool rest = false;
+                if (pComplex > 60 && s != 0)
+                {
+                    if ((rv (92, s) % 100) < (pComplex - 60) / 2) rest = true;
+                }
+                if (! rest)
+                {
+                    int cyc = (b % 2) * 32 + s;
+                    int c = chordAt (b, s);
+                    if (pushNext && s >= stepsBar - 2) c = cN;
+                    int rootOff = posMod (keyOff() + cRoot.at (c) + 5, 12) - 5;
+                    int k = idx % cnt;
+                    int o = idx / cnt;
+                    int pitch = 60 + 12 * pOctave + rootOff
+                                + cInt.at (c * 5 + (k % maxi (1, cCnt.at (c)))) + 12 * o;
+                    int acc = -6;
+                    if (isBeat (s)) acc = 8;
+                    addNote (b * barTicks + s * 24, humanT (nCount), durLen (baseLen, cyc, stepLen * 24 * 2),
+                             pitch, pVel + acc + humanV (nCount) + velDev (213, cyc, pRVel));
+                }
+                i += 1;
+            }
+        }
+    }
+
+    void genDrums()
+    {
+        int nb = 2;
+        if (numBars == 1) nb = 1;
+
+        for (int cb = 0; cb < 2; ++cb)
+        {
+            for (int lane = 0; lane < 12; ++lane)
+            {
+                int base16 = 0;
+                if (lane < 8) base16 = drumBase.at (pStyle * 8 + lane);
+                if (lane == 3 && pDensity < 20) base16 = base16 & 0x1111;
+                int base = expandMask (base16);
+                int extra = 0;
+                if (lane < 8) extra = expandMask (drumExtra.at (pStyle * 8 + lane));
+
+                // Compound meters: closed hat / ride play the three eighths of each beat
+                if (compound && (lane == 3 || lane == 7) && pDensity >= 20)
+                {
+                    for (int s = 0; s < stepsBar; ++s)
+                    {
+                        if ((s % 6) == 2)
+                        {
+                            if (((base >> (s - 2)) & 1) != 0) base = base | (1 << s);
+                        }
+                    }
+                }
+
+                int pe = 0;
+                if (lane == 3 || lane == 4 || lane == 7) pe = clampi ((pDensity - 35) * 3 / 2, 0, 95);
+                else                                     pe = clampi ((pDensity + pComplex) / 4 - 8, 0, 60);
+
+                int lm = base;
+                int g = 0;
+                if (lane == 2)
+                {
+                    if (pDensity >= 60) lm = lm | extra;
+                }
+                else
+                {
+                    for (int s = 0; s < stepsBar; ++s)
+                    {
+                        if (((extra >> s) & 1) != 0)
+                        {
+                            if ((rv (100 + lane, cb * 32 + s) % 100) < pe)
+                            {
+                                lm = lm | (1 << s);
+                                g = g | (1 << s);
+                            }
+                        }
+                    }
+                }
+
+                // Fill on the last beat of the cycle: high tom, mid tom, low tom, with snare hits mixed in.
+                // Kept apart from the pattern so it can close the phrase only every 2, 4 or 8 bars.
+                int fm = 0;
+                if (cb == nb - 1 && pComplex > 50)
+                {
+                    int f0 = maxi (0, stepsBar - 4);
+                    for (int s = f0; s < stepsBar; ++s)
+                    {
+                        if ((rv (120, s) % 100) < (pComplex - 45))
+                        {
+                            int fl = 10;
+                            if (s - f0 == 2)      fl = 6;
+                            else if (s - f0 == 3) fl = 9;
+                            if ((rv (121, s) % 100) < 35) fl = 1;
+                            if (fl == lane) fm = fm | (1 << s);
+                        }
+                    }
+                }
+
+                if (cb == nb - 1) dFill.at (lane) = fm ^ ((fillEdit.at (lane) & 255) << maxi (0, stepsBar - 8));
+
+                // Pedal hat: closes the open hat an eighth later; in jazz it marks beats 2 and 4
+                if (lane == 8)
+                {
+                    if (pStyle == 7) lm = lm | expandMask (0x1010);
+                    else if (pComplex > 30)
+                    {
+                        int oh = dMask.at (8 + cb);
+                        for (int s = 0; s + 2 < stepsBar; ++s)
+                        {
+                            if (((oh >> s) & 1) != 0) lm = lm | (1 << (s + 2));
+                        }
+                    }
+                }
+
+                // Crash on the downbeat of busy patterns
+                if (lane == 11 && cb == 0 && pComplex >= 60 && pStyle != 7 && pStyle != 4) lm = lm | 1;
+
+                // Per-lane density: below 50 thins the lane, above 50 adds hits in musical order
+                int ld = laneDens.at (lane);
+                if (ld < 50)
+                {
+                    for (int s = 0; s < stepsBar; ++s)
+                    {
+                        if (((lm >> s) & 1) != 0)
+                        {
+                            if ((rv (150 + lane, cb * 32 + s) % 100) >= ld * 2) lm = lm & (0 - 1 - (1 << s));
+                        }
+                    }
+                }
+                else if (ld > 50)
+                {
+                    int boost = (ld - 50) * 2;
+                    if (lane == 11)
+                    {
+                        if (cb == 0 || boost >= 60) lm = lm | 1;
+                    }
+                    else
+                    {
+                        for (int s = 0; s < stepsBar; ++s)
+                        {
+                            if (((lm >> s) & 1) == 0)
+                            {
+                                int pr = 0;
+                                if (lane == 6 || lane == 9 || lane == 10)
+                                {
+                                    // Toms: end of the phrase first, then end of each bar, then everywhere
+                                    int q = (s % maxi (1, beatSteps)) * 4 / maxi (1, beatSteps);
+                                    int tl = 10;
+                                    if (q == 2)      tl = 6;
+                                    else if (q == 3) tl = 9;
+                                    if (tl == lane)
+                                    {
+                                        pr = boost - 80;
+                                        if (s >= stepsBar / 2) pr = boost - 60;
+                                        if (s >= stepsBar - 4) pr = boost - 30;
+                                        if (s >= stepsBar - 4 && cb == nb - 1) pr = boost;
+                                    }
+                                }
+                                else if (((extra >> s) & 1) != 0)
+                                {
+                                    // The style's own candidate steps come first
+                                    pr = boost;
+                                }
+                                else
+                                {
+                                    int wgt = 35;
+                                    if (isBeat (s))        wgt = 90;
+                                    else if ((s % 2) == 0) wgt = 60;
+                                    pr = (boost - 30) * wgt / 100;
+                                }
+                                if (pr > 0)
+                                {
+                                    if ((rv (160 + lane, cb * 32 + s) % 100) < pr)
+                                    {
+                                        lm = lm | (1 << s);
+                                        if (lane == 1) g = g | (1 << s);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                lm = lm ^ (drumEdit.at (lane * 2 + cb) & 0xffffff);
+                dMask.at (lane * 2 + cb) = lm;
+                dGhost.at (lane * 2 + cb) = g;
+            }
+
+            // One hi-hat sound per step: open hat wins over closed, closed wins over pedal.
+            // Hand edits are re-applied afterwards so they always have the last word.
+            int e3 = drumEdit.at (6 + cb) & 0xffffff;
+            int e8 = drumEdit.at (16 + cb) & 0xffffff;
+            int openM = dMask.at (8 + cb);
+            int g3 = (dMask.at (6 + cb) ^ e3) & (0 - 1 - openM);
+            dMask.at (6 + cb) = g3 ^ e3;
+            int closedM = dMask.at (6 + cb);
+            int g8 = (dMask.at (16 + cb) ^ e8) & (0 - 1 - (openM | closedM));
+            dMask.at (16 + cb) = g8 ^ e8;
+        }
+
+        for (int b = 0; b < numBars; ++b)
+        {
+            int cb = 0;
+            if (nb == 2) cb = b % 2;
+
+            for (int lane = 0; lane < 12; ++lane)
+            {
+                int lm = dMask.at (lane * 2 + cb);
+                int g = dGhost.at (lane * 2 + cb);
+
+                int fper = 1;
+                if (pFill == 1)      fper = 2;
+                else if (pFill == 2) fper = 4;
+                else if (pFill == 3) fper = 8;
+                if (pFill > 0 && cb == nb - 1)
+                {
+                    if (((b + 1) % maxi (1, fper)) == 0 || (b == numBars - 1 && numBars < fper)) lm = lm | dFill.at (lane);
+                }
+                int amt = clampi (pRVel + laneRand.at (lane), 0, 100);
+
+                for (int s = 0; s < stepsBar; ++s)
+                {
+                    if (((lm >> s) & 1) != 0)
+                    {
+                        int v = 100;
+                        if (lane == 0)      v = 112;
+                        else if (lane == 1)
+                        {
+                            v = 108;
+                            if (((g >> s) & 1) != 0) v = 48;
+                        }
+                        else if (lane == 2) v = 100;
+                        else if (lane == 3)
+                        {
+                            v = 62;
+                            if (isBeat (s))        v = 98;
+                            else if ((s % 2) == 0) v = 80;
+                        }
+                        else if (lane == 4) v = 92;
+                        else if (lane == 5) v = 78;
+                        else if (lane == 6)  v = 96;
+                        else if (lane == 8)  v = 68;
+                        else if (lane == 9)  v = 100;
+                        else if (lane == 10) v = 94;
+                        else if (lane == 11) v = 106;
+                        else
+                        {
+                            v = 70;
+                            if (isBeat (s)) v = 92;
+                        }
+                        v = v * pVel / 96 + humanV (nCount) + velDev (230 + lane, cb * 32 + s, amt);
+                        int grid = b * barTicks + s * 24;
+                        addNote (grid, humanT (nCount), 10, lanePitch.at (lane), v);
+
+                        if (lane == 3 && pStyle == 3 && pComplex > 45)
+                        {
+                            if ((rv (130, cb * 32 + s) % 100) < (pComplex - 45) / 2)
+                                addNote (grid + 12, 0, 8, lanePitch.at (lane), v - 16);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void regenerate()
+    {
+        int m9 = clampi (pMode, 0, 4) * 9;
+        pComplex = mp.at (m9);
+        pDensity = mp.at (m9 + 1);
+        pHuman   = mp.at (m9 + 2);
+        pOctave  = mp.at (m9 + 3);
+        pRange   = mp.at (m9 + 4);
+        pGate    = mp.at (m9 + 5);
+        pVel     = mp.at (m9 + 6);
+        pRVel    = mp.at (m9 + 7);
+        pRDur    = mp.at (m9 + 8);
+
+        computeMeter();
+        numBars = 1 << clampi (pBarsIdx, 0, 3);
+        loopTicks = numBars * barTicks;
+        nCount = 0;
+        computeChords();
+
+        if (pMode == 0)      genChords();
+        else if (pMode == 1) genLead();
+        else if (pMode == 2) genBass();
+        else if (pMode == 3) genArp();
+        else                 genDrums();
+
+        dirty = false;
+        dumpIdx = 0;
+        dumpTimer = 0;
+    }
+
+    // ---- MIDI output queue (one message per frame) --------------------------------
+    void pushMidi (int status, int a, int b)
+    {
+        if (qCount >= 256) return;
+        int w = (qHead + qCount) % 256;
+        qS.at (w) = status;
+        qA.at (w) = a;
+        qB.at (w) = b;
+        qCount += 1;
+    }
+
+    void allOff()
+    {
+        for (int i = 0; i < 32; ++i)
+        {
+            if (aRemain.at (i) > 0)
+            {
+                pushMidi (0x80, aPitch.at (i), 0);
+                aRemain.at (i) = 0;
+            }
+        }
+    }
+
+    void startNote (int pitch, int vel, int len)
+    {
+        int slot = -1;
+        for (int i = 0; i < 32; ++i)
+        {
+            if (aRemain.at (i) > 0 && aPitch.at (i) == pitch)
+            {
+                pushMidi (0x80, pitch, 0);
+                aRemain.at (i) = 0;
+            }
+        }
+        for (int i = 0; i < 32; ++i)
+        {
+            if (slot < 0 && aRemain.at (i) <= 0) slot = i;
+        }
+        if (slot < 0)
+        {
+            slot = 0;
+            pushMidi (0x80, aPitch.at (0), 0);
+        }
+        pushMidi (0x90, pitch, vel);
+        aPitch.at (slot) = pitch;
+        aRemain.at (slot) = len;
+    }
+
+    void processTick (int t, bool emit)
+    {
+        for (int i = 0; i < 32; ++i)
+        {
+            if (aRemain.at (i) > 0)
+            {
+                aRemain.at (i) = aRemain.at (i) - 1;
+                if (aRemain.at (i) == 0) pushMidi (0x80, aPitch.at (i), 0);
+            }
+        }
+
+        int lt = posMod (t - originOff, loopTicks);
+
+        if (emit)
+        {
+            for (int n = 0; n < nCount; ++n)
+            {
+                if (nTick.at (n) == lt)
+                {
+                    int p = nPitch.at (n);
+                    if (pMode != 4) p += transpose;
+                    startNote (clampi (p, 0, 127), nVel.at (n), nLen.at (n));
+                }
+            }
+        }
+
+        int st = lt / 24;
+        if (st != lastStep)
+        {
+            lastStep = st;
+            posOut <- float (st);
+        }
+    }
+
+    int floorTick (float64 p)
+    {
+        float64 x = p * 96.0;
+        int i = int (x);
+        if (float64 (i) > x) i -= 1;
+        return i;
+    }
+
+    void emitDump()
+    {
+        int total = 24 + 2 * nCount;
+        float v = 0.0f;
+        if (dumpIdx == 0)       v = 0.0f - float (nCount + 1);
+        else if (dumpIdx == 1)  v = float (pMode);
+        else if (dumpIdx == 2)  v = float (numBars + 64 * stepsBar + 4096 * beatSteps);
+        else if (dumpIdx < 11)  v = float (cInfo.at (dumpIdx - 3));
+        else if (dumpIdx == 11) v = float (transpose + 64 + 128 * pushMask() + 32768 * pRate);
+        else if (dumpIdx < 24)  v = float (dFill.at (dumpIdx - 12));
+        else
+        {
+            int k = dumpIdx - 24;
+            int n = k / 2;
+            if ((k % 2) == 0) v = float (nGrid.at (n) * 128 + nPitch.at (n));
+            else              v = float (((nOff.at (n) + 64) * 1024 + nLen.at (n)) * 128 + nVel.at (n));
+        }
+        patOut <- v;
+        dumpIdx += 1;
+        if (dumpIdx >= total) dumpIdx = -1;
+    }
+
+    void setMp (int i, float v, int lo, int hi)
+    {
+        mp.at (i) = clampi (roundi (v), lo, hi);
+        mpSet.at (i) = 1;
+        dirty = true;
+    }
+
+    void setLane (int lane, float v)
+    {
+        laneRand.at (lane) = clampi (roundi (v), 0, 100);
+        laneSet.at (lane) = 1;
+        dirty = true;
+    }
+
+    // Hand edits of the fill: 8 steps per lane (the last 8 of the bar), three lanes packed per parameter
+    void setFill (int grp, float v)
+    {
+        int x = clampi (roundi (v), 0, 16777215);
+        fillEdit.at (grp * 3) = x & 255;
+        fillEdit.at (grp * 3 + 1) = (x >> 8) & 255;
+        fillEdit.at (grp * 3 + 2) = (x >> 16) & 255;
+        dirty = true;
+    }
+
+    void setNote (int lane, float v)
+    {
+        lanePitch.at (lane) = clampi (roundi (v), 0, 127);
+        lanePitchSet.at (lane) = 1;
+        dirty = true;
+    }
+
+    void setDens (int lane, float v)
+    {
+        laneDens.at (lane) = clampi (roundi (v), 0, 100);
+        laneDensSet.at (lane) = 1;
+        dirty = true;
+    }
+
+    void setEdit (int i, float v)
+    {
+        drumEdit.at (i) = clampi (roundi (v), 0, 16777215);
+        dirty = true;
+    }
+
+    void setChord (int i, float v)
+    {
+        chordOv.at (i) = clampi (roundi (v), 0, 255);
+        dirty = true;
+    }
+
+    // ---- Parameter handlers ---------------------------------------------------------
+    event param1  (float v) { pMode = clampi (roundi (v), 0, 4); dirty = true; }
+    event param2  (float v) { pStyle = clampi (roundi (v), 0, 8); dirty = true; }
+    event param3  (float v) { pKey = clampi (roundi (v), 0, 11); dirty = true; }
+    event param4  (float v) { pScale = clampi (roundi (v), 0, 6); dirty = true; }
+    event param5  (float v) { pSong = clampi (roundi (v), 0, 9999); dirty = true; }
+    event param6  (float v) { pPart = clampi (roundi (v), 0, 9999); dirty = true; }
+    event param7  (float v) { pVar = clampi (roundi (v), 0, 99); dirty = true; }
+    event param8  (float v) { pBarsIdx = clampi (roundi (v), 0, 3); dirty = true; }
+    event param9  (float v) { pSwing = clampi (roundi (v), 0, 100); dirty = true; }
+    event param10 (float v)
+    {
+        int im = clampi (roundi (v), 0, 2);
+        if (im != pInMode)
+        {
+            pInMode = im;
+            heldCount = 0;
+            allOff();
+        }
+    }
+    // Lock Chords also carries the style the locked progression was written in: lock + 2 * style
+    event param11 (float v)
+    {
+        int x = clampi (roundi (v), 0, 17);
+        pLock = x % 2;
+        pChordStyle = clampi (x / 2, 0, 8);
+        dirty = true;
+    }
+    event param12 (float v) { setChord (0, v); }
+    event param13 (float v) { setChord (1, v); }
+    event param14 (float v) { setChord (2, v); }
+    event param15 (float v) { setChord (3, v); }
+    event param16 (float v) { setChord (4, v); }
+    event param17 (float v) { setChord (5, v); }
+    event param18 (float v) { setChord (6, v); }
+    event param19 (float v) { setChord (7, v); }
+    event param20 (float v) { setEdit (0, v); }
+    event param21 (float v) { setEdit (1, v); }
+    event param22 (float v) { setEdit (2, v); }
+    event param23 (float v) { setEdit (3, v); }
+    event param24 (float v) { setEdit (4, v); }
+    event param25 (float v) { setEdit (5, v); }
+    event param26 (float v) { setEdit (6, v); }
+    event param27 (float v) { setEdit (7, v); }
+    event param28 (float v) { setEdit (8, v); }
+    event param29 (float v) { setEdit (9, v); }
+    event param30 (float v) { setEdit (10, v); }
+    event param31 (float v) { setEdit (11, v); }
+    event param32 (float v) { setEdit (12, v); }
+    event param33 (float v) { setEdit (13, v); }
+    event param34 (float v) { setEdit (14, v); }
+    event param35 (float v) { setEdit (15, v); }
+    event param36 (float v) { setLane (0, v); }
+    event param37 (float v) { setLane (1, v); }
+    event param38 (float v) { setLane (2, v); }
+    event param39 (float v) { setLane (3, v); }
+    event param40 (float v) { setLane (4, v); }
+    event param41 (float v) { setLane (5, v); }
+    event param42 (float v) { setLane (6, v); }
+    event param43 (float v) { setLane (7, v); }
+
+    event param44 (float v) { setMp (0, v, 0, 100); }
+    event param45 (float v) { setMp (1, v, 0, 100); }
+    event param46 (float v) { setMp (2, v, 0, 100); }
+    event param47 (float v) { setMp (3, v, -2, 2); }
+    event param48 (float v) { setMp (4, v, 0, 100); }
+    event param49 (float v) { setMp (5, v, 10, 100); }
+    event param50 (float v) { setMp (6, v, 1, 127); }
+    event param51 (float v) { setMp (7, v, 0, 100); }
+    event param52 (float v) { setMp (8, v, 0, 100); }
+
+    event param53 (float v) { setMp (9, v, 0, 100); }
+    event param54 (float v) { setMp (10, v, 0, 100); }
+    event param55 (float v) { setMp (11, v, 0, 100); }
+    event param56 (float v) { setMp (12, v, -2, 2); }
+    event param57 (float v) { setMp (13, v, 0, 100); }
+    event param58 (float v) { setMp (14, v, 10, 100); }
+    event param59 (float v) { setMp (15, v, 1, 127); }
+    event param60 (float v) { setMp (16, v, 0, 100); }
+    event param61 (float v) { setMp (17, v, 0, 100); }
+
+    event param62 (float v) { setMp (18, v, 0, 100); }
+    event param63 (float v) { setMp (19, v, 0, 100); }
+    event param64 (float v) { setMp (20, v, 0, 100); }
+    event param65 (float v) { setMp (21, v, -2, 2); }
+    event param66 (float v) { setMp (22, v, 0, 100); }
+    event param67 (float v) { setMp (23, v, 10, 100); }
+    event param68 (float v) { setMp (24, v, 1, 127); }
+    event param69 (float v) { setMp (25, v, 0, 100); }
+    event param70 (float v) { setMp (26, v, 0, 100); }
+
+    event param71 (float v) { setMp (27, v, 0, 100); }
+    event param72 (float v) { setMp (28, v, 0, 100); }
+    event param73 (float v) { setMp (29, v, 0, 100); }
+    event param74 (float v) { setMp (30, v, -2, 2); }
+    event param75 (float v) { setMp (31, v, 0, 100); }
+    event param76 (float v) { setMp (32, v, 10, 100); }
+    event param77 (float v) { setMp (33, v, 1, 127); }
+    event param78 (float v) { setMp (34, v, 0, 100); }
+    event param79 (float v) { setMp (35, v, 0, 100); }
+
+    event param80 (float v) { setMp (36, v, 0, 100); }
+    event param81 (float v) { setMp (37, v, 0, 100); }
+    event param82 (float v) { setMp (38, v, 0, 100); }
+    event param83 (float v) { setFill (0, v); }
+    event param84 (float v) { setFill (1, v); }
+    event param85 (float v) { setFill (2, v); }
+    event param86 (float v) { setMp (42, v, 1, 127); }
+    event param87 (float v) { setMp (43, v, 0, 100); }
+    event param88 (float v) { setFill (3, v); }
+    event param89 (float v) { pOffsetMs = clampi (roundi (v), -50, 50); }
+    event param90 (float v) { setEdit (16, v); }
+    event param91 (float v) { setEdit (17, v); }
+    event param92 (float v) { setEdit (18, v); }
+    event param93 (float v) { setEdit (19, v); }
+    event param94 (float v) { setEdit (20, v); }
+    event param95 (float v) { setEdit (21, v); }
+    event param96 (float v) { setEdit (22, v); }
+    event param97 (float v) { setEdit (23, v); }
+    event param98 (float v) { setLane (8, v); }
+    event param99 (float v) { setLane (9, v); }
+    event param100 (float v) { setLane (10, v); }
+    event param101 (float v) { setLane (11, v); }
+    event param102 (float v) { setDens (0, v); }
+    event param103 (float v) { setDens (1, v); }
+    event param104 (float v) { setDens (2, v); }
+    event param105 (float v) { setDens (3, v); }
+    event param106 (float v) { setDens (4, v); }
+    event param107 (float v) { setDens (5, v); }
+    event param108 (float v) { setDens (6, v); }
+    event param109 (float v) { setDens (7, v); }
+    event param110 (float v) { setDens (8, v); }
+    event param111 (float v) { setDens (9, v); }
+    event param112 (float v) { setDens (10, v); }
+    event param113 (float v) { setDens (11, v); }
+    event param114 (float v) { pPush = clampi (roundi (v), 0, 100); dirty = true; }
+    event param115 (float v) { setNote (0, v); }
+    event param116 (float v) { setNote (1, v); }
+    event param117 (float v) { setNote (2, v); }
+    event param118 (float v) { setNote (3, v); }
+    event param119 (float v) { setNote (4, v); }
+    event param120 (float v) { setNote (5, v); }
+    event param121 (float v) { setNote (6, v); }
+    event param122 (float v) { setNote (7, v); }
+    event param123 (float v) { setNote (8, v); }
+    event param124 (float v) { setNote (9, v); }
+    event param125 (float v) { setNote (10, v); }
+    event param126 (float v) { setNote (11, v); }
+    event param127 (float v) { pRate = clampi (roundi (v), 0, 2); dirty = true; }
+    event param128 (float v) { pFill = clampi (roundi (v), 0, 3); dirty = true; }
+
+    // Transport events arrive as 6 consecutive floats per block:
+    // [0] play state, [1] bpm, [2] time sig num, [3] den, [4] ppq, [5] ppq of last bar start
+    event transportIn (float value)
+    {
+        transportSeen = true;
+
+        if (transportEventCount == 0)
+        {
+            transportPlaying = (value > 0.5f);
+        }
+        else if (transportEventCount == 1)
+        {
+            if (value > 0.0f) bpm = clamp (value, 20.0f, 999.0f);
+        }
+        else if (transportEventCount == 2)
+        {
+            pendNum = roundi (value);
+        }
+        else if (transportEventCount == 3)
+        {
+            int den = roundi (value);
+            if (pendNum >= 1 && pendNum <= 32 && (den == 2 || den == 4 || den == 8 || den == 16))
+            {
+                if (pendNum != tsNum || den != tsDen)
+                {
+                    tsNum = pendNum;
+                    tsDen = den;
+                    dirty = true;
+                }
+            }
+        }
+        else if (transportEventCount == 4)
+        {
+            hostPpq = float64 (value);
+        }
+        else
+        {
+            // Align the loop on the host's bar lines
+            float64 bs = float64 (value);
+            if (bs <= hostPpq + 0.001 && hostPpq - bs < 40.0 && barTicks > 0)
+            {
+                int bst = floorTick (bs + 0.0026);
+                int bi = floorDiv (bst + barTicks / 2, barTicks);
+                originOff = bst - bi * barTicks;
+            }
+        }
+
+        transportEventCount = (transportEventCount + 1) % 6;
+    }
+
+    event midiIn (std::midi::Message msg)
+    {
+        if (pInMode == 2)
+        {
+            midiOut <- msg;
+            return;
+        }
+
+        bool noteOn = msg.isNoteOn() && msg.getVelocity() > 0;
+        bool noteOff = msg.isNoteOff() || (msg.isNoteOn() && msg.getVelocity() == 0);
+
+        if (noteOn)
+        {
+            heldCount += 1;
+            if (pMode != 4)
+            {
+                int tr = posMod (msg.getNoteNumber() - pKey, 12);
+                if (tr > 6) tr -= 12;
+                if (tr != transpose)
+                {
+                    transpose = tr;
+                    dumpIdx = 0;
+                }
+            }
+            return;
+        }
+
+        if (noteOff)
+        {
+            heldCount = maxi (0, heldCount - 1);
+            if (heldCount == 0 && pInMode == 1) allOff();
+            return;
+        }
+
+        if (msg.isAllNotesOff() || msg.isAllSoundOff())
+        {
+            heldCount = 0;
+            allOff();
+            return;
+        }
+
+        midiOut <- msg;
+    }
+
+    void main()
+    {
+        setupTables();
+        redumpPeriod = int (processor.frequency * 1.5);
+
+        loop
+        {
+            if (cooldown > 0) cooldown -= 1;
+            if (dirty && cooldown == 0)
+            {
+                regenerate();
+                cooldown = 256;
+            }
+
+            int want = 0;
+            if (transportSeen && transportPlaying) want = 1;
+            else if (heldCount > 0 && pInMode != 2) want = 2;
+
+            if (want != runState)
+            {
+                allOff();
+                lastTick = -1000000;
+                lastStep = -1;
+                if (want == 2)
+                {
+                    freePpq = 0.0;
+                    originOff = 0;
+                }
+                if (want == 0) posOut <- -1.0f;
+                runState = want;
+            }
+
+            if (runState != 0)
+            {
+                float64 ppq = freePpq;
+                if (runState == 1) ppq = hostPpq - float64 (pOffsetMs) * float64 (bpm) / 60000.0;
+                int t = floorTick (ppq);
+                bool emit = (pInMode != 1) || (heldCount > 0);
+
+                if (t != lastTick)
+                {
+                    int d = t - lastTick;
+                    if (d > 0 && d <= 8)
+                    {
+                        for (int k = lastTick + 1; k <= t; ++k)
+                            processTick (k, emit);
+                        lastTick = t;
+                    }
+                    else if (d > 0 || d < -3)
+                    {
+                        allOff();
+                        processTick (t, emit);
+                        lastTick = t;
+                    }
+                }
+
+                float64 inc = float64 (bpm) / 60.0 * float(processor.period);
+                if (runState == 1) hostPpq += inc;
+                else               freePpq += inc;
+            }
+
+            if (qCount > 0)
+            {
+                midiOut <- std::midi::createMessage (qS.at (qHead), qA.at (qHead), qB.at (qHead));
+                qHead = (qHead + 1) % 256;
+                qCount -= 1;
+            }
+
+            dumpTimer += 1;
+            if (dumpIdx >= 0 && dumpTimer >= 16)
+            {
+                dumpTimer = 0;
+                emitDump();
+            }
+
+            redump += 1;
+            if (redump > redumpPeriod)
+            {
+                redump = 0;
+                if (dumpIdx < 0) dumpIdx = 0;
+            }
+
+            advance();
+        }
+    }
+}

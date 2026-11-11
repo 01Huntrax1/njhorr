@@ -196,6 +196,9 @@ int main (int argc, char** argv)
     be.setParam (5800, 24.0f); be.setParam (5816 + 64 * 3 + 0, 3.0f); be.setParam (5816 + 64 * 3 + 2, 7.0f);
     be.setParam (njo::ARP_BASE + 1, 7.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_melodic.png"), scale);
     be.setParam (njo::ARP_BASE + 1, 8.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_gen.png"), scale);
+    ed.seqArpPage().showInspirator (true); be.setParam (7000, 1.0f); be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_chords.png"), scale);
+    be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_drums.png"), scale);
+    ed.seqArpPage().showInspirator (false);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix
         auto& cx = ed.context();
