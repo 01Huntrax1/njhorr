@@ -196,8 +196,23 @@ int main (int argc, char** argv)
     be.setParam (5800, 24.0f); be.setParam (5816 + 64 * 3 + 0, 3.0f); be.setParam (5816 + 64 * 3 + 2, 7.0f);
     be.setParam (njo::ARP_BASE + 1, 7.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_melodic.png"), scale);
     be.setParam (njo::ARP_BASE + 1, 8.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp_gen.png"), scale);
+    {   // Inspirator: a synthetic pattern (C G Am F, triads) streamed like the DSP does
+        std::vector<float> d;
+        const int chords[4] = { 46912, 1091399, 1353529, 833349 }, tones[4][3] = { { 60, 64, 67 }, { 62, 67, 71 }, { 60, 64, 69 }, { 60, 65, 69 } };
+        const int stepsAt[6] = { 0, 3, 6, 8, 10, 12 };
+        struct N { int grid, pitch, len, vel; }; std::vector<N> ns;
+        for (int b = 0; b < 4; ++b) for (int s : stepsAt) for (int t = 0; t < 3; ++t) ns.push_back ({ b * 384 + s * 24, tones[b][t] + (s == 12 ? -12 : 0), s == 0 ? 60 : 36, 70 + 8 * t + s });
+        d.push_back ((float) (-(int) ns.size() - 1)); d.push_back (0.0f); d.push_back ((float) (4 + 64 * 16 + 4096 * 4));
+        for (int c : chords) d.push_back ((float) c);
+        for (int c : chords) d.push_back ((float) c);
+        d.push_back (64.0f); for (int k = 0; k < 12; ++k) d.push_back (0.0f);
+        for (auto& n : ns) { d.push_back ((float) (n.grid * 128 + n.pitch)); d.push_back ((float) (((0 + 64) * 1024 + n.len) * 128 + n.vel)); }
+        for (float f : d) be.insPush (f);
+        be.insPlayStep = 21;
+    }
     ed.seqArpPage().showInspirator (true); be.setParam (7000, 1.0f); be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_chords.png"), scale);
     be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_drums.png"), scale);
+    be.setParam (7001, 1.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_lead.png"), scale);
     ed.seqArpPage().showInspirator (false);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix

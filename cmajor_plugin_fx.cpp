@@ -69,7 +69,7 @@ namespace performer
 
         //==============================================================================
         static constexpr uint32_t numInputEndpoints  = 4872;
-        static constexpr uint32_t numOutputEndpoints = 2;
+        static constexpr uint32_t numOutputEndpoints = 4;
 
         static constexpr uint32_t maxFramesPerBlock  = 512;
         static constexpr uint32_t eventBufferSize    = 32;
@@ -85,6 +85,8 @@ namespace performer
             positionIn       = 4   ,
             timeSigIn        = 5   ,
             transportStateIn = 6   ,
+            insDump          = 4874,
+            insPos           = 4875,
             param7000        = 7   ,
             param7001        = 8   ,
             param7002        = 9   ,
@@ -214,7 +216,7 @@ namespace performer
             param7126        = 133 ,
             param7127        = 134 ,
             param7128        = 135 ,
-            seqPos           = 4874,
+            seqPos           = 4876,
             lfoShapeLoad     = 136 ,
             wtBankLoad       = 137 ,
             frqShapeLoad     = 138 ,
@@ -4963,6 +4965,8 @@ namespace performer
             if (endpointName == "positionIn")        return static_cast<uint32_t> (EndpointHandles::positionIn);
             if (endpointName == "timeSigIn")         return static_cast<uint32_t> (EndpointHandles::timeSigIn);
             if (endpointName == "transportStateIn")  return static_cast<uint32_t> (EndpointHandles::transportStateIn);
+            if (endpointName == "insDump")           return static_cast<uint32_t> (EndpointHandles::insDump);
+            if (endpointName == "insPos")            return static_cast<uint32_t> (EndpointHandles::insPos);
             if (endpointName == "param7000")         return static_cast<uint32_t> (EndpointHandles::param7000);
             if (endpointName == "param7001")         return static_cast<uint32_t> (EndpointHandles::param7001);
             if (endpointName == "param7002")         return static_cast<uint32_t> (EndpointHandles::param7002);
@@ -14711,8 +14715,10 @@ namespace performer
 
         static constexpr EndpointInfo outputEndpoints[] =
         {
-            { 4873,  "out",     EndpointType::stream },
-            { 4874,  "seqPos",  EndpointType::event  }
+            { 4873,  "out",      EndpointType::stream },
+            { 4874,  "insDump",  EndpointType::event  },
+            { 4875,  "insPos",   EndpointType::event  },
+            { 4876,  "seqPos",   EndpointType::event  }
         };
 
         //==============================================================================
@@ -14726,7 +14732,9 @@ namespace performer
 
         static constexpr std::array outputEvents
         {
-            outputEndpoints[1]
+            outputEndpoints[1],
+            outputEndpoints[2],
+            outputEndpoints[3]
         };
 
         static constexpr std::array<EndpointInfo, 0> outputMIDIEvents {};
@@ -50411,8 +50419,13 @@ namespace performer
                 32,32,32,32,32,32,32,34,101,108,101,109,101,110,116,34,58,32,123,10,32,32,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,102,108,111,97,116,51,50,34,10,32,32,32,32,32,32,32,32,125,44,10,
                 32,32,32,32,32,32,32,32,34,115,105,122,101,34,58,32,50,10,32,32,32,32,32,32,125,44,10,32,32,32,32,32,32,34,112,117,114,112,111,115,101,34,58,32,34,97,117,100,105,111,32,111,117,116,34,44,10,32,32,
                 32,32,32,32,34,110,117,109,65,117,100,105,111,67,104,97,110,110,101,108,115,34,58,32,50,10,32,32,32,32,125,44,10,32,32,32,32,123,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,73,68,34,
-                58,32,34,115,101,113,80,111,115,34,44,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,84,121,112,101,34,58,32,34,101,118,101,110,116,34,44,10,32,32,32,32,32,32,34,100,97,116,97,84,121,112,
-                101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,105,110,116,51,50,34,10,32,32,32,32,32,32,125,10,32,32,32,32,125,10,32,32,93,10,125, 0 };
+                58,32,34,105,110,115,68,117,109,112,34,44,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,84,121,112,101,34,58,32,34,101,118,101,110,116,34,44,10,32,32,32,32,32,32,34,100,97,116,97,84,121,
+                112,101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,102,108,111,97,116,51,50,34,10,32,32,32,32,32,32,125,10,32,32,32,32,125,44,10,32,32,32,32,123,10,32,32,32,32,32,32,
+                34,101,110,100,112,111,105,110,116,73,68,34,58,32,34,105,110,115,80,111,115,34,44,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,84,121,112,101,34,58,32,34,101,118,101,110,116,34,44,10,
+                32,32,32,32,32,32,34,100,97,116,97,84,121,112,101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,105,110,116,51,50,34,10,32,32,32,32,32,32,125,10,32,32,32,32,125,44,10,32,
+                32,32,32,123,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,73,68,34,58,32,34,115,101,113,80,111,115,34,44,10,32,32,32,32,32,32,34,101,110,100,112,111,105,110,116,84,121,112,101,34,58,32,
+                34,101,118,101,110,116,34,44,10,32,32,32,32,32,32,34,100,97,116,97,84,121,112,101,34,58,32,123,10,32,32,32,32,32,32,32,32,34,116,121,112,101,34,58,32,34,105,110,116,51,50,34,10,32,32,32,32,32,32,
+                125,10,32,32,32,32,125,10,32,32,93,10,125, 0 };
 
         //==============================================================================
         struct intrinsics
@@ -51215,10 +51228,26 @@ namespace performer
             float ins_bpm = {};
             bool ins_transportPlaying = {};
             bool ins_transportSeen = {};
-            int32_t ins_posOut = {};
+            int32_t ins_dumpIdx = {};
+            int32_t ins_dumpTimer = {};
+            int32_t ins_redump = {};
             int32_t _sessionID = {};
             double _frequency = {};
             int32_t _resumeIndex = {};
+        };
+
+        struct Eisenpuls_Synth_eventValue_insDump
+        {
+            int32_t frame = {};
+            int32_t type = {};
+            float value_0 = {};
+        };
+
+        struct Eisenpuls_Synth_eventValue_insPos
+        {
+            int32_t frame = {};
+            int32_t type = {};
+            int32_t value_0 = {};
         };
 
         struct Eisenpuls_Synth_eventValue_seqPos
@@ -51232,6 +51261,10 @@ namespace performer
         {
             int32_t _currentFrame = {};
             _Eisenpuls_Synth_State _state;
+            int32_t insDump_eventCount = {};
+            Array<Eisenpuls_Synth_eventValue_insDump, 32> insDump;
+            int32_t insPos_eventCount = {};
+            Array<Eisenpuls_Synth_eventValue_insPos, 32> insPos;
             int32_t seqPos_eventCount = {};
             Array<Eisenpuls_Synth_eventValue_seqPos, 32> seqPos;
         };
@@ -51376,19 +51409,25 @@ namespace performer
 
         uint32_t getNumOutputEvents (EndpointHandle endpointHandle)
         {
-            if (endpointHandle == 4874) return (uint32_t) cmajState.seqPos_eventCount;
+            if (endpointHandle == 4874) return (uint32_t) cmajState.insDump_eventCount;
+            if (endpointHandle == 4875) return (uint32_t) cmajState.insPos_eventCount;
+            if (endpointHandle == 4876) return (uint32_t) cmajState.seqPos_eventCount;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return {};
         }
 
         void resetOutputEventCount (EndpointHandle endpointHandle)
         {
-            if (endpointHandle == 4874) { cmajState.seqPos_eventCount = 0; return; }
+            if (endpointHandle == 4874) { cmajState.insDump_eventCount = 0; return; }
+            if (endpointHandle == 4875) { cmajState.insPos_eventCount = 0; return; }
+            if (endpointHandle == 4876) { cmajState.seqPos_eventCount = 0; return; }
         }
 
         uint32_t getOutputEventType (EndpointHandle endpointHandle, uint32_t index)
         {
-            if (endpointHandle == 4874) return (uint32_t) cmajState.seqPos[(IndexType) index].type;
+            if (endpointHandle == 4874) return (uint32_t) cmajState.insDump[(IndexType) index].type;
+            if (endpointHandle == 4875) return (uint32_t) cmajState.insPos[(IndexType) index].type;
+            if (endpointHandle == 4876) return (uint32_t) cmajState.seqPos[(IndexType) index].type;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return {};
         }
@@ -51398,6 +51437,8 @@ namespace performer
             (void) endpointHandle; (void) typeIndex;
 
             if (endpointHandle == 4874 && typeIndex == 0) return 4;
+            if (endpointHandle == 4875 && typeIndex == 0) return 4;
+            if (endpointHandle == 4876 && typeIndex == 0) return 4;
             throw std::runtime_error ("Unknown event endpointHandle:" + std::to_string (endpointHandle));
             return 0;
         }
@@ -51405,6 +51446,26 @@ namespace performer
         uint32_t readOutputEvent (EndpointHandle endpointHandle, uint32_t index, unsigned char* dest)
         {
             if (endpointHandle == 4874)
+            {
+                auto& event = cmajState.insDump[(IndexType) index];
+                if (event.type == 0)
+                {
+                    memcpy (dest, std::addressof (event.value_0), 4);
+                    dest += 4;
+                    return (uint32_t) event.frame;
+                }
+            }
+            if (endpointHandle == 4875)
+            {
+                auto& event = cmajState.insPos[(IndexType) index];
+                if (event.type == 0)
+                {
+                    memcpy (dest, std::addressof (event.value_0), 4);
+                    dest += 4;
+                    return (uint32_t) event.frame;
+                }
+            }
+            if (endpointHandle == 4876)
             {
                 auto& event = cmajState.seqPos[(IndexType) index];
                 if (event.type == 0)
@@ -167845,12 +167906,14 @@ namespace performer
             _state.ins_pFill = int32_t {2};
             _state.ins_pBarsIdx = int32_t {2};
             _state.ins_dirty = true;
+            _state.ins_dumpIdx = int32_t {0};
+            _state.ins_dumpTimer = int32_t {0};
             _state.ins_lastStep = int32_t {-1};
-            _state.ins_posOut = int32_t {-1};
             _state.ins_pOffsetMs = int32_t {0};
+            _state.ins_cooldown = int32_t {0};
+            _state.ins_redump = int32_t {0};
             _state.ins_runState = int32_t {0};
             _state.ins_lastTick = int32_t {-1000000};
-            _state.ins_cooldown = int32_t {0};
             _state.ins_transportSeen = false;
             _state.ins_transportPlaying = false;
             _state.ins_freePpq = 0.0;
@@ -171485,18 +171548,6 @@ namespace performer
             int32_t  k;
             double  inc;
 
-            if (_state.insOn < 0.5f)
-            {
-                if (_state.ins_runState != int32_t {0})
-                {
-                    _Eisenpuls_Synth__ins_allOff (_state);
-                    _state.ins_runState = int32_t {0};
-                    _state.ins_lastTick = int32_t {-1000000};
-                    _state.ins_lastStep = int32_t {-1};
-                }
-                _Eisenpuls_Synth__ins_flush (_state);
-                return;
-            }
             if (_state.ins_cooldown > int32_t {0})
             {
                 _state.ins_cooldown = intrinsics::subtract (_state.ins_cooldown, int32_t {1});
@@ -171505,6 +171556,34 @@ namespace performer
             {
                 _Eisenpuls_Synth__ins_regenerate (_state);
                 _state.ins_cooldown = int32_t {256};
+            }
+            _state.ins_dumpTimer = intrinsics::add (_state.ins_dumpTimer, int32_t {1});
+            if ((_state.ins_dumpIdx >= int32_t {0}) ? (_state.ins_dumpTimer >= int32_t {16}) : false)
+            {
+                _state.ins_dumpTimer = int32_t {0};
+                _Eisenpuls_Synth__ins_emitDump (_state);
+            }
+            _state.ins_redump = intrinsics::add (_state.ins_redump, int32_t {1});
+            if (_state.ins_redump > static_cast<int32_t> ((1.0 * g__frequency) * 1.5))
+            {
+                _state.ins_redump = int32_t {0};
+                if (_state.ins_dumpIdx < int32_t {0})
+                {
+                    _state.ins_dumpIdx = int32_t {0};
+                }
+            }
+            if (_state.insOn < 0.5f)
+            {
+                if (_state.ins_runState != int32_t {0})
+                {
+                    _Eisenpuls_Synth__ins_allOff (_state);
+                    _state.ins_runState = int32_t {0};
+                    _state.ins_lastTick = int32_t {-1000000};
+                    _state.ins_lastStep = int32_t {-1};
+                    _Eisenpuls_Synth___writeEvent_insPos (_state, int32_t {-1});
+                }
+                _Eisenpuls_Synth__ins_flush (_state);
+                return;
             }
             want = int32_t {0};
             if (_state.ins_transportSeen ? _state.ins_transportPlaying : false)
@@ -171530,7 +171609,7 @@ namespace performer
                 }
                 if (want == int32_t {0})
                 {
-                    _state.ins_posOut = int32_t {-1};
+                    _Eisenpuls_Synth___writeEvent_insPos (_state, int32_t {-1});
                 }
                 _state.ins_runState = want;
             }
@@ -171588,30 +171667,6 @@ namespace performer
             _Eisenpuls_Synth__ins_flush (_state);
         }
 
-        void _Eisenpuls_Synth__ins_flush (_Eisenpuls_Synth_State& _state) noexcept
-        {
-            int32_t  st;
-            int32_t  nn;
-            int32_t  vv;
-
-            if (_state.ins_qCount > int32_t {0})
-            {
-                st = _state.ins_qS[std__intrinsics___wrap_256 (_state.ins_qHead)];
-                nn = _state.ins_qA[std__intrinsics___wrap_256 (_state.ins_qHead)];
-                vv = _state.ins_qB[std__intrinsics___wrap_256 (_state.ins_qHead)];
-                _state.ins_qHead = intrinsics::modulo (intrinsics::add (_state.ins_qHead, int32_t {1}), int32_t {256});
-                _state.ins_qCount = intrinsics::subtract (_state.ins_qCount, int32_t {1});
-                if (st == int32_t {144})
-                {
-                    _Eisenpuls_Synth__voiceNoteOn (_state, nn, static_cast<float> (vv) / 127.0f);
-                }
-                else
-                {
-                    _Eisenpuls_Synth__voiceNoteOff (_state, nn);
-                }
-            }
-        }
-
         void _Eisenpuls_Synth__ins_regenerate (_Eisenpuls_Synth_State& _state) noexcept
         {
             int32_t  m9;
@@ -171661,6 +171716,8 @@ namespace performer
                 }
             }
             _state.ins_dirty = false;
+            _state.ins_dumpIdx = int32_t {0};
+            _state.ins_dumpTimer = int32_t {0};
         }
 
         void _Eisenpuls_Synth__ins_computeMeter (_Eisenpuls_Synth_State& _state) noexcept
@@ -174100,6 +174157,171 @@ namespace performer
             }
         }
 
+        void _Eisenpuls_Synth__ins_emitDump (_Eisenpuls_Synth_State& _state) noexcept
+        {
+            int32_t  total;
+            float  v;
+            int32_t  _temp;
+            int32_t  _temp_0;
+            int32_t  k;
+            int32_t  n;
+
+            total = intrinsics::add (int32_t {24}, intrinsics::multiply (int32_t {2}, _state.ins_nCount));
+            v = 0.0f;
+            if (_state.ins_dumpIdx == int32_t {0})
+            {
+                v = (0.0f - static_cast<float> (intrinsics::add (_state.ins_nCount, int32_t {1})));
+            }
+            else
+            {
+                if (_state.ins_dumpIdx == int32_t {1})
+                {
+                    v = static_cast<float> (_state.ins_pMode);
+                }
+                else
+                {
+                    if (_state.ins_dumpIdx == int32_t {2})
+                    {
+                        v = static_cast<float> (intrinsics::add (intrinsics::add (_state.ins_numBars, intrinsics::multiply (int32_t {64}, _state.ins_stepsBar)), intrinsics::multiply (int32_t {4096}, _state.ins_beatSteps)));
+                    }
+                    else
+                    {
+                        if (_state.ins_dumpIdx < int32_t {11})
+                        {
+                            v = static_cast<float> (_state.ins_cInfo[std__intrinsics___wrap_8 (intrinsics::subtract (_state.ins_dumpIdx, int32_t {3}))]);
+                        }
+                        else
+                        {
+                            if (_state.ins_dumpIdx == int32_t {11})
+                            {
+                                _temp = intrinsics::add (_state.ins_transpose, int32_t {64});
+                                _temp_0 = intrinsics::add (_temp, intrinsics::multiply (int32_t {128}, _Eisenpuls_Synth__ins_pushMask (_state)));
+                                v = static_cast<float> (intrinsics::add (_temp_0, intrinsics::multiply (int32_t {32768}, _state.ins_pRate)));
+                            }
+                            else
+                            {
+                                if (_state.ins_dumpIdx < int32_t {24})
+                                {
+                                    v = static_cast<float> (_state.ins_dFill[std__intrinsics___wrap_12 (intrinsics::subtract (_state.ins_dumpIdx, int32_t {12}))]);
+                                }
+                                else
+                                {
+                                    k = intrinsics::subtract (_state.ins_dumpIdx, int32_t {24});
+                                    n = k / int32_t {2};
+                                    if (intrinsics::modulo (k, int32_t {2}) == int32_t {0})
+                                    {
+                                        v = static_cast<float> (intrinsics::add (intrinsics::multiply (_state.ins_nGrid[std__intrinsics___wrap_512 (n)], int32_t {128}), _state.ins_nPitch[std__intrinsics___wrap_512 (n)]));
+                                    }
+                                    else
+                                    {
+                                        v = static_cast<float> (intrinsics::add (intrinsics::multiply (intrinsics::add (intrinsics::multiply (intrinsics::add (_state.ins_nOff[std__intrinsics___wrap_512 (n)], int32_t {64}), int32_t {1024}), _state.ins_nLen[std__intrinsics___wrap_512 (n)]), int32_t {128}), _state.ins_nVel[std__intrinsics___wrap_512 (n)]));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            _Eisenpuls_Synth___writeEvent_insDump (_state, v);
+            _state.ins_dumpIdx = intrinsics::add (_state.ins_dumpIdx, int32_t {1});
+            if (_state.ins_dumpIdx >= total)
+            {
+                _state.ins_dumpIdx = int32_t {-1};
+            }
+        }
+
+        int32_t _Eisenpuls_Synth__ins_pushMask (_Eisenpuls_Synth_State& _state) noexcept
+        {
+            int32_t  pm;
+            int32_t  b;
+
+            pm = int32_t {0};
+            {
+                b = int32_t {0};
+                for (;;)
+                {
+                    if  (! (b < int32_t {8}))
+                    {
+                        break;
+                    }
+                    if (_state.ins_pushed[std__intrinsics___wrap_8 (b)] != int32_t {0})
+                    {
+                        pm = (pm | intrinsics::leftShift (int32_t {1}, b));
+                    }
+                    {
+                        intrinsics::addTo (b, 1);
+                    }
+                }
+            }
+            return pm;
+        }
+
+        void _Eisenpuls_Synth___writeEvent_insDump (_Eisenpuls_Synth_State& _state, float value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_insDump (state_upcast_struct_Eisenpuls_Synth_St_LSrTwb(_state), value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_insDump (Eisenpuls_Synth_State& _state, const float& value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_insDump_0 (_state, value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_insDump_0 (Eisenpuls_Synth_State& _state, float value) noexcept
+        {
+            if (_state.insDump_eventCount < int32_t {32})
+            {
+                _state.insDump[_state.insDump_eventCount].frame = _state._currentFrame;
+                _state.insDump[_state.insDump_eventCount].type = int32_t {0};
+                _state.insDump[_state.insDump_eventCount].value_0 = value;
+            }
+            intrinsics::addTo (_state.insDump_eventCount, 1);
+        }
+
+        void _Eisenpuls_Synth___writeEvent_insPos (_Eisenpuls_Synth_State& _state, int32_t value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_insPos (state_upcast_struct_Eisenpuls_Synth_St_LSrTwb(_state), value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_insPos (Eisenpuls_Synth_State& _state, const int32_t& value) noexcept
+        {
+            Eisenpuls_Synth___writeEvent_insPos_0 (_state, value);
+        }
+
+        void Eisenpuls_Synth___writeEvent_insPos_0 (Eisenpuls_Synth_State& _state, int32_t value) noexcept
+        {
+            if (_state.insPos_eventCount < int32_t {32})
+            {
+                _state.insPos[_state.insPos_eventCount].frame = _state._currentFrame;
+                _state.insPos[_state.insPos_eventCount].type = int32_t {0};
+                _state.insPos[_state.insPos_eventCount].value_0 = value;
+            }
+            intrinsics::addTo (_state.insPos_eventCount, 1);
+        }
+
+        void _Eisenpuls_Synth__ins_flush (_Eisenpuls_Synth_State& _state) noexcept
+        {
+            int32_t  st;
+            int32_t  nn;
+            int32_t  vv;
+
+            if (_state.ins_qCount > int32_t {0})
+            {
+                st = _state.ins_qS[std__intrinsics___wrap_256 (_state.ins_qHead)];
+                nn = _state.ins_qA[std__intrinsics___wrap_256 (_state.ins_qHead)];
+                vv = _state.ins_qB[std__intrinsics___wrap_256 (_state.ins_qHead)];
+                _state.ins_qHead = intrinsics::modulo (intrinsics::add (_state.ins_qHead, int32_t {1}), int32_t {256});
+                _state.ins_qCount = intrinsics::subtract (_state.ins_qCount, int32_t {1});
+                if (st == int32_t {144})
+                {
+                    _Eisenpuls_Synth__voiceNoteOn (_state, nn, static_cast<float> (vv) / 127.0f);
+                }
+                else
+                {
+                    _Eisenpuls_Synth__voiceNoteOff (_state, nn);
+                }
+            }
+        }
+
         void _Eisenpuls_Synth__ins_processTick (_Eisenpuls_Synth_State& _state, int32_t t, bool emit) noexcept
         {
             int32_t  i;
@@ -174159,7 +174381,7 @@ namespace performer
             if (st != _state.ins_lastStep)
             {
                 _state.ins_lastStep = st;
-                _state.ins_posOut = st;
+                _Eisenpuls_Synth___writeEvent_insPos (_state, st);
             }
         }
 

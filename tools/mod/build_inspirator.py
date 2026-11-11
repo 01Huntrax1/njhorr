@@ -33,14 +33,10 @@ assert len(decl) == 128
 # --- body: state + functions (lines 144-1776), handlers, then own transport / midi / main logic
 body = '\n'.join(ins[143:1776])
 # drop the UI dump function (patOut) and the position output
-i = body.index('    void emitDump()'); j = body.index('    void setMp (int i, float v')
-body = body[:i] + body[j:]
-body = body.replace('posOut <- float (st);', 'ins_posOut = st;').replace('posOut <- -1.0f;', 'ins_posOut = -1;')
-body = re.sub(r'\n\s*int dumpIdx = 0;|\n\s*int dumpTimer = 0;|\n\s*int redump = 0;|\n\s*int redumpPeriod = 66000;', '', body)
-body = re.sub(r'\n\s*dumpIdx = 0;|\n\s*dumpTimer = 0;', '', body)
+body = body.replace('posOut <- float (st);', 'insPos <- st;').replace('patOut <- v;', 'insDump <- v;')
 handlers = '\n'.join(ins[1777:1926])
 handlers = re.sub(r'event param(\d+)\b', lambda m: 'event param%d' % (BASE + int(m.group(1))), handlers)
-handlers = re.sub(r'\s*dumpIdx = 0;', '', handlers)
+pass
 # identifiers declared at the top level of the body
 names = set()
 for ln in body.split('\n'):
@@ -55,8 +51,6 @@ body = pre(body); handlers = pre(handlers)
 # the original's midiIn / transportIn / main replaced by the synth side below
 core = '''
     // ---- INSPIRATOR-DSP: glue to the synth ----
-    int   ins_posOut = -1;
-
     void ins_position (float64 ppq, float64 barStart)
     {
         ins_hostPpq = ppq;
@@ -117,6 +111,27 @@ core = '''
     // called once per sample from main(): the original loop body without the UI dump
     void ins_frame()
     {
+        if (ins_cooldown > 0) ins_cooldown -= 1;
+        if (ins_dirty && ins_cooldown == 0)
+        {
+            ins_regenerate();
+            ins_cooldown = 256;
+        }
+
+        ins_dumpTimer += 1;
+        if (ins_dumpIdx >= 0 && ins_dumpTimer >= 16)
+        {
+            ins_dumpTimer = 0;
+            ins_emitDump();
+        }
+
+        ins_redump += 1;
+        if (ins_redump > int (processor.frequency * 1.5))
+        {
+            ins_redump = 0;
+            if (ins_dumpIdx < 0) ins_dumpIdx = 0;
+        }
+
         if (insOn < 0.5f)
         {
             if (ins_runState != 0)
@@ -125,16 +140,10 @@ core = '''
                 ins_runState = 0;
                 ins_lastTick = -1000000;
                 ins_lastStep = -1;
+                insPos <- -1;
             }
             ins_flush();
             return;
-        }
-
-        if (ins_cooldown > 0) ins_cooldown -= 1;
-        if (ins_dirty && ins_cooldown == 0)
-        {
-            ins_regenerate();
-            ins_cooldown = 256;
         }
 
         int want = 0;
@@ -151,7 +160,7 @@ core = '''
                 ins_freePpq = 0.0;
                 ins_originOff = 0;
             }
-            if (want == 0) ins_posOut = -1;
+            if (want == 0) insPos <- -1;
             ins_runState = want;
         }
 
@@ -212,7 +221,7 @@ core = '''
 '''
 # --- insert into the synth
 rep('    input event std::timeline::Position positionIn;   // FX-SYNC\n',
-    '    input event std::timeline::Position positionIn;   // FX-SYNC\n    input event std::timeline::TimeSignature timeSigIn;   // INSPIRATOR-DSP\n    input event std::timeline::TransportState transportStateIn;\n    input event float param7000 [[ name: "Inspirator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];\n' + '\n'.join(decl) + '\n')
+    '    input event std::timeline::Position positionIn;   // FX-SYNC\n    input event std::timeline::TimeSignature timeSigIn;   // INSPIRATOR-DSP\n    input event std::timeline::TransportState transportStateIn;\n    output event float insDump;\n    output event int insPos;\n    input event float param7000 [[ name: "Inspirator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];\n' + '\n'.join(decl) + '\n')
 rep('    event positionIn (std::timeline::Position p) { fxBeat = p.quarterNote; }\n',
     '    event positionIn (std::timeline::Position p) { fxBeat = p.quarterNote; ins_position (p.quarterNote, p.barStartQuarterNote); }\n')
 rep('    float64       fxBeat = 0.0;', '    float         insOn = 0.0f;\n    float64       fxBeat = 0.0;')

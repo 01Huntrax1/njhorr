@@ -9,6 +9,8 @@ processor Eisenpuls_Synth
     input event std::timeline::Position positionIn;   // FX-SYNC
     input event std::timeline::TimeSignature timeSigIn;   // INSPIRATOR-DSP
     input event std::timeline::TransportState transportStateIn;
+    output event float insDump;
+    output event int insPos;
     input event float param7000 [[ name: "Inspirator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7001 [[ name: "Insp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0, text: "Chords|Lead|Bass|Arp|Drums", automatable: false ]];
     input event float param7002 [[ name: "Insp Style", min: 0.0, max: 8.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul", automatable: false ]];
@@ -21204,6 +21206,10 @@ processor Eisenpuls_Synth
     bool ins_transportSeen = false;
 
     // ---- UI dump -------------------------------------------------------------
+    int ins_dumpIdx = 0;
+    int ins_dumpTimer = 0;
+    int ins_redump = 0;
+    int ins_redumpPeriod = 66000;
 
     // ========================================================================
     int ins_clampi (int v, int lo, int hi)
@@ -22559,6 +22565,8 @@ processor Eisenpuls_Synth
         else                 ins_genDrums();
 
         ins_dirty = false;
+        ins_dumpIdx = 0;
+        ins_dumpTimer = 0;
     }
 
     // ---- MIDI output queue (one message per frame) --------------------------------
@@ -22639,7 +22647,7 @@ processor Eisenpuls_Synth
         if (st != ins_lastStep)
         {
             ins_lastStep = st;
-            ins_posOut = st;
+            insPos <- st;
         }
     }
 
@@ -22649,6 +22657,28 @@ processor Eisenpuls_Synth
         int i = int (x);
         if (float64 (i) > x) i -= 1;
         return i;
+    }
+
+    void ins_emitDump()
+    {
+        int total = 24 + 2 * ins_nCount;
+        float v = 0.0f;
+        if (ins_dumpIdx == 0)       v = 0.0f - float (ins_nCount + 1);
+        else if (ins_dumpIdx == 1)  v = float (ins_pMode);
+        else if (ins_dumpIdx == 2)  v = float (ins_numBars + 64 * ins_stepsBar + 4096 * ins_beatSteps);
+        else if (ins_dumpIdx < 11)  v = float (ins_cInfo.at (ins_dumpIdx - 3));
+        else if (ins_dumpIdx == 11) v = float (ins_transpose + 64 + 128 * ins_pushMask() + 32768 * ins_pRate);
+        else if (ins_dumpIdx < 24)  v = float (ins_dFill.at (ins_dumpIdx - 12));
+        else
+        {
+            int k = ins_dumpIdx - 24;
+            int n = k / 2;
+            if ((k % 2) == 0) v = float (ins_nGrid.at (n) * 128 + ins_nPitch.at (n));
+            else              v = float (((ins_nOff.at (n) + 64) * 1024 + ins_nLen.at (n)) * 128 + ins_nVel.at (n));
+        }
+        insDump <- v;
+        ins_dumpIdx += 1;
+        if (ins_dumpIdx >= total) ins_dumpIdx = -1;
     }
 
     void ins_setMp (int i, float v, int lo, int hi)
@@ -22852,8 +22882,6 @@ processor Eisenpuls_Synth
     event param7128 (float v) { ins_pFill = ins_clampi (ins_roundi (v), 0, 3); ins_dirty = true; }
 
     // ---- INSPIRATOR-DSP: glue to the synth ----
-    int   ins_posOut = -1;
-
     void ins_position (float64 ppq, float64 barStart)
     {
         ins_hostPpq = ppq;
@@ -22914,6 +22942,27 @@ processor Eisenpuls_Synth
     // called once per sample from main(): the original loop body without the UI dump
     void ins_frame()
     {
+        if (ins_cooldown > 0) ins_cooldown -= 1;
+        if (ins_dirty && ins_cooldown == 0)
+        {
+            ins_regenerate();
+            ins_cooldown = 256;
+        }
+
+        ins_dumpTimer += 1;
+        if (ins_dumpIdx >= 0 && ins_dumpTimer >= 16)
+        {
+            ins_dumpTimer = 0;
+            ins_emitDump();
+        }
+
+        ins_redump += 1;
+        if (ins_redump > int (processor.frequency * 1.5))
+        {
+            ins_redump = 0;
+            if (ins_dumpIdx < 0) ins_dumpIdx = 0;
+        }
+
         if (insOn < 0.5f)
         {
             if (ins_runState != 0)
@@ -22922,16 +22971,10 @@ processor Eisenpuls_Synth
                 ins_runState = 0;
                 ins_lastTick = -1000000;
                 ins_lastStep = -1;
+                insPos <- -1;
             }
             ins_flush();
             return;
-        }
-
-        if (ins_cooldown > 0) ins_cooldown -= 1;
-        if (ins_dirty && ins_cooldown == 0)
-        {
-            ins_regenerate();
-            ins_cooldown = 256;
         }
 
         int want = 0;
@@ -22948,7 +22991,7 @@ processor Eisenpuls_Synth
                 ins_freePpq = 0.0;
                 ins_originOff = 0;
             }
-            if (want == 0) ins_posOut = -1;
+            if (want == 0) insPos <- -1;
             ins_runState = want;
         }
 

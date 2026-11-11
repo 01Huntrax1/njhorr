@@ -739,6 +739,23 @@ protected:
         }
        #endif
 
+       #if NJOHRR_NATIVE_UI
+        if (endpointID == "insDump" || endpointID == "insPos")   // Inspirator: the generated pattern (a float stream) and the playhead step
+        {
+            if (njoBridge)
+            {
+                float f = 0.0f;
+                if (value.isFloat32())        f = value.getFloat32();
+                else if (value.isFloat64())   f = (float) value.getFloat64();
+                else if (value.isInt32())     f = (float) value.getInt32();
+                else if (value.isInt64())     f = (float) value.getInt64();
+                if (endpointID == "insDump")  njoBridge->backend.insPush (f);
+                else                          njoBridge->backend.insPlayStep = (int) f;
+            }
+            return;
+        }
+       #endif
+
         if (endpointID == cmaj::getConsoleEndpointID())
         {
             auto text = cmaj::convertConsoleMessageToString (value);
