@@ -56,5 +56,35 @@ ch1 = render(BASE + mode(0), [60], tag="cd0"); ch2 = render(BASE + mode(0, (44, 
 check("Chords Complexity changes the pattern", rm(ch2 - ch1) > 0.05 * rm(ch1))
 d0 = render(BASE + mode(4, (81, 10)), [60], tag="dd0"); d1 = render(BASE + mode(4, (81, 100)), [60], tag="dd1")
 check("Drums Density changes the pattern", rm(d1 - d0) > 0.05 * rm(d0 + 1e-6))
+# ---- post-stage (7129-7138) ----
+def differs(name, base_cmds, alt, key=60, thr=0.03):
+    x = render(BASE + base_cmds, [key], tag="pa"); y = render(BASE + alt, [key], tag="pb")
+    check(name, np.isfinite(y).all() and np.abs(y).max() < 6.0 and rm(y - x) > thr * rm(x) and rm(y[int(0.5 * RATE):int(3.8 * RATE)]) > 0.005, "d %.3f" % (rm(y - x) / max(rm(x), 1e-6)))
+differs("Inversion changes the chords", mode(0), mode(0, (130, 2)))
+differs("Spread changes the chords", mode(0), mode(0, (131, 2)))
+differs("Strum changes the chords", mode(0), mode(0, (132, 100)))
+for f, nm in [(1, "Up"), (2, "Down"), (3, "Up-Down"), (4, "Alberti")]:
+    differs("Figure %s changes the chords" % nm, mode(0), mode(0, (133, f)))
+differs("Ghost notes change the drums", mode(4), mode(4, (134, 100)))
+differs("Ghost notes change the bass", mode(2), mode(2, (134, 100)))
+differs("Chord pull changes the lead", mode(1), mode(1, (135, 100)))
+differs("Max leap changes the lead", mode(1), mode(1, (136, 2)))
+differs("Melody degree changes the lead", mode(1), mode(1, (138, 5)))
+differs("Mutate changes the lead", mode(1), mode(1, (137, 80)))
+differs("Mutate changes the drums", mode(4), mode(4, (137, 80)))
+# locks: lock all bars while running, then change the Part Seed: the pattern must stay the same
+def render_live(cmds, lock, seed, tag):
+    script = os.path.join(TMP, tag + ".txt"); out = os.path.join(TMP, tag + ".f32")
+    with open(script, "w") as f:
+        for c in BASE + cmds: f.write((c if isinstance(c, str) else "p %d %s" % c) + "\n")
+        f.write("run 0.05\non 60 100\nrun 0.5\n")
+        if lock: f.write("p %d 255\n" % (I + 129))
+        f.write("run 0.1\np %d %d\nrun 3.4\noff 60\nrun 0.3\n" % (I + 6, seed))
+    subprocess.run([args.host, script, out], check=True)
+    return np.fromfile(out, dtype=np.float32).reshape(-1, 2)[:, 0]
+seg = slice(int(1.2 * RATE), int(3.5 * RATE))
+ref = render_live(mode(1), False, 1, "lkr"); unl = render_live(mode(1), False, 77, "lku"); lck = render_live(mode(1), True, 77, "lkl")
+check("Seed change without lock changes the pattern", rm(unl[seg] - ref[seg]) > 0.1 * rm(ref[seg]))
+check("Locked bars survive a seed change", rm(lck[seg] - ref[seg]) < 0.02 * rm(ref[seg]) + 1e-4, "%.4f" % (rm(lck[seg] - ref[seg]) / max(rm(ref[seg]), 1e-6)))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
