@@ -3,6 +3,7 @@
 #pragma once
 #include "ModUi.h"
 #include <map>
+#include <juce_audio_basics/juce_audio_basics.h>
 
 namespace njo
 {
@@ -54,6 +55,51 @@ namespace njo
             if (dim) roman << juce::String (juce::CharPointer_UTF8 ("\xc2\xb0"));
             if (lvl >= 1 && shape != 4 && shape != 5) roman << (lvl >= 2 ? "9" : "7");
         }
+
+        // the generated pattern as a standard MIDI file (96 ticks per quarter note, one loop long) in the temp folder; empty when there is no pattern yet
+        inline juce::File exportMidi (const Backend::InsPattern& p, const juce::String& title)
+        {
+            if (p.count <= 0) return {};
+            const int loop = juce::jmax (1, p.numBars * p.stepsBar * 24);
+            juce::MidiMessageSequence seq;
+            seq.addEvent (juce::MidiMessage::textMetaEvent (3, title), 0.0);
+            seq.addEvent (juce::MidiMessage::tempoMetaEvent (500000), 0.0);
+            seq.addEvent (juce::MidiMessage::timeSignatureMetaEvent (juce::jmax (1, p.stepsBar / 4), 4), 0.0);
+            const int ch = p.mode == 4 ? 10 : 1;
+            for (int n = 0; n < p.count; ++n)
+            {
+                const int t0 = juce::jlimit (0, loop - 1, p.grid[(size_t) n] + p.off[(size_t) n]);
+                const int t1 = juce::jmax (t0 + 1, juce::jmin (loop, t0 + p.len[(size_t) n]));
+                seq.addEvent (juce::MidiMessage::noteOn (ch, p.pitch[(size_t) n], (juce::uint8) juce::jlimit (1, 127, p.vel[(size_t) n])), (double) t0);
+                seq.addEvent (juce::MidiMessage::noteOff (ch, p.pitch[(size_t) n]), (double) t1);
+            }
+            seq.addEvent (juce::MidiMessage::endOfTrack(), (double) loop);
+            seq.updateMatchedPairs();
+            juce::MidiFile mf; mf.setTicksPerQuarterNote (96); mf.addTrack (seq);
+            auto dir = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("Njohrr");
+            dir.createDirectory();
+            auto f = dir.getChildFile (juce::File::createLegalFileName (title) + ".mid");
+            f.deleteFile();
+            if (auto os = f.createOutputStream()) { mf.writeTo (*os); return f; }
+            return {};
+        }
+
+        // dragging from here (or from the piano roll) hands the MIDI file to the host: drop it on a piano roll or the playlist
+        struct MidiDrag : juce::Component
+        {
+            std::function<void()> start; bool hover = false;
+            void paint (juce::Graphics& g) override
+            {
+                auto r = getLocalBounds().toFloat().reduced (1.0f);
+                paintButton (g, r, false, hover, false, 3.0f);
+                g.setColour (ink); g.setFont (font (9.0f, true));
+                g.drawText (juce::String (juce::CharPointer_UTF8 ("\xe2\xa0\xbf  DRAG MIDI")), r.toNearestInt(), juce::Justification::centred);
+            }
+            void mouseEnter (const juce::MouseEvent&) override { hover = true; repaint(); }
+            void mouseExit (const juce::MouseEvent&) override { hover = false; repaint(); }
+            void mouseDrag (const juce::MouseEvent& e) override { if (e.getDistanceFromDragStart() > 6 && start) start(); }
+            void setHelp() { setMouseCursor (juce::MouseCursor::DraggingHandCursor); }
+        };
 
         struct SelGrid : juce::Component, Ctx::Listener
         {
@@ -204,7 +250,9 @@ namespace njo
 
         struct Roll : juce::Component
         {
-            Ctx& ctx; explicit Roll (Ctx& c) : ctx (c) { setInterceptsMouseClicks (false, false); }
+            Ctx& ctx; std::function<void()> start;
+            explicit Roll (Ctx& c) : ctx (c) { setMouseCursor (juce::MouseCursor::DraggingHandCursor); }
+            void mouseDrag (const juce::MouseEvent& e) override { if (e.getDistanceFromDragStart() > 6 && start) start(); }
             void paint (juce::Graphics& g) override
             {
                 auto r = getLocalBounds().toFloat();
@@ -245,7 +293,7 @@ namespace njo
                 else
                 {
                     g.setColour (dim); g.setFont (font (8.5f));
-                    g.drawText ("Press play in your DAW - or hold a note to audition", getLocalBounds().removeFromBottom (14).withTrimmedRight (8), juce::Justification::centredRight);
+                    g.drawText ("Press play in your DAW - or hold a note to audition. Drag the pattern into a piano roll", getLocalBounds().removeFromBottom (14).withTrimmedRight (8), juce::Justification::centredRight);
                 }
             }
         };
@@ -256,7 +304,7 @@ namespace njo
         Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
         insp::SelGrid modeG, styleG, keyG, scaleG, barsG, rateG, inG, onG;
         insp::SeedBox song, part, vari;
-        insp::Action lockB, genB, copyB, pasteB;
+        insp::Action lockB, genB, copyB, pasteB; insp::MidiDrag dragB; bool dragging = false;
         insp::ChordCards cards; insp::Roll roll; juce::TextEditor code;
         unsigned lastVer = 0; int lastStep = -2;
 
@@ -279,7 +327,7 @@ namespace njo
             modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f;
             for (auto* x : { (juce::Component*) &modeG, (juce::Component*) &styleG, (juce::Component*) &keyG, (juce::Component*) &scaleG, (juce::Component*) &barsG, (juce::Component*) &rateG,
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
-                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
+                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
             lockB.click = [this]
             {
@@ -287,6 +335,17 @@ namespace njo
                 const int nv = (cur % 2) != 0 ? 0 : 1 + 2 * juce::roundToInt (ctx.get (7002));
                 ctx.begin (7011); ctx.set (7011, (float) nv); ctx.end (7011);
             };
+            dragB.setHelp();
+            auto startDrag = [this]
+            {
+                if (dragging) return;
+                static const char* md[5] = { "Chords", "Lead", "Bass", "Arp", "Drums" };
+                auto f = insp::exportMidi (ctx.be.ins, juce::String ("Inspirator ") + md[mode()] + " " + makeCode());
+                if (! f.existsAsFile()) return;
+                dragging = true;
+                juce::DragAndDropContainer::performExternalDragDropOfFiles ({ f.getFullPathName() }, false, this, [this] { dragging = false; });
+            };
+            dragB.start = startDrag; roll.start = startDrag;
             genB.text = "GENERATE"; genB.sub = "NEW IDEA"; genB.accent = true;
             genB.click = [this] { const int v = juce::Random::getSystemRandom().nextInt (10000); ctx.begin (7006); ctx.set (7006, (float) v); ctx.end (7006); };
             copyB.text = "Copy"; pasteB.text = "Paste";
@@ -389,7 +448,8 @@ namespace njo
             auto b = getLocalBounds().reduced (10, 4);
             labels.clear();
             auto head = b.removeFromTop (20);
-            onG.setBounds (head.removeFromRight (120).withTrimmedTop (0));
+            onG.setBounds (head.removeFromRight (120).withTrimmedTop (0)); head.removeFromRight (8);
+            dragB.setBounds (head.removeFromRight (110).reduced (0, 1));
             b.removeFromTop (2);
             auto top = b.removeFromTop (60);
             modeG.setBounds (top.removeFromLeft (400)); top.removeFromLeft (6);

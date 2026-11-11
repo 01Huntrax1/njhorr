@@ -1,4 +1,5 @@
 // Headless screenshot harness: njo_shot <outDir> [scale]  renders every page of the editor to PNG (software renderer, no display needed).
+#include "../pages/InspPanel.h"
 #include "../NjoEq.h"
 #include "../NjoTer.h"
 #include "../NjoWg.h"
@@ -209,6 +210,11 @@ int main (int argc, char** argv)
         for (auto& n : ns) { d.push_back ((float) (n.grid * 128 + n.pitch)); d.push_back ((float) (((0 + 64) * 1024 + n.len) * 128 + n.vel)); }
         for (float f : d) be.insPush (f);
         be.insPlayStep = 21;
+        auto mf = njo::insp::exportMidi (be.ins, "Inspirator shot test");
+        juce::MidiFile back; int nOn = 0; double endT = 0;
+        if (auto in = mf.createInputStream()) { back.readFrom (*in); }
+        if (back.getNumTracks() > 0) { auto* t = back.getTrack (0); for (int i = 0; i < t->getNumEvents(); ++i) { if (t->getEventPointer (i)->message.isNoteOn()) ++nOn; endT = juce::jmax (endT, t->getEventTime (i)); } }
+        std::printf ("midi export: %s, %d notes (expected %d), ticks/q %d, length %.0f\n", mf.getFullPathName().toRawUTF8(), nOn, be.ins.count, back.getTimeFormat(), endT);
     }
     ed.seqArpPage().showInspirator (true); be.setParam (7000, 1.0f); be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_chords.png"), scale);
     be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_drums.png"), scale);
