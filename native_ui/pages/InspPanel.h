@@ -1,5 +1,5 @@
 // INSPIRATOR page of the SEQ / ARP group: mode tabs, seeds, style / key / scale buttons, chord cards, a piano roll of the generated
-// pattern (streamed by the DSP, see Backend::insPush), the knob row and the MIDI In switch.  Parameters 7000-7140 (7129-7140: locks, voicing, generators, import).
+// pattern (streamed by the DSP, see Backend::insPush), the knob row and the MIDI In switch.  Parameters 7000-7144 (7129-7140: locks, voicing, generators, import).
 #pragma once
 #include "ModUi.h"
 #include <map>
@@ -450,7 +450,7 @@ namespace njo
             : ctx (c),
               modeG (c, 7001, 5, names ({ "CHORDS", "LEAD", "BASS", "ARP", "DRUMS" })),
               styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub", "Disco", "Bossa Nova", "Synthwave", "Dubstep", "Trance", "Drill", "UK Garage", "Salsa", "Metal", "Country", "Blues", "Ambient", "Ska", "Amapiano", "Breakbeat", "Gospel", "Hardstyle", "Moombahton" })),
-              genG (c, 7139, 3, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import" })),
+              genG (c, 7139, 4, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute" })),
               lockBars (c),
               keyG (c, 7003, 6, names ({ "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" })),
               scaleG (c, 7004, 4, names ({ "Major", "Minor", "Dorian", "Mixoly.", "Phrygi.", "Lydian", "Harm." })),
@@ -505,7 +505,7 @@ namespace njo
             code.onReturnKey = [this] { applyCode (code.getText()); };
             static const int ids[] = { 7009, 7114, 7089 };
             for (int id : ids) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
-            for (int id : { 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7140 }) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
+            for (int id : { 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7140, 7141, 7142, 7143, 7144 }) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             for (int id = 7044; id <= 7087; ++id) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             static const char* lanes[12] = { "Kick", "Snare", "Clap", "Hat", "Open", "Rim", "Tom", "Ride", "Pedal", "Low", "High", "Crash" };
             for (int l = 0; l < 12; ++l)
@@ -580,9 +580,10 @@ namespace njo
             else for (int id : { 7080, 7081, 7082, 7086, 7087 }) ids.push_back (id);
             extraIds.clear();
             extraIds.push_back (7140);
-            if (m == 0) for (int id : { 7130, 7131, 7132, 7133 }) extraIds.push_back (id);
+            if (m == 0) for (int id : { 7141, 7130, 7131, 7132, 7133 }) extraIds.push_back (id);
             if (m == 1) for (int id : { 7135, 7136, 7138 }) extraIds.push_back (id);
             if (m == 2 || m == 4) extraIds.push_back (7134);
+            if (m == 4) for (int id : { 7142, 7143, 7144 }) extraIds.push_back (id);
             extraIds.push_back (7137);
             if (extras) ids = extraIds;
             knobIds = ids;

@@ -223,6 +223,7 @@ int main (int argc, char** argv)
     be.setParam (7001, 1.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_lead.png"), scale);
     be.setParam (7129, 5.0f); be.setParam (7002, 12.0f); ed.seqArpPage().inspExtras (true); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_lead.png"), scale);
     be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_chords.png"), scale);
+    be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_drums.png"), scale);
     ed.seqArpPage().inspExtras (false); be.setParam (7129, 0.0f); be.setParam (7002, 0.0f);
     ed.seqArpPage().showInspirator (false);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();

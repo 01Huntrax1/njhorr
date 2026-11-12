@@ -110,5 +110,15 @@ for st, nm in [(9, "Reggaeton"), (10, "Drum & Bass"), (11, "Afrobeats"), (12, "F
         check("%s / %s sounds, finite" % (nm, mn), np.isfinite(a).all() and rm(a[int(0.5 * RATE):int(2.8 * RATE)]) > 0.005 and np.abs(a).max() < 6.0)
     x = render(BASE + mode(4, (2, st)), [60], tag="nsa"); y = render(BASE + mode(4, (2, 0)), [60], tag="nsb")
     check("%s drums differ from Pop" % nm, rm(x - y) > 0.1 * rm(y))
+# ---- chord bass, drum chance, ratchet, poly, Walk / Permute (7139 = 6 / 7, 7141-7144) ----
+differs("Chord bass adds a root note", mode(0), mode(0, (141, 1)))
+differs("Chord bass with octave differs", mode(0, (141, 1)), mode(0, (141, 2)))
+differs("Drum chance thins the drums", mode(4), mode(4, (142, 40)))
+differs("Ratchet changes the drums", mode(4), mode(4, (143, 100)))
+differs("Poly A changes the Euclid drums", mode(4, (139, 1)), mode(4, (139, 1), (144, 1)))
+differs("Poly C changes the Euclid drums", mode(4, (139, 1)), mode(4, (139, 1), (144, 3)))
+for g, nm in [(6, "Walk"), (7, "Permute")]:
+    for m, mn in [(1, "Lead"), (2, "Bass"), (3, "Arp")]:
+        differs("%s generator changes %s" % (nm, mn), mode(m), mode(m, (139, g)))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
