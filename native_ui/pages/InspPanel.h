@@ -471,7 +471,7 @@ namespace njo
     {
         Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
         insp::StylePick styleG;
-        insp::DropPick genG;
+        insp::DropPick genG, varG;
         insp::SelGrid modeG, keyG, scaleG, barsG, rateG, inG, onG;
         insp::LockBars lockBars; insp::Action extraB, importB, randB, autoB; juce::String importInfo; bool extras = false, fileHover = false;
         std::vector<int> extraIds;
@@ -487,6 +487,7 @@ namespace njo
               modeG (c, 7001, 5, names ({ "CHORDS", "LEAD", "BASS", "ARP", "DRUMS" })),
               styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub", "Disco", "Bossa Nova", "Synthwave", "Dubstep", "Trance", "Drill", "UK Garage", "Salsa", "Metal", "Country", "Blues", "Ambient", "Ska", "Amapiano", "Breakbeat", "Gospel", "Hardstyle", "Moombahton" })),
               genG (c, 7139, 4, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute", "Trance", "Genre" })),
+              varG (c, 7140, 4, [] { std::vector<juce::String> v; for (int i = 1; i <= 16; ++i) v.push_back ("Variant " + juce::String (i)); return v; }()),
               lockBars (c),
               keyG (c, 7003, 6, names ({ "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" })),
               scaleG (c, 7004, 4, names ({ "Major", "Minor", "Dorian", "Mixoly.", "Phrygi.", "Lydian", "Harm." })),
@@ -498,10 +499,10 @@ namespace njo
               cards (c), roll (c)
         {
             ctx.addListener (this);
-            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 11.0f; 
+            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 11.0f; varG.fs = 11.0f; 
             for (auto* x : { (juce::Component*) &modeG, (juce::Component*) &styleG, (juce::Component*) &keyG, (juce::Component*) &scaleG, (juce::Component*) &barsG, (juce::Component*) &rateG,
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
-                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
+                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &varG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
             lockB.click = [this]
             {
@@ -550,7 +551,7 @@ namespace njo
             code.onReturnKey = [this] { applyCode (code.getText()); };
             static const int ids[] = { 7009, 7114, 7089 };
             for (int id : ids) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
-            for (int id : { 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7140, 7141, 7142, 7143, 7144 }) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
+            for (int id : { 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7141, 7142, 7143, 7144 }) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             for (int id = 7044; id <= 7087; ++id) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             static const char* lanes[12] = { "Kick", "Snare", "Clap", "Hat", "Open", "Rim", "Tom", "Ride", "Pedal", "Low", "High", "Crash" };
             for (int l = 0; l < 12; ++l)
@@ -654,7 +655,6 @@ namespace njo
             if (m < 4) { for (int k : { 0, 1, 2, 3, 4, 5, 8, 6, 7 }) ids.push_back (7044 + 9 * m + k); }
             else for (int id : { 7080, 7081, 7082, 7086, 7087 }) ids.push_back (id);
             extraIds.clear();
-            extraIds.push_back (7140);
             if (m == 0) for (int id : { 7141, 7130, 7131, 7132, 7133 }) extraIds.push_back (id);
             if (m == 1) for (int id : { 7135, 7136, 7138 }) extraIds.push_back (id);
             if (m == 2 || m == 4) extraIds.push_back (7134);
@@ -663,7 +663,7 @@ namespace njo
             if (extras) ids = extraIds;
             knobIds = ids;
             for (int id : ids) byId[id]->setVisible (true);
-            genG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
+            genG.setVisible (extras); varG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
             cards.setVisible (m != 4);
             if (m == 4) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
             if (m < 4)
@@ -738,7 +738,7 @@ namespace njo
             genB.setBounds (top.reduced (0, 2));
             b.removeFromTop (6);
             auto bottom = b.removeFromBottom (112);
-            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (30)); gl.removeFromTop (6); importB.setBounds (gl.removeFromTop (46).reduced (0, 2)); }
+            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); varG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); importB.setBounds (gl.removeFromTop (40).reduced (0, 2)); }
             b.removeFromBottom (6);
             // left column
             auto left = b.removeFromLeft (258); b.removeFromLeft (8);
