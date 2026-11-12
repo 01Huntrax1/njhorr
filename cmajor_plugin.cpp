@@ -51366,8 +51366,8 @@ namespace performer
             int32_t ins_barTicks = {};
             int32_t ins_originOff = {};
             Array<int32_t, 49> ins_scaleTab;
-            Array<int32_t, 48> ins_progMaj;
-            Array<int32_t, 48> ins_progMin;
+            Array<int32_t, 256> ins_progMaj;
+            Array<int32_t, 256> ins_progMin;
             Array<int32_t, 128> ins_selMaj;
             Array<int32_t, 128> ins_selMin;
             Array<int32_t, 288> ins_chordRh;
@@ -169860,6 +169860,94 @@ namespace performer
             _Eisenpuls_Synth__ins_dr (_state, int32_t {1}, int32_t {30}, int32_t {8}, int32_t {32768}, int32_t {0}, int32_t {21845}, int32_t {0}, int32_t {8224}, int32_t {0}, int32_t {0});
             _Eisenpuls_Synth__ins_dr (_state, int32_t {0}, int32_t {31}, int32_t {4369}, int32_t {2120}, int32_t {0}, int32_t {21845}, int32_t {0}, int32_t {0}, int32_t {0}, int32_t {0});
             _Eisenpuls_Synth__ins_dr (_state, int32_t {1}, int32_t {31}, int32_t {1024}, int32_t {16384}, int32_t {257}, int32_t {43690}, int32_t {8192}, int32_t {544}, int32_t {0}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {12}, int32_t {3}, int32_t {4}, int32_t {0}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {13}, int32_t {3}, int32_t {0}, int32_t {4}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {14}, int32_t {0}, int32_t {2}, int32_t {5}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {15}, int32_t {3}, int32_t {0}, int32_t {3}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {16}, int32_t {0}, int32_t {4}, int32_t {0}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {17}, int32_t {0}, int32_t {5}, int32_t {0}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {18}, int32_t {0}, int32_t {3}, int32_t {1}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {19}, int32_t {2}, int32_t {5}, int32_t {1}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {20}, int32_t {0}, int32_t {2}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {21}, int32_t {3}, int32_t {4}, int32_t {5}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {22}, int32_t {0}, int32_t {0}, int32_t {4}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {23}, int32_t {5}, int32_t {5}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {24}, int32_t {5}, int32_t {4}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {25}, int32_t {0}, int32_t {3}, int32_t {4}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {26}, int32_t {0}, int32_t {4}, int32_t {3}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {27}, int32_t {0}, int32_t {0}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {28}, int32_t {0}, int32_t {2}, int32_t {3}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {29}, int32_t {0}, int32_t {3}, int32_t {0}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {30}, int32_t {5}, int32_t {3}, int32_t {0}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {0}, int32_t {31}, int32_t {0}, int32_t {5}, int32_t {2}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {12}, int32_t {0}, int32_t {6}, int32_t {5}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {13}, int32_t {0}, int32_t {5}, int32_t {3}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {14}, int32_t {0}, int32_t {6}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {15}, int32_t {0}, int32_t {6}, int32_t {3}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {16}, int32_t {0}, int32_t {5}, int32_t {6}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {17}, int32_t {0}, int32_t {0}, int32_t {3}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {18}, int32_t {0}, int32_t {6}, int32_t {0}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {19}, int32_t {0}, int32_t {5}, int32_t {6}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {20}, int32_t {0}, int32_t {3}, int32_t {0}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {21}, int32_t {0}, int32_t {3}, int32_t {6}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {22}, int32_t {0}, int32_t {5}, int32_t {1}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {23}, int32_t {0}, int32_t {3}, int32_t {1}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {24}, int32_t {0}, int32_t {3}, int32_t {5}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {25}, int32_t {0}, int32_t {0}, int32_t {5}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {26}, int32_t {0}, int32_t {3}, int32_t {4}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {27}, int32_t {0}, int32_t {2}, int32_t {6}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {28}, int32_t {0}, int32_t {0}, int32_t {3}, int32_t {4});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {29}, int32_t {0}, int32_t {3}, int32_t {4}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {30}, int32_t {0}, int32_t {2}, int32_t {5}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {31}, int32_t {0}, int32_t {5}, int32_t {0}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {32}, int32_t {0}, int32_t {3}, int32_t {0}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {1}, int32_t {33}, int32_t {5}, int32_t {6}, int32_t {0}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {9}, int32_t {0}, int32_t {1}, int32_t {2}, int32_t {12});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {9}, int32_t {1}, int32_t {6}, int32_t {0}, int32_t {12});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {10}, int32_t {0}, int32_t {1}, int32_t {13}, int32_t {14});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {10}, int32_t {0}, int32_t {1}, int32_t {9}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {11}, int32_t {4}, int32_t {2}, int32_t {13}, int32_t {1});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {11}, int32_t {13}, int32_t {6}, int32_t {14}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {12}, int32_t {8}, int32_t {5}, int32_t {6}, int32_t {15});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {12}, int32_t {9}, int32_t {15}, int32_t {6}, int32_t {16});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {13}, int32_t {11}, int32_t {8}, int32_t {16}, int32_t {17});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {13}, int32_t {17}, int32_t {18}, int32_t {19}, int32_t {20});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {14}, int32_t {6}, int32_t {5}, int32_t {18}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {14}, int32_t {6}, int32_t {3}, int32_t {12}, int32_t {21});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {15}, int32_t {5}, int32_t {6}, int32_t {19}, int32_t {18});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {15}, int32_t {5}, int32_t {6}, int32_t {22}, int32_t {23});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {16}, int32_t {1}, int32_t {0}, int32_t {20}, int32_t {21});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {16}, int32_t {0}, int32_t {1}, int32_t {24}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {17}, int32_t {1}, int32_t {0}, int32_t {22}, int32_t {23});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {17}, int32_t {0}, int32_t {1}, int32_t {25}, int32_t {20});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {18}, int32_t {1}, int32_t {0}, int32_t {13}, int32_t {24});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {18}, int32_t {0}, int32_t {1}, int32_t {13}, int32_t {24});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {19}, int32_t {1}, int32_t {0}, int32_t {2}, int32_t {23});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {19}, int32_t {16}, int32_t {1}, int32_t {20}, int32_t {0});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {20}, int32_t {5}, int32_t {2}, int32_t {1}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {20}, int32_t {0}, int32_t {6}, int32_t {7}, int32_t {1});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {21}, int32_t {9}, int32_t {3}, int32_t {6}, int32_t {5});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {21}, int32_t {26}, int32_t {12}, int32_t {6}, int32_t {16});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {22}, int32_t {3}, int32_t {0}, int32_t {8}, int32_t {1});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {22}, int32_t {16}, int32_t {1}, int32_t {2}, int32_t {27});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {23}, int32_t {25}, int32_t {8}, int32_t {26}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {23}, int32_t {26}, int32_t {16}, int32_t {1}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {24}, int32_t {8}, int32_t {27}, int32_t {3}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {24}, int32_t {9}, int32_t {28}, int32_t {29}, int32_t {3});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {25}, int32_t {28}, int32_t {29}, int32_t {30}, int32_t {31});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {25}, int32_t {30}, int32_t {31}, int32_t {32}, int32_t {33});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {26}, int32_t {3}, int32_t {2}, int32_t {8}, int32_t {26});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {26}, int32_t {26}, int32_t {1}, int32_t {19}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {27}, int32_t {5}, int32_t {1}, int32_t {13}, int32_t {14});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {27}, int32_t {6}, int32_t {13}, int32_t {12}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {28}, int32_t {3}, int32_t {0}, int32_t {1}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {28}, int32_t {1}, int32_t {0}, int32_t {20}, int32_t {6});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {29}, int32_t {6}, int32_t {18}, int32_t {5}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {29}, int32_t {6}, int32_t {13}, int32_t {26}, int32_t {12});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {30}, int32_t {1}, int32_t {0}, int32_t {13}, int32_t {2});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {30}, int32_t {0}, int32_t {1}, int32_t {24}, int32_t {7});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {2}, int32_t {31}, int32_t {0}, int32_t {1}, int32_t {2}, int32_t {12});
+            _Eisenpuls_Synth__ins_set4 (_state, int32_t {3}, int32_t {31}, int32_t {1}, int32_t {0}, int32_t {6}, int32_t {12});
             if (_state.ins_lanePitchSet[int32_t {0}] == int32_t {0})
             {
                 _state.ins_lanePitch[int32_t {0}] = int32_t {36};
@@ -169978,19 +170066,19 @@ namespace performer
             i = intrinsics::multiply (row, int32_t {4});
             if (which == int32_t {0})
             {
-                _state.ins_progMaj[std__intrinsics___wrap_48 (i)] = a;
-                _state.ins_progMaj[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {1}))] = b;
-                _state.ins_progMaj[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {2}))] = c;
-                _state.ins_progMaj[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {3}))] = d;
+                _state.ins_progMaj[std__intrinsics___wrap_256 (i)] = a;
+                _state.ins_progMaj[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {1}))] = b;
+                _state.ins_progMaj[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {2}))] = c;
+                _state.ins_progMaj[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {3}))] = d;
             }
             else
             {
                 if (which == int32_t {1})
                 {
-                    _state.ins_progMin[std__intrinsics___wrap_48 (i)] = a;
-                    _state.ins_progMin[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {1}))] = b;
-                    _state.ins_progMin[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {2}))] = c;
-                    _state.ins_progMin[std__intrinsics___wrap_48 (intrinsics::add (i, int32_t {3}))] = d;
+                    _state.ins_progMin[std__intrinsics___wrap_256 (i)] = a;
+                    _state.ins_progMin[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {1}))] = b;
+                    _state.ins_progMin[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {2}))] = c;
+                    _state.ins_progMin[std__intrinsics___wrap_256 (intrinsics::add (i, int32_t {3}))] = d;
                 }
                 else
                 {
@@ -172915,11 +173003,11 @@ namespace performer
                     deg = int32_t {0};
                     if (minorish)
                     {
-                        deg = _state.ins_progMin[std__intrinsics___wrap_48 (intrinsics::add (intrinsics::multiply (row, int32_t {4}), j))];
+                        deg = _state.ins_progMin[std__intrinsics___wrap_256 (intrinsics::add (intrinsics::multiply (row, int32_t {4}), j))];
                     }
                     else
                     {
-                        deg = _state.ins_progMaj[std__intrinsics___wrap_48 (intrinsics::add (intrinsics::multiply (row, int32_t {4}), j))];
+                        deg = _state.ins_progMaj[std__intrinsics___wrap_256 (intrinsics::add (intrinsics::multiply (row, int32_t {4}), j))];
                     }
                     if ((nbars >= int32_t {4}) ? ((j == int32_t {1}) ? true : (j == int32_t {2})) : false)
                     {

@@ -120,5 +120,11 @@ differs("Poly C changes the Euclid drums", mode(4, (139, 1)), mode(4, (139, 1), 
 for g, nm in [(6, "Walk"), (7, "Permute")]:
     for m, mn in [(1, "Lead"), (2, "Bass"), (3, "Arp")]:
         differs("%s generator changes %s" % (nm, mn), mode(m), mode(m, (139, g)))
+# ---- genre progressions: different Song Seeds pick different progressions of the style (major and minor) ----
+for st in (9, 13, 15, 21, 24, 29):
+    for sc, sn in ((0, "major"), (1, "minor")):
+        outs = [render(BASE + mode(0, (2, st), (4, sc), (5, sd)), [60], hold=8.2, tag="gp%d" % sd) for sd in (11, 22, 33, 44, 55)]
+        spread = max(rm(o - outs[0]) for o in outs[1:]) / max(rm(outs[0]), 1e-6)
+        check("Style %d (%s): the Song Seed picks different progressions" % (st, sn), spread > 0.05, "%.2f" % spread)
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)
