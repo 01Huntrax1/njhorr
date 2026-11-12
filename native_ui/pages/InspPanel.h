@@ -234,7 +234,8 @@ namespace njo
         // generic dropdown: current value on a button, flat popup menu
         struct DropPick : juce::Component, Ctx::Listener
         {
-            Ctx& ctx; int id; std::vector<juce::String> opts; bool hover = false; float fs = 11.0f;
+            Ctx& ctx; int id; std::vector<juce::String> opts; bool hover = false; float fs = 11.0f; std::function<juce::String (int)> nameOf;
+            juce::String nm (int i) const { return nameOf ? nameOf (i) : opts[(size_t) i]; }
             DropPick (Ctx& c, int pid, int, std::vector<juce::String> o) : ctx (c), id (pid), opts (std::move (o)) { ctx.addListener (this); }
             ~DropPick() override { ctx.removeListener (this); }
             void paramChanged (int n, float) override { if (n == id) repaint(); }
@@ -244,7 +245,7 @@ namespace njo
                 paintButton (g, r, false, hover, false, 4.0f);
                 const int cur = juce::jlimit (0, (int) opts.size() - 1, juce::roundToInt (ctx.get (id)));
                 g.setColour (ink); g.setFont (font (fs, true));
-                g.drawText (opts[(size_t) cur], r.toNearestInt().withTrimmedLeft (10), juce::Justification::centredLeft);
+                g.drawText (nm (cur), r.toNearestInt().withTrimmedLeft (10), juce::Justification::centredLeft);
                 juce::Path t; const float cx = r.getRight() - 14.0f, cy = r.getCentreY();
                 t.addTriangle (cx - 4.0f, cy - 2.5f, cx + 4.0f, cy - 2.5f, cx, cy + 3.0f);
                 g.setColour (red); g.fillPath (t);
@@ -256,7 +257,7 @@ namespace njo
                 if (! getLocalBounds().contains (e.getPosition())) return;
                 const int cur = juce::roundToInt (ctx.get (id));
                 juce::PopupMenu m;
-                for (int i = 0; i < (int) opts.size(); ++i) m.addItem (i + 1, opts[(size_t) i], true, i == cur);
+                for (int i = 0; i < (int) opts.size(); ++i) m.addItem (i + 1, nm (i), true, i == cur);
                 juce::Component::SafePointer<DropPick> sp (this);
                 m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (this), [sp] (int r)
                 {
@@ -519,6 +520,7 @@ namespace njo
                 m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&randB), [sp] (int r) { if (sp != nullptr && r > 0) sp->randomizeChords (r - 1); });
             };
             autoB.text = "AUTO"; autoB.click = [this] { for (int i = 0; i < 8; ++i) setP (7012 + i, (juce::roundToInt (ctx.get (7012 + i)) / 64) * 64); };
+            varG.nameOf = [this] (int v) { return variantName (v); };
             extraB.text = "EXTRAS";
             extraB.click = [this] { extras = ! extras; extraB.accent = extras; refresh(); };
             importB.text = "IMPORT MIDI"; importB.sub = "or drop a .mid file here";
@@ -634,6 +636,41 @@ namespace njo
                 setP (7012 + i, pushBits + v);
             }
         }
+
+        // descriptive names of the Variant (parameter 7140) for the current generator and mode
+        juce::String variantName (int v) const
+        {
+            const int gen = juce::roundToInt (ctx.get (7139)), m = juce::jlimit (0, 4, juce::roundToInt (ctx.get (7001)));
+            static const char* const letters[4] = { "A", "B", "C", "D" };
+            static const char* const octFig[4] = { "", " + octaves", " + oct / fifth", " + fifth / oct" };
+            static const char* const pluck[16] = { "Offbeat 8ths", "Straight 8ths", "3-3-2 stabs", "16ths", "Rolling 16ths", "Triplet drive", "Gallop", "Quarters",
+                                                   "Offbeat 16ths", "Pairs", "Syncopated 8ths", "Push 8ths", "Broken 8ths", "Ghost stabs", "Upbeat 16ths", "Dotted" };
+            static const char* const arp[16] = { "Up-down triad", "Zigzag", "Climb", "Octave skip", "Double steps", "Down-up", "Wide climb", "Triad + octave",
+                                                 "Octave pump", "Wave", "Wide zigzag", "Psy pulse", "High triad", "Interleave", "3 over 4", "Octave sweep" };
+            static const char* const bassT[4] = { "Rolling", "Offbeat", "Gallop", "Psy" };
+            static const char* const leadK[4] = { "Call & response", "Focus note", "Micro phrase", "Acid line" };
+            const juce::String n = juce::String (v + 1);
+            switch (gen)
+            {
+                case 1: return "Rotation " + juce::String (v);
+                case 2: { static const char* const c[4] = { "Pop corpus", "Minor corpus", "Jazz corpus", "Custom (imported MIDI)" }; return juce::String (c[v % 4]) + (v >= 4 ? " (" + juce::String (v / 4 + 1) + ")" : juce::String()); }
+                case 3: { static const char* const c[4] = { "Rule 30", "Rule 90", "Rule 110", "Rule 150" }; return juce::String (c[v % 4]) + (v >= 4 ? " (" + juce::String (v / 4 + 1) + ")" : juce::String()); }
+                case 4: return "Rule set " + juce::String (letters[v % 4]) + (v >= 4 ? " (" + juce::String (v / 4 + 1) + ")" : juce::String());
+                case 8:
+                    if (m == 0) return pluck[v];
+                    if (m == 2) return juce::String (bassT[v % 4]) + octFig[v / 4];
+                    if (m == 3) return arp[v];
+                    if (m == 1) return juce::String (leadK[v / 4]) + ", cell " + juce::String (v % 4 + 1);
+                    return "Trance kit";
+                case 9:
+                    if (m == 0) return "Pluck rhythm " + juce::String (letters[v % 4]) + (v >= 4 ? " (" + juce::String (v / 4 + 1) + ")" : juce::String());
+                    if (m == 2) return "Bass rhythm " + juce::String (letters[v % 4]) + octFig[v / 4];
+                    if (m == 3) return "Arp pattern " + juce::String (letters[v % 4]) + (v >= 4 ? " (" + juce::String (v / 4 + 1) + ")" : juce::String());
+                    if (m == 1) return "Hook " + juce::String (letters[v % 4]) + ", cell " + juce::String (v / 4 + 1);
+                    return "Style kit";
+                default: return "Variant " + n;
+            }
+        }
         void setP (int id, int v) { ctx.begin (id); ctx.set (id, (float) v); ctx.end (id); }
         void applyCode (const juce::String& t)
         {
@@ -685,7 +722,7 @@ namespace njo
             if (n == 7001) refresh();
             else if (n == 7002 || n == 7003 || n == 7004 || n == 7005 || n == 7008) code.setText (makeCode(), false);
             if (n == 7011 || n == 7002) { resized(); lockB.repaint(); }
-            if (n == 7139) repaint();
+            if (n == 7139 || n == 7001) { repaint(); varG.repaint(); }
         }
         void timerCallback() override
         {
