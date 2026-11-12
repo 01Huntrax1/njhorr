@@ -117,6 +117,22 @@ struct Host
         flushIfNeeded();
     }
 
+    // Inspirator MIDI import: "insimp up|down" = 16 sixteenth notes in 1 bar, rising or falling
+    void insImport (const std::string& kind)
+    {
+        Eisenpuls_Synth::_Eisenpuls_Synth_InsImportChunk c {};
+        c.offset = 0; c.count = 16; c.total = 16; c.bars = 1;
+        for (int i = 0; i < 16; ++i)
+        {
+            int pitch = kind == "up" ? 60 + i : 76 - i;
+            c.data[2 * i] = (float) (i * 24 * 128 + pitch);
+            c.data[2 * i + 1] = (float) (20 * 128 + 100);
+        }
+        dsp.addEvent_insImport (c);
+        ++queued;
+        flushIfNeeded();
+    }
+
     void freqShape (int m, const std::string& kind, float v)
     {
         Eisenpuls_Synth::_Eisenpuls_Synth_LfoShapeChunk c {};
@@ -319,6 +335,7 @@ int main (int argc, char** argv)
 
         if (cmd == "p")        { int n; float v; ls >> n >> v; h.setParam (n, v); }
         else if (cmd == "shape") { int n; std::string k; float v = 0; ls >> n >> k >> v; h.lfoShape (n, k, v); }
+        else if (cmd == "insimp") { std::string k; ls >> k; h.insImport (k); }
         else if (cmd == "fshape") { int m; std::string k; float v = 0; ls >> m >> k >> v; h.freqShape (m, k, v); }
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }

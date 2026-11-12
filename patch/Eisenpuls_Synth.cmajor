@@ -155,6 +155,7 @@ processor Eisenpuls_Synth
     output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
+    input event InsImportChunk insImport;
     input event LfoShapeChunk lfoShapeLoad;
     input event BankChunk wtBankLoad;
     input event LfoShapeChunk frqShapeLoad;   // drawn curve of a Freq modulator (256 points, 0..1)
@@ -5010,6 +5011,16 @@ processor Eisenpuls_Synth
     // ---------------- WAVETABLE UNISON (per wavetable: voices, detune, random phase) ----------------
 
     // ---------------- SYNTH SAMPLE LOADER TYPE ----------------
+    // INSPIRATOR4-DSP
+    struct InsImportChunk
+    {
+        int        offset;
+        int        count;
+        int        total;
+        int        bars;
+        float[256] data;
+    }
+
     struct LfoShapeChunk
     {
         int        lfo;
@@ -23307,6 +23318,79 @@ processor Eisenpuls_Synth
         }
     }
 
+
+    // ---- INSPIRATOR4-DSP: imported MIDI pattern ----
+    int[512] ins_imGrid;
+    int[512] ins_imLen;
+    int[512] ins_imPitch;
+    int[512] ins_imVel;
+    int ins_imCount = 0;
+    int ins_imBars = 0;
+
+    int ins_deltaClass (int semis)
+    {
+        if (semis <= -5) return 0;
+        if (semis <= -3) return 1;
+        if (semis <= -1) return 2;
+        if (semis == 0)  return 3;
+        if (semis <= 2)  return 4;
+        if (semis <= 4)  return 5;
+        return 6;
+    }
+
+    event insImport (InsImportChunk c)
+    {
+        if (c.offset == 0) { ins_imCount = 0; ins_imDeltaCount = 0; }
+        ins_imBars = ins_clampi (c.bars, 0, 8);
+        for (int i = 0; i < c.count && i < 128; ++i)
+        {
+            if (ins_imCount < 512)
+            {
+                int a = ins_roundi (c.data.at (2 * i));
+                int b = ins_roundi (c.data.at (2 * i + 1));
+                ins_imGrid.at (ins_imCount) = a / 128;
+                ins_imPitch.at (ins_imCount) = a % 128;
+                ins_imLen.at (ins_imCount) = b / 128;
+                ins_imVel.at (ins_imCount) = ins_clampi (b % 128, 1, 127);
+                ins_imCount += 1;
+            }
+        }
+        if (c.offset + c.count >= c.total)
+        {
+            // pitch steps of the melody (lowest voice per onset is good enough) for the Custom Markov corpus
+            int prev = -1;
+            int lastG = -1;
+            for (int i = 0; i < ins_imCount && ins_imDeltaCount < 64; ++i)
+            {
+                if (ins_imGrid.at (i) != lastG)
+                {
+                    if (prev >= 0)
+                    {
+                        ins_imDelta.at (ins_imDeltaCount) = ins_deltaClass (ins_imPitch.at (i) - prev);
+                        ins_imDeltaCount += 1;
+                    }
+                    prev = ins_imPitch.at (i);
+                    lastG = ins_imGrid.at (i);
+                }
+            }
+        }
+        ins_dirty = true;
+    }
+
+    void ins_genImport()
+    {
+        int shift = 12 * ins_pOctave;
+        for (int i = 0; i < ins_imCount; ++i)
+        {
+            int g = ins_imGrid.at (i);
+            if (g >= 0 && g < ins_loopTicks)
+            {
+                int v = ins_clampi (ins_imVel.at (i) + (ins_pVel - 90) / 2 + ins_humanV (i), 1, 127);
+                ins_rawAdd (g, ins_humanT (i), ins_maxi (4, ins_imLen.at (i) * ins_pGate / 100), ins_imPitch.at (i) + shift, v);
+            }
+        }
+    }
+
     void ins_regenerate()
     {
         int m9 = ins_clampi (ins_pMode, 0, 4) * 9;
@@ -23326,7 +23410,8 @@ processor Eisenpuls_Synth
         ins_nCount = 0;
         ins_computeChords();
 
-        if (ins_pGen > 0 && ins_pMode >= 1) ins_genAlt (ins_pMode);
+        if (ins_pGen == 5 && ins_imCount > 0) ins_genImport();
+        else if (ins_pGen >= 1 && ins_pGen <= 4 && ins_pMode >= 1) ins_genAlt (ins_pMode);
         else if (ins_pMode == 0)      ins_genChords();
         else if (ins_pMode == 1) ins_genLead();
         else if (ins_pMode == 2) ins_genBass();
