@@ -104,7 +104,7 @@ check("Mutate varies the imported pattern", rm(c - a) > 0.05 * rm(a))
 m1 = render(BASE + ["insimp up"] + mode(1, (139, 2), (140, 3)), [60], tag="im3"); m2 = render(BASE + ["insimp down"] + mode(1, (139, 2), (140, 3)), [60], tag="im4")
 check("Markov Custom corpus is trained by the import", np.isfinite(m1).all() and rm(m1 - m2) > 0.02 * rm(m1))
 # ---- styles 9-13 ----
-for st, nm in [(9, "Reggaeton"), (10, "Drum & Bass"), (11, "Afrobeats"), (12, "Funk"), (13, "Dub")]:
+for st, nm in [(9, "Reggaeton"), (10, "Drum & Bass"), (11, "Afrobeats"), (12, "Funk"), (13, "Dub"), (14, "Disco"), (15, "Bossa Nova"), (16, "Synthwave"), (17, "Dubstep"), (18, "Trance"), (19, "Drill")]:
     for m, mn in enumerate(["Chords", "Lead", "Bass", "Arp", "Drums"]):
         a = render(BASE + mode(m, (2, st)), [60], hold=3.0, tag="ns")
         check("%s / %s sounds, finite" % (nm, mn), np.isfinite(a).all() and rm(a[int(0.5 * RATE):int(2.8 * RATE)]) > 0.005 and np.abs(a).max() < 6.0)
