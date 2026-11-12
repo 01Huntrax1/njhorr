@@ -231,6 +231,41 @@ namespace njo
             }
         };
 
+        // generic dropdown: current value on a button, flat popup menu
+        struct DropPick : juce::Component, Ctx::Listener
+        {
+            Ctx& ctx; int id; std::vector<juce::String> opts; bool hover = false; float fs = 11.0f;
+            DropPick (Ctx& c, int pid, int, std::vector<juce::String> o) : ctx (c), id (pid), opts (std::move (o)) { ctx.addListener (this); }
+            ~DropPick() override { ctx.removeListener (this); }
+            void paramChanged (int n, float) override { if (n == id) repaint(); }
+            void paint (juce::Graphics& g) override
+            {
+                auto r = getLocalBounds().toFloat().reduced (1.0f);
+                paintButton (g, r, false, hover, false, 4.0f);
+                const int cur = juce::jlimit (0, (int) opts.size() - 1, juce::roundToInt (ctx.get (id)));
+                g.setColour (ink); g.setFont (font (fs, true));
+                g.drawText (opts[(size_t) cur], r.toNearestInt().withTrimmedLeft (10), juce::Justification::centredLeft);
+                juce::Path t; const float cx = r.getRight() - 14.0f, cy = r.getCentreY();
+                t.addTriangle (cx - 4.0f, cy - 2.5f, cx + 4.0f, cy - 2.5f, cx, cy + 3.0f);
+                g.setColour (red); g.fillPath (t);
+            }
+            void mouseEnter (const juce::MouseEvent&) override { hover = true; repaint(); }
+            void mouseExit (const juce::MouseEvent&) override { hover = false; repaint(); }
+            void mouseUp (const juce::MouseEvent& e) override
+            {
+                if (! getLocalBounds().contains (e.getPosition())) return;
+                const int cur = juce::roundToInt (ctx.get (id));
+                juce::PopupMenu m;
+                for (int i = 0; i < (int) opts.size(); ++i) m.addItem (i + 1, opts[(size_t) i], true, i == cur);
+                juce::Component::SafePointer<DropPick> sp (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (this), [sp] (int r)
+                {
+                    if (sp == nullptr || r <= 0) return;
+                    sp->ctx.begin (sp->id); sp->ctx.set (sp->id, (float) (r - 1)); sp->ctx.end (sp->id);
+                });
+            }
+        };
+
         // lock toggles above the roll: one button per bar (bit b of parameter 7129)
         struct LockBars : juce::Component, Ctx::Listener
         {
@@ -436,7 +471,8 @@ namespace njo
     {
         Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
         insp::StylePick styleG;
-        insp::SelGrid modeG, keyG, scaleG, barsG, rateG, inG, onG, genG;
+        insp::DropPick genG;
+        insp::SelGrid modeG, keyG, scaleG, barsG, rateG, inG, onG;
         insp::LockBars lockBars; insp::Action extraB, importB, randB, autoB; juce::String importInfo; bool extras = false, fileHover = false;
         std::vector<int> extraIds;
         insp::SeedBox song, part, vari;
@@ -462,7 +498,7 @@ namespace njo
               cards (c), roll (c)
         {
             ctx.addListener (this);
-            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 9.0f; 
+            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 11.0f; 
             for (auto* x : { (juce::Component*) &modeG, (juce::Component*) &styleG, (juce::Component*) &keyG, (juce::Component*) &scaleG, (juce::Component*) &barsG, (juce::Component*) &rateG,
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
                              (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
@@ -702,7 +738,7 @@ namespace njo
             genB.setBounds (top.reduced (0, 2));
             b.removeFromTop (6);
             auto bottom = b.removeFromBottom (112);
-            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (58)); importB.setBounds (gl.removeFromTop (38).reduced (0, 2)); }
+            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (30)); gl.removeFromTop (6); importB.setBounds (gl.removeFromTop (46).reduced (0, 2)); }
             b.removeFromBottom (6);
             // left column
             auto left = b.removeFromLeft (258); b.removeFromLeft (8);
