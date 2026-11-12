@@ -150,7 +150,7 @@ processor Eisenpuls_Synth
     input event float param7136 [[ name: "Insp Max Leap", min: 1.0, max: 12.0, init: 12.0, step: 1.0, automatable: false ]];
     input event float param7137 [[ name: "Insp Mutate", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7138 [[ name: "Insp Melody Degree", min: 0.0, max: 7.0, init: 0.0, step: 1.0, text: "Free|I|II|III|IV|V|VI|VII", automatable: false ]];
-    input event float param7139 [[ name: "Insp Generator", min: 0.0, max: 8.0, init: 0.0, step: 1.0, text: "Classic|Euclid|Markov|Cellular|L-System|Import|Walk|Permute|Trance", automatable: false ]];
+    input event float param7139 [[ name: "Insp Generator", min: 0.0, max: 9.0, init: 0.0, step: 1.0, text: "Classic|Euclid|Markov|Cellular|L-System|Import|Walk|Permute|Trance|Genre", automatable: false ]];
     input event float param7140 [[ name: "Insp Gen Variant", min: 0.0, max: 15.0, init: 0.0, step: 1.0, automatable: false ]];
     // INSPIRATOR9-DSP
     input event float param7141 [[ name: "Insp Chord Bass", min: 0.0, max: 2.0, init: 0.0, step: 1.0, text: "Off|Root|Root+Oct", automatable: false ]];
@@ -23314,6 +23314,7 @@ processor Eisenpuls_Synth
     }
 
 
+    // INSPIRATOR12-DSP marker
     // INSPIRATOR11-DSP marker
     // INSPIRATOR10-DSP marker
     // INSPIRATOR8-DSP marker
@@ -23768,6 +23769,39 @@ processor Eisenpuls_Synth
     }
 
 
+    // ---- INSPIRATOR12-DSP: per-style tables for the Genre generator ----
+    int ins_gSty = 0;
+
+    int ins_gPluck (int i)
+    {
+        const int[128] t = (0x1111, 0x5555, 0x4949, 0x0505, 0x5555, 0x5151, 0x1111, 0x4545, 0x0101, 0x0401, 0x4141, 0x0141, 0x0101, 0x0001, 0x0111, 0x0505, 0x0101, 0x4949, 0x0505, 0x0441, 0x4444, 0x2424, 0x4B4B, 0x0909, 0x2222, 0x4444, 0xAAAA, 0x0A0A, 0x0049, 0x0449, 0x1449, 0x2489, 0x0249, 0x0409, 0x4449, 0x0821, 0x0049, 0x4849, 0x0009, 0x0849, 0x0001, 0x0401, 0x0101, 0x0505, 0x0049, 0x0249, 0x2449, 0x4949, 0x0105, 0x0545, 0x4D4D, 0x2565, 0x4444, 0x0404, 0x4C4C, 0x4040, 0x4545, 0x5555, 0x5D5D, 0x4444, 0x1449, 0x0449, 0x0049, 0x1441, 0x1111, 0x5555, 0x0101, 0x5151, 0x0001, 0x0101, 0x0105, 0x0011, 0x4444, 0x5555, 0x4949, 0xEEEE, 0x0001, 0x0441, 0x0449, 0x0101, 0x0249, 0x4949, 0x0449, 0x4C49, 0x2449, 0x0249, 0x6D6D, 0x1449, 0x1111, 0x5555, 0x0101, 0x5757, 0x1111, 0x5555, 0x0101, 0x1515, 0x0505, 0x5555, 0x0101, 0x5D5D, 0x0001, 0x0101, 0x0011, 0x0001, 0x4444, 0x4C4C, 0x0404, 0x5454, 0x0249, 0x4449, 0x0449, 0x2449, 0x0101, 0x0505, 0x0405, 0x5555, 0x0549, 0x5D5D, 0x0101, 0x4949, 0x1111, 0x0101, 0x4444, 0x5555, 0x0049, 0x4849, 0x0009, 0x0849);
+        return t.at (i);
+    }
+
+    int ins_gBass (int i)
+    {
+        const int[128] t = (0x0101, 0x1111, 0x5555, 0x0141, 0x5555, 0x1111, 0x5757, 0x0101, 0x0401, 0x0481, 0x0141, 0x4C81, 0x0001, 0x0081, 0x0401, 0x0C01, 0x0101, 0x0141, 0x0505, 0x0909, 0x4444, 0x5555, 0x6666, 0x4B4B, 0xEEEE, 0x4444, 0x2A2A, 0xAAAA, 0x1111, 0x1111, 0x5555, 0x1515, 0x0401, 0x0481, 0x0C41, 0x2421, 0x0049, 0x4849, 0x0849, 0x4B49, 0x0401, 0x0481, 0x0C81, 0x4C85, 0x0141, 0x0949, 0x0541, 0x4949, 0x0405, 0x0C45, 0x4D45, 0x1445, 0x0101, 0x0141, 0x0103, 0x0949, 0x5555, 0xDDDD, 0x1111, 0x5D5D, 0x1449, 0x0449, 0x0009, 0x1041, 0x5555, 0xFFFF, 0x1111, 0x7777, 0x0001, 0x0011, 0x0C45, 0x0401, 0xEEEE, 0x4444, 0xDDDD, 0xEEEE, 0x0049, 0x0249, 0x4949, 0x0041, 0x0401, 0x0C41, 0x4C45, 0x0441, 0x0A49, 0x0201, 0x4A4B, 0x0949, 0x5555, 0x1111, 0xFFFF, 0x7777, 0x0101, 0x1111, 0x1515, 0x0111, 0x1111, 0x5555, 0x5D5D, 0x1515, 0x0001, 0x0101, 0x0001, 0x1111, 0x1111, 0x5555, 0x5D5D, 0x1515, 0x0541, 0x0109, 0x4D49, 0x0141, 0x0405, 0x0C45, 0x4D45, 0x0401, 0x1111, 0x0101, 0x1D1D, 0x5555, 0x4444, 0x5555, 0xEEEE, 0x4C4C, 0x0049, 0x4849, 0x0849, 0x4B49);
+        return t.at (i);
+    }
+
+    int ins_gArp (int i)
+    {
+        const int[128] t = (0, 5, 1, 7, 0, 5, 7, 13, 1, 7, 5, 0, 0, 11, 6, 1, 0, 7, 1, 5, 11, 12, 7, 0, 11, 4, 14, 12, 0, 9, 10, 6, 9, 10, 2, 7, 0, 7, 5, 1, 11, 3, 6, 4, 0, 7, 2, 9, 11, 8, 1, 2, 0, 5, 7, 11, 8, 11, 3, 12, 9, 10, 6, 0, 0, 2, 6, 7, 11, 14, 15, 3, 0, 3, 7, 11, 14, 11, 5, 1, 10, 1, 13, 11, 6, 9, 10, 2, 4, 11, 6, 13, 0, 5, 7, 1, 0, 5, 1, 7, 6, 9, 15, 2, 5, 1, 7, 0, 9, 10, 2, 13, 11, 1, 7, 3, 9, 6, 10, 0, 11, 4, 12, 3, 0, 7, 5, 1);
+        return t.at (i);
+    }
+
+    int ins_gLead (int i)
+    {
+        const int[128] t = (0, 1, 0, 2, 0, 2, 1, 0, 2, 0, 2, 1, 2, 2, 1, 0, 0, 2, 0, 1, 1, 2, 3, 0, 3, 2, 1, 2, 0, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1, 0, 2, 1, 3, 0, 0, 2, 0, 1, 2, 3, 0, 2, 2, 0, 1, 2, 0, 1, 0, 2, 0, 0, 2, 1, 1, 0, 2, 3, 3, 2, 1, 0, 0, 1, 2, 3, 2, 1, 2, 0, 0, 2, 1, 3, 0, 2, 0, 1, 2, 0, 1, 2, 0, 0, 1, 2, 0, 3, 0, 2, 1, 0, 2, 1, 0, 2, 0, 1, 0, 2, 1, 0, 3, 2, 0, 1, 0, 0, 1, 2, 1, 0, 2, 3, 0, 2, 1, 0);
+        return t.at (i);
+    }
+
+    int ins_gRate (int sty)
+    {
+        const int[32] t = (2, 2, 2, 1, 2, 1, 1, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 2, 2, 1, 2, 1, 2);
+        return t.at (sty);
+    }
+
     // ---- INSPIRATOR11-DSP: Trance generator family ----
     int ins_tPitchScale (int si)
     {
@@ -23792,6 +23826,7 @@ processor Eisenpuls_Synth
             int cA = ins_chordAt (b, 0);
             int cB = ins_chordAt (b, ns - 1);
             int mask = ins_expandMask (pats.at (ins_pGenVar % 16));
+            if (ins_gSty != 0) mask = ins_expandMask (ins_gPluck (ins_pStyle * 4 + (ins_pGenVar % 4)));
             // thin out with Density: low density keeps only every other hit
             for (int s = 1; s < ns; ++s)
                 if (((mask >> s) & 1) != 0 && (ins_rv (396, b * 32 + s) % 100) >= 30 + ins_pDensity * 70 / 100) mask = mask & (0 - 1 - (1 << s));
@@ -23824,6 +23859,8 @@ processor Eisenpuls_Synth
     {
         int type = ins_pGenVar % 4;
         int opat = ins_pGenVar / 4;
+        int bmask = 0;
+        if (ins_gSty != 0) { type = 0; bmask = ins_expandMask (ins_gBass (ins_pStyle * 4 + (ins_pGenVar % 4))); }
         int ns = ins_clampi (ins_stepsBar, 1, 31);
         int low = 36 + 12 * ins_pOctave;
         for (int b = 0; b < ins_numBars; ++b)
@@ -23836,6 +23873,7 @@ processor Eisenpuls_Synth
                 if (type == 0 || type == 3) hit = (q != 0);
                 else if (type == 1)         hit = (q == 2);
                 else                        hit = (q != 1);
+                if (ins_gSty != 0) hit = ((bmask >> s) & 1) != 0;
                 if (hit && (ins_rv (397, b * 32 + s) % 100) >= 55 + ins_pDensity * 45 / 100) hit = false;
                 if (hit)
                 {
@@ -23850,6 +23888,7 @@ processor Eisenpuls_Synth
                     else if (type == 3) { if (m == 2) off = 12; }
                     int len = ins_maxi (6, 24 * ins_pGate / 100);
                     if (type == 1) len = ins_maxi (6, 36 * ins_pGate / 100);
+                    if (ins_gSty != 0) len = ins_maxi (6, ins_mini (ins_nextHit (bmask, s) - s, 4) * 24 * ins_pGate / 100);
                     int acc = (q == 2) ? 8 : 0;
                     ins_tNote (b, s, p + off, len, acc, k);
                     k += 1;
@@ -23867,12 +23906,14 @@ processor Eisenpuls_Synth
                               2,4,6,4,2,4,6,4,  0,4,2,6,1,5,2,6,  0,1,2,0,1,2,0,1,  0,4,8,4,0,4,8,4);
         int ns = ins_clampi (ins_stepsBar, 1, 31);
         int pt = ins_pGenVar % 16;
+        int rate = 1;
+        if (ins_gSty != 0) { pt = ins_gArp (ins_pStyle * 4 + (ins_pGenVar % 4)); rate = ins_gRate (ins_pStyle); }
         int base = 60 + 12 * ins_pOctave - 5;
         for (int b = 0; b < ins_numBars; ++b)
         {
             for (int s = 0; s < ns; ++s)
             {
-                if ((ins_rv (398, b * 32 + s) % 100) < 40 + ins_pDensity * 60 / 100)
+                if ((s % rate) == 0 && (ins_rv (398, b * 32 + s) % 100) < 40 + ins_pDensity * 60 / 100)
                 {
                     int c = ins_chordAt (b, s);
                     int cnt = ins_maxi (1, ins_cCnt.at (c));
@@ -23883,7 +23924,7 @@ processor Eisenpuls_Synth
                     int pc = ins_posMod (ins_pKey + ins_cRoot.at (c) + ins_cInt.at (c * 5 + tone), 12);
                     int p = base + ins_posMod (pc - base, 12) + 12 * oct;
                     int acc = (s % 4) == 0 ? 8 : ((s % 2) == 0 ? 2 : -4);
-                    ins_tNote (b, s, p, ins_maxi (6, 24 * ins_pGate / 100), acc, s);
+                    ins_tNote (b, s, p, ins_maxi (6, rate * 24 * ins_pGate / 100), acc, s);
                 }
             }
         }
@@ -23894,6 +23935,7 @@ processor Eisenpuls_Synth
     {
         int kind = ins_pGenVar / 4;
         int cellSel = ins_pGenVar % 4;
+        if (ins_gSty != 0) { kind = ins_gLead (ins_pStyle * 4 + (ins_pGenVar % 4)); cellSel = ins_pGenVar / 4; }
         int ns = ins_clampi (ins_stepsBar, 1, 31);
         int centerSi = 7;
         int w = 3 + ins_pRange * 6 / 100;
@@ -23904,6 +23946,7 @@ processor Eisenpuls_Synth
         {
             int mask = 0;
             int rot = cellSel + (kind == 1 ? 1 : 0);
+            if (ins_gSty != 0) rot += (ins_pStyle % 5) + (ins_pStyle / 8);
             if (kind == 3) mask = (1 << ns) - 1;
             else mask = ins_euclid (pc, ns, rot);
             if (mask == 0) mask = 1;
@@ -23962,6 +24005,7 @@ processor Eisenpuls_Synth
         else if (role == 1) ins_genTLead();
         else if (role == 2) ins_genTBass();
         else if (role == 3) ins_genTArp();
+        else if (ins_gSty != 0) ins_genDrums();
         else
         {
             int sv = ins_pStyle;
@@ -23990,7 +24034,11 @@ processor Eisenpuls_Synth
         ins_nCount = 0;
         ins_computeChords();
 
-        if (ins_pGen == 8) ins_genTrance (ins_pMode);
+        if (ins_pGen == 8 || ins_pGen == 9)
+        {
+            ins_gSty = ins_pGen == 9 ? 1 : 0;
+            ins_genTrance (ins_pMode);
+        }
         else if (ins_pGen == 5 && ins_imCount > 0) ins_genImport();
         else if (ins_pGen >= 1 && ins_pGen != 5 && ins_pMode >= 1) ins_genAlt (ins_pMode);
         else if (ins_pMode == 0)      ins_genChords();
@@ -24328,7 +24376,7 @@ processor Eisenpuls_Synth
     event param7136 (float v) { ins_pLeap = ins_clampi (ins_roundi (v), 1, 12); ins_dirty = true; }
     event param7137 (float v) { ins_pMut = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
     event param7138 (float v) { ins_pDegF = ins_clampi (ins_roundi (v), 0, 7); ins_dirty = true; }
-    event param7139 (float v) { ins_pGen = ins_clampi (ins_roundi (v), 0, 8); ins_dirty = true; }
+    event param7139 (float v) { ins_pGen = ins_clampi (ins_roundi (v), 0, 9); ins_dirty = true; }
     event param7140 (float v) { ins_pGenVar = ins_clampi (ins_roundi (v), 0, 15); ins_dirty = true; }
     event param7141 (float v) { ins_pCBass = ins_clampi (ins_roundi (v), 0, 2); ins_dirty = true; }
     event param7142 (float v) { ins_pChance = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }

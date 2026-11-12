@@ -133,5 +133,12 @@ for m, mn, vs in [(0, "pluck rhythm", (0, 4, 9)), (1, "lead kind", (0, 4, 8, 12)
     for v in vs[1:]:
         differs("Trance %s: variant %d differs from variant %d" % (mn, v, vs[0]), mode(m, (139, 8), (140, vs[0])), mode(m, (139, 8), (140, v)))
 differs("Trance bass: octave figure changes the line", mode(2, (139, 8)), mode(2, (139, 8), (140, 4)))
+# ---- Genre generator (7139 = 9): per-style tables ----
+for m, mn in enumerate(["Chords (pluck)", "Lead", "Bass", "Arp"]):
+    differs("Genre generator changes %s" % mn, mode(m), mode(m, (139, 9)))
+for m, mn in [(0, "pluck"), (1, "lead"), (2, "bass"), (3, "arp")]:
+    for st in (6, 12, 21, 22, 25):
+        differs("Genre %s: style %d differs from Pop" % (mn, st), mode(m, (139, 9), (2, 0)), mode(m, (139, 9), (2, st)))
+    differs("Genre %s: variant 1 differs from variant 0" % mn, mode(m, (139, 9), (2, 5)), mode(m, (139, 9), (2, 5), (140, 1)))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

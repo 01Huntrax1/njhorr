@@ -3588,7 +3588,7 @@ static void allSpecs_79 (std::vector<Spec>& v)
         Spec { 7136, NJ_S("Insp Max Leap"), 1.0, 12.0, 12.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Max Leap"), {  } },
         Spec { 7137, NJ_S("Insp Mutate"), 0.0, 100.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Mutate"), {  } },
         Spec { 7138, NJ_S("Insp Melody Degree"), 0.0, 7.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Free"), NJ_S("I"), NJ_S("II"), NJ_S("III"), NJ_S("IV"), NJ_S("V"), NJ_S("VI"), NJ_S("VII") }, 1, NJ_S("Degree"), {  } },
-        Spec { 7139, NJ_S("Insp Generator"), 0.0, 8.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("Euclid"), NJ_S("Markov"), NJ_S("Cellular"), NJ_S("L-System"), NJ_S("Import"), NJ_S("Walk"), NJ_S("Permute"), NJ_S("Trance") }, 1, NJ_S("Generator"), {  } },
+        Spec { 7139, NJ_S("Insp Generator"), 0.0, 9.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Classic"), NJ_S("Euclid"), NJ_S("Markov"), NJ_S("Cellular"), NJ_S("L-System"), NJ_S("Import"), NJ_S("Walk"), NJ_S("Permute"), NJ_S("Trance"), NJ_S("Genre") }, 1, NJ_S("Generator"), {  } },
         Spec { 7140, NJ_S("Insp Gen Variant"), 0.0, 15.0, 0.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Variant"), {  } },
         Spec { 7141, NJ_S("Insp Chord Bass"), 0.0, 2.0, 0.0, NJ_S(""), NJ_S("sel"), { NJ_S("Off"), NJ_S("Root"), NJ_S("Root+Oct") }, 1, NJ_S("Chord Bass"), {  } },
         Spec { 7142, NJ_S("Insp Drum Chance"), 0.0, 100.0, 100.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Chance"), {  } },
