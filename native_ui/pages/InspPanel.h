@@ -437,7 +437,7 @@ namespace njo
         Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
         insp::StylePick styleG;
         insp::SelGrid modeG, keyG, scaleG, barsG, rateG, inG, onG, genG;
-        insp::LockBars lockBars; insp::Action extraB, importB; juce::String importInfo; bool extras = false, fileHover = false;
+        insp::LockBars lockBars; insp::Action extraB, importB, randB, autoB; juce::String importInfo; bool extras = false, fileHover = false;
         std::vector<int> extraIds;
         insp::SeedBox song, part, vari;
         insp::Action lockB, genB, copyB, pasteB; insp::MidiDrag dragB; bool dragging = false;
@@ -465,7 +465,7 @@ namespace njo
             modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 9.0f; 
             for (auto* x : { (juce::Component*) &modeG, (juce::Component*) &styleG, (juce::Component*) &keyG, (juce::Component*) &scaleG, (juce::Component*) &barsG, (juce::Component*) &rateG,
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
-                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
+                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
             lockB.click = [this]
             {
@@ -473,6 +473,8 @@ namespace njo
                 const int nv = (cur % 2) != 0 ? 0 : 1 + 2 * juce::roundToInt (ctx.get (7002));
                 ctx.begin (7011); ctx.set (7011, (float) nv); ctx.end (7011);
             };
+            randB.text = "RANDOM CHORDS"; randB.click = [this] { randomizeChords(); };
+            autoB.text = "AUTO"; autoB.click = [this] { for (int i = 0; i < 8; ++i) setP (7012 + i, (juce::roundToInt (ctx.get (7012 + i)) / 64) * 64); };
             extraB.text = "EXTRAS";
             extraB.click = [this] { extras = ! extras; extraB.accent = extras; refresh(); };
             importB.text = "IMPORT MIDI"; importB.sub = "or drop a .mid file here";
@@ -558,6 +560,28 @@ namespace njo
             insp::sendImport (ctx.be, n);
             importInfo = "imported pattern  -  " + juce::String ((int) n.grid.size()) + " notes, " + juce::String (n.bars) + " bars";
         }
+        // new progression: a random degree and chord shape for every bar (the first bar likes the tonic), now and then a borrowed chord; the push flags stay
+        void randomizeChords()
+        {
+            auto& rnd = juce::Random::getSystemRandom();
+            static const int degW[7] = { 30, 10, 8, 20, 20, 24, 3 };
+            static const int shapeW[7] = { 40, 14, 14, 6, 8, 8, 10 };
+            auto pick = [&] (const int* w, int n) { int t = 0; for (int i = 0; i < n; ++i) t += w[i]; int r = rnd.nextInt (t); for (int i = 0; i < n; ++i) { if (r < w[i]) return i; r -= w[i]; } return 0; };
+            const int bars = juce::jlimit (1, 8, ctx.be.ins.numBars);
+            for (int i = 0; i < 8; ++i)
+            {
+                const int pushBits = (juce::roundToInt (ctx.get (7012 + i)) / 64) * 64;
+                if (i >= bars) { setP (7012 + i, pushBits); continue; }
+                int v;
+                if (rnd.nextInt (100) < 10 && i > 0) v = 1 + rnd.nextInt (7) + 56;
+                else
+                {
+                    int deg = (i == 0 && rnd.nextInt (100) < 70) ? 0 : pick (degW, 7);
+                    v = 1 + deg + 8 * pick (shapeW, 7);
+                }
+                setP (7012 + i, pushBits + v);
+            }
+        }
         void setP (int id, int v) { ctx.begin (id); ctx.set (id, (float) v); ctx.end (id); }
         void applyCode (const juce::String& t)
         {
@@ -588,7 +612,7 @@ namespace njo
             if (extras) ids = extraIds;
             knobIds = ids;
             for (int id : ids) byId[id]->setVisible (true);
-            genG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4);
+            genG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
             cards.setVisible (m != 4);
             if (m == 4) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
             if (m < 4)
@@ -648,7 +672,9 @@ namespace njo
             auto head = b.removeFromTop (20);
             onG.setBounds (head.removeFromRight (120).withTrimmedTop (0)); head.removeFromRight (8);
             dragB.setBounds (head.removeFromRight (110).reduced (0, 1)); head.removeFromRight (6);
-            extraB.setBounds (head.removeFromRight (150).reduced (0, 1));
+            extraB.setBounds (head.removeFromRight (110).reduced (0, 1)); head.removeFromRight (6);
+            autoB.setBounds (head.removeFromRight (56).reduced (0, 1)); head.removeFromRight (4);
+            randB.setBounds (head.removeFromRight (130).reduced (0, 1));
             b.removeFromTop (2);
             auto top = b.removeFromTop (60);
             modeG.setBounds (top.removeFromLeft (400)); top.removeFromLeft (6);

@@ -224,6 +224,11 @@ int main (int argc, char** argv)
     be.setParam (7129, 5.0f); be.setParam (7002, 12.0f); ed.seqArpPage().inspExtras (true); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_lead.png"), scale);
     be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_chords.png"), scale);
     be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_drums.png"), scale);
+    be.setParam (7001, 0.0f); for (int i = 0; i < 8; ++i) be.setParam (7012 + i, 0.0f);
+    ed.seqArpPage().inspRandomChords(); pump(); pump();
+    { int changed = 0; for (int i = 0; i < 4; ++i) if (((int) be.getParam (7012 + i)) % 64 != 0) ++changed; std::printf ("random chords: %d of 4 bars overridden\n", changed); }
+    save (ed, dir.getChildFile ("insp_randchords.png"), scale);
+    for (int i = 0; i < 8; ++i) be.setParam (7012 + i, 0.0f);
     ed.seqArpPage().inspExtras (false); be.setParam (7129, 0.0f); be.setParam (7002, 0.0f);
     ed.seqArpPage().showInspirator (false);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
