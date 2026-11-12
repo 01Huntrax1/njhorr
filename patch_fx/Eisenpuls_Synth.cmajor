@@ -13,7 +13,7 @@ processor Eisenpuls_Synth
     output event int insPos;
     input event float param7000 [[ name: "Inspirator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7001 [[ name: "Insp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0, text: "Chords|Lead|Bass|Arp|Drums", automatable: false ]];
-    input event float param7002 [[ name: "Insp Style", min: 0.0, max: 19.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul|Reggaeton|Drum & Bass|Afrobeats|Funk|Dub|Disco|Bossa Nova|Synthwave|Dubstep|Trance|Drill", automatable: false ]];
+    input event float param7002 [[ name: "Insp Style", min: 0.0, max: 25.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul|Reggaeton|Drum & Bass|Afrobeats|Funk|Dub|Disco|Bossa Nova|Synthwave|Dubstep|Trance|Drill|UK Garage|Salsa|Metal|Country|Blues|Ambient", automatable: false ]];
     input event float param7003 [[ name: "Insp Key", min: 0.0, max: 11.0, init: 0.0, step: 1.0, text: "C|C#|D|Eb|E|F|F#|G|Ab|A|Bb|B", automatable: false ]];
     input event float param7004 [[ name: "Insp Scale", min: 0.0, max: 6.0, init: 0.0, step: 1.0, text: "Major|Minor|Dorian|Mixolydian|Phrygian|Lydian|Harm Minor", automatable: false ]];
     input event float param7005 [[ name: "Insp Song Seed", min: 0.0, max: 9999.0, init: 1234.0, step: 1.0, automatable: false ]];
@@ -22,7 +22,7 @@ processor Eisenpuls_Synth
     input event float param7008 [[ name: "Insp Bars", min: 0.0, max: 3.0, init: 2.0, step: 1.0, text: "1|2|4|8", automatable: false ]];
     input event float param7009 [[ name: "Insp Swing", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7010 [[ name: "Insp MIDI In", min: 0.0, max: 2.0, init: 0.0, step: 1.0, text: "Transpose|Hold|Off", automatable: false ]];
-    input event float param7011 [[ name: "Insp Lock Chords", min: 0.0, max: 39.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7011 [[ name: "Insp Lock Chords", min: 0.0, max: 51.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7012 [[ name: "Insp Chord Bar 1", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7013 [[ name: "Insp Chord Bar 2", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7014 [[ name: "Insp Chord Bar 3", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
@@ -21181,12 +21181,12 @@ processor Eisenpuls_Synth
     int[49] ins_scaleTab;
     int[48] ins_progMaj;
     int[48] ins_progMin;
-    int[80] ins_selMaj;
-    int[80] ins_selMin;
-    int[180] ins_chordRh;
-    int[180] ins_bassRh;
-    int[160] ins_drumBase;
-    int[160] ins_drumExtra;
+    int[104] ins_selMaj;
+    int[104] ins_selMin;
+    int[234] ins_chordRh;
+    int[234] ins_bassRh;
+    int[208] ins_drumBase;
+    int[208] ins_drumExtra;
     int[12] ins_lanePitch;
     int[8] ins_motifTab;
 
@@ -21516,43 +21516,43 @@ processor Eisenpuls_Synth
         ins_set3 (1, 8, 0x0401, 0x4409, 0x6489);
 
         // Rhythm variants 2 and 3 (rows 9-17 and 18-26), picked by the Part seed
-        ins_set3 (0, 20,  0x0041, 0x4141, 0x4949);
-        ins_set3 (0, 21, 0x0041, 0x0141, 0x5151);
-        ins_set3 (0, 22, 0x0081, 0x0481, 0x2491);
-        ins_set3 (0, 23, 0x0101, 0x0109, 0x4909);
-        ins_set3 (0, 24, 0x0041, 0x0841, 0x4849);
-        ins_set3 (0, 25, 0x4848, 0x1249, 0x5249);
-        ins_set3 (0, 26, 0x0808, 0x4848, 0x4949);
-        ins_set3 (0, 27, 0x4040, 0x4041, 0x4441);
-        ins_set3 (0, 28, 0x0041, 0x0409, 0x2449);
-        ins_set3 (0, 40, 0x0401, 0x1411, 0x4545);
-        ins_set3 (0, 41, 0x1001, 0x1049, 0x5549);
-        ins_set3 (0, 42, 0x0801, 0x0809, 0x4909);
-        ins_set3 (0, 43, 0x1001, 0x1041, 0x9441);
-        ins_set3 (0, 44, 0x0101, 0x2121, 0x2525);
-        ins_set3 (0, 45, 0x0441, 0x4924, 0x4925);
-        ins_set3 (0, 46, 0x4040, 0x4141, 0x4C4C);
-        ins_set3 (0, 47, 0x0401, 0x4104, 0x4451);
-        ins_set3 (0, 48, 0x0801, 0x4881, 0x4C85);
+        ins_set3 (0, 26,  0x0041, 0x4141, 0x4949);
+        ins_set3 (0, 27, 0x0041, 0x0141, 0x5151);
+        ins_set3 (0, 28, 0x0081, 0x0481, 0x2491);
+        ins_set3 (0, 29, 0x0101, 0x0109, 0x4909);
+        ins_set3 (0, 30, 0x0041, 0x0841, 0x4849);
+        ins_set3 (0, 31, 0x4848, 0x1249, 0x5249);
+        ins_set3 (0, 32, 0x0808, 0x4848, 0x4949);
+        ins_set3 (0, 33, 0x4040, 0x4041, 0x4441);
+        ins_set3 (0, 34, 0x0041, 0x0409, 0x2449);
+        ins_set3 (0, 52, 0x0401, 0x1411, 0x4545);
+        ins_set3 (0, 53, 0x1001, 0x1049, 0x5549);
+        ins_set3 (0, 54, 0x0801, 0x0809, 0x4909);
+        ins_set3 (0, 55, 0x1001, 0x1041, 0x9441);
+        ins_set3 (0, 56, 0x0101, 0x2121, 0x2525);
+        ins_set3 (0, 57, 0x0441, 0x4924, 0x4925);
+        ins_set3 (0, 58, 0x4040, 0x4141, 0x4C4C);
+        ins_set3 (0, 59, 0x0401, 0x4104, 0x4451);
+        ins_set3 (0, 60, 0x0801, 0x4881, 0x4C85);
 
-        ins_set3 (1, 20,  0x0141, 0x0909, 0x5919);
-        ins_set3 (1, 21, 0x0101, 0x5151, 0xF555);
-        ins_set3 (1, 22, 0x0081, 0x0409, 0x2449);
-        ins_set3 (1, 23, 0x0801, 0x0809, 0x4949);
-        ins_set3 (1, 24, 0x0041, 0x0841, 0x4C49);
-        ins_set3 (1, 25, 0x0049, 0x4449, 0xCCCC);
-        ins_set3 (1, 26, 0x0101, 0xC444, 0xDDDD);
-        ins_set3 (1, 27, 0x0101, 0x0141, 0x4141);
-        ins_set3 (1, 28, 0x0081, 0x4481, 0x4989);
-        ins_set3 (1, 40, 0x0401, 0x4441, 0x4545);
-        ins_set3 (1, 41, 0x0141, 0x1515, 0x5D5D);
-        ins_set3 (1, 42, 0x0101, 0x0141, 0x4941);
-        ins_set3 (1, 43, 0x0101, 0x4181, 0x4985);
-        ins_set3 (1, 44, 0x0101, 0x0121, 0x2521);
-        ins_set3 (1, 45, 0x0404, 0x4544, 0x5555);
-        ins_set3 (1, 46, 0x8888, 0x4C4C, 0xBBBB);
-        ins_set3 (1, 47, 0x0401, 0x4101, 0x4111);
-        ins_set3 (1, 48, 0x0041, 0x2441, 0x6445);
+        ins_set3 (1, 26,  0x0141, 0x0909, 0x5919);
+        ins_set3 (1, 27, 0x0101, 0x5151, 0xF555);
+        ins_set3 (1, 28, 0x0081, 0x0409, 0x2449);
+        ins_set3 (1, 29, 0x0801, 0x0809, 0x4949);
+        ins_set3 (1, 30, 0x0041, 0x0841, 0x4C49);
+        ins_set3 (1, 31, 0x0049, 0x4449, 0xCCCC);
+        ins_set3 (1, 32, 0x0101, 0xC444, 0xDDDD);
+        ins_set3 (1, 33, 0x0101, 0x0141, 0x4141);
+        ins_set3 (1, 34, 0x0081, 0x4481, 0x4989);
+        ins_set3 (1, 52, 0x0401, 0x4441, 0x4545);
+        ins_set3 (1, 53, 0x0141, 0x1515, 0x5D5D);
+        ins_set3 (1, 54, 0x0101, 0x0141, 0x4941);
+        ins_set3 (1, 55, 0x0101, 0x4181, 0x4985);
+        ins_set3 (1, 56, 0x0101, 0x0121, 0x2521);
+        ins_set3 (1, 57, 0x0404, 0x4544, 0x5555);
+        ins_set3 (1, 58, 0x8888, 0x4C4C, 0xBBBB);
+        ins_set3 (1, 59, 0x0401, 0x4101, 0x4111);
+        ins_set3 (1, 60, 0x0041, 0x2441, 0x6445);
 
         //            kick    snare   clap    c.hat   o.hat   rim     tom     ride
         ins_dr (0, 0, 0x0101, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
@@ -21584,34 +21584,34 @@ processor Eisenpuls_Synth
         ins_set4 (2, 13, 11, 0, 8, 5);  ins_set4 (3, 13, 11, 8, 0, 10);
         ins_set3 (0, 9, 0x0009, 0x0049, 0x4949);
         ins_set3 (1, 9, 0x0049, 0x4849, 0x4949);
-        ins_set3 (0, 29, 0x0009, 0x0089, 0x4889);
-        ins_set3 (1, 29, 0x0009, 0x0849, 0x4B49);
-        ins_set3 (0, 49, 0x0001, 0x0049, 0x2449);
-        ins_set3 (1, 49, 0x0041, 0x0441, 0x4C49);
+        ins_set3 (0, 35, 0x0009, 0x0089, 0x4889);
+        ins_set3 (1, 35, 0x0009, 0x0849, 0x4B49);
+        ins_set3 (0, 61, 0x0001, 0x0049, 0x2449);
+        ins_set3 (1, 61, 0x0041, 0x0441, 0x4C49);
         ins_set3 (0, 10, 0x0001, 0x0001, 0x0101);
         ins_set3 (1, 10, 0x0401, 0x0481, 0x4C81);
-        ins_set3 (0, 30, 0x0001, 0x0041, 0x0101);
-        ins_set3 (1, 30, 0x0401, 0x0C41, 0x4C45);
-        ins_set3 (0, 50, 0x0001, 0x0401, 0x0441);
-        ins_set3 (1, 50, 0x0001, 0x0401, 0x4489);
+        ins_set3 (0, 36, 0x0001, 0x0041, 0x0101);
+        ins_set3 (1, 36, 0x0401, 0x0C41, 0x4C45);
+        ins_set3 (0, 62, 0x0001, 0x0401, 0x0441);
+        ins_set3 (1, 62, 0x0001, 0x0401, 0x4489);
         ins_set3 (0, 11, 0x0009, 0x0049, 0x2449);
         ins_set3 (1, 11, 0x0141, 0x0949, 0x4949);
-        ins_set3 (0, 31, 0x0041, 0x0249, 0x4949);
-        ins_set3 (1, 31, 0x0101, 0x0541, 0x2949);
-        ins_set3 (0, 51, 0x0009, 0x0409, 0x2489);
-        ins_set3 (1, 51, 0x0009, 0x0149, 0x4B49);
+        ins_set3 (0, 37, 0x0041, 0x0249, 0x4949);
+        ins_set3 (1, 37, 0x0101, 0x0541, 0x2949);
+        ins_set3 (0, 63, 0x0009, 0x0409, 0x2489);
+        ins_set3 (1, 63, 0x0009, 0x0149, 0x4B49);
         ins_set3 (0, 12, 0x0105, 0x0545, 0x4D4D);
         ins_set3 (1, 12, 0x0405, 0x0C45, 0x4D4D);
-        ins_set3 (0, 32, 0x0021, 0x0525, 0x2565);
-        ins_set3 (1, 32, 0x0401, 0x1445, 0x5C5D);
-        ins_set3 (0, 52, 0x0101, 0x1141, 0x5959);
-        ins_set3 (1, 52, 0x0105, 0x0505, 0x4D45);
+        ins_set3 (0, 38, 0x0021, 0x0525, 0x2565);
+        ins_set3 (1, 38, 0x0401, 0x1445, 0x5C5D);
+        ins_set3 (0, 64, 0x0101, 0x1141, 0x5959);
+        ins_set3 (1, 64, 0x0105, 0x0505, 0x4D45);
         ins_set3 (0, 13, 0x0404, 0x4444, 0x4C4C);
         ins_set3 (1, 13, 0x0101, 0x0141, 0x0949);
-        ins_set3 (0, 33, 0x0404, 0x4444, 0xCCCC);
-        ins_set3 (1, 33, 0x0001, 0x0101, 0x0501);
-        ins_set3 (0, 53, 0x0400, 0x0404, 0x4444);
-        ins_set3 (1, 53, 0x0101, 0x0105, 0x2145);
+        ins_set3 (0, 39, 0x0404, 0x4444, 0xCCCC);
+        ins_set3 (1, 39, 0x0001, 0x0101, 0x0501);
+        ins_set3 (0, 65, 0x0400, 0x0404, 0x4444);
+        ins_set3 (1, 65, 0x0101, 0x0105, 0x2145);
         ins_dr (0, 9, 0x1111, 0x4848, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
         ins_dr (1, 9, 0x0408, 0x0020, 0x0000, 0xAAAA, 0x2000, 0x0210, 0x0000, 0x0000);
         ins_dr (0, 10, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
@@ -21632,40 +21632,40 @@ processor Eisenpuls_Synth
         ins_set4 (2, 19, 5, 10, 8, 11);  ins_set4 (3, 19, 8, 11, 10, 8);
         ins_set3 (0, 14, 0x0505, 0x4545, 0x5555);
         ins_set3 (1, 14, 0x1111, 0x5555, 0x5555);
-        ins_set3 (0, 34, 0x0404, 0x4444, 0x5555);
-        ins_set3 (1, 34, 0x0505, 0x5555, 0xDDDD);
-        ins_set3 (0, 54, 0x0101, 0x0505, 0x4D4D);
-        ins_set3 (1, 54, 0x1111, 0x1515, 0x5555);
+        ins_set3 (0, 40, 0x0404, 0x4444, 0x5555);
+        ins_set3 (1, 40, 0x0505, 0x5555, 0xDDDD);
+        ins_set3 (0, 66, 0x0101, 0x0505, 0x4D4D);
+        ins_set3 (1, 66, 0x1111, 0x1515, 0x5555);
         ins_set3 (0, 15, 0x0009, 0x0449, 0x1449);
         ins_set3 (1, 15, 0x0009, 0x0449, 0x1449);
-        ins_set3 (0, 35, 0x0041, 0x0449, 0x1449);
-        ins_set3 (1, 35, 0x0041, 0x0449, 0x0C49);
-        ins_set3 (0, 55, 0x0009, 0x0409, 0x1441);
-        ins_set3 (1, 55, 0x0009, 0x0049, 0x1441);
+        ins_set3 (0, 41, 0x0041, 0x0449, 0x1449);
+        ins_set3 (1, 41, 0x0041, 0x0449, 0x0C49);
+        ins_set3 (0, 67, 0x0009, 0x0409, 0x1441);
+        ins_set3 (1, 67, 0x0009, 0x0049, 0x1441);
         ins_set3 (0, 16, 0x0001, 0x0101, 0x1111);
         ins_set3 (1, 16, 0x5555, 0x5555, 0xFFFF);
-        ins_set3 (0, 36, 0x0001, 0x0011, 0x1111);
-        ins_set3 (1, 36, 0x1111, 0x5555, 0x5555);
-        ins_set3 (0, 56, 0x0101, 0x1111, 0x5555);
-        ins_set3 (1, 56, 0x5555, 0xDDDD, 0xFFFF);
+        ins_set3 (0, 42, 0x0001, 0x0011, 0x1111);
+        ins_set3 (1, 42, 0x1111, 0x5555, 0x5555);
+        ins_set3 (0, 68, 0x0101, 0x1111, 0x5555);
+        ins_set3 (1, 68, 0x5555, 0xDDDD, 0xFFFF);
         ins_set3 (0, 17, 0x0001, 0x0001, 0x0101);
         ins_set3 (1, 17, 0x0001, 0x0011, 0x0C45);
-        ins_set3 (0, 37, 0x0001, 0x0101, 0x0105);
-        ins_set3 (1, 37, 0x0001, 0x0401, 0x0C45);
-        ins_set3 (0, 57, 0x0001, 0x0011, 0x0101);
-        ins_set3 (1, 57, 0x0001, 0x0111, 0x4C45);
+        ins_set3 (0, 43, 0x0001, 0x0101, 0x0105);
+        ins_set3 (1, 43, 0x0001, 0x0401, 0x0C45);
+        ins_set3 (0, 69, 0x0001, 0x0011, 0x0101);
+        ins_set3 (1, 69, 0x0001, 0x0111, 0x4C45);
         ins_set3 (0, 18, 0x0101, 0x5555, 0xDDDD);
         ins_set3 (1, 18, 0x4444, 0x4444, 0x5555);
-        ins_set3 (0, 38, 0x0001, 0x5555, 0xFFFF);
-        ins_set3 (1, 38, 0x4444, 0x5555, 0x5555);
-        ins_set3 (0, 58, 0x0101, 0x1111, 0x5555);
-        ins_set3 (1, 58, 0x4444, 0x4C4C, 0xDDDD);
+        ins_set3 (0, 44, 0x0001, 0x5555, 0xFFFF);
+        ins_set3 (1, 44, 0x4444, 0x5555, 0x5555);
+        ins_set3 (0, 70, 0x0101, 0x1111, 0x5555);
+        ins_set3 (1, 70, 0x4444, 0x4C4C, 0xDDDD);
         ins_set3 (0, 19, 0x0001, 0x0101, 0x0441);
         ins_set3 (1, 19, 0x0049, 0x0249, 0x4949);
-        ins_set3 (0, 39, 0x0001, 0x0041, 0x0449);
-        ins_set3 (1, 39, 0x0041, 0x0249, 0x4B49);
-        ins_set3 (0, 59, 0x0001, 0x0401, 0x0441);
-        ins_set3 (1, 59, 0x0009, 0x0249, 0x4949);
+        ins_set3 (0, 45, 0x0001, 0x0041, 0x0449);
+        ins_set3 (1, 45, 0x0041, 0x0249, 0x4B49);
+        ins_set3 (0, 71, 0x0001, 0x0401, 0x0441);
+        ins_set3 (1, 71, 0x0009, 0x0249, 0x4949);
         ins_dr (0, 14, 0x1111, 0x1010, 0x0000, 0x5555, 0x4444, 0x0000, 0x0000, 0x0000);
         ins_dr (1, 14, 0x0000, 0x0200, 0x1010, 0xAAAA, 0x8000, 0x0000, 0x0000, 0x0000);
         ins_dr (0, 15, 0x0909, 0x0000, 0x0000, 0x5555, 0x0000, 0x1449, 0x0000, 0x0000);
@@ -21678,6 +21678,62 @@ processor Eisenpuls_Synth
         ins_dr (1, 18, 0x0000, 0x8000, 0x0000, 0xFFFF, 0x0000, 0x2020, 0x0000, 0x5555);
         ins_dr (0, 19, 0x0041, 0x0100, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
         ins_dr (1, 19, 0x2400, 0x0000, 0x0000, 0xAAAA, 0x4000, 0x0020, 0x0000, 0x0000);
+
+        // INSPIRATOR7-DSP: styles 20-25 (UK Garage, Salsa, Metal, Country, Blues, Ambient)
+        ins_set4 (2, 20, 9, 5, 8, 10);  ins_set4 (3, 20, 8, 10, 9, 8);
+        ins_set4 (2, 21, 9, 0, 9, 5);  ins_set4 (3, 21, 8, 9, 8, 10);
+        ins_set4 (2, 22, 0, 3, 5, 8);  ins_set4 (3, 22, 8, 10, 8, 0);
+        ins_set4 (2, 23, 8, 0, 5, 3);  ins_set4 (3, 23, 8, 5, 10, 2);
+        ins_set4 (2, 24, 8, 8, 8, 9);  ins_set4 (3, 24, 9, 8, 8, 10);
+        ins_set4 (2, 25, 11, 10, 0, 5);  ins_set4 (3, 25, 11, 10, 8, 11);
+        ins_set3 (0, 20, 0x0009, 0x0249, 0x4949);
+        ins_set3 (1, 20, 0x0401, 0x0C41, 0x4C45);
+        ins_set3 (0, 46, 0x0009, 0x0049, 0x2449);
+        ins_set3 (1, 46, 0x0401, 0x0441, 0x4C41);
+        ins_set3 (0, 72, 0x0041, 0x0449, 0x4C49);
+        ins_set3 (1, 72, 0x0001, 0x0401, 0x0C45);
+        ins_set3 (0, 21, 0x0049, 0x2449, 0x6D6D);
+        ins_set3 (1, 21, 0x0201, 0x0A49, 0x4A4B);
+        ins_set3 (0, 47, 0x0049, 0x0249, 0x2D2D);
+        ins_set3 (1, 47, 0x0141, 0x0949, 0x4949);
+        ins_set3 (0, 73, 0x0009, 0x0449, 0x1449);
+        ins_set3 (1, 73, 0x0201, 0x0A41, 0x4A49);
+        ins_set3 (0, 22, 0x0001, 0x1111, 0x5555);
+        ins_set3 (1, 22, 0x1111, 0x5555, 0x5555);
+        ins_set3 (0, 48, 0x0001, 0x0101, 0x1111);
+        ins_set3 (1, 48, 0x5555, 0x5555, 0xFFFF);
+        ins_set3 (0, 74, 0x0101, 0x1111, 0x5555);
+        ins_set3 (1, 74, 0x1111, 0x1515, 0x5555);
+        ins_set3 (0, 23, 0x0101, 0x1111, 0x5555);
+        ins_set3 (1, 23, 0x0101, 0x1111, 0x1515);
+        ins_set3 (0, 49, 0x0101, 0x1111, 0x1515);
+        ins_set3 (1, 49, 0x0101, 0x1111, 0x5555);
+        ins_set3 (0, 75, 0x0101, 0x5151, 0x5555);
+        ins_set3 (1, 75, 0x0101, 0x0111, 0x1515);
+        ins_set3 (0, 24, 0x0101, 0x0505, 0x5555);
+        ins_set3 (1, 24, 0x1111, 0x5555, 0x5D5D);
+        ins_set3 (0, 50, 0x0001, 0x0101, 0x0505);
+        ins_set3 (1, 50, 0x1111, 0x5555, 0x5555);
+        ins_set3 (0, 76, 0x0101, 0x1111, 0x5555);
+        ins_set3 (1, 76, 0x0101, 0x1111, 0x5555);
+        ins_set3 (0, 25, 0x0001, 0x0001, 0x0101);
+        ins_set3 (1, 25, 0x0001, 0x0001, 0x0101);
+        ins_set3 (0, 51, 0x0001, 0x0101, 0x0101);
+        ins_set3 (1, 51, 0x0001, 0x0101, 0x0101);
+        ins_set3 (0, 77, 0x0001, 0x0001, 0x0011);
+        ins_set3 (1, 77, 0x0001, 0x0011, 0x0101);
+        ins_dr (0, 20, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 20, 0x0020, 0x0480, 0x0000, 0xAAAA, 0x4000, 0x0200, 0x0000, 0x0000);
+        ins_dr (0, 21, 0x0111, 0x0000, 0x0000, 0x5555, 0x0000, 0x1449, 0x2424, 0x5555);
+        ins_dr (1, 21, 0x2000, 0x0000, 0x0000, 0xAAAA, 0x0000, 0x0220, 0x4848, 0xAAAA);
+        ins_dr (0, 22, 0x5555, 0x1010, 0x0000, 0x1111, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 22, 0xAAAA, 0x0000, 0x0000, 0x4444, 0x0000, 0x0000, 0x8888, 0x0000);
+        ins_dr (0, 23, 0x0101, 0x1010, 0x0000, 0x1111, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 23, 0x0404, 0x4040, 0x0000, 0x4444, 0x0000, 0x0200, 0x0000, 0x0000);
+        ins_dr (0, 24, 0x0101, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 24, 0x0400, 0x0040, 0x0000, 0xAAAA, 0x4000, 0x0000, 0x0000, 0x0000);
+        ins_dr (0, 25, 0x0001, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x1111);
+        ins_dr (1, 25, 0x0000, 0x0100, 0x0000, 0x0000, 0x0000, 0x2020, 0x0000, 0x4444);
 
         if (ins_lanePitchSet.at (0) == 0) ins_lanePitch.at (0) = 36;
         if (ins_lanePitchSet.at (1) == 0) ins_lanePitch.at (1) = 38;
@@ -22085,7 +22141,7 @@ processor Eisenpuls_Synth
             int cN = ins_chordAt (nbar, 0);
 
             int mask = 1;
-            if (tier >= 0) mask = ins_expandMask (ins_chordRh.at (ins_rhVar (b, 300) * 60 + ins_pStyle * 3 + tier));
+            if (tier >= 0) mask = ins_expandMask (ins_chordRh.at (ins_rhVar (b, 300) * 78 + ins_pStyle * 3 + tier));
             if (tier >= 0) mask = ins_syncopate (mask, b, 303);
             if (tier >= 1)
             {
@@ -22311,7 +22367,7 @@ processor Eisenpuls_Synth
                 int tier = 0;
                 if (ins_pDensity >= 67)      tier = 2;
                 else if (ins_pDensity >= 34) tier = 1;
-                int mask = ins_expandMask (ins_bassRh.at (ins_rhVar (b, 310) * 60 + ins_pStyle * 3 + tier));
+                int mask = ins_expandMask (ins_bassRh.at (ins_rhVar (b, 310) * 78 + ins_pStyle * 3 + tier));
                 mask = ins_syncopate (mask, b, 313);
                 if (mask == 0) mask = 1;
                 if (cB != cA) mask = mask | 1 | (1 << half);
@@ -23091,6 +23147,7 @@ processor Eisenpuls_Synth
     }
 
 
+    // INSPIRATOR7-DSP marker
     // INSPIRATOR6-DSP marker
     // INSPIRATOR5-DSP marker
     // ---- INSPIRATOR3-DSP: alternative generators ----
@@ -23698,7 +23755,7 @@ processor Eisenpuls_Synth
     }
 
     event param7001  (float v) { ins_pMode = ins_clampi (ins_roundi (v), 0, 4); ins_dirty = true; }
-    event param7002  (float v) { ins_pStyle = ins_clampi (ins_roundi (v), 0, 19); ins_dirty = true; }
+    event param7002  (float v) { ins_pStyle = ins_clampi (ins_roundi (v), 0, 25); ins_dirty = true; }
     event param7003  (float v) { ins_pKey = ins_clampi (ins_roundi (v), 0, 11); ins_dirty = true; }
     event param7004  (float v) { ins_pScale = ins_clampi (ins_roundi (v), 0, 6); ins_dirty = true; }
     event param7005  (float v) { ins_pSong = ins_clampi (ins_roundi (v), 0, 9999); ins_dirty = true; }
@@ -23719,9 +23776,9 @@ processor Eisenpuls_Synth
     // Lock Chords also carries the style the locked progression was written in: lock + 2 * style
     event param7011 (float v)
     {
-        int x = ins_clampi (ins_roundi (v), 0, 39);
+        int x = ins_clampi (ins_roundi (v), 0, 51);
         ins_pLock = x % 2;
-        ins_pChordStyle = ins_clampi (x / 2, 0, 19);
+        ins_pChordStyle = ins_clampi (x / 2, 0, 25);
         ins_dirty = true;
     }
     event param7012 (float v) { ins_setChord (0, v); }

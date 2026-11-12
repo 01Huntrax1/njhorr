@@ -15,7 +15,7 @@ namespace njo
         inline const int kScale[7][7] = { { 0, 2, 4, 5, 7, 9, 11 }, { 0, 2, 3, 5, 7, 8, 10 }, { 0, 2, 3, 5, 7, 9, 10 }, { 0, 2, 4, 5, 7, 9, 10 },
                                           { 0, 1, 3, 5, 7, 8, 10 }, { 0, 2, 4, 6, 7, 9, 11 }, { 0, 2, 3, 5, 7, 8, 11 } };
         inline const char* const kRoman[7] = { "I", "II", "III", "IV", "V", "VI", "VII" };
-        inline const char* const kStyleCode[20] = { "pop", "rock", "hiphop", "trap", "lofi", "house", "techno", "jazz", "neosoul", "reggaeton", "dnb", "afro", "funk", "dub", "disco", "bossa", "synthwave", "dubstep", "trance", "drill" };
+        inline const char* const kStyleCode[26] = { "pop", "rock", "hiphop", "trap", "lofi", "house", "techno", "jazz", "neosoul", "reggaeton", "dnb", "afro", "funk", "dub", "disco", "bossa", "synthwave", "dubstep", "trance", "drill", "ukg", "salsa", "metal", "country", "blues", "ambient" };
         inline const char* const kScaleCode[7] = { "maj", "min", "dor", "mix", "phr", "lyd", "hmin" };
         inline bool minorish (int scale) { return scale == 1 || scale == 2 || scale == 4 || scale == 6; }
 
@@ -403,7 +403,7 @@ namespace njo
         explicit InspPanel (Ctx& c)
             : ctx (c),
               modeG (c, 7001, 5, names ({ "CHORDS", "LEAD", "BASS", "ARP", "DRUMS" })),
-              styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub", "Disco", "Bossa Nova", "Synthwave", "Dubstep", "Trance", "Drill" })),
+              styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub", "Disco", "Bossa Nova", "Synthwave", "Dubstep", "Trance", "Drill", "UK Garage", "Salsa", "Metal", "Country", "Blues", "Ambient" })),
               genG (c, 7139, 3, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import" })),
               lockBars (c),
               keyG (c, 7003, 6, names ({ "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" })),
@@ -478,7 +478,7 @@ namespace njo
         juce::String makeCode() const
         {
             return juce::String (insp::kKeys[juce::jlimit (0, 11, juce::roundToInt (ctx.get (7003)))]) + "-" + insp::kScaleCode[juce::jlimit (0, 6, juce::roundToInt (ctx.get (7004)))] + "-"
-                   + insp::kStyleCode[juce::jlimit (0, 19, juce::roundToInt (ctx.get (7002)))] + "-" + juce::String (1 << juce::jlimit (0, 3, juce::roundToInt (ctx.get (7008)))) + "-" + juce::String (juce::roundToInt (ctx.get (7005)));
+                   + insp::kStyleCode[juce::jlimit (0, 25, juce::roundToInt (ctx.get (7002)))] + "-" + juce::String (1 << juce::jlimit (0, 3, juce::roundToInt (ctx.get (7008)))) + "-" + juce::String (juce::roundToInt (ctx.get (7005)));
         }
         // ---- MIDI import: file drop / chooser -> quantised notes -> DSP (Generator = Import), stored with the project ----
         bool isInterestedInFileDrag (const juce::StringArray& f) override { for (auto& n : f) if (n.endsWithIgnoreCase (".mid") || n.endsWithIgnoreCase (".midi")) return true; return false; }
@@ -520,7 +520,7 @@ namespace njo
             int k = -1, sc = -1, st = -1, b = -1;
             for (int i = 0; i < 12; ++i) if (p[0] == insp::kKeys[i]) k = i;
             for (int i = 0; i < 7; ++i) if (p[1] == insp::kScaleCode[i]) sc = i;
-            for (int i = 0; i < 20; ++i) if (p[2] == insp::kStyleCode[i]) st = i;
+            for (int i = 0; i < 26; ++i) if (p[2] == insp::kStyleCode[i]) st = i;
             for (int i = 0; i < 4; ++i) if (p[3].getIntValue() == (1 << i)) b = i;
             if (k < 0 || sc < 0 || st < 0 || b < 0) return;
             setP (7003, k); setP (7004, sc); setP (7002, st); setP (7008, b); setP (7005, juce::jlimit (0, 9999, p[4].getIntValue()));
@@ -623,7 +623,7 @@ namespace njo
                 auto lr = left.removeFromTop (12); labels.push_back ({ t, lr });
                 c.setBounds (left.removeFromTop (h)); left.removeFromTop (4);
             };
-            sect ("STYLE", 136, styleG);
+            sect ("STYLE", 160, styleG);
             sect ("KEY", 44, keyG);
             sect ("SCALE", 44, scaleG);
             {
