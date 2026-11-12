@@ -450,7 +450,7 @@ namespace njo
             : ctx (c),
               modeG (c, 7001, 5, names ({ "CHORDS", "LEAD", "BASS", "ARP", "DRUMS" })),
               styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub", "Disco", "Bossa Nova", "Synthwave", "Dubstep", "Trance", "Drill", "UK Garage", "Salsa", "Metal", "Country", "Blues", "Ambient", "Ska", "Amapiano", "Breakbeat", "Gospel", "Hardstyle", "Moombahton" })),
-              genG (c, 7139, 4, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute" })),
+              genG (c, 7139, 3, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute", "Trance" })),
               lockBars (c),
               keyG (c, 7003, 6, names ({ "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" })),
               scaleG (c, 7004, 4, names ({ "Major", "Minor", "Dorian", "Mixoly.", "Phrygi.", "Lydian", "Harm." })),
@@ -473,7 +473,14 @@ namespace njo
                 const int nv = (cur % 2) != 0 ? 0 : 1 + 2 * juce::roundToInt (ctx.get (7002));
                 ctx.begin (7011); ctx.set (7011, (float) nv); ctx.end (7011);
             };
-            randB.text = "RANDOM CHORDS"; randB.click = [this] { randomizeChords(); };
+            randB.text = "RANDOM CHORDS"; randB.click = [this]
+            {
+                juce::PopupMenu m;
+                static const char* al[6] = { "Mixed (random degrees and shapes)", "Circle of fifths", "Tonic pedal", "Trance loops", "Stepwise", "Colourful (7ths, 9ths, borrowed)" };
+                for (int i = 0; i < 6; ++i) m.addItem (i + 1, al[i]);
+                juce::Component::SafePointer<InspPanel> sp (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&randB), [sp] (int r) { if (sp != nullptr && r > 0) sp->randomizeChords (r - 1); });
+            };
             autoB.text = "AUTO"; autoB.click = [this] { for (int i = 0; i < 8; ++i) setP (7012 + i, (juce::roundToInt (ctx.get (7012 + i)) / 64) * 64); };
             extraB.text = "EXTRAS";
             extraB.click = [this] { extras = ! extras; extraB.accent = extras; refresh(); };
@@ -561,24 +568,32 @@ namespace njo
             importInfo = "imported pattern  -  " + juce::String ((int) n.grid.size()) + " notes, " + juce::String (n.bars) + " bars";
         }
         // new progression: a random degree and chord shape for every bar (the first bar likes the tonic), now and then a borrowed chord; the push flags stay
-        void randomizeChords()
+        void randomizeChords (int algo = 0)
         {
             auto& rnd = juce::Random::getSystemRandom();
             static const int degW[7] = { 30, 10, 8, 20, 20, 24, 3 };
             static const int shapeW[7] = { 40, 14, 14, 6, 8, 8, 10 };
+            static const int richW[7] = { 6, 10, 14, 4, 6, 6, 8 };
+            static const int loops[5][4] = { { 5, 3, 0, 4 }, { 0, 5, 2, 6 }, { 0, 4, 5, 3 }, { 3, 4, 5, 5 }, { 5, 4, 3, 4 } };
             auto pick = [&] (const int* w, int n) { int t = 0; for (int i = 0; i < n; ++i) t += w[i]; int r = rnd.nextInt (t); for (int i = 0; i < n; ++i) { if (r < w[i]) return i; r -= w[i]; } return 0; };
             const int bars = juce::jlimit (1, 8, ctx.be.ins.numBars);
+            int deg = rnd.nextInt (100) < 70 ? 0 : pick (degW, 7);
+            const int loop = rnd.nextInt (5), rot = rnd.nextInt (4);
             for (int i = 0; i < 8; ++i)
             {
                 const int pushBits = (juce::roundToInt (ctx.get (7012 + i)) / 64) * 64;
                 if (i >= bars) { setP (7012 + i, pushBits); continue; }
-                int v;
-                if (rnd.nextInt (100) < 10 && i > 0) v = 1 + rnd.nextInt (7) + 56;
-                else
+                int shape = pick (shapeW, 7), borrowed = -1;
+                switch (algo)
                 {
-                    int deg = (i == 0 && rnd.nextInt (100) < 70) ? 0 : pick (degW, 7);
-                    v = 1 + deg + 8 * pick (shapeW, 7);
+                    case 1: if (i > 0) deg = (deg + 3) % 7; if (deg == 6) deg = (deg + 3) % 7; break;                       // circle of fifths: every root a fifth below the last
+                    case 2: deg = (i % 2) == 0 ? 0 : pick (degW, 7); if ((i % 2) == 1 && deg == 0) deg = 3; break;          // tonic pedal on the odd bars
+                    case 3: deg = loops[loop][(i + rot) % 4]; shape = rnd.nextInt (100) < 70 ? 0 : pick (shapeW, 7); break; // classic trance loops
+                    case 4: if (i > 0) { deg = (deg + (rnd.nextBool() ? 1 : 6) + (rnd.nextInt (100) < 30 ? (rnd.nextBool() ? 1 : 6) : 0)) % 7; if (deg == 6) deg = 5; } break;
+                    case 5: deg = pick (degW, 7); shape = 1 + pick (richW, 6) % 6; if (i > 0 && rnd.nextInt (100) < 40) borrowed = rnd.nextInt (7); break;
+                    default: if (i > 0) deg = pick (degW, 7); if (i > 0 && rnd.nextInt (100) < 10) borrowed = rnd.nextInt (7); break;
                 }
+                const int v = borrowed >= 0 ? 1 + borrowed + 56 : 1 + deg + 8 * (shape % 7);
                 setP (7012 + i, pushBits + v);
             }
         }
@@ -687,7 +702,7 @@ namespace njo
             genB.setBounds (top.reduced (0, 2));
             b.removeFromTop (6);
             auto bottom = b.removeFromBottom (112);
-            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (50)); importB.setBounds (gl.removeFromTop (46).reduced (0, 2)); }
+            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (58)); importB.setBounds (gl.removeFromTop (38).reduced (0, 2)); }
             b.removeFromBottom (6);
             // left column
             auto left = b.removeFromLeft (258); b.removeFromLeft (8);

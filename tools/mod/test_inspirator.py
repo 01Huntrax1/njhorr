@@ -126,5 +126,12 @@ for st in (9, 13, 15, 21, 24, 29):
         outs = [render(BASE + mode(0, (2, st), (4, sc), (5, sd)), [60], hold=8.2, tag="gp%d" % sd) for sd in (11, 22, 33, 44, 55)]
         spread = max(rm(o - outs[0]) for o in outs[1:]) / max(rm(outs[0]), 1e-6)
         check("Style %d (%s): the Song Seed picks different progressions" % (st, sn), spread > 0.05, "%.2f" % spread)
+# ---- Trance generator (7139 = 8) ----
+for m, mn in enumerate(["Chords (pluck)", "Lead", "Bass", "Arp", "Drums"]):
+    differs("Trance generator changes %s" % mn, mode(m), mode(m, (139, 8)))
+for m, mn, vs in [(0, "pluck rhythm", (0, 4, 9)), (1, "lead kind", (0, 4, 8, 12)), (2, "bass type", (0, 1, 2, 3)), (3, "arp pattern", (0, 5, 11))]:
+    for v in vs[1:]:
+        differs("Trance %s: variant %d differs from variant %d" % (mn, v, vs[0]), mode(m, (139, 8), (140, vs[0])), mode(m, (139, 8), (140, v)))
+differs("Trance bass: octave figure changes the line", mode(2, (139, 8)), mode(2, (139, 8), (140, 4)))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

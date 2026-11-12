@@ -1057,7 +1057,7 @@ const OSC_SPEC_ROWS = [
     [7136, "Insp Max Leap", 1, 12, 12, "", "knb", null, 1, "Max Leap", null],
     [7137, "Insp Mutate", 0, 100, 0, "", "knb", null, 1, "Mutate", null],
     [7138, "Insp Melody Degree", 0, 7, 0, "", "sel", ["Free", "I", "II", "III", "IV", "V", "VI", "VII"], 1, "Degree", null],
-    [7139, "Insp Generator", 0, 7, 0, "", "sel", ["Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute"], 1, "Generator", null],
+    [7139, "Insp Generator", 0, 8, 0, "", "sel", ["Classic", "Euclid", "Markov", "Cellular", "L-System", "Import", "Walk", "Permute", "Trance"], 1, "Generator", null],
     [7140, "Insp Gen Variant", 0, 15, 0, "", "knb", null, 1, "Variant", null],
     [7141, "Insp Chord Bass", 0, 2, 0, "", "sel", ["Off", "Root", "Root+Oct"], 1, "Chord Bass", null],
     [7142, "Insp Drum Chance", 0, 100, 100, "", "knb", null, 1, "Chance", null],
