@@ -86,5 +86,13 @@ seg = slice(int(1.2 * RATE), int(3.5 * RATE))
 ref = render_live(mode(1), False, 1, "lkr"); unl = render_live(mode(1), False, 77, "lku"); lck = render_live(mode(1), True, 77, "lkl")
 check("Seed change without lock changes the pattern", rm(unl[seg] - ref[seg]) > 0.1 * rm(ref[seg]))
 check("Locked bars survive a seed change", rm(lck[seg] - ref[seg]) < 0.02 * rm(ref[seg]) + 1e-4, "%.4f" % (rm(lck[seg] - ref[seg]) / max(rm(ref[seg]), 1e-6)))
+# ---- generators (7139/7140) ----
+for g, nm in [(1, "Euclid"), (2, "Markov"), (3, "Cellular"), (4, "L-System")]:
+    for m, mn in [(1, "Lead"), (2, "Bass"), (3, "Arp"), (4, "Drums")]:
+        differs("%s generator changes %s" % (nm, mn), mode(m), mode(m, (139, g)))
+differs("Generator variant changes Euclid lead", mode(1, (139, 1)), mode(1, (139, 1), (140, 5)))
+differs("Generator variant changes Markov lead", mode(1, (139, 2)), mode(1, (139, 2), (140, 2)))
+differs("Generator variant changes Cellular lead", mode(1, (139, 3)), mode(1, (139, 3), (140, 1)))
+differs("Generator variant changes L-System lead", mode(1, (139, 4)), mode(1, (139, 4), (140, 1)))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

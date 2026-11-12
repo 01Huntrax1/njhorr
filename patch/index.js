@@ -1057,6 +1057,8 @@ const OSC_SPEC_ROWS = [
     [7136, "Insp Max Leap", 1, 12, 12, "", "knb", null, 1, "Max Leap", null],
     [7137, "Insp Mutate", 0, 100, 0, "", "knb", null, 1, "Mutate", null],
     [7138, "Insp Melody Degree", 0, 7, 0, "", "sel", ["Free", "I", "II", "III", "IV", "V", "VI", "VII"], 1, "Degree", null],
+    [7139, "Insp Generator", 0, 5, 0, "", "sel", ["Classic", "Euclid", "Markov", "Cellular", "L-System", "Import"], 1, "Generator", null],
+    [7140, "Insp Gen Variant", 0, 15, 0, "", "knb", null, 1, "Variant", null],
     [1045, "OSC 1 Pre-Matrix Order", 0, 5, 0, "", "sel", ["Filter > Dist > Reso", "Dist > Filter > Reso", "Filter > Reso > Dist", "Reso > Filter > Dist", "Dist > Reso > Filter", "Reso > Dist > Filter"], 1, "Order", null],
     [1056, "OSC 1 Resonator On", 0, 1, 0, "", "btn", ["Off", "On"], 1, "On", null],
     [1057, "OSC 1 Resonator Model", 0, 8, 0, "", "sel", ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"], 1, "Model", null],
