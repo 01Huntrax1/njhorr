@@ -215,10 +215,15 @@ int main (int argc, char** argv)
         if (auto in = mf.createInputStream()) { back.readFrom (*in); }
         if (back.getNumTracks() > 0) { auto* t = back.getTrack (0); for (int i = 0; i < t->getNumEvents(); ++i) { if (t->getEventPointer (i)->message.isNoteOn()) ++nOn; endT = juce::jmax (endT, t->getEventTime (i)); } }
         std::printf ("midi export: %s, %d notes (expected %d), ticks/q %d, length %.0f\n", mf.getFullPathName().toRawUTF8(), nOn, be.ins.count, back.getTimeFormat(), endT);
+        { njo::insp::ImportedNotes im; const bool ok = njo::insp::readMidiFile (mf, 384, im); njo::insp::sendImport (be, im);
+          std::printf ("midi import: ok %d, %d notes (expected %d), %d bars, first grid %d pitch %d\n", (int) ok, (int) im.grid.size(), be.ins.count, im.bars, im.grid.empty() ? -1 : im.grid[0], im.pitch.empty() ? -1 : im.pitch[0]); }
     }
     ed.seqArpPage().showInspirator (true); be.setParam (7000, 1.0f); be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_chords.png"), scale);
     be.setParam (7001, 4.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_drums.png"), scale);
     be.setParam (7001, 1.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_lead.png"), scale);
+    be.setParam (7129, 5.0f); be.setParam (7002, 12.0f); ed.seqArpPage().inspExtras (true); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_lead.png"), scale);
+    be.setParam (7001, 0.0f); pump(); pump(); save (ed, dir.getChildFile ("insp_extras_chords.png"), scale);
+    ed.seqArpPage().inspExtras (false); be.setParam (7129, 0.0f); be.setParam (7002, 0.0f);
     ed.seqArpPage().showInspirator (false);
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix

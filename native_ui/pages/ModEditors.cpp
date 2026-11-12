@@ -1342,6 +1342,7 @@ namespace njo
         }
         paramChanged (ARP_BASE + 1, c.get (ARP_BASE + 1));
     }
+    void SeqArpPage::inspExtras (bool b) { impl->insp.extras = b; impl->insp.extraB.accent = b; impl->insp.refresh(); }
     void SeqArpPage::showInspirator (bool b) { if (impl->showView) impl->showView (b); }
     SeqArpPage::~SeqArpPage() { if (impl->ctxp) impl->ctxp->removeListener (this); }
     void SeqArpPage::paramChanged (int num, float v)

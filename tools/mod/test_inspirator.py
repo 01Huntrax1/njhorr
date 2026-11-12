@@ -103,5 +103,12 @@ c = render(BASE + imp("up", (137, 80)), [60], tag="im2")
 check("Mutate varies the imported pattern", rm(c - a) > 0.05 * rm(a))
 m1 = render(BASE + ["insimp up"] + mode(1, (139, 2), (140, 3)), [60], tag="im3"); m2 = render(BASE + ["insimp down"] + mode(1, (139, 2), (140, 3)), [60], tag="im4")
 check("Markov Custom corpus is trained by the import", np.isfinite(m1).all() and rm(m1 - m2) > 0.02 * rm(m1))
+# ---- styles 9-13 ----
+for st, nm in [(9, "Reggaeton"), (10, "Drum & Bass"), (11, "Afrobeats"), (12, "Funk"), (13, "Dub")]:
+    for m, mn in enumerate(["Chords", "Lead", "Bass", "Arp", "Drums"]):
+        a = render(BASE + mode(m, (2, st)), [60], hold=3.0, tag="ns")
+        check("%s / %s sounds, finite" % (nm, mn), np.isfinite(a).all() and rm(a[int(0.5 * RATE):int(2.8 * RATE)]) > 0.005 and np.abs(a).max() < 6.0)
+    x = render(BASE + mode(4, (2, st)), [60], tag="nsa"); y = render(BASE + mode(4, (2, 0)), [60], tag="nsb")
+    check("%s drums differ from Pop" % nm, rm(x - y) > 0.1 * rm(y))
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

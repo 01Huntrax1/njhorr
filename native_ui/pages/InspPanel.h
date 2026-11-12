@@ -1,5 +1,5 @@
 // INSPIRATOR page of the SEQ / ARP group: mode tabs, seeds, style / key / scale buttons, chord cards, a piano roll of the generated
-// pattern (streamed by the DSP, see Backend::insPush), the knob row and the MIDI In switch.  Parameters 7000-7128.
+// pattern (streamed by the DSP, see Backend::insPush), the knob row and the MIDI In switch.  Parameters 7000-7140 (7129-7140: locks, voicing, generators, import).
 #pragma once
 #include "ModUi.h"
 #include <map>
@@ -15,7 +15,7 @@ namespace njo
         inline const int kScale[7][7] = { { 0, 2, 4, 5, 7, 9, 11 }, { 0, 2, 3, 5, 7, 8, 10 }, { 0, 2, 3, 5, 7, 9, 10 }, { 0, 2, 4, 5, 7, 9, 10 },
                                           { 0, 1, 3, 5, 7, 8, 10 }, { 0, 2, 4, 6, 7, 9, 11 }, { 0, 2, 3, 5, 7, 8, 11 } };
         inline const char* const kRoman[7] = { "I", "II", "III", "IV", "V", "VI", "VII" };
-        inline const char* const kStyleCode[9] = { "pop", "rock", "hiphop", "trap", "lofi", "house", "techno", "jazz", "neosoul" };
+        inline const char* const kStyleCode[14] = { "pop", "rock", "hiphop", "trap", "lofi", "house", "techno", "jazz", "neosoul", "reggaeton", "dnb", "afro", "funk", "dub" };
         inline const char* const kScaleCode[7] = { "maj", "min", "dor", "mix", "phr", "lyd", "hmin" };
         inline bool minorish (int scale) { return scale == 1 || scale == 2 || scale == 4 || scale == 6; }
 
@@ -186,6 +186,94 @@ namespace njo
             void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
         };
 
+        // lock toggles above the roll: one button per bar (bit b of parameter 7129)
+        struct LockBars : juce::Component, Ctx::Listener
+        {
+            Ctx& ctx;
+            explicit LockBars (Ctx& c) : ctx (c) { ctx.addListener (this); }
+            ~LockBars() override { ctx.removeListener (this); }
+            void paramChanged (int n, float) override { if (n == 7129) repaint(); }
+            int count() const { return juce::jlimit (1, 8, ctx.be.ins.numBars); }
+            juce::Rectangle<int> cell (int i) const { const int n = count(), w = getWidth() / n; return { i * w, 0, w - 6, getHeight() }; }
+            void paint (juce::Graphics& g) override
+            {
+                const int mask = juce::roundToInt (ctx.get (7129));
+                for (int i = 0; i < count(); ++i)
+                {
+                    const bool on = ((mask >> i) & 1) != 0;
+                    auto r = cell (i);
+                    paintButton (g, r.toFloat(), on, false, false, 3.0f);
+                    g.setColour (on ? juce::Colours::white : dim); g.setFont (font (8.5f, true));
+                    g.drawText (juce::String (on ? "BAR " : "lock bar ") + juce::String (i + 1) + (on ? " LOCKED" : ""), r, juce::Justification::centred);
+                }
+            }
+            void mouseUp (const juce::MouseEvent& e) override
+            {
+                for (int i = 0; i < count(); ++i)
+                    if (cell (i).contains (e.getPosition()))
+                    {
+                        const int mask = juce::roundToInt (ctx.get (7129)) ^ (1 << i);
+                        ctx.begin (7129); ctx.set (7129, (float) mask); ctx.end (7129);
+                    }
+            }
+        };
+
+        // a dropped MIDI file as 96-ticks-per-quarter notes: pairs (grid * 128 + pitch, len * 128 + vel), sorted by time
+        struct ImportedNotes { std::vector<int> grid, len, pitch, vel; int bars = 1; };
+        inline bool readMidiFile (const juce::File& f, int barTicks, ImportedNotes& out)
+        {
+            juce::FileInputStream in (f);
+            juce::MidiFile mf;
+            if (! in.openedOk() || ! mf.readFrom (in)) return false;
+            const int tpq = mf.getTimeFormat();
+            if (tpq <= 0) return false;
+            struct N { int g, l, p, v; };
+            std::vector<N> v;
+            for (int t = 0; t < mf.getNumTracks(); ++t)
+            {
+                juce::MidiMessageSequence seq (*mf.getTrack (t));
+                seq.updateMatchedPairs();
+                for (int i = 0; i < seq.getNumEvents(); ++i)
+                {
+                    auto* e = seq.getEventPointer (i);
+                    if (! e->message.isNoteOn() || e->noteOffObject == nullptr) continue;
+                    const int g = (int) std::lround (e->message.getTimeStamp() * 96.0 / tpq / 6.0) * 6;
+                    const int l = juce::jmax (6, (int) std::lround ((e->noteOffObject->message.getTimeStamp() - e->message.getTimeStamp()) * 96.0 / tpq));
+                    v.push_back ({ g, juce::jmin (l, 1000), e->message.getNoteNumber(), juce::jlimit (1, 127, (int) e->message.getVelocity()) });
+                }
+            }
+            if (v.empty()) return false;
+            std::stable_sort (v.begin(), v.end(), [] (const N& a, const N& b) { return a.g < b.g; });
+            int lastOnset = 0;
+            for (auto& n : v) lastOnset = juce::jmax (lastOnset, n.g);
+            const int needBars = lastOnset / juce::jmax (1, barTicks) + 1;
+            out.bars = needBars <= 1 ? 1 : needBars <= 2 ? 2 : needBars <= 4 ? 4 : 8;
+            for (auto& n : v)
+                if (n.g < out.bars * barTicks && (int) out.grid.size() < 512)
+                { out.grid.push_back (n.g); out.len.push_back (n.l); out.pitch.push_back (n.p); out.vel.push_back (n.v); }
+            return ! out.grid.empty();
+        }
+
+        inline void sendImport (Backend& be, const ImportedNotes& n)
+        {
+            const int total = (int) n.grid.size();
+            for (int off = 0; off < total; off += 128)
+            {
+                const int cnt = juce::jmin (128, total - off);
+                juce::Array<juce::var> d;
+                for (int i = 0; i < 128; ++i)
+                {
+                    const bool ok = i < cnt; const int k = off + i;
+                    d.add ((double) (ok ? n.grid[(size_t) k] * 128 + n.pitch[(size_t) k] : 0));
+                    d.add ((double) (ok ? n.len[(size_t) k] * 128 + n.vel[(size_t) k] : 0));
+                }
+                auto* o = new juce::DynamicObject();
+                o->setProperty ("offset", off); o->setProperty ("count", cnt); o->setProperty ("total", total); o->setProperty ("bars", n.bars);
+                o->setProperty ("data", juce::var (d));
+                be.sendEvent ("insImport", juce::var (o));
+            }
+        }
+
         struct ChordCards : juce::Component
         {
             Ctx& ctx; int hover = -1;
@@ -299,10 +387,12 @@ namespace njo
         };
     }
 
-    struct InspPanel : juce::Component, Ctx::Listener, juce::Timer
+    struct InspPanel : juce::Component, Ctx::Listener, juce::Timer, juce::FileDragAndDropTarget
     {
         Ctx& ctx; juce::OwnedArray<ParamWidget> w; std::map<int, ParamWidget*> byId;
-        insp::SelGrid modeG, styleG, keyG, scaleG, barsG, rateG, inG, onG;
+        insp::SelGrid modeG, styleG, keyG, scaleG, barsG, rateG, inG, onG, genG;
+        insp::LockBars lockBars; insp::Action extraB, importB; juce::String importInfo; bool extras = false, fileHover = false;
+        std::vector<int> extraIds;
         insp::SeedBox song, part, vari;
         insp::Action lockB, genB, copyB, pasteB; insp::MidiDrag dragB; bool dragging = false;
         insp::ChordCards cards; insp::Roll roll; juce::TextEditor code;
@@ -313,7 +403,9 @@ namespace njo
         explicit InspPanel (Ctx& c)
             : ctx (c),
               modeG (c, 7001, 5, names ({ "CHORDS", "LEAD", "BASS", "ARP", "DRUMS" })),
-              styleG (c, 7002, 3, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul" })),
+              styleG (c, 7002, 4, names ({ "Pop", "Rock", "Hip-Hop", "Trap", "Lo-Fi", "House", "Techno", "Jazz", "Neo-Soul", "Reggaeton", "D&B", "Afrobeats", "Funk", "Dub" })),
+              genG (c, 7139, 3, names ({ "Classic", "Euclid", "Markov", "Cellular", "L-System", "Import" })),
+              lockBars (c),
               keyG (c, 7003, 6, names ({ "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" })),
               scaleG (c, 7004, 4, names ({ "Major", "Minor", "Dorian", "Mixoly.", "Phrygi.", "Lydian", "Harm." })),
               barsG (c, 7008, 4, names ({ "1", "2", "4", "8" })),
@@ -324,10 +416,10 @@ namespace njo
               cards (c), roll (c)
         {
             ctx.addListener (this);
-            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f;
+            modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 9.0f; styleG.fs = 8.5f;
             for (auto* x : { (juce::Component*) &modeG, (juce::Component*) &styleG, (juce::Component*) &keyG, (juce::Component*) &scaleG, (juce::Component*) &barsG, (juce::Component*) &rateG,
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
-                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
+                             (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
             lockB.click = [this]
             {
@@ -335,6 +427,17 @@ namespace njo
                 const int nv = (cur % 2) != 0 ? 0 : 1 + 2 * juce::roundToInt (ctx.get (7002));
                 ctx.begin (7011); ctx.set (7011, (float) nv); ctx.end (7011);
             };
+            extraB.text = "EXTRAS";
+            extraB.click = [this] { extras = ! extras; extraB.accent = extras; refresh(); };
+            importB.text = "IMPORT MIDI"; importB.sub = "or drop a .mid file here";
+            importB.click = [this]
+            {
+                auto fc = std::make_shared<juce::FileChooser> ("Import a MIDI file", juce::File(), "*.mid;*.midi");
+                juce::Component::SafePointer<InspPanel> sp (this);
+                fc->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [sp, fc] (const juce::FileChooser& r)
+                { if (sp != nullptr && r.getResult().existsAsFile()) sp->importFile (r.getResult()); });
+            };
+            { auto st = ctx.be.getStored ("insImport"); if (st.isArray()) restoreImport (st); }
             dragB.setHelp();
             auto startDrag = [this]
             {
@@ -356,6 +459,7 @@ namespace njo
             code.onReturnKey = [this] { applyCode (code.getText()); };
             static const int ids[] = { 7009, 7114, 7089 };
             for (int id : ids) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
+            for (int id : { 7130, 7131, 7132, 7133, 7134, 7135, 7136, 7137, 7138, 7140 }) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             for (int id = 7044; id <= 7087; ++id) { auto* x = w.add (makeWidget (c, id, true).release()); x->setLook (true); byId[id] = x; addChildComponent (x); }
             static const char* lanes[12] = { "Kick", "Snare", "Clap", "Hat", "Open", "Rim", "Tom", "Ride", "Pedal", "Low", "High", "Crash" };
             for (int l = 0; l < 12; ++l)
@@ -374,7 +478,39 @@ namespace njo
         juce::String makeCode() const
         {
             return juce::String (insp::kKeys[juce::jlimit (0, 11, juce::roundToInt (ctx.get (7003)))]) + "-" + insp::kScaleCode[juce::jlimit (0, 6, juce::roundToInt (ctx.get (7004)))] + "-"
-                   + insp::kStyleCode[juce::jlimit (0, 8, juce::roundToInt (ctx.get (7002)))] + "-" + juce::String (1 << juce::jlimit (0, 3, juce::roundToInt (ctx.get (7008)))) + "-" + juce::String (juce::roundToInt (ctx.get (7005)));
+                   + insp::kStyleCode[juce::jlimit (0, 13, juce::roundToInt (ctx.get (7002)))] + "-" + juce::String (1 << juce::jlimit (0, 3, juce::roundToInt (ctx.get (7008)))) + "-" + juce::String (juce::roundToInt (ctx.get (7005)));
+        }
+        // ---- MIDI import: file drop / chooser -> quantised notes -> DSP (Generator = Import), stored with the project ----
+        bool isInterestedInFileDrag (const juce::StringArray& f) override { for (auto& n : f) if (n.endsWithIgnoreCase (".mid") || n.endsWithIgnoreCase (".midi")) return true; return false; }
+        void fileDragEnter (const juce::StringArray&, int, int) override { fileHover = true; repaint(); }
+        void fileDragExit (const juce::StringArray&) override { fileHover = false; repaint(); }
+        void filesDropped (const juce::StringArray& f, int, int) override { fileHover = false; for (auto& n : f) if (n.endsWithIgnoreCase (".mid") || n.endsWithIgnoreCase (".midi")) { importFile (juce::File (n)); break; } repaint(); }
+        int barTicks() const { return juce::jmax (1, ctx.be.ins.stepsBar) * 24; }
+        void applyImport (const insp::ImportedNotes& n, const juce::String& name)
+        {
+            insp::sendImport (ctx.be, n);
+            juce::Array<juce::var> a; a.add (n.bars);
+            for (size_t i = 0; i < n.grid.size(); ++i) { a.add (n.grid[i]); a.add (n.len[i]); a.add (n.pitch[i]); a.add (n.vel[i]); }
+            ctx.be.setStored ("insImport", juce::var (a));
+            importInfo = name + "  -  " + juce::String ((int) n.grid.size()) + " notes, " + juce::String (n.bars) + " bar" + (n.bars > 1 ? "s" : "");
+            int bi = n.bars == 1 ? 0 : n.bars == 2 ? 1 : n.bars == 4 ? 2 : 3;
+            setP (7008, bi); setP (7139, 5);
+            repaint();
+        }
+        void importFile (const juce::File& f)
+        {
+            insp::ImportedNotes n;
+            if (! insp::readMidiFile (f, barTicks(), n)) { importInfo = "could not read " + f.getFileName(); repaint(); return; }
+            applyImport (n, f.getFileName());
+        }
+        void restoreImport (const juce::var& a)
+        {
+            if (a.size() < 5) return;
+            insp::ImportedNotes n; n.bars = juce::jlimit (1, 8, (int) a[0]);
+            for (int i = 1; i + 3 < a.size(); i += 4) { n.grid.push_back ((int) a[i]); n.len.push_back ((int) a[i + 1]); n.pitch.push_back ((int) a[i + 2]); n.vel.push_back ((int) a[i + 3]); }
+            if (n.grid.empty()) return;
+            insp::sendImport (ctx.be, n);
+            importInfo = "imported pattern  -  " + juce::String ((int) n.grid.size()) + " notes, " + juce::String (n.bars) + " bars";
         }
         void setP (int id, int v) { ctx.begin (id); ctx.set (id, (float) v); ctx.end (id); }
         void applyCode (const juce::String& t)
@@ -384,7 +520,7 @@ namespace njo
             int k = -1, sc = -1, st = -1, b = -1;
             for (int i = 0; i < 12; ++i) if (p[0] == insp::kKeys[i]) k = i;
             for (int i = 0; i < 7; ++i) if (p[1] == insp::kScaleCode[i]) sc = i;
-            for (int i = 0; i < 9; ++i) if (p[2] == insp::kStyleCode[i]) st = i;
+            for (int i = 0; i < 14; ++i) if (p[2] == insp::kStyleCode[i]) st = i;
             for (int i = 0; i < 4; ++i) if (p[3].getIntValue() == (1 << i)) b = i;
             if (k < 0 || sc < 0 || st < 0 || b < 0) return;
             setP (7003, k); setP (7004, sc); setP (7002, st); setP (7008, b); setP (7005, juce::jlimit (0, 9999, p[4].getIntValue()));
@@ -396,8 +532,16 @@ namespace njo
             std::vector<int> ids = { 7009, 7114, 7089 };
             if (m < 4) { for (int k : { 0, 1, 2, 3, 4, 5, 8, 6, 7 }) ids.push_back (7044 + 9 * m + k); }
             else for (int id : { 7080, 7081, 7082, 7086, 7087 }) ids.push_back (id);
+            extraIds.clear();
+            extraIds.push_back (7140);
+            if (m == 0) for (int id : { 7130, 7131, 7132, 7133 }) extraIds.push_back (id);
+            if (m == 1) for (int id : { 7135, 7136, 7138 }) extraIds.push_back (id);
+            if (m == 2 || m == 4) extraIds.push_back (7134);
+            extraIds.push_back (7137);
+            if (extras) ids = extraIds;
             knobIds = ids;
             for (int id : ids) byId[id]->setVisible (true);
+            genG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4);
             cards.setVisible (m != 4);
             if (m == 4) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
             if (m < 4)
@@ -419,6 +563,7 @@ namespace njo
             if (n == 7001) refresh();
             else if (n == 7002 || n == 7003 || n == 7004 || n == 7005 || n == 7008) code.setText (makeCode(), false);
             if (n == 7011 || n == 7002) { resized(); lockB.repaint(); }
+            if (n == 7139) repaint();
         }
         void timerCallback() override
         {
@@ -435,6 +580,12 @@ namespace njo
             for (auto& t : labels) { g.setColour (dim); g.setFont (font (8.0f, true)); g.drawText (t.text, t.r, juce::Justification::centredLeft); }
             g.setColour (dim); g.setFont (font (8.0f, true));
             g.drawText ("MIDI IN", midiLbl, juce::Justification::centredLeft);
+            if (extras)
+            {
+                g.drawText ("GENERATOR", genG.getX(), genG.getY() - 11, 120, 10, juce::Justification::centredLeft);
+                if (importInfo.isNotEmpty()) { g.setColour (ink); g.drawText (importInfo, importB.getRight() - 120, importB.getY(), 120, 12, juce::Justification::centredRight); }
+            }
+            if (fileHover) { g.setColour (red.withAlpha (0.18f)); g.fillRect (getLocalBounds()); g.setColour (red); g.drawRect (getLocalBounds(), 2); g.setFont (impact (22.0f)); g.drawText ("DROP MIDI FILE TO IMPORT", getLocalBounds(), juce::Justification::centred); }
             if (mode() == 4)
             {
                 static const char* lanes[12] = { "KICK", "SNARE", "CLAP", "HAT", "O.HAT", "RIM", "M.TOM", "RIDE", "PEDAL", "L.TOM", "H.TOM", "CRASH" };
@@ -449,7 +600,8 @@ namespace njo
             labels.clear();
             auto head = b.removeFromTop (20);
             onG.setBounds (head.removeFromRight (120).withTrimmedTop (0)); head.removeFromRight (8);
-            dragB.setBounds (head.removeFromRight (110).reduced (0, 1));
+            dragB.setBounds (head.removeFromRight (110).reduced (0, 1)); head.removeFromRight (6);
+            extraB.setBounds (head.removeFromRight (150).reduced (0, 1));
             b.removeFromTop (2);
             auto top = b.removeFromTop (60);
             modeG.setBounds (top.removeFromLeft (400)); top.removeFromLeft (6);
@@ -462,6 +614,7 @@ namespace njo
             genB.setBounds (top.reduced (0, 2));
             b.removeFromTop (6);
             auto bottom = b.removeFromBottom (112);
+            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (50)); importB.setBounds (gl.removeFromTop (46).reduced (0, 2)); }
             b.removeFromBottom (6);
             // left column
             auto left = b.removeFromLeft (258); b.removeFromLeft (8);
@@ -470,9 +623,9 @@ namespace njo
                 auto lr = left.removeFromTop (12); labels.push_back ({ t, lr });
                 c.setBounds (left.removeFromTop (h)); left.removeFromTop (4);
             };
-            sect ("STYLE", 90, styleG);
-            sect ("KEY", 58, keyG);
-            sect ("SCALE", 58, scaleG);
+            sect ("STYLE", 112, styleG);
+            sect ("KEY", 44, keyG);
+            sect ("SCALE", 44, scaleG);
             {
                 auto lr = left.removeFromTop (12); labels.push_back ({ "BARS", lr.removeFromLeft (130) }); labels.push_back ({ "CHORD RATE", lr });
                 auto row = left.removeFromTop (28); left.removeFromTop (4);
@@ -498,6 +651,7 @@ namespace njo
                     for (int k = 0; k < 3; ++k) byId[ids[k]]->setBounds (col.removeFromTop (52).reduced (0, 0));
                 }
             }
+            if (m != 4) { lockBars.setBounds (b.removeFromTop (16)); b.removeFromTop (3); }
             roll.setBounds (b);
             // bottom: knobs + MIDI IN
             auto mi = bottom.removeFromRight (176); bottom.removeFromRight (8);

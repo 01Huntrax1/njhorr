@@ -13,7 +13,7 @@ processor Eisenpuls_Synth
     output event int insPos;
     input event float param7000 [[ name: "Inspirator On", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7001 [[ name: "Insp Mode", min: 0.0, max: 4.0, init: 0.0, step: 1.0, text: "Chords|Lead|Bass|Arp|Drums", automatable: false ]];
-    input event float param7002 [[ name: "Insp Style", min: 0.0, max: 8.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul", automatable: false ]];
+    input event float param7002 [[ name: "Insp Style", min: 0.0, max: 13.0, init: 0.0, step: 1.0, text: "Pop|Rock|Hip-Hop|Trap|Lo-Fi|House|Techno|Jazz|Neo-Soul|Reggaeton|Drum & Bass|Afrobeats|Funk|Dub", automatable: false ]];
     input event float param7003 [[ name: "Insp Key", min: 0.0, max: 11.0, init: 0.0, step: 1.0, text: "C|C#|D|Eb|E|F|F#|G|Ab|A|Bb|B", automatable: false ]];
     input event float param7004 [[ name: "Insp Scale", min: 0.0, max: 6.0, init: 0.0, step: 1.0, text: "Major|Minor|Dorian|Mixolydian|Phrygian|Lydian|Harm Minor", automatable: false ]];
     input event float param7005 [[ name: "Insp Song Seed", min: 0.0, max: 9999.0, init: 1234.0, step: 1.0, automatable: false ]];
@@ -22,7 +22,7 @@ processor Eisenpuls_Synth
     input event float param7008 [[ name: "Insp Bars", min: 0.0, max: 3.0, init: 2.0, step: 1.0, text: "1|2|4|8", automatable: false ]];
     input event float param7009 [[ name: "Insp Swing", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7010 [[ name: "Insp MIDI In", min: 0.0, max: 2.0, init: 0.0, step: 1.0, text: "Transpose|Hold|Off", automatable: false ]];
-    input event float param7011 [[ name: "Insp Lock Chords", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7011 [[ name: "Insp Lock Chords", min: 0.0, max: 27.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7012 [[ name: "Insp Chord Bar 1", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7013 [[ name: "Insp Chord Bar 2", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7014 [[ name: "Insp Chord Bar 3", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
@@ -140,9 +140,23 @@ processor Eisenpuls_Synth
     input event float param7126 [[ name: "Insp Crash Note", min: 0.0, max: 127.0, init: 49.0, step: 1.0, automatable: false ]];
     input event float param7127 [[ name: "Insp Chord Rate", min: 0.0, max: 2.0, init: 1.0, step: 1.0, text: "Half|Normal|Double", automatable: false ]];
     input event float param7128 [[ name: "Insp Fill Every", min: 0.0, max: 3.0, init: 2.0, step: 1.0, text: "Off|2 Bars|4 Bars|8 Bars", automatable: false ]];
+    // INSPIRATOR2-DSP
+    input event float param7129 [[ name: "Insp Lock Bars", min: 0.0, max: 255.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7130 [[ name: "Insp Inversion", min: 0.0, max: 3.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7131 [[ name: "Insp Spread", min: 0.0, max: 2.0, init: 0.0, step: 1.0, text: "Close|Open|Wide", automatable: false ]];
+    input event float param7132 [[ name: "Insp Strum", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7133 [[ name: "Insp Figure", min: 0.0, max: 4.0, init: 0.0, step: 1.0, text: "Block|Up|Down|Up-Down|Alberti", automatable: false ]];
+    input event float param7134 [[ name: "Insp Ghost Notes", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7135 [[ name: "Insp Chord Pull", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7136 [[ name: "Insp Max Leap", min: 1.0, max: 12.0, init: 12.0, step: 1.0, automatable: false ]];
+    input event float param7137 [[ name: "Insp Mutate", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7138 [[ name: "Insp Melody Degree", min: 0.0, max: 7.0, init: 0.0, step: 1.0, text: "Free|I|II|III|IV|V|VI|VII", automatable: false ]];
+    input event float param7139 [[ name: "Insp Generator", min: 0.0, max: 5.0, init: 0.0, step: 1.0, text: "Classic|Euclid|Markov|Cellular|L-System|Import", automatable: false ]];
+    input event float param7140 [[ name: "Insp Gen Variant", min: 0.0, max: 15.0, init: 0.0, step: 1.0, automatable: false ]];
     output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
+    input event InsImportChunk insImport;
     input event LfoShapeChunk lfoShapeLoad;
     input event BankChunk wtBankLoad;
     input event LfoShapeChunk frqShapeLoad;   // drawn curve of a Freq modulator (256 points, 0..1)
@@ -4998,6 +5012,16 @@ processor Eisenpuls_Synth
     // ---------------- WAVETABLE UNISON (per wavetable: voices, detune, random phase) ----------------
 
     // ---------------- SYNTH SAMPLE LOADER TYPE ----------------
+    // INSPIRATOR4-DSP
+    struct InsImportChunk
+    {
+        int        offset;
+        int        count;
+        int        total;
+        int        bars;
+        float[256] data;
+    }
+
     struct LfoShapeChunk
     {
         int        lfo;
@@ -21155,14 +21179,14 @@ processor Eisenpuls_Synth
 
     // ---- Tables ------------------------------------------------------------
     int[49] ins_scaleTab;
-    int[32] ins_progMaj;
-    int[32] ins_progMin;
-    int[36] ins_selMaj;
-    int[36] ins_selMin;
-    int[81] ins_chordRh;
-    int[81] ins_bassRh;
-    int[72] ins_drumBase;
-    int[72] ins_drumExtra;
+    int[48] ins_progMaj;
+    int[48] ins_progMin;
+    int[56] ins_selMaj;
+    int[56] ins_selMin;
+    int[126] ins_chordRh;
+    int[126] ins_bassRh;
+    int[112] ins_drumBase;
+    int[112] ins_drumExtra;
     int[12] ins_lanePitch;
     int[8] ins_motifTab;
 
@@ -21492,43 +21516,43 @@ processor Eisenpuls_Synth
         ins_set3 (1, 8, 0x0401, 0x4409, 0x6489);
 
         // Rhythm variants 2 and 3 (rows 9-17 and 18-26), picked by the Part seed
-        ins_set3 (0, 9,  0x0041, 0x4141, 0x4949);
-        ins_set3 (0, 10, 0x0041, 0x0141, 0x5151);
-        ins_set3 (0, 11, 0x0081, 0x0481, 0x2491);
-        ins_set3 (0, 12, 0x0101, 0x0109, 0x4909);
-        ins_set3 (0, 13, 0x0041, 0x0841, 0x4849);
-        ins_set3 (0, 14, 0x4848, 0x1249, 0x5249);
-        ins_set3 (0, 15, 0x0808, 0x4848, 0x4949);
-        ins_set3 (0, 16, 0x4040, 0x4041, 0x4441);
-        ins_set3 (0, 17, 0x0041, 0x0409, 0x2449);
-        ins_set3 (0, 18, 0x0401, 0x1411, 0x4545);
-        ins_set3 (0, 19, 0x1001, 0x1049, 0x5549);
-        ins_set3 (0, 20, 0x0801, 0x0809, 0x4909);
-        ins_set3 (0, 21, 0x1001, 0x1041, 0x9441);
-        ins_set3 (0, 22, 0x0101, 0x2121, 0x2525);
-        ins_set3 (0, 23, 0x0441, 0x4924, 0x4925);
-        ins_set3 (0, 24, 0x4040, 0x4141, 0x4C4C);
-        ins_set3 (0, 25, 0x0401, 0x4104, 0x4451);
-        ins_set3 (0, 26, 0x0801, 0x4881, 0x4C85);
+        ins_set3 (0, 14,  0x0041, 0x4141, 0x4949);
+        ins_set3 (0, 15, 0x0041, 0x0141, 0x5151);
+        ins_set3 (0, 16, 0x0081, 0x0481, 0x2491);
+        ins_set3 (0, 17, 0x0101, 0x0109, 0x4909);
+        ins_set3 (0, 18, 0x0041, 0x0841, 0x4849);
+        ins_set3 (0, 19, 0x4848, 0x1249, 0x5249);
+        ins_set3 (0, 20, 0x0808, 0x4848, 0x4949);
+        ins_set3 (0, 21, 0x4040, 0x4041, 0x4441);
+        ins_set3 (0, 22, 0x0041, 0x0409, 0x2449);
+        ins_set3 (0, 28, 0x0401, 0x1411, 0x4545);
+        ins_set3 (0, 29, 0x1001, 0x1049, 0x5549);
+        ins_set3 (0, 30, 0x0801, 0x0809, 0x4909);
+        ins_set3 (0, 31, 0x1001, 0x1041, 0x9441);
+        ins_set3 (0, 32, 0x0101, 0x2121, 0x2525);
+        ins_set3 (0, 33, 0x0441, 0x4924, 0x4925);
+        ins_set3 (0, 34, 0x4040, 0x4141, 0x4C4C);
+        ins_set3 (0, 35, 0x0401, 0x4104, 0x4451);
+        ins_set3 (0, 36, 0x0801, 0x4881, 0x4C85);
 
-        ins_set3 (1, 9,  0x0141, 0x0909, 0x5919);
-        ins_set3 (1, 10, 0x0101, 0x5151, 0xF555);
-        ins_set3 (1, 11, 0x0081, 0x0409, 0x2449);
-        ins_set3 (1, 12, 0x0801, 0x0809, 0x4949);
-        ins_set3 (1, 13, 0x0041, 0x0841, 0x4C49);
-        ins_set3 (1, 14, 0x0049, 0x4449, 0xCCCC);
-        ins_set3 (1, 15, 0x0101, 0xC444, 0xDDDD);
-        ins_set3 (1, 16, 0x0101, 0x0141, 0x4141);
-        ins_set3 (1, 17, 0x0081, 0x4481, 0x4989);
-        ins_set3 (1, 18, 0x0401, 0x4441, 0x4545);
-        ins_set3 (1, 19, 0x0141, 0x1515, 0x5D5D);
-        ins_set3 (1, 20, 0x0101, 0x0141, 0x4941);
-        ins_set3 (1, 21, 0x0101, 0x4181, 0x4985);
-        ins_set3 (1, 22, 0x0101, 0x0121, 0x2521);
-        ins_set3 (1, 23, 0x0404, 0x4544, 0x5555);
-        ins_set3 (1, 24, 0x8888, 0x4C4C, 0xBBBB);
-        ins_set3 (1, 25, 0x0401, 0x4101, 0x4111);
-        ins_set3 (1, 26, 0x0041, 0x2441, 0x6445);
+        ins_set3 (1, 14,  0x0141, 0x0909, 0x5919);
+        ins_set3 (1, 15, 0x0101, 0x5151, 0xF555);
+        ins_set3 (1, 16, 0x0081, 0x0409, 0x2449);
+        ins_set3 (1, 17, 0x0801, 0x0809, 0x4949);
+        ins_set3 (1, 18, 0x0041, 0x0841, 0x4C49);
+        ins_set3 (1, 19, 0x0049, 0x4449, 0xCCCC);
+        ins_set3 (1, 20, 0x0101, 0xC444, 0xDDDD);
+        ins_set3 (1, 21, 0x0101, 0x0141, 0x4141);
+        ins_set3 (1, 22, 0x0081, 0x4481, 0x4989);
+        ins_set3 (1, 28, 0x0401, 0x4441, 0x4545);
+        ins_set3 (1, 29, 0x0141, 0x1515, 0x5D5D);
+        ins_set3 (1, 30, 0x0101, 0x0141, 0x4941);
+        ins_set3 (1, 31, 0x0101, 0x4181, 0x4985);
+        ins_set3 (1, 32, 0x0101, 0x0121, 0x2521);
+        ins_set3 (1, 33, 0x0404, 0x4544, 0x5555);
+        ins_set3 (1, 34, 0x8888, 0x4C4C, 0xBBBB);
+        ins_set3 (1, 35, 0x0401, 0x4101, 0x4111);
+        ins_set3 (1, 36, 0x0041, 0x2441, 0x6445);
 
         //            kick    snare   clap    c.hat   o.hat   rim     tom     ride
         ins_dr (0, 0, 0x0101, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
@@ -21549,6 +21573,55 @@ processor Eisenpuls_Synth
         ins_dr (1, 7, 0x4441, 0x4448, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0404);
         ins_dr (0, 8, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
         ins_dr (1, 8, 0x2888, 0x8280, 0x1010, 0xAAAA, 0x4000, 0x0804, 0x0000, 0x0000);
+
+        // INSPIRATOR5-DSP: styles 9-13 (Reggaeton, Drum & Bass, Afrobeats, Funk, Dub)
+        ins_set4 (0, 8, 0, 3, 0, 4);   ins_set4 (0, 9, 1, 4, 0, 0);   ins_set4 (0, 10, 0, 2, 3, 3);  ins_set4 (0, 11, 0, 0, 3, 3);
+        ins_set4 (1, 8, 0, 6, 5, 6);   ins_set4 (1, 9, 0, 3, 0, 4);   ins_set4 (1, 10, 0, 5, 2, 6);  ins_set4 (1, 11, 0, 0, 5, 5);
+        ins_set4 (2, 9, 5, 10, 8, 0);   ins_set4 (3, 9, 8, 10, 0, 2);
+        ins_set4 (2, 10, 8, 9, 11, 5);  ins_set4 (3, 10, 8, 10, 11, 9);
+        ins_set4 (2, 11, 10, 0, 5, 8);  ins_set4 (3, 11, 10, 8, 0, 9);
+        ins_set4 (2, 12, 9, 8, 4, 0);   ins_set4 (3, 12, 9, 8, 10, 2);
+        ins_set4 (2, 13, 11, 0, 8, 5);  ins_set4 (3, 13, 11, 8, 0, 10);
+        ins_set3 (0, 9, 0x0009, 0x0049, 0x4949);
+        ins_set3 (1, 9, 0x0049, 0x4849, 0x4949);
+        ins_set3 (0, 23, 0x0009, 0x0089, 0x4889);
+        ins_set3 (1, 23, 0x0009, 0x0849, 0x4B49);
+        ins_set3 (0, 37, 0x0001, 0x0049, 0x2449);
+        ins_set3 (1, 37, 0x0041, 0x0441, 0x4C49);
+        ins_set3 (0, 10, 0x0001, 0x0001, 0x0101);
+        ins_set3 (1, 10, 0x0401, 0x0481, 0x4C81);
+        ins_set3 (0, 24, 0x0001, 0x0041, 0x0101);
+        ins_set3 (1, 24, 0x0401, 0x0C41, 0x4C45);
+        ins_set3 (0, 38, 0x0001, 0x0401, 0x0441);
+        ins_set3 (1, 38, 0x0001, 0x0401, 0x4489);
+        ins_set3 (0, 11, 0x0009, 0x0049, 0x2449);
+        ins_set3 (1, 11, 0x0141, 0x0949, 0x4949);
+        ins_set3 (0, 25, 0x0041, 0x0249, 0x4949);
+        ins_set3 (1, 25, 0x0101, 0x0541, 0x2949);
+        ins_set3 (0, 39, 0x0009, 0x0409, 0x2489);
+        ins_set3 (1, 39, 0x0009, 0x0149, 0x4B49);
+        ins_set3 (0, 12, 0x0105, 0x0545, 0x4D4D);
+        ins_set3 (1, 12, 0x0405, 0x0C45, 0x4D4D);
+        ins_set3 (0, 26, 0x0021, 0x0525, 0x2565);
+        ins_set3 (1, 26, 0x0401, 0x1445, 0x5C5D);
+        ins_set3 (0, 40, 0x0101, 0x1141, 0x5959);
+        ins_set3 (1, 40, 0x0105, 0x0505, 0x4D45);
+        ins_set3 (0, 13, 0x0404, 0x4444, 0x4C4C);
+        ins_set3 (1, 13, 0x0101, 0x0141, 0x0949);
+        ins_set3 (0, 27, 0x0404, 0x4444, 0xCCCC);
+        ins_set3 (1, 27, 0x0001, 0x0101, 0x0501);
+        ins_set3 (0, 41, 0x0400, 0x0404, 0x4444);
+        ins_set3 (1, 41, 0x0101, 0x0105, 0x2145);
+        ins_dr (0, 9, 0x1111, 0x4848, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 9, 0x0408, 0x0020, 0x0000, 0xAAAA, 0x2000, 0x0210, 0x0000, 0x0000);
+        ins_dr (0, 10, 0x0401, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 10, 0x2800, 0x0480, 0x0000, 0xAAAA, 0x4000, 0x0000, 0x0000, 0x0000);
+        ins_dr (0, 11, 0x0141, 0x0808, 0x0000, 0x5555, 0x0000, 0x2492, 0x0000, 0x0000);
+        ins_dr (1, 11, 0x4004, 0x0020, 0x0000, 0xAAAA, 0x0200, 0x0000, 0x1000, 0x0000);
+        ins_dr (0, 12, 0x0405, 0x1010, 0x0000, 0x5555, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 12, 0x2008, 0x4480, 0x0000, 0xAAAA, 0x2000, 0x0000, 0x0000, 0x0000);
+        ins_dr (0, 13, 0x0100, 0x0100, 0x0000, 0x4444, 0x0000, 0x0000, 0x0000, 0x0000);
+        ins_dr (1, 13, 0x0001, 0x0000, 0x0000, 0x1111, 0x8800, 0x1010, 0x0000, 0x0000);
 
         if (ins_lanePitchSet.at (0) == 0) ins_lanePitch.at (0) = 36;
         if (ins_lanePitchSet.at (1) == 0) ins_lanePitch.at (1) = 38;
@@ -21956,7 +22029,7 @@ processor Eisenpuls_Synth
             int cN = ins_chordAt (nbar, 0);
 
             int mask = 1;
-            if (tier >= 0) mask = ins_expandMask (ins_chordRh.at (ins_rhVar (b, 300) * 27 + ins_pStyle * 3 + tier));
+            if (tier >= 0) mask = ins_expandMask (ins_chordRh.at (ins_rhVar (b, 300) * 42 + ins_pStyle * 3 + tier));
             if (tier >= 0) mask = ins_syncopate (mask, b, 303);
             if (tier >= 1)
             {
@@ -22182,7 +22255,7 @@ processor Eisenpuls_Synth
                 int tier = 0;
                 if (ins_pDensity >= 67)      tier = 2;
                 else if (ins_pDensity >= 34) tier = 1;
-                int mask = ins_expandMask (ins_bassRh.at (ins_rhVar (b, 310) * 27 + ins_pStyle * 3 + tier));
+                int mask = ins_expandMask (ins_bassRh.at (ins_rhVar (b, 310) * 42 + ins_pStyle * 3 + tier));
                 mask = ins_syncopate (mask, b, 313);
                 if (mask == 0) mask = 1;
                 if (cB != cA) mask = mask | 1 | (1 << half);
@@ -22539,6 +22612,836 @@ processor Eisenpuls_Synth
         }
     }
 
+
+    // ---- INSPIRATOR2-DSP: post-stage (voicing, figures, strum, melody rules, ghost notes, mutation) and bar locks ----
+    int ins_pLockBars = 0;
+    int ins_pInv = 0;
+    int ins_pSpread = 0;
+    int ins_pStrum = 0;
+    int ins_pFig = 0;
+    int ins_pGhost = 0;
+    int ins_pPull = 0;
+    int ins_pLeap = 12;
+    int ins_pMut = 0;
+    int ins_pDegF = 0;
+    bool ins_generated = false;
+    int[512] ins_fzGrid;
+    int[512] ins_fzOff;
+    int[512] ins_fzLen;
+    int[512] ins_fzPitch;
+    int[512] ins_fzVel;
+    int ins_fzCount = 0;
+    int ins_fzMode = -1;
+    int ins_fzValid = 0;
+
+    void ins_rawAdd (int grid, int off, int len, int pitch, int vel)
+    {
+        if (ins_nCount >= 512) return;
+        int o = ins_clampi (off, -60, 60);
+        ins_nGrid.at (ins_nCount) = grid;
+        ins_nOff.at (ins_nCount) = o;
+        ins_nTick.at (ins_nCount) = ins_posMod (grid + o, ins_loopTicks);
+        ins_nLen.at (ins_nCount) = ins_clampi (len, 1, 1000);
+        ins_nPitch.at (ins_nCount) = ins_clampi (pitch, 0, 127);
+        ins_nVel.at (ins_nCount) = ins_clampi (vel, 1, 127);
+        ins_nCount += 1;
+    }
+
+    void ins_retick (int i)
+    {
+        ins_nOff.at (i) = ins_clampi (ins_nOff.at (i), -60, 60);
+        ins_nTick.at (i) = ins_posMod (ins_nGrid.at (i) + ins_nOff.at (i), ins_loopTicks);
+    }
+
+    // remove notes whose velocity was set to 0
+    void ins_compact()
+    {
+        int w = 0;
+        for (int i = 0; i < ins_nCount; ++i)
+        {
+            if (ins_nVel.at (i) > 0)
+            {
+                if (w != i)
+                {
+                    ins_nGrid.at (w) = ins_nGrid.at (i);
+                    ins_nOff.at (w) = ins_nOff.at (i);
+                    ins_nTick.at (w) = ins_nTick.at (i);
+                    ins_nLen.at (w) = ins_nLen.at (i);
+                    ins_nPitch.at (w) = ins_nPitch.at (i);
+                    ins_nVel.at (w) = ins_nVel.at (i);
+                }
+                w += 1;
+            }
+        }
+        ins_nCount = w;
+    }
+
+    // pitch moved by scale steps (stays in the scale of the key)
+    int ins_scaleShift (int pitch, int steps)
+    {
+        int rel = pitch - 60 - ins_keyOff();
+        int best = 0;
+        int bd = 1000;
+        for (int k = -40; k <= 45; ++k)
+        {
+            int d = ins_scaleSemi (k) - rel;
+            if (d < 0) d = 0 - d;
+            if (d < bd) { bd = d; best = k; }
+        }
+        return ins_clampi (60 + ins_keyOff() + ins_scaleSemi (best + steps), 0, 127);
+    }
+
+    int ins_snapChord (int pitch, int c)
+    {
+        for (int k = 0; k < 7; ++k)
+        {
+            int d = (k + 1) / 2;
+            if ((k % 2) == 1) d = 0 - d;
+            if (ins_inChord (pitch + d - ins_keyOff(), c)) return pitch + d;
+        }
+        return pitch;
+    }
+
+    int ins_snapDegree (int pitch, int deg)
+    {
+        int target = ins_posMod (ins_keyOff() + ins_scaleSemi (deg), 12);
+        for (int k = 0; k < 7; ++k)
+        {
+            if (ins_posMod (pitch + k, 12) == target) return pitch + k;
+            if (ins_posMod (pitch - k, 12) == target) return pitch - k;
+        }
+        return pitch;
+    }
+
+    // sort the first n entries of ord by pitch (ascending)
+    void ins_sortOrd (int[8]& ord, int n)
+    {
+        for (int a = 0; a < n - 1; ++a)
+        {
+            for (int b = a + 1; b < n; ++b)
+            {
+                if (ins_nPitch.at (ord.at (b)) < ins_nPitch.at (ord.at (a)))
+                {
+                    int t = ord.at (a);
+                    ord.at (a) = ord.at (b);
+                    ord.at (b) = t;
+                }
+            }
+        }
+    }
+
+    // one chord (n simultaneous notes, entries start..start+n-1)
+    void ins_voiceGroup (int start, int n)
+    {
+        int[8] ord;
+        for (int k = 0; k < n; ++k) ord.at (k) = start + k;
+        ins_sortOrd (ord, n);
+
+        int inv = ins_minValue (ins_pInv, n - 1);
+        for (int k = 0; k < inv; ++k) ins_nPitch.at (ord.at (k)) = ins_clampi (ins_nPitch.at (ord.at (k)) + 12, 0, 127);
+        ins_sortOrd (ord, n);
+
+        if (ins_pSpread >= 1 && n >= 3)
+        {
+            ins_nPitch.at (ord.at (n - 2)) = ins_clampi (ins_nPitch.at (ord.at (n - 2)) - 12, 0, 127);
+            if (ins_pSpread >= 2)
+            {
+                if (n >= 4) ins_nPitch.at (ord.at (n - 4)) = ins_clampi (ins_nPitch.at (ord.at (n - 4)) - 12, 0, 127);
+                else        ins_nPitch.at (ord.at (0)) = ins_clampi (ins_nPitch.at (ord.at (0)) - 12, 0, 127);
+            }
+            ins_sortOrd (ord, n);
+        }
+
+        int baseGrid = ins_nGrid.at (start);
+        int gl = ins_nLen.at (ord.at (0));
+        if (ins_pFig > 0 && n >= 3)
+        {
+            int[16] seq;
+            int m = 0;
+            if (ins_pFig == 1)      { for (int k = 0; k < n; ++k) { seq.at (m) = k; m += 1; } }
+            else if (ins_pFig == 2) { for (int k = 0; k < n; ++k) { seq.at (m) = n - 1 - k; m += 1; } }
+            else if (ins_pFig == 3)
+            {
+                for (int k = 0; k < n; ++k) { seq.at (m) = k; m += 1; }
+                for (int k = n - 2; k >= 1; --k) { seq.at (m) = k; m += 1; }
+            }
+            else
+            {
+                seq.at (0) = 0; seq.at (1) = n - 1; seq.at (2) = n / 2; seq.at (3) = n - 1; m = 4;
+            }
+            int step = ins_clampi ((gl / ins_maxi (1, m) / 12) * 12, 12, 48);
+            int slen = ins_maxi (6, step * ins_pGate / 100);
+            int[8] pit;
+            int[8] vel;
+            int[8] off;
+            int[8] used;
+            for (int k = 0; k < n; ++k)
+            {
+                pit.at (k) = ins_nPitch.at (ord.at (k));
+                vel.at (k) = ins_nVel.at (ord.at (k));
+                off.at (k) = ins_nOff.at (ord.at (k));
+            }
+            int slots = ins_minValue (ins_maxi (m, gl / step), 64);
+            for (int j = 0; j < slots; ++j)
+            {
+                int q = seq.at (j % m);
+                int g = baseGrid + j * step;
+                if (g < baseGrid + gl && used.at (q) == 0)
+                {
+                    used.at (q) = 1;
+                    int e = ord.at (q);
+                    ins_nGrid.at (e) = g;
+                    ins_nLen.at (e) = slen;
+                    ins_retick (e);
+                }
+                else if (g < baseGrid + gl)
+                {
+                    ins_rawAdd (g, off.at (q), slen, pit.at (q), vel.at (q) - (j % 2) * 4);
+                }
+            }
+            // notes that never got a slot (shorter than the chord): silence them
+            for (int k = 0; k < n; ++k)
+            {
+                if (used.at (k) == 0) ins_nVel.at (ord.at (k)) = 0;
+            }
+        }
+
+        if (ins_pStrum > 0)
+        {
+            int st = ins_pStrum * 8 / 100;
+            for (int k = 0; k < n; ++k)
+            {
+                ins_nOff.at (ord.at (k)) = ins_nOff.at (ord.at (k)) + k * st;
+                ins_retick (ord.at (k));
+            }
+        }
+    }
+
+    int ins_minValue (int a, int b)
+    {
+        if (a < b) return a;
+        return b;
+    }
+
+    void ins_postChords()
+    {
+        if (ins_pInv == 0 && ins_pSpread == 0 && ins_pStrum == 0 && ins_pFig == 0) return;
+        int n0 = ins_nCount;
+        int i = 0;
+        while (i < n0)
+        {
+            int j = i;
+            while (j + 1 < n0 && ins_nGrid.at (j + 1) == ins_nGrid.at (i)) j += 1;
+            int n = j - i + 1;
+            if (n > 1 && n <= 8) ins_voiceGroup (i, n);
+            i = j + 1;
+        }
+    }
+
+    void ins_postLead()
+    {
+        int prev = -1;
+        for (int i = 0; i < ins_nCount; ++i)
+        {
+            int g = ins_nGrid.at (i);
+            int b = g / ins_maxi (1, ins_barTicks);
+            int s = (g % ins_maxi (1, ins_barTicks)) / 24;
+            int c = ins_chordAt (b, s);
+            int p = ins_nPitch.at (i);
+            bool strong = (g % 96) == 0;
+            if (ins_pDegF > 0 && ! strong && (ins_rv (320, i) % 100) < 35) p = ins_snapDegree (p, ins_pDegF - 1);
+            if ((g % 48) == 0 && (ins_rv (321, i) % 100) < ins_pPull) p = ins_snapChord (p, c);
+            if (ins_pLeap < 12 && prev >= 0)
+            {
+                for (int k = 0; k < 3; ++k)
+                {
+                    if (p - prev > ins_pLeap) p -= 12;
+                    else if (prev - p > ins_pLeap) p += 12;
+                }
+                if (p - prev > ins_pLeap) p = ins_scaleShift (prev + ins_pLeap, 0);
+                if (prev - p > ins_pLeap) p = ins_scaleShift (prev - ins_pLeap, 0);
+            }
+            p = ins_clampi (p, 0, 127);
+            ins_nPitch.at (i) = p;
+            prev = p;
+        }
+    }
+
+    void ins_ghostDrums()
+    {
+        int sn = ins_lanePitch.at (1);
+        int ki = ins_lanePitch.at (0);
+        int n0 = ins_nCount;
+        for (int b = 0; b < ins_numBars; ++b)
+        {
+            for (int s = 0; s < ins_stepsBar; ++s)
+            {
+                if ((s % 4) != 0)
+                {
+                    int g = b * ins_barTicks + s * 24;
+                    bool occ = false;
+                    for (int i = 0; i < n0; ++i)
+                    {
+                        if (ins_nGrid.at (i) == g && (ins_nPitch.at (i) == sn || ins_nPitch.at (i) == ki)) occ = true;
+                    }
+                    int pr = ins_pGhost * 45 / 100;
+                    if ((s % 2) == 0) pr = ins_pGhost * 20 / 100;
+                    if (! occ && (ins_rv (310, b * 32 + s) % 100) < pr)
+                        ins_addNote (g, ins_humanT (ins_nCount), 8, sn, 14 + (ins_rv (311, b * 32 + s) % 16));
+                }
+            }
+        }
+    }
+
+    void ins_ghostBass()
+    {
+        int n0 = ins_nCount;
+        for (int b = 0; b < ins_numBars; ++b)
+        {
+            for (int s = 0; s < ins_stepsBar; ++s)
+            {
+                int g = b * ins_barTicks + s * 24;
+                bool occ = false;
+                int lastG = -1;
+                int lastP = -1;
+                for (int i = 0; i < n0; ++i)
+                {
+                    int ng = ins_nGrid.at (i);
+                    if (ng >= g && ng < g + 24) occ = true;
+                    if (ng < g && ng >= b * ins_barTicks && ng > lastG) { lastG = ng; lastP = ins_nPitch.at (i); }
+                }
+                int pr = ins_pGhost * 35 / 100;
+                if ((s % 2) == 0) pr = ins_pGhost * 12 / 100;
+                if (! occ && lastP >= 0 && (ins_rv (312, b * 32 + s) % 100) < pr)
+                    ins_addNote (g, ins_humanT (ins_nCount), 10, lastP, 22 + (ins_rv (313, b * 32 + s) % 14));
+            }
+        }
+    }
+
+    void ins_postMutate()
+    {
+        for (int i = 0; i < ins_nCount; ++i)
+        {
+            if ((ins_rv (330, i) % 100) < ins_pMut)
+            {
+                int r = ins_rv (331, i) % 6;
+                if (ins_pMode == 4)
+                {
+                    if (r < 2) ins_nVel.at (i) = 0;
+                    else ins_nVel.at (i) = ins_clampi (ins_nVel.at (i) + (ins_rv (332, i) % 31) - 15, 1, 127);
+                }
+                else if (ins_pMode == 0)
+                {
+                    ins_nVel.at (i) = ins_clampi (ins_nVel.at (i) + (ins_rv (332, i) % 31) - 15, 1, 127);
+                }
+                else
+                {
+                    if (r == 0)      ins_nPitch.at (i) = ins_scaleShift (ins_nPitch.at (i), 1);
+                    else if (r == 1) ins_nPitch.at (i) = ins_scaleShift (ins_nPitch.at (i), -1);
+                    else if (r == 2) ins_nPitch.at (i) = ins_scaleShift (ins_nPitch.at (i), 2);
+                    else if (r == 3) ins_nPitch.at (i) = ins_clampi (ins_nPitch.at (i) + 12 - 24 * (ins_rv (333, i) % 2), 0, 127);
+                    else if (r == 4) ins_nVel.at (i) = 0;
+                    else             ins_nVel.at (i) = ins_clampi (ins_nVel.at (i) + (ins_rv (332, i) % 31) - 15, 1, 127);
+                }
+            }
+        }
+    }
+
+    void ins_post()
+    {
+        if (ins_pMode == 0)      ins_postChords();
+        else if (ins_pMode == 1) ins_postLead();
+        if (ins_pGhost > 0)
+        {
+            if (ins_pMode == 4)      ins_ghostDrums();
+            else if (ins_pMode == 2) ins_ghostBass();
+        }
+        if (ins_pMut > 0) ins_postMutate();
+        ins_compact();
+    }
+
+    // ---- bar locks: locked bars keep the notes they had when they were locked ----
+    void ins_fzRemoveBars (int mask)
+    {
+        int w = 0;
+        for (int i = 0; i < ins_fzCount; ++i)
+        {
+            int b = ins_fzGrid.at (i) / ins_maxi (1, ins_barTicks);
+            bool drop = b < 8 && ((mask >> b) & 1) != 0;
+            if (! drop)
+            {
+                ins_fzGrid.at (w) = ins_fzGrid.at (i);
+                ins_fzOff.at (w) = ins_fzOff.at (i);
+                ins_fzLen.at (w) = ins_fzLen.at (i);
+                ins_fzPitch.at (w) = ins_fzPitch.at (i);
+                ins_fzVel.at (w) = ins_fzVel.at (i);
+                w += 1;
+            }
+        }
+        ins_fzCount = w;
+        ins_fzValid = ins_fzValid & (255 - mask);
+    }
+
+    event param7129 (float v)
+    {
+        int nm = ins_clampi (ins_roundi (v), 0, 255);
+        int added = nm & (255 - ins_pLockBars);
+        int removed = ins_pLockBars & (255 - nm);
+        if (ins_fzMode != ins_pMode && added != 0)
+        {
+            ins_fzCount = 0;
+            ins_fzValid = 0;
+            ins_fzMode = ins_pMode;
+        }
+        ins_fzRemoveBars (removed | added);
+        if (ins_generated && ins_fzMode == ins_pMode)
+        {
+            for (int i = 0; i < ins_nCount; ++i)
+            {
+                int b = ins_nGrid.at (i) / ins_maxi (1, ins_barTicks);
+                if (b < 8 && ((added >> b) & 1) != 0 && ins_fzCount < 512)
+                {
+                    ins_fzGrid.at (ins_fzCount) = ins_nGrid.at (i);
+                    ins_fzOff.at (ins_fzCount) = ins_nOff.at (i);
+                    ins_fzLen.at (ins_fzCount) = ins_nLen.at (i);
+                    ins_fzPitch.at (ins_fzCount) = ins_nPitch.at (i);
+                    ins_fzVel.at (ins_fzCount) = ins_nVel.at (i);
+                    ins_fzCount += 1;
+                }
+            }
+            ins_fzValid = ins_fzValid | added;
+        }
+        ins_pLockBars = nm;
+        ins_dirty = true;
+    }
+
+    void ins_applyLocks()
+    {
+        if (ins_pLockBars == 0 || ins_fzMode != ins_pMode) return;
+        int m = ins_pLockBars & ins_fzValid;
+        if (m == 0) return;
+        for (int i = 0; i < ins_nCount; ++i)
+        {
+            int b = ins_nGrid.at (i) / ins_maxi (1, ins_barTicks);
+            if (b < 8 && ((m >> b) & 1) != 0) ins_nVel.at (i) = 0;
+        }
+        ins_compact();
+        for (int i = 0; i < ins_fzCount; ++i)
+        {
+            int b = ins_fzGrid.at (i) / ins_maxi (1, ins_barTicks);
+            if (b < ins_numBars && b < 8 && ((m >> b) & 1) != 0)
+                ins_rawAdd (ins_fzGrid.at (i), ins_fzOff.at (i), ins_fzLen.at (i), ins_fzPitch.at (i), ins_fzVel.at (i));
+        }
+    }
+
+
+    // INSPIRATOR5-DSP marker
+    // ---- INSPIRATOR3-DSP: alternative generators ----
+    int ins_pGen = 0;
+    int ins_pGenVar = 0;
+    int[343] ins_mkCnt;
+    int[64] ins_imDelta;     // deltas (class 0..6) of an imported melody, for the Custom Markov corpus
+    int ins_imDeltaCount = 0;
+    int[128] ins_lsStr;
+    int ins_lsLen = 0;
+
+    int ins_euclid (int k, int n, int rot)
+    {
+        int m = 0;
+        for (int s = 0; s < n; ++s)
+        {
+            int ix = ins_posMod (s + rot, n);
+            if (((ix * k) % n) < k) m = m | (1 << s);
+        }
+        return m;
+    }
+
+    int ins_corpusDelta (int corpus, int i)
+    {
+        // three built-in "schools", 32 deltas each (class 3 = repeat, 4 = +1 step, 2 = -1 step ...)
+        if (corpus == 0)
+        {
+            int t0 = 0;
+            const int[32] pop = (3,4,4,2,3,4,5,3,2,2,4,3,3,5,1,3,4,4,3,2,3,4,2,3,3,5,4,2,1,3,4,3);
+            return pop.at (i % 32);
+        }
+        if (corpus == 1)
+        {
+            const int[32] mnr = (3,2,3,4,2,3,3,1,4,3,2,2,4,5,3,2,3,4,3,2,4,3,3,2,4,4,2,2,3,5,3,1);
+            return mnr.at (i % 32);
+        }
+        const int[32] jzz = (5,1,4,2,5,0,4,3,1,5,2,4,1,6,0,3,5,2,4,1,5,3,0,4,2,5,1,3,4,2,6,0);
+        return jzz.at (i % 32);
+    }
+
+    void ins_trainMarkov()
+    {
+        for (int i = 0; i < 343; ++i) ins_mkCnt.at (i) = 1;
+        int corpus = ins_pGenVar % 4;
+        int n = 32;
+        if (corpus == 3 && ins_imDeltaCount > 3) n = ins_imDeltaCount;
+        int d1 = 3;
+        int d2 = 3;
+        for (int i = 0; i < n * 2; ++i)
+        {
+            int d = 3;
+            if (corpus == 3)
+            {
+                if (ins_imDeltaCount > 3) d = ins_imDelta.at (i % n);
+            }
+            else d = ins_corpusDelta (corpus, i);
+            ins_mkCnt.at ((d1 * 7 + d2) * 7 + d) += 4;
+            d1 = d2;
+            d2 = d;
+        }
+    }
+
+    int ins_markovNext (int d1, int d2, int key)
+    {
+        int base = (d1 * 7 + d2) * 7;
+        int total = 0;
+        for (int k = 0; k < 7; ++k) total += ins_mkCnt.at (base + k);
+        int r = ins_rv (360, key) % ins_maxi (1, total);
+        for (int k = 0; k < 7; ++k)
+        {
+            r -= ins_mkCnt.at (base + k);
+            if (r < 0) return k;
+        }
+        return 3;
+    }
+
+    void ins_buildLSystem()
+    {
+        int set = ins_pGenVar % 4;
+        const int[48] rules = (0,0,1, 1,2,0, 2,0,3, 3,2,4,
+                               0,3,1, 2,1,0, 2,0,0, 0,3,4,
+                               0,2,1, 1,1,0, 3,2,0, 0,4,4,
+                               0,1,0, 1,0,2, 0,3,2, 1,2,4);
+        ins_lsLen = 1;
+        ins_lsStr.at (0) = ins_rv (350, 0) % 3;
+        int[128] tmp;
+        for (int it = 0; it < 4; ++it)
+        {
+            int w = 0;
+            for (int i = 0; i < ins_lsLen; ++i)
+            {
+                int sym = ins_lsStr.at (i);
+                for (int j = 0; j < 3; ++j)
+                {
+                    int r = rules.at (set * 12 + sym * 3 + j);
+                    if (r < 4 && w < 128) { tmp.at (w) = r; w += 1; }
+                }
+            }
+            if (w == 0) { tmp.at (0) = 0; w = 1; }
+            for (int i = 0; i < w; ++i) ins_lsStr.at (i) = tmp.at (i);
+            ins_lsLen = w;
+        }
+    }
+
+    // symbols: 0 up, 1 down, 2 stay, 3 rest
+    int ins_caNext (int row, int rule, int n)
+    {
+        int nr = 0;
+        for (int i = 0; i < n; ++i)
+        {
+            int l = (row >> ins_posMod (i - 1, n)) & 1;
+            int c = (row >> i) & 1;
+            int r = (row >> ins_posMod (i + 1, n)) & 1;
+            if (((rule >> (l * 4 + c * 2 + r)) & 1) != 0) nr = nr | (1 << i);
+        }
+        return nr;
+    }
+
+    int ins_caRule()
+    {
+        int v = ins_pGenVar % 4;
+        if (v == 0) return 30;
+        if (v == 1) return 90;
+        if (v == 2) return 110;
+        return 150;
+    }
+
+    void ins_genAlt (int role)
+    {
+        int gen = ins_pGen;
+        if (role == 4) { ins_genDrumsAlt(); return; }
+        int baseP = 60 + 12 * ins_pOctave + ins_keyOff();
+        int centerSi = 7;
+        int w = 3 + ins_pRange * 6 / 100;
+        if (role == 2) { baseP = 36 + 12 * ins_pOctave + ins_keyOff(); centerSi = 0; w = 4; }
+        bool minorish = ins_isMinorish();
+        int ns = ins_clampi (ins_stepsBar, 1, 31);
+        int fullMask = (1 << ns) - 1;
+        int caRow = (ins_rv (340, 0) | 5) & fullMask;
+        int caRule = ins_caRule();
+        if (gen == 2) ins_trainMarkov();
+        if (gen == 4) ins_buildLSystem();
+        int cur = centerSi;
+        int d1 = 3;
+        int d2 = 3;
+        int kk = 0;
+        int pc = 1 + (ins_pDensity * (ns - 2)) / 100;
+        pc = ins_clampi (pc, 1, ns);
+
+        for (int b = 0; b < ins_numBars; ++b)
+        {
+            int nbar = (b + 1) % ins_maxi (1, ins_numBars);
+            bool pushNext = ins_pushInto (nbar);
+            int mask = 0;
+            if (gen == 1)
+            {
+                int rot = ins_pGenVar + (b % 2) * (1 + ins_pGenVar % 3);
+                mask = ins_euclid (pc, ns, rot);
+            }
+            else if (gen == 3)
+            {
+                caRow = ins_caNext (caRow, caRule, ns);
+                if (caRow == 0) caRow = 1 << (ins_rv (341, b) % ns);
+                mask = caRow & fullMask;
+                // density thins the automaton out
+                for (int s = 0; s < ns; ++s)
+                {
+                    if (((mask >> s) & 1) != 0 && (ins_rv (342, b * 32 + s) % 100) >= 40 + ins_pDensity * 60 / 100)
+                        mask = mask & (fullMask - (1 << s));
+                }
+            }
+            else if (gen == 4)
+            {
+                for (int s = 0; s < ns; ++s)
+                {
+                    int sym = ins_lsStr.at ((b * ns + s) % ins_maxi (1, ins_lsLen));
+                    if (sym != 3 && (ins_rv (343, b * 32 + s) % 100) < 30 + ins_pDensity * 70 / 100) mask = mask | (1 << s);
+                }
+            }
+            else
+            {
+                for (int s = 0; s < ns; ++s)
+                {
+                    int t = ins_tmpl (s);
+                    int wt = 0;
+                    if (t >= 0 && (t % 8) == 0)      wt = 95;
+                    else if (t >= 0 && (t % 4) == 0) wt = 75;
+                    else if (t >= 0 && (t % 2) == 0) wt = 55;
+                    else                             wt = 14 + ins_pComplex / 4;
+                    if ((ins_rv (344, b * 32 + s) % 100) < wt * (28 + ins_pDensity) / 100) mask = mask | (1 << s);
+                }
+            }
+            if (mask == 0) mask = 1;
+
+            int lastC = ins_chordAt (b, 0);
+            for (int s = 0; s < ns; ++s)
+            {
+                if (((mask >> s) & 1) != 0)
+                {
+                    int t = ins_tmpl (s);
+                    int c = ins_chordAt (b, s);
+                    bool strong = (t >= 0 && (t % 8) == 0);
+                    if (c != lastC) strong = true;
+                    lastC = c;
+                    int pitch = 0;
+
+                    if (gen == 1)
+                    {
+                        // chord tones, up and down through the chord
+                        int cnt = ins_maxi (1, ins_cCnt.at (c));
+                        int span = cnt * (1 + ins_pRange / 50);
+                        int ix = kk % ins_maxi (1, 2 * span - 2 + (span == 1 ? 1 : 0));
+                        if (ix >= span) ix = 2 * span - 2 - ix;
+                        int ch = ins_posMod (ins_pKey + ins_cRoot.at (c) + ins_cInt.at (c * 5 + (ix % cnt)), 12);
+                        int lo = baseP - 5;
+                        pitch = lo + ins_posMod (ch - lo, 12) + 12 * (ix / cnt);
+                    }
+                    else
+                    {
+                        int dlt = 0;
+                        if (gen == 2)
+                        {
+                            int dc = ins_markovNext (d1, d2, kk + b * 64);
+                            d1 = d2;
+                            d2 = dc;
+                            dlt = dc - 3;
+                        }
+                        else if (gen == 3)
+                        {
+                            int nb = (((caRow >> ins_posMod (s - 1, ns)) & 1) << 2) | (((caRow >> s) & 1) << 1) | ((caRow >> ins_posMod (s + 1, ns)) & 1);
+                            int tabd = 0;
+                            if (nb == 1 || nb == 5) tabd = 1;
+                            else if (nb == 2 || nb == 6) tabd = -1;
+                            else if (nb == 3) tabd = 2;
+                            else if (nb == 4) tabd = -2;
+                            dlt = tabd;
+                        }
+                        else if (gen == 4)
+                        {
+                            int sym = ins_lsStr.at ((b * ns + s) % ins_maxi (1, ins_lsLen));
+                            if (sym == 0) dlt = 1;
+                            else if (sym == 1) dlt = -1;
+                        }
+                        else
+                        {
+                            dlt = (ins_rv (345, kk) % 5) - 2;
+                        }
+                        if (kk > 0) cur += dlt;
+                        if (cur > centerSi + w) cur = centerSi + w - 1;
+                        if (cur < centerSi - w) cur = centerSi - w + 1;
+                        if (ins_pComplex < 50 && dlt != 0)
+                        {
+                            int d7 = ins_posMod (cur, 7);
+                            bool avoid = false;
+                            if (minorish) avoid = (d7 == 1 || d7 == 5);
+                            else          avoid = (d7 == 3 || d7 == 6);
+                            if (avoid) cur += dlt;
+                        }
+                        if (strong) cur = ins_nearestChordTone (cur, c);
+                        if (pushNext && s >= ns - 2) cur = ins_nearestChordTone (cur, ins_chordAt (nbar, 0));
+                        pitch = baseP + ins_scaleSemi (cur);
+                    }
+
+                    int cyc = (b % 2) * 32 + s;
+                    int gap = ins_nextHit (mask, s) - s;
+                    if (gap > 8) gap = 8;
+                    int len = ins_maxi (6, gap * 24 * ins_pGate / 100);
+                    len = ins_durLen (len, cyc, gap * 24);
+                    int acc = 0;
+                    if (strong)              acc = 10;
+                    else if (ins_isBeat (s)) acc = 2;
+                    else                     acc = 0 - (ins_rv (78, b * 32 + s) % 12);
+                    ins_addNote (b * ins_barTicks + s * 24, ins_humanT (ins_nCount), len, pitch,
+                                 ins_pVel + acc + ins_humanV (ins_nCount) + ins_velDev (211, cyc, ins_pRVel));
+                    kk += 1;
+                }
+            }
+        }
+    }
+
+    void ins_genDrumsAlt()
+    {
+        int ns = ins_clampi (ins_stepsBar, 1, 31);
+        int fullMask = (1 << ns) - 1;
+        int caRow = (ins_rv (346, 0) | 9) & fullMask;
+        int caRule = ins_caRule();
+        for (int b = 0; b < ins_numBars; ++b)
+        {
+            int kick = 0;
+            int snare = 0;
+            int hat = 0;
+            int open = 0;
+            int perc = 0;
+            int rot = ins_pGenVar;
+            if (ins_pGen == 1)
+            {
+                kick  = ins_euclid (ins_clampi (2 + ins_pDensity * 5 / 100, 2, ns), ns, 0);
+                snare = ins_euclid (ins_clampi (2 + ins_pDensity / 50, 2, ns), ns, ns / 4 + (b % 2));
+                hat   = ins_euclid (ins_clampi (4 + ins_pDensity * (ns - 4) / 100, 1, ns), ns, rot % 3);
+                open  = ins_euclid (ins_clampi (1 + ins_pDensity / 40, 1, ns), ns, ns / 2 + rot % ns);
+                perc  = ins_euclid (ins_clampi (1 + ins_pComplex / 20, 1, ns), ns, rot + b);
+            }
+            else
+            {
+                caRow = ins_caNext (caRow, caRule, ns);
+                if (caRow == 0) caRow = 1 << (ins_rv (347, b) % ns);
+                kick  = ins_euclid (4, ns, 0) | (caRow & ins_caNext (caRow, 90, ns) & fullMask);
+                snare = ins_euclid (2, ns, ns / 4) ;
+                hat   = caRow | ins_euclid (ns / 2, ns, 0);
+                open  = ins_caNext (caRow, 30, ns) & ins_caNext (caRow, 110, ns);
+                perc  = ins_caNext (ins_caNext (caRow, caRule, ns), 90, ns);
+            }
+            for (int s = 0; s < ns; ++s)
+            {
+                int g = b * ins_barTicks + s * 24;
+                int cyc = (b % 2) * 32 + s;
+                bool strong = ins_isBeat (s);
+                if (((kick >> s) & 1) != 0)
+                    ins_addNote (g, ins_humanT (ins_nCount), 20, ins_lanePitch.at (0), ins_pVel + 14 + ins_humanV (ins_nCount) + ins_velDev (211, cyc, ins_pRVel));
+                if (((snare >> s) & 1) != 0 && ((kick >> s) & 1) == 0)
+                    ins_addNote (g, ins_humanT (ins_nCount), 20, ins_lanePitch.at (1), ins_pVel + 10 + ins_humanV (ins_nCount) + ins_velDev (212, cyc, ins_pRVel));
+                if (((hat >> s) & 1) != 0 && ((open >> s) & 1) == 0)
+                {
+                    int hv = ins_pVel - 18 + ins_humanV (ins_nCount) + ins_velDev (213, cyc, ins_pRVel);
+                    if (strong) hv += 12;
+                    ins_addNote (g, ins_humanT (ins_nCount), 12, ins_lanePitch.at (3), hv);
+                }
+                if (((open >> s) & 1) != 0 && (s % 2) == 1)
+                    ins_addNote (g, ins_humanT (ins_nCount), 36, ins_lanePitch.at (4), ins_pVel - 10 + ins_humanV (ins_nCount));
+                if (((perc >> s) & 1) != 0 && ins_pComplex > 25 && ((snare >> s) & 1) == 0)
+                    ins_addNote (g, ins_humanT (ins_nCount), 16, ins_lanePitch.at (5), ins_pVel - 22 + ins_humanV (ins_nCount));
+            }
+        }
+    }
+
+
+    // ---- INSPIRATOR4-DSP: imported MIDI pattern ----
+    int[512] ins_imGrid;
+    int[512] ins_imLen;
+    int[512] ins_imPitch;
+    int[512] ins_imVel;
+    int ins_imCount = 0;
+    int ins_imBars = 0;
+
+    int ins_deltaClass (int semis)
+    {
+        if (semis <= -5) return 0;
+        if (semis <= -3) return 1;
+        if (semis <= -1) return 2;
+        if (semis == 0)  return 3;
+        if (semis <= 2)  return 4;
+        if (semis <= 4)  return 5;
+        return 6;
+    }
+
+    event insImport (InsImportChunk c)
+    {
+        if (c.offset == 0) { ins_imCount = 0; ins_imDeltaCount = 0; }
+        ins_imBars = ins_clampi (c.bars, 0, 8);
+        for (int i = 0; i < c.count && i < 128; ++i)
+        {
+            if (ins_imCount < 512)
+            {
+                int a = ins_roundi (c.data.at (2 * i));
+                int b = ins_roundi (c.data.at (2 * i + 1));
+                ins_imGrid.at (ins_imCount) = a / 128;
+                ins_imPitch.at (ins_imCount) = a % 128;
+                ins_imLen.at (ins_imCount) = b / 128;
+                ins_imVel.at (ins_imCount) = ins_clampi (b % 128, 1, 127);
+                ins_imCount += 1;
+            }
+        }
+        if (c.offset + c.count >= c.total)
+        {
+            // pitch steps of the melody (lowest voice per onset is good enough) for the Custom Markov corpus
+            int prev = -1;
+            int lastG = -1;
+            for (int i = 0; i < ins_imCount && ins_imDeltaCount < 64; ++i)
+            {
+                if (ins_imGrid.at (i) != lastG)
+                {
+                    if (prev >= 0)
+                    {
+                        ins_imDelta.at (ins_imDeltaCount) = ins_deltaClass (ins_imPitch.at (i) - prev);
+                        ins_imDeltaCount += 1;
+                    }
+                    prev = ins_imPitch.at (i);
+                    lastG = ins_imGrid.at (i);
+                }
+            }
+        }
+        ins_dirty = true;
+    }
+
+    void ins_genImport()
+    {
+        int shift = 12 * ins_pOctave;
+        for (int i = 0; i < ins_imCount; ++i)
+        {
+            int g = ins_imGrid.at (i);
+            if (g >= 0 && g < ins_loopTicks)
+            {
+                int v = ins_clampi (ins_imVel.at (i) + (ins_pVel - 90) / 2 + ins_humanV (i), 1, 127);
+                ins_rawAdd (g, ins_humanT (i), ins_maxi (4, ins_imLen.at (i) * ins_pGate / 100), ins_imPitch.at (i) + shift, v);
+            }
+        }
+    }
+
     void ins_regenerate()
     {
         int m9 = ins_clampi (ins_pMode, 0, 4) * 9;
@@ -22558,11 +23461,17 @@ processor Eisenpuls_Synth
         ins_nCount = 0;
         ins_computeChords();
 
-        if (ins_pMode == 0)      ins_genChords();
+        if (ins_pGen == 5 && ins_imCount > 0) ins_genImport();
+        else if (ins_pGen >= 1 && ins_pGen <= 4 && ins_pMode >= 1) ins_genAlt (ins_pMode);
+        else if (ins_pMode == 0)      ins_genChords();
         else if (ins_pMode == 1) ins_genLead();
         else if (ins_pMode == 2) ins_genBass();
         else if (ins_pMode == 3) ins_genArp();
         else                 ins_genDrums();
+
+        ins_post();
+        ins_applyLocks();
+        ins_generated = true;
 
         ins_dirty = false;
         ins_dumpIdx = 0;
@@ -22732,7 +23641,7 @@ processor Eisenpuls_Synth
     }
 
     event param7001  (float v) { ins_pMode = ins_clampi (ins_roundi (v), 0, 4); ins_dirty = true; }
-    event param7002  (float v) { ins_pStyle = ins_clampi (ins_roundi (v), 0, 8); ins_dirty = true; }
+    event param7002  (float v) { ins_pStyle = ins_clampi (ins_roundi (v), 0, 13); ins_dirty = true; }
     event param7003  (float v) { ins_pKey = ins_clampi (ins_roundi (v), 0, 11); ins_dirty = true; }
     event param7004  (float v) { ins_pScale = ins_clampi (ins_roundi (v), 0, 6); ins_dirty = true; }
     event param7005  (float v) { ins_pSong = ins_clampi (ins_roundi (v), 0, 9999); ins_dirty = true; }
@@ -22753,9 +23662,9 @@ processor Eisenpuls_Synth
     // Lock Chords also carries the style the locked progression was written in: lock + 2 * style
     event param7011 (float v)
     {
-        int x = ins_clampi (ins_roundi (v), 0, 17);
+        int x = ins_clampi (ins_roundi (v), 0, 27);
         ins_pLock = x % 2;
-        ins_pChordStyle = ins_clampi (x / 2, 0, 8);
+        ins_pChordStyle = ins_clampi (x / 2, 0, 13);
         ins_dirty = true;
     }
     event param7012 (float v) { ins_setChord (0, v); }
@@ -22880,6 +23789,17 @@ processor Eisenpuls_Synth
     event param7126 (float v) { ins_setNote (11, v); }
     event param7127 (float v) { ins_pRate = ins_clampi (ins_roundi (v), 0, 2); ins_dirty = true; }
     event param7128 (float v) { ins_pFill = ins_clampi (ins_roundi (v), 0, 3); ins_dirty = true; }
+    event param7130 (float v) { ins_pInv = ins_clampi (ins_roundi (v), 0, 3); ins_dirty = true; }
+    event param7131 (float v) { ins_pSpread = ins_clampi (ins_roundi (v), 0, 2); ins_dirty = true; }
+    event param7132 (float v) { ins_pStrum = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
+    event param7133 (float v) { ins_pFig = ins_clampi (ins_roundi (v), 0, 4); ins_dirty = true; }
+    event param7134 (float v) { ins_pGhost = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
+    event param7135 (float v) { ins_pPull = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
+    event param7136 (float v) { ins_pLeap = ins_clampi (ins_roundi (v), 1, 12); ins_dirty = true; }
+    event param7137 (float v) { ins_pMut = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
+    event param7138 (float v) { ins_pDegF = ins_clampi (ins_roundi (v), 0, 7); ins_dirty = true; }
+    event param7139 (float v) { ins_pGen = ins_clampi (ins_roundi (v), 0, 5); ins_dirty = true; }
+    event param7140 (float v) { ins_pGenVar = ins_clampi (ins_roundi (v), 0, 15); ins_dirty = true; }
 
     // ---- INSPIRATOR-DSP: glue to the synth ----
     void ins_position (float64 ppq, float64 barStart)
