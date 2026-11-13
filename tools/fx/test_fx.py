@@ -477,11 +477,11 @@ js = rd("patch", "index.js"); cm = rd("patch", "Eisenpuls_Synth.cmajor"); gen = 
 blk = js[js.index("const FX_TYPES = ["):]; blk = blk[:blk.index("\n];")]
 NT = len(re.findall(r'^    \{ n: "', blk, re.M))
 check("FX types counted in index.js", NT >= 19, "%d types incl. None" % NT)
-tm = re.findall(r'FX \d+ Type",\s*min: 0\.0, max: ([0-9.]+)', cm)
+tm = re.findall(r'(?:Main|Bus \d) FX \d+ Type",\s*min: 0\.0, max: ([0-9.]+)', cm)
 check("DSP: all 48 FX Type parameters allow every type", len(tm) == 48 and all(float(m) == NT - 1 for m in tm), "%d params, max %s" % (len(tm), sorted(set(tm))))
 m = re.search(r'int nt = clamp \(t, 0, (\d+)\)', cm)
 check("DSP: the type clamp allows every type", bool(m) and int(m.group(1)) == NT - 1, m.group(1) if m else "not found")
-gm = re.findall(r'FX \d+ Type"\), 0\.0, ([0-9.]+),', gen)
+gm = re.findall(r'NJ_S\("(?:Main|Bus \d) FX \d+ Type"\), 0\.0, ([0-9.]+),', gen)
 check("UI tables (NjoData.gen.cpp): the 48 Type specs allow every type - run gen_data.js after changing index.js", len(gm) == 48 and all(float(x) == NT - 1 for x in gm), "%d specs, max %s" % (len(gm), sorted(set(gm))))
 check("DSP: every type is dispatched", all(re.search(r'ty == %d\) +y = fx' % k, cm) for k in range(1, NT)), str([k for k in range(1, NT) if not re.search(r'ty == %d\) +y = fx' % k, cm)]))
 cl = re.search(r'static const juce::uint32 c\[\] = \{([^}]*)\}', fxp); ncol = len(re.findall(r'0x[0-9a-fA-F]+', cl.group(1))) if cl else 0

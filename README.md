@@ -496,3 +496,9 @@ The single RND source became 10 random modulators (RND 1 = the old source 23, RN
 - **Seed**: 0 = new values for every note, 1-16 = the same value sequence on every note (reproducible randomness).
 
 The mod matrix sources go up to 52 now. Tests: `python3 tools/mod/test_rnd.py --host <dsp_host>`; script `tools/mod/build_rnd.py` (marker RND-DSP).
+
+## CloudSeed reverb and effect categories
+- **CloudSeed** (FX type 31, "Add FX" > Delay / Reverb): a port of the CloudSeed algorithmic reverb core (Ghost Note Audio / Valdemar Erlingsson, MIT licence, https://github.com/GhostNoteAudio/CloudSeedCore). Signal flow as in the original: input high / low cut, pre-delay, multitap, early diffuser (modulated allpass chain), up to 8 modulated delay lines with feedback, a modulated allpass diffuser, low / high shelf and low-pass in every loop; early and late are mixed with the Early knob. Knobs: Decay (0.2-30 s), Size, Damp, PreDly (0-80 ms), Mod, Early. The 8 modes are own parameter sets: Dark Plate, Hall, Room, Chamber, Cathedral, Cloud, Ambience, Echo Space.
+- Differences to the original (memory per slot is limited): at most 32 taps, 6 early stages, 8 lines with 4 diffuser stages; delays are capped (pre-delay 85 ms, taps 170 ms, line 85 ms, diffuser stage 21 ms at 48 kHz); the loop feedback is one sample, not one block, long.
+- **Categories**: the "Add FX" page has a CATEGORY dropdown (All effects, Distortion, Analog / Console, Filter / EQ, Dynamics, Modulation, Delay / Reverb, Creative); in "All effects" every effect shows its category.
+- Tests: `python3 tools/fx/test_cloudseed.py --host <dsp_host>`; script `tools/fx/build_cloudseed.py` (marker FX-CLOUDSEED).

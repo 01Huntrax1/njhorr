@@ -20,8 +20,8 @@ namespace njo
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0 };
-            return juce::Colour (c[juce::jlimit (0, 30, type)]);
+            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff };
+            return juce::Colour (c[juce::jlimit (0, 31, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -138,17 +138,45 @@ namespace njo
             void mouseUp (const juce::MouseEvent&) override { dragIdx = -1; repaint(); }
         };
 
-        // ---- grid of all effect types ("+ ADD FX") ----
+        // ---- grid of all effect types ("+ ADD FX"), sorted into categories; the dropdown in the header filters one category ----
         struct Chooser : public juce::Component
         {
             explicit Chooser (Impl& i) : im (i) {}
-            Impl& im; int over = -1; int scroll = 0;
+            Impl& im; int over = -1; int scroll = 0; int category = -1;   // -1 = all
             static constexpr int cols = 3, bw = 190, bh = 40, gap = 14, headH = 54;
-            int contentH() const { int n = (int) fxTypes().size() - 1, rows = (n + cols - 1) / cols; return rows * bh + (rows - 1) * gap + 16; }
+            static const std::vector<juce::String>& categories()
+            {
+                static const std::vector<juce::String> c { "Distortion", "Analog / Console", "Filter / EQ", "Dynamics", "Modulation", "Delay / Reverb", "Creative" };
+                return c;
+            }
+            static int categoryOf (int type)   // type = 1..
+            {
+                switch (type)
+                {
+                    case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: return 0;
+                    case 17: case 23: case 24: case 25: case 26: return 1;
+                    case 9: case 10: case 13: case 18: case 27: return 2;
+                    case 11: return 3;
+                    case 4: case 5: case 6: case 7: case 16: return 4;
+                    case 3: case 8: case 12: case 31: return 5;
+                    default: return 6;
+                }
+            }
+            // effect types (1..) of the shown category, in category order
+            std::vector<int> vis() const
+            {
+                std::vector<int> v;
+                for (int c = 0; c < (int) categories().size(); ++c)
+                    if (category < 0 || category == c)
+                        for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) v.push_back (t);
+                return v;
+            }
+            juce::Rectangle<int> dropRect() const { return { getWidth() - 214, 8, 200, 24 }; }
+            int contentH() const { int n = (int) vis().size(), rows = (n + cols - 1) / cols; return rows * bh + (rows - 1) * gap + 16; }
             int maxScroll() const { return juce::jmax (0, contentH() - (getHeight() - headH)); }
             juce::Rectangle<int> cell (int i) const
             {
-                int n = (int) fxTypes().size() - 1, rows = (n + cols - 1) / cols;
+                int n = (int) vis().size(), rows = (n + cols - 1) / cols;
                 int totalW = cols * bw + (cols - 1) * gap, totalH = rows * bh + (rows - 1) * gap;
                 int x0 = (getWidth() - totalW) / 2, y0 = headH + juce::jmax (0, (getHeight() - headH - totalH) / 2 - 10) - scroll;
                 return { x0 + (i % cols) * (bw + gap), y0 + (i / cols) * (bh + gap), bw, bh };
@@ -166,16 +194,32 @@ namespace njo
                 g.drawText (full ? "THIS RACK IS FULL (16 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
                 g.setColour (dim); g.setFont (font (9.5f));
                 g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
+                {   // category dropdown
+                    auto d = dropRect().toFloat();
+                    g.setColour (dim); g.setFont (font (8.5f, true)); g.drawText ("CATEGORY", d.withHeight (10).translated (0, -9).toNearestInt(), juce::Justification::topLeft);
+                    paintButton (g, d, false, dropOver, false, 3.0f);
+                    g.setColour (ink); g.setFont (font (11.0f, true));
+                    g.drawText (category < 0 ? juce::String ("All effects") : categories()[(size_t) category], d.reduced (8, 0).toNearestInt(), juce::Justification::centredLeft, true);
+                    juce::Path t; auto a = juce::Rectangle<float> (d.getRight() - 16, d.getCentreY() - 3, 9, 6);
+                    t.addTriangle (a.getX(), a.getY(), a.getRight(), a.getY(), a.getCentreX(), a.getBottom());
+                    g.setColour (red); g.fillPath (t);
+                }
                 g.saveState();
                 g.reduceClipRegion (getLocalBounds().withTrimmedTop (headH - 4));
-                for (int i = 0; i < (int) fxTypes().size() - 1; ++i)
+                auto v = vis();
+                for (int i = 0; i < (int) v.size(); ++i)
                 {
                     auto r = cell (i).toFloat();
                     if (r.getBottom() < headH - 4 || r.getY() > getHeight()) continue;
                     g.setColour (juce::Colour (over == i && ! full ? 0xff282a2d : 0xff161719)); g.fillRoundedRectangle (r, 3.0f);
-                    g.setColour (fxColour (i + 1).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
+                    g.setColour (fxColour (v[(size_t) i]).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
                     g.setColour (full ? dim : ink); g.setFont (font (12.0f, true));
-                    g.drawText (fxTypes()[(size_t) i + 1].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);
+                    g.drawText (fxTypes()[(size_t) v[(size_t) i]].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);
+                    if (category < 0)
+                    {
+                        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.0f));
+                        g.drawText (categories()[(size_t) categoryOf (v[(size_t) i])], r.withTrimmedRight (6).withTrimmedTop (r.getHeight() - 13).toNearestInt(), juce::Justification::bottomRight);
+                    }
                 }
                 g.restoreState();
                 if (maxScroll() > 0)   // scroll bar
@@ -185,10 +229,33 @@ namespace njo
                     g.setColour (juce::Colours::white.withAlpha (0.18f)); g.fillRoundedRectangle ((float) getWidth() - 8.0f, ty, 4.0f, th, 2.0f);
                 }
             }
-            void mouseMove (const juce::MouseEvent& e) override { int o = hit (e.getPosition()); if (o != over) { over = o; repaint(); } }
-            void mouseExit (const juce::MouseEvent&) override { over = -1; repaint(); }
-            void mouseUp (const juce::MouseEvent& e) override { int i = hit (e.getPosition()); if (i >= 0) im.addEffect (i + 1); }
-            int hit (juce::Point<int> p) const { if (p.y < headH - 4) return -1; for (int i = 0; i < (int) fxTypes().size() - 1; ++i) if (cell (i).contains (p)) return i; return -1; }
+            bool dropOver = false;
+            void mouseMove (const juce::MouseEvent& e) override
+            {
+                int o = hit (e.getPosition()); bool d = dropRect().contains (e.getPosition());
+                if (o != over || d != dropOver) { over = o; dropOver = d; repaint(); }
+            }
+            void mouseExit (const juce::MouseEvent&) override { over = -1; dropOver = false; repaint(); }
+            void openMenu()
+            {
+                juce::PopupMenu m;
+                m.addItem (1, "All effects", true, category < 0);
+                m.addSeparator();
+                for (int c = 0; c < (int) categories().size(); ++c)
+                {
+                    int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) ++n;
+                    m.addItem (c + 2, categories()[(size_t) c] + "  (" + juce::String (n) + ")", true, category == c);
+                }
+                auto self = juce::Component::SafePointer<Chooser> (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetScreenArea (localAreaToGlobal (dropRect())).withMinimumWidth (dropRect().getWidth()),
+                                 [self] (int r) { if (self != nullptr && r > 0) { self->category = r - 2; self->scroll = 0; self->repaint(); } });
+            }
+            void mouseUp (const juce::MouseEvent& e) override
+            {
+                if (dropRect().contains (e.getPosition())) { openMenu(); return; }
+                int i = hit (e.getPosition()); if (i >= 0) im.addEffect (vis()[(size_t) i]);
+            }
+            int hit (juce::Point<int> p) const { if (p.y < headH - 4) return -1; int n = (int) vis().size(); for (int i = 0; i < n; ++i) if (cell (i).contains (p)) return i; return -1; }
         };
 
         // ---- display of the selected effect (schematic: follows the knobs, not the exact DSP) ----

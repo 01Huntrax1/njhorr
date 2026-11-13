@@ -3306,7 +3306,10 @@ const FX_TYPES = [
     { n: "Granular", mix: 0.5, modes: ["Granular", "Freeze", "Pitch Shifter", "Looping Delay"],
       p: [["Position", fxPct, 0.3], ["Size", fxMs(20, 600), fxExpN(150, 20, 600)], ["Pitch", fxLin(-24, 24, 1, "st"), 0.5], ["Density", fxPct, 0.5], ["Texture", fxPct, 0.5], ["Feedback", fxPct, 0]] },
     { n: "Warp", mix: 1, modes: ["Analog RM", "Digital RM", "Vocoder", "Freq Shift"],
-      p: [["Amount", fxPct, 0.5], ["Level", n => (n * 2).toFixed(2) + "x", 0.5], ["Pitch", fxHz(20, 4000), fxExpN(220, 20, 4000)], ["Shape", fxPct, 0], ["Drive", fxDb(-12, 12), 0.5], ["Release", fxPct, 0.3]] }
+      p: [["Amount", fxPct, 0.5], ["Level", n => (n * 2).toFixed(2) + "x", 0.5], ["Pitch", fxHz(20, 4000), fxExpN(220, 20, 4000)], ["Shape", fxPct, 0], ["Drive", fxDb(-12, 12), 0.5], ["Release", fxPct, 0.3]] },
+    // FX-CLOUDSEED: port of the CloudSeed reverb core (Ghost Note Audio, MIT licence), FX type 31
+    { n: "CloudSeed", mix: 0.3, modes: ["Dark Plate", "Hall", "Room", "Chamber", "Cathedral", "Cloud", "Ambience", "Echo Space"],
+      p: [["Decay", fxMs(200, 30000), 0.45], ["Size", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 80, 0, "ms"), 0.1], ["Mod", fxPct, 0.3], ["Early", fxPct, 0.3]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
