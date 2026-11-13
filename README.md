@@ -474,3 +474,13 @@ The 303 pattern editor has a bar with a pattern dropdown, previous / next, **SAV
 * **Euclid / Poly** (ids 5710 + 8 * lane + k): four lanes, each with On, Steps (1-64), Pulses, Rotation, Offset (semitones from the root), Probability and Ratchet (1-4). Step i of a lane hits when `((i + rotation) % steps * pulses) % steps < pulses`; the lanes run on the same clock with their own lengths, so different lengths give polyrhythms. The first step of a lane is accented.
 * **Melodic** (length 5800, rows 5810 + 64 * row + step): up to 64 steps, per step Note (-24..24), Velocity, Length (10-400 % of a step, over 100 % ties into the next), Chord (none, octave, fifth, major, minor, sus4, maj7, min7, dim), Probability, Ratchet and Gate. The editor shows one lane at a time (chips on top), 16 steps per page.
 * **Generative** (ids 5750-5759): **Turing Machine** (shift register of Loop bits, Mutation % flips the bit that wraps: 0 % = fixed loop) or **Random Walk** (Max Step in scale degrees, Bias up / down), mapped to one of 12 scales over Range semitones above the root (+ Shift), Rest % and Ratchet.
+
+## MSEG modulation envelopes
+Each of the 10 modulation envelopes (sources ENV 1-10) can run as an MSEG. In the ENV / LFO page the envelope display has a button **> MSEG** (ADSR mode, the default, so old presets sound as before); it converts the current A/D/S/R into 3 nodes. **ADSR** switches back.
+
+- Up to **8 nodes**; each has *time* (ms to reach it from the previous node, 0-10 s), *level* (0-1) and the *curve* of the segment before it (-1..1, shape `x^exp(curve*2.5)`).
+- Drag a node to change time and level, drag the diamond on a segment for the curve, click empty space to add a node, double click a node to delete it (double click a diamond = straight).
+- **Sustain node** (green): while the key is held the envelope stops there. **Loop** (LOOP button or right click > Loop starts / ends here): while held the envelope repeats the nodes of the loop region.
+- On note off the envelope continues with the nodes after the sustain node. Without further nodes (or without a sustain node) the level falls to 0 with the ADSR Release knob.
+- Parameters 7200 + 30 * env (non-automatable, stored in presets): mode, nodes, sustain, loop on / start / end, then 3 values per node. The filter-effect envelope keeps the ADSR behaviour.
+- Tests: `python3 tools/mod/test_mseg.py --host <dsp_host>`; script `tools/mod/build_mseg.py` (marker MSEG-DSP).

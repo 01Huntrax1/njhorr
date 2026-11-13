@@ -189,6 +189,12 @@ int main (int argc, char** argv)
         pump();
     }
     ed.setGroup (njo::EditorContent::Modulation); pump(); save (ed, dir.getChildFile ("mod.png"), scale);
+    {   // MSEG editor: envelope 1 as a 5 node MSEG with sustain on node 3 and a loop 2..3
+        const float nd[5][3] = { { 60, 1.0f, -0.4f }, { 220, 0.55f, -0.5f }, { 140, 0.8f, 0.3f }, { 400, 0.3f, 0.0f }, { 600, 0.0f, 0.6f } };
+        be.setParam (7200, 1); be.setParam (7201, 5); be.setParam (7202, 3); be.setParam (7203, 1); be.setParam (7204, 2); be.setParam (7205, 3);
+        for (int k = 0; k < 5; ++k) { be.setParam (7206 + 3 * k, nd[k][0]); be.setParam (7207 + 3 * k, nd[k][1]); be.setParam (7208 + 3 * k, nd[k][2]); }
+        pump(); pump(); save (ed, dir.getChildFile ("mod_mseg.png"), scale);
+    }
     for (int k = 0; k < 8; ++k) be.setParam (5000 + k, (float) k);   // every step shape once
     be.seqStepPos[0] = 2; ed.setGroup (njo::EditorContent::Sequencer); pump(); save (ed, dir.getChildFile ("seqarp.png"), scale);
     be.setParam (njo::ARP_BASE + 1, 5.0f); be.setParam (njo::ARP_BASE, 1.0f); be.setParam (5264, 40.0f); pump(); pump(); save (ed, dir.getChildFile ("seqarp303.png"), scale);

@@ -158,6 +158,307 @@ processor Eisenpuls_Synth
     input event float param7142 [[ name: "Insp Drum Chance", min: 0.0, max: 100.0, init: 100.0, step: 1.0, automatable: false ]];
     input event float param7143 [[ name: "Insp Ratchet", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7144 [[ name: "Insp Poly", min: 0.0, max: 3.0, init: 0.0, step: 1.0, text: "Off|A 12:5:7|B 10:7:9|C 14:5:11", automatable: false ]];
+    // MSEG-DSP
+    input event float param7200 [[ name: "MSEG1 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7201 [[ name: "MSEG1 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7202 [[ name: "MSEG1 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7203 [[ name: "MSEG1 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7204 [[ name: "MSEG1 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7205 [[ name: "MSEG1 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7206 [[ name: "MSEG1 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7207 [[ name: "MSEG1 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7208 [[ name: "MSEG1 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7209 [[ name: "MSEG1 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7210 [[ name: "MSEG1 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7211 [[ name: "MSEG1 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7212 [[ name: "MSEG1 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7213 [[ name: "MSEG1 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7214 [[ name: "MSEG1 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7215 [[ name: "MSEG1 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7216 [[ name: "MSEG1 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7217 [[ name: "MSEG1 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7218 [[ name: "MSEG1 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7219 [[ name: "MSEG1 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7220 [[ name: "MSEG1 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7221 [[ name: "MSEG1 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7222 [[ name: "MSEG1 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7223 [[ name: "MSEG1 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7224 [[ name: "MSEG1 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7225 [[ name: "MSEG1 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7226 [[ name: "MSEG1 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7227 [[ name: "MSEG1 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7228 [[ name: "MSEG1 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7229 [[ name: "MSEG1 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7230 [[ name: "MSEG2 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7231 [[ name: "MSEG2 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7232 [[ name: "MSEG2 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7233 [[ name: "MSEG2 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7234 [[ name: "MSEG2 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7235 [[ name: "MSEG2 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7236 [[ name: "MSEG2 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7237 [[ name: "MSEG2 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7238 [[ name: "MSEG2 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7239 [[ name: "MSEG2 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7240 [[ name: "MSEG2 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7241 [[ name: "MSEG2 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7242 [[ name: "MSEG2 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7243 [[ name: "MSEG2 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7244 [[ name: "MSEG2 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7245 [[ name: "MSEG2 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7246 [[ name: "MSEG2 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7247 [[ name: "MSEG2 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7248 [[ name: "MSEG2 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7249 [[ name: "MSEG2 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7250 [[ name: "MSEG2 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7251 [[ name: "MSEG2 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7252 [[ name: "MSEG2 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7253 [[ name: "MSEG2 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7254 [[ name: "MSEG2 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7255 [[ name: "MSEG2 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7256 [[ name: "MSEG2 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7257 [[ name: "MSEG2 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7258 [[ name: "MSEG2 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7259 [[ name: "MSEG2 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7260 [[ name: "MSEG3 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7261 [[ name: "MSEG3 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7262 [[ name: "MSEG3 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7263 [[ name: "MSEG3 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7264 [[ name: "MSEG3 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7265 [[ name: "MSEG3 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7266 [[ name: "MSEG3 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7267 [[ name: "MSEG3 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7268 [[ name: "MSEG3 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7269 [[ name: "MSEG3 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7270 [[ name: "MSEG3 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7271 [[ name: "MSEG3 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7272 [[ name: "MSEG3 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7273 [[ name: "MSEG3 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7274 [[ name: "MSEG3 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7275 [[ name: "MSEG3 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7276 [[ name: "MSEG3 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7277 [[ name: "MSEG3 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7278 [[ name: "MSEG3 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7279 [[ name: "MSEG3 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7280 [[ name: "MSEG3 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7281 [[ name: "MSEG3 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7282 [[ name: "MSEG3 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7283 [[ name: "MSEG3 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7284 [[ name: "MSEG3 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7285 [[ name: "MSEG3 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7286 [[ name: "MSEG3 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7287 [[ name: "MSEG3 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7288 [[ name: "MSEG3 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7289 [[ name: "MSEG3 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7290 [[ name: "MSEG4 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7291 [[ name: "MSEG4 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7292 [[ name: "MSEG4 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7293 [[ name: "MSEG4 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7294 [[ name: "MSEG4 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7295 [[ name: "MSEG4 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7296 [[ name: "MSEG4 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7297 [[ name: "MSEG4 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7298 [[ name: "MSEG4 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7299 [[ name: "MSEG4 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7300 [[ name: "MSEG4 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7301 [[ name: "MSEG4 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7302 [[ name: "MSEG4 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7303 [[ name: "MSEG4 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7304 [[ name: "MSEG4 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7305 [[ name: "MSEG4 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7306 [[ name: "MSEG4 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7307 [[ name: "MSEG4 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7308 [[ name: "MSEG4 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7309 [[ name: "MSEG4 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7310 [[ name: "MSEG4 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7311 [[ name: "MSEG4 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7312 [[ name: "MSEG4 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7313 [[ name: "MSEG4 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7314 [[ name: "MSEG4 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7315 [[ name: "MSEG4 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7316 [[ name: "MSEG4 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7317 [[ name: "MSEG4 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7318 [[ name: "MSEG4 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7319 [[ name: "MSEG4 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7320 [[ name: "MSEG5 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7321 [[ name: "MSEG5 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7322 [[ name: "MSEG5 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7323 [[ name: "MSEG5 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7324 [[ name: "MSEG5 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7325 [[ name: "MSEG5 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7326 [[ name: "MSEG5 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7327 [[ name: "MSEG5 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7328 [[ name: "MSEG5 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7329 [[ name: "MSEG5 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7330 [[ name: "MSEG5 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7331 [[ name: "MSEG5 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7332 [[ name: "MSEG5 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7333 [[ name: "MSEG5 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7334 [[ name: "MSEG5 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7335 [[ name: "MSEG5 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7336 [[ name: "MSEG5 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7337 [[ name: "MSEG5 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7338 [[ name: "MSEG5 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7339 [[ name: "MSEG5 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7340 [[ name: "MSEG5 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7341 [[ name: "MSEG5 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7342 [[ name: "MSEG5 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7343 [[ name: "MSEG5 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7344 [[ name: "MSEG5 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7345 [[ name: "MSEG5 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7346 [[ name: "MSEG5 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7347 [[ name: "MSEG5 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7348 [[ name: "MSEG5 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7349 [[ name: "MSEG5 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7350 [[ name: "MSEG6 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7351 [[ name: "MSEG6 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7352 [[ name: "MSEG6 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7353 [[ name: "MSEG6 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7354 [[ name: "MSEG6 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7355 [[ name: "MSEG6 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7356 [[ name: "MSEG6 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7357 [[ name: "MSEG6 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7358 [[ name: "MSEG6 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7359 [[ name: "MSEG6 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7360 [[ name: "MSEG6 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7361 [[ name: "MSEG6 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7362 [[ name: "MSEG6 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7363 [[ name: "MSEG6 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7364 [[ name: "MSEG6 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7365 [[ name: "MSEG6 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7366 [[ name: "MSEG6 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7367 [[ name: "MSEG6 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7368 [[ name: "MSEG6 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7369 [[ name: "MSEG6 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7370 [[ name: "MSEG6 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7371 [[ name: "MSEG6 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7372 [[ name: "MSEG6 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7373 [[ name: "MSEG6 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7374 [[ name: "MSEG6 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7375 [[ name: "MSEG6 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7376 [[ name: "MSEG6 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7377 [[ name: "MSEG6 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7378 [[ name: "MSEG6 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7379 [[ name: "MSEG6 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7380 [[ name: "MSEG7 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7381 [[ name: "MSEG7 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7382 [[ name: "MSEG7 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7383 [[ name: "MSEG7 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7384 [[ name: "MSEG7 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7385 [[ name: "MSEG7 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7386 [[ name: "MSEG7 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7387 [[ name: "MSEG7 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7388 [[ name: "MSEG7 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7389 [[ name: "MSEG7 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7390 [[ name: "MSEG7 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7391 [[ name: "MSEG7 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7392 [[ name: "MSEG7 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7393 [[ name: "MSEG7 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7394 [[ name: "MSEG7 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7395 [[ name: "MSEG7 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7396 [[ name: "MSEG7 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7397 [[ name: "MSEG7 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7398 [[ name: "MSEG7 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7399 [[ name: "MSEG7 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7400 [[ name: "MSEG7 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7401 [[ name: "MSEG7 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7402 [[ name: "MSEG7 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7403 [[ name: "MSEG7 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7404 [[ name: "MSEG7 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7405 [[ name: "MSEG7 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7406 [[ name: "MSEG7 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7407 [[ name: "MSEG7 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7408 [[ name: "MSEG7 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7409 [[ name: "MSEG7 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7410 [[ name: "MSEG8 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7411 [[ name: "MSEG8 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7412 [[ name: "MSEG8 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7413 [[ name: "MSEG8 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7414 [[ name: "MSEG8 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7415 [[ name: "MSEG8 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7416 [[ name: "MSEG8 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7417 [[ name: "MSEG8 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7418 [[ name: "MSEG8 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7419 [[ name: "MSEG8 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7420 [[ name: "MSEG8 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7421 [[ name: "MSEG8 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7422 [[ name: "MSEG8 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7423 [[ name: "MSEG8 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7424 [[ name: "MSEG8 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7425 [[ name: "MSEG8 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7426 [[ name: "MSEG8 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7427 [[ name: "MSEG8 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7428 [[ name: "MSEG8 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7429 [[ name: "MSEG8 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7430 [[ name: "MSEG8 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7431 [[ name: "MSEG8 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7432 [[ name: "MSEG8 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7433 [[ name: "MSEG8 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7434 [[ name: "MSEG8 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7435 [[ name: "MSEG8 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7436 [[ name: "MSEG8 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7437 [[ name: "MSEG8 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7438 [[ name: "MSEG8 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7439 [[ name: "MSEG8 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7440 [[ name: "MSEG9 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7441 [[ name: "MSEG9 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7442 [[ name: "MSEG9 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7443 [[ name: "MSEG9 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7444 [[ name: "MSEG9 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7445 [[ name: "MSEG9 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7446 [[ name: "MSEG9 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7447 [[ name: "MSEG9 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7448 [[ name: "MSEG9 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7449 [[ name: "MSEG9 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7450 [[ name: "MSEG9 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7451 [[ name: "MSEG9 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7452 [[ name: "MSEG9 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7453 [[ name: "MSEG9 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7454 [[ name: "MSEG9 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7455 [[ name: "MSEG9 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7456 [[ name: "MSEG9 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7457 [[ name: "MSEG9 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7458 [[ name: "MSEG9 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7459 [[ name: "MSEG9 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7460 [[ name: "MSEG9 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7461 [[ name: "MSEG9 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7462 [[ name: "MSEG9 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7463 [[ name: "MSEG9 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7464 [[ name: "MSEG9 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7465 [[ name: "MSEG9 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7466 [[ name: "MSEG9 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7467 [[ name: "MSEG9 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7468 [[ name: "MSEG9 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7469 [[ name: "MSEG9 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7470 [[ name: "MSEG10 Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7471 [[ name: "MSEG10 Nodes", min: 2.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];
+    input event float param7472 [[ name: "MSEG10 Sustain", min: 0.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7473 [[ name: "MSEG10 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7474 [[ name: "MSEG10 Loop Start", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7475 [[ name: "MSEG10 Loop End", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param7476 [[ name: "MSEG10 Node 1 Time", min: 0.0, max: 10000.0, init: 10.0, step: 1.0, automatable: false ]];
+    input event float param7477 [[ name: "MSEG10 Node 1 Level", min: 0.0, max: 1.0, init: 1.00, step: 0.001, automatable: false ]];
+    input event float param7478 [[ name: "MSEG10 Node 1 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7479 [[ name: "MSEG10 Node 2 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7480 [[ name: "MSEG10 Node 2 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7481 [[ name: "MSEG10 Node 2 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7482 [[ name: "MSEG10 Node 3 Time", min: 0.0, max: 10000.0, init: 300.0, step: 1.0, automatable: false ]];
+    input event float param7483 [[ name: "MSEG10 Node 3 Level", min: 0.0, max: 1.0, init: 0.00, step: 0.001, automatable: false ]];
+    input event float param7484 [[ name: "MSEG10 Node 3 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7485 [[ name: "MSEG10 Node 4 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7486 [[ name: "MSEG10 Node 4 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7487 [[ name: "MSEG10 Node 4 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7488 [[ name: "MSEG10 Node 5 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7489 [[ name: "MSEG10 Node 5 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7490 [[ name: "MSEG10 Node 5 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7491 [[ name: "MSEG10 Node 6 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7492 [[ name: "MSEG10 Node 6 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7493 [[ name: "MSEG10 Node 6 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7494 [[ name: "MSEG10 Node 7 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7495 [[ name: "MSEG10 Node 7 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7496 [[ name: "MSEG10 Node 7 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
+    input event float param7497 [[ name: "MSEG10 Node 8 Time", min: 0.0, max: 10000.0, init: 100.0, step: 1.0, automatable: false ]];
+    input event float param7498 [[ name: "MSEG10 Node 8 Level", min: 0.0, max: 1.0, init: 0.50, step: 0.001, automatable: false ]];
+    input event float param7499 [[ name: "MSEG10 Node 8 Curve", min: -1.0, max: 1.0, init: 0.0, step: 0.01, automatable: false ]];
     output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
@@ -5193,6 +5494,16 @@ processor Eisenpuls_Synth
     float[16]   mEnvD;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvR;  // padded to a power of two (cheap index wrap)
+    // MSEG-DSP
+    int[16]     msMode;
+    int[16]     msN;
+    int[16]     msSus;
+    int[16]     msLoopOn;
+    int[16]     msLoopS;
+    int[16]     msLoopE;
+    float[128]  msT;
+    float[128]  msL;
+    float[128]  msC;
     float[16]   envMax;  // padded to a power of two (cheap index wrap)
     float[16]   lfoUni;  // MOD-LFOBIP
     float[256]  seqStep;   // MOD-SEQ: 16 steps of each sequencer (0..1)
@@ -10151,6 +10462,10 @@ processor Eisenpuls_Synth
         float[16] lfoSh;      // per-voice sample & hold values
         float[16] lfoSm;      // per-voice smoothing state
         int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
+        int[16]   vmNode;     // MSEG-DSP: target node (held node in stage 2)
+        int[16]   vmFlag;     // MSEG-DSP: 0 not released, 1 release through nodes, 2 fallback release, 3 done
+        float[16] vmT;        // MSEG-DSP: seconds in the current segment
+        float[16] vmFrom;     // MSEG-DSP: level at the segment start
         float   env;
         float   penv;
         float   velGain;
@@ -10721,6 +11036,12 @@ processor Eisenpuls_Synth
             mEnvD.at (mi)       = 300.0f;
             mEnvS.at (mi)       = 0.5f;
             mEnvR.at (mi)       = 300.0f;
+            msMode.at (mi)      = 0;
+            msN.at (mi)         = 3;
+            msSus.at (mi)       = 2;
+            msLoopOn.at (mi)    = 0;
+            msLoopS.at (mi)     = 1;
+            msLoopE.at (mi)     = 2;
             envMax.at (mi)      = 0.0f;
             envMaxNext.at (mi)  = 0.0f;
             mmSrcI.at (mi)      = 0;
@@ -15727,11 +16048,94 @@ processor Eisenpuls_Synth
         }
     }
 
+    // MSEG-DSP: advances MSEG m of one voice by one sample
+    void msStep (int vi, int m, float dtv)
+    {
+        int   ms  = voices.at (vi).mstage.at (m);
+        float me  = voices.at (vi).menv.at (m);
+        int   n   = msN.at (m);
+        int   sus = msSus.at (m) - 1;
+        int   fl  = voices.at (vi).vmFlag.at (m);
+        int   k   = voices.at (vi).vmNode.at (m);
+
+        if (ms == 3 && fl == 0)
+        {
+            fl = 1;
+            voices.at (vi).vmFrom.at (m) = me;
+            voices.at (vi).vmT.at (m)    = 0.0f;
+
+            if (sus < 0)
+                fl = 2;
+            else
+            {
+                if (k <= sus)
+                    k = sus + 1;
+
+                if (k >= n)
+                    fl = 2;
+            }
+        }
+
+        if ((ms == 1 || (ms == 3 && fl == 1)) && k < n)
+        {
+            float tt = max (msT.at (m * 8 + k), 0.0f) * 0.001f;
+            float t  = voices.at (vi).vmT.at (m) + dtv;
+            float x  = tt <= 0.00002f ? 1.0f : t / tt;
+            float lv = msL.at (m * 8 + k);
+
+            if (x >= 1.0f)
+            {
+                me = lv;
+                voices.at (vi).vmFrom.at (m) = me;
+                voices.at (vi).vmT.at (m)    = 0.0f;
+
+                if (ms == 1)
+                {
+                    int le = max (msLoopS.at (m), msLoopE.at (m)) - 1;
+                    int ls = min (msLoopS.at (m), msLoopE.at (m)) - 1;
+
+                    if (msLoopOn.at (m) > 0 && k == le && le < n)
+                        k = ls;
+                    else if (k == sus)
+                        ms = 2;
+                    else if (k + 1 >= n)
+                        ms = 2;
+                    else
+                        k = k + 1;
+                }
+                else
+                    k = k + 1;
+            }
+            else
+            {
+                float sh = float (pow (x, float (exp (msC.at (m * 8 + k) * 2.5f))));
+                me = voices.at (vi).vmFrom.at (m) + (lv - voices.at (vi).vmFrom.at (m)) * sh;
+                voices.at (vi).vmT.at (m) = t;
+            }
+        }
+        else if (fl == 2)
+            me -= me * clamp (dtv * 5.0f / (max (mEnvR.at (m), 1.0f) * 0.001f), 0.0f, 0.99f);
+
+        voices.at (vi).mstage.at (m) = ms;
+        voices.at (vi).vmFlag.at (m) = fl;
+        voices.at (vi).vmNode.at (m) = k;
+        voices.at (vi).menv.at (m)   = me;
+
+        if (me > envMaxNext.at (m))
+            envMaxNext.at (m) = me;
+    }
+
     // Advances the 10 mod envelopes of one voice by one sample
     void updateModEnvs (int vi, float dtv)
     {
         for (int m = 0; m < 10; ++m)
         {
+            if (msMode.at (m) == 1)
+            {
+                msStep (vi, m, dtv);
+                continue;
+            }
+
             int   ms = voices.at (vi).mstage.at (m);
             float me = voices.at (vi).menv.at (m);
 
@@ -20562,7 +20966,13 @@ processor Eisenpuls_Synth
         }
 
         for (int ms = 0; ms < 10; ++ms)
+        {
             voices.at (v).mstage.at (ms) = 1;
+            voices.at (v).vmNode.at (ms) = 0;
+            voices.at (v).vmFlag.at (ms) = 0;
+            voices.at (v).vmT.at (ms)    = 0.0f;
+            voices.at (v).vmFrom.at (ms) = voices.at (v).menv.at (ms);
+        }
 
         voices.at (v).penv    = 1.0f;
         voices.at (v).velGain = velGainV;
@@ -24383,6 +24793,306 @@ processor Eisenpuls_Synth
     event param7142 (float v) { ins_pChance = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
     event param7143 (float v) { ins_pRatchet = ins_clampi (ins_roundi (v), 0, 100); ins_dirty = true; }
     event param7144 (float v) { ins_pPoly = ins_clampi (ins_roundi (v), 0, 3); ins_dirty = true; }
+    event param7200 (float v) { msMode.at (0) = v > 0.5f ? 1 : 0; }
+    event param7201 (float v) { msN.at (0) = clamp (int (v + 0.5f), 2, 8); }
+    event param7202 (float v) { msSus.at (0) = clamp (int (v + 0.5f), 0, 8); }
+    event param7203 (float v) { msLoopOn.at (0) = v > 0.5f ? 1 : 0; }
+    event param7204 (float v) { msLoopS.at (0) = clamp (int (v + 0.5f), 1, 8); }
+    event param7205 (float v) { msLoopE.at (0) = clamp (int (v + 0.5f), 1, 8); }
+    event param7206 (float v) { msT.at (0) = v; }
+    event param7207 (float v) { msL.at (0) = v; }
+    event param7208 (float v) { msC.at (0) = v; }
+    event param7209 (float v) { msT.at (1) = v; }
+    event param7210 (float v) { msL.at (1) = v; }
+    event param7211 (float v) { msC.at (1) = v; }
+    event param7212 (float v) { msT.at (2) = v; }
+    event param7213 (float v) { msL.at (2) = v; }
+    event param7214 (float v) { msC.at (2) = v; }
+    event param7215 (float v) { msT.at (3) = v; }
+    event param7216 (float v) { msL.at (3) = v; }
+    event param7217 (float v) { msC.at (3) = v; }
+    event param7218 (float v) { msT.at (4) = v; }
+    event param7219 (float v) { msL.at (4) = v; }
+    event param7220 (float v) { msC.at (4) = v; }
+    event param7221 (float v) { msT.at (5) = v; }
+    event param7222 (float v) { msL.at (5) = v; }
+    event param7223 (float v) { msC.at (5) = v; }
+    event param7224 (float v) { msT.at (6) = v; }
+    event param7225 (float v) { msL.at (6) = v; }
+    event param7226 (float v) { msC.at (6) = v; }
+    event param7227 (float v) { msT.at (7) = v; }
+    event param7228 (float v) { msL.at (7) = v; }
+    event param7229 (float v) { msC.at (7) = v; }
+    event param7230 (float v) { msMode.at (1) = v > 0.5f ? 1 : 0; }
+    event param7231 (float v) { msN.at (1) = clamp (int (v + 0.5f), 2, 8); }
+    event param7232 (float v) { msSus.at (1) = clamp (int (v + 0.5f), 0, 8); }
+    event param7233 (float v) { msLoopOn.at (1) = v > 0.5f ? 1 : 0; }
+    event param7234 (float v) { msLoopS.at (1) = clamp (int (v + 0.5f), 1, 8); }
+    event param7235 (float v) { msLoopE.at (1) = clamp (int (v + 0.5f), 1, 8); }
+    event param7236 (float v) { msT.at (8) = v; }
+    event param7237 (float v) { msL.at (8) = v; }
+    event param7238 (float v) { msC.at (8) = v; }
+    event param7239 (float v) { msT.at (9) = v; }
+    event param7240 (float v) { msL.at (9) = v; }
+    event param7241 (float v) { msC.at (9) = v; }
+    event param7242 (float v) { msT.at (10) = v; }
+    event param7243 (float v) { msL.at (10) = v; }
+    event param7244 (float v) { msC.at (10) = v; }
+    event param7245 (float v) { msT.at (11) = v; }
+    event param7246 (float v) { msL.at (11) = v; }
+    event param7247 (float v) { msC.at (11) = v; }
+    event param7248 (float v) { msT.at (12) = v; }
+    event param7249 (float v) { msL.at (12) = v; }
+    event param7250 (float v) { msC.at (12) = v; }
+    event param7251 (float v) { msT.at (13) = v; }
+    event param7252 (float v) { msL.at (13) = v; }
+    event param7253 (float v) { msC.at (13) = v; }
+    event param7254 (float v) { msT.at (14) = v; }
+    event param7255 (float v) { msL.at (14) = v; }
+    event param7256 (float v) { msC.at (14) = v; }
+    event param7257 (float v) { msT.at (15) = v; }
+    event param7258 (float v) { msL.at (15) = v; }
+    event param7259 (float v) { msC.at (15) = v; }
+    event param7260 (float v) { msMode.at (2) = v > 0.5f ? 1 : 0; }
+    event param7261 (float v) { msN.at (2) = clamp (int (v + 0.5f), 2, 8); }
+    event param7262 (float v) { msSus.at (2) = clamp (int (v + 0.5f), 0, 8); }
+    event param7263 (float v) { msLoopOn.at (2) = v > 0.5f ? 1 : 0; }
+    event param7264 (float v) { msLoopS.at (2) = clamp (int (v + 0.5f), 1, 8); }
+    event param7265 (float v) { msLoopE.at (2) = clamp (int (v + 0.5f), 1, 8); }
+    event param7266 (float v) { msT.at (16) = v; }
+    event param7267 (float v) { msL.at (16) = v; }
+    event param7268 (float v) { msC.at (16) = v; }
+    event param7269 (float v) { msT.at (17) = v; }
+    event param7270 (float v) { msL.at (17) = v; }
+    event param7271 (float v) { msC.at (17) = v; }
+    event param7272 (float v) { msT.at (18) = v; }
+    event param7273 (float v) { msL.at (18) = v; }
+    event param7274 (float v) { msC.at (18) = v; }
+    event param7275 (float v) { msT.at (19) = v; }
+    event param7276 (float v) { msL.at (19) = v; }
+    event param7277 (float v) { msC.at (19) = v; }
+    event param7278 (float v) { msT.at (20) = v; }
+    event param7279 (float v) { msL.at (20) = v; }
+    event param7280 (float v) { msC.at (20) = v; }
+    event param7281 (float v) { msT.at (21) = v; }
+    event param7282 (float v) { msL.at (21) = v; }
+    event param7283 (float v) { msC.at (21) = v; }
+    event param7284 (float v) { msT.at (22) = v; }
+    event param7285 (float v) { msL.at (22) = v; }
+    event param7286 (float v) { msC.at (22) = v; }
+    event param7287 (float v) { msT.at (23) = v; }
+    event param7288 (float v) { msL.at (23) = v; }
+    event param7289 (float v) { msC.at (23) = v; }
+    event param7290 (float v) { msMode.at (3) = v > 0.5f ? 1 : 0; }
+    event param7291 (float v) { msN.at (3) = clamp (int (v + 0.5f), 2, 8); }
+    event param7292 (float v) { msSus.at (3) = clamp (int (v + 0.5f), 0, 8); }
+    event param7293 (float v) { msLoopOn.at (3) = v > 0.5f ? 1 : 0; }
+    event param7294 (float v) { msLoopS.at (3) = clamp (int (v + 0.5f), 1, 8); }
+    event param7295 (float v) { msLoopE.at (3) = clamp (int (v + 0.5f), 1, 8); }
+    event param7296 (float v) { msT.at (24) = v; }
+    event param7297 (float v) { msL.at (24) = v; }
+    event param7298 (float v) { msC.at (24) = v; }
+    event param7299 (float v) { msT.at (25) = v; }
+    event param7300 (float v) { msL.at (25) = v; }
+    event param7301 (float v) { msC.at (25) = v; }
+    event param7302 (float v) { msT.at (26) = v; }
+    event param7303 (float v) { msL.at (26) = v; }
+    event param7304 (float v) { msC.at (26) = v; }
+    event param7305 (float v) { msT.at (27) = v; }
+    event param7306 (float v) { msL.at (27) = v; }
+    event param7307 (float v) { msC.at (27) = v; }
+    event param7308 (float v) { msT.at (28) = v; }
+    event param7309 (float v) { msL.at (28) = v; }
+    event param7310 (float v) { msC.at (28) = v; }
+    event param7311 (float v) { msT.at (29) = v; }
+    event param7312 (float v) { msL.at (29) = v; }
+    event param7313 (float v) { msC.at (29) = v; }
+    event param7314 (float v) { msT.at (30) = v; }
+    event param7315 (float v) { msL.at (30) = v; }
+    event param7316 (float v) { msC.at (30) = v; }
+    event param7317 (float v) { msT.at (31) = v; }
+    event param7318 (float v) { msL.at (31) = v; }
+    event param7319 (float v) { msC.at (31) = v; }
+    event param7320 (float v) { msMode.at (4) = v > 0.5f ? 1 : 0; }
+    event param7321 (float v) { msN.at (4) = clamp (int (v + 0.5f), 2, 8); }
+    event param7322 (float v) { msSus.at (4) = clamp (int (v + 0.5f), 0, 8); }
+    event param7323 (float v) { msLoopOn.at (4) = v > 0.5f ? 1 : 0; }
+    event param7324 (float v) { msLoopS.at (4) = clamp (int (v + 0.5f), 1, 8); }
+    event param7325 (float v) { msLoopE.at (4) = clamp (int (v + 0.5f), 1, 8); }
+    event param7326 (float v) { msT.at (32) = v; }
+    event param7327 (float v) { msL.at (32) = v; }
+    event param7328 (float v) { msC.at (32) = v; }
+    event param7329 (float v) { msT.at (33) = v; }
+    event param7330 (float v) { msL.at (33) = v; }
+    event param7331 (float v) { msC.at (33) = v; }
+    event param7332 (float v) { msT.at (34) = v; }
+    event param7333 (float v) { msL.at (34) = v; }
+    event param7334 (float v) { msC.at (34) = v; }
+    event param7335 (float v) { msT.at (35) = v; }
+    event param7336 (float v) { msL.at (35) = v; }
+    event param7337 (float v) { msC.at (35) = v; }
+    event param7338 (float v) { msT.at (36) = v; }
+    event param7339 (float v) { msL.at (36) = v; }
+    event param7340 (float v) { msC.at (36) = v; }
+    event param7341 (float v) { msT.at (37) = v; }
+    event param7342 (float v) { msL.at (37) = v; }
+    event param7343 (float v) { msC.at (37) = v; }
+    event param7344 (float v) { msT.at (38) = v; }
+    event param7345 (float v) { msL.at (38) = v; }
+    event param7346 (float v) { msC.at (38) = v; }
+    event param7347 (float v) { msT.at (39) = v; }
+    event param7348 (float v) { msL.at (39) = v; }
+    event param7349 (float v) { msC.at (39) = v; }
+    event param7350 (float v) { msMode.at (5) = v > 0.5f ? 1 : 0; }
+    event param7351 (float v) { msN.at (5) = clamp (int (v + 0.5f), 2, 8); }
+    event param7352 (float v) { msSus.at (5) = clamp (int (v + 0.5f), 0, 8); }
+    event param7353 (float v) { msLoopOn.at (5) = v > 0.5f ? 1 : 0; }
+    event param7354 (float v) { msLoopS.at (5) = clamp (int (v + 0.5f), 1, 8); }
+    event param7355 (float v) { msLoopE.at (5) = clamp (int (v + 0.5f), 1, 8); }
+    event param7356 (float v) { msT.at (40) = v; }
+    event param7357 (float v) { msL.at (40) = v; }
+    event param7358 (float v) { msC.at (40) = v; }
+    event param7359 (float v) { msT.at (41) = v; }
+    event param7360 (float v) { msL.at (41) = v; }
+    event param7361 (float v) { msC.at (41) = v; }
+    event param7362 (float v) { msT.at (42) = v; }
+    event param7363 (float v) { msL.at (42) = v; }
+    event param7364 (float v) { msC.at (42) = v; }
+    event param7365 (float v) { msT.at (43) = v; }
+    event param7366 (float v) { msL.at (43) = v; }
+    event param7367 (float v) { msC.at (43) = v; }
+    event param7368 (float v) { msT.at (44) = v; }
+    event param7369 (float v) { msL.at (44) = v; }
+    event param7370 (float v) { msC.at (44) = v; }
+    event param7371 (float v) { msT.at (45) = v; }
+    event param7372 (float v) { msL.at (45) = v; }
+    event param7373 (float v) { msC.at (45) = v; }
+    event param7374 (float v) { msT.at (46) = v; }
+    event param7375 (float v) { msL.at (46) = v; }
+    event param7376 (float v) { msC.at (46) = v; }
+    event param7377 (float v) { msT.at (47) = v; }
+    event param7378 (float v) { msL.at (47) = v; }
+    event param7379 (float v) { msC.at (47) = v; }
+    event param7380 (float v) { msMode.at (6) = v > 0.5f ? 1 : 0; }
+    event param7381 (float v) { msN.at (6) = clamp (int (v + 0.5f), 2, 8); }
+    event param7382 (float v) { msSus.at (6) = clamp (int (v + 0.5f), 0, 8); }
+    event param7383 (float v) { msLoopOn.at (6) = v > 0.5f ? 1 : 0; }
+    event param7384 (float v) { msLoopS.at (6) = clamp (int (v + 0.5f), 1, 8); }
+    event param7385 (float v) { msLoopE.at (6) = clamp (int (v + 0.5f), 1, 8); }
+    event param7386 (float v) { msT.at (48) = v; }
+    event param7387 (float v) { msL.at (48) = v; }
+    event param7388 (float v) { msC.at (48) = v; }
+    event param7389 (float v) { msT.at (49) = v; }
+    event param7390 (float v) { msL.at (49) = v; }
+    event param7391 (float v) { msC.at (49) = v; }
+    event param7392 (float v) { msT.at (50) = v; }
+    event param7393 (float v) { msL.at (50) = v; }
+    event param7394 (float v) { msC.at (50) = v; }
+    event param7395 (float v) { msT.at (51) = v; }
+    event param7396 (float v) { msL.at (51) = v; }
+    event param7397 (float v) { msC.at (51) = v; }
+    event param7398 (float v) { msT.at (52) = v; }
+    event param7399 (float v) { msL.at (52) = v; }
+    event param7400 (float v) { msC.at (52) = v; }
+    event param7401 (float v) { msT.at (53) = v; }
+    event param7402 (float v) { msL.at (53) = v; }
+    event param7403 (float v) { msC.at (53) = v; }
+    event param7404 (float v) { msT.at (54) = v; }
+    event param7405 (float v) { msL.at (54) = v; }
+    event param7406 (float v) { msC.at (54) = v; }
+    event param7407 (float v) { msT.at (55) = v; }
+    event param7408 (float v) { msL.at (55) = v; }
+    event param7409 (float v) { msC.at (55) = v; }
+    event param7410 (float v) { msMode.at (7) = v > 0.5f ? 1 : 0; }
+    event param7411 (float v) { msN.at (7) = clamp (int (v + 0.5f), 2, 8); }
+    event param7412 (float v) { msSus.at (7) = clamp (int (v + 0.5f), 0, 8); }
+    event param7413 (float v) { msLoopOn.at (7) = v > 0.5f ? 1 : 0; }
+    event param7414 (float v) { msLoopS.at (7) = clamp (int (v + 0.5f), 1, 8); }
+    event param7415 (float v) { msLoopE.at (7) = clamp (int (v + 0.5f), 1, 8); }
+    event param7416 (float v) { msT.at (56) = v; }
+    event param7417 (float v) { msL.at (56) = v; }
+    event param7418 (float v) { msC.at (56) = v; }
+    event param7419 (float v) { msT.at (57) = v; }
+    event param7420 (float v) { msL.at (57) = v; }
+    event param7421 (float v) { msC.at (57) = v; }
+    event param7422 (float v) { msT.at (58) = v; }
+    event param7423 (float v) { msL.at (58) = v; }
+    event param7424 (float v) { msC.at (58) = v; }
+    event param7425 (float v) { msT.at (59) = v; }
+    event param7426 (float v) { msL.at (59) = v; }
+    event param7427 (float v) { msC.at (59) = v; }
+    event param7428 (float v) { msT.at (60) = v; }
+    event param7429 (float v) { msL.at (60) = v; }
+    event param7430 (float v) { msC.at (60) = v; }
+    event param7431 (float v) { msT.at (61) = v; }
+    event param7432 (float v) { msL.at (61) = v; }
+    event param7433 (float v) { msC.at (61) = v; }
+    event param7434 (float v) { msT.at (62) = v; }
+    event param7435 (float v) { msL.at (62) = v; }
+    event param7436 (float v) { msC.at (62) = v; }
+    event param7437 (float v) { msT.at (63) = v; }
+    event param7438 (float v) { msL.at (63) = v; }
+    event param7439 (float v) { msC.at (63) = v; }
+    event param7440 (float v) { msMode.at (8) = v > 0.5f ? 1 : 0; }
+    event param7441 (float v) { msN.at (8) = clamp (int (v + 0.5f), 2, 8); }
+    event param7442 (float v) { msSus.at (8) = clamp (int (v + 0.5f), 0, 8); }
+    event param7443 (float v) { msLoopOn.at (8) = v > 0.5f ? 1 : 0; }
+    event param7444 (float v) { msLoopS.at (8) = clamp (int (v + 0.5f), 1, 8); }
+    event param7445 (float v) { msLoopE.at (8) = clamp (int (v + 0.5f), 1, 8); }
+    event param7446 (float v) { msT.at (64) = v; }
+    event param7447 (float v) { msL.at (64) = v; }
+    event param7448 (float v) { msC.at (64) = v; }
+    event param7449 (float v) { msT.at (65) = v; }
+    event param7450 (float v) { msL.at (65) = v; }
+    event param7451 (float v) { msC.at (65) = v; }
+    event param7452 (float v) { msT.at (66) = v; }
+    event param7453 (float v) { msL.at (66) = v; }
+    event param7454 (float v) { msC.at (66) = v; }
+    event param7455 (float v) { msT.at (67) = v; }
+    event param7456 (float v) { msL.at (67) = v; }
+    event param7457 (float v) { msC.at (67) = v; }
+    event param7458 (float v) { msT.at (68) = v; }
+    event param7459 (float v) { msL.at (68) = v; }
+    event param7460 (float v) { msC.at (68) = v; }
+    event param7461 (float v) { msT.at (69) = v; }
+    event param7462 (float v) { msL.at (69) = v; }
+    event param7463 (float v) { msC.at (69) = v; }
+    event param7464 (float v) { msT.at (70) = v; }
+    event param7465 (float v) { msL.at (70) = v; }
+    event param7466 (float v) { msC.at (70) = v; }
+    event param7467 (float v) { msT.at (71) = v; }
+    event param7468 (float v) { msL.at (71) = v; }
+    event param7469 (float v) { msC.at (71) = v; }
+    event param7470 (float v) { msMode.at (9) = v > 0.5f ? 1 : 0; }
+    event param7471 (float v) { msN.at (9) = clamp (int (v + 0.5f), 2, 8); }
+    event param7472 (float v) { msSus.at (9) = clamp (int (v + 0.5f), 0, 8); }
+    event param7473 (float v) { msLoopOn.at (9) = v > 0.5f ? 1 : 0; }
+    event param7474 (float v) { msLoopS.at (9) = clamp (int (v + 0.5f), 1, 8); }
+    event param7475 (float v) { msLoopE.at (9) = clamp (int (v + 0.5f), 1, 8); }
+    event param7476 (float v) { msT.at (72) = v; }
+    event param7477 (float v) { msL.at (72) = v; }
+    event param7478 (float v) { msC.at (72) = v; }
+    event param7479 (float v) { msT.at (73) = v; }
+    event param7480 (float v) { msL.at (73) = v; }
+    event param7481 (float v) { msC.at (73) = v; }
+    event param7482 (float v) { msT.at (74) = v; }
+    event param7483 (float v) { msL.at (74) = v; }
+    event param7484 (float v) { msC.at (74) = v; }
+    event param7485 (float v) { msT.at (75) = v; }
+    event param7486 (float v) { msL.at (75) = v; }
+    event param7487 (float v) { msC.at (75) = v; }
+    event param7488 (float v) { msT.at (76) = v; }
+    event param7489 (float v) { msL.at (76) = v; }
+    event param7490 (float v) { msC.at (76) = v; }
+    event param7491 (float v) { msT.at (77) = v; }
+    event param7492 (float v) { msL.at (77) = v; }
+    event param7493 (float v) { msC.at (77) = v; }
+    event param7494 (float v) { msT.at (78) = v; }
+    event param7495 (float v) { msL.at (78) = v; }
+    event param7496 (float v) { msC.at (78) = v; }
+    event param7497 (float v) { msT.at (79) = v; }
+    event param7498 (float v) { msL.at (79) = v; }
+    event param7499 (float v) { msC.at (79) = v; }
 
     // ---- INSPIRATOR-DSP: glue to the synth ----
     void ins_position (float64 ppq, float64 barStart)

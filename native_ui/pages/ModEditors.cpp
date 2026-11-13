@@ -62,43 +62,233 @@ namespace njo
         bool dragged = false;
     };
 
-    // ------------------------------------------------------------------ envelope display
+    // ------------------------------------------------------------------ envelope display / MSEG editor
+    // ADSR mode (params 267..): the classic curve, button "-> MSEG" converts it.  MSEG mode (params 7200 + 30 * e): up to 8 nodes
+    // (time to reach it, level, curve of the segment before it), sustain node, loop region.  Drag nodes, drag the diamonds for the curve,
+    // click on empty space adds a node, double click removes one, right click = sustain / loop menu.
     struct EnvCanvas : juce::Component
     {
         Ctx& ctx; EnvCanvas (Ctx& c) : ctx (c) {}
+        static constexpr float pad = 10;
+        int  E() const { return ctx.selectedEnv; }
+        int  B() const { return 7200 + 30 * E(); }
+        bool mseg() const { return ctx.get (B()) > 0.5f; }
+        int  N() const { return juce::jlimit (2, 8, juce::roundToInt (ctx.get (B() + 1))); }
+        int  sus() const { return juce::roundToInt (ctx.get (B() + 2)) - 1; }          // node index or -1
+        bool loopOn() const { return ctx.get (B() + 3) > 0.5f; }
+        int  loopS() const { return juce::jmin (juce::roundToInt (ctx.get (B() + 4)), juce::roundToInt (ctx.get (B() + 5))) - 1; }
+        int  loopE() const { return juce::jmax (juce::roundToInt (ctx.get (B() + 4)), juce::roundToInt (ctx.get (B() + 5))) - 1; }
+        float nT (int k) const { return ctx.get (B() + 6 + 3 * k); }
+        float nL (int k) const { return ctx.get (B() + 7 + 3 * k); }
+        float nC (int k) const { return ctx.get (B() + 8 + 3 * k); }
+        void  setNode (int k, float t, float l, float c) { ctx.set (B() + 6 + 3 * k, t); ctx.set (B() + 7 + 3 * k, l); ctx.set (B() + 8 + 3 * k, c); }
+        static float segW (float ms) { return juce::jmax (0.03f, std::sqrt (juce::jmax (ms, 0.0f) / 4000.0f)); }
+        static float shape (float x, float c) { return std::pow (juce::jlimit (0.0f, 1.0f, x), std::exp (c * 2.5f)); }
+
+        // screen layout of the nodes: cumulative width (with a gap behind the sustain node), total
+        std::vector<float> cum; float tot = 1;
+        void layoutNodes()
+        {
+            int n = N(); cum.assign ((size_t) n, 0.0f); float x = 0;
+            for (int k = 0; k < n; ++k) { x += segW (nT (k)); cum[(size_t) k] = x; if (k == sus()) x += 0.14f; }
+            tot = x;
+        }
+        float X (float f) const { return pad + f / tot * ((float) getWidth() - 2 * pad); }
+        float Y (float a) const { return (float) getHeight() - pad - a * ((float) getHeight() - 2 * pad); }
+        float nodeX (int k) const { return X (cum[(size_t) k]); }
+        juce::Rectangle<float> btnMode() const { return { (float) getWidth() - 56, 3, 52, 15 }; }
+        juce::Rectangle<float> btnLoop() const { return { (float) getWidth() - 100, 3, 40, 15 }; }
+
         void paint (juce::Graphics& g) override
         {
             auto bnd = getLocalBounds().toFloat();
-            float W = bnd.getWidth(), H = bnd.getHeight(), pad = 10;
-            int b = envParam (ctx.selectedEnv);
-            float A = ctx.get (b), D = ctx.get (b + 1), S = ctx.get (b + 2), R = ctx.get (b + 3);
-            auto t = [] (float ms) { return std::sqrt (juce::jmax (ms, 0.0f) / 5000.0f); };
-            float seg[4] = { juce::jmax (t (A), 0.03f), juce::jmax (t (D), 0.05f), 0.18f, juce::jmax (t (R), 0.05f) };
-            float tot = seg[0] + seg[1] + seg[2] + seg[3];
-            auto X = [&] (float f) { return pad + f / tot * (W - 2 * pad); };
-            auto Y = [&] (float a) { return H - pad - a * (H - 2 * pad); };
+            float W = bnd.getWidth(), H = bnd.getHeight();
             g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (bnd, 2.0f);
             g.setColour (juce::Colours::white.withAlpha (0.06f));
             for (int k = 1; k < 4; ++k) g.drawHorizontalLine ((int) Y (k / 4.0f), pad, W - pad);
+            const bool bip = ctx.get (3100 + E()) > 0.5f;   // Bipolar: the curve is the same, the value is mapped to value * 2 - 1
+            g.setColour (juce::Colours::white.withAlpha (bip ? 0.22f : 0.0f)); if (bip) g.drawHorizontalLine ((int) Y (0.5f), pad, W - pad);
+            g.setColour (juce::Colours::white.withAlpha (0.45f)); g.setFont (font (8.5f, true));
+            g.drawText (bip ? "+1" : "1", (int) W - 26, (int) Y (1.0f) + 12, 22, 11, juce::Justification::centredRight);
+            g.drawText (bip ? "-1" : "0", (int) W - 26, (int) Y (0.0f) - 11, 22, 11, juce::Justification::centredRight);
+            auto button = [&] (juce::Rectangle<float> r, const juce::String& t, bool on)
+            {
+                g.setColour (on ? blue.withAlpha (0.35f) : juce::Colours::white.withAlpha (0.08f)); g.fillRoundedRectangle (r, 3.0f);
+                g.setColour (on ? blue : juce::Colours::white.withAlpha (0.55f)); g.drawRoundedRectangle (r, 3.0f, 1.0f);
+                g.setFont (font (9.0f, true)); g.drawText (t, r.toNearestInt(), juce::Justification::centred);
+            };
+            if (! mseg()) { paintAdsr (g); button (btnMode(), "> MSEG", false); return; }
+            layoutNodes(); int n = N();
+            if (loopOn() && loopE() < n)
+            {
+                float x0 = loopS() > 0 ? nodeX (loopS() - 1) : X (0), x1 = nodeX (loopE());
+                g.setColour (juce::Colour::fromFloatRGBA (1, 0.8f, 0.2f, 0.10f)); g.fillRect (x0, pad, x1 - x0, H - 2 * pad);
+                g.setColour (juce::Colour::fromFloatRGBA (1, 0.8f, 0.2f, 0.5f)); g.drawVerticalLine ((int) x0, pad, H - pad); g.drawVerticalLine ((int) x1, pad, H - pad);
+            }
+            juce::Path p; p.startNewSubPath (X (0), Y (0)); float px = 0, py = 0;
+            for (int k = 0; k < n; ++k)
+            {
+                float x1 = cum[(size_t) k], y1 = nL (k), c = nC (k);
+                for (int s = 1; s <= 24; ++s) { float f = s / 24.0f; p.lineTo (X (px + (x1 - px) * f), Y (py + (y1 - py) * shape (f, c))); }
+                px = x1; py = y1;
+                if (k == sus()) { p.lineTo (X (px + 0.14f), Y (py)); px += 0.14f; }
+            }
+            juce::Path fill (p); fill.lineTo (X (px), Y (0)); fill.closeSubPath();
+            g.setGradientFill (juce::ColourGradient (blue.withAlpha (0.30f), 0, 0, blue.withAlpha (0.03f), 0, H, false)); g.fillPath (fill);
+            g.setColour (blue); g.strokePath (p, juce::PathStrokeType (2.0f));
+            for (int k = 0; k < n; ++k)   // curve handles
+            {
+                float xa = k ? cum[(size_t) k - 1] + (k - 1 == sus() ? 0.14f : 0.0f) : 0.0f, xb = cum[(size_t) k];
+                float ya = k ? nL (k - 1) : 0.0f, yb = nL (k), c = nC (k);
+                juce::Path d; d.addRectangle (-3.5f, -3.5f, 7.0f, 7.0f);
+                d.applyTransform (juce::AffineTransform::rotation (juce::MathConstants<float>::pi / 4).translated (X ((xa + xb) / 2), Y (ya + (yb - ya) * shape (0.5f, c))));
+                g.setColour (juce::Colour (0xff0b0404)); g.fillPath (d); g.setColour (blue.brighter (0.4f)); g.strokePath (d, juce::PathStrokeType (1.3f));
+            }
+            for (int k = 0; k < n; ++k)
+            {
+                auto r = juce::Rectangle<float> (11, 11).withCentre ({ nodeX (k), Y (nL (k)) });
+                bool s = k == sus();
+                g.setColour (s ? juce::Colour (0xff7be07a) : juce::Colour (0xffd8e6ff)); g.fillEllipse (r);
+                g.setColour (juce::Colour (0xff0b0404)); g.drawEllipse (r, 1.5f);
+                g.setColour (juce::Colours::white.withAlpha (0.55f)); g.setFont (font (8.5f, true));
+                g.drawText (juce::String (k + 1) + (s ? " S" : ""), (int) r.getX() - 6, (int) H - 15, 24, 11, juce::Justification::centredLeft);
+            }
+            g.setColour (juce::Colours::white.withAlpha (0.35f)); g.setFont (font (9.0f));
+            g.drawText (juce::String (nT (0), 0) + " ms", (int) pad + 2, 4, 60, 11, juce::Justification::centredLeft);
+            button (btnMode(), "ADSR", true); button (btnLoop(), "LOOP", loopOn());
+        }
+
+        void paintAdsr (juce::Graphics& g)
+        {
+            float W = (float) getWidth(), H = (float) getHeight();
+            int b = envParam (E());
+            float A = ctx.get (b), D = ctx.get (b + 1), S = ctx.get (b + 2), R = ctx.get (b + 3);
+            auto t = [] (float ms) { return std::sqrt (juce::jmax (ms, 0.0f) / 5000.0f); };
+            float seg[4] = { juce::jmax (t (A), 0.03f), juce::jmax (t (D), 0.05f), 0.18f, juce::jmax (t (R), 0.05f) };
+            float tt = seg[0] + seg[1] + seg[2] + seg[3];
+            auto XX = [&] (float f) { return pad + f / tt * (W - 2 * pad); };
             float x1 = seg[0], x2 = x1 + seg[1], x3 = x2 + seg[2], x4 = x3 + seg[3];
-            juce::Path p; p.startNewSubPath (X (0), Y (0)); p.lineTo (X (x1), Y (1));
-            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (X (x1 + seg[1] * f), Y (S + (1 - S) * std::exp (-4 * f))); }
-            p.lineTo (X (x3), Y (S));
-            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (X (x3 + seg[3] * f), Y (S * std::exp (-4 * f))); }
-            p.lineTo (X (x4), Y (0));
+            juce::Path p; p.startNewSubPath (XX (0), Y (0)); p.lineTo (XX (x1), Y (1));
+            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (x1 + seg[1] * f), Y (S + (1 - S) * std::exp (-4 * f))); }
+            p.lineTo (XX (x3), Y (S));
+            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (x3 + seg[3] * f), Y (S * std::exp (-4 * f))); }
+            p.lineTo (XX (x4), Y (0));
             g.setGradientFill (juce::ColourGradient (blue.withAlpha (0.30f), 0, 0, blue.withAlpha (0.03f), 0, H, false)); g.fillPath (p);
             g.setColour (blue); g.strokePath (p, juce::PathStrokeType (2.0f));
-            g.setColour (juce::Colours::white.withAlpha (0.4f)); g.setFont (font (11.0f));
-            {   // axis: 0..1, or -1..1 in Bipolar mode (the curve is the same, the value is mapped to value * 2 - 1)
-                const bool bip = ctx.get (3100 + ctx.selectedEnv) > 0.5f;
-                g.setColour (juce::Colours::white.withAlpha (bip ? 0.22f : 0.0f)); if (bip) g.drawHorizontalLine ((int) Y (0.5f), pad, W - pad);
-                g.setColour (juce::Colours::white.withAlpha (0.45f)); g.setFont (font (8.5f, true));
-                g.drawText (bip ? "+1" : "1", (int) W - 26, (int) Y (1.0f) - 1, 22, 11, juce::Justification::centredRight);
-                if (bip) g.drawText ("0", (int) W - 26, (int) Y (0.5f) - 11, 22, 11, juce::Justification::centredRight);
-                g.drawText (bip ? "-1" : "0", (int) W - 26, (int) Y (0.0f) - 11, 22, 11, juce::Justification::centredRight);
-            }
+            g.setColour (juce::Colours::white.withAlpha (0.45f)); g.setFont (font (8.5f, true));
             const char* l[4] = { "A", "D", "S", "R" }; float xs[4] = { 0, x1, x2, x3 };
-            for (int k = 0; k < 4; ++k) g.drawText (l[k], (int) X (xs[k]) + 4, (int) H - 26, 14, 14, juce::Justification::centredLeft);
+            for (int k = 0; k < 4; ++k) g.drawText (l[k], (int) XX (xs[k]) + 4, (int) H - 26, 14, 14, juce::Justification::centredLeft);
+        }
+
+        // ---- editing
+        void convertFromAdsr()
+        {
+            int b = envParam (E()); float A = ctx.get (b), D = ctx.get (b + 1), S = ctx.get (b + 2), R = ctx.get (b + 3);
+            ctx.set (B() + 1, 3); ctx.set (B() + 2, 2); ctx.set (B() + 3, 0); ctx.set (B() + 4, 1); ctx.set (B() + 5, 2);
+            setNode (0, A, 1.0f, 0.0f); setNode (1, D, S, -0.6f); setNode (2, R, 0.0f, -0.6f);
+            ctx.set (B(), 1);
+        }
+        void insertNode (int k, float t, float l)
+        {
+            int n = N(); if (n >= 8) return;
+            for (int j = n; j > k; --j) setNode (j, nT (j - 1), nL (j - 1), nC (j - 1));
+            setNode (k, t, l, 0.0f);
+            ctx.set (B() + 1, (float) n + 1);
+            if (sus() >= k) ctx.set (B() + 2, (float) sus() + 2);
+            if (ctx.get (B() + 4) - 1 >= k) ctx.set (B() + 4, juce::jmin (8.0f, ctx.get (B() + 4) + 1));
+            if (ctx.get (B() + 5) - 1 >= k) ctx.set (B() + 5, juce::jmin (8.0f, ctx.get (B() + 5) + 1));
+        }
+        void removeNode (int k)
+        {
+            int n = N(); if (n <= 2) return;
+            if (k + 1 < n) ctx.set (B() + 6 + 3 * (k + 1), nT (k + 1) + nT (k));   // the next segment takes over the time
+            for (int j = k; j < n - 1; ++j) setNode (j, nT (j + 1), nL (j + 1), nC (j + 1));
+            ctx.set (B() + 1, (float) n - 1);
+            int s = sus(); if (s == k) ctx.set (B() + 2, 0); else if (s > k) ctx.set (B() + 2, (float) s);
+            for (int q = 4; q <= 5; ++q) { float v = ctx.get (B() + q); if (v - 1 >= k && v > 1) ctx.set (B() + q, v - 1); }
+        }
+        struct Hit { int kind = 0, k = 0; };   // 1 node, 2 curve handle
+        Hit hit (float mx, float my)
+        {
+            layoutNodes(); int n = N();
+            for (int k = 0; k < n; ++k) if (std::hypot (nodeX (k) - mx, Y (nL (k)) - my) < 10) return { 1, k };
+            for (int k = 0; k < n; ++k)
+            {
+                float xa = k ? cum[(size_t) k - 1] + (k - 1 == sus() ? 0.14f : 0.0f) : 0.0f, xb = cum[(size_t) k];
+                float ya = k ? nL (k - 1) : 0.0f;
+                if (std::hypot (X ((xa + xb) / 2) - mx, Y (ya + (nL (k) - ya) * shape (0.5f, nC (k))) - my) < 9) return { 2, k };
+            }
+            return {};
+        }
+        Hit dragHit; float tot0 = 1, xprev0 = 0, y0 = 0, c0 = 0; bool dragging = false;
+        void mouseDown (const juce::MouseEvent& e) override
+        {
+            auto pt = e.position;
+            if (! mseg()) { if (btnMode().contains (pt)) convertFromAdsr(); return; }
+            if (btnMode().contains (pt)) { ctx.set (B(), 0); return; }
+            if (btnLoop().contains (pt)) { ctx.set (B() + 3, loopOn() ? 0.0f : 1.0f); return; }
+            auto h = hit (pt.x, pt.y);
+            if (e.mods.isPopupMenu()) { if (h.kind == 1) nodeMenu (h.k); return; }
+            if (h.kind == 0)
+            {
+                int n = N(); if (n >= 8) return;
+                int k = n; for (int j = 0; j < n; ++j) if (pt.x < nodeX (j)) { k = j; break; }
+                float lvl = juce::jlimit (0.0f, 1.0f, 1.0f - (pt.y - pad) / ((float) getHeight() - 2 * pad));
+                float t = 300.0f;
+                if (k < n)
+                {
+                    float xa = k ? nodeX (k - 1) : X (0), xb = nodeX (k), fr = juce::jlimit (0.1f, 0.9f, (pt.x - xa) / juce::jmax (1.0f, xb - xa));
+                    float old = nT (k); t = old * fr; ctx.set (B() + 6 + 3 * k, old - t);
+                }
+                insertNode (k, t, lvl);
+                h = { 1, k };
+            }
+            layoutNodes(); dragHit = h; tot0 = tot; y0 = pt.y; c0 = nC (h.k); dragging = true;
+            xprev0 = h.k ? nodeX (h.k - 1) : X (0);
+            if (h.kind == 1 && h.k > 0 && h.k - 1 == sus()) xprev0 += 0.14f / tot * ((float) getWidth() - 2 * pad);
+        }
+        void mouseDrag (const juce::MouseEvent& e) override
+        {
+            if (! dragging || e.mods.isPopupMenu()) return;
+            auto pt = e.position; int k = dragHit.k;
+            if (dragHit.kind == 1)
+            {
+                float lvl = juce::jlimit (0.0f, 1.0f, 1.0f - (pt.y - pad) / ((float) getHeight() - 2 * pad));
+                if (std::abs (lvl - 0.5f) < 0.02f) lvl = 0.5f;
+                float w = juce::jmax (0.0f, (pt.x - xprev0) / ((float) getWidth() - 2 * pad) * tot0);
+                float ms = juce::jlimit (0.0f, 10000.0f, std::round (4000.0f * w * w));
+                if (w < 0.035f) ms = 0.0f;
+                setNode (k, ms, lvl, nC (k));
+            }
+            else
+            {
+                float ya = k ? nL (k - 1) : 0.0f; float dir = nL (k) >= ya ? 1.0f : -1.0f;
+                ctx.set (B() + 8 + 3 * k, juce::jlimit (-1.0f, 1.0f, c0 + (pt.y - y0) / 70.0f * dir));
+            }
+        }
+        void mouseUp (const juce::MouseEvent&) override { dragging = false; }
+        void mouseDoubleClick (const juce::MouseEvent& e) override
+        {
+            if (! mseg()) return;
+            auto h = hit (e.position.x, e.position.y);
+            if (h.kind == 1) removeNode (h.k); else if (h.kind == 2) ctx.set (B() + 8 + 3 * h.k, 0);
+        }
+        void nodeMenu (int k)
+        {
+            juce::PopupMenu m;
+            m.addItem (1, "Sustain here", true, sus() == k); m.addItem (2, "No sustain", sus() >= 0);
+            m.addSeparator();
+            m.addItem (3, "Loop starts here"); m.addItem (4, "Loop ends here"); m.addItem (5, loopOn() ? "Loop off" : "Loop on");
+            m.addSeparator(); m.addItem (6, "Straight segment"); m.addItem (7, "Delete node", N() > 2);
+            m.showMenuAsync (juce::PopupMenu::Options(), [this, k] (int r)
+            {
+                if (r == 1) ctx.set (B() + 2, (float) k + 1); else if (r == 2) ctx.set (B() + 2, 0);
+                else if (r == 3) { ctx.set (B() + 4, (float) k + 1); if (loopE() < k) ctx.set (B() + 5, (float) k + 1); ctx.set (B() + 3, 1); }
+                else if (r == 4) { ctx.set (B() + 5, (float) k + 1); if (loopS() > k) ctx.set (B() + 4, (float) k + 1); ctx.set (B() + 3, 1); }
+                else if (r == 5) ctx.set (B() + 3, loopOn() ? 0.0f : 1.0f);
+                else if (r == 6) ctx.set (B() + 8 + 3 * k, 0);
+                else if (r == 7) removeNode (k);
+            });
         }
     };
 
@@ -315,7 +505,7 @@ namespace njo
         void paramChanged (int n, float) override
         {
             int i = ctx.selectedLfo, e = ctx.selectedEnv;
-            if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e) envCv.repaint();
+            if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e || (n >= 7200 + 30 * e && n < 7230 + 30 * e)) { envCv.repaint(); if (n == 7200 + 30 * e) refreshAll(); }
             if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); }
             if (n == lfoSyncParam (i)) refreshAll();
             if (n == 3111 + i) lfoCv.repaint();
@@ -328,7 +518,7 @@ namespace njo
             {
                 lfoChips[i]->on = i == li; lfoChips[i]->repaint();
                 envChips[i]->on = i == ei; envChips[i]->repaint();
-                for (int k = 0; k < 4; ++k) envKnobs[i * 4 + k]->setVisible (i == ei);
+                for (int k = 0; k < 4; ++k) { envKnobs[i * 4 + k]->setVisible (i == ei); envKnobs[i * 4 + k]->setAlpha (ctx.get (7200 + 30 * i) > 0.5f && k != 3 ? 0.3f : 1.0f); }
                 envPol[i]->setVisible (i == ei);
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
                 modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (i == li);
