@@ -59,6 +59,7 @@ namespace njo
         // Freq modulators: the selected one and the drawn curves
         int selectedFrq = 0;
         int selectedSeq = 0;   // step sequencers
+        int selectedRnd = 0;   // random modulators
         std::shared_ptr<FreqShapes> freqShapes;
 
     private:

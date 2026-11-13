@@ -245,6 +245,8 @@ int main (int argc, char** argv)
         pump(); ed.setMatrixPage (0); pump(); save (ed, dir.getChildFile ("mod_p1.png"), scale);
         ed.setMatrixPage (1); pump(); save (ed, dir.getChildFile ("mod_p2.png"), scale); ed.setMatrixPage (0);
     }
+    be.setParam (7500 + 8 * 0, 2); be.setParam (7500 + 8 * 0 + 1, 6.0f); be.setParam (7500 + 8 * 0 + 5, 1);
+    ed.setGroup (njo::EditorContent::Modulation); ed.setModTab (3); pump(); pump(); save (ed, dir.getChildFile ("rnd_mod.png"), scale);
     ed.setModTab (1); pump(); save (ed, dir.getChildFile ("frq_mod.png"), scale);
     ed.setModTab (2); pump(); save (ed, dir.getChildFile ("seq_mod.png"), scale);
     return 0;

@@ -484,3 +484,15 @@ Each of the 10 modulation envelopes (sources ENV 1-10) can run as an MSEG. In th
 - On note off the envelope continues with the nodes after the sustain node. Without further nodes (or without a sustain node) the level falls to 0 with the ADSR Release knob.
 - Parameters 7200 + 30 * env (non-automatable, stored in presets): mode, nodes, sustain, loop on / start / end, then 3 values per node. The filter-effect envelope keeps the ADSR behaviour.
 - Tests: `python3 tools/mod/test_mseg.py --host <dsp_host>`; script `tools/mod/build_mseg.py` (marker MSEG-DSP).
+
+## Random modulators (RND 1-10)
+The single RND source became 10 random modulators (RND 1 = the old source 23, RND 2-10 = sources 44-52, drag the chips of the new **RND** tab of the modulation page onto a knob like any other source). Every one has its own settings (params 7500 + 8 * n, non-automatable, stored in presets; the defaults are the old behaviour: one bipolar value per note):
+
+- **Mode**: Note (one value per note), S&H (new value every step), Glide (smooth interpolation between the values), Walk (random walk in small steps).
+- **Rate / Sync / Division**: step rate in Hz or tempo-synced.
+- **Smooth**: slews the steps.
+- **Distribution**: Uniform, Gauss (bell shaped), Binary (only -1 / +1), Steps (5 levels).
+- **Polarity**: Bipolar -1..1 or Unipolar 0..1.
+- **Seed**: 0 = new values for every note, 1-16 = the same value sequence on every note (reproducible randomness).
+
+The mod matrix sources go up to 52 now. Tests: `python3 tools/mod/test_rnd.py --host <dsp_host>`; script `tools/mod/build_rnd.py` (marker RND-DSP).

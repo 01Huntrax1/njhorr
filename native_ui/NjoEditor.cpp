@@ -51,13 +51,13 @@ namespace njo
     struct EditorContent::Impl
     {
         juce::OwnedArray<NavButton> rail, tabs;
-        std::unique_ptr<NavButton> stripToggle, sizeButton, stripModBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn;
+        std::unique_ptr<NavButton> stripToggle, sizeButton, stripModBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn, modRndBtn;
         juce::Rectangle<int> topBar, lcdRect, stripRect, mainRect, stageRect, subRect, mgrRect;
         juce::Component* shownPage = nullptr;
     };
 
     EditorContent::EditorContent (Backend& be, SoundMemory* sharedMemory)
-        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), matrix (ctx), seqArp (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), rndFull (ctx), matrix (ctx), seqArp (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
@@ -114,7 +114,7 @@ namespace njo
         glob.onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
         fx.onModDropped = glob.onModDropped;
         addChildComponent (fm); addChildComponent (fmRm); addChildComponent (glob); addChildComponent (fx);
-        addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (seqFull); addChildComponent (matrix); addChildComponent (seqArp);
+        addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (seqFull); addChildComponent (rndFull); addChildComponent (matrix); addChildComponent (seqArp);
         addChildComponent (freq); addChildComponent (seq);
         addAndMakeVisible (editors);
         // tabs of the bottom strip (MOD / FREQ) and of the top panel of the modulation page (ENV / LFO | FREQ)
@@ -123,6 +123,7 @@ namespace njo
         mk (impl->stripFrqBtn, "FREQ", [this] { stripTab = 1; stripOpen = true; layoutAll(); });
         mk (impl->stripSeqBtn, "SEQ", [this] { stripTab = 2; stripOpen = true; layoutAll(); });
         mk (impl->modSeqBtn, "SEQ", [this] { modTab = 2; layoutAll(); });
+        mk (impl->modRndBtn, "RND", [this] { modTab = 3; layoutAll(); });
         mk (impl->modEnvBtn, "ENV / LFO", [this] { modTab = 0; layoutAll(); });
         mk (impl->modFrqBtn, "FREQ", [this] { modTab = 1; layoutAll(); });
         addAndMakeVisible (manager);
@@ -203,8 +204,8 @@ namespace njo
         for (auto* p : resoPages) p->setVisible (false);
         for (auto* p : fxPages) p->setVisible (false);
         fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false); seqArp.setVisible (false);
-        editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false); seq.setVisible (false); seqFull.setVisible (false);
-        for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get() }) b->setVisible (false);
+        editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false); seq.setVisible (false); seqFull.setVisible (false); rndFull.setVisible (false);
+        for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get(), impl->modRndBtn.get() }) b->setVisible (false);
         if (synth)
         {
             if (currentSynthPage < 6) { osc[currentSynthPage]->setBounds (impl->stageRect); osc[currentSynthPage]->setVisible (true); }
@@ -225,11 +226,11 @@ namespace njo
             impl->stripRect = area.withHeight (0);
             auto top = area.removeFromTop (juce::roundToInt (area.getHeight() * 0.48f));
             area.removeFromTop (6);
-            editorsFull.setBounds (top); freqFull.setBounds (top); seqFull.setBounds (top);
-            editorsFull.setVisible (modTab == 0); freqFull.setVisible (modTab == 1); seqFull.setVisible (modTab == 2);
-            impl->modEnvBtn->setBounds (top.getRight() - 182, top.getY() + 5, 70, 18); impl->modFrqBtn->setBounds (top.getRight() - 108, top.getY() + 5, 46, 18); impl->modSeqBtn->setBounds (top.getRight() - 58, top.getY() + 5, 46, 18);
-            impl->modEnvBtn->text = "ENV / LFO"; impl->modEnvBtn->setOn (modTab == 0); impl->modFrqBtn->setOn (modTab == 1); impl->modSeqBtn->setOn (modTab == 2);
-            impl->modEnvBtn->setVisible (true); impl->modFrqBtn->setVisible (true); impl->modSeqBtn->setVisible (true);
+            editorsFull.setBounds (top); freqFull.setBounds (top); seqFull.setBounds (top); rndFull.setBounds (top);
+            editorsFull.setVisible (modTab == 0); freqFull.setVisible (modTab == 1); seqFull.setVisible (modTab == 2); rndFull.setVisible (modTab == 3);
+            impl->modEnvBtn->setBounds (top.getRight() - 234, top.getY() + 5, 70, 18); impl->modFrqBtn->setBounds (top.getRight() - 160, top.getY() + 5, 46, 18); impl->modSeqBtn->setBounds (top.getRight() - 110, top.getY() + 5, 46, 18); impl->modRndBtn->setBounds (top.getRight() - 60, top.getY() + 5, 48, 18);
+            impl->modEnvBtn->text = "ENV / LFO"; impl->modEnvBtn->setOn (modTab == 0); impl->modFrqBtn->setOn (modTab == 1); impl->modSeqBtn->setOn (modTab == 2); impl->modRndBtn->setOn (modTab == 3);
+            impl->modEnvBtn->setVisible (true); impl->modFrqBtn->setVisible (true); impl->modSeqBtn->setVisible (true); impl->modRndBtn->setVisible (true);
             matrix.setBounds (area); matrix.setVisible (true);
         }
         if (! mod && ! seqa)

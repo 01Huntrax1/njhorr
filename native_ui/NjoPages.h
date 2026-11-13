@@ -82,6 +82,17 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
+    // the 10 random modulators (sources 23 and 44..52): mode, rate / sync, smoothing, distribution, polarity, seed
+    class RndEditor : public juce::Component
+    {
+    public:
+        explicit RndEditor (Ctx&);
+        ~RndEditor() override;
+        void paint (juce::Graphics&) override;
+        void resized() override;
+        struct Impl; std::unique_ptr<Impl> impl;
+    };
+
     // the 10 step sequencers (modulation sources 34..43): 16 steps drawn with the mouse, length, rate / tempo sync, glide, direction, retrig, polarity
     class SeqEditor : public juce::Component
     {

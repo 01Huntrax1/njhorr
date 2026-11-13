@@ -1,4 +1,5 @@
 // Envelope + LFO editors with the drag handles for the modulation sources.
+#include <random>
 #include "ModUi.h"
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
@@ -848,6 +849,159 @@ namespace njo
             I.retrig[i]->setBounds (ra); I.loop[i]->setBounds (br);
             for (int k = 0; k < 2; ++k) I.knobs[i * 2 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
         }
+    }
+
+    // ------------------------------------------------------------------ random modulators (RND 1..10 = sources 23, 44..52)
+    struct RndRefresh { virtual ~RndRefresh() = default; virtual void refreshAll() = 0; };
+    static std::vector<RndRefresh*> gRndAll;
+    static int rndBase (int r) { return 7500 + 8 * r; }
+    static int rndSrc (int r) { return r == 0 ? 23 : 43 + r; }
+
+    // illustrative preview of the selected RND: a few values drawn with the same rules as the DSP (mode, distribution, smooth, polarity)
+    struct RndCanvas : juce::Component
+    {
+        Ctx& ctx; explicit RndCanvas (Ctx& c) : ctx (c) {}
+        static float draw (std::mt19937& g, int dist)
+        {
+            std::uniform_real_distribution<float> u (-1.0f, 1.0f);
+            float a = u (g);
+            if (dist == 1) a = juce::jlimit (-1.0f, 1.0f, (a + u (g) + u (g)) * 0.6667f);
+            else if (dist == 2) a = a >= 0 ? 1.0f : -1.0f;
+            else if (dist == 3) a = std::floor (a * 2.0f + 0.5f) * 0.5f;
+            return a;
+        }
+        void paint (juce::Graphics& g) override
+        {
+            const int r = ctx.selectedRnd, b = rndBase (r);
+            const int mode = juce::roundToInt (ctx.get (b)), dist = juce::roundToInt (ctx.get (b + 5)), seed = juce::roundToInt (ctx.get (b + 7));
+            const bool uni = ctx.get (b + 6) > 0.5f; const float sm = ctx.get (b + 4);
+            auto bnd = getLocalBounds().toFloat(); float W = bnd.getWidth(), H = bnd.getHeight(), pad = 12;
+            g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (bnd, 2.0f);
+            auto Y = [&] (float v) { float n = uni ? v * 0.5f + 0.5f : (v + 1) * 0.5f; return H - pad - n * (H - 2 * pad); };
+            g.setColour (juce::Colours::white.withAlpha (0.08f));
+            for (int k = 0; k <= 4; ++k) g.drawHorizontalLine ((int) (pad + k * (H - 2 * pad) / 4), pad, W - pad);
+            if (! uni) { g.setColour (juce::Colours::white.withAlpha (0.2f)); g.drawHorizontalLine ((int) Y (0), pad, W - pad); }
+            std::mt19937 gen (seed > 0 ? (unsigned) seed * 7919u + (unsigned) r : 12345u + (unsigned) r * 31u);
+            const int steps = 14, per = 24; const int total = steps * per;
+            std::vector<float> v ((size_t) total);
+            float prev = draw (gen, dist), tgt = prev, cur = prev;
+            for (int i = 0; i < total; ++i)
+            {
+                float ph = (float) (i % per) / per;
+                if (i > 0 && i % per == 0 && mode != 0) { prev = tgt; tgt = mode == 3 ? juce::jlimit (-1.0f, 1.0f, tgt + draw (gen, dist) * 0.35f) : draw (gen, dist); }
+                float target = mode == 0 ? prev : (mode == 2 ? prev + (tgt - prev) * ph * ph * (3 - 2 * ph) : tgt);
+                cur = sm <= 0.001f ? target : cur + (target - cur) * juce::jlimit (0.0f, 1.0f, 1.0f / (1.0f + sm * sm * 90.0f));
+                v[(size_t) i] = cur;
+            }
+            juce::Path p;
+            for (int i = 0; i < total; ++i) { float x = pad + (float) i / (total - 1) * (W - 2 * pad), y = Y (v[(size_t) i]); if (i == 0) p.startNewSubPath (x, y); else p.lineTo (x, y); }
+            juce::Path f (p); f.lineTo (W - pad, Y (0)); f.lineTo (pad, Y (0)); f.closeSubPath();
+            g.setColour (srcColour (23).withAlpha (0.14f)); g.fillPath (f);
+            g.setColour (srcColour (23)); g.strokePath (p, juce::PathStrokeType (2.0f));
+            g.setColour (juce::Colours::white.withAlpha (0.4f)); g.setFont (font (8.5f, true));
+            g.drawText (uni ? "1" : "+1", (int) W - 28, (int) pad - 4, 22, 11, juce::Justification::centredRight);
+            g.drawText (uni ? "0" : "-1", (int) W - 28, (int) (H - pad) - 8, 22, 11, juce::Justification::centredRight);
+            g.setColour (juce::Colours::white.withAlpha (0.35f)); g.setFont (font (9.0f));
+            g.drawText (mode == 0 ? "one value per note" : "preview of the value course", 14, 4, 220, 12, juce::Justification::centredLeft);
+        }
+    };
+
+    struct RndEditor::Impl : Ctx::Listener, RndRefresh
+    {
+        Ctx& ctx; RndEditor& owner;
+        juce::OwnedArray<SourceChip> chips;
+        RndCanvas cv;
+        juce::OwnedArray<ParamWidget> mode, dist, pol, sync, knobs;   // knobs: Rate, Smooth, Seed
+        juce::OwnedArray<MiniSelect> divSel;
+        juce::Rectangle<int> labels[4];
+
+        Impl (Ctx& c, RndEditor& o) : ctx (c), owner (o), cv (c)
+        {
+            ctx.addListener (this); gRndAll.push_back (this);
+            for (int i = 0; i < 10; ++i)
+            {
+                const int b = rndBase (i);
+                auto* ch = chips.add (new SourceChip (rndSrc (i))); ch->onClick = [this, i] { ctx.selectedRnd = i; for (auto* a : gRndAll) a->refreshAll(); };
+                owner.addAndMakeVisible (ch);
+                auto btn = [&] (juce::OwnedArray<ParamWidget>& arr, int num) { auto* w = static_cast<ButtonsWidget*> (arr.add (makeWidget (ctx, num, false).release())); w->setShowLabel (false); owner.addChildComponent (w); };
+                for (auto pr : { std::pair<juce::OwnedArray<ParamWidget>*, int> { &mode, b }, { &dist, b + 5 }, { &sync, b + 2 }, { &pol, b + 6 } }) { auto* w = pr.first->add (makeWidget (ctx, pr.second, false).release()); owner.addChildComponent (w); }
+                for (int k : { b + 1, b + 4, b + 7 }) { auto* w = knobs.add (makeWidget (ctx, k, true).release()); w->setLook (true); owner.addChildComponent (w); }
+                auto* d = divSel.add (new MiniSelect());
+                int dp = b + 3; d->names = syncDivs();
+                d->getIndex = [this, dp] { return juce::roundToInt (ctx.get (dp)); };
+                d->setIndex = [this, dp] (int v) { ctx.begin (dp); ctx.set (dp, (float) v); ctx.end (dp); };
+                owner.addChildComponent (d);
+            }
+            owner.addAndMakeVisible (cv);
+            refreshAll();
+        }
+        ~Impl() override { ctx.removeListener (this); gRndAll.erase (std::remove (gRndAll.begin(), gRndAll.end(), this), gRndAll.end()); }
+
+        void paramChanged (int n, float) override
+        {
+            if (n >= 7500 && n < 7580) { cv.repaint(); if (n - rndBase (ctx.selectedRnd) == 2) refreshAll(); }
+        }
+
+        void refreshAll() override
+        {
+            int s = ctx.selectedRnd;
+            for (int i = 0; i < 10; ++i)
+            {
+                chips[i]->on = i == s; chips[i]->repaint();
+                mode[i]->setVisible (i == s); sync[i]->setVisible (i == s); dist[i]->setVisible (i == s); pol[i]->setVisible (i == s); divSel[i]->setVisible (i == s);
+                const bool sy = ctx.get (rndBase (i) + 2) > 0.5f, note = ctx.get (rndBase (i)) < 0.5f;
+                divSel[i]->dimmed = ! sy; divSel[i]->repaint();
+                for (int k = 0; k < 3; ++k) knobs[i * 3 + k]->setVisible (i == s);
+                knobs[i * 3]->setAlpha (note || sy ? 0.4f : 1.0f);
+                knobs[i * 3 + 1]->setAlpha (note ? 0.4f : 1.0f);
+            }
+            cv.repaint(); owner.repaint();
+        }
+    };
+
+    RndEditor::RndEditor (Ctx& c) : impl (new Impl (c, *this)) {}
+    RndEditor::~RndEditor() = default;
+
+    void RndEditor::paint (juce::Graphics& g)
+    {
+        auto& I = *impl;
+        paintCard (g, getLocalBounds().toFloat());
+        g.setColour (red); g.setFont (impact (11.0f));
+        g.drawText ("RANDOM MODULATORS", 10, 4, 260, 16, juce::Justification::centredLeft);
+        g.setFont (font (8.5f, true)); g.setColour (dim);
+
+        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
+        g.drawText ("Note: one value per note  |  S&H: new value every step  |  Glide: smooth between values  |  Walk: small random steps  |  Seed 1-16: same sequence every note",
+                    10, getHeight() - 16, getWidth() - 250, 12, juce::Justification::centredLeft, true);
+    }
+
+    void RndEditor::resized()
+    {
+        auto& I = *impl;
+        auto b = getLocalBounds().reduced (10, 6); b.removeFromTop (16);
+        const int ch = 18, cg = 3;
+        auto row = b.removeFromTop (ch); b.removeFromTop (4);
+        int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
+        for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
+        auto right = b.removeFromRight (230); b.removeFromRight (10);
+        b.removeFromBottom (14);
+        I.cv.setBounds (b);
+        auto c = right;
+        auto place = [&] (int labelIdx, juce::OwnedArray<ParamWidget>& arr, bool selfLabelled)
+        {
+            juce::Rectangle<int> r;
+            if (selfLabelled) r = c.removeFromTop (34); else { I.labels[labelIdx] = c.removeFromTop (12); r = c.removeFromTop (20); }
+            c.removeFromTop (4);
+            for (auto* w : arr) w->setBounds (r);
+        };
+        place (0, I.mode, true); place (1, I.dist, true); place (2, I.pol, true);
+        auto sr = c.removeFromTop (34); c.removeFromTop (4);
+        auto sa = sr.removeFromLeft (sr.getWidth() / 2 - 3); sr.removeFromLeft (3);
+        for (auto* w : I.sync) w->setBounds (sa);
+        for (auto* d : I.divSel) d->setBounds (sr.withTrimmedTop (14));
+        auto knobs = c.removeFromBottom (juce::jmin (c.getHeight(), 60));
+        int kw = knobs.getWidth() / 3;
+        for (int i = 0; i < 10; ++i) for (int k = 0; k < 3; ++k) I.knobs[i * 3 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
     }
 
     // ------------------------------------------------------------------ step sequencer

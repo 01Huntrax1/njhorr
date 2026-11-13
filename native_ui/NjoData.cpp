@@ -72,9 +72,10 @@ namespace njo
     {
         if (n >= 1 && n <= 10) return "LFO " + juce::String (n);
         if (n >= 11 && n <= 20) return "ENV " + juce::String (n - 10);
-        if (n == 21) return "VEL"; if (n == 22) return "KEY"; if (n == 23) return "RND";
+        if (n == 21) return "VEL"; if (n == 22) return "KEY"; if (n == 23) return "RND 1";
         if (n >= 24 && n <= 33) return "FRQ " + juce::String (n - 23);
         if (n >= 34 && n <= 43) return "SEQ " + juce::String (n - 33);
+        if (n >= 44 && n <= 52) return "RND " + juce::String (n - 42);
         return {};
     }
 
@@ -82,6 +83,7 @@ namespace njo
     {
         if (n >= 1 && n <= 10) return juce::Colour (0xffff594e);
         if (n >= 11 && n <= 20) return juce::Colour (0xff4db8ff);
+        if (n >= 44) return juce::Colour (0xffc9c24a);
         if (n >= 34) return juce::Colour (0xff5be08a);
         if (n >= 24) return juce::Colour (0xffb57bff);
         return juce::Colour (0xffc9c24a);
