@@ -144,24 +144,8 @@ namespace njo
             explicit Chooser (Impl& i) : im (i) {}
             Impl& im; int over = -1; int scroll = 0; int category = -1;   // -1 = all
             static constexpr int cols = 3, bw = 190, bh = 40, gap = 14, headH = 54;
-            static const std::vector<juce::String>& categories()
-            {
-                static const std::vector<juce::String> c { "Distortion", "Analog / Console", "Filter / EQ", "Dynamics", "Modulation", "Delay / Reverb", "Creative" };
-                return c;
-            }
-            static int categoryOf (int type)   // type = 1..
-            {
-                switch (type)
-                {
-                    case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: return 0;
-                    case 17: case 23: case 24: case 25: case 26: return 1;
-                    case 9: case 10: case 13: case 18: case 27: return 2;
-                    case 11: return 3;
-                    case 4: case 5: case 6: case 7: case 16: return 4;
-                    case 3: case 8: case 12: case 31: return 5;
-                    default: return 6;
-                }
-            }
+            static const std::vector<juce::String>& categories() { return fxCategories(); }
+            static int categoryOf (int type) { return fxCategoryOf (type); }
             // effect types (1..) of the shown category, in category order
             std::vector<int> vis() const
             {

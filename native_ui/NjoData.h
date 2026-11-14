@@ -67,6 +67,11 @@ namespace njo
     struct FxRack  { juce::String name; int id, ord; };
     const std::vector<FxType>& fxTypes();
     const std::vector<FxRack>& fxRacks();
+    // effect categories of the chooser (Add FX page, oscillator racks) and the types that may run per voice in an oscillator rack
+    const std::vector<juce::String>& fxCategories();
+    int  fxCategoryOf (int type);          // type = 1.. -> category index
+    bool fxVoiceType (int type);           // memory-light types of the oscillator FX racks
+    constexpr int kOscFxBase = 6300, kOscFxOn = 7600;   // OSC rack: id 6300 + 32 * osc + 8 * slot + k (k 0 type, 1 mix, 2..7 P1..P6), Mode 7600 + 2 * (osc * 4 + slot), On + 1
     const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns();   // trance gate patterns: name, 16 steps (# open, + 45 %, . closed)
     // FX-SLOTS: 16 slots per rack. Global slot g: 0..29 = slots 1-10 (rack * 10 + k), 30..47 = slots 11-16 (30 + rack * 6 + j); the same numbering as the DSP
     constexpr int kFxPer = 16, kFxTotal = 48;

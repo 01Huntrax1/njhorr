@@ -6,6 +6,8 @@ namespace njo
     {
         for (int g = 0; g < kFxTotal; ++g)
             fxTypes[g] = juce::roundToInt (be.getParam (fxSlotId (g)));
+        for (int sl = 0; sl < 24; ++sl)
+            fxTypes[kFxTotal + sl] = juce::roundToInt (be.getParam (kOscFxBase + 8 * sl));
         be.addListener (this);
     }
 
@@ -21,6 +23,7 @@ namespace njo
     {
         auto loc = fxLocate (num);
         if (loc.valid && loc.ord < 0 && loc.off == 0) fxTypes[loc.g] = juce::roundToInt (v);
+        if (num >= kOscFxBase && num < kOscFxBase + 192 && (num - kOscFxBase) % 8 == 0) fxTypes[kFxTotal + (num - kOscFxBase) / 8] = juce::roundToInt (v);
         listeners.call ([&] (Listener& l) { l.paramChanged (num, v); });
     }
 
@@ -28,6 +31,8 @@ namespace njo
     {
         for (int g = 0; g < kFxTotal; ++g)
             fxTypes[g] = juce::roundToInt (be.getParam (fxSlotId (g)));
+        for (int sl = 0; sl < 24; ++sl)
+            fxTypes[kFxTotal + sl] = juce::roundToInt (be.getParam (kOscFxBase + 8 * sl));
         for (auto& s : allSpecs()) { float v = be.getParam (s.num); listeners.call ([&] (Listener& l) { l.paramChanged (s.num, v); }); }
     }
 

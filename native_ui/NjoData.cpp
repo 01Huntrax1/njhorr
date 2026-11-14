@@ -97,8 +97,46 @@ namespace njo
         return k == oscKey ("fcut") || k == oscKey ("freq");
     }
 
+    const std::vector<juce::String>& fxCategories()
+    {
+        static const std::vector<juce::String> c { "Distortion", "Analog / Console", "Filter / EQ", "Dynamics", "Modulation", "Delay / Reverb", "Creative" };
+        return c;
+    }
+    int fxCategoryOf (int type)
+    {
+        switch (type)
+        {
+            case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: return 0;
+            case 17: case 23: case 24: case 25: case 26: return 1;
+            case 9: case 10: case 13: case 18: case 27: return 2;
+            case 11: return 3;
+            case 4: case 5: case 6: case 7: case 16: return 4;
+            case 3: case 8: case 12: case 31: return 5;
+            default: return 6;
+        }
+    }
+    bool fxVoiceType (int t)
+    {
+        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30;
+    }
+
     juce::String formatValue (const Spec& s, double v, const int* fxSlotTypes)
     {
+        if ((s.num >= kOscFxBase && s.num < kOscFxBase + 192) || (s.num >= kOscFxOn && s.num < kOscFxOn + 48))   // oscillator FX racks
+        {
+            auto& types = fxTypes();
+            const bool modeOn = s.num >= kOscFxOn;
+            const int sl = modeOn ? (s.num - kOscFxOn) / 2 : (s.num - kOscFxBase) / 8;
+            const int k  = modeOn ? 8 + (s.num - kOscFxOn) % 2 : (s.num - kOscFxBase) % 8;
+            auto& t = types[(size_t) juce::jlimit (0, (int) types.size() - 1, fxSlotTypes ? fxSlotTypes[kFxTotal + sl] : 0)];
+            if (k == 0) return types[(size_t) juce::jlimit (0, (int) types.size() - 1, juce::roundToInt (v))].name;
+            if (k == 1) return juce::String (juce::roundToInt (v * 100)) + "%";
+            if (k == 8) { if (t.modes.isEmpty()) return "-"; return t.modes[juce::jlimit (0, t.modes.size() - 1, juce::roundToInt (v))]; }
+            if (k == 9) return v > 0.5 ? "On" : "Off";
+            const int pi = k - 2;
+            if (pi < (int) t.params.size()) return fxFormatParam (t.params[(size_t) pi].fmt, v);
+            return "-";
+        }
         auto loc = fxLocate (s.num);
         if (loc.valid)
         {

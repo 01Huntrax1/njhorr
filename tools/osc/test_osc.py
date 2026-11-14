@@ -1120,30 +1120,19 @@ def slotamt(v, tag): return render(fmb + [(307, 1), (308, 61), (309, v), ("shape
 a1_ = slotamt(1.0, "sa1"); a4_ = slotamt(4.0, "sa4")
 check("mod slot amount 400 % opens the FM cell further than 100 % (different, more harmonics), still bounded", band(seg(a4_), 500, 6000) > 1.05 * band(seg(a1_), 500, 6000) and rms(a4_ - a1_) > 0.1 * rms(a1_) and np.isfinite(a4_).all() and np.abs(a4_).max() < 3.0, "%.1f vs %.1f" % (band(seg(a4_), 500, 6000), band(seg(a1_), 500, 6000)))
 
-# OSCFX-DSP: per oscillator effect rack (slot ids 6300 + 32 * osc + 8 * slot + k, k = type, mix, p1, p2, p3)
+# OSCFX3-DSP: per oscillator rack with the main-section effects (slot ids 6300 + 32 * osc + 8 * slot + k, k = type, mix, p1..p6); details in tools/fx/test_oscrack.py
 def FX(o, sl, k, v): return (6300 + 32 * o + 8 * sl + k, v)
 base_fx = render(SAW, note=45, hold=0.6, tail=0.1, tag="fxb")[:, 0]
-for ty, nm, par in ((4, "Bitcrush", [FX(0, 3, 2, 0.8), FX(0, 3, 3, 0.7)]), (5, "Fold", [FX(0, 3, 2, 0.9)]), (6, "Comb", [FX(0, 3, 2, 0.3), FX(0, 3, 3, 0.8)]), (7, "Tilt", [FX(0, 3, 2, 0.4), FX(0, 3, 3, 1.0)])):
+for ty, nm, par in ((1, "Distortion", [FX(0, 3, 2, 0.9)]), (2, "Bit Crush", [FX(0, 3, 2, 0.8), FX(0, 3, 3, 0.7)]), (7, "Tremolo", [FX(0, 3, 2, 0.6), FX(0, 3, 3, 1.0)]), (15, "Waveshaper", [FX(0, 3, 2, 0.9)])):
     a = render(SAW + [FX(0, 3, 0, ty)] + par, note=45, hold=0.6, tail=0.1, tag="fx%d" % ty)[:, 0]
     check("OSC FX %s differs from the dry sound, finite and bounded" % nm, rms(a[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]) > 0.02 * rms(base_fx) and np.isfinite(a).all() and np.abs(a).max() < 6.0, "%.3f" % np.abs(a).max())
     a0 = render(SAW + [FX(0, 3, 0, ty), FX(0, 3, 1, 0.0)] + par, note=45, hold=0.6, tail=0.1, tag="fxm%d" % ty)[:, 0]
     check("OSC FX %s mix 0 leaves the sound alone" % nm, np.abs(a0[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]).max() < 1e-4)
-# the slot order decides: Dist > Reso (slots 1, 2 swapped) differs from Reso > Dist
-sw = render(SAW + DST + RES + [FX(0, 0, 0, 0), FX(0, 1, 0, 3), FX(0, 2, 0, 2)], note=45, hold=0.6, tail=0.1, tag="fxsw")[:, 0]
-nm_ = render(SAW + DST + RES + [FX(0, 0, 0, 0), FX(0, 1, 0, 2), FX(0, 2, 0, 3)], note=45, hold=0.6, tail=0.1, tag="fxnm")[:, 0]
-check("OSC FX slot types set the order (Reso > Dist differs from Dist > Reso)", np.abs(sw[:int(0.5 * RATE)] - nm_[:int(0.5 * RATE)]).max() > 0.02)
-off = render(SAW + DST + [FX(0, 0, 0, 0), FX(0, 1, 0, 0), FX(0, 2, 0, 0)], note=45, hold=0.6, tail=0.1, tag="fxoff")[:, 0]
+off = render(SAW + [FX(0, 0, 0, 0), FX(0, 1, 0, 0), FX(0, 2, 0, 0)], note=45, hold=0.6, tail=0.1, tag="fxoff")[:, 0]
 check("OSC FX all slots Off = unprocessed sound", np.abs(off[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]).max() < 1e-4)
-dup = render(SAW + [FX(0, 3, 0, 5), FX(0, 3, 2, 0.9), FX(0, 2, 0, 5), FX(0, 2, 2, 0.9)], note=45, hold=0.6, tail=0.1, tag="fxdup")[:, 0]
-check("OSC FX the same effect twice in a rack works (two folds) and stays bounded", np.isfinite(dup).all() and np.abs(dup).max() < 6.0)
-
-# OSCFX2-DSP: the extra Fold / Comb parameters (P4..P6 = k 5..7)
-def fxr(ty, extra, tag): return render(SAW + [FX(0, 3, 0, ty)] + extra, note=45, hold=0.6, tail=0.1, tag=tag)[:, 0]
-for ty, nm, ks in ((5, "Fold", ((5, "Shape"), (6, "Asym"), (7, "Attenuate"), (4, "Stage 2"))), (6, "Comb", ((5, "Polarity"), (6, "Key Track"), (7, "Mod"), (4, "Damp")))):
-    ref = fxr(ty, [FX(0, 3, 2, 0.4), FX(0, 3, 3, 0.7)] + ([FX(0, 3, 4, 0.0)] if ty == 5 else [FX(0, 3, 4, 0.2)]), "fx2r%d" % ty)
-    for k, lab in ks:
-        a = fxr(ty, [FX(0, 3, 2, 0.4), FX(0, 3, 3, 0.7), FX(0, 3, 4, 0.0 if ty == 5 else 0.2), FX(0, 3, k, 0.9)], "fx2%d%d" % (ty, k))
-        check("OSC FX %s %s changes the sound, finite and bounded" % (nm, lab), rms(a[:int(0.5 * RATE)] - ref[:int(0.5 * RATE)]) > 0.01 * rms(ref) and np.isfinite(a).all() and np.abs(a).max() < 8.0, "%.3f" % np.abs(a).max())
+# the Pre-Matrix Order still decides the fixed Filter / Distortion / Resonator stages
+o1 = render(SAW + DST + RES, note=45, hold=0.6, tail=0.1, tag="fxo1")[:, 0]
+check("OSC Dist and Reso stages still run in front of the rack", rms(o1[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]) > 0.02 * rms(base_fx))
 
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

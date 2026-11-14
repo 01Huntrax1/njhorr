@@ -1572,126 +1572,175 @@ processor Eisenpuls_Synth
     input event float param1890 [[ name: "OSC 6 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     // PHYS-DECL-END
     // OSCFX-DSP: per oscillator effect rack
-    input event float param6300 [[ name: "OSC 1 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6300 [[ name: "OSC 1 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6301 [[ name: "OSC 1 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6302 [[ name: "OSC 1 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6303 [[ name: "OSC 1 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6304 [[ name: "OSC 1 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6308 [[ name: "OSC 1 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6308 [[ name: "OSC 1 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6309 [[ name: "OSC 1 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6310 [[ name: "OSC 1 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6311 [[ name: "OSC 1 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6312 [[ name: "OSC 1 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6316 [[ name: "OSC 1 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6316 [[ name: "OSC 1 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6317 [[ name: "OSC 1 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6318 [[ name: "OSC 1 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6319 [[ name: "OSC 1 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6320 [[ name: "OSC 1 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6324 [[ name: "OSC 1 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6324 [[ name: "OSC 1 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6325 [[ name: "OSC 1 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6326 [[ name: "OSC 1 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6327 [[ name: "OSC 1 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6328 [[ name: "OSC 1 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6332 [[ name: "OSC 2 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6332 [[ name: "OSC 2 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6333 [[ name: "OSC 2 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6334 [[ name: "OSC 2 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6335 [[ name: "OSC 2 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6336 [[ name: "OSC 2 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6340 [[ name: "OSC 2 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6340 [[ name: "OSC 2 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6341 [[ name: "OSC 2 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6342 [[ name: "OSC 2 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6343 [[ name: "OSC 2 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6344 [[ name: "OSC 2 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6348 [[ name: "OSC 2 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6348 [[ name: "OSC 2 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6349 [[ name: "OSC 2 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6350 [[ name: "OSC 2 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6351 [[ name: "OSC 2 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6352 [[ name: "OSC 2 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6356 [[ name: "OSC 2 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6356 [[ name: "OSC 2 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6357 [[ name: "OSC 2 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6358 [[ name: "OSC 2 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6359 [[ name: "OSC 2 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6360 [[ name: "OSC 2 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6364 [[ name: "OSC 3 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6364 [[ name: "OSC 3 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6365 [[ name: "OSC 3 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6366 [[ name: "OSC 3 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6367 [[ name: "OSC 3 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6368 [[ name: "OSC 3 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6372 [[ name: "OSC 3 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6372 [[ name: "OSC 3 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6373 [[ name: "OSC 3 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6374 [[ name: "OSC 3 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6375 [[ name: "OSC 3 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6376 [[ name: "OSC 3 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6380 [[ name: "OSC 3 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6380 [[ name: "OSC 3 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6381 [[ name: "OSC 3 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6382 [[ name: "OSC 3 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6383 [[ name: "OSC 3 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6384 [[ name: "OSC 3 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6388 [[ name: "OSC 3 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6388 [[ name: "OSC 3 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6389 [[ name: "OSC 3 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6390 [[ name: "OSC 3 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6391 [[ name: "OSC 3 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6392 [[ name: "OSC 3 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6396 [[ name: "OSC 4 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6396 [[ name: "OSC 4 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6397 [[ name: "OSC 4 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6398 [[ name: "OSC 4 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6399 [[ name: "OSC 4 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6400 [[ name: "OSC 4 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6404 [[ name: "OSC 4 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6404 [[ name: "OSC 4 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6405 [[ name: "OSC 4 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6406 [[ name: "OSC 4 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6407 [[ name: "OSC 4 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6408 [[ name: "OSC 4 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6412 [[ name: "OSC 4 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6412 [[ name: "OSC 4 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6413 [[ name: "OSC 4 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6414 [[ name: "OSC 4 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6415 [[ name: "OSC 4 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6416 [[ name: "OSC 4 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6420 [[ name: "OSC 4 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6420 [[ name: "OSC 4 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6421 [[ name: "OSC 4 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6422 [[ name: "OSC 4 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6423 [[ name: "OSC 4 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6424 [[ name: "OSC 4 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6428 [[ name: "OSC 5 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6428 [[ name: "OSC 5 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6429 [[ name: "OSC 5 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6430 [[ name: "OSC 5 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6431 [[ name: "OSC 5 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6432 [[ name: "OSC 5 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6436 [[ name: "OSC 5 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6436 [[ name: "OSC 5 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6437 [[ name: "OSC 5 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6438 [[ name: "OSC 5 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6439 [[ name: "OSC 5 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6440 [[ name: "OSC 5 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6444 [[ name: "OSC 5 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6444 [[ name: "OSC 5 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6445 [[ name: "OSC 5 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6446 [[ name: "OSC 5 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6447 [[ name: "OSC 5 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6448 [[ name: "OSC 5 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6452 [[ name: "OSC 5 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6452 [[ name: "OSC 5 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6453 [[ name: "OSC 5 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6454 [[ name: "OSC 5 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6455 [[ name: "OSC 5 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6456 [[ name: "OSC 5 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6460 [[ name: "OSC 6 FX 1 Type", min: 0.0, max: 7.0, init: 1.0, step: 1.0 ]];
+    input event float param6460 [[ name: "OSC 6 FX 1 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6461 [[ name: "OSC 6 FX 1 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6462 [[ name: "OSC 6 FX 1 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6463 [[ name: "OSC 6 FX 1 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6464 [[ name: "OSC 6 FX 1 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6468 [[ name: "OSC 6 FX 2 Type", min: 0.0, max: 7.0, init: 2.0, step: 1.0 ]];
+    input event float param6468 [[ name: "OSC 6 FX 2 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6469 [[ name: "OSC 6 FX 2 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6470 [[ name: "OSC 6 FX 2 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6471 [[ name: "OSC 6 FX 2 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6472 [[ name: "OSC 6 FX 2 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6476 [[ name: "OSC 6 FX 3 Type", min: 0.0, max: 7.0, init: 3.0, step: 1.0 ]];
+    input event float param6476 [[ name: "OSC 6 FX 3 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6477 [[ name: "OSC 6 FX 3 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6478 [[ name: "OSC 6 FX 3 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6479 [[ name: "OSC 6 FX 3 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6480 [[ name: "OSC 6 FX 3 P3", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param6484 [[ name: "OSC 6 FX 4 Type", min: 0.0, max: 7.0, init: 0.0, step: 1.0 ]];
+    input event float param6484 [[ name: "OSC 6 FX 4 Type", min: 0.0, max: 31.0, init: 0.0, step: 1.0 ]];
     input event float param6485 [[ name: "OSC 6 FX 4 Mix", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param6486 [[ name: "OSC 6 FX 4 P1", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6487 [[ name: "OSC 6 FX 4 P2", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param6488 [[ name: "OSC 6 FX 4 P3", min: 0.0, max: 1.0, init: 0.5 ]];
+    // OSCFX3-DSP
+    input event float param7600 [[ name: "OSC 1 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7601 [[ name: "OSC 1 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7602 [[ name: "OSC 1 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7603 [[ name: "OSC 1 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7604 [[ name: "OSC 1 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7605 [[ name: "OSC 1 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7606 [[ name: "OSC 1 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7607 [[ name: "OSC 1 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7608 [[ name: "OSC 2 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7609 [[ name: "OSC 2 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7610 [[ name: "OSC 2 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7611 [[ name: "OSC 2 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7612 [[ name: "OSC 2 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7613 [[ name: "OSC 2 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7614 [[ name: "OSC 2 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7615 [[ name: "OSC 2 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7616 [[ name: "OSC 3 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7617 [[ name: "OSC 3 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7618 [[ name: "OSC 3 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7619 [[ name: "OSC 3 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7620 [[ name: "OSC 3 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7621 [[ name: "OSC 3 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7622 [[ name: "OSC 3 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7623 [[ name: "OSC 3 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7624 [[ name: "OSC 4 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7625 [[ name: "OSC 4 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7626 [[ name: "OSC 4 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7627 [[ name: "OSC 4 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7628 [[ name: "OSC 4 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7629 [[ name: "OSC 4 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7630 [[ name: "OSC 4 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7631 [[ name: "OSC 4 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7632 [[ name: "OSC 5 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7633 [[ name: "OSC 5 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7634 [[ name: "OSC 5 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7635 [[ name: "OSC 5 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7636 [[ name: "OSC 5 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7637 [[ name: "OSC 5 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7638 [[ name: "OSC 5 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7639 [[ name: "OSC 5 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7640 [[ name: "OSC 6 FX 1 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7641 [[ name: "OSC 6 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7642 [[ name: "OSC 6 FX 2 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7643 [[ name: "OSC 6 FX 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7644 [[ name: "OSC 6 FX 3 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7645 [[ name: "OSC 6 FX 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param7646 [[ name: "OSC 6 FX 4 Mode", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param7647 [[ name: "OSC 6 FX 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
     // OSCFX2-DSP
     input event float param6305 [[ name: "OSC 1 FX 1 P4", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param6306 [[ name: "OSC 1 FX 1 P5", min: 0.0, max: 1.0, init: 0.0 ]];
@@ -5465,49 +5514,49 @@ processor Eisenpuls_Synth
 
     // Wavetable 3 memory bank (1 memory x 96000 samples)
     // ---------------- FX RACK STATE ----------------
-    int[64]       fxType;  // padded to a power of two (cheap index wrap)
-    float[64]     fxOn;  // padded to a power of two (cheap index wrap)
-    float[64]     fxMix;  // padded to a power of two (cheap index wrap)
-    int[64]       fxMode;  // padded to a power of two (cheap index wrap)
+    int[320] fxType;  // padded to a power of two (cheap index wrap)
+    float[320] fxOn;  // padded to a power of two (cheap index wrap)
+    float[320] fxMix;  // padded to a power of two (cheap index wrap)
+    int[320] fxMode;  // padded to a power of two (cheap index wrap)
     // FX-PEQ: band table (10 values per band, 24 bands per slot, normalised), biquad sections (64 per slot, 5 coefficients, 4 states), combs (4 values per band)
-    float[11520]   peqB;
-    float[15360]   peqC;
-    float[12288]   peqZ;
-    int[3072]     peqCh;
-    int[64]       peqN;
-    float[4608]   peqK;
-    float[64]     fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
-    float[64]     fxEnvRel;
-    float[64]     fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
-    int[64]       fxEnvSt;
-    int[64]       fxEnvSeen;
-    float[64]     fxEnvGc;
-    float[64]     fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
-    int[64]       fxEnvCt;
+    float[57600] peqB;
+    float[76800] peqC;
+    float[61440] peqZ;
+    int[15360] peqCh;
+    int[320] peqN;
+    float[23040] peqK;
+    float[320] fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
+    float[320] fxEnvRel;
+    float[320] fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
+    int[320] fxEnvSt;
+    int[320] fxEnvSeen;
+    float[320] fxEnvGc;
+    float[320] fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
+    int[320] fxEnvCt;
     int           fxNoteSeq = 0;   // counts accepted note-ons
     bool          fxHeld = false;  // any note is held (not yet released)
-    int[64]       fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
+    int[320] fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
     float         insOn = 0.0f;
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
-    float[512]    fxP;  // padded to a power of two (cheap index wrap)
-    bool[64]      fxDirty;  // padded to a power of two (cheap index wrap)
+    float[2560] fxP;  // padded to a power of two (cheap index wrap)
+    bool[320] fxDirty;  // padded to a power of two (cheap index wrap)
     int[64]       fxOrder;  // padded to a power of two (cheap index wrap)
     int[64]       fxSeq;  // padded to a power of two (cheap index wrap)
-    float[1024]    fxD;  // padded to a power of two (cheap index wrap)
-    float[2048]   fxF;  // padded to a power of two (cheap index wrap)
-    float64[2048] awS;  // FX-AW: Airwindows effects, state (40 per slot)
-    float64[1152] awD;  // FX-AW: derived values (24 per slot)
-    float[12288] mgG;   // FX-MUTABLE: grains of the Granular effect (32 per slot, 8 floats: active, position, increment, age, length, gain L, gain R)
-    float[49152] csV;   // FX-CLOUDSEED: per slot 1024 floats: derived coefficients (0..511) and filter / modulation states (512..1023)
+    float[5120] fxD;  // padded to a power of two (cheap index wrap)
+    float[10240] fxF;  // padded to a power of two (cheap index wrap)
+    float64[10240] awS;  // FX-AW: Airwindows effects, state (40 per slot)
+    float64[5760] awD;  // FX-AW: derived values (24 per slot)
+    float[61440] mgG;   // FX-MUTABLE: grains of the Granular effect (32 per slot, 8 floats: active, position, increment, age, length, gain L, gain R)
+    float[245760] csV;   // FX-CLOUDSEED: per slot 1024 floats: derived coefficients (0..511) and filter / modulation states (512..1023)
     float[128]   csTmp;
     int64        csLcg;
-    float[6144]  wpV;   // FX-MUTABLE: filter memories of the Warp effect (128 per slot)
-    int64[128]   plN;   // FX-PLASMA: noise generator state (2 per slot)
-    float64[2304] awT;  // FX-AW-MACK: MackEQ state (48 per slot)
-    int[2048]      fxI;  // padded to a power of two (cheap index wrap)
-    float64[256]  fxPh;  // padded to a power of two (cheap index wrap)
-    float[9437184] fxArena;   // FX-SLOTS: 48 slots x 196608 floats
+    float[30720] wpV;   // FX-MUTABLE: filter memories of the Warp effect (128 per slot)
+    int64[640] plN;   // FX-PLASMA: noise generator state (2 per slot)
+    float64[11520] awT;  // FX-AW-MACK: MackEQ state (48 per slot)
+    int[10240] fxI;  // padded to a power of two (cheap index wrap)
+    float64[1280] fxPh;  // padded to a power of two (cheap index wrap)
+    float[12582912] fxArena;   // FX-SLOTS: 48 slots x 196608 floats
     float[8]      busDcX;  // padded to a power of two (cheap index wrap)
     float[8]      busDcY;  // padded to a power of two (cheap index wrap)
     float         busLevel1 = 1.0f;
@@ -6853,6 +6902,54 @@ processor Eisenpuls_Synth
     event param6489 (float v) { rkSet (23, 5, v); }
     event param6490 (float v) { rkSet (23, 6, v); }
     event param6491 (float v) { rkSet (23, 7, v); }
+    event param7600 (float v) { rkSet (0, 8, v); }
+    event param7601 (float v) { rkSet (0, 9, v); }
+    event param7602 (float v) { rkSet (1, 8, v); }
+    event param7603 (float v) { rkSet (1, 9, v); }
+    event param7604 (float v) { rkSet (2, 8, v); }
+    event param7605 (float v) { rkSet (2, 9, v); }
+    event param7606 (float v) { rkSet (3, 8, v); }
+    event param7607 (float v) { rkSet (3, 9, v); }
+    event param7608 (float v) { rkSet (4, 8, v); }
+    event param7609 (float v) { rkSet (4, 9, v); }
+    event param7610 (float v) { rkSet (5, 8, v); }
+    event param7611 (float v) { rkSet (5, 9, v); }
+    event param7612 (float v) { rkSet (6, 8, v); }
+    event param7613 (float v) { rkSet (6, 9, v); }
+    event param7614 (float v) { rkSet (7, 8, v); }
+    event param7615 (float v) { rkSet (7, 9, v); }
+    event param7616 (float v) { rkSet (8, 8, v); }
+    event param7617 (float v) { rkSet (8, 9, v); }
+    event param7618 (float v) { rkSet (9, 8, v); }
+    event param7619 (float v) { rkSet (9, 9, v); }
+    event param7620 (float v) { rkSet (10, 8, v); }
+    event param7621 (float v) { rkSet (10, 9, v); }
+    event param7622 (float v) { rkSet (11, 8, v); }
+    event param7623 (float v) { rkSet (11, 9, v); }
+    event param7624 (float v) { rkSet (12, 8, v); }
+    event param7625 (float v) { rkSet (12, 9, v); }
+    event param7626 (float v) { rkSet (13, 8, v); }
+    event param7627 (float v) { rkSet (13, 9, v); }
+    event param7628 (float v) { rkSet (14, 8, v); }
+    event param7629 (float v) { rkSet (14, 9, v); }
+    event param7630 (float v) { rkSet (15, 8, v); }
+    event param7631 (float v) { rkSet (15, 9, v); }
+    event param7632 (float v) { rkSet (16, 8, v); }
+    event param7633 (float v) { rkSet (16, 9, v); }
+    event param7634 (float v) { rkSet (17, 8, v); }
+    event param7635 (float v) { rkSet (17, 9, v); }
+    event param7636 (float v) { rkSet (18, 8, v); }
+    event param7637 (float v) { rkSet (18, 9, v); }
+    event param7638 (float v) { rkSet (19, 8, v); }
+    event param7639 (float v) { rkSet (19, 9, v); }
+    event param7640 (float v) { rkSet (20, 8, v); }
+    event param7641 (float v) { rkSet (20, 9, v); }
+    event param7642 (float v) { rkSet (21, 8, v); }
+    event param7643 (float v) { rkSet (21, 9, v); }
+    event param7644 (float v) { rkSet (22, 8, v); }
+    event param7645 (float v) { rkSet (22, 9, v); }
+    event param7646 (float v) { rkSet (23, 8, v); }
+    event param7647 (float v) { rkSet (23, 9, v); }
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -10501,7 +10598,7 @@ processor Eisenpuls_Synth
         {
             hostBpm = t.bpm;
 
-            for (int fs = 0; fs < 48; ++fs)
+            for (int fs = 0; fs < 240; ++fs)
                 fxDirty.at (fs) = true;
         }
     }
@@ -10542,8 +10639,6 @@ processor Eisenpuls_Synth
         float[8]    tzPh;     // through-zero FM: integrated modulator phase per slot (cycles)
         float[8]    pdPh;     // phase of every slot as seen by the phase distortion matrix (cycles)
         float[8]    fenv;     // filter envelope level per slot
-        float[384]  rkS;      // OSCFX-DSP: per oscillator / slot / channel state, 8 floats (held, counter, write pos, lowpass, mod phase)
-        float[49152] rkB;     // OSCFX-DSP: comb delay lines (6 x 4 x 2 x 1024)
         int[8]      fstage;   // filter envelope stage per slot
         float[16] menv;       // mod envelope levels
         float64[16] lfoPh;    // per-voice LFO phases (modes Trig / Env)
@@ -10630,15 +10725,6 @@ processor Eisenpuls_Synth
 
         fxGateInit();
         ins_setupTables();   // INSPIRATOR-DSP
-
-        for (int rq = 0; rq < 24; ++rq)   // OSCFX-DSP defaults: Filter > Dist > Reso > Off, mix 100 %, parameters 50 %
-        {
-            rkP.at (rq * 8)     = (rq & 3) < 3 ? float ((rq & 3) + 1) : 0.0f;
-            rkP.at (rq * 8 + 1) = 1.0f;
-            rkP.at (rq * 8 + 2) = 0.5f;
-            rkP.at (rq * 8 + 3) = 0.5f;
-            rkP.at (rq * 8 + 4) = 0.5f;
-        }
 
         for (int ei = 0; ei < 32; ++ei)   // FX-FENV defaults
         {
@@ -11529,7 +11615,7 @@ processor Eisenpuls_Synth
         }
 
         // combs: a delay line of 4096 samples per channel in the slot's arena, the write position of band b in fxI
-        int ab = s * 196608;
+        int ab = fxAb (s);
 
         for (int b = 0; b < 24; ++b)
         {
@@ -11592,9 +11678,11 @@ processor Eisenpuls_Synth
     // Clears the delay lines and filter memories of one slot
     void fxResetSlot (int s)
     {
-        int ab = s * 196608;
+        int ab = fxAb (s);
 
-        for (int i = 0; i < 196608; ++i)
+        int al = s < 48 ? 196608 : 16384;
+
+        for (int i = 0; i < al; ++i)
             fxArena.at (ab + i) = 0.0f;
 
         for (int i = 0; i < 40; ++i)
@@ -11634,6 +11722,7 @@ processor Eisenpuls_Synth
     }
 
     // FX-SLOTS: global slot numbers: 0..29 = slots 1-10 of the racks (rk * 10 + k), 30..47 = slots 11-16 (30 + rk * 6 + j)
+    int fxAb (int s)            { return s < 48 ? s * 196608 : 9437184 + (s - 48) * 16384; }   // OSCFX3-DSP
     int fxRk (int s)            { return s < 30 ? s / 10 : (s - 30) / 6; }
     int fxG (int rk, int ls)    { return ls < 10 ? rk * 10 + ls : 30 + rk * 6 + (ls - 10); }
 
@@ -11818,7 +11907,7 @@ processor Eisenpuls_Synth
         {
             // reverb: engine and tuning per mode, pre-delay (samples), width, wet tone filters;  FX-REV
             int   md    = fxMode.at (s);
-            int   ab    = s * 196608;
+            int   ab    = fxAb (s);
             float dsc   = 0.85f;      // delay length scale of the FDN
             float rtLo  = 0.6f;       // RT60 range (s) over the Size knob
             float rtHi  = 8.0f;
@@ -12619,7 +12708,7 @@ processor Eisenpuls_Synth
         int   db = s * 16;
         int   fb = s * 40;
         int   ib = s * 24;
-        int   ab = s * 196608;
+        int   ab = fxAb (s);
         float dt = float (processor.period);
 
         // pre-delay
@@ -12951,7 +13040,7 @@ processor Eisenpuls_Synth
         float dt = float (processor.period);
         int   db = s * 16;
         int   pb = s * 6;
-        int   ab = s * 196608;
+        int   ab = fxAb (s);
 
         fxD.at (db)     = float (pow (10.0f, clamp (fxP.at (pb), 0.0f, 1.0f) * 30.0f / 20.0f));
         fxD.at (db + 1) = (clamp (fxP.at (pb + 1), 0.0f, 1.0f) - 0.5f) * 1.0f;
@@ -13025,7 +13114,7 @@ processor Eisenpuls_Synth
     {
         int   fb = s * 40;
         int   db = s * 16;
-        int   ab = s * 196608;
+        int   ab = fxAb (s);
         int   md = fxMode.at (s);
 
         float lcs = fxF.at (fb + c);
@@ -13136,7 +13225,7 @@ processor Eisenpuls_Synth
         int   ib  = s * 24;
         int   pb  = s * 4;
         int   db  = s * 16;
-        int   ab  = s * 196608;
+        int   ab  = fxAb (s);
         float sr  = float (processor.frequency);
         int   dty = fxMode.at (s);
 
@@ -13264,7 +13353,7 @@ processor Eisenpuls_Synth
         int   ib   = s * 24;
         int   pb   = s * 4;
         int   db   = s * 16;
-        int   ab   = s * 196608;
+        int   ab   = fxAb (s);
         float sr   = float (processor.frequency);
         int   mode = fxMode.at (s);
 
@@ -13347,7 +13436,7 @@ processor Eisenpuls_Synth
         int   ib = s * 24;
         int   pb = s * 4;
         int   db = s * 16;
-        int   ab = s * 196608;
+        int   ab = fxAb (s);
         float sr = float (processor.frequency);
         int   fm = fxMode.at (s);
 
@@ -13588,7 +13677,7 @@ processor Eisenpuls_Synth
         int   fb = s * 40;
         int   ib = s * 24;
         int   db = s * 16;
-        int   ab = s * 196608;
+        int   ab = fxAb (s);
         float dt = float (processor.period);
 
         float preS = fxD.at (db + 2);
@@ -13888,7 +13977,7 @@ processor Eisenpuls_Synth
             int   di  = int (dly);
             float fr  = dly - float (di);
             int   w   = fxI.at (ib);
-            int   cb  = s * 196608 + ch * 2048;
+            int   cb  = fxAb (s) + ch * 2048;
             int   r0  = (w - di) & 2047;
             int   r1  = (w - di - 1) & 2047;
             float d   = fxArena.at (cb + r0) * (1.0f - fr) + fxArena.at (cb + r1) * fr;
@@ -13927,7 +14016,7 @@ processor Eisenpuls_Synth
             int   di    = int (dly);
             float fr    = dly - float (di);
             int   w     = fxI.at (ib);
-            int   cb    = s * 196608 + ch * 2048;
+            int   cb    = fxAb (s) + ch * 2048;
             int   r0    = (w - di) & 2047;
             int   r1    = (w - di - 1) & 2047;
             float d     = fxArena.at (cb + r0) * (1.0f - fr) + fxArena.at (cb + r1) * fr;
@@ -14274,7 +14363,7 @@ processor Eisenpuls_Synth
         int   fb    = s * 40;
         int   ib    = s * 24;
         int   db    = s * 16;
-        int   ab    = s * 196608;
+        int   ab    = fxAb (s);
         int   n     = int (fxD.at (db) + 0.5f);
         float drift = fxD.at (db + 1);
         float wnd   = fxD.at (db + 2);
@@ -15179,7 +15268,7 @@ processor Eisenpuls_Synth
     {
         int     sb    = s * 40;
         int     db    = s * 24;
-        int     ab    = s * 196608;
+        int     ab    = fxAb (s);
         float64 ig    = awD.at (db);
         float64 depth = awD.at (db + 11);
         float64 ft    = awD.at (db + 12);
@@ -15508,7 +15597,7 @@ processor Eisenpuls_Synth
     {
         int   ib  = s * 24;
         int   fb  = s * 40;
-        int   ab  = s * 196608;
+        int   ab  = fxAb (s);
         int   gb  = s * 256;
         int   db  = s * 16;
         int   md  = clamp (fxMode.at (s), 0, 3);
@@ -16045,7 +16134,7 @@ processor Eisenpuls_Synth
         int Dc = D + c * 220;
         int G  = D + 440;
         int Sc = D + 512 + c * 256;
-        int cb = s * 196608 + c * 98304;
+        int cb = fxAb (s) + c * 98304;
         int fl = int (csV.at (G + 20));
         float v = x;
 
@@ -16275,6 +16364,21 @@ processor Eisenpuls_Synth
             fxMix.at (s)   = 1.0f;
             fxMode.at (s)  = 0;
             fxDirty.at (s) = true;
+
+            for (int k = 0; k < 6; ++k)
+                fxP.at (s * 6 + k) = 0.5f;
+        }
+
+        for (int s = 48; s < 240; ++s)   // OSCFX3-DSP: per voice slots of the oscillator racks
+        {
+            fxType.at (s)  = 0;
+            fxOn.at (s)    = 1.0f;
+            fxMix.at (s)   = 1.0f;
+            fxMode.at (s)  = 0;
+            fxDirty.at (s) = true;
+            fxSync.at (s)  = 0;
+            fxEnvSus.at (s) = 1.0f;
+            fxEnvRel.at (s) = 0.3f;
 
             for (int k = 0; k < 6; ++k)
                 fxP.at (s * 6 + k) = 0.5f;
@@ -17377,7 +17481,6 @@ processor Eisenpuls_Synth
     }
 
     float[512]    op;  // padded to a power of two (cheap index wrap)
-    float[256]    rkP;        // OSCFX-DSP: 24 slots x (type, mix, p1..p6) at slot * 8 + k
     float[64]     fmAmt;      // frequency modulation
     float[64]     pmAmt;      // phase modulation
     float[64]     pdAmt;      // phase distortion (the modulator bends the phase of the carrier, Casio CZ style)
@@ -17436,21 +17539,52 @@ processor Eisenpuls_Synth
         return op.at (o * 64 + k);
     }
 
+    // OSCFX3-DSP: light effect types of the main rack that may run per voice (no big delay lines)
+    bool oscFxLight (int t)
+    {
+        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30;
+    }
+
     void rkSet (int sl, int k, float v)
     {
-        rkP.at (sl * 8 + k) = v;
+        for (int vi = 0; vi < 8; ++vi)
+        {
+            int s = 48 + vi * 24 + sl;
+
+            if (k == 0)
+            {
+                int nt = int (v + 0.5f);
+                nt = oscFxLight (nt) ? nt : 0;
+
+                if (nt != fxType.at (s))
+                {
+                    fxType.at (s) = nt;
+                    fxResetSlot (s);
+                }
+
+                fxDirty.at (s) = true;
+            }
+            else if (k == 1)
+                fxMix.at (s) = v;
+            else if (k == 8)
+            {
+                fxMode.at (s) = clamp (int (v + 0.5f), 0, 32);
+                fxDirty.at (s) = true;
+            }
+            else if (k == 9)
+                fxOn.at (s) = v;
+            else
+            {
+                fxP.at (s * 6 + k - 2) = v;
+                fxDirty.at (s) = true;
+            }
+        }
     }
 
     void opSet (int o, int k, float v)
     {
         op.at (o * 64 + k) = v;
 
-        if (k == 45 && v > 0.5f)   // OSCFX-DSP: old presets with a different Pre-Matrix Order
-        {
-            int ord = clamp (int (v + 0.5f), 0, 5);
-            for (int q = 0; q < 3; ++q)
-                rkP.at ((o * 4 + q) * 8) = float (chainOrder.at (ord * 3 + q) + 1);
-        }
 
         if (k >= 13 && k <= 17)
             updateWtUni (o);
@@ -21530,8 +21664,13 @@ processor Eisenpuls_Synth
         for (int o = 0; o < 6; ++o)
         {
             voices.at (v).fstage.at (o) = 1;
-            for (int rq = 0; rq < 64; ++rq)
-                voices.at (v).rkS.at (o * 64 + rq) = 0.0f;
+            for (int fq = 0; fq < 4; ++fq)   // OSCFX3-DSP: fresh effect state at the start of the voice
+            {
+                int fs = 48 + v * 24 + o * 4 + fq;
+
+                if (fxType.at (fs) != 0)
+                    fxResetSlot (fs);
+            }
             voices.at (v).fenv.at (o)   = opv (o, 38) > 0.5f ? 0.0f : 1.0f;
         }
 
@@ -26276,23 +26415,10 @@ processor Eisenpuls_Synth
                     int   chOrd = clamp (int (op.at (ob + 45) + 0.5f), 0, 5);   // RESO-CHAIN
                     float dwp  = clamp (op.at (ob + 47) + vmod.at (169 + 2 * o) * 0.5f, 0.0f, 1.0f);
 
-                    for (int chSt = 0; chSt < 4; ++chSt)
+                    for (int chSt = 0; chSt < 3; ++chSt)
                     {
-                        int   rkIx  = (o * 4 + chSt) * 8;
-                        int   rkTy  = clamp (int (rkP.at (rkIx) + 0.5f), 0, 7);
-                        float rkMx  = rkP.at (rkIx + 1);
-                        float rk1   = rkP.at (rkIx + 2);
-                        float rk2   = rkP.at (rkIx + 3);
-                        float rk3   = rkP.at (rkIx + 4);
-                        float rk4   = rkP.at (rkIx + 5);
-                        float rk5   = rkP.at (rkIx + 6);
-                        float rk6   = rkP.at (rkIx + 7);
-                        int   chStage = rkTy >= 1 && rkTy <= 3 ? rkTy - 1 : -1;
-                        float rkDL  = sL;
-                        float rkDR  = sR;
-
-                        if (rkTy == 0 || rkMx <= 0.0f)
-                            continue;
+                        int   rkTy    = chainOrder.at (chOrd * 3 + chSt) + 1;   // OSCFX3-DSP: Filter / Distortion / Resonator pages stay fixed stages
+                        int   chStage = rkTy - 1;
 
                         // ----- filter -----
                         if (chStage == 0 && op.at (ob + 30) > 0.5f)
@@ -26352,81 +26478,32 @@ processor Eisenpuls_Synth
                             sL = rz.at (0);
                             sR = stereo ? rz.at (1) : sL;
                         }
+                    }
 
-                        if (rkTy >= 4)
+                    // OSCFX3-DSP: four effects of the main FX section per oscillator (own instance per voice)
+                    {
+                        int      fb0  = 48 + i * 24 + o * 4;
+                        bool     fxAct = false;
+                        float<2> fxv  = float<2> (sL, stereo ? sR : sL);
+
+                        for (int fq = 0; fq < 4; ++fq)
                         {
-                            for (int ch = 0; ch < (stereo ? 2 : 1); ++ch)
+                            int fs = fb0 + fq;
+
+                            if (fxType.at (fs) != 0 && fxOn.at (fs) > 0.5f)
                             {
-                                int   si = ((o * 4 + chSt) * 2 + ch) * 8;   // inside rkS of this voice: 6 x 4 x 2 x 8 = 384
-                                float c  = ch == 0 ? sL : sR;
-
-                                if (rkTy == 4)   // bitcrush: bits and sample rate reduction
-                                {
-                                    float lv  = float (pow (2.0f, 1.0f + (1.0f - rk1) * 15.0f));
-                                    float hold = 1.0f + rk2 * rk2 * 63.0f;
-                                    float cnt = voices.at (i).rkS.at (si + 1) + 1.0f;
-                                    if (cnt >= hold)
-                                    {
-                                        cnt -= hold;
-                                        voices.at (i).rkS.at (si) = floor (clamp (c, -1.0f, 1.0f) * lv + 0.5f) / lv;
-                                    }
-                                    voices.at (i).rkS.at (si + 1) = cnt;
-                                    c = voices.at (i).rkS.at (si);
-                                }
-                                else if (rkTy == 5)   // wavefolder: two cascaded folds, sine <> triangle shape, asymmetry, output level
-                                {
-                                    float g1 = 1.0f + rk1 * 9.0f;
-                                    float as = (rk5 - 0.0f) * 0.9f;
-                                    float y  = c * g1 * (c >= 0.0f ? 1.0f + as : 1.0f - as) + (rk2 - 0.5f);
-                                    float f1 = float (sin (y * 1.5707963f)) * (1.0f - rk4) + rk4 * (2.0f / 3.1415927f) * float (asin (clamp (float (sin (y * 1.5707963f)), -1.0f, 1.0f)));
-                                    float y2 = f1 * (1.0f + rk3 * 3.0f) * 1.0f;
-                                    float f2 = float (sin (y2 * 1.5707963f)) * (1.0f - rk4) + rk4 * (2.0f / 3.1415927f) * float (asin (clamp (float (sin (y2 * 1.5707963f)), -1.0f, 1.0f)));
-                                    c = (f1 + (f2 - f1) * rk3) * (1.0f - rk6 * 0.8f);
-                                }
-                                else if (rkTy == 6)   // comb: delay (optionally tuned to the key), feedback, damping, polarity, delay modulation
-                                {
-                                    int   cb = ((o * 4 + chSt) * 2 + ch) * 1024;
-                                    int   wp = int (voices.at (i).rkS.at (si + 2));
-                                    float dk = 2.0f + rk1 * rk1 * 1018.0f;
-                                    float kt = clamp ((rk5 - 0.0f), 0.0f, 1.0f);
-                                    float dkey = clamp (sr / max (freq, 20.0f), 2.0f, 1018.0f);
-                                    float dly = dk + (dkey - dk) * kt;
-                                    float mp = voices.at (i).rkS.at (si + 4) + 0.7f * float (processor.period);
-                                    if (mp >= 1.0f) mp -= 1.0f;
-                                    voices.at (i).rkS.at (si + 4) = mp;
-                                    dly = clamp (dly * (1.0f + rk6 * 0.15f * float (sin (mp * 6.2831853f))), 2.0f, 1019.0f);
-                                    float rp  = float (wp) - dly;
-                                    int   i0  = int (floor (rp));
-                                    float fr  = rp - float (i0);
-                                    float dv  = voices.at (i).rkB.at (cb + (i0 & 1023)) * (1.0f - fr) + voices.at (i).rkB.at (cb + ((i0 + 1) & 1023)) * fr;
-                                    float sg  = 1.0f - 2.0f * rk4;
-                                    float lp  = voices.at (i).rkS.at (si + 3);
-                                    lp += (dv - lp) * (1.0f - rk3 * 0.9f);
-                                    voices.at (i).rkS.at (si + 3) = lp;
-                                    voices.at (i).rkB.at (cb + (wp & 1023)) = clamp (c + lp * sg * rk2 * 0.95f, -4.0f, 4.0f);
-                                    voices.at (i).rkS.at (si + 2) = float ((wp + 1) & 1023);
-                                    c = c + dv * 0.5f * (sg >= 0.0f ? 1.0f : -1.0f) * max (abs (sg), 0.2f);
-                                }
-                                else   // tilt: one pole split, high or low shelf boost
-                                {
-                                    float fcT = 100.0f * float (pow (100.0f, rk1));
-                                    float aT  = 1.0f - float (exp (-6.2831853f * fcT * float (processor.period)));
-                                    float lpT = voices.at (i).rkS.at (si + 3);
-                                    lpT += (c - lpT) * aT;
-                                    voices.at (i).rkS.at (si + 3) = lpT;
-                                    c = c + (rk2 - 0.5f) * 4.0f * (c - lpT);
-                                }
-
-                                if (ch == 0) sL = c; else sR = c;
+                                fxv = fxRunSlot (fs, fxv);
+                                fxAct = true;
                             }
-                            if (! stereo)
-                                sR = sL;
                         }
 
-                        if (rkMx < 1.0f)
+                        if (fxAct)
                         {
-                            sL = rkDL + (sL - rkDL) * rkMx;
-                            sR = rkDR + (sR - rkDR) * rkMx;
+                            sL = fxv[0];
+                            sR = fxv[1];
+
+                            if (fxv[0] != fxv[1])
+                                stereo = true;
                         }
                     }
 

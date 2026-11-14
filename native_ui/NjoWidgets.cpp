@@ -25,6 +25,7 @@ namespace njo
     {
         if (n == paramNum) { val = v; valueUpdated(); if (hover || dragging) ctx.lcd (sp->label, valueString()); }
         else if (((sp->num >= 541 && sp->num < 891) || (sp->num >= 3200 && sp->num < 3380)) && fxLocate (sp->num).valid) repaint();   // fx knobs depend on the slot type
+        else if (((sp->num >= kOscFxBase && sp->num < kOscFxBase + 192) || (sp->num >= kOscFxOn && sp->num < kOscFxOn + 48)) && n >= kOscFxBase && n < kOscFxBase + 192 && (n - kOscFxBase) % 8 == 0) repaint();   // oscillator rack knobs follow the slot type
         else if (ctx.isModTarget (paramNum) && isModSlotParam (n)) repaint();   // modulation ring
     }
 
