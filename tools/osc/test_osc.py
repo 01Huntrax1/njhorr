@@ -1120,10 +1120,11 @@ def slotamt(v, tag): return render(fmb + [(307, 1), (308, 61), (309, v), ("shape
 a1_ = slotamt(1.0, "sa1"); a4_ = slotamt(4.0, "sa4")
 check("mod slot amount 400 % opens the FM cell further than 100 % (different, more harmonics), still bounded", band(seg(a4_), 500, 6000) > 1.05 * band(seg(a1_), 500, 6000) and rms(a4_ - a1_) > 0.1 * rms(a1_) and np.isfinite(a4_).all() and np.abs(a4_).max() < 3.0, "%.1f vs %.1f" % (band(seg(a4_), 500, 6000), band(seg(a1_), 500, 6000)))
 
-# OSCFX3-DSP: per oscillator rack with the main-section effects (slot ids 6300 + 32 * osc + 8 * slot + k, k = type, mix, p1..p6); details in tools/fx/test_oscrack.py
-def FX(o, sl, k, v): return (6300 + 32 * o + 8 * sl + k, v)
+# OSCFX3-DSP: per oscillator rack with the main-section effects (slot ids 8000 + 272 * osc + 16 * slot + k); details in tools/fx/test_oscrack.py
+FXK = (0, 2, 4, 5, 6, 7, 8, 9)   # old k (type, mix, p1..p6) -> offset in the slot block
+def FX(o, sl, k, v): return (8000 + 272 * o + 16 * sl + FXK[k], v)
 base_fx = render(SAW, note=45, hold=0.6, tail=0.1, tag="fxb")[:, 0]
-for ty, nm, par in ((1, "Distortion", [FX(0, 3, 2, 0.9)]), (2, "Bit Crush", [FX(0, 3, 2, 0.8), FX(0, 3, 3, 0.7)]), (7, "Tremolo", [FX(0, 3, 2, 0.6), FX(0, 3, 3, 1.0)]), (15, "Waveshaper", [FX(0, 3, 2, 0.9)])):
+for ty, nm, par in ((1, "Distortion", [FX(0, 3, 2, 0.9)]), (2, "Bit Crush", [FX(0, 3, 2, 0.8), FX(0, 3, 3, 0.7)]), (7, "Tremolo", [FX(0, 3, 2, 0.6), FX(0, 3, 3, 1.0)]), (14, "Saturator", [FX(0, 3, 2, 0.9)])):
     a = render(SAW + [FX(0, 3, 0, ty)] + par, note=45, hold=0.6, tail=0.1, tag="fx%d" % ty)[:, 0]
     check("OSC FX %s differs from the dry sound, finite and bounded" % nm, rms(a[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]) > 0.02 * rms(base_fx) and np.isfinite(a).all() and np.abs(a).max() < 6.0, "%.3f" % np.abs(a).max())
     a0 = render(SAW + [FX(0, 3, 0, ty), FX(0, 3, 1, 0.0)] + par, note=45, hold=0.6, tail=0.1, tag="fxm%d" % ty)[:, 0]

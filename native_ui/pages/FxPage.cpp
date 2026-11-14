@@ -152,7 +152,7 @@ namespace njo
                 std::vector<int> v;
                 for (int c = 0; c < (int) categories().size(); ++c)
                     if (category < 0 || category == c)
-                        for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) v.push_back (t);
+                        for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c && (im.osc < 0 || fxVoiceType (t))) v.push_back (t);
                 return v;
             }
             juce::Rectangle<int> dropRect() const { return { getWidth() - 214, 8, 200, 24 }; }
@@ -175,7 +175,7 @@ namespace njo
             {
                 bool full = im.freeSlot (im.current) < 0;
                 g.setColour (ink); g.setFont (impact (14.0f));
-                g.drawText (full ? "THIS RACK IS FULL (16 EFFECTS)" : "ADD AN EFFECT TO " + fxRacks()[(size_t) im.current].name.toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
+                g.drawText (full ? "THIS RACK IS FULL (16 EFFECTS)" : "ADD AN EFFECT TO " + (im.osc >= 0 ? "OSC " + juce::String (im.osc + 1) : fxRacks()[(size_t) im.current].name).toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
                 g.setColour (dim); g.setFont (font (9.5f));
                 g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
                 {   // category dropdown
@@ -227,7 +227,7 @@ namespace njo
                 m.addSeparator();
                 for (int c = 0; c < (int) categories().size(); ++c)
                 {
-                    int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) ++n;
+                    int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c && (im.osc < 0 || fxVoiceType (t))) ++n;
                     m.addItem (c + 2, categories()[(size_t) c] + "  (" + juce::String (n) + ")", true, category == c);
                 }
                 auto self = juce::Component::SafePointer<Chooser> (this);
@@ -576,9 +576,9 @@ namespace njo
         };
 
         // ====================================================================================================================
-        Impl (FxPage& o, Ctx& c, SoundMemory& m) : owner (o), ctx (c), mem (m), list (*this), chooser (*this), display (*this)
+        Impl (FxPage& o, Ctx& c, SoundMemory& m, int oscIdx) : owner (o), ctx (c), mem (m), osc (oscIdx), rkLo (oscIdx < 0 ? 0 : 3 + oscIdx), rkHi (oscIdx < 0 ? 3 : 4 + oscIdx), gLo (oscIdx < 0 ? 0 : kFxMain + oscIdx * 16), gHi (oscIdx < 0 ? kFxMain : kFxMain + oscIdx * 16 + 16), list (*this), chooser (*this), display (*this)
         {
-            for (int g = 0; g < kFxTotal; ++g)
+            for (int g = gLo; g < gHi; ++g)
             {
                 int b = slotBase (g);
                 onT[g] = std::make_unique<OnToggle> (ctx, b + 1);
@@ -594,6 +594,7 @@ namespace njo
                 pos[fxRkOf (g) * kFxPer + fxSlOf (g)] = fxSlOf (g);
                 refreshSlot (g);
             }
+            if (osc < 0)
             for (int num : { 28, 536, 175, 189, 221, 222 })
             {
                 auto w = makeWidget (ctx, num, true);
@@ -606,7 +607,7 @@ namespace njo
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); refreshList(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
-            for (int rk = 0; rk < 3; ++rk) { sel[rk] = -1; }
+            for (int rk = 0; rk < kFxRacks; ++rk) { sel[rk] = -1; }
             loadIr.text = "LOAD IR"; clearIr.text = "CLEAR";
             loadIr.click = [this]
             {
@@ -621,8 +622,8 @@ namespace njo
             owner.addChildComponent (loadIr); owner.addChildComponent (clearIr);
             ctx.addListener (this);
             applyOrders();
-            for (int rk = 0; rk < 3; ++rk) autoSelect (rk);
-            showRack (0);
+            for (int rk = rkLo; rk < rkHi; ++rk) autoSelect (rk);
+            showRack (rkLo);
         }
         ~Impl() override { ctx.removeListener (this); }
 
@@ -654,7 +655,7 @@ namespace njo
             for (int k = 0; k < kFxPer; ++k) o[(size_t) k] = juce::roundToInt (ctx.get (fxOrdId (rk, k)));
             return o;
         }
-        void applyOrders() { for (int rk = 0; rk < 3; ++rk) applyOrder (rk); }
+        void applyOrders() { for (int rk = rkLo; rk < rkHi; ++rk) applyOrder (rk); }
         void applyOrder (int rk)
         {
             auto order = orderNow (rk);
@@ -699,7 +700,7 @@ namespace njo
         void showRack (int rk) { current = rk; adding = false; autoSelect (rk); updateTabs(); layoutCentre(); refreshList(); owner.repaint(); }
         void updateTabs()
         {
-            const int tabRk[] = { 0 };
+            const int tabRk[] = { rkLo };
             for (int i = 0; i < tabs.size(); ++i) { tabs[i]->used = ! usedSlots (tabRk[i]).empty(); tabs[i]->on = tabRk[i] == current; tabs[i]->repaint(); }
         }
 
@@ -747,8 +748,9 @@ namespace njo
         void paramChanged (int num, float) override
         {
             if ((num >= 940 && num < 970) || (num >= 3000 && num < 3060) || (num >= 3400 && num < 3418)) { layoutCentre(); owner.repaint(); return; }
+            if (osc >= 0 && num >= kOscFxBase + kOscFxStride * osc + 10 && num < kOscFxBase + kOscFxStride * (osc + 1) && num < kOscFxBase + kOscFxStride * osc + 256 && (num - kOscFxBase) % 16 >= 10) { layoutCentre(); owner.repaint(); return; }
             auto loc = fxLocate (num);
-            if (! loc.valid) return;
+            if (! loc.valid || loc.rk < rkLo || loc.rk >= rkHi) return;
             if (loc.ord >= 0) { applyOrder (loc.rk); return; }
             if (loc.off == 3) refreshSlot (loc.g);
             if (loc.off == 3 && loc.rk == current) { layoutCentre(); owner.repaint(); }
@@ -765,7 +767,7 @@ namespace njo
         // ---- centre area ----
         void layoutCentre()
         {
-            for (int g = 0; g < kFxTotal; ++g)
+            for (int g = gLo; g < gHi; ++g)
             {
                 onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false); syncS[g]->setVisible (false); envS[g]->setVisible (false); envR[g]->setVisible (false);
                 for (auto& w : pK[g]) w->setVisible (false);
@@ -842,22 +844,35 @@ namespace njo
         std::unique_ptr<OnToggle> onT[kFxTotal]; std::unique_ptr<ParamWidget> mixK[kFxTotal], modeS[kFxTotal], syncS[kFxTotal], envS[kFxTotal], envR[kFxTotal], pK[kFxTotal][6]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
         juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
-        int current = 0, sel[3] = { -1, -1, -1 }, pos[3 * kFxPer] = {}; bool adding = false;
+        int osc, rkLo, rkHi, gLo, gHi;   // osc >= 0: the rack page of that oscillator (rack 3 + osc, global slots 48 + 16 * osc ..)
+        juce::OwnedArray<DotTab> chips;
+        int current = 0, sel[kFxRacks] = {}, pos[kFxRacks * kFxPer] = {}; bool adding = false;
     };
 
-    FxPage::FxPage (Ctx& c, SoundMemory& m) : impl (new Impl (*this, c, m)) {}
+    FxPage::FxPage (Ctx& c, SoundMemory& m, int osc) : impl (new Impl (*this, c, m, osc))
+    {
+        if (osc >= 0)
+            for (int i = 0; i < OSC_N; ++i)
+            {
+                auto* b = impl->chips.add (new DotTab());
+                b->text = juce::String::charToString ((juce::juce_wchar) ('A' + i)); b->on = i == osc; b->used = false;
+                b->click = [this, i] { if (onSelectOsc) onSelectOsc (i); };
+                addAndMakeVisible (b);
+            }
+    }
     FxPage::~FxPage() = default;
 
     void FxPage::resized()
     {
         auto b = getLocalBounds();
-        impl->outCard = b.removeFromBottom (84); b.removeFromBottom (6);
+        if (impl->osc < 0) { impl->outCard = b.removeFromBottom (84); b.removeFromBottom (6); }
         impl->mainCard = b;
         auto m = impl->mainCard.reduced (12, 8);
         auto head = m.removeFromTop (22);
         head.removeFromLeft (110);
         int x = head.getX();
         for (auto* t : impl->tabs) { t->setBounds (x, head.getY(), 76, 20); x += 80; }
+        for (auto* t : impl->chips) { t->setBounds (x, head.getY(), 26, 20); x += 30; }
         m.removeFromTop (8);
         auto left = m.removeFromLeft (kLeftW); m.removeFromLeft (14);
         impl->addRect = left.removeFromBottom (28); left.removeFromBottom (6);
@@ -874,13 +889,13 @@ namespace njo
     void FxPage::paint (juce::Graphics& g)
     {
         paintCard (g, impl->mainCard.toFloat());
-        paintCard (g, impl->outCard.toFloat());
+        if (impl->osc < 0) paintCard (g, impl->outCard.toFloat());
         auto head = [&] (juce::Rectangle<int> card, const juce::String& t)
         {
             g.setColour (red); g.fillRect (juce::Rectangle<float> ((float) card.getX() + 12, (float) card.getY() + 13, 7, 7));
             g.setFont (impact (11.0f)); g.drawText (t, card.getX() + 24, card.getY() + 8, 90, 16, juce::Justification::centredLeft);
         };
-        head (impl->mainCard, "FX"); head (impl->outCard, "OUTPUT");
+        head (impl->mainCard, impl->osc < 0 ? juce::String ("FX") : "OSC " + juce::String (impl->osc + 1) + " FX"); if (impl->osc < 0) head (impl->outCard, "OUTPUT");
         g.setColour (dim); g.setFont (font (8.5f));
         g.drawText ("Signal runs top to bottom", impl->mainCard.withTrimmedLeft (320).withHeight (30).reduced (10, 0), juce::Justification::centredRight, true);
         // panel behind the list and the centre area

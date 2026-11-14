@@ -37,6 +37,14 @@ namespace njo
             if (num >= R.id && num < R.id + 100) { r.valid = true; r.rk = rk; r.sl = (num - R.id) / 10; r.off = (num - R.id) % 10; r.g = rk * 10 + r.sl; return r; }
             if (num >= R.ord && num < R.ord + 10) { r.valid = true; r.rk = rk; r.ord = num - R.ord; return r; }
         }
+        if (num >= kOscFxBase && num < kOscFxBase + kOscFxStride * 6)   // oscillator racks (sync / envelope ids k >= 10 are not located, like the main ones)
+        {
+            const int o = (num - kOscFxBase) / kOscFxStride, q = (num - kOscFxBase) % kOscFxStride;
+            r.rk = 3 + o;
+            if (q >= 256) { r.valid = true; r.ord = q - 256; return r; }
+            if (q % 16 >= 10) return FxLoc();
+            r.valid = true; r.sl = q / 16; r.off = q % 16; r.g = kFxMain + o * 16 + r.sl; return r;
+        }
         if (num >= 3200 && num < 3380) { int g = 30 + (num - 3200) / 10; r.valid = true; r.g = g; r.rk = fxRkOf (g); r.sl = fxSlOf (g); r.off = (num - 3200) % 10; return r; }
         if (num >= 3380 && num < 3398) { r.valid = true; r.rk = (num - 3380) / 6; r.ord = 10 + (num - 3380) % 6; return r; }
         return r;
@@ -122,21 +130,6 @@ namespace njo
 
     juce::String formatValue (const Spec& s, double v, const int* fxSlotTypes)
     {
-        if ((s.num >= kOscFxBase && s.num < kOscFxBase + 192) || (s.num >= kOscFxOn && s.num < kOscFxOn + 48))   // oscillator FX racks
-        {
-            auto& types = fxTypes();
-            const bool modeOn = s.num >= kOscFxOn;
-            const int sl = modeOn ? (s.num - kOscFxOn) / 2 : (s.num - kOscFxBase) / 8;
-            const int k  = modeOn ? 8 + (s.num - kOscFxOn) % 2 : (s.num - kOscFxBase) % 8;
-            auto& t = types[(size_t) juce::jlimit (0, (int) types.size() - 1, fxSlotTypes ? fxSlotTypes[kFxTotal + sl] : 0)];
-            if (k == 0) return types[(size_t) juce::jlimit (0, (int) types.size() - 1, juce::roundToInt (v))].name;
-            if (k == 1) return juce::String (juce::roundToInt (v * 100)) + "%";
-            if (k == 8) { if (t.modes.isEmpty()) return "-"; return t.modes[juce::jlimit (0, t.modes.size() - 1, juce::roundToInt (v))]; }
-            if (k == 9) return v > 0.5 ? "On" : "Off";
-            const int pi = k - 2;
-            if (pi < (int) t.params.size()) return fxFormatParam (t.params[(size_t) pi].fmt, v);
-            return "-";
-        }
         auto loc = fxLocate (s.num);
         if (loc.valid)
         {

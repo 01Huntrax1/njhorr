@@ -100,13 +100,19 @@ namespace njo
             p->onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
             addChildComponent (p);
         }
-        for (int m = 1; m <= 4; ++m)
+        for (int o = 0; o < OSC_N; ++o)
+        {
+            auto* p = fxPages.add (new FxPage (ctx, memory, o));
+            p->onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
+            p->onSelectOsc = [this] (int k) { setSynthPage (OscPage::fxPageOf (ctx, k)); };
+            addChildComponent (p);
+        }
+        for (int m = 1; m <= 3; ++m)
             for (int o = 0; o < OSC_N; ++o)
             {
-                auto* p = (m == 1 ? fltPages : (m == 2 ? distPages : (m == 3 ? resoPages : fxPages))).add (new OscPage (ctx, memory, o, m));
+                auto* p = (m == 1 ? fltPages : (m == 2 ? distPages : resoPages)).add (new OscPage (ctx, memory, o, m));
                 p->onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
                 p->onSelectOsc = [this] (int k) { setSynthPage (OscPage::fxPageOf (ctx, k)); };
-                p->onFxRoute = [this] (int k) { setSynthPage (OscPage::fxPageOf (ctx, k)); };
                 addChildComponent (p);
             }
         fm.setOnOpenOsc ([this] (int o) { setSynthPage (o); });

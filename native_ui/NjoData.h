@@ -71,18 +71,21 @@ namespace njo
     const std::vector<juce::String>& fxCategories();
     int  fxCategoryOf (int type);          // type = 1.. -> category index
     bool fxVoiceType (int type);           // memory-light types of the oscillator FX racks
-    constexpr int kOscFxBase = 6300, kOscFxOn = 7600;   // OSC rack: id 6300 + 32 * osc + 8 * slot + k (k 0 type, 1 mix, 2..7 P1..P6), Mode 7600 + 2 * (osc * 4 + slot), On + 1
     const std::vector<std::pair<juce::String, juce::String>>& fxGatePatterns();   // trance gate patterns: name, 16 steps (# open, + 45 %, . closed)
     // FX-SLOTS: 16 slots per rack. Global slot g: 0..29 = slots 1-10 (rack * 10 + k), 30..47 = slots 11-16 (30 + rack * 6 + j); the same numbering as the DSP
-    constexpr int kFxPer = 16, kFxTotal = 48;
-    inline int fxG (int rk, int sl)  { return sl < 10 ? rk * 10 + sl : 30 + rk * 6 + (sl - 10); }
-    inline int fxRkOf (int g)        { return g < 30 ? g / 10 : (g - 30) / 6; }
-    inline int fxSlOf (int g)        { return g < 30 ? g % 10 : 10 + (g - 30) % 6; }       // slot number inside its rack, 0..15
-    inline int fxSlotId (int g)      { return g < 30 ? fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10 : 3200 + (g - 30) * 10; }   // id of the Type parameter (+1 On, +2 Mix, +3 Mode, +4..+9 P1..P6)
-    inline int fxOrdId (int rk, int k) { return k < 10 ? fxRacks()[(size_t) rk].ord + k : 3380 + rk * 6 + (k - 10); }   // processing order parameter of position k
-    inline int fxEnvSusId (int g) { return g < 30 ? 3000 + g : 3000 + (g - 30); }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
-    inline int fxEnvRelId (int g) { return g < 30 ? 3030 + g : 3030 + (g - 30); }   // legacy, never shown
-    inline int fxSyncId (int g) { return g < 30 ? 940 + g : 3400 + (g - 30); }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
+    // The oscillator FX racks use the same numbering as extra racks 3..8 (rack 3 + osc, 16 slots): global slots 48 + osc * 16 + slot, ids 8000 + 272 * osc + 16 * slot + k
+    // (k 0..9 like the main slots, 10 sync, 11 env sustain, 12 env release), order 8000 + 272 * osc + 256 + pos
+    constexpr int kFxPer = 16, kFxMain = 48, kFxTotal = 48 + 6 * 16, kFxRacks = 9;
+    constexpr int kOscFxBase = 8000, kOscFxStride = 272;
+    inline bool fxIsOsc (int g)      { return g >= kFxMain; }
+    inline int fxG (int rk, int sl)  { return rk >= 3 ? kFxMain + (rk - 3) * 16 + sl : (sl < 10 ? rk * 10 + sl : 30 + rk * 6 + (sl - 10)); }
+    inline int fxRkOf (int g)        { return g >= kFxMain ? 3 + (g - kFxMain) / 16 : (g < 30 ? g / 10 : (g - 30) / 6); }
+    inline int fxSlOf (int g)        { return g >= kFxMain ? (g - kFxMain) % 16 : (g < 30 ? g % 10 : 10 + (g - 30) % 6); }       // slot number inside its rack, 0..15
+    inline int fxSlotId (int g)      { return g >= kFxMain ? kOscFxBase + kOscFxStride * ((g - kFxMain) / 16) + 16 * ((g - kFxMain) % 16) : g < 30 ? fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10 : 3200 + (g - 30) * 10; }   // id of the Type parameter (+1 On, +2 Mix, +3 Mode, +4..+9 P1..P6)
+    inline int fxOrdId (int rk, int k) { return rk >= 3 ? kOscFxBase + kOscFxStride * (rk - 3) + 256 + k : k < 10 ? fxRacks()[(size_t) rk].ord + k : 3380 + rk * 6 + (k - 10); }   // processing order parameter of position k
+    inline int fxEnvSusId (int g) { return g >= kFxMain ? fxSlotId (g) + 11 : g < 30 ? 3000 + g : 3000 + (g - 30); }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
+    inline int fxEnvRelId (int g) { return g >= kFxMain ? fxSlotId (g) + 12 : g < 30 ? 3030 + g : 3030 + (g - 30); }   // legacy, never shown
+    inline int fxSyncId (int g) { return g >= kFxMain ? fxSlotId (g) + 10 : g < 30 ? 940 + g : 3400 + (g - 30); }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)
     struct FxLoc { int rk = 0, sl = 0, off = 0, g = 0, ord = -1; bool valid = false; };   // sl 0..15, g global slot 0..47; ord >= 0: position of a processing order parameter
     FxLoc fxLocate (int num);
     juce::String fxFormatParam (const FxParam::Fmt&, double n);

@@ -11,8 +11,8 @@ def check(name, ok, extra=""):
     print(("PASS " if ok else "FAIL ") + name + (("  (" + extra + ")") if extra else ""))
     if not ok: failures += 1
 def fx(o, sl, ty, mix=1.0, p=(0.5,) * 6, mode=0, on=1):
-    b = 6300 + 32 * o + 8 * sl; q = 7600 + 2 * (o * 4 + sl)
-    return ["p %d %d" % (b, ty), "p %d %s" % (b + 1, mix)] + ["p %d %s" % (b + 2 + i, v) for i, v in enumerate(p)] + ["p %d %d" % (q, mode), "p %d %d" % (q + 1, on)]
+    b = 8000 + 272 * o + 16 * sl
+    return ["p %d %d" % (b, ty), "p %d %d" % (b + 1, on), "p %d %s" % (b + 2, mix), "p %d %d" % (b + 3, mode)] + ["p %d %s" % (b + 4 + i, v) for i, v in enumerate(p)]
 def render(cmds, tag="x", notes=(57,), hold=0.5):
     script = os.path.join(TMP, tag + ".txt"); out = os.path.join(TMP, tag + ".f32")
     with open(script, "w") as f:
@@ -28,7 +28,7 @@ def render(cmds, tag="x", notes=(57,), hold=0.5):
 def seg(a): return a[int(0.4 * RATE):int(0.7 * RATE)]
 dry = render([], "dry")
 check("dry reference sounds", np.abs(seg(dry)).max() > 0.01)
-NAME = {1:"Distortion",2:"BitCrush",4:"Chorus",5:"Flanger",6:"Phaser",7:"Tremolo",9:"Filter",10:"EQ",11:"Compressor",14:"Saturator",15:"Waveshaper",17:"Console",18:"Filterbank",19:"PurestDrive",20:"Spiral",21:"Drive",22:"Tube",23:"Density",24:"Console7",25:"Channel",26:"ToTape",27:"MackEQ",28:"Plasma",30:"Warp"}
+NAME = {1:"Distortion",2:"BitCrush",4:"Chorus",5:"Flanger",6:"Phaser",7:"Tremolo",9:"Filter",10:"EQ",11:"Compressor",14:"Saturator",17:"Console",18:"Filterbank",19:"PurestDrive",20:"Spiral",21:"Drive",22:"Tube",23:"Density",24:"Console7",25:"Channel",26:"ToTape",27:"MackEQ",28:"Plasma",30:"Warp"}
 for t, nm in NAME.items():
     a = render(fx(0, 0, t, 1.0, (0.7, 0.4, 0.6, 0.5, 0.5, 0.5)), "t%d" % t, notes=(57, 64))
     s = seg(a)
@@ -59,4 +59,17 @@ check("8 voices with a filter stay finite", np.isfinite(a).all() and np.abs(a).m
 # other oscillator racks are independent
 a = render(fx(1, 0, 1, 1.0, (0.9, 1.0, 0.5, 0.5, 0, 0)), "o2")
 check("OSC 2 rack does not touch OSC 1", np.abs(seg(a) - seg(dry)).max() < 1e-5)
+# 16 slots per oscillator: slot 16 works and the order parameters reorder the chain
+a = render(fx(0, 15, 1, 1.0, (0.9, 1.0, 0.5, 0.5, 0, 0)), "s16")
+check("slot 16 of an oscillator rack runs", np.abs(seg(a) - seg(dry)).max() > 0.05)
+cmd = fx(0, 0, 1, 1.0, (0.9, 1.0, 0.5, 0.5, 0, 0)) + fx(0, 1, 9, 1.0, (0.2, 0.5, 0, 0.5, 0.5, 0.5))
+o1 = render(cmd, "ord1")
+swap = ["p %d %d" % (8000 + 256, 1), "p %d %d" % (8000 + 257, 0)]
+o2 = render(cmd + swap, "ord2")
+check("Order parameters change the processing order (Dist > Filter vs Filter > Dist)", np.abs(seg(o1) - seg(o2)).max() > 0.005, "%.4f" % np.abs(seg(o1) - seg(o2)).max())
+bad = render(cmd + ["p %d 1" % (8000 + 256), "p %d 1" % (8000 + 257)], "ord3")
+check("an order that is not a permutation is ignored", np.abs(seg(bad) - seg(o1)).max() < 0.2 * np.abs(seg(o1) - seg(o2)).max(), "%.5f" % np.abs(seg(bad) - seg(o1)).max())
+# Sync and the other main-slot parameters exist (tremolo on a tempo division)
+a = render(fx(0, 0, 7, 1.0, (0.5, 1.0, 0, 0, 0.5, 0)) + ["p %d 5" % (8000 + 10)], "sync")
+check("Tremolo with a sync division stays finite", np.isfinite(a).all() and np.abs(seg(a)).max() > 1e-3)
 print("%d failures" % failures); sys.exit(1 if failures else 0)

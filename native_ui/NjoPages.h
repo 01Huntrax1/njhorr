@@ -17,8 +17,6 @@ namespace njo
         void resized() override;
         std::function<void (ParamWidget&)> onModDropped;
         std::function<void (int)> onSelectOsc;     // chip A-F of the filter / distortion page
-        std::function<void (int)> onFxRoute;       // the selected slot of this oscillator's FX rack changed: open the page of its type
-        static int& fxSel (int osc);               // selected rack slot (0..3) per oscillator
         static int fxPageOf (Ctx&, int osc);            // synth page of the selected slot: 9+o filter, 15+o dist, 21+o reso, 27+o the other types
         struct Impl; std::unique_ptr<Impl> impl;
     };
@@ -51,11 +49,12 @@ namespace njo
     class FxPage : public juce::Component
     {
     public:
-        FxPage (Ctx&, SoundMemory&);
+        FxPage (Ctx&, SoundMemory&, int osc = -1);   // osc >= 0: the FX rack of that oscillator (16 slots, memory-light effects)
         ~FxPage() override;
         void paint (juce::Graphics&) override;
         void resized() override;
         std::function<void (ParamWidget&)> onModDropped;
+        std::function<void (int)> onSelectOsc;   // oscillator chips A-F of the rack pages
         struct Impl; std::unique_ptr<Impl> impl;
     };
 

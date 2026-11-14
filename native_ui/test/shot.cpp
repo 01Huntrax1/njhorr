@@ -61,8 +61,7 @@ int main (int argc, char** argv)
         cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f);
         ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("rson")), 1.0f); cx.set (njo::oscId (0, njo::oscKey ("rsmod")), 6.0f); cx.set (njo::oscId (0, njo::oscKey ("rsdec")), 2.0f); cx.set (njo::oscId (0, njo::oscKey ("dpos")), 3.0f); ed.setSynthPage (21); pump(); save (ed, dir.getChildFile ("reso.png"), scale);
-        cx.set (6300, 1.0f); cx.set (6300 + 8, 6.0f); cx.set (6300 + 8 + 2, 0.4f); cx.set (7600 + 2, 2.0f); cx.set (6300 + 16, 24.0f); njo::OscPage::fxSel (0) = 1; ed.setSynthPage (njo::OscPage::fxPageOf (cx, 0)); pump(); save (ed, dir.getChildFile ("oscfx_rack.png"), scale);
-        njo::OscPage::fxSel (0) = 0;
+        for (int sl = 0; sl < 3; ++sl) { cx.set (8000 + 16 * sl, (float) (sl == 0 ? 1 : (sl == 1 ? 6 : 24))); cx.set (8000 + 16 * sl + 1, 1.0f); cx.set (8000 + 16 * sl + 2, 0.7f); } cx.set (8000 + 16 + 4, 0.4f); cx.set (8000 + 16 + 3, 2.0f); for (int k = 0; k < 3; ++k) cx.set (8256 + k, (float) ((k + 1) % 3)); ed.setSynthPage (njo::OscPage::fxPageOf (cx, 0)); pump(); save (ed, dir.getChildFile ("oscfx_rack.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 7.0f); ed.setSynthPage (15); pump(); save (ed, dir.getChildFile ("dist_wd.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("dtype")), 0.0f);
         // Physical source

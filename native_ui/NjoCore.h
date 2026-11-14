@@ -64,7 +64,7 @@ namespace njo
 
     private:
         void paramChanged (int num, float v) override;
-        int fxTypes[kFxTotal + 24] = {};   // + the 24 slots of the oscillator racks
+        int fxTypes[kFxTotal] = {};
         juce::ListenerList<Listener> listeners;
     };
 }
