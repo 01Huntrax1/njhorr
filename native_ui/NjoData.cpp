@@ -125,7 +125,7 @@ namespace njo
     }
     bool fxVoiceType (int t)
     {
-        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30;
+        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30 || t == 32;
     }
 
     juce::String formatValue (const Spec& s, double v, const int* fxSlotTypes)

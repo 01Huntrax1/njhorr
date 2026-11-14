@@ -25,16 +25,57 @@ namespace njo::wg
         if (std::string_view (name) == "wktrack") return 15;
         return 0;
     }
-    // labels of the parameters 1..15 for every model ("" = the model does not use the parameter)
-    inline const char* label (int model, int j) 
+    // labels of the parameters 1..15 for every model ("" = the model does not use the parameter); models 5..16 are the medieval instruments (WG-MEDIEVAL)
+    inline const char* label (int model, int j)
     {
-        static const char* const t[5][15] = {
+        static const char* const t[17][15] = {
             { "Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay" },
             { "Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay" },
             { "Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay" },
             { "Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay" },
             { "Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay" },
+            { "Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay" },
+            { "Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay" },
+            { "Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay" },
+            { "Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay" },
+            { "Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay" },
+            { "Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay" },
+            { "Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay" },
+            { "Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay" },
+            { "Decay", "Bore Tone", "Breath", "", "Air Noise", "Saturation", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay" },
+            { "Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay" },
+            { "Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay" },
+            { "Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay" }
         };
-        return j < 1 || j > 15 || model < 0 || model > 4 ? "" : t[model][j - 1];
+        return j < 1 || j > 15 || model < 0 || model > 16 ? "" : t[model][j - 1];
+    }
+    // start values of the parameters 1..15 that the model list sets when a model is picked (Karplus-Strong .. Drum keep the values the user has)
+    inline float defaultOf (int model, int j)
+    {
+        static const float t[17][15] = {
+            { 0.50f, 0.60f, 0.60f, 0.30f, 0.20f, 0.00f, 0.00f, 0.20f, 0.00f, 0.00f, 0.40f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.50f, 0.60f, 0.60f, 0.30f, 0.20f, 0.00f, 0.00f, 0.20f, 0.00f, 0.00f, 0.40f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.50f, 0.60f, 0.60f, 0.30f, 0.20f, 0.00f, 0.00f, 0.20f, 0.00f, 0.00f, 0.40f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.50f, 0.60f, 0.60f, 0.30f, 0.20f, 0.00f, 0.00f, 0.20f, 0.00f, 0.00f, 0.40f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.50f, 0.60f, 0.60f, 0.30f, 0.20f, 0.00f, 0.00f, 0.20f, 0.00f, 0.00f, 0.40f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.55f, 0.45f, 0.55f, 0.22f, 0.10f, 0.00f, 0.15f, 0.20f, 0.00f, 0.55f, 0.30f, 0.60f, 0.00f, 0.10f, 0.40f },
+            { 0.70f, 0.70f, 0.75f, 0.15f, 0.05f, 0.00f, 0.25f, 0.20f, 0.00f, 0.35f, 0.45f, 0.60f, 0.00f, 0.00f, 0.35f },
+            { 0.65f, 0.80f, 0.85f, 0.12f, 0.15f, 0.00f, 0.30f, 0.20f, 0.00f, 0.40f, 0.50f, 0.70f, 0.00f, 0.00f, 0.30f },
+            { 0.35f, 0.55f, 0.50f, 0.22f, 0.30f, 0.30f, 0.00f, 0.35f, 0.00f, 0.60f, 0.55f, 0.50f, 0.10f, 0.00f, 0.30f },
+            { 0.45f, 0.50f, 0.60f, 0.15f, 0.45f, 0.20f, 0.00f, 0.12f, 0.00f, 0.50f, 0.30f, 0.20f, 0.25f, 0.00f, 0.20f },
+            { 0.30f, 0.85f, 0.75f, 0.80f, 0.25f, 0.40f, 0.00f, 0.15f, 0.00f, 0.30f, 0.60f, 0.50f, 0.30f, 0.00f, 0.30f },
+            { 0.35f, 0.40f, 0.65f, 0.85f, 0.35f, 0.60f, 0.00f, 0.25f, 0.00f, 0.20f, 0.40f, 0.40f, 0.35f, 0.00f, 0.30f },
+            { 0.30f, 0.70f, 0.70f, 0.70f, 0.20f, 0.50f, 0.00f, 0.30f, 0.00f, 0.25f, 0.45f, 0.10f, 0.30f, 0.00f, 0.30f },
+            { 0.50f, 0.55f, 0.45f, 0.30f, 0.25f, 0.10f, 0.00f, 0.30f, 0.00f, 0.15f, 0.50f, 0.50f, 0.00f, 0.00f, 0.30f },
+            { 0.30f, 0.50f, 0.60f, 0.40f, 0.30f, 0.00f, 0.20f, 0.20f, 0.70f, 0.60f, 0.20f, 0.70f, 0.00f, 0.30f, 0.10f },
+            { 0.75f, 0.75f, 0.70f, 0.20f, 0.10f, 0.00f, 0.50f, 0.20f, 0.00f, 0.00f, 0.40f, 0.60f, 0.00f, 0.00f, 0.20f },
+            { 0.60f, 0.55f, 0.50f, 0.35f, 0.08f, 0.00f, 0.05f, 0.20f, 0.00f, 0.45f, 0.25f, 0.50f, 0.00f, 0.00f, 0.45f }
+        };
+        return j < 1 || j > 15 || model < 0 || model > 16 ? 0.0f : t[model][j - 1];
+    }
+    inline const char* modelName (int model)
+    {
+        static const char* const n[17] = { "Karplus-Strong", "Bowed String", "Clarinet", "Banded Waveguide", "Drum", "Lute", "Psaltery", "Dulcimer", "Rebec", "Hurdy-Gurdy", "Shawm", "Crumhorn", "Bagpipe", "Recorder", "Tabor", "Handbell", "Medieval Harp" };
+        return n[model < 0 ? 0 : (model > 16 ? 16 : model)];
     }
 }

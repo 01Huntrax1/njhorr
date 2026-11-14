@@ -694,8 +694,17 @@ for m, name in enumerate(L.WG_MODELS):
     errs = []
     for note in (45, 57, 69):
         f0 = 440 * 2 ** ((note - 69) / 12); x = wg(m, note=note, tag="wgp%d" % m)
-        errs.append(1200 * math.log2(peak_near(win(x, 0.3, 0.7) if m < 3 else win(x, 0.03, 0.3), f0) / f0))
+        errs.append(1200 * math.log2(peak_near(win(x, 0.3, 0.7) if m < 3 or 8 <= m <= 13 else win(x, 0.03, 0.3), f0) / f0))
     check("Waveguide %s follows the keyboard (A2, A3, A4 within 12 cents)" % name, max(abs(e) for e in errs) < 12, "%s cents" % ["%.1f" % e for e in errs])
+# medieval instruments (WG-MEDIEVAL)
+def partial(x, hz, tol=0.03):
+    f, X = spec(x); k = (f > hz * (1 - tol)) & (f < hz * (1 + tol)); return float(X[k].max())
+bp = wg(12, note=57, tag="wmb"); sh = wg(10, note=57, tag="wms")
+check("Bagpipe: the drone sounds an octave below the note", partial(win(bp, 0.3, 0.7), 110.0) > 4 * partial(win(sh, 0.3, 0.7), 110.0), "%.1f vs %.1f" % (partial(win(bp, 0.3, 0.7), 110.0), partial(win(sh, 0.3, 0.7), 110.0)))
+lu = wg(5, note=57, tag="wml"); ks = wg(0, note=57, tag="wmk")
+check("Lute: the second string of the course adds a detuned partial", rms(win(lu, 0.1, 0.5) - win(ks, 0.1, 0.5)) > 0.2 * rms(win(ks, 0.1, 0.5)))
+check("Recorder: blown pipe is audible and rings at the note", rms(win(wg(13, note=69, tag="wmr"), 0.2, 0.6)) > 0.01)
+check("Crumhorn: the buzzing reed adds high frequencies against the clarinet", hfrac(win(wg(11, tag="wmh"), 0.3, 0.7), 1500) > hfrac(win(wg(2, tag="wmb1"), 0.3, 0.7), 1500))
 bad = 0
 for m in range(5):
     for note, vel, ex in ((24, 1, [("wexc", 1.0), ("wnoise", 1.0), ("wnl", 1.0), ("wstretch", 1.0), ("wsnare", 1.0), ("wdrive", 1.0), ("wglide", 1.0)]), (108, 127, [("wexc", 0.0), ("wtone", 0.0), ("wdecay", 1.0)]), (60, 127, [("wbody", 1.0), ("wexc", 1.0), ("wdecay", 1.0)])):

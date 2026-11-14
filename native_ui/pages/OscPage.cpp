@@ -475,7 +475,7 @@ namespace njo
 
         void updateWgLabels()
         {
-            const int model = juce::jlimit (0, 4, juce::roundToInt (ctx.get (wg::wgId (o, wg::key ("wmodel")))));
+            const int model = juce::jlimit (0, 16, juce::roundToInt (ctx.get (wg::wgId (o, wg::key ("wmodel")))));
             for (auto key : wgKeys)
             {
                 const int j = wg::key (juce::String (key) == "wgpos" ? "wpos" : key);

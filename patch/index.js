@@ -659,8 +659,8 @@ const dkId = (o, key) => DK_BASE + DK_STRIDE * o + DK_K[key];
 const AD_SHAPES = ["Saw", "Square", "Triangle", "Organ", "Bell", "Vowel", "Brass", "Hollow"];
 const JP_WAVES = ["Saw", "Square", "Triangle", "Sine", "Noise", "Spectrum", "Super Saw", "Feedback Osc", "Tri Mod"];
 const JP_LABELS = [["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"], ["Pulse Width", "PWM Depth", "PWM Rate", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"], ["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"], ["", "", "", "", "", "", "", "", "", "", "", "", "Noise", "Drive", "Sub"], ["", "", "", "", "", "", "", "", "", "", "", "", "", "Drive", ""], ["", "", "", "", "", "", "", "", "", "", "Tilt", "Peak", "Noise", "Drive", "Sub"], ["", "", "", "Detune", "Mix", "Width", "", "", "", "", "", "", "Noise", "Drive", "Sub"], ["", "", "", "", "", "", "Feedback", "Color", "", "", "", "", "Noise", "Drive", "Sub"], ["", "", "", "", "", "", "", "", "Mod Depth", "Mod Ratio", "", "", "Noise", "Drive", "Sub"]];
-const WG_MODELS = ["Karplus-Strong", "Bowed String", "Clarinet", "Banded Waveguide", "Drum"];
-const WG_LABELS = [["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"], ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"], ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay"], ["Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay"]];
+const WG_MODELS = ["Karplus-Strong", "Bowed String", "Clarinet", "Banded Waveguide", "Drum", "Lute", "Psaltery", "Dulcimer", "Rebec", "Hurdy-Gurdy", "Shawm", "Crumhorn", "Bagpipe", "Recorder", "Tabor", "Handbell", "Medieval Harp"];
+const WG_LABELS = [["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"], ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"], ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay"], ["Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay"], ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"], ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"], ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"], ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"], ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"], ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Decay", "Bore Tone", "Breath", "", "Air Noise", "Saturation", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"], ["Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay"], ["Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay"], ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"]];
 const PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"];
 const PHY_RAT = [[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 2.7778, 5.4444, 9.0, 13.4444, 18.7778, 25.0, 32.1111, 40.1111, 49.0, 58.7778, 69.4444, 81.0, 93.4444, 106.7778, 121.0], [1.0, 1.5811, 2.0, 2.2361, 2.5495, 2.9155, 3.0, 3.1623, 3.5355, 3.6056, 3.8079, 4.0, 4.1231, 4.3012, 4.4721, 4.5277], [1.0, 1.5934, 2.1356, 2.2955, 2.6531, 2.9173, 3.1555, 3.5002, 3.5985, 3.6475, 4.059, 4.1318, 4.2305, 4.6011, 4.6101, 4.8319], [1.0, 2.1152, 2.8848, 3.974, 4.0, 5.8587, 6.026, 6.5762, 7.1413, 8.461, 9.0, 9.9219, 10.4238, 11.539, 11.6022, 11.8067], [1.0, 1.2967, 1.5678, 1.6477, 1.8266, 1.9587, 2.0777, 2.2501, 2.2993, 2.3237, 2.5295, 2.5659, 2.6152, 2.8005, 2.8051, 2.916], [1, 4, 10, 17.82, 26.62, 37.18, 49.5, 63.58, 79.42, 97.02, 116.38, 137.5, 160.38, 185.02, 211.42, 239.58], [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0], [1.0, 3.0, 5.0, 7.0, 9.0, 11.0, 13.0, 15.0, 17.0, 19.0, 21.0, 23.0, 25.0, 27.0, 29.0, 31.0]];
 const PHY_AEXP = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.35, 1.0, 1.0];
@@ -2325,7 +2325,7 @@ const OSC_SPEC_ROWS = [
     [2193, "OSC 6 Terrain Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2194, "OSC 6 Terrain Bit Depth", 2, 16, 16, "", "sld", null, 1, "Bits", null],
     [2195, "OSC 6 Terrain Velocity to Radius", -1, 1, 0.0, "", "sld", null, 1, "Vel > Radius", null],
-    [2200, "OSC 1 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2200, "OSC 1 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2201, "OSC 1 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2202, "OSC 1 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2203, "OSC 1 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -2341,7 +2341,7 @@ const OSC_SPEC_ROWS = [
     [2213, "OSC 1 Waveguide Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2214, "OSC 1 Waveguide Tension", 0, 1, 0.0, "", "sld", null, 1, "Tension", null],
     [2215, "OSC 1 Waveguide Key Decay", 0, 1, 0.3, "", "sld", null, 1, "Key Decay", null],
-    [2216, "OSC 2 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2216, "OSC 2 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2217, "OSC 2 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2218, "OSC 2 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2219, "OSC 2 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -2357,7 +2357,7 @@ const OSC_SPEC_ROWS = [
     [2229, "OSC 2 Waveguide Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2230, "OSC 2 Waveguide Tension", 0, 1, 0.0, "", "sld", null, 1, "Tension", null],
     [2231, "OSC 2 Waveguide Key Decay", 0, 1, 0.3, "", "sld", null, 1, "Key Decay", null],
-    [2232, "OSC 3 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2232, "OSC 3 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2233, "OSC 3 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2234, "OSC 3 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2235, "OSC 3 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -2373,7 +2373,7 @@ const OSC_SPEC_ROWS = [
     [2245, "OSC 3 Waveguide Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2246, "OSC 3 Waveguide Tension", 0, 1, 0.0, "", "sld", null, 1, "Tension", null],
     [2247, "OSC 3 Waveguide Key Decay", 0, 1, 0.3, "", "sld", null, 1, "Key Decay", null],
-    [2248, "OSC 4 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2248, "OSC 4 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2249, "OSC 4 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2250, "OSC 4 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2251, "OSC 4 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -2389,7 +2389,7 @@ const OSC_SPEC_ROWS = [
     [2261, "OSC 4 Waveguide Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2262, "OSC 4 Waveguide Tension", 0, 1, 0.0, "", "sld", null, 1, "Tension", null],
     [2263, "OSC 4 Waveguide Key Decay", 0, 1, 0.3, "", "sld", null, 1, "Key Decay", null],
-    [2264, "OSC 5 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2264, "OSC 5 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2265, "OSC 5 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2266, "OSC 5 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2267, "OSC 5 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -2405,7 +2405,7 @@ const OSC_SPEC_ROWS = [
     [2277, "OSC 5 Waveguide Drive", 0, 1, 0.0, "", "sld", null, 1, "Drive", null],
     [2278, "OSC 5 Waveguide Tension", 0, 1, 0.0, "", "sld", null, 1, "Tension", null],
     [2279, "OSC 5 Waveguide Key Decay", 0, 1, 0.3, "", "sld", null, 1, "Key Decay", null],
-    [2280, "OSC 6 Waveguide Model", 0, 4, 0, "", "sel", WG_MODELS, 1, "Model", null],
+    [2280, "OSC 6 Waveguide Model", 0, 16, 0, "", "sel", WG_MODELS, 1, "Model", null],
     [2281, "OSC 6 Waveguide Decay", 0, 1, 0.5, "", "sld", null, 1, "Decay", null],
     [2282, "OSC 6 Waveguide Tone", 0, 1, 0.6, "", "sld", null, 1, "Tone", null],
     [2283, "OSC 6 Waveguide Excite", 0, 1, 0.6, "", "sld", null, 1, "Excite", null],
@@ -3118,6 +3118,9 @@ const FX_TYPES = [
     // FX-CLOUDSEED: port of the CloudSeed reverb core (Ghost Note Audio, MIT licence), FX type 31
     { n: "CloudSeed", mix: 0.3, modes: ["Dark Plate", "Hall", "Room", "Chamber", "Cathedral", "Cloud", "Ambience", "Echo Space"],
       p: [["Decay", fxMs(200, 30000), 0.45], ["Size", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 80, 0, "ms"), 0.1], ["Mod", fxPct, 0.3], ["Early", fxPct, 0.3]] },
+    // FX-WAVEGUIDE: the input excites resonating delay loops (FX type 32)
+    { n: "Waveguide", mix: 0.5, modes: ["String", "Tube", "Dual Strings", "Fifth Drone", "Octave Drone"],
+      p: [["Pitch", fxHz(30, 2000), 0.45], ["Decay", fxMs(50, 8000), 0.5], ["Damp", fxHz(500, 16000), 0.7], ["Detune", fxLin(0, 50, 0, "ct"), 0.1], ["Excite", fxPct, 0.5], ["Drive", fxPct, 0]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
@@ -3331,7 +3334,7 @@ const SPECS = (() => {
     for (let o = 0; o < 6; o++) {
         for (let sl = 0; sl < 16; sl++) {
             const b = 8000 + 272 * o + 16 * sl, n = "OSC " + (o + 1) + " FX " + (sl + 1);
-            L.push([b,     n + " Type", 0, 31, 0, "", "sel", FX_TYPES.map(t => t.n).slice(0, 32), 1, "Type"]);
+            L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
             L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);

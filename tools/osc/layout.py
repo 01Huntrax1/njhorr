@@ -213,9 +213,9 @@ def terdst(o, j): return TER_DST_BASE + TER_STRIDE * o + j
 # Waveguide source (tools/osc/build_wg.py): parameter j (0..15) of slot o has the id WG_BASE + 16 * o + j and the mod destination 636 + 16 * o + j
 WG_BASE = 2200
 WG_STRIDE = 16
-WG_MODELS = ["Karplus-Strong", "Bowed String", "Clarinet", "Banded Waveguide", "Drum"]
+WG_MODELS = ['Karplus-Strong', 'Bowed String', 'Clarinet', 'Banded Waveguide', 'Drum', 'Lute', 'Psaltery', 'Dulcimer', 'Rebec', 'Hurdy-Gurdy', 'Shawm', 'Crumhorn', 'Bagpipe', 'Recorder', 'Tabor', 'Handbell', 'Medieval Harp']
 WG = [
- (0,  "wmodel",   "Waveguide Model",       "Model",       0, 4, 0, "", "sel", WG_MODELS),
+ (0,  "wmodel",   "Waveguide Model",       "Model",       0, 16, 0, "", "sel", WG_MODELS),
  (1,  "wdecay",   "Waveguide Decay",       "Decay",       0, 1, 0.5, "", "sld", None),    # 0.05 .. 20 s (exponential)
  (2,  "wtone",    "Waveguide Tone",        "Tone",        0, 1, 0.6, "", "sld", None),    # brightness of the loop damping
  (3,  "wexc",     "Waveguide Excite",      "Excite",      0, 1, 0.6, "", "sld", None),    # pluck / mallet hardness, bow pressure, breath pressure
@@ -234,11 +234,23 @@ WG = [
 ]
 # labels of parameters 1..15 per model ("" = not used by the model)
 WG_LABELS = [
- ["Decay", "Tone", "Hardness", "Pluck Pos", "Pluck Noise", "Saturation", "Stiffness", "", "", "Body", "Body Tune", "Vel > Excite", "Drive", "Tension", "Key Decay"],
- ["Loss", "Bridge Tone", "Bow Pressure", "Bow Pos", "Bow Noise", "Bow Offset", "", "Bow Attack", "", "Body", "Body Tune", "Vel > Bow", "Drive", "", "Key Decay"],
- ["Loss", "Bore Tone", "Breath", "Reed Stiff", "Breath Noise", "Reed Offset", "", "Breath Attack", "", "Body", "Body Tune", "Vel > Breath", "Drive", "", "Key Decay"],
- ["Decay", "Tone", "Hardness", "Strike Pos", "Strike Noise", "", "Mode Ratios", "", "", "Body", "Body Tune", "Vel > Strike", "Drive", "", "Key Decay"],
- ["Decay", "Tone", "Mallet", "Strike Pos", "Stick Noise", "", "Stiffness", "", "Snare", "Shell", "Shell Tune", "Vel > Strike", "Drive", "Tension", "Key Decay"],
+ ['Decay', 'Tone', 'Hardness', 'Pluck Pos', 'Pluck Noise', 'Saturation', 'Stiffness', '', '', 'Body', 'Body Tune', 'Vel > Excite', 'Drive', 'Tension', 'Key Decay'],
+ ['Loss', 'Bridge Tone', 'Bow Pressure', 'Bow Pos', 'Bow Noise', 'Bow Offset', '', 'Bow Attack', '', 'Body', 'Body Tune', 'Vel > Bow', 'Drive', '', 'Key Decay'],
+ ['Loss', 'Bore Tone', 'Breath', 'Reed Stiff', 'Breath Noise', 'Reed Offset', '', 'Breath Attack', '', 'Body', 'Body Tune', 'Vel > Breath', 'Drive', '', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Strike Pos', 'Strike Noise', '', 'Mode Ratios', '', '', 'Body', 'Body Tune', 'Vel > Strike', 'Drive', '', 'Key Decay'],
+ ['Decay', 'Tone', 'Mallet', 'Strike Pos', 'Stick Noise', '', 'Stiffness', '', 'Snare', 'Shell', 'Shell Tune', 'Vel > Strike', 'Drive', 'Tension', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Pluck Pos', 'Pluck Noise', 'Saturation', 'Stiffness', '', '', 'Body', 'Body Tune', 'Vel > Excite', 'Drive', 'Tension', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Pluck Pos', 'Pluck Noise', 'Saturation', 'Stiffness', '', '', 'Body', 'Body Tune', 'Vel > Excite', 'Drive', 'Tension', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Pluck Pos', 'Pluck Noise', 'Saturation', 'Stiffness', '', '', 'Body', 'Body Tune', 'Vel > Excite', 'Drive', 'Tension', 'Key Decay'],
+ ['Loss', 'Bridge Tone', 'Bow Pressure', 'Bow Pos', 'Bow Noise', 'Bow Offset', '', 'Bow Attack', '', 'Body', 'Body Tune', 'Vel > Bow', 'Drive', '', 'Key Decay'],
+ ['Loss', 'Bridge Tone', 'Bow Pressure', 'Bow Pos', 'Bow Noise', 'Bow Offset', '', 'Bow Attack', '', 'Body', 'Body Tune', 'Vel > Bow', 'Drive', '', 'Key Decay'],
+ ['Loss', 'Bore Tone', 'Breath', 'Reed Stiff', 'Breath Noise', 'Reed Offset', '', 'Breath Attack', '', 'Body', 'Body Tune', 'Vel > Breath', 'Drive', '', 'Key Decay'],
+ ['Loss', 'Bore Tone', 'Breath', 'Reed Stiff', 'Breath Noise', 'Reed Offset', '', 'Breath Attack', '', 'Body', 'Body Tune', 'Vel > Breath', 'Drive', '', 'Key Decay'],
+ ['Loss', 'Bore Tone', 'Breath', 'Reed Stiff', 'Breath Noise', 'Reed Offset', '', 'Breath Attack', '', 'Body', 'Body Tune', 'Vel > Breath', 'Drive', '', 'Key Decay'],
+ ['Decay', 'Bore Tone', 'Breath', '', 'Air Noise', 'Saturation', '', 'Breath Attack', '', 'Body', 'Body Tune', 'Vel > Breath', 'Drive', '', 'Key Decay'],
+ ['Decay', 'Tone', 'Mallet', 'Strike Pos', 'Stick Noise', '', 'Stiffness', '', 'Snare', 'Shell', 'Shell Tune', 'Vel > Strike', 'Drive', 'Tension', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Strike Pos', 'Strike Noise', '', 'Mode Ratios', '', '', 'Body', 'Body Tune', 'Vel > Strike', 'Drive', '', 'Key Decay'],
+ ['Decay', 'Tone', 'Hardness', 'Pluck Pos', 'Pluck Noise', 'Saturation', 'Stiffness', '', '', 'Body', 'Body Tune', 'Vel > Excite', 'Drive', 'Tension', 'Key Decay'],
 ]
 def wg_id(o, j): return WG_BASE + WG_STRIDE * o + j
 WG_DST_BASE = TER_DST_BASE + TER_STRIDE * OSC_COUNT   # 636
