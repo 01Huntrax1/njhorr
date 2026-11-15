@@ -12,7 +12,7 @@ FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "H
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"]
 DIST_TYPES = ["Off", "Soft", "Tube", "Hard", "Fold", "Sine", "Crunch", "Wavedistortion"]
-SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral", "SoundFont"]
+SRC_TYPES = ["Wavetable", "Sampler", "Wave Terrain", "Physical", "Alpha Juno", "Kick", "Waveguide", "JP-8080", "Granular", "Additive", "Modal Drum", "Spectral", "SoundFont", "Bagpipe"]
 TERRAINS = ["Sine Product", "Ripples", "Saddle", "Chebyshev", "Checker", "Spiral", "Diamond", "Interference", "Lattice", "Bumps", "Fractal", "Twist"]
 WF_LAWS = ["Linear", "Bipolar", "dB"]
 PHY_MODELS = ["String", "Beam", "Squared", "Membrane", "Plate", "Drumhead", "Marimba", "Open Tube", "Closed Tube"]
@@ -22,7 +22,7 @@ OUTS = ["Main", "Bus 1", "Bus 2"]
 # k, key, label, short, min, max, init, unit, kind(sld/btn/sel/stp), step
 # kind: sld = continuous, stp = integer stepper, btn = buttons, sel = dropdown
 PARAMS = [
- (0,  "type",   "Source",        "Source",    0, 12, 0, "", "sel", SRC_TYPES),
+ (0,  "type",   "Source",        "Source",    0, 13, 0, "", "sel", SRC_TYPES),
  (1,  "level",  "Level",         "Level",     0, 1, 0.0, "", "sld", None),
  (2,  "pan",    "Pan",           "Pan",      -1, 1, 0, "", "sld", None),
  (3,  "out",    "Output",        "Output",    0, 2, 0, "", "btn", OUTS),
@@ -408,4 +408,32 @@ SF = [
 ]
 def sf_id(o, j): return SF_BASE + SF_STRIDE * o + j
 def sfdst(o, j): return SF_DST_BASE + SF_STRIDE * o + j
-N_DST_TOTAL = SF_DST_BASE + SF_STRIDE * OSC_COUNT   # 1308
+BP_DST_BASE = 1488   # after the TZFM / FM / mixer destinations (1308..1487, see MOD_DST in patch/index.js)
+# Bagpipe source (tools/osc/build_bp.py, own implementation after the design described in the manual of Quilcom SIM-BP; no code of it): ids BP_BASE + 16 * o + j, mod destination 1488 + 16 * o + j.
+BP_BASE = 3500
+BP_STRIDE = 16
+BP_SCALES = ["Equal", "Just", "Highland"]
+BP_REEDS = ["Narrow", "Wide", "Saw Spike", "Sharp Spike", "Half Sine", "Triangle", "Double Pulse", "Buzzy", "Rounded"]
+BP_CHORDS = ["Off", "Octaves", "Oct + Fifth", "Fifth", "Minor"]
+BP_KEYS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+BP = [
+ (0,  "bpscale",  "Bagpipe Scale",         "Scale",       0, 2, 2, "", "sel", BP_SCALES),   # tuning of the notes against the drone key
+ (1,  "bpreed",   "Bagpipe Reed",          "Reed",        0, 8, 3, "", "sel", BP_REEDS),    # shape of the reed pulse
+ (2,  "bpdouble", "Bagpipe Reed Type",     "Reed Type", 0, 1, 0.0, "", "sld", None),    # output from the tap (single reed) ... from the end (double reed)
+ (3,  "bpconic",  "Bagpipe Bore Shape",    "Bore Shape", 0, 1, 0.0, "", "sld", None), # all harmonics ... odd harmonics only
+ (4,  "bpcoup",   "Bagpipe Coupling",      "Coupling",    0, 1, 0.22, "", "sld", None),    # tap position of the reed in the waveguide
+ (5,  "bpbore",   "Bagpipe Bore",          "Bore",        0, 1, 0.5, "", "sld", None),     # feedback
+ (6,  "bpfluct",  "Bagpipe Fluctuation",   "Fluct.",      0, 1, 0.18, "", "sld", None),    # random unsteadiness of the pitch and the amplitude
+ (7,  "bpair",    "Bagpipe Air",           "Air",         0, 1, 0.05, "", "sld", None),
+ (8,  "bpcolmix", "Bagpipe Colour Mix",    "Colour Mix",  0, 1, 0.4, "", "sld", None),     # comb filter with fixed (inharmonic) peaks: the resonances of the pipe
+ (9,  "bpcolf",   "Bagpipe Colour Freq",   "Colour Freq", 0, 1, 0.3, "", "sld", None),
+ (10, "bpdrone",  "Bagpipe Drone Level",   "Drone Level", 0, 1, 0.5, "", "sld", None),
+ (11, "bpchord",  "Bagpipe Drone Chord",   "Drones",      0, 4, 1, "", "sel", BP_CHORDS),
+ (12, "bpkey",    "Bagpipe Drone Key",     "Key",         0, 11, 9, "", "sel", BP_KEYS),
+ (13, "bpstrike", "Bagpipe Strike-In",     "Strike-In",   0, 1, 0.4, "", "sld", None),     # the drones start flat and drift up to pitch
+ (14, "bpvib",    "Bagpipe Vibrato",       "Vibrato",     0, 1, 0.0, "", "sld", None),     # clipped sine flutter: from a lower pitch up to the note
+ (15, "bpblow",   "Bagpipe Blow",          "Blow",        0, 1, 0.0, "", "sld", None),     # pitch droop every 4 seconds
+]
+def bp_id(o, j): return BP_BASE + BP_STRIDE * o + j
+def bpdst(o, j): return BP_DST_BASE + BP_STRIDE * o + j
+N_DST_TOTAL = BP_DST_BASE + BP_STRIDE * OSC_COUNT   # 1584

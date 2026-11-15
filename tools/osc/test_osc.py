@@ -1144,5 +1144,44 @@ check("OSC FX all slots Off = unprocessed sound", np.abs(off[:int(0.5 * RATE)] -
 o1 = render(SAW + DST + RES, note=45, hold=0.6, tail=0.1, tag="fxo1")[:, 0]
 check("OSC Dist and Reso stages still run in front of the rack", rms(o1[:int(0.5 * RATE)] - base_fx[:int(0.5 * RATE)]) > 0.02 * rms(base_fx))
 
+
+# ---------------------------------------------------------------- Bagpipe source (type 13): ids BP_BASE + 16 * slot + j (own implementation, tools/osc/build_bp.py)
+def BPP(o, key, v):
+    for q in L.BP:
+        if q[1] == key: return (L.bp_id(o, q[0]), v)
+    return P(o, key, v)
+BPBASE = [P(0, "type", 13), P(0, "level", 0.8), FOFF(0), BPP(0, "bpchord", 0), BPP(0, "bpcolmix", 0.0)]
+def bp(extra=(), note=57, tag="bpx", hold=0.8, tail=0.2, vel=100):
+    return render(BPBASE + [BPP(0, k, v) for k, v in extra], note=note, hold=hold, tail=tail, tag=tag, vel=vel)[:, 0]
+b0 = bp(tag="bp0")
+check("Bagpipe chanter sounds and stays finite", np.isfinite(b0).all() and rms(win(b0, 0.1, 0.6)) > 0.02 and np.abs(b0).max() < 1.0, "rms %.3f peak %.2f" % (rms(win(b0, 0.1, 0.6)), np.abs(b0).max()))
+errs = []
+for note in (45, 57, 69):
+    f0 = 440 * 2 ** ((note - 69) / 12); x = bp(note=note, tag="bpp")
+    errs.append(1200 * math.log2(peak_near(win(x, 0.3, 0.7), f0) / f0))
+check("Bagpipe follows the keyboard (A2, A3, A4 within 12 cents, equal scale)", max(abs(e) for e in errs) < 12, "%s cents" % ["%.1f" % e for e in errs])
+# Highland scale: G above the key A is tuned to the flat seventh 7:4 (-31.2 cents)
+fg = 440 * 2 ** ((67 - 69) / 12)
+eg = bp([("bpscale", 0)], note=67, tag="bph0"); hg = bp([("bpscale", 2)], note=67, tag="bph2")
+d = 1200 * math.log2(peak_near(win(hg, 0.3, 0.7), fg) / peak_near(win(eg, 0.3, 0.7), fg))
+check("Bagpipe Highland scale lowers G to the flat seventh (-31 cents)", abs(d + 31.2) < 8, "%.1f cents" % d)
+dr = bp([("bpchord", 1), ("bpdrone", 1.0)], note=72, tag="bpd1", hold=1.2)
+check("Bagpipe drones sound at the key (A 110 Hz and 220 Hz)", partial(win(dr, 0.6, 1.1), 110.0) > 8 * partial(win(bp(note=72, tag="bpd0", hold=1.2), 0.6, 1.1), 110.0) and partial(win(dr, 0.6, 1.1), 220.0) > 5 * partial(win(bp(note=72, tag="bpd0b", hold=1.2), 0.6, 1.1), 220.0))
+dk = bp([("bpchord", 1), ("bpdrone", 1.0), ("bpstrike", 0.6)], note=72, tag="bpd2", hold=1.5)
+early = peak_near(win(dk, 0.1, 0.3), 110.0, 0.2); late = peak_near(win(dk, 1.0, 1.4), 110.0, 0.2)
+check("Bagpipe drones strike in flat and settle on pitch", early < late * 0.97 and abs(late / 110.0 - 1) < 0.02, "%.1f -> %.1f Hz" % (early, late))
+cv = bp([("bpconic", 0.0)], tag="bpc0"); st = bp([("bpconic", 1.0)], tag="bpc1")
+check("Bagpipe Straight bore keeps the odd harmonics (2nd harmonic drops)", partial(win(st, 0.3, 0.7), 440.0) < 0.35 * partial(win(cv, 0.3, 0.7), 440.0) and partial(win(st, 0.3, 0.7), 220.0) > 0.3 * partial(win(cv, 0.3, 0.7), 220.0))
+check("Bagpipe Colour comb changes the timbre", rms(win(bp([("bpcolmix", 1.0), ("bpcolf", 0.5)], tag="bpcol"), 0.3, 0.7) - win(b0, 0.3, 0.7)) > 0.1 * rms(win(b0, 0.3, 0.7)))
+check("Bagpipe reed shapes all sound", all(rms(win(bp([("bpreed", r)], tag="bpr%d" % r), 0.2, 0.6)) > 0.01 for r in range(9)))
+check("Bagpipe Vibrato lowers the pitch periodically (spectrum differs)", rms(win(bp([("bpvib", 1.0)], tag="bpv"), 0.3, 0.7) - win(b0, 0.3, 0.7)) > 0.1 * rms(win(b0, 0.3, 0.7)))
+bad = 0
+for note, vel, ex in ((24, 1, [(k[1], 1.0) for k in L.BP if k[8] == "sld"]), (108, 127, [("bpbore", 1.0), ("bpair", 1.0), ("bpchord", 4), ("bpdrone", 1.0)]), (60, 127, [("bpdouble", 1.0), ("bpconic", 1.0), ("bpcoup", 1.0), ("bpfluct", 1.0)])):
+    x = bp(ex, note=note, vel=vel, tag="bpe", hold=0.5, tail=0.3)
+    bad += 0 if np.isfinite(x).all() and np.abs(x).max() < 1.0 else 1
+check("Bagpipe: extreme notes and settings stay finite and bounded", bad == 0, "%d bad" % bad)
+two = render(BPBASE + [P(1, "type", 13), P(1, "level", 0.8), FOFF(1), BPP(1, "bpchord", 2)], note=57, hold=0.5, tail=0.3, tag="bp2")
+check("two Bagpipe slots together stay finite", np.isfinite(two).all() and np.abs(two).max() < 1.0)
+
 print("all passed" if not failures else "%d FAILED" % failures)
 sys.exit(1 if failures else 0)

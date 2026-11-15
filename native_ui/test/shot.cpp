@@ -69,6 +69,8 @@ int main (int argc, char** argv)
     for (int i = 0; i < 9; ++i) { ed.setSynthPage (i); pump(); save (ed, dir.getChildFile (juce::String (names[i]) + ".png"), scale); }
     {
         auto& cx = ed.context();
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 13.0f); ed.setSynthPage (0); pump(); save (ed, dir.getChildFile ("bagpipe.png"), scale);
+        cx.set (njo::oscId (0, njo::oscKey ("type")), 0.0f);
         ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("ftype")), 30.0f); cx.set (njo::oscId (0, njo::oscKey ("wfwarp")), 0.5f); cx.set (njo::oscId (0, njo::oscKey ("wfcont")), 0.4f); cx.set (njo::oscId (0, njo::oscKey ("wftilt")), -0.3f); ed.setSynthPage (9); pump(); save (ed, dir.getChildFile ("flt_wf.png"), scale);
         cx.set (njo::oscId (0, njo::oscKey ("ftype")), 0.0f);

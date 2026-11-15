@@ -12,6 +12,7 @@
 #include "../NjoDk.h"
 #include "../NjoSp.h"
 #include "../NjoSf.h"
+#include "../NjoBp.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include <array>
@@ -239,6 +240,13 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            for (auto key : bpKeys)
+            {
+                auto w = makeWidget (ctx, bp::bpId (o, bp::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
             for (auto key : dkKeys)
             {
                 auto w = makeWidget (ctx, dk::dkId (o, dk::key (key)), true);
@@ -329,13 +337,14 @@ namespace njo
             layoutChildren();
         }
         int pnum (const char* key) const { return oscId (o, oscKey (key)); }
-        int srcType() const { return juce::jlimit (0, 12, juce::roundToInt (ctx.get (pnum ("type")))); }
+        int srcType() const { return juce::jlimit (0, 13, juce::roundToInt (ctx.get (pnum ("type")))); }
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
         static constexpr const char* grKeys[] = { "gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gdrive", "gvel" };
         static constexpr const char* adKeys[] = { "ashape", "ashapeb", "amorph", "acount", "atilt", "aodd", "ainh", "aform", "aformg", "ashim", "ashimr", "adec", "adrive", "awid", "avel" };
         static constexpr const char* spKeys[] = { "smode", "spos", "spos2", "smorph", "sscan", "sblur", "sshift", "stilt", "sharm", "sodd", "scomb", "scont", "sjit", "sspr", "swid", "svel" };
+        static constexpr const char* bpKeys[] = { "bpscale", "bpreed", "bpdouble", "bpconic", "bpcoup", "bpbore", "bpfluct", "bpair", "bpcolmix", "bpcolf", "bpdrone", "bpchord", "bpkey", "bpstrike", "bpvib", "bpblow" };
         static constexpr const char* sfKeys[] = { "sfgain", "sfvel", "sfatk", "sfdec", "sfsus", "sfrel", "sfloop", "sfpan", "sfstart", "sfdrive" };
         static constexpr const char* dkKeys[] = { "ddecay", "dtone", "dhit", "dstick", "dedge", "dres", "drtune", "dshell", "ddepth", "dsnare", "dsten", "dsym", "dtens", "dvel", "ddrive", "dsize" };
         static constexpr const char* kickKeys[] = { "kmode", "ksweep", "kstime", "kscurve", "kdec", "ktone", "kclick", "kcltone", "knoise", "kdrive", "kdtype", "ksub", "kpunch", "ktune", "kcldec", "kchar" };
@@ -531,7 +540,7 @@ namespace njo
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
-            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11 || type == 12, wgf = type == 6, jpf = type == 7, grf = type == 8, adf = type == 9, dkf = type == 10, spf = type == 11, sff = type == 12;
+            const bool wt = type == 0, sm = type == 1, tr = type == 2, ph = type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8 || type == 9 || type == 10 || type == 11 || type == 12 || type == 13, wgf = type == 6, jpf = type == 7, grf = type == 8, adf = type == 9, dkf = type == 10, spf = type == 11, sff = type == 12, bpf = type == 13;
             const int cw = owner.getWidth(), ch = owner.getHeight();
             const double col = (cw - 88.0) / 12.0;
             auto span = [&] (int c0, int n) { return juce::Rectangle<int> (juce::roundToInt (c0 * (col + 8)), 0, juce::roundToInt (n * col + (n - 1) * 8), ch); };
@@ -623,6 +632,17 @@ namespace njo
                     for (int r = 0; r < 3; ++r)
                         for (int i = 0; i < 5; ++i)
                             knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 222 + 62 * r, c, spf);
+                }
+
+                {   // Bagpipe: four selectors (scale, reed, drone chord, key), then three rows of knobs
+                    const int cw4 = (w - 26 - 3 * 6) / 4;
+                    const char* sels[4] = { "bpscale", "bpreed", "bpchord", "bpkey" };
+                    for (int i = 0; i < 4; ++i) put (sels[i], 13 + i * (cw4 + 6), 146, cw4, 36, c, bpf);
+                    const float fw = (float) (w - 26);
+                    const char* rows[3][5] = { { "bpdouble", "bpconic", "bpcoup", "bpbore", "bpfluct" }, { "bpair", "bpcolmix", "bpcolf", "bpdrone", "bpstrike" }, { "bpvib", "bpblow", nullptr, nullptr, nullptr } };
+                    for (int r = 0; r < 3; ++r)
+                        for (int i = 0; i < 5; ++i)
+                            if (rows[r][i] != nullptr) knob (rows[r][i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 192 + 62 * r, c, bpf);
                 }
 
                 {   // SoundFont: preset button above, the loop switch, then two rows of knobs
