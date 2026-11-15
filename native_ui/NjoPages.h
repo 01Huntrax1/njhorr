@@ -45,6 +45,21 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
+    // Njohrr Modular: nodes (Synth, Audio In, 16 effect modules, Out) and their cables (tools/modular/build_matrix.py)
+    class PatchPage : public juce::Component
+    {
+    public:
+        explicit PatchPage (Ctx&);
+        ~PatchPage() override;
+        void paint (juce::Graphics&) override;
+        void resized() override;
+        void mouseDown (const juce::MouseEvent&) override;
+        void mouseDrag (const juce::MouseEvent&) override;
+        void mouseUp (const juce::MouseEvent&) override;
+        void select (int node);   // 0 Synth, 1 Audio In, 2..17 module 1..16, 18 Out
+        struct Impl; std::unique_ptr<Impl> impl;
+    };
+
     // the three FX racks (Bus 1, Bus 2, Main) with 10 slots each and the output section
     class FxPage : public juce::Component
     {

@@ -1572,6 +1572,181 @@ processor Eisenpuls_Synth
     input event float param1890 [[ name: "OSC 6 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     // PHYS-DECL-END
     // OSCFX-DSP: per oscillator effect rack
+    // MODMAT
+    input event float param9700 [[ name: "Patch M1 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9701 [[ name: "Patch M1 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9702 [[ name: "Patch M1 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9703 [[ name: "Patch M1 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9704 [[ name: "Patch M1 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9705 [[ name: "Patch M1 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9706 [[ name: "Patch M1 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9707 [[ name: "Patch M1 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9708 [[ name: "Patch M2 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9709 [[ name: "Patch M2 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9710 [[ name: "Patch M2 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9711 [[ name: "Patch M2 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9712 [[ name: "Patch M2 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9713 [[ name: "Patch M2 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9714 [[ name: "Patch M2 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9715 [[ name: "Patch M2 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9716 [[ name: "Patch M3 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9717 [[ name: "Patch M3 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9718 [[ name: "Patch M3 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9719 [[ name: "Patch M3 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9720 [[ name: "Patch M3 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9721 [[ name: "Patch M3 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9722 [[ name: "Patch M3 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9723 [[ name: "Patch M3 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9724 [[ name: "Patch M4 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9725 [[ name: "Patch M4 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9726 [[ name: "Patch M4 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9727 [[ name: "Patch M4 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9728 [[ name: "Patch M4 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9729 [[ name: "Patch M4 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9730 [[ name: "Patch M4 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9731 [[ name: "Patch M4 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9732 [[ name: "Patch M5 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9733 [[ name: "Patch M5 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9734 [[ name: "Patch M5 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9735 [[ name: "Patch M5 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9736 [[ name: "Patch M5 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9737 [[ name: "Patch M5 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9738 [[ name: "Patch M5 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9739 [[ name: "Patch M5 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9740 [[ name: "Patch M6 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9741 [[ name: "Patch M6 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9742 [[ name: "Patch M6 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9743 [[ name: "Patch M6 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9744 [[ name: "Patch M6 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9745 [[ name: "Patch M6 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9746 [[ name: "Patch M6 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9747 [[ name: "Patch M6 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9748 [[ name: "Patch M7 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9749 [[ name: "Patch M7 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9750 [[ name: "Patch M7 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9751 [[ name: "Patch M7 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9752 [[ name: "Patch M7 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9753 [[ name: "Patch M7 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9754 [[ name: "Patch M7 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9755 [[ name: "Patch M7 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9756 [[ name: "Patch M8 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9757 [[ name: "Patch M8 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9758 [[ name: "Patch M8 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9759 [[ name: "Patch M8 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9760 [[ name: "Patch M8 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9761 [[ name: "Patch M8 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9762 [[ name: "Patch M8 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9763 [[ name: "Patch M8 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9764 [[ name: "Patch M9 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9765 [[ name: "Patch M9 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9766 [[ name: "Patch M9 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9767 [[ name: "Patch M9 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9768 [[ name: "Patch M9 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9769 [[ name: "Patch M9 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9770 [[ name: "Patch M9 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9771 [[ name: "Patch M9 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9772 [[ name: "Patch M10 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9773 [[ name: "Patch M10 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9774 [[ name: "Patch M10 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9775 [[ name: "Patch M10 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9776 [[ name: "Patch M10 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9777 [[ name: "Patch M10 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9778 [[ name: "Patch M10 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9779 [[ name: "Patch M10 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9780 [[ name: "Patch M11 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9781 [[ name: "Patch M11 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9782 [[ name: "Patch M11 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9783 [[ name: "Patch M11 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9784 [[ name: "Patch M11 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9785 [[ name: "Patch M11 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9786 [[ name: "Patch M11 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9787 [[ name: "Patch M11 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9788 [[ name: "Patch M12 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9789 [[ name: "Patch M12 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9790 [[ name: "Patch M12 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9791 [[ name: "Patch M12 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9792 [[ name: "Patch M12 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9793 [[ name: "Patch M12 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9794 [[ name: "Patch M12 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9795 [[ name: "Patch M12 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9796 [[ name: "Patch M13 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9797 [[ name: "Patch M13 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9798 [[ name: "Patch M13 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9799 [[ name: "Patch M13 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9800 [[ name: "Patch M13 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9801 [[ name: "Patch M13 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9802 [[ name: "Patch M13 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9803 [[ name: "Patch M13 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9804 [[ name: "Patch M14 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9805 [[ name: "Patch M14 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9806 [[ name: "Patch M14 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9807 [[ name: "Patch M14 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9808 [[ name: "Patch M14 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9809 [[ name: "Patch M14 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9810 [[ name: "Patch M14 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9811 [[ name: "Patch M14 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9812 [[ name: "Patch M15 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9813 [[ name: "Patch M15 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9814 [[ name: "Patch M15 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9815 [[ name: "Patch M15 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9816 [[ name: "Patch M15 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9817 [[ name: "Patch M15 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9818 [[ name: "Patch M15 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9819 [[ name: "Patch M15 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9820 [[ name: "Patch M16 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9821 [[ name: "Patch M16 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9822 [[ name: "Patch M16 Cable 2 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9823 [[ name: "Patch M16 Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9824 [[ name: "Patch M16 Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9825 [[ name: "Patch M16 Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9826 [[ name: "Patch M16 Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9827 [[ name: "Patch M16 Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9828 [[ name: "Patch Out Cable 1 Src", min: 0.0, max: 18.0, init: 1.0, step: 1.0, automatable: false ]];
+    input event float param9829 [[ name: "Patch Out Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9830 [[ name: "Patch Out Cable 2 Src", min: 0.0, max: 18.0, init: 2.0, step: 1.0, automatable: false ]];
+    input event float param9831 [[ name: "Patch Out Cable 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9832 [[ name: "Patch Out Cable 3 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9833 [[ name: "Patch Out Cable 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9834 [[ name: "Patch Out Cable 4 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param9835 [[ name: "Patch Out Cable 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param9850 [[ name: "Patch Node 1 X", min: 0.0, max: 1.0, init: 0.000, step: 0.001, automatable: false ]];
+    input event float param9851 [[ name: "Patch Node 1 Y", min: 0.0, max: 1.0, init: 0.200, step: 0.001, automatable: false ]];
+    input event float param9852 [[ name: "Patch Node 2 X", min: 0.0, max: 1.0, init: 0.000, step: 0.001, automatable: false ]];
+    input event float param9853 [[ name: "Patch Node 2 Y", min: 0.0, max: 1.0, init: 0.700, step: 0.001, automatable: false ]];
+    input event float param9854 [[ name: "Patch Node 3 X", min: 0.0, max: 1.0, init: 0.200, step: 0.001, automatable: false ]];
+    input event float param9855 [[ name: "Patch Node 3 Y", min: 0.0, max: 1.0, init: 0.080, step: 0.001, automatable: false ]];
+    input event float param9856 [[ name: "Patch Node 4 X", min: 0.0, max: 1.0, init: 0.400, step: 0.001, automatable: false ]];
+    input event float param9857 [[ name: "Patch Node 4 Y", min: 0.0, max: 1.0, init: 0.080, step: 0.001, automatable: false ]];
+    input event float param9858 [[ name: "Patch Node 5 X", min: 0.0, max: 1.0, init: 0.600, step: 0.001, automatable: false ]];
+    input event float param9859 [[ name: "Patch Node 5 Y", min: 0.0, max: 1.0, init: 0.080, step: 0.001, automatable: false ]];
+    input event float param9860 [[ name: "Patch Node 6 X", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9861 [[ name: "Patch Node 6 Y", min: 0.0, max: 1.0, init: 0.080, step: 0.001, automatable: false ]];
+    input event float param9862 [[ name: "Patch Node 7 X", min: 0.0, max: 1.0, init: 0.200, step: 0.001, automatable: false ]];
+    input event float param9863 [[ name: "Patch Node 7 Y", min: 0.0, max: 1.0, init: 0.320, step: 0.001, automatable: false ]];
+    input event float param9864 [[ name: "Patch Node 8 X", min: 0.0, max: 1.0, init: 0.400, step: 0.001, automatable: false ]];
+    input event float param9865 [[ name: "Patch Node 8 Y", min: 0.0, max: 1.0, init: 0.320, step: 0.001, automatable: false ]];
+    input event float param9866 [[ name: "Patch Node 9 X", min: 0.0, max: 1.0, init: 0.600, step: 0.001, automatable: false ]];
+    input event float param9867 [[ name: "Patch Node 9 Y", min: 0.0, max: 1.0, init: 0.320, step: 0.001, automatable: false ]];
+    input event float param9868 [[ name: "Patch Node 10 X", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9869 [[ name: "Patch Node 10 Y", min: 0.0, max: 1.0, init: 0.320, step: 0.001, automatable: false ]];
+    input event float param9870 [[ name: "Patch Node 11 X", min: 0.0, max: 1.0, init: 0.200, step: 0.001, automatable: false ]];
+    input event float param9871 [[ name: "Patch Node 11 Y", min: 0.0, max: 1.0, init: 0.560, step: 0.001, automatable: false ]];
+    input event float param9872 [[ name: "Patch Node 12 X", min: 0.0, max: 1.0, init: 0.400, step: 0.001, automatable: false ]];
+    input event float param9873 [[ name: "Patch Node 12 Y", min: 0.0, max: 1.0, init: 0.560, step: 0.001, automatable: false ]];
+    input event float param9874 [[ name: "Patch Node 13 X", min: 0.0, max: 1.0, init: 0.600, step: 0.001, automatable: false ]];
+    input event float param9875 [[ name: "Patch Node 13 Y", min: 0.0, max: 1.0, init: 0.560, step: 0.001, automatable: false ]];
+    input event float param9876 [[ name: "Patch Node 14 X", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9877 [[ name: "Patch Node 14 Y", min: 0.0, max: 1.0, init: 0.560, step: 0.001, automatable: false ]];
+    input event float param9878 [[ name: "Patch Node 15 X", min: 0.0, max: 1.0, init: 0.200, step: 0.001, automatable: false ]];
+    input event float param9879 [[ name: "Patch Node 15 Y", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9880 [[ name: "Patch Node 16 X", min: 0.0, max: 1.0, init: 0.400, step: 0.001, automatable: false ]];
+    input event float param9881 [[ name: "Patch Node 16 Y", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9882 [[ name: "Patch Node 17 X", min: 0.0, max: 1.0, init: 0.600, step: 0.001, automatable: false ]];
+    input event float param9883 [[ name: "Patch Node 17 Y", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9884 [[ name: "Patch Node 18 X", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9885 [[ name: "Patch Node 18 Y", min: 0.0, max: 1.0, init: 0.800, step: 0.001, automatable: false ]];
+    input event float param9886 [[ name: "Patch Node 19 X", min: 0.0, max: 1.0, init: 1.000, step: 0.001, automatable: false ]];
+    input event float param9887 [[ name: "Patch Node 19 Y", min: 0.0, max: 1.0, init: 0.450, step: 0.001, automatable: false ]];
     // OSCFX4-DSP
     input event float param8000 [[ name: "OSC 1 FX 1 Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param8001 [[ name: "OSC 1 FX 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];
@@ -6585,6 +6760,8 @@ processor Eisenpuls_Synth
     float ampRelease   = 250.0f;
     float velSens      = 0.6f;
     float driveAmt     = 0.0f;
+    int[68]   mrSrc;    // MODMAT: source of every cable (see build_matrix.py)
+    float[68] mrGain;
     float panParam     = 0.0f;
     float panL         = 1.0f;
     float panR         = 1.0f;
@@ -9161,6 +9338,180 @@ processor Eisenpuls_Synth
     event param9629 (float v) { oscOrd.at (93) = clamp (int (v + 0.5f), 0, 15); oscRebuild (5); }
     event param9630 (float v) { oscOrd.at (94) = clamp (int (v + 0.5f), 0, 15); oscRebuild (5); }
     event param9631 (float v) { oscOrd.at (95) = clamp (int (v + 0.5f), 0, 15); oscRebuild (5); }
+    event param9700 (float v) { mrSrc.at (0) = clamp (int (v + 0.5f), 0, 18); }
+    event param9701 (float v) { mrGain.at (0) = clamp (v, 0.0f, 2.0f); }
+    event param9702 (float v) { mrSrc.at (1) = clamp (int (v + 0.5f), 0, 18); }
+    event param9703 (float v) { mrGain.at (1) = clamp (v, 0.0f, 2.0f); }
+    event param9704 (float v) { mrSrc.at (2) = clamp (int (v + 0.5f), 0, 18); }
+    event param9705 (float v) { mrGain.at (2) = clamp (v, 0.0f, 2.0f); }
+    event param9706 (float v) { mrSrc.at (3) = clamp (int (v + 0.5f), 0, 18); }
+    event param9707 (float v) { mrGain.at (3) = clamp (v, 0.0f, 2.0f); }
+    event param9708 (float v) { mrSrc.at (4) = clamp (int (v + 0.5f), 0, 18); }
+    event param9709 (float v) { mrGain.at (4) = clamp (v, 0.0f, 2.0f); }
+    event param9710 (float v) { mrSrc.at (5) = clamp (int (v + 0.5f), 0, 18); }
+    event param9711 (float v) { mrGain.at (5) = clamp (v, 0.0f, 2.0f); }
+    event param9712 (float v) { mrSrc.at (6) = clamp (int (v + 0.5f), 0, 18); }
+    event param9713 (float v) { mrGain.at (6) = clamp (v, 0.0f, 2.0f); }
+    event param9714 (float v) { mrSrc.at (7) = clamp (int (v + 0.5f), 0, 18); }
+    event param9715 (float v) { mrGain.at (7) = clamp (v, 0.0f, 2.0f); }
+    event param9716 (float v) { mrSrc.at (8) = clamp (int (v + 0.5f), 0, 18); }
+    event param9717 (float v) { mrGain.at (8) = clamp (v, 0.0f, 2.0f); }
+    event param9718 (float v) { mrSrc.at (9) = clamp (int (v + 0.5f), 0, 18); }
+    event param9719 (float v) { mrGain.at (9) = clamp (v, 0.0f, 2.0f); }
+    event param9720 (float v) { mrSrc.at (10) = clamp (int (v + 0.5f), 0, 18); }
+    event param9721 (float v) { mrGain.at (10) = clamp (v, 0.0f, 2.0f); }
+    event param9722 (float v) { mrSrc.at (11) = clamp (int (v + 0.5f), 0, 18); }
+    event param9723 (float v) { mrGain.at (11) = clamp (v, 0.0f, 2.0f); }
+    event param9724 (float v) { mrSrc.at (12) = clamp (int (v + 0.5f), 0, 18); }
+    event param9725 (float v) { mrGain.at (12) = clamp (v, 0.0f, 2.0f); }
+    event param9726 (float v) { mrSrc.at (13) = clamp (int (v + 0.5f), 0, 18); }
+    event param9727 (float v) { mrGain.at (13) = clamp (v, 0.0f, 2.0f); }
+    event param9728 (float v) { mrSrc.at (14) = clamp (int (v + 0.5f), 0, 18); }
+    event param9729 (float v) { mrGain.at (14) = clamp (v, 0.0f, 2.0f); }
+    event param9730 (float v) { mrSrc.at (15) = clamp (int (v + 0.5f), 0, 18); }
+    event param9731 (float v) { mrGain.at (15) = clamp (v, 0.0f, 2.0f); }
+    event param9732 (float v) { mrSrc.at (16) = clamp (int (v + 0.5f), 0, 18); }
+    event param9733 (float v) { mrGain.at (16) = clamp (v, 0.0f, 2.0f); }
+    event param9734 (float v) { mrSrc.at (17) = clamp (int (v + 0.5f), 0, 18); }
+    event param9735 (float v) { mrGain.at (17) = clamp (v, 0.0f, 2.0f); }
+    event param9736 (float v) { mrSrc.at (18) = clamp (int (v + 0.5f), 0, 18); }
+    event param9737 (float v) { mrGain.at (18) = clamp (v, 0.0f, 2.0f); }
+    event param9738 (float v) { mrSrc.at (19) = clamp (int (v + 0.5f), 0, 18); }
+    event param9739 (float v) { mrGain.at (19) = clamp (v, 0.0f, 2.0f); }
+    event param9740 (float v) { mrSrc.at (20) = clamp (int (v + 0.5f), 0, 18); }
+    event param9741 (float v) { mrGain.at (20) = clamp (v, 0.0f, 2.0f); }
+    event param9742 (float v) { mrSrc.at (21) = clamp (int (v + 0.5f), 0, 18); }
+    event param9743 (float v) { mrGain.at (21) = clamp (v, 0.0f, 2.0f); }
+    event param9744 (float v) { mrSrc.at (22) = clamp (int (v + 0.5f), 0, 18); }
+    event param9745 (float v) { mrGain.at (22) = clamp (v, 0.0f, 2.0f); }
+    event param9746 (float v) { mrSrc.at (23) = clamp (int (v + 0.5f), 0, 18); }
+    event param9747 (float v) { mrGain.at (23) = clamp (v, 0.0f, 2.0f); }
+    event param9748 (float v) { mrSrc.at (24) = clamp (int (v + 0.5f), 0, 18); }
+    event param9749 (float v) { mrGain.at (24) = clamp (v, 0.0f, 2.0f); }
+    event param9750 (float v) { mrSrc.at (25) = clamp (int (v + 0.5f), 0, 18); }
+    event param9751 (float v) { mrGain.at (25) = clamp (v, 0.0f, 2.0f); }
+    event param9752 (float v) { mrSrc.at (26) = clamp (int (v + 0.5f), 0, 18); }
+    event param9753 (float v) { mrGain.at (26) = clamp (v, 0.0f, 2.0f); }
+    event param9754 (float v) { mrSrc.at (27) = clamp (int (v + 0.5f), 0, 18); }
+    event param9755 (float v) { mrGain.at (27) = clamp (v, 0.0f, 2.0f); }
+    event param9756 (float v) { mrSrc.at (28) = clamp (int (v + 0.5f), 0, 18); }
+    event param9757 (float v) { mrGain.at (28) = clamp (v, 0.0f, 2.0f); }
+    event param9758 (float v) { mrSrc.at (29) = clamp (int (v + 0.5f), 0, 18); }
+    event param9759 (float v) { mrGain.at (29) = clamp (v, 0.0f, 2.0f); }
+    event param9760 (float v) { mrSrc.at (30) = clamp (int (v + 0.5f), 0, 18); }
+    event param9761 (float v) { mrGain.at (30) = clamp (v, 0.0f, 2.0f); }
+    event param9762 (float v) { mrSrc.at (31) = clamp (int (v + 0.5f), 0, 18); }
+    event param9763 (float v) { mrGain.at (31) = clamp (v, 0.0f, 2.0f); }
+    event param9764 (float v) { mrSrc.at (32) = clamp (int (v + 0.5f), 0, 18); }
+    event param9765 (float v) { mrGain.at (32) = clamp (v, 0.0f, 2.0f); }
+    event param9766 (float v) { mrSrc.at (33) = clamp (int (v + 0.5f), 0, 18); }
+    event param9767 (float v) { mrGain.at (33) = clamp (v, 0.0f, 2.0f); }
+    event param9768 (float v) { mrSrc.at (34) = clamp (int (v + 0.5f), 0, 18); }
+    event param9769 (float v) { mrGain.at (34) = clamp (v, 0.0f, 2.0f); }
+    event param9770 (float v) { mrSrc.at (35) = clamp (int (v + 0.5f), 0, 18); }
+    event param9771 (float v) { mrGain.at (35) = clamp (v, 0.0f, 2.0f); }
+    event param9772 (float v) { mrSrc.at (36) = clamp (int (v + 0.5f), 0, 18); }
+    event param9773 (float v) { mrGain.at (36) = clamp (v, 0.0f, 2.0f); }
+    event param9774 (float v) { mrSrc.at (37) = clamp (int (v + 0.5f), 0, 18); }
+    event param9775 (float v) { mrGain.at (37) = clamp (v, 0.0f, 2.0f); }
+    event param9776 (float v) { mrSrc.at (38) = clamp (int (v + 0.5f), 0, 18); }
+    event param9777 (float v) { mrGain.at (38) = clamp (v, 0.0f, 2.0f); }
+    event param9778 (float v) { mrSrc.at (39) = clamp (int (v + 0.5f), 0, 18); }
+    event param9779 (float v) { mrGain.at (39) = clamp (v, 0.0f, 2.0f); }
+    event param9780 (float v) { mrSrc.at (40) = clamp (int (v + 0.5f), 0, 18); }
+    event param9781 (float v) { mrGain.at (40) = clamp (v, 0.0f, 2.0f); }
+    event param9782 (float v) { mrSrc.at (41) = clamp (int (v + 0.5f), 0, 18); }
+    event param9783 (float v) { mrGain.at (41) = clamp (v, 0.0f, 2.0f); }
+    event param9784 (float v) { mrSrc.at (42) = clamp (int (v + 0.5f), 0, 18); }
+    event param9785 (float v) { mrGain.at (42) = clamp (v, 0.0f, 2.0f); }
+    event param9786 (float v) { mrSrc.at (43) = clamp (int (v + 0.5f), 0, 18); }
+    event param9787 (float v) { mrGain.at (43) = clamp (v, 0.0f, 2.0f); }
+    event param9788 (float v) { mrSrc.at (44) = clamp (int (v + 0.5f), 0, 18); }
+    event param9789 (float v) { mrGain.at (44) = clamp (v, 0.0f, 2.0f); }
+    event param9790 (float v) { mrSrc.at (45) = clamp (int (v + 0.5f), 0, 18); }
+    event param9791 (float v) { mrGain.at (45) = clamp (v, 0.0f, 2.0f); }
+    event param9792 (float v) { mrSrc.at (46) = clamp (int (v + 0.5f), 0, 18); }
+    event param9793 (float v) { mrGain.at (46) = clamp (v, 0.0f, 2.0f); }
+    event param9794 (float v) { mrSrc.at (47) = clamp (int (v + 0.5f), 0, 18); }
+    event param9795 (float v) { mrGain.at (47) = clamp (v, 0.0f, 2.0f); }
+    event param9796 (float v) { mrSrc.at (48) = clamp (int (v + 0.5f), 0, 18); }
+    event param9797 (float v) { mrGain.at (48) = clamp (v, 0.0f, 2.0f); }
+    event param9798 (float v) { mrSrc.at (49) = clamp (int (v + 0.5f), 0, 18); }
+    event param9799 (float v) { mrGain.at (49) = clamp (v, 0.0f, 2.0f); }
+    event param9800 (float v) { mrSrc.at (50) = clamp (int (v + 0.5f), 0, 18); }
+    event param9801 (float v) { mrGain.at (50) = clamp (v, 0.0f, 2.0f); }
+    event param9802 (float v) { mrSrc.at (51) = clamp (int (v + 0.5f), 0, 18); }
+    event param9803 (float v) { mrGain.at (51) = clamp (v, 0.0f, 2.0f); }
+    event param9804 (float v) { mrSrc.at (52) = clamp (int (v + 0.5f), 0, 18); }
+    event param9805 (float v) { mrGain.at (52) = clamp (v, 0.0f, 2.0f); }
+    event param9806 (float v) { mrSrc.at (53) = clamp (int (v + 0.5f), 0, 18); }
+    event param9807 (float v) { mrGain.at (53) = clamp (v, 0.0f, 2.0f); }
+    event param9808 (float v) { mrSrc.at (54) = clamp (int (v + 0.5f), 0, 18); }
+    event param9809 (float v) { mrGain.at (54) = clamp (v, 0.0f, 2.0f); }
+    event param9810 (float v) { mrSrc.at (55) = clamp (int (v + 0.5f), 0, 18); }
+    event param9811 (float v) { mrGain.at (55) = clamp (v, 0.0f, 2.0f); }
+    event param9812 (float v) { mrSrc.at (56) = clamp (int (v + 0.5f), 0, 18); }
+    event param9813 (float v) { mrGain.at (56) = clamp (v, 0.0f, 2.0f); }
+    event param9814 (float v) { mrSrc.at (57) = clamp (int (v + 0.5f), 0, 18); }
+    event param9815 (float v) { mrGain.at (57) = clamp (v, 0.0f, 2.0f); }
+    event param9816 (float v) { mrSrc.at (58) = clamp (int (v + 0.5f), 0, 18); }
+    event param9817 (float v) { mrGain.at (58) = clamp (v, 0.0f, 2.0f); }
+    event param9818 (float v) { mrSrc.at (59) = clamp (int (v + 0.5f), 0, 18); }
+    event param9819 (float v) { mrGain.at (59) = clamp (v, 0.0f, 2.0f); }
+    event param9820 (float v) { mrSrc.at (60) = clamp (int (v + 0.5f), 0, 18); }
+    event param9821 (float v) { mrGain.at (60) = clamp (v, 0.0f, 2.0f); }
+    event param9822 (float v) { mrSrc.at (61) = clamp (int (v + 0.5f), 0, 18); }
+    event param9823 (float v) { mrGain.at (61) = clamp (v, 0.0f, 2.0f); }
+    event param9824 (float v) { mrSrc.at (62) = clamp (int (v + 0.5f), 0, 18); }
+    event param9825 (float v) { mrGain.at (62) = clamp (v, 0.0f, 2.0f); }
+    event param9826 (float v) { mrSrc.at (63) = clamp (int (v + 0.5f), 0, 18); }
+    event param9827 (float v) { mrGain.at (63) = clamp (v, 0.0f, 2.0f); }
+    event param9828 (float v) { mrSrc.at (64) = clamp (int (v + 0.5f), 0, 18); }
+    event param9829 (float v) { mrGain.at (64) = clamp (v, 0.0f, 2.0f); }
+    event param9830 (float v) { mrSrc.at (65) = clamp (int (v + 0.5f), 0, 18); }
+    event param9831 (float v) { mrGain.at (65) = clamp (v, 0.0f, 2.0f); }
+    event param9832 (float v) { mrSrc.at (66) = clamp (int (v + 0.5f), 0, 18); }
+    event param9833 (float v) { mrGain.at (66) = clamp (v, 0.0f, 2.0f); }
+    event param9834 (float v) { mrSrc.at (67) = clamp (int (v + 0.5f), 0, 18); }
+    event param9835 (float v) { mrGain.at (67) = clamp (v, 0.0f, 2.0f); }
+    event param9850 (float v) { }
+    event param9851 (float v) { }
+    event param9852 (float v) { }
+    event param9853 (float v) { }
+    event param9854 (float v) { }
+    event param9855 (float v) { }
+    event param9856 (float v) { }
+    event param9857 (float v) { }
+    event param9858 (float v) { }
+    event param9859 (float v) { }
+    event param9860 (float v) { }
+    event param9861 (float v) { }
+    event param9862 (float v) { }
+    event param9863 (float v) { }
+    event param9864 (float v) { }
+    event param9865 (float v) { }
+    event param9866 (float v) { }
+    event param9867 (float v) { }
+    event param9868 (float v) { }
+    event param9869 (float v) { }
+    event param9870 (float v) { }
+    event param9871 (float v) { }
+    event param9872 (float v) { }
+    event param9873 (float v) { }
+    event param9874 (float v) { }
+    event param9875 (float v) { }
+    event param9876 (float v) { }
+    event param9877 (float v) { }
+    event param9878 (float v) { }
+    event param9879 (float v) { }
+    event param9880 (float v) { }
+    event param9881 (float v) { }
+    event param9882 (float v) { }
+    event param9883 (float v) { }
+    event param9884 (float v) { }
+    event param9885 (float v) { }
+    event param9886 (float v) { }
+    event param9887 (float v) { }
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -13468,6 +13819,12 @@ processor Eisenpuls_Synth
         apLen.at (1) = clamp (int (441.0f * rs), 16, 4095);
         apLen.at (2) = clamp (int (579.0f * rs), 16, 4095);
         apLen.at (3) = clamp (int (464.0f * rs), 16, 4095);
+
+        for (int mi = 0; mi < 68; ++mi)   // MODMAT: start values (Synth and Audio In to Out, all cable gains 1)
+        {
+            mrSrc.at (mi)  = mi == 64 ? 1 : (mi == 65 ? 2 : 0);
+            mrGain.at (mi) = 1.0f;
+        }
 
         fxInit();
         cvInit();

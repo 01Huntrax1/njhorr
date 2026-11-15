@@ -1,0 +1,15 @@
+{
+    "CmajorVersion": 1,
+    "ID": "dev.njohrr.modular",
+    "version": "1.0",
+    "name": "Njohrr Modular",
+    "description": "Njohrr synthesizer with a patchable effect matrix",
+    "manufacturer": "Njohrr",
+    "category": "synth",
+    "isInstrument": true,
+    "source": "Eisenpuls_Synth.cmajor",
+    "plugin": {
+        "pluginCode": "NjMD",
+        "manufacturerCode": "Njhr"
+    }
+}

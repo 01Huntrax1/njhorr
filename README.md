@@ -499,6 +499,13 @@ The single RND source became 10 random modulators (RND 1 = the old source 23, RN
 
 The mod matrix sources go up to 52 now. Tests: `python3 tools/mod/test_rnd.py --host <dsp_host>`; script `tools/mod/build_rnd.py` (marker RND-DSP).
 
+## Njohrr Modular (third plugin)
+VST3 "Njohrr Modular" (`NjohrrModular` target, `NJOHRR_BUILD_MODULAR`, plugin code NjMD): the complete synth (all pages, modulation, OSC racks) plus an audio input, with a **patch matrix** instead of the fixed Main rack. Nodes: **Synth**, **Audio In**, 16 **effect modules** (the 16 slots of the Main rack: any FX type incl. Waveguide and CloudSeed) and **Out**. Every node sums up to 4 cables, each with its own gain (0-2); a module runs its effect on that sum; a module without cables is silent. A cable from a later module (or from the module itself) carries the previous sample, so feedback loops work (module outputs are limited to +-8, the plugin output to +-1). Start patch: Synth and Audio In to Out.
+- Editor: group EFFECTS > PATCH (RACK shows the classic rack page). Drag from a node's round output onto another node to connect, right-click a cable to remove it, drag a node to move it. The side panel edits the selected node: effect type, On, Mix, Mode, P1-P6 and its four cables (source dropdown + gain). Module settings are the Main FX slot parameters, so the FX page and presets stay compatible.
+- Parameters: cables `9700 + 8 * dest + 2 * cable` (+1 gain; dest 0-15 module, 16 Out; source 0 off, 1 Synth, 2 Audio In, 3-18 module 1-16), node positions `9850 + 2 * node` (+1 y). They also exist (unused) in the synth and FX plugins.
+- Code: `tools/modular/build_matrix.py` (parameters, marker MODMAT), `tools/modular/build_modplugin.py` (router, writes `patch_mod/`, called by `tools/regen_plugin.sh` -> `cmajor_plugin_mod.cpp`), `native_ui/pages/PatchPage.cpp` (`NJOHRR_MODULAR`), tests `python3 tools/modular/test_modplugin.py --host <dsp_host built from patch_mod with -DDSP_FX>`.
+- Not done yet: Synth oscillators / filters / LFOs as free modules (the OSC racks and the modulation matrix stay as they are), cables for control signals, a host build of the VST3 (only the DSP, the UI harness and the Cmajor generation were checked).
+
 ## Waveguide effect (FX type 32)
 Every effect rack (main section and the OSC racks) offers **Waveguide** (Creative): the input excites a tuned resonator loop (Karplus-Strong style, loop filter, allpass tuning) that rings at the Pitch knob. Modes: String, Tube, Dual Strings, Fifth Drone, Octave Drone. Knobs: Pitch (30-2000 Hz), Decay, Damp, Detune, Excite, Drive. Also available per voice in the OSC racks. Tests: `python3 tools/fx/test_wgfx.py --host <dsp_host>`; script `tools/fx/build_wgfx.py` (marker FX-WAVEGUIDE).
 

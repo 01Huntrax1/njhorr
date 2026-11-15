@@ -52,6 +52,19 @@ int main (int argc, char** argv)
         auto& P = ed.context().freqShapes->points (0);
         P = { { 0, 0.95f, 0 }, { 0.12f, 0.7f, 0 }, { 0.25f, 0.5f, 0 }, { 0.5f, 0.3f, 0 }, { 1, 0.1f, 0 } };
     }
+#if NJOHRR_MODULAR
+    {   // Njohrr Modular: patch page with a small patch (Synth -> M1 Distortion -> M2 Delay -> Out, Audio In -> M3 Reverb -> Out)
+        auto& cx = ed.context();
+        cx.set (541, 1.0f); cx.set (541 + 1, 1.0f); cx.set (551, 3.0f); cx.set (552, 1.0f); cx.set (561, 8.0f); cx.set (562, 1.0f);
+        cx.set (9700, 1.0f);                          // M1 <- Synth
+        cx.set (9708, 3.0f);                          // M2 <- M1
+        cx.set (9716, 2.0f); cx.set (9717, 0.7f);     // M3 <- Audio In (gain 0.7)
+        cx.set (9700 + 8 * 16, 4.0f); cx.set (9700 + 8 * 16 + 2, 5.0f); cx.set (9700 + 8 * 16 + 3, 0.5f);   // Out <- M2, M3
+        ed.setGroup (njo::EditorContent::Effects); pump(); save (ed, dir.getChildFile ("patch.png"), scale);
+        ed.patchPage().select (3); pump(); save (ed, dir.getChildFile ("patch_m2.png"), scale);
+        ed.setGroup (njo::EditorContent::Synth);
+    }
+#endif
     const char* names[] = { "osc1", "osc2", "osc3", "osc4", "osc5", "osc6", "fm", "rmam", "global" };
     for (int i = 0; i < 9; ++i) { ed.setSynthPage (i); pump(); save (ed, dir.getChildFile (juce::String (names[i]) + ".png"), scale); }
     {

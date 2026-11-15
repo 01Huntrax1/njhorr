@@ -154,3 +154,46 @@ if (NJOHRR_BUILD_FX)
         target_include_directories(NjohrrFX PRIVATE ${GTK3_INCLUDE_DIRS} ${WEBKIT2_INCLUDE_DIRS})
     endif()
 endif()
+
+
+# ---- Njohrr Modular: the synth with a patch matrix (Synth, Audio In, 16 effect modules, Out) instead of the fixed Main rack ----
+# The DSP comes from patch_mod/ (tools/modular/build_modplugin.py) through tools/regen_plugin.sh -> cmajor_plugin_mod.cpp.
+option (NJOHRR_BUILD_MODULAR "Also build the third plugin Njohrr Modular" ON)
+
+if (NJOHRR_BUILD_MODULAR)
+    juce_add_plugin(NjohrrModular
+        FORMATS VST3
+        DESCRIPTION "Njohrr modular"
+        PRODUCT_NAME "Njohrr Modular"
+        PLUGIN_NAME "Njohrr Modular"
+        BUNDLE_ID "dev.njohrr.modular"
+        PLUGIN_CODE "NjMD"
+        PLUGIN_MANUFACTURER_CODE "Njhr"
+        COMPANY_NAME "Njohrr"
+        COMPANY_WEBSITE ""
+        NEEDS_MIDI_INPUT TRUE
+        NEEDS_MIDI_OUTPUT FALSE
+        MICROPHONE_PERMISSION_ENABLED FALSE
+        IS_SYNTH TRUE
+    )
+
+    juce_generate_juce_header(NjohrrModular)
+
+    file(GLOB NJO_MOD_UI_SOURCES CONFIGURE_DEPENDS native_ui/*.cpp native_ui/pages/*.cpp)
+    target_sources(NjohrrModular PRIVATE cmajor_plugin_mod.cpp ${HEADERS} ${NJO_MOD_UI_SOURCES})
+    target_compile_definitions(NjohrrModular PRIVATE NJOHRR_NATIVE_UI=1 NJOHRR_MODULAR=1)
+    target_compile_features(NjohrrModular PRIVATE cxx_std_17)
+    target_include_directories(NjohrrModular PRIVATE include include/choc native_ui)
+
+    target_link_libraries(NjohrrModular
+        PRIVATE
+            juce::juce_audio_utils
+            juce::juce_audio_formats
+            $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_LESS:$<CXX_COMPILER_VERSION>,9.0>>:stdc++fs>
+    )
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+        target_link_libraries (NjohrrModular PUBLIC ${GTK3_LIBRARIES} ${WEBKIT2_LIBRARIES})
+        target_include_directories(NjohrrModular PRIVATE ${GTK3_INCLUDE_DIRS} ${WEBKIT2_INCLUDE_DIRS})
+    endif()
+endif()

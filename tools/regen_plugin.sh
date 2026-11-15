@@ -62,4 +62,27 @@ if [ $fail = 0 ] || [ $CHECK = 0 ]; then
         cp "$NEWFX" "$ROOT/cmajor_plugin_fx.cpp"; echo "updated cmajor_plugin_fx.cpp"
     fi
 fi
+
+# 4. the third plugin, Njohrr Modular: patch_mod/ is generated from the synth source (patch matrix instead of the Main rack), then cmajor_plugin_mod.cpp
+cp -r "$ROOT/patch_mod" "$TMP/patch_mod.old" 2>/dev/null || true
+python3 "$ROOT/tools/modular/build_modplugin.py" >/dev/null
+for f in Eisenpuls_Synth.cmajor Njohrr_Modular.cmajorpatch; do
+    if ! cmp -s "$TMP/patch_mod.old/$f" "$ROOT/patch_mod/$f"; then
+        if [ $CHECK = 1 ]; then echo "patch_mod/$f is out of date (run tools/regen_plugin.sh)"; cp "$TMP/patch_mod.old/$f" "$ROOT/patch_mod/$f" 2>/dev/null || true; fail=1
+        else echo "updated patch_mod/$f"; fi
+    fi
+done
+if [ $fail = 0 ] || [ $CHECK = 0 ]; then
+    "$CMAJ" generate --target=juce --output="$TMP/juce_mod" --cmajorIncludePath="$CMAJ_INCLUDE" "$ROOT/patch_mod/Njohrr_Modular.cmajorpatch" >/dev/null
+    NEWMOD="$TMP/juce_mod/cmajor_plugin.cpp"
+    [ -f "$NEWMOD" ] || { echo "the juce target produced no cmajor_plugin.cpp for the Modular plugin"; exit 2; }
+    grep -q "JUCE_CALLTYPE createPluginFilter" "$NEWMOD" || { echo "generated Modular file has no createPluginFilter()"; exit 2; }
+    if cmp -s "$NEWMOD" "$ROOT/cmajor_plugin_mod.cpp"; then
+        echo "cmajor_plugin_mod.cpp is up to date"
+    elif [ $CHECK = 1 ]; then
+        echo "cmajor_plugin_mod.cpp is out of date (run tools/regen_plugin.sh)"; fail=1
+    else
+        cp "$NEWMOD" "$ROOT/cmajor_plugin_mod.cpp"; echo "updated cmajor_plugin_mod.cpp"
+    fi
+fi
 exit $fail

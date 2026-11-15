@@ -3345,6 +3345,18 @@ const SPECS = (() => {
         }
         for (let k = 0; k < 16; k++) L.push([8000 + 272 * o + 256 + k, "OSC " + (o + 1) + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
     }
+    // MODMAT: patch matrix of Njohrr Modular
+    {
+        const MSRC = ["Off", "Synth", "Audio In"].concat(Array.from({ length: 16 }, (_, i) => "Module " + (i + 1)));
+        const MPOS = [[0.0, 0.2], [0.0, 0.7], [0.2, 0.08], [0.4, 0.08], [0.6, 0.08], [0.8, 0.08], [0.2, 0.32], [0.4, 0.32], [0.6, 0.32], [0.8, 0.32], [0.2, 0.56], [0.4, 0.56], [0.6, 0.56], [0.8, 0.56], [0.2, 0.8], [0.4, 0.8], [0.6, 0.8], [0.8, 0.8], [1.0, 0.45]];
+        for (let d = 0; d < 17; d++) for (let c = 0; c < 4; c++) {
+            const nm = d === 16 ? "Out" : "M" + (d + 1), i = 9700 + 8 * d + 2 * c;
+            L.push([i,     "Patch " + nm + " Cable " + (c + 1) + " Src", 0, 18, d === 16 && c < 2 ? c + 1 : 0, "", "sel", MSRC, 1, "Src"]);
+            L.push([i + 1, "Patch " + nm + " Cable " + (c + 1) + " Gain", 0, 2, 1, "", "sld", null, 1, "Gain"]);
+        }
+        for (let n = 0; n < 19; n++) for (let a = 0; a < 2; a++)
+            L.push([9850 + 2 * n + a, "Patch Node " + (n + 1) + " " + "XY"[a], 0, 1, MPOS[n][a], "", "sld", null, 1, "XY"[a]]);
+    }
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) L.push([940 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]); });
     // ADSR of the Filter effect: Sustain and Release (ids 3000+g / 3030+g); Env Amt, Attack and Decay are P4..P6
     FX_RACKS.forEach((rack, rk) => { for (let sl = 0; sl < 10; sl++) { L.push([3000 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Sustain", 0, 1, 1, "", "sld", null, 1, "Sustain"]); L.push([3030 + rk * 10 + sl, rack.name + " FX " + (sl + 1) + " Env Release", 0, 1, 0.3, "", "sld", null, 1, "Release"]); } });

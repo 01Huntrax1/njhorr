@@ -9,6 +9,10 @@ namespace njo
     // ---- layout constants (same as the JS UI) ----
     constexpr int OSC_N = 6, OSC_BASE = 1000, OSC_STRIDE = 64, FM_BASE = 1400, FRQ_BASE = 1600, PM_BASE = 1440, PD_BASE = 1480, RM_BASE = 1520, AM_BASE = 1560, TZ_BASE = 2900, MX_BASE = 5300, MOD_SLOTS = 256, MODX_BASE = 4000;   // 256 matrix slots: 1-10 at 307.., 11-20 at 472.., 21-256 at MODX_BASE + 3 * (slot - 20)
     // NJOHRR_FX_ONLY: the effects-only plugin (Njohrr FX): only the FX page, no page rail and no modulation strip, hence a lower window
+    // NJOHRR_MODULAR: the third plugin (Njohrr Modular): the synth with a patch page (nodes and cables) in front of the effect rack
+    #ifndef NJOHRR_MODULAR
+     #define NJOHRR_MODULAR 0
+    #endif
     #ifndef NJOHRR_FX_ONLY
      #define NJOHRR_FX_ONLY 0
     #endif

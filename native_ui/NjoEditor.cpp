@@ -51,13 +51,13 @@ namespace njo
     struct EditorContent::Impl
     {
         juce::OwnedArray<NavButton> rail, tabs;
-        std::unique_ptr<NavButton> stripToggle, sizeButton, stripModBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn, modRndBtn;
+        std::unique_ptr<NavButton> patchBtn, rackBtn, stripToggle, sizeButton, stripModBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn, modRndBtn;
         juce::Rectangle<int> topBar, lcdRect, stripRect, mainRect, stageRect, subRect, mgrRect;
         juce::Component* shownPage = nullptr;
     };
 
     EditorContent::EditorContent (Backend& be, SoundMemory* sharedMemory)
-        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), rndFull (ctx), matrix (ctx), seqArp (ctx), manager (ctx, memory, *this), impl (new Impl)
+        : ctx (be), ownMemory (sharedMemory ? nullptr : std::make_unique<SoundMemory> (ctx)), memory (sharedMemory ? *sharedMemory : *ownMemory), fm (ctx), fmRm (ctx, 1), glob (ctx), fx (ctx, memory), patch (ctx), editors (ctx), editorsFull (ctx), freq (ctx), freqFull (ctx), seq (ctx), seqFull (ctx), rndFull (ctx), matrix (ctx), seqArp (ctx), manager (ctx, memory, *this), impl (new Impl)
     {
         if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
@@ -119,12 +119,14 @@ namespace njo
         fmRm.setOnOpenOsc ([this] (int o) { setSynthPage (o); });
         glob.onModDropped = [this] (ParamWidget& w) { showModPopup (ctx, w, w.num()); };
         fx.onModDropped = glob.onModDropped;
-        addChildComponent (fm); addChildComponent (fmRm); addChildComponent (glob); addChildComponent (fx);
+        addChildComponent (fm); addChildComponent (fmRm); addChildComponent (glob); addChildComponent (fx); addChildComponent (patch);
         addChildComponent (editorsFull); addChildComponent (freqFull); addChildComponent (seqFull); addChildComponent (rndFull); addChildComponent (matrix); addChildComponent (seqArp);
         addChildComponent (freq); addChildComponent (seq);
         addAndMakeVisible (editors);
         // tabs of the bottom strip (MOD / FREQ) and of the top panel of the modulation page (ENV / LFO | FREQ)
         auto mk = [this] (std::unique_ptr<NavButton>& b, const char* t, std::function<void()> f) { b = std::make_unique<NavButton> (NavButton::Mini, t); b->onClick = std::move (f); addChildComponent (*b); };
+        mk (impl->patchBtn, "PATCH", [this] { fxTab = 0; layoutAll(); });
+        mk (impl->rackBtn, "RACK", [this] { fxTab = 1; layoutAll(); });
         mk (impl->stripModBtn, "MOD", [this] { stripTab = 0; stripOpen = true; layoutAll(); });
         mk (impl->stripFrqBtn, "FREQ", [this] { stripTab = 1; stripOpen = true; layoutAll(); });
         mk (impl->stripSeqBtn, "SEQ", [this] { stripTab = 2; stripOpen = true; layoutAll(); });
@@ -209,7 +211,7 @@ namespace njo
         for (auto* p : distPages) p->setVisible (false);
         for (auto* p : resoPages) p->setVisible (false);
         for (auto* p : fxPages) p->setVisible (false);
-        fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false); seqArp.setVisible (false);
+        fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); patch.setVisible (false); impl->patchBtn->setVisible (false); impl->rackBtn->setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false); seqArp.setVisible (false);
         editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false); seq.setVisible (false); seqFull.setVisible (false); rndFull.setVisible (false);
         for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get(), impl->modRndBtn.get() }) b->setVisible (false);
         if (synth)
@@ -223,7 +225,18 @@ namespace njo
             else if (currentSynthPage >= 27) { fxPages[currentSynthPage - 27]->setBounds (impl->stageRect); fxPages[currentSynthPage - 27]->setVisible (true); }
             else { glob.setBounds (impl->stageRect); glob.setVisible (true); }
         }
-        else if (currentGroup == Effects) { fx.setBounds (impl->stageRect); fx.setVisible (true); }
+        else if (currentGroup == Effects)
+        {
+            if (NJOHRR_MODULAR)
+            {
+                auto st = impl->stageRect; auto bar = st.removeFromTop (22); st.removeFromTop (4);
+                impl->patchBtn->setBounds (bar.getX(), bar.getY(), 70, 20); impl->rackBtn->setBounds (bar.getX() + 74, bar.getY(), 70, 20);
+                impl->patchBtn->setOn (fxTab == 0); impl->rackBtn->setOn (fxTab == 1);
+                impl->patchBtn->setVisible (true); impl->rackBtn->setVisible (true);
+                if (fxTab == 0) { patch.setBounds (st); patch.setVisible (true); } else { fx.setBounds (st); fx.setVisible (true); }
+            }
+            else { fx.setBounds (impl->stageRect); fx.setVisible (true); }
+        }
         else if (seqa) { seqArp.setBounds (impl->stageRect); seqArp.setVisible (true); }
         else
         {
@@ -278,7 +291,7 @@ namespace njo
         g.drawText ("NJOHRR", juce::Rectangle<int> (impl->topBar.getX() + 16, impl->topBar.getY(), 130, impl->topBar.getHeight()), juce::Justification::centredLeft);
         auto model = juce::Rectangle<float> (t.getX() + 138, t.getY() + 13, 72, 18);
         g.setColour (red); g.fillRoundedRectangle (model, 1.5f);
-        g.setColour (juce::Colour (0xff101112)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : "SYNTH", model.toNearestInt(), juce::Justification::centred);
+        g.setColour (juce::Colour (0xff101112)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : (NJOHRR_MODULAR ? "MODULAR" : "SYNTH"), model.toNearestInt(), juce::Justification::centred);
         auto ver = juce::Rectangle<float> (t.getX() + 220, t.getY() + 14, 46, 16);
         g.setColour (line); g.drawRoundedRectangle (ver, 2.0f, 1.0f); g.setColour (dim); g.setFont (mono (8.0f, true)); g.drawText ("V1.0.0", ver.toNearestInt(), juce::Justification::centred);
         // VU
