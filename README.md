@@ -519,3 +519,12 @@ Every effect rack (main section and the OSC racks) offers **Waveguide** (Creativ
 - Differences to the original (memory per slot is limited): at most 32 taps, 6 early stages, 8 lines with 4 diffuser stages; delays are capped (pre-delay 85 ms, taps 170 ms, line 85 ms, diffuser stage 21 ms at 48 kHz); the loop feedback is one sample, not one block, long.
 - **Categories**: the "Add FX" page has a CATEGORY dropdown (All effects, Distortion, Analog / Console, Filter / EQ, Dynamics, Modulation, Delay / Reverb, Creative); in "All effects" every effect shows its category.
 - Tests: `python3 tools/fx/test_cloudseed.py --host <dsp_host>`; script `tools/fx/build_cloudseed.py` (marker FX-CLOUDSEED).
+
+## Eurorack rack (Njohrr Modular)
+
+The plugin Njohrr Modular has a second patch page, **EURORACK**: 20 module slots like a modular case. Each slot holds one module; every input jack takes one cable (a source: Synth L/R, Audio In L/R or output A/B of any slot) with its own gain. Signals are mono floats: audio +-1, pitch CV in octaves (0 = C4, 1 V/oct), gates 0 / 1. A cable from a later slot carries the previous sample (feedback possible).
+
+- Modules: MIDI-CV (pitch, gate, glide above 50 %, bend), VCO (sine/tri/saw/pulse, sub, V/Oct, FM, PWM), LFO (5 shapes, reset), ADSR (loop mode), VCF (LP/HP/BP/notch, TPT state variable, cutoff/reso CV, drive), VCA, Mixer, Noise (white/pink), S&H (sample/track, slew), Sequencer (8 steps, 1-8 length, clock/reset), Clock (x1/x2/x4//2, divided out), Attenuverter (2 channels), Slew, Folder (fold/clip/rectify), FX (any of the 33 effects of the FX page, slots 11-30 of the Bus racks), Output (mono/stereo sum), Ring Mod.
+- The sum of all Output modules is added to the output of the old patch matrix (set the Out cables of the PATCH page to Off if only the rack should sound). The synth voices still play on MIDI; MIDI-CV modules use the same notes.
+- Code: `tools/modular/euro_modules.py` (module table), `build_euro.py` (parameters 10000 + 32 * slot + k, marker EURO), `euro_engine.cmajor.txt` (engine, inserted by `build_modplugin.py`), `gen_euro_h.py` (-> `native_ui/NjoEuro.h`), `native_ui/pages/EuroPage.cpp`. Tests: `python3 tools/modular/test_euro.py --host <dsp_host built from patch_mod with -DDSP_FX>`.
+- Caveats: mono per module, no oversampling (naive saw/pulse use PolyBLEP, the filter is not band limited above the cutoff), the plugin output has a DC blocker (very slow LFOs are not audible directly, they work as CV), UI compiled but not checked in a host.

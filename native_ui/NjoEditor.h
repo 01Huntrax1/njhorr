@@ -44,9 +44,9 @@ namespace njo
         juce::OwnedArray<OscPage> osc, fltPages, distPages, resoPages;
         juce::OwnedArray<FxPage> fxPages;   // the FX racks of the six oscillators
         int fltOsc = 0, distOsc = 0, resoOsc = 0;       // the oscillator the FILTER / DIST tabs reopen
-        FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx; PatchPage patch;
+        FmPage fm; FmPage fmRm; GlobalPage glob; FxPage fx; PatchPage patch; EuroPage euro;
         ModEditors editors, editorsFull; FreqEditor freq, freqFull; SeqEditor seq, seqFull; RndEditor rndFull; MatrixPanel matrix; SeqArpPage seqArp;
-        int fxTab = 0;                      // Njohrr Modular, effects group: 0 = patch, 1 = rack
+        int fxTab = 0;                      // Njohrr Modular, effects group: 0 = patch, 1 = rack, 2 = Eurorack
         int stripTab = 0, modTab = 0;       // 0 = envelopes / LFOs, 1 = Freq modulators, 2 = step sequencers
         ManagerBar manager;
         juce::OwnedArray<juce::TextButton> railButtons, subButtons;   // plain buttons, painted by us

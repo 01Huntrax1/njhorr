@@ -60,6 +60,18 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     };
 
+    // Njohrr Modular: Eurorack-style rack of 20 slots (tools/modular/build_euro.py, native_ui/NjoEuro.h)
+    class EuroPage : public juce::Component
+    {
+    public:
+        explicit EuroPage (Ctx&);
+        ~EuroPage() override;
+        void paint (juce::Graphics&) override;
+        void resized() override;
+        void mouseDown (const juce::MouseEvent&) override;
+        struct Impl; std::unique_ptr<Impl> impl;
+    };
+
     // the three FX racks (Bus 1, Bus 2, Main) with 10 slots each and the output section
     class FxPage : public juce::Component
     {
