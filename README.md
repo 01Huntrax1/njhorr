@@ -541,3 +541,7 @@ Own implementation of Gorkem Sen's Yaybahar, written from the published architec
 ### Key tracking (Waveguide and Yaybahar)
 
 Both pitched effects have key tracking modes ("... Key": Waveguide modes 6-10, Yaybahar modes 4-6). The string then follows the last played note: the **Pitch** knob transposes relative to the note, 261.6 Hz = unison, 130.8 Hz = an octave down, 523 Hz = an octave up. The effect is retuned on every note-on (also from the arpeggiator), and it works in the Bus / Main racks of the synth and of Njohrr Modular, and in the FX modules of the Eurorack rack; the per voice racks of the oscillators ignore it. Code `tools/fx/build_fxkey.py` (marker FX-KEYTRACK), tests in `tools/fx/test_ybfx.py`.
+
+### Effect displays
+
+Every effect has a display above its knobs now (schematic: it follows the knobs and the mode, it is not a measurement of the signal): transfer curves for AW PurestDrive / Spiral / Drive / Tube / Density / Channel (flavour per mode) and Plasma (12 styles, drive, asymmetry), the fader law of AW Console 7, frequency responses for AW ToTape (head bump, soft highs) and AW MackEQ, the grain cloud of Granular (size, pitch, density, texture, feedback), ring modulation / vocoder bands / frequency shift of Warp, the impulse response of CloudSeed, the resonance comb of the Waveguide (odd harmonics for the tube, second comb for the drones) and a string - two springs - two drums picture of the Yaybahar. Code: `native_ui/pages/FxPage.cpp` (Display::paint).

@@ -290,6 +290,22 @@ namespace njo
                     return p;
                 };
 
+                // transfer curve helper (input -1..1 -> output -1..1, normalised so that full scale stays at full scale)
+                auto xfer = [&] (std::function<double (double)> f, const juce::String& txt)
+                {
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
+                    stroke (curve ([&] (double t) { return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, f (t * 2 - 1)); }));
+                    label (txt);
+                };
+                auto sgn = [] (double v) { return v < 0 ? -1.0 : 1.0; };
+                auto dbAxis = [&]   // frequency curve with a 0 dB line, +-18 dB
+                {
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight());
+                    freqAxis();
+                };
+                auto dbCurve = [&] (std::function<double (double)> db) { auto p = curve ([&] (double t) { return (juce::jlimit (-18.0, 18.0, db (20.0 * std::pow (1000.0, t))) + 18.0) / 36.0; }); fill (p, 0.5); stroke (p); };
+
                 if (ty == 9)   // Filter: response
                 {
                     const double fc = 20.0 * std::pow (1000.0, P (0)), res = P (1);
@@ -571,6 +587,259 @@ namespace njo
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
                     g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X ((th + 60.0) / 60.0), r.getY(), r.getBottom());
                     stroke (p); label ("THRESH " + juce::String (th, 1) + " dB   " + juce::String (ratio, 1) + ":1");
+                }
+                else if (ty == 19)   // AW PurestDrive
+                {
+                    const double gn = 0.5 + 2.5 * P (0);
+                    xfer ([&] (double x) { return std::sin (juce::jlimit (-1.5708, 1.5708, x * gn)) / std::sin (juce::jlimit (-1.5708, 1.5708, gn)); }, "INPUT -> OUTPUT   DRIVE " + juce::String (juce::roundToInt (P (0) * 100)) + "%");
+                }
+                else if (ty == 20)   // AW Spiral
+                {
+                    const double gn = 0.2 + 3.0 * P (0), og = P (3);
+                    xfer ([&] (double x) { return og * std::sin (juce::jlimit (-1.5708, 1.5708, x * gn)) / std::sin (juce::jlimit (-1.5708, 1.5708, gn)); },
+                          "INPUT -> OUTPUT   IN " + juce::String (juce::roundToInt (P (0) * 100)) + "%   HP " + juce::String (juce::roundToInt (P (1) * 100)) + "%   PRESENCE " + juce::String (juce::roundToInt (P (2) * 100)) + "%");
+                }
+                else if (ty == 21)   // AW Drive
+                {
+                    const double gn = 1.0 + 11.0 * P (0), og = P (2);
+                    xfer ([&] (double x) { return og * std::tanh (x * gn) / std::tanh (gn); }, "INPUT -> OUTPUT   DRIVE " + juce::String (juce::roundToInt (P (0) * 100)) + "%   HP " + juce::String (juce::roundToInt (P (1) * 100)) + "%");
+                }
+                else if (ty == 22)   // AW Tube: asymmetric, even harmonics
+                {
+                    const double gn = 0.5 + 3.0 * P (0), tb = P (1);
+                    auto sh = [&] (double u) { return u >= 0 ? std::tanh (u * (1.0 + 1.5 * tb)) : std::tanh (u * (1.0 - 0.5 * tb)) * (1.0 - 0.25 * tb); };
+                    xfer ([&] (double x) { return sh (x * gn) / sh (gn); }, "INPUT -> OUTPUT   TUBE " + juce::String (juce::roundToInt (P (1) * 100)) + "%");
+                }
+                else if (ty == 23)   // AW Density: low levels are raised
+                {
+                    const double dn = 1.0 + 3.0 * P (0), og = P (2);
+                    xfer ([&] (double x) { return og * sgn (x) * (1.0 - std::pow (1.0 - std::abs (x), dn)); }, "INPUT -> OUTPUT   DENSITY " + juce::String (juce::roundToInt (P (0) * 100)) + "%");
+                }
+                else if (ty == 24)   // AW Console 7: fader law
+                {
+                    const double fd = P (0);
+                    auto gdb = [&] (double f) { return 20.0 * std::log10 (juce::jmax (1e-4, std::pow (f / 0.772, 2.2))); };
+                    auto p = curve ([&] (double t) { return juce::jlimit (0.0, 1.0, (gdb (t) + 60.0) / 72.0); });
+                    fill (p, 0.0); stroke (p);
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (60.0 / 72.0), r.getX(), r.getRight());
+                    const float px = X (fd), py = Y (juce::jlimit (0.0, 1.0, (gdb (fd) + 60.0) / 72.0));
+                    g.setColour (ink); g.fillEllipse (px - 4, py - 4, 8, 8);
+                    label ("FADER " + juce::String (juce::jmax (-60.0, gdb (fd)), 1) + " dB");
+                }
+                else if (ty == 25)   // AW Channel: console flavour
+                {
+                    const double gn = 1.0 + 7.0 * P (0), og = P (1);
+                    auto sh = [&] (double u)
+                    {
+                        switch (juce::jlimit (0, 4, mode))
+                        {
+                            case 0: return std::tanh (u);                                              // Neve: round
+                            case 1: return u / std::pow (1.0 + std::pow (std::abs (u), 3.0), 1.0 / 3.0);   // API: harder knee
+                            case 2: return std::tanh (u * 1.4) * 0.96 + 0.04 * u / (1.0 + std::abs (u));  // SSL: tight
+                            case 3: return u >= 0 ? std::tanh (u * 0.8) : std::tanh (u * 1.1);             // Teac: tape-like asymmetry
+                            default: return std::atan (u * 1.2) / 1.2 * 0.9;                                 // Mackie: soft
+                        }
+                    };
+                    xfer ([&] (double x) { return og * sh (x * gn) / sh (gn); }, juce::String ("CHANNEL ") + (mode == 0 ? "NEVE" : mode == 1 ? "API" : mode == 2 ? "SSL" : mode == 3 ? "TEAC" : "MACKIE") + "   DRIVE " + juce::String (juce::roundToInt (P (0) * 100)) + "%");
+                }
+                else if (ty == 26)   // AW ToTape: head bump and soft high end
+                {
+                    const double bump = 8.0 * P (2), soft = P (1);
+                    dbAxis();
+                    dbCurve ([&] (double f)
+                    {
+                        double x = std::log2 (f / 70.0), b = bump * std::exp (-x * x * 0.9);
+                        double hi = -10.0 * soft * (1.0 - 1.0 / (1.0 + std::pow (f / (14000.0 - 9000.0 * soft), 2.0)));
+                        return b + hi - 0.5 * (0.5 - P (3)) * 0;   // flutter does not change the response
+                    });
+                    label ("BUMP " + juce::String (bump, 1) + " dB   SOFT " + juce::String (juce::roundToInt (soft * 100)) + "%   FLUTTER " + juce::String (juce::roundToInt (P (3) * 100)) + "%");
+                }
+                else if (ty == 27)   // AW MackEQ: low and high shelf
+                {
+                    const double gL = (P (2) - 0.5) * 24.0, gH = (P (1) - 0.5) * 24.0;
+                    dbAxis();
+                    dbCurve ([&] (double f) { return gL / (1.0 + std::pow (f / 100.0, 2.0)) + gH / (1.0 + std::pow (8000.0 / f, 2.0)); });
+                    label ("LO " + juce::String (gL, 1) + " dB   HI " + juce::String (gH, 1) + " dB   TRIM " + juce::String (juce::roundToInt (P (0) * 100)) + "%");
+                }
+                else if (ty == 28)   // Plasma: transfer curve of the style, with drive and asymmetry
+                {
+                    const double gn = std::pow (10.0, 40.0 * P (0) / 20.0), bias = (P (1) - 0.5) * 2.0 * 0.6;
+                    auto sh = [&] (double u)
+                    {
+                        switch (juce::jlimit (0, 11, mode))
+                        {
+                            case 0: return std::tanh (u);
+                            case 1: return juce::jlimit (-1.0, 1.0, u);
+                            case 2: { double y = u; while (y > 1 || y < -1) y = y > 1 ? 2 - y : -2 - y; return y; }
+                            case 3: return u > 0 ? std::tanh (u) : 0.0;
+                            case 4: return u >= 0 ? std::tanh (u * 2.0) : juce::jlimit (-0.6, 0.0, u * 3.0);
+                            case 5: return u >= 0 ? 1.0 - std::exp (-u) : -(1.0 - std::exp (u * 0.7)) * 0.85;
+                            case 6: return std::atan (u * 1.5708) / 1.5708;
+                            case 7: return u / (1.0 + std::abs (u));
+                            case 8: return u >= 0 ? 1.0 - std::exp (-u * 1.2) : std::exp (u * 1.2) - 1.0;
+                            case 9: return std::tanh (u) * 0.85 + 0.15 * std::sin (u * 6.0);
+                            case 10: { double y = std::asin (std::sin (u * 1.5708)) / 1.5708; return y; }
+                            default: { double c = juce::jlimit (-1.0, 1.0, u); return 1.5 * (c - c * c * c / 3.0) / 1.0; }
+                        }
+                    };
+                    const double ref = std::max (0.05, std::abs (sh (gn)));
+                    xfer ([&] (double x) { return (sh (x * gn + bias * gn) - sh (bias * gn)) / ref; },
+                          "INPUT -> OUTPUT   " + juce::String (40.0 * P (0), 1) + " dB   ASYM " + juce::String (juce::roundToInt ((P (1) - 0.5) * 200)) + "%   " + juce::String (std::initializer_list<const char*> { "HP", "LP", "DUAL", "PEAK" }.begin()[juce::jmin (3, (int) (P (3) * 4))]));
+                }
+                else if (ty == 29)   // Granular: grains in the buffer
+                {
+                    const double pos = P (0), sizeMs = 20.0 * std::pow (30.0, P (1)), semis = (P (2) - 0.5) * 48.0, dens = P (3), tex = P (4), fb = P (5);
+                    const double span = 1.2;   // seconds shown
+                    g.setColour (col.withAlpha (0.18f)); g.strokePath (curve ([&] (double t) { return 0.5 + 0.28 * std::sin (t * 2 * pi * 9.0) * (0.55 + 0.45 * std::sin (t * 2 * pi * 2.3)); }, 480), juce::PathStrokeType (1.0f));
+                    juce::Random rng (5);
+                    const int n = mode == 1 ? 6 : 3 + juce::roundToInt (dens * 18.0);
+                    const double cx = mode == 3 ? 0.5 : pos;
+                    for (int k = 0; k < n; ++k)
+                    {
+                        double t0 = juce::jlimit (0.0, 0.95, cx + (rng.nextDouble() - 0.5) * (0.04 + 0.6 * tex));
+                        double wd = juce::jlimit (0.015, 0.6, sizeMs / 1000.0 / span);
+                        double fr = 5.0 * std::pow (2.0, semis / 12.0) * (mode == 2 ? 1.0 : 0.85 + 0.3 * rng.nextDouble());
+                        double yc = 0.5 + (rng.nextDouble() - 0.5) * 0.5;
+                        juce::Path gp;
+                        for (int i = 0; i <= 40; ++i)
+                        {
+                            double u = (double) i / 40, win = 0.5 - 0.5 * std::cos (2 * pi * u);
+                            double xx = t0 + u * wd; if (xx > 1.0) break;
+                            double yy = yc + 0.22 * win * std::sin (u * 2 * pi * fr);
+                            if (i == 0) gp.startNewSubPath (X (xx), Y (yy)); else gp.lineTo (X (xx), Y (yy));
+                        }
+                        stroke (gp, 0.35f + 0.5f * (float) (1.0 - (double) k / n), 1.4f);
+                    }
+                    if (fb > 0.02 && mode != 2)   // feedback: faint repeats of the grain cloud
+                    {
+                        g.setColour (col.withAlpha (0.25f)); for (int k = 1; k < 4; ++k) g.fillRect (X (juce::jmin (1.0, cx + 0.12 * k)), Y (0.5 + 0.35 * std::pow (fb, k)), 2.0f, (float) (0.7 * std::pow (fb, k) * H));
+                    }
+                    g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (cx), r.getY(), 2.0f, H);
+                    label (juce::String (std::initializer_list<const char*> { "GRANULAR", "FREEZE", "PITCH SHIFT", "LOOPING DELAY" }.begin()[juce::jlimit (0, 3, mode)]) + "   " + juce::String (juce::roundToInt (sizeMs)) + " ms grains   " + juce::String (semis, 1) + " st");
+                }
+                else if (ty == 30)   // Warp: the four modes
+                {
+                    const double amt = P (0), ratio = 0.5 + 6.0 * P (2), shape = P (3);
+                    if (mode <= 1)
+                    {
+                        auto in = [&] (double t) { return std::sin (t * 2 * pi * 3.0); };
+                        auto md = [&] (double t) { return std::sin (t * 2 * pi * 3.0 * ratio); };
+                        g.setColour (juce::Colours::white.withAlpha (0.18f)); g.strokePath (curve ([&] (double t) { return 0.5 + 0.4 * in (t); }, 480), juce::PathStrokeType (1.0f));
+                        auto p = curve ([&] (double t)
+                        {
+                            double m = md (t); if (mode == 1) m = juce::jlimit (-1.0, 1.0, m * (1.0 + 4.0 * shape));
+                            return 0.5 + 0.4 * ((1.0 - amt) * in (t) + amt * in (t) * m);
+                        }, 480);
+                        stroke (p); label (juce::String (mode == 0 ? "ANALOG RING MOD" : "DIGITAL RING MOD") + "   x" + juce::String (ratio, 2) + " pitch ratio   " + juce::String (juce::roundToInt (amt * 100)) + "% amount");
+                    }
+                    else if (mode == 2)
+                    {
+                        juce::Random rng (11);
+                        for (int k = 0; k < 20; ++k)
+                        {
+                            double e = (0.25 + 0.75 * rng.nextDouble()) * (0.35 + 0.65 * amt) * (1.0 - 0.5 * std::abs (k / 19.0 - 0.35));
+                            g.setColour (col.withAlpha (0.3f + 0.6f * (float) e)); g.fillRect (X ((k + 0.15) / 20.0), Y (0.04 + 0.9 * e), W / 20.0f * 0.7f, (float) (0.9 * e * H));
+                        }
+                        label ("VOCODER   20 bands   " + juce::String (juce::roundToInt (amt * 100)) + "% amount");
+                    }
+                    else
+                    {
+                        const double sh2 = (P (2) - 0.5) * 0.5;
+                        for (int k = 1; k <= 8; ++k)
+                        {
+                            double a = 1.0 / k, x0 = 0.08 + 0.1 * k;
+                            g.setColour (juce::Colours::white.withAlpha (0.25f)); g.fillRect (X (x0), Y (0.04 + 0.8 * a), 2.0f, (float) (0.8 * a * H));
+                            double x1 = x0 + sh2; if (x1 > 0 && x1 < 1) { g.setColour (col.withAlpha (0.85f)); g.fillRect (X (x1), Y (0.04 + 0.8 * a), 2.5f, (float) (0.8 * a * H)); }
+                        }
+                        label ("FREQUENCY SHIFT   " + juce::String (juce::roundToInt ((P (2) - 0.5) * 2.0 * 2000.0)) + " Hz (shape only)");
+                    }
+                }
+                else if (ty == 31)   // CloudSeed: impulse response
+                {
+                    const double dec = 0.2 * std::pow (150.0, P (0)), size = P (1), damp = P (2), pre = P (3) * 0.08, mod = P (4), early = P (5);
+                    const double span = juce::jmin (dec * 1.15, 12.0) + pre;
+                    juce::Random rng (9);
+                    const int n = 160;
+                    for (int i = 0; i < n; ++i)
+                    {
+                        double t = (double) i / n * span; if (t < pre) continue;
+                        double tt = t - pre, e = std::pow (10.0, -3.0 * tt / dec);
+                        double dens = juce::jlimit (0.15, 1.0, tt / (0.25 + 0.5 * size));   // the echo density grows
+                        if (rng.nextDouble() > 0.35 + 0.65 * dens) continue;
+                        e *= (0.5 + 0.5 * rng.nextDouble()) * (1.0 - 0.35 * damp * (tt / dec)) * (1.0 + 0.2 * mod * std::sin (tt * 25.0));
+                        g.setColour (col.withAlpha (0.25f + 0.6f * (float) e)); g.fillRect (X (t / span), Y (0.04 + 0.9 * e), 2.0f, (float) (0.9 * juce::jlimit (0.0, 1.0, e) * H));
+                    }
+                    const int ne = 4 + juce::roundToInt (early * 9.0);   // early reflections
+                    for (int k = 0; k < ne; ++k)
+                    {
+                        double t = pre + (0.004 + 0.07 * size) * (k + 1) / ne * (0.8 + 0.4 * rng.nextDouble());
+                        g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (t / span), Y (0.04 + 0.9 * (0.4 + 0.5 * early) * std::pow (0.8, k)), 2.0f, (float) (0.9 * (0.4 + 0.5 * early) * std::pow (0.8, k) * H));
+                    }
+                    g.setColour (ink.withAlpha (0.8f)); g.fillRect (X (pre / span), Y (0.95), 2.0f, (float) (0.9 * H));
+                    label (juce::String (dec, 2) + " s decay   " + juce::String (juce::roundToInt (P (3) * 80)) + " ms pre-delay");
+                }
+                else if (ty == 32)   // Waveguide: the resonances of the loop
+                {
+                    const int mm = mode >= 5 ? mode - 5 : mode;
+                    const bool key = mode >= 5;
+                    const double f0 = 30.0 * std::pow (2000.0 / 30.0, P (0)), t60 = 0.05 * std::pow (160.0, P (1)), fc = 500.0 * std::pow (32.0, P (2)), cent = 50.0 * P (3);
+                    auto x = [&] (double f) { return std::log (f / 20.0) / std::log (1000.0); };
+                    auto bars = [&] (double base, double w, float al)
+                    {
+                        for (int n = 1; n < 80; ++n)
+                        {
+                            if (mm == 1 && (n % 2) == 0) continue;
+                            double f = base * n; if (f > 20000.0) break;
+                            double a = juce::jlimit (0.0, 1.0, w / (n * std::sqrt (1.0 + (f / fc) * (f / fc))) * (0.5 + 0.5 * std::min (1.0, t60 / 2.0)));
+                            g.setColour (col.withAlpha (al)); g.fillRect (X (x (f)) - 1.0f, Y (0.04 + 0.92 * std::sqrt (a)), 2.0f, (float) (0.92 * std::sqrt (a) * H));
+                        }
+                    };
+                    freqAxis();
+                    bars (f0, 1.0, 0.9f);
+                    if (mm == 2) bars (f0 * std::pow (2.0, (3.0 + cent) / 1200.0), 0.9, 0.5f);
+                    else if (mm == 3) bars (f0 * 1.5, 0.8, 0.5f);
+                    else if (mm == 4) bars (f0 * 0.5, 0.8, 0.5f);
+                    label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (f0, 1) + " Hz   T60 " + juce::String (t60, 2) + " s");
+                }
+                else if (ty == 33)   // Yaybahar: string -> springs -> drums
+                {
+                    const bool key = mode >= 3; const int mm = key ? mode - 3 : mode;
+                    const double f0 = 40.0 * std::pow (20.0, P (0)), sprMs = 20.0 * std::pow (12.5, P (1)), dec = P (2), disp = P (3), fm = 40.0 * std::pow (6.25, P (4)), damp = P (5);
+                    // string
+                    const float sx0 = X (0.02), sx1 = X (0.2), cy = Y (0.5);
+                    g.setColour (ink.withAlpha (0.6f)); g.drawLine (sx0, cy, sx1, cy, 1.5f);
+                    juce::Path sp; for (int i = 0; i <= 60; ++i) { float u = (float) i / 60.0f, yy = cy + (float) (0.18 * H * std::sin (u * pi) * std::sin (u * 2 * pi * 2.0 + 0.0)); if (i == 0) sp.startNewSubPath (sx0 + u * (sx1 - sx0), yy); else sp.lineTo (sx0 + u * (sx1 - sx0), yy); }
+                    stroke (sp, 0.9f, 1.8f);
+                    // two springs: the turns get longer with the spring time, the dispersion spreads them
+                    auto spring = [&] (float y0, float y1, float len, int v)
+                    {
+                        const int turns = 6 + juce::roundToInt ((v == 1 && mm != 1 ? 1.37 : 1.0) * 14.0 * P (1));
+                        juce::Path p; const float x0 = X (0.24), x1 = x0 + (X (0.62) - x0) * len;
+                        for (int i = 0; i <= turns * 12; ++i)
+                        {
+                            float u = (float) i / (float) (turns * 12), uu = (float) std::pow ((double) u, 1.0 + 0.8 * disp);
+                            float xx = x0 + uu * (x1 - x0), yb = y0 + (y1 - y0) * u, yy = yb + 0.07f * H * (float) std::sin (u * turns * 2 * pi);
+                            if (i == 0) p.startNewSubPath (xx, yy); else p.lineTo (xx, yy);
+                        }
+                        stroke (p, 0.9f, 1.6f); return x1;
+                    };
+                    const float ya = Y (0.5) - 0.0f;
+                    const float xa = spring (cy, Y (0.74), 0.72f + 0.28f * (float) dec, 0);
+                    const float xb = spring (cy, Y (0.26), 0.72f + 0.28f * (float) dec, 1);
+                    g.setColour (ink.withAlpha (0.35f)); g.drawLine (sx1, cy, X (0.24), cy, 1.2f); juce::ignoreUnused (ya);
+                    // drums: the lower the tuning, the bigger the drum
+                    auto drum = [&] (float cx, float cyy, double hz)
+                    {
+                        float rr = (float) juce::jlimit (0.06, 0.22, 0.30 - 0.16 * std::log (hz / 20.0) / std::log (20.0)) * H;
+                        juce::Rectangle<float> e (cx - rr * 1.2f, cyy - rr, rr * 2.4f, rr * 2.0f);
+                        g.setColour (col.withAlpha (0.08f + 0.18f * (float) dec)); g.fillEllipse (e);
+                        g.setColour (col.withAlpha (0.9f)); g.drawEllipse (e, 2.0f);
+                        g.setColour (col.withAlpha (0.45f)); g.drawEllipse (e.reduced (rr * 0.55f), 1.0f); g.drawLine (e.getX(), cyy, e.getRight(), cyy, 0.8f);
+                    };
+                    drum (X (0.77), Y (0.74), fm * (mm == 2 ? 0.6 : 1.0));
+                    drum (X (0.77), Y (0.26), fm * (mm == 0 ? 0.5 : (mm == 1 ? 0.94 : 0.3)));
+                    juce::ignoreUnused (xa, xb, damp);
+                    label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (juce::roundToInt (f0)) + " Hz string   " + juce::String (juce::roundToInt (sprMs)) + " ms spring   " + juce::String (juce::roundToInt (fm)) + " Hz drum");
                 }
             }
         };
