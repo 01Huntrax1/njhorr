@@ -1571,6 +1571,387 @@ processor Eisenpuls_Synth
     input event float param1890 [[ name: "OSC 6 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     // PHYS-DECL-END
     // OSCFX-DSP: per oscillator effect rack
+    // EURO
+    input event float param10000 [[ name: "Euro M1 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10001 [[ name: "Euro M1 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10002 [[ name: "Euro M1 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10003 [[ name: "Euro M1 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10004 [[ name: "Euro M1 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10005 [[ name: "Euro M1 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10006 [[ name: "Euro M1 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10007 [[ name: "Euro M1 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10008 [[ name: "Euro M1 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10009 [[ name: "Euro M1 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10010 [[ name: "Euro M1 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10014 [[ name: "Euro M1 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10011 [[ name: "Euro M1 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10015 [[ name: "Euro M1 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10012 [[ name: "Euro M1 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10016 [[ name: "Euro M1 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10013 [[ name: "Euro M1 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10017 [[ name: "Euro M1 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10018 [[ name: "Euro M1 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10032 [[ name: "Euro M2 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10033 [[ name: "Euro M2 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10034 [[ name: "Euro M2 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10035 [[ name: "Euro M2 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10036 [[ name: "Euro M2 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10037 [[ name: "Euro M2 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10038 [[ name: "Euro M2 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10039 [[ name: "Euro M2 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10040 [[ name: "Euro M2 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10041 [[ name: "Euro M2 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10042 [[ name: "Euro M2 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10046 [[ name: "Euro M2 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10043 [[ name: "Euro M2 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10047 [[ name: "Euro M2 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10044 [[ name: "Euro M2 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10048 [[ name: "Euro M2 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10045 [[ name: "Euro M2 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10049 [[ name: "Euro M2 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10050 [[ name: "Euro M2 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10064 [[ name: "Euro M3 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10065 [[ name: "Euro M3 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10066 [[ name: "Euro M3 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10067 [[ name: "Euro M3 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10068 [[ name: "Euro M3 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10069 [[ name: "Euro M3 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10070 [[ name: "Euro M3 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10071 [[ name: "Euro M3 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10072 [[ name: "Euro M3 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10073 [[ name: "Euro M3 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10074 [[ name: "Euro M3 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10078 [[ name: "Euro M3 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10075 [[ name: "Euro M3 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10079 [[ name: "Euro M3 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10076 [[ name: "Euro M3 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10080 [[ name: "Euro M3 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10077 [[ name: "Euro M3 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10081 [[ name: "Euro M3 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10082 [[ name: "Euro M3 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10096 [[ name: "Euro M4 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10097 [[ name: "Euro M4 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10098 [[ name: "Euro M4 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10099 [[ name: "Euro M4 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10100 [[ name: "Euro M4 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10101 [[ name: "Euro M4 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10102 [[ name: "Euro M4 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10103 [[ name: "Euro M4 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10104 [[ name: "Euro M4 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10105 [[ name: "Euro M4 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10106 [[ name: "Euro M4 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10110 [[ name: "Euro M4 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10107 [[ name: "Euro M4 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10111 [[ name: "Euro M4 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10108 [[ name: "Euro M4 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10112 [[ name: "Euro M4 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10109 [[ name: "Euro M4 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10113 [[ name: "Euro M4 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10114 [[ name: "Euro M4 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10128 [[ name: "Euro M5 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10129 [[ name: "Euro M5 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10130 [[ name: "Euro M5 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10131 [[ name: "Euro M5 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10132 [[ name: "Euro M5 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10133 [[ name: "Euro M5 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10134 [[ name: "Euro M5 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10135 [[ name: "Euro M5 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10136 [[ name: "Euro M5 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10137 [[ name: "Euro M5 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10138 [[ name: "Euro M5 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10142 [[ name: "Euro M5 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10139 [[ name: "Euro M5 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10143 [[ name: "Euro M5 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10140 [[ name: "Euro M5 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10144 [[ name: "Euro M5 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10141 [[ name: "Euro M5 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10145 [[ name: "Euro M5 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10146 [[ name: "Euro M5 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10160 [[ name: "Euro M6 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10161 [[ name: "Euro M6 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10162 [[ name: "Euro M6 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10163 [[ name: "Euro M6 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10164 [[ name: "Euro M6 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10165 [[ name: "Euro M6 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10166 [[ name: "Euro M6 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10167 [[ name: "Euro M6 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10168 [[ name: "Euro M6 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10169 [[ name: "Euro M6 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10170 [[ name: "Euro M6 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10174 [[ name: "Euro M6 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10171 [[ name: "Euro M6 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10175 [[ name: "Euro M6 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10172 [[ name: "Euro M6 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10176 [[ name: "Euro M6 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10173 [[ name: "Euro M6 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10177 [[ name: "Euro M6 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10178 [[ name: "Euro M6 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10192 [[ name: "Euro M7 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10193 [[ name: "Euro M7 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10194 [[ name: "Euro M7 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10195 [[ name: "Euro M7 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10196 [[ name: "Euro M7 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10197 [[ name: "Euro M7 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10198 [[ name: "Euro M7 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10199 [[ name: "Euro M7 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10200 [[ name: "Euro M7 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10201 [[ name: "Euro M7 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10202 [[ name: "Euro M7 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10206 [[ name: "Euro M7 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10203 [[ name: "Euro M7 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10207 [[ name: "Euro M7 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10204 [[ name: "Euro M7 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10208 [[ name: "Euro M7 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10205 [[ name: "Euro M7 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10209 [[ name: "Euro M7 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10210 [[ name: "Euro M7 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10224 [[ name: "Euro M8 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10225 [[ name: "Euro M8 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10226 [[ name: "Euro M8 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10227 [[ name: "Euro M8 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10228 [[ name: "Euro M8 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10229 [[ name: "Euro M8 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10230 [[ name: "Euro M8 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10231 [[ name: "Euro M8 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10232 [[ name: "Euro M8 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10233 [[ name: "Euro M8 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10234 [[ name: "Euro M8 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10238 [[ name: "Euro M8 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10235 [[ name: "Euro M8 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10239 [[ name: "Euro M8 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10236 [[ name: "Euro M8 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10240 [[ name: "Euro M8 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10237 [[ name: "Euro M8 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10241 [[ name: "Euro M8 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10242 [[ name: "Euro M8 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10256 [[ name: "Euro M9 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10257 [[ name: "Euro M9 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10258 [[ name: "Euro M9 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10259 [[ name: "Euro M9 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10260 [[ name: "Euro M9 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10261 [[ name: "Euro M9 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10262 [[ name: "Euro M9 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10263 [[ name: "Euro M9 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10264 [[ name: "Euro M9 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10265 [[ name: "Euro M9 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10266 [[ name: "Euro M9 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10270 [[ name: "Euro M9 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10267 [[ name: "Euro M9 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10271 [[ name: "Euro M9 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10268 [[ name: "Euro M9 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10272 [[ name: "Euro M9 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10269 [[ name: "Euro M9 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10273 [[ name: "Euro M9 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10274 [[ name: "Euro M9 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10288 [[ name: "Euro M10 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10289 [[ name: "Euro M10 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10290 [[ name: "Euro M10 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10291 [[ name: "Euro M10 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10292 [[ name: "Euro M10 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10293 [[ name: "Euro M10 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10294 [[ name: "Euro M10 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10295 [[ name: "Euro M10 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10296 [[ name: "Euro M10 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10297 [[ name: "Euro M10 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10298 [[ name: "Euro M10 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10302 [[ name: "Euro M10 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10299 [[ name: "Euro M10 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10303 [[ name: "Euro M10 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10300 [[ name: "Euro M10 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10304 [[ name: "Euro M10 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10301 [[ name: "Euro M10 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10305 [[ name: "Euro M10 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10306 [[ name: "Euro M10 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10320 [[ name: "Euro M11 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10321 [[ name: "Euro M11 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10322 [[ name: "Euro M11 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10323 [[ name: "Euro M11 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10324 [[ name: "Euro M11 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10325 [[ name: "Euro M11 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10326 [[ name: "Euro M11 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10327 [[ name: "Euro M11 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10328 [[ name: "Euro M11 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10329 [[ name: "Euro M11 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10330 [[ name: "Euro M11 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10334 [[ name: "Euro M11 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10331 [[ name: "Euro M11 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10335 [[ name: "Euro M11 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10332 [[ name: "Euro M11 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10336 [[ name: "Euro M11 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10333 [[ name: "Euro M11 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10337 [[ name: "Euro M11 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10338 [[ name: "Euro M11 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10352 [[ name: "Euro M12 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10353 [[ name: "Euro M12 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10354 [[ name: "Euro M12 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10355 [[ name: "Euro M12 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10356 [[ name: "Euro M12 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10357 [[ name: "Euro M12 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10358 [[ name: "Euro M12 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10359 [[ name: "Euro M12 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10360 [[ name: "Euro M12 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10361 [[ name: "Euro M12 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10362 [[ name: "Euro M12 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10366 [[ name: "Euro M12 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10363 [[ name: "Euro M12 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10367 [[ name: "Euro M12 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10364 [[ name: "Euro M12 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10368 [[ name: "Euro M12 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10365 [[ name: "Euro M12 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10369 [[ name: "Euro M12 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10370 [[ name: "Euro M12 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10384 [[ name: "Euro M13 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10385 [[ name: "Euro M13 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10386 [[ name: "Euro M13 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10387 [[ name: "Euro M13 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10388 [[ name: "Euro M13 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10389 [[ name: "Euro M13 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10390 [[ name: "Euro M13 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10391 [[ name: "Euro M13 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10392 [[ name: "Euro M13 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10393 [[ name: "Euro M13 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10394 [[ name: "Euro M13 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10398 [[ name: "Euro M13 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10395 [[ name: "Euro M13 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10399 [[ name: "Euro M13 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10396 [[ name: "Euro M13 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10400 [[ name: "Euro M13 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10397 [[ name: "Euro M13 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10401 [[ name: "Euro M13 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10402 [[ name: "Euro M13 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10416 [[ name: "Euro M14 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10417 [[ name: "Euro M14 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10418 [[ name: "Euro M14 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10419 [[ name: "Euro M14 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10420 [[ name: "Euro M14 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10421 [[ name: "Euro M14 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10422 [[ name: "Euro M14 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10423 [[ name: "Euro M14 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10424 [[ name: "Euro M14 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10425 [[ name: "Euro M14 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10426 [[ name: "Euro M14 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10430 [[ name: "Euro M14 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10427 [[ name: "Euro M14 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10431 [[ name: "Euro M14 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10428 [[ name: "Euro M14 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10432 [[ name: "Euro M14 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10429 [[ name: "Euro M14 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10433 [[ name: "Euro M14 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10434 [[ name: "Euro M14 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10448 [[ name: "Euro M15 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10449 [[ name: "Euro M15 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10450 [[ name: "Euro M15 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10451 [[ name: "Euro M15 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10452 [[ name: "Euro M15 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10453 [[ name: "Euro M15 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10454 [[ name: "Euro M15 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10455 [[ name: "Euro M15 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10456 [[ name: "Euro M15 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10457 [[ name: "Euro M15 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10458 [[ name: "Euro M15 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10462 [[ name: "Euro M15 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10459 [[ name: "Euro M15 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10463 [[ name: "Euro M15 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10460 [[ name: "Euro M15 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10464 [[ name: "Euro M15 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10461 [[ name: "Euro M15 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10465 [[ name: "Euro M15 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10466 [[ name: "Euro M15 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10480 [[ name: "Euro M16 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10481 [[ name: "Euro M16 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10482 [[ name: "Euro M16 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10483 [[ name: "Euro M16 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10484 [[ name: "Euro M16 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10485 [[ name: "Euro M16 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10486 [[ name: "Euro M16 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10487 [[ name: "Euro M16 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10488 [[ name: "Euro M16 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10489 [[ name: "Euro M16 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10490 [[ name: "Euro M16 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10494 [[ name: "Euro M16 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10491 [[ name: "Euro M16 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10495 [[ name: "Euro M16 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10492 [[ name: "Euro M16 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10496 [[ name: "Euro M16 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10493 [[ name: "Euro M16 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10497 [[ name: "Euro M16 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10498 [[ name: "Euro M16 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10512 [[ name: "Euro M17 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10513 [[ name: "Euro M17 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10514 [[ name: "Euro M17 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10515 [[ name: "Euro M17 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10516 [[ name: "Euro M17 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10517 [[ name: "Euro M17 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10518 [[ name: "Euro M17 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10519 [[ name: "Euro M17 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10520 [[ name: "Euro M17 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10521 [[ name: "Euro M17 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10522 [[ name: "Euro M17 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10526 [[ name: "Euro M17 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10523 [[ name: "Euro M17 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10527 [[ name: "Euro M17 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10524 [[ name: "Euro M17 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10528 [[ name: "Euro M17 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10525 [[ name: "Euro M17 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10529 [[ name: "Euro M17 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10530 [[ name: "Euro M17 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10544 [[ name: "Euro M18 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10545 [[ name: "Euro M18 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10546 [[ name: "Euro M18 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10547 [[ name: "Euro M18 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10548 [[ name: "Euro M18 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10549 [[ name: "Euro M18 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10550 [[ name: "Euro M18 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10551 [[ name: "Euro M18 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10552 [[ name: "Euro M18 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10553 [[ name: "Euro M18 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10554 [[ name: "Euro M18 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10558 [[ name: "Euro M18 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10555 [[ name: "Euro M18 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10559 [[ name: "Euro M18 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10556 [[ name: "Euro M18 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10560 [[ name: "Euro M18 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10557 [[ name: "Euro M18 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10561 [[ name: "Euro M18 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10562 [[ name: "Euro M18 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10576 [[ name: "Euro M19 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10577 [[ name: "Euro M19 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10578 [[ name: "Euro M19 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10579 [[ name: "Euro M19 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10580 [[ name: "Euro M19 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10581 [[ name: "Euro M19 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10582 [[ name: "Euro M19 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10583 [[ name: "Euro M19 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10584 [[ name: "Euro M19 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10585 [[ name: "Euro M19 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10586 [[ name: "Euro M19 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10590 [[ name: "Euro M19 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10587 [[ name: "Euro M19 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10591 [[ name: "Euro M19 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10588 [[ name: "Euro M19 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10592 [[ name: "Euro M19 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10589 [[ name: "Euro M19 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10593 [[ name: "Euro M19 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10594 [[ name: "Euro M19 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10608 [[ name: "Euro M20 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10609 [[ name: "Euro M20 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10610 [[ name: "Euro M20 Knob 2", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10611 [[ name: "Euro M20 Knob 3", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10612 [[ name: "Euro M20 Knob 4", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10613 [[ name: "Euro M20 Knob 5", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10614 [[ name: "Euro M20 Knob 6", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10615 [[ name: "Euro M20 Knob 7", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10616 [[ name: "Euro M20 Knob 8", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
+    input event float param10617 [[ name: "Euro M20 Mode", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10618 [[ name: "Euro M20 In 1 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10622 [[ name: "Euro M20 In 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10619 [[ name: "Euro M20 In 2 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10623 [[ name: "Euro M20 In 2 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10620 [[ name: "Euro M20 In 3 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10624 [[ name: "Euro M20 In 3 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10621 [[ name: "Euro M20 In 4 Src", min: 0.0, max: 44.0, init: 0.0, step: 1.0, automatable: false ]];
+    input event float param10625 [[ name: "Euro M20 In 4 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
+    input event float param10626 [[ name: "Euro M20 FX Type", min: 0.0, max: 32.0, init: 0.0, step: 1.0, automatable: false ]];
     // MODMAT
     input event float param9700 [[ name: "Patch M1 Cable 1 Src", min: 0.0, max: 18.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param9701 [[ name: "Patch M1 Cable 1 Gain", min: 0.0, max: 2.0, init: 1.0, step: 0.001, automatable: false ]];
@@ -6859,6 +7240,12 @@ processor Eisenpuls_Synth
     float driveAmt     = 0.1f;
     int[68]   mrSrc;    // MODMAT: source of every cable (see build_matrix.py)
     float[68] mrGain;
+    int[20]   eType;    // EURO: Eurorack rack (see build_euro.py)
+    int[20]   eMode;
+    int[20]   eRst;
+    int[80]   eSrc;
+    float[80] eGain;
+    float[160] eK;
     float panParam     = 0.0f;
     float panL         = 1.0f;
     float panR         = 1.0f;
@@ -9609,6 +9996,386 @@ processor Eisenpuls_Synth
     event param9885 (float v) { }
     event param9886 (float v) { }
     event param9887 (float v) { }
+    event param10000 (float v) { eType.at (0) = clamp (int (v + 0.5f), 0, 17); eRst.at (0) = 1; }
+    event param10001 (float v) { eK.at (0) = v; fxP.at (60) = v; fxDirty.at (10) = true; }
+    event param10002 (float v) { eK.at (1) = v; fxP.at (61) = v; fxDirty.at (10) = true; }
+    event param10003 (float v) { eK.at (2) = v; fxP.at (62) = v; fxDirty.at (10) = true; }
+    event param10004 (float v) { eK.at (3) = v; fxP.at (63) = v; fxDirty.at (10) = true; }
+    event param10005 (float v) { eK.at (4) = v; fxP.at (64) = v; fxDirty.at (10) = true; }
+    event param10006 (float v) { eK.at (5) = v; fxP.at (65) = v; fxDirty.at (10) = true; }
+    event param10007 (float v) { eK.at (6) = v; fxMix.at (10) = v; }
+    event param10008 (float v) { eK.at (7) = v; }
+    event param10009 (float v) { eMode.at (0) = clamp (int (v + 0.5f), 0, 7); }
+    event param10010 (float v) { eSrc.at (0) = clamp (int (v + 0.5f), 0, 44); }
+    event param10014 (float v) { eGain.at (0) = clamp (v, 0.0f, 2.0f); }
+    event param10011 (float v) { eSrc.at (1) = clamp (int (v + 0.5f), 0, 44); }
+    event param10015 (float v) { eGain.at (1) = clamp (v, 0.0f, 2.0f); }
+    event param10012 (float v) { eSrc.at (2) = clamp (int (v + 0.5f), 0, 44); }
+    event param10016 (float v) { eGain.at (2) = clamp (v, 0.0f, 2.0f); }
+    event param10013 (float v) { eSrc.at (3) = clamp (int (v + 0.5f), 0, 44); }
+    event param10017 (float v) { eGain.at (3) = clamp (v, 0.0f, 2.0f); }
+    event param10018 (float v) { fxSetType (10, int (v + 0.5f)); }
+    event param10032 (float v) { eType.at (1) = clamp (int (v + 0.5f), 0, 17); eRst.at (1) = 1; }
+    event param10033 (float v) { eK.at (8) = v; fxP.at (66) = v; fxDirty.at (11) = true; }
+    event param10034 (float v) { eK.at (9) = v; fxP.at (67) = v; fxDirty.at (11) = true; }
+    event param10035 (float v) { eK.at (10) = v; fxP.at (68) = v; fxDirty.at (11) = true; }
+    event param10036 (float v) { eK.at (11) = v; fxP.at (69) = v; fxDirty.at (11) = true; }
+    event param10037 (float v) { eK.at (12) = v; fxP.at (70) = v; fxDirty.at (11) = true; }
+    event param10038 (float v) { eK.at (13) = v; fxP.at (71) = v; fxDirty.at (11) = true; }
+    event param10039 (float v) { eK.at (14) = v; fxMix.at (11) = v; }
+    event param10040 (float v) { eK.at (15) = v; }
+    event param10041 (float v) { eMode.at (1) = clamp (int (v + 0.5f), 0, 7); }
+    event param10042 (float v) { eSrc.at (4) = clamp (int (v + 0.5f), 0, 44); }
+    event param10046 (float v) { eGain.at (4) = clamp (v, 0.0f, 2.0f); }
+    event param10043 (float v) { eSrc.at (5) = clamp (int (v + 0.5f), 0, 44); }
+    event param10047 (float v) { eGain.at (5) = clamp (v, 0.0f, 2.0f); }
+    event param10044 (float v) { eSrc.at (6) = clamp (int (v + 0.5f), 0, 44); }
+    event param10048 (float v) { eGain.at (6) = clamp (v, 0.0f, 2.0f); }
+    event param10045 (float v) { eSrc.at (7) = clamp (int (v + 0.5f), 0, 44); }
+    event param10049 (float v) { eGain.at (7) = clamp (v, 0.0f, 2.0f); }
+    event param10050 (float v) { fxSetType (11, int (v + 0.5f)); }
+    event param10064 (float v) { eType.at (2) = clamp (int (v + 0.5f), 0, 17); eRst.at (2) = 1; }
+    event param10065 (float v) { eK.at (16) = v; fxP.at (72) = v; fxDirty.at (12) = true; }
+    event param10066 (float v) { eK.at (17) = v; fxP.at (73) = v; fxDirty.at (12) = true; }
+    event param10067 (float v) { eK.at (18) = v; fxP.at (74) = v; fxDirty.at (12) = true; }
+    event param10068 (float v) { eK.at (19) = v; fxP.at (75) = v; fxDirty.at (12) = true; }
+    event param10069 (float v) { eK.at (20) = v; fxP.at (76) = v; fxDirty.at (12) = true; }
+    event param10070 (float v) { eK.at (21) = v; fxP.at (77) = v; fxDirty.at (12) = true; }
+    event param10071 (float v) { eK.at (22) = v; fxMix.at (12) = v; }
+    event param10072 (float v) { eK.at (23) = v; }
+    event param10073 (float v) { eMode.at (2) = clamp (int (v + 0.5f), 0, 7); }
+    event param10074 (float v) { eSrc.at (8) = clamp (int (v + 0.5f), 0, 44); }
+    event param10078 (float v) { eGain.at (8) = clamp (v, 0.0f, 2.0f); }
+    event param10075 (float v) { eSrc.at (9) = clamp (int (v + 0.5f), 0, 44); }
+    event param10079 (float v) { eGain.at (9) = clamp (v, 0.0f, 2.0f); }
+    event param10076 (float v) { eSrc.at (10) = clamp (int (v + 0.5f), 0, 44); }
+    event param10080 (float v) { eGain.at (10) = clamp (v, 0.0f, 2.0f); }
+    event param10077 (float v) { eSrc.at (11) = clamp (int (v + 0.5f), 0, 44); }
+    event param10081 (float v) { eGain.at (11) = clamp (v, 0.0f, 2.0f); }
+    event param10082 (float v) { fxSetType (12, int (v + 0.5f)); }
+    event param10096 (float v) { eType.at (3) = clamp (int (v + 0.5f), 0, 17); eRst.at (3) = 1; }
+    event param10097 (float v) { eK.at (24) = v; fxP.at (78) = v; fxDirty.at (13) = true; }
+    event param10098 (float v) { eK.at (25) = v; fxP.at (79) = v; fxDirty.at (13) = true; }
+    event param10099 (float v) { eK.at (26) = v; fxP.at (80) = v; fxDirty.at (13) = true; }
+    event param10100 (float v) { eK.at (27) = v; fxP.at (81) = v; fxDirty.at (13) = true; }
+    event param10101 (float v) { eK.at (28) = v; fxP.at (82) = v; fxDirty.at (13) = true; }
+    event param10102 (float v) { eK.at (29) = v; fxP.at (83) = v; fxDirty.at (13) = true; }
+    event param10103 (float v) { eK.at (30) = v; fxMix.at (13) = v; }
+    event param10104 (float v) { eK.at (31) = v; }
+    event param10105 (float v) { eMode.at (3) = clamp (int (v + 0.5f), 0, 7); }
+    event param10106 (float v) { eSrc.at (12) = clamp (int (v + 0.5f), 0, 44); }
+    event param10110 (float v) { eGain.at (12) = clamp (v, 0.0f, 2.0f); }
+    event param10107 (float v) { eSrc.at (13) = clamp (int (v + 0.5f), 0, 44); }
+    event param10111 (float v) { eGain.at (13) = clamp (v, 0.0f, 2.0f); }
+    event param10108 (float v) { eSrc.at (14) = clamp (int (v + 0.5f), 0, 44); }
+    event param10112 (float v) { eGain.at (14) = clamp (v, 0.0f, 2.0f); }
+    event param10109 (float v) { eSrc.at (15) = clamp (int (v + 0.5f), 0, 44); }
+    event param10113 (float v) { eGain.at (15) = clamp (v, 0.0f, 2.0f); }
+    event param10114 (float v) { fxSetType (13, int (v + 0.5f)); }
+    event param10128 (float v) { eType.at (4) = clamp (int (v + 0.5f), 0, 17); eRst.at (4) = 1; }
+    event param10129 (float v) { eK.at (32) = v; fxP.at (84) = v; fxDirty.at (14) = true; }
+    event param10130 (float v) { eK.at (33) = v; fxP.at (85) = v; fxDirty.at (14) = true; }
+    event param10131 (float v) { eK.at (34) = v; fxP.at (86) = v; fxDirty.at (14) = true; }
+    event param10132 (float v) { eK.at (35) = v; fxP.at (87) = v; fxDirty.at (14) = true; }
+    event param10133 (float v) { eK.at (36) = v; fxP.at (88) = v; fxDirty.at (14) = true; }
+    event param10134 (float v) { eK.at (37) = v; fxP.at (89) = v; fxDirty.at (14) = true; }
+    event param10135 (float v) { eK.at (38) = v; fxMix.at (14) = v; }
+    event param10136 (float v) { eK.at (39) = v; }
+    event param10137 (float v) { eMode.at (4) = clamp (int (v + 0.5f), 0, 7); }
+    event param10138 (float v) { eSrc.at (16) = clamp (int (v + 0.5f), 0, 44); }
+    event param10142 (float v) { eGain.at (16) = clamp (v, 0.0f, 2.0f); }
+    event param10139 (float v) { eSrc.at (17) = clamp (int (v + 0.5f), 0, 44); }
+    event param10143 (float v) { eGain.at (17) = clamp (v, 0.0f, 2.0f); }
+    event param10140 (float v) { eSrc.at (18) = clamp (int (v + 0.5f), 0, 44); }
+    event param10144 (float v) { eGain.at (18) = clamp (v, 0.0f, 2.0f); }
+    event param10141 (float v) { eSrc.at (19) = clamp (int (v + 0.5f), 0, 44); }
+    event param10145 (float v) { eGain.at (19) = clamp (v, 0.0f, 2.0f); }
+    event param10146 (float v) { fxSetType (14, int (v + 0.5f)); }
+    event param10160 (float v) { eType.at (5) = clamp (int (v + 0.5f), 0, 17); eRst.at (5) = 1; }
+    event param10161 (float v) { eK.at (40) = v; fxP.at (90) = v; fxDirty.at (15) = true; }
+    event param10162 (float v) { eK.at (41) = v; fxP.at (91) = v; fxDirty.at (15) = true; }
+    event param10163 (float v) { eK.at (42) = v; fxP.at (92) = v; fxDirty.at (15) = true; }
+    event param10164 (float v) { eK.at (43) = v; fxP.at (93) = v; fxDirty.at (15) = true; }
+    event param10165 (float v) { eK.at (44) = v; fxP.at (94) = v; fxDirty.at (15) = true; }
+    event param10166 (float v) { eK.at (45) = v; fxP.at (95) = v; fxDirty.at (15) = true; }
+    event param10167 (float v) { eK.at (46) = v; fxMix.at (15) = v; }
+    event param10168 (float v) { eK.at (47) = v; }
+    event param10169 (float v) { eMode.at (5) = clamp (int (v + 0.5f), 0, 7); }
+    event param10170 (float v) { eSrc.at (20) = clamp (int (v + 0.5f), 0, 44); }
+    event param10174 (float v) { eGain.at (20) = clamp (v, 0.0f, 2.0f); }
+    event param10171 (float v) { eSrc.at (21) = clamp (int (v + 0.5f), 0, 44); }
+    event param10175 (float v) { eGain.at (21) = clamp (v, 0.0f, 2.0f); }
+    event param10172 (float v) { eSrc.at (22) = clamp (int (v + 0.5f), 0, 44); }
+    event param10176 (float v) { eGain.at (22) = clamp (v, 0.0f, 2.0f); }
+    event param10173 (float v) { eSrc.at (23) = clamp (int (v + 0.5f), 0, 44); }
+    event param10177 (float v) { eGain.at (23) = clamp (v, 0.0f, 2.0f); }
+    event param10178 (float v) { fxSetType (15, int (v + 0.5f)); }
+    event param10192 (float v) { eType.at (6) = clamp (int (v + 0.5f), 0, 17); eRst.at (6) = 1; }
+    event param10193 (float v) { eK.at (48) = v; fxP.at (96) = v; fxDirty.at (16) = true; }
+    event param10194 (float v) { eK.at (49) = v; fxP.at (97) = v; fxDirty.at (16) = true; }
+    event param10195 (float v) { eK.at (50) = v; fxP.at (98) = v; fxDirty.at (16) = true; }
+    event param10196 (float v) { eK.at (51) = v; fxP.at (99) = v; fxDirty.at (16) = true; }
+    event param10197 (float v) { eK.at (52) = v; fxP.at (100) = v; fxDirty.at (16) = true; }
+    event param10198 (float v) { eK.at (53) = v; fxP.at (101) = v; fxDirty.at (16) = true; }
+    event param10199 (float v) { eK.at (54) = v; fxMix.at (16) = v; }
+    event param10200 (float v) { eK.at (55) = v; }
+    event param10201 (float v) { eMode.at (6) = clamp (int (v + 0.5f), 0, 7); }
+    event param10202 (float v) { eSrc.at (24) = clamp (int (v + 0.5f), 0, 44); }
+    event param10206 (float v) { eGain.at (24) = clamp (v, 0.0f, 2.0f); }
+    event param10203 (float v) { eSrc.at (25) = clamp (int (v + 0.5f), 0, 44); }
+    event param10207 (float v) { eGain.at (25) = clamp (v, 0.0f, 2.0f); }
+    event param10204 (float v) { eSrc.at (26) = clamp (int (v + 0.5f), 0, 44); }
+    event param10208 (float v) { eGain.at (26) = clamp (v, 0.0f, 2.0f); }
+    event param10205 (float v) { eSrc.at (27) = clamp (int (v + 0.5f), 0, 44); }
+    event param10209 (float v) { eGain.at (27) = clamp (v, 0.0f, 2.0f); }
+    event param10210 (float v) { fxSetType (16, int (v + 0.5f)); }
+    event param10224 (float v) { eType.at (7) = clamp (int (v + 0.5f), 0, 17); eRst.at (7) = 1; }
+    event param10225 (float v) { eK.at (56) = v; fxP.at (102) = v; fxDirty.at (17) = true; }
+    event param10226 (float v) { eK.at (57) = v; fxP.at (103) = v; fxDirty.at (17) = true; }
+    event param10227 (float v) { eK.at (58) = v; fxP.at (104) = v; fxDirty.at (17) = true; }
+    event param10228 (float v) { eK.at (59) = v; fxP.at (105) = v; fxDirty.at (17) = true; }
+    event param10229 (float v) { eK.at (60) = v; fxP.at (106) = v; fxDirty.at (17) = true; }
+    event param10230 (float v) { eK.at (61) = v; fxP.at (107) = v; fxDirty.at (17) = true; }
+    event param10231 (float v) { eK.at (62) = v; fxMix.at (17) = v; }
+    event param10232 (float v) { eK.at (63) = v; }
+    event param10233 (float v) { eMode.at (7) = clamp (int (v + 0.5f), 0, 7); }
+    event param10234 (float v) { eSrc.at (28) = clamp (int (v + 0.5f), 0, 44); }
+    event param10238 (float v) { eGain.at (28) = clamp (v, 0.0f, 2.0f); }
+    event param10235 (float v) { eSrc.at (29) = clamp (int (v + 0.5f), 0, 44); }
+    event param10239 (float v) { eGain.at (29) = clamp (v, 0.0f, 2.0f); }
+    event param10236 (float v) { eSrc.at (30) = clamp (int (v + 0.5f), 0, 44); }
+    event param10240 (float v) { eGain.at (30) = clamp (v, 0.0f, 2.0f); }
+    event param10237 (float v) { eSrc.at (31) = clamp (int (v + 0.5f), 0, 44); }
+    event param10241 (float v) { eGain.at (31) = clamp (v, 0.0f, 2.0f); }
+    event param10242 (float v) { fxSetType (17, int (v + 0.5f)); }
+    event param10256 (float v) { eType.at (8) = clamp (int (v + 0.5f), 0, 17); eRst.at (8) = 1; }
+    event param10257 (float v) { eK.at (64) = v; fxP.at (108) = v; fxDirty.at (18) = true; }
+    event param10258 (float v) { eK.at (65) = v; fxP.at (109) = v; fxDirty.at (18) = true; }
+    event param10259 (float v) { eK.at (66) = v; fxP.at (110) = v; fxDirty.at (18) = true; }
+    event param10260 (float v) { eK.at (67) = v; fxP.at (111) = v; fxDirty.at (18) = true; }
+    event param10261 (float v) { eK.at (68) = v; fxP.at (112) = v; fxDirty.at (18) = true; }
+    event param10262 (float v) { eK.at (69) = v; fxP.at (113) = v; fxDirty.at (18) = true; }
+    event param10263 (float v) { eK.at (70) = v; fxMix.at (18) = v; }
+    event param10264 (float v) { eK.at (71) = v; }
+    event param10265 (float v) { eMode.at (8) = clamp (int (v + 0.5f), 0, 7); }
+    event param10266 (float v) { eSrc.at (32) = clamp (int (v + 0.5f), 0, 44); }
+    event param10270 (float v) { eGain.at (32) = clamp (v, 0.0f, 2.0f); }
+    event param10267 (float v) { eSrc.at (33) = clamp (int (v + 0.5f), 0, 44); }
+    event param10271 (float v) { eGain.at (33) = clamp (v, 0.0f, 2.0f); }
+    event param10268 (float v) { eSrc.at (34) = clamp (int (v + 0.5f), 0, 44); }
+    event param10272 (float v) { eGain.at (34) = clamp (v, 0.0f, 2.0f); }
+    event param10269 (float v) { eSrc.at (35) = clamp (int (v + 0.5f), 0, 44); }
+    event param10273 (float v) { eGain.at (35) = clamp (v, 0.0f, 2.0f); }
+    event param10274 (float v) { fxSetType (18, int (v + 0.5f)); }
+    event param10288 (float v) { eType.at (9) = clamp (int (v + 0.5f), 0, 17); eRst.at (9) = 1; }
+    event param10289 (float v) { eK.at (72) = v; fxP.at (114) = v; fxDirty.at (19) = true; }
+    event param10290 (float v) { eK.at (73) = v; fxP.at (115) = v; fxDirty.at (19) = true; }
+    event param10291 (float v) { eK.at (74) = v; fxP.at (116) = v; fxDirty.at (19) = true; }
+    event param10292 (float v) { eK.at (75) = v; fxP.at (117) = v; fxDirty.at (19) = true; }
+    event param10293 (float v) { eK.at (76) = v; fxP.at (118) = v; fxDirty.at (19) = true; }
+    event param10294 (float v) { eK.at (77) = v; fxP.at (119) = v; fxDirty.at (19) = true; }
+    event param10295 (float v) { eK.at (78) = v; fxMix.at (19) = v; }
+    event param10296 (float v) { eK.at (79) = v; }
+    event param10297 (float v) { eMode.at (9) = clamp (int (v + 0.5f), 0, 7); }
+    event param10298 (float v) { eSrc.at (36) = clamp (int (v + 0.5f), 0, 44); }
+    event param10302 (float v) { eGain.at (36) = clamp (v, 0.0f, 2.0f); }
+    event param10299 (float v) { eSrc.at (37) = clamp (int (v + 0.5f), 0, 44); }
+    event param10303 (float v) { eGain.at (37) = clamp (v, 0.0f, 2.0f); }
+    event param10300 (float v) { eSrc.at (38) = clamp (int (v + 0.5f), 0, 44); }
+    event param10304 (float v) { eGain.at (38) = clamp (v, 0.0f, 2.0f); }
+    event param10301 (float v) { eSrc.at (39) = clamp (int (v + 0.5f), 0, 44); }
+    event param10305 (float v) { eGain.at (39) = clamp (v, 0.0f, 2.0f); }
+    event param10306 (float v) { fxSetType (19, int (v + 0.5f)); }
+    event param10320 (float v) { eType.at (10) = clamp (int (v + 0.5f), 0, 17); eRst.at (10) = 1; }
+    event param10321 (float v) { eK.at (80) = v; fxP.at (120) = v; fxDirty.at (20) = true; }
+    event param10322 (float v) { eK.at (81) = v; fxP.at (121) = v; fxDirty.at (20) = true; }
+    event param10323 (float v) { eK.at (82) = v; fxP.at (122) = v; fxDirty.at (20) = true; }
+    event param10324 (float v) { eK.at (83) = v; fxP.at (123) = v; fxDirty.at (20) = true; }
+    event param10325 (float v) { eK.at (84) = v; fxP.at (124) = v; fxDirty.at (20) = true; }
+    event param10326 (float v) { eK.at (85) = v; fxP.at (125) = v; fxDirty.at (20) = true; }
+    event param10327 (float v) { eK.at (86) = v; fxMix.at (20) = v; }
+    event param10328 (float v) { eK.at (87) = v; }
+    event param10329 (float v) { eMode.at (10) = clamp (int (v + 0.5f), 0, 7); }
+    event param10330 (float v) { eSrc.at (40) = clamp (int (v + 0.5f), 0, 44); }
+    event param10334 (float v) { eGain.at (40) = clamp (v, 0.0f, 2.0f); }
+    event param10331 (float v) { eSrc.at (41) = clamp (int (v + 0.5f), 0, 44); }
+    event param10335 (float v) { eGain.at (41) = clamp (v, 0.0f, 2.0f); }
+    event param10332 (float v) { eSrc.at (42) = clamp (int (v + 0.5f), 0, 44); }
+    event param10336 (float v) { eGain.at (42) = clamp (v, 0.0f, 2.0f); }
+    event param10333 (float v) { eSrc.at (43) = clamp (int (v + 0.5f), 0, 44); }
+    event param10337 (float v) { eGain.at (43) = clamp (v, 0.0f, 2.0f); }
+    event param10338 (float v) { fxSetType (20, int (v + 0.5f)); }
+    event param10352 (float v) { eType.at (11) = clamp (int (v + 0.5f), 0, 17); eRst.at (11) = 1; }
+    event param10353 (float v) { eK.at (88) = v; fxP.at (126) = v; fxDirty.at (21) = true; }
+    event param10354 (float v) { eK.at (89) = v; fxP.at (127) = v; fxDirty.at (21) = true; }
+    event param10355 (float v) { eK.at (90) = v; fxP.at (128) = v; fxDirty.at (21) = true; }
+    event param10356 (float v) { eK.at (91) = v; fxP.at (129) = v; fxDirty.at (21) = true; }
+    event param10357 (float v) { eK.at (92) = v; fxP.at (130) = v; fxDirty.at (21) = true; }
+    event param10358 (float v) { eK.at (93) = v; fxP.at (131) = v; fxDirty.at (21) = true; }
+    event param10359 (float v) { eK.at (94) = v; fxMix.at (21) = v; }
+    event param10360 (float v) { eK.at (95) = v; }
+    event param10361 (float v) { eMode.at (11) = clamp (int (v + 0.5f), 0, 7); }
+    event param10362 (float v) { eSrc.at (44) = clamp (int (v + 0.5f), 0, 44); }
+    event param10366 (float v) { eGain.at (44) = clamp (v, 0.0f, 2.0f); }
+    event param10363 (float v) { eSrc.at (45) = clamp (int (v + 0.5f), 0, 44); }
+    event param10367 (float v) { eGain.at (45) = clamp (v, 0.0f, 2.0f); }
+    event param10364 (float v) { eSrc.at (46) = clamp (int (v + 0.5f), 0, 44); }
+    event param10368 (float v) { eGain.at (46) = clamp (v, 0.0f, 2.0f); }
+    event param10365 (float v) { eSrc.at (47) = clamp (int (v + 0.5f), 0, 44); }
+    event param10369 (float v) { eGain.at (47) = clamp (v, 0.0f, 2.0f); }
+    event param10370 (float v) { fxSetType (21, int (v + 0.5f)); }
+    event param10384 (float v) { eType.at (12) = clamp (int (v + 0.5f), 0, 17); eRst.at (12) = 1; }
+    event param10385 (float v) { eK.at (96) = v; fxP.at (132) = v; fxDirty.at (22) = true; }
+    event param10386 (float v) { eK.at (97) = v; fxP.at (133) = v; fxDirty.at (22) = true; }
+    event param10387 (float v) { eK.at (98) = v; fxP.at (134) = v; fxDirty.at (22) = true; }
+    event param10388 (float v) { eK.at (99) = v; fxP.at (135) = v; fxDirty.at (22) = true; }
+    event param10389 (float v) { eK.at (100) = v; fxP.at (136) = v; fxDirty.at (22) = true; }
+    event param10390 (float v) { eK.at (101) = v; fxP.at (137) = v; fxDirty.at (22) = true; }
+    event param10391 (float v) { eK.at (102) = v; fxMix.at (22) = v; }
+    event param10392 (float v) { eK.at (103) = v; }
+    event param10393 (float v) { eMode.at (12) = clamp (int (v + 0.5f), 0, 7); }
+    event param10394 (float v) { eSrc.at (48) = clamp (int (v + 0.5f), 0, 44); }
+    event param10398 (float v) { eGain.at (48) = clamp (v, 0.0f, 2.0f); }
+    event param10395 (float v) { eSrc.at (49) = clamp (int (v + 0.5f), 0, 44); }
+    event param10399 (float v) { eGain.at (49) = clamp (v, 0.0f, 2.0f); }
+    event param10396 (float v) { eSrc.at (50) = clamp (int (v + 0.5f), 0, 44); }
+    event param10400 (float v) { eGain.at (50) = clamp (v, 0.0f, 2.0f); }
+    event param10397 (float v) { eSrc.at (51) = clamp (int (v + 0.5f), 0, 44); }
+    event param10401 (float v) { eGain.at (51) = clamp (v, 0.0f, 2.0f); }
+    event param10402 (float v) { fxSetType (22, int (v + 0.5f)); }
+    event param10416 (float v) { eType.at (13) = clamp (int (v + 0.5f), 0, 17); eRst.at (13) = 1; }
+    event param10417 (float v) { eK.at (104) = v; fxP.at (138) = v; fxDirty.at (23) = true; }
+    event param10418 (float v) { eK.at (105) = v; fxP.at (139) = v; fxDirty.at (23) = true; }
+    event param10419 (float v) { eK.at (106) = v; fxP.at (140) = v; fxDirty.at (23) = true; }
+    event param10420 (float v) { eK.at (107) = v; fxP.at (141) = v; fxDirty.at (23) = true; }
+    event param10421 (float v) { eK.at (108) = v; fxP.at (142) = v; fxDirty.at (23) = true; }
+    event param10422 (float v) { eK.at (109) = v; fxP.at (143) = v; fxDirty.at (23) = true; }
+    event param10423 (float v) { eK.at (110) = v; fxMix.at (23) = v; }
+    event param10424 (float v) { eK.at (111) = v; }
+    event param10425 (float v) { eMode.at (13) = clamp (int (v + 0.5f), 0, 7); }
+    event param10426 (float v) { eSrc.at (52) = clamp (int (v + 0.5f), 0, 44); }
+    event param10430 (float v) { eGain.at (52) = clamp (v, 0.0f, 2.0f); }
+    event param10427 (float v) { eSrc.at (53) = clamp (int (v + 0.5f), 0, 44); }
+    event param10431 (float v) { eGain.at (53) = clamp (v, 0.0f, 2.0f); }
+    event param10428 (float v) { eSrc.at (54) = clamp (int (v + 0.5f), 0, 44); }
+    event param10432 (float v) { eGain.at (54) = clamp (v, 0.0f, 2.0f); }
+    event param10429 (float v) { eSrc.at (55) = clamp (int (v + 0.5f), 0, 44); }
+    event param10433 (float v) { eGain.at (55) = clamp (v, 0.0f, 2.0f); }
+    event param10434 (float v) { fxSetType (23, int (v + 0.5f)); }
+    event param10448 (float v) { eType.at (14) = clamp (int (v + 0.5f), 0, 17); eRst.at (14) = 1; }
+    event param10449 (float v) { eK.at (112) = v; fxP.at (144) = v; fxDirty.at (24) = true; }
+    event param10450 (float v) { eK.at (113) = v; fxP.at (145) = v; fxDirty.at (24) = true; }
+    event param10451 (float v) { eK.at (114) = v; fxP.at (146) = v; fxDirty.at (24) = true; }
+    event param10452 (float v) { eK.at (115) = v; fxP.at (147) = v; fxDirty.at (24) = true; }
+    event param10453 (float v) { eK.at (116) = v; fxP.at (148) = v; fxDirty.at (24) = true; }
+    event param10454 (float v) { eK.at (117) = v; fxP.at (149) = v; fxDirty.at (24) = true; }
+    event param10455 (float v) { eK.at (118) = v; fxMix.at (24) = v; }
+    event param10456 (float v) { eK.at (119) = v; }
+    event param10457 (float v) { eMode.at (14) = clamp (int (v + 0.5f), 0, 7); }
+    event param10458 (float v) { eSrc.at (56) = clamp (int (v + 0.5f), 0, 44); }
+    event param10462 (float v) { eGain.at (56) = clamp (v, 0.0f, 2.0f); }
+    event param10459 (float v) { eSrc.at (57) = clamp (int (v + 0.5f), 0, 44); }
+    event param10463 (float v) { eGain.at (57) = clamp (v, 0.0f, 2.0f); }
+    event param10460 (float v) { eSrc.at (58) = clamp (int (v + 0.5f), 0, 44); }
+    event param10464 (float v) { eGain.at (58) = clamp (v, 0.0f, 2.0f); }
+    event param10461 (float v) { eSrc.at (59) = clamp (int (v + 0.5f), 0, 44); }
+    event param10465 (float v) { eGain.at (59) = clamp (v, 0.0f, 2.0f); }
+    event param10466 (float v) { fxSetType (24, int (v + 0.5f)); }
+    event param10480 (float v) { eType.at (15) = clamp (int (v + 0.5f), 0, 17); eRst.at (15) = 1; }
+    event param10481 (float v) { eK.at (120) = v; fxP.at (150) = v; fxDirty.at (25) = true; }
+    event param10482 (float v) { eK.at (121) = v; fxP.at (151) = v; fxDirty.at (25) = true; }
+    event param10483 (float v) { eK.at (122) = v; fxP.at (152) = v; fxDirty.at (25) = true; }
+    event param10484 (float v) { eK.at (123) = v; fxP.at (153) = v; fxDirty.at (25) = true; }
+    event param10485 (float v) { eK.at (124) = v; fxP.at (154) = v; fxDirty.at (25) = true; }
+    event param10486 (float v) { eK.at (125) = v; fxP.at (155) = v; fxDirty.at (25) = true; }
+    event param10487 (float v) { eK.at (126) = v; fxMix.at (25) = v; }
+    event param10488 (float v) { eK.at (127) = v; }
+    event param10489 (float v) { eMode.at (15) = clamp (int (v + 0.5f), 0, 7); }
+    event param10490 (float v) { eSrc.at (60) = clamp (int (v + 0.5f), 0, 44); }
+    event param10494 (float v) { eGain.at (60) = clamp (v, 0.0f, 2.0f); }
+    event param10491 (float v) { eSrc.at (61) = clamp (int (v + 0.5f), 0, 44); }
+    event param10495 (float v) { eGain.at (61) = clamp (v, 0.0f, 2.0f); }
+    event param10492 (float v) { eSrc.at (62) = clamp (int (v + 0.5f), 0, 44); }
+    event param10496 (float v) { eGain.at (62) = clamp (v, 0.0f, 2.0f); }
+    event param10493 (float v) { eSrc.at (63) = clamp (int (v + 0.5f), 0, 44); }
+    event param10497 (float v) { eGain.at (63) = clamp (v, 0.0f, 2.0f); }
+    event param10498 (float v) { fxSetType (25, int (v + 0.5f)); }
+    event param10512 (float v) { eType.at (16) = clamp (int (v + 0.5f), 0, 17); eRst.at (16) = 1; }
+    event param10513 (float v) { eK.at (128) = v; fxP.at (156) = v; fxDirty.at (26) = true; }
+    event param10514 (float v) { eK.at (129) = v; fxP.at (157) = v; fxDirty.at (26) = true; }
+    event param10515 (float v) { eK.at (130) = v; fxP.at (158) = v; fxDirty.at (26) = true; }
+    event param10516 (float v) { eK.at (131) = v; fxP.at (159) = v; fxDirty.at (26) = true; }
+    event param10517 (float v) { eK.at (132) = v; fxP.at (160) = v; fxDirty.at (26) = true; }
+    event param10518 (float v) { eK.at (133) = v; fxP.at (161) = v; fxDirty.at (26) = true; }
+    event param10519 (float v) { eK.at (134) = v; fxMix.at (26) = v; }
+    event param10520 (float v) { eK.at (135) = v; }
+    event param10521 (float v) { eMode.at (16) = clamp (int (v + 0.5f), 0, 7); }
+    event param10522 (float v) { eSrc.at (64) = clamp (int (v + 0.5f), 0, 44); }
+    event param10526 (float v) { eGain.at (64) = clamp (v, 0.0f, 2.0f); }
+    event param10523 (float v) { eSrc.at (65) = clamp (int (v + 0.5f), 0, 44); }
+    event param10527 (float v) { eGain.at (65) = clamp (v, 0.0f, 2.0f); }
+    event param10524 (float v) { eSrc.at (66) = clamp (int (v + 0.5f), 0, 44); }
+    event param10528 (float v) { eGain.at (66) = clamp (v, 0.0f, 2.0f); }
+    event param10525 (float v) { eSrc.at (67) = clamp (int (v + 0.5f), 0, 44); }
+    event param10529 (float v) { eGain.at (67) = clamp (v, 0.0f, 2.0f); }
+    event param10530 (float v) { fxSetType (26, int (v + 0.5f)); }
+    event param10544 (float v) { eType.at (17) = clamp (int (v + 0.5f), 0, 17); eRst.at (17) = 1; }
+    event param10545 (float v) { eK.at (136) = v; fxP.at (162) = v; fxDirty.at (27) = true; }
+    event param10546 (float v) { eK.at (137) = v; fxP.at (163) = v; fxDirty.at (27) = true; }
+    event param10547 (float v) { eK.at (138) = v; fxP.at (164) = v; fxDirty.at (27) = true; }
+    event param10548 (float v) { eK.at (139) = v; fxP.at (165) = v; fxDirty.at (27) = true; }
+    event param10549 (float v) { eK.at (140) = v; fxP.at (166) = v; fxDirty.at (27) = true; }
+    event param10550 (float v) { eK.at (141) = v; fxP.at (167) = v; fxDirty.at (27) = true; }
+    event param10551 (float v) { eK.at (142) = v; fxMix.at (27) = v; }
+    event param10552 (float v) { eK.at (143) = v; }
+    event param10553 (float v) { eMode.at (17) = clamp (int (v + 0.5f), 0, 7); }
+    event param10554 (float v) { eSrc.at (68) = clamp (int (v + 0.5f), 0, 44); }
+    event param10558 (float v) { eGain.at (68) = clamp (v, 0.0f, 2.0f); }
+    event param10555 (float v) { eSrc.at (69) = clamp (int (v + 0.5f), 0, 44); }
+    event param10559 (float v) { eGain.at (69) = clamp (v, 0.0f, 2.0f); }
+    event param10556 (float v) { eSrc.at (70) = clamp (int (v + 0.5f), 0, 44); }
+    event param10560 (float v) { eGain.at (70) = clamp (v, 0.0f, 2.0f); }
+    event param10557 (float v) { eSrc.at (71) = clamp (int (v + 0.5f), 0, 44); }
+    event param10561 (float v) { eGain.at (71) = clamp (v, 0.0f, 2.0f); }
+    event param10562 (float v) { fxSetType (27, int (v + 0.5f)); }
+    event param10576 (float v) { eType.at (18) = clamp (int (v + 0.5f), 0, 17); eRst.at (18) = 1; }
+    event param10577 (float v) { eK.at (144) = v; fxP.at (168) = v; fxDirty.at (28) = true; }
+    event param10578 (float v) { eK.at (145) = v; fxP.at (169) = v; fxDirty.at (28) = true; }
+    event param10579 (float v) { eK.at (146) = v; fxP.at (170) = v; fxDirty.at (28) = true; }
+    event param10580 (float v) { eK.at (147) = v; fxP.at (171) = v; fxDirty.at (28) = true; }
+    event param10581 (float v) { eK.at (148) = v; fxP.at (172) = v; fxDirty.at (28) = true; }
+    event param10582 (float v) { eK.at (149) = v; fxP.at (173) = v; fxDirty.at (28) = true; }
+    event param10583 (float v) { eK.at (150) = v; fxMix.at (28) = v; }
+    event param10584 (float v) { eK.at (151) = v; }
+    event param10585 (float v) { eMode.at (18) = clamp (int (v + 0.5f), 0, 7); }
+    event param10586 (float v) { eSrc.at (72) = clamp (int (v + 0.5f), 0, 44); }
+    event param10590 (float v) { eGain.at (72) = clamp (v, 0.0f, 2.0f); }
+    event param10587 (float v) { eSrc.at (73) = clamp (int (v + 0.5f), 0, 44); }
+    event param10591 (float v) { eGain.at (73) = clamp (v, 0.0f, 2.0f); }
+    event param10588 (float v) { eSrc.at (74) = clamp (int (v + 0.5f), 0, 44); }
+    event param10592 (float v) { eGain.at (74) = clamp (v, 0.0f, 2.0f); }
+    event param10589 (float v) { eSrc.at (75) = clamp (int (v + 0.5f), 0, 44); }
+    event param10593 (float v) { eGain.at (75) = clamp (v, 0.0f, 2.0f); }
+    event param10594 (float v) { fxSetType (28, int (v + 0.5f)); }
+    event param10608 (float v) { eType.at (19) = clamp (int (v + 0.5f), 0, 17); eRst.at (19) = 1; }
+    event param10609 (float v) { eK.at (152) = v; fxP.at (174) = v; fxDirty.at (29) = true; }
+    event param10610 (float v) { eK.at (153) = v; fxP.at (175) = v; fxDirty.at (29) = true; }
+    event param10611 (float v) { eK.at (154) = v; fxP.at (176) = v; fxDirty.at (29) = true; }
+    event param10612 (float v) { eK.at (155) = v; fxP.at (177) = v; fxDirty.at (29) = true; }
+    event param10613 (float v) { eK.at (156) = v; fxP.at (178) = v; fxDirty.at (29) = true; }
+    event param10614 (float v) { eK.at (157) = v; fxP.at (179) = v; fxDirty.at (29) = true; }
+    event param10615 (float v) { eK.at (158) = v; fxMix.at (29) = v; }
+    event param10616 (float v) { eK.at (159) = v; }
+    event param10617 (float v) { eMode.at (19) = clamp (int (v + 0.5f), 0, 7); }
+    event param10618 (float v) { eSrc.at (76) = clamp (int (v + 0.5f), 0, 44); }
+    event param10622 (float v) { eGain.at (76) = clamp (v, 0.0f, 2.0f); }
+    event param10619 (float v) { eSrc.at (77) = clamp (int (v + 0.5f), 0, 44); }
+    event param10623 (float v) { eGain.at (77) = clamp (v, 0.0f, 2.0f); }
+    event param10620 (float v) { eSrc.at (78) = clamp (int (v + 0.5f), 0, 44); }
+    event param10624 (float v) { eGain.at (78) = clamp (v, 0.0f, 2.0f); }
+    event param10621 (float v) { eSrc.at (79) = clamp (int (v + 0.5f), 0, 44); }
+    event param10625 (float v) { eGain.at (79) = clamp (v, 0.0f, 2.0f); }
+    event param10626 (float v) { fxSetType (29, int (v + 0.5f)); }
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -14043,7 +14810,19 @@ processor Eisenpuls_Synth
             mrGain.at (mi) = 1.0f;
         }
 
+        for (int ei = 0; ei < 20; ++ei)   // EURO: start values
+            eRst.at (ei) = 1;
+
+        for (int ei = 0; ei < 160; ++ei)
+            eK.at (ei) = 0.5f;
+
+        for (int ei = 0; ei < 80; ++ei)
+            eGain.at (ei) = 1.0f;
+
         fxInit();
+        for (int ei = 0; ei < 20; ++ei)
+            fxMix.at (10 + ei) = 0.5f;
+
         cvInit();
         modEdInit();
 

@@ -3444,6 +3444,23 @@ const SPECS = (() => {
         }
         for (let k = 0; k < 16; k++) L.push([8000 + 272 * o + 256 + k, "OSC " + (o + 1) + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
     }
+    // EURO: Eurorack rack of Njohrr Modular
+    {
+        const ESRC = ["Off", "Synth L", "Synth R", "Audio In L", "Audio In R"];
+        for (let m = 0; m < 20; m++) ESRC.push("M" + (m + 1) + " A", "M" + (m + 1) + " B");
+        const ETYPE = ["Empty", "MIDI-CV", "VCO", "LFO", "ADSR", "VCF", "VCA", "Mixer", "Noise", "S&H", "Sequencer", "Clock", "Attenuverter", "Slew", "Folder", "FX", "Output", "Ring Mod"];
+        for (let m = 0; m < 20; m++) {
+            const b = 10000 + 32 * m, n = "Euro M" + (m + 1);
+            L.push([b, n + " Type", 0, 17, 0, "", "sel", ETYPE, 1, "Type"]);
+            for (let k = 0; k < 8; k++) L.push([b + 1 + k, n + " Knob " + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "K" + (k + 1)]);
+            L.push([b + 9, n + " Mode", 0, 7, 0, "", "sel", ["1", "2", "3", "4", "5", "6", "7", "8"], 1, "Mode"]);
+            for (let c = 0; c < 4; c++) {
+                L.push([b + 10 + c, n + " In " + (c + 1) + " Src", 0, 44, 0, "", "sel", ESRC, 1, "Src"]);
+                L.push([b + 14 + c, n + " In " + (c + 1) + " Gain", 0, 2, 1, "", "sld", null, 1, "Gain"]);
+            }
+            L.push([b + 18, n + " FX Type", 0, 32, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "FX"]);
+        }
+    }
     // MODMAT: patch matrix of Njohrr Modular
     {
         const MSRC = ["Off", "Synth", "Audio In"].concat(Array.from({ length: 16 }, (_, i) => "Module " + (i + 1)));

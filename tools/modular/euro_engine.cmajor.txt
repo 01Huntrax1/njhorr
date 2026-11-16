@@ -1,0 +1,436 @@
+    // ===== EURO: engine of the Eurorack rack (tools/modular/euro_engine.cmajor.txt) =====
+    // Signals are mono floats: audio +-1, pitch CV in octaves (0 = C4), gates 0 / 1.  Source numbers: see tools/modular/euro_modules.py.
+    void euroMidiScan()
+    {
+        int cnt = 0;
+        int lo  = 127;
+        int hi  = 0;
+
+        for (int i = 0; i < 128; ++i)
+            if (eHeld.at (i))
+            {
+                cnt++;
+                lo = min (lo, i);
+                hi = max (hi, i);
+            }
+
+        eCount = cnt;
+
+        if (cnt > 0)
+        {
+            eNLow  = lo;
+            eNHigh = hi;
+
+            if (! eHeld.at (eNLast))
+                eNLast = hi;
+        }
+    }
+
+    void euroMidi (std::midi::Message msg)
+    {
+        if (msg.isNoteOn())
+        {
+            int n = clamp (msg.getNoteNumber(), 0, 127);
+            eHeld.at (n) = true;
+            eNLast = n;
+            eVel   = msg.getFloatVelocity();
+            euroMidiScan();
+        }
+        else if (msg.isNoteOff())
+        {
+            eHeld.at (clamp (msg.getNoteNumber(), 0, 127)) = false;
+            euroMidiScan();
+        }
+        else if (msg.isPitchWheel())
+            eBend = float (msg.getPitchWheelValue() - 8192) / 8192.0f;
+    }
+
+    float euI (int m, int c)   // value of input c of slot m: cable source * gain (0 when nothing is patched)
+    {
+        int s = eSrc.at (m * 4 + c);
+        return s > 0 ? eOut.at (s) * eGain.at (m * 4 + c) : 0.0f;
+    }
+
+    bool  euP (int m, int c)   { return eSrc.at (m * 4 + c) > 0; }
+    float euK (int m, int i)   { return eK.at (m * 8 + i); }
+    float euBlep (float t, float dp)
+    {
+        if (t < dp)         { float u = t / dp;           return u + u - u * u - 1.0f; }
+        if (t > 1.0f - dp)  { float u = (t - 1.0f) / dp;  return u * u + u + u + 1.0f; }
+        return 0.0f;
+    }
+
+    float euCoef (float seconds)   // one pole smoothing coefficient for a time constant
+    {
+        return seconds <= 0.00002f ? 1.0f : 1.0f - float (exp (-1.0f / (float (processor.frequency) * seconds)));
+    }
+
+    void euMidiCv (int m)
+    {
+        int   b   = m * 16;
+        int   md  = eMode.at (m);
+        int   n   = md == 1 ? eNLow : (md == 2 ? eNHigh : eNLast);
+        float tgt = float (n - 60) / 12.0f;
+        float gl  = euK (m, 0);
+        float c   = gl < 0.52f ? 1.0f : euCoef ((gl - 0.5f) * (gl - 0.5f) * 8.0f);
+        eS.at (b) += c * (tgt - eS.at (b));
+        float tr  = float (int (floor ((euK (m, 1) - 0.5f) * 48.0f + 0.5f))) / 12.0f;
+        eOut.at (5 + 2 * m)     = eS.at (b) + tr + eBend * euK (m, 2) * 4.0f / 12.0f;
+        eOut.at (5 + 2 * m + 1) = eCount > 0 ? 1.0f : 0.0f;
+    }
+
+    void euVco (int m)
+    {
+        int   b   = m * 16;
+        float fs  = float (processor.frequency);
+        float st  = floor ((euK (m, 0) - 0.5f) * 48.0f + 0.5f) + (euK (m, 1) - 0.5f) * 2.0f;
+        float oct = st / 12.0f + euI (m, 0) + euI (m, 1) * euK (m, 2) * 2.0f;
+        float f   = clamp (261.63f * float (pow (2.0f, oct)), 0.01f, fs * 0.45f);
+        float dp  = f / fs;
+        float ph  = eS.at (b) + dp;
+        float pw  = clamp (euK (m, 3) + euI (m, 2) * 0.5f, 0.05f, 0.95f);
+
+        if (ph >= 1.0f)
+        {
+            ph -= 1.0f;
+            eS.at (b + 1) = eS.at (b + 1) > 0.5f ? 0.0f : 1.0f;
+        }
+
+        eS.at (b) = ph;
+        int   md = eMode.at (m);
+        float y;
+
+        if (md == 0)       y = float (sin (ph * 6.2831853f));
+        else if (md == 1)  y = 4.0f * abs (ph - 0.5f) - 1.0f;
+        else if (md == 2)  y = 2.0f * ph - 1.0f - euBlep (ph, dp);
+        else
+        {
+            float p2 = ph + 1.0f - pw;
+            p2 -= floor (p2);
+            y = (ph < pw ? 1.0f : -1.0f) + euBlep (ph, dp) - euBlep (p2, dp);
+        }
+
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = (eS.at (b + 1) > 0.5f ? 1.0f : -1.0f) * euK (m, 4);
+    }
+
+    void euLfo (int m)
+    {
+        int   b   = m * 16;
+        float fs  = float (processor.frequency);
+        float hz  = 0.05f * float (pow (2.0f, euK (m, 0) * 10.0f + euI (m, 0)));
+        float ph  = eS.at (b) + hz / fs;
+        float rst = euI (m, 1) > 0.5f ? 1.0f : 0.0f;
+
+        if (rst > 0.5f && eS.at (b + 3) < 0.5f)
+            ph = 0.0f;
+
+        eS.at (b + 3) = rst;
+
+        if (ph >= 1.0f)
+        {
+            ph -= floor (ph);
+            eS.at (b + 1) = nextNoise();
+        }
+
+        eS.at (b) = ph;
+        float p = ph + (euK (m, 3) - 0.5f);
+        p -= floor (p);
+        int   md = eMode.at (m);
+        float y;
+
+        if (md == 0)       y = float (sin (p * 6.2831853f));
+        else if (md == 1)  y = 4.0f * abs (p - 0.5f) - 1.0f;
+        else if (md == 2)  y = 2.0f * p - 1.0f;
+        else if (md == 3)  y = p < 0.5f ? 1.0f : -1.0f;
+        else               y = eS.at (b + 1);
+
+        y = y * euK (m, 1) * 2.0f + (euK (m, 2) - 0.5f) * 2.0f;
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = y * 0.5f + 0.5f;
+    }
+
+    void euAdsr (int m)
+    {
+        int   b    = m * 16;
+        bool  gate = euI (m, 0) > 0.5f;
+        bool  was  = eS.at (b + 2) > 0.5f;
+        float env  = eS.at (b);
+        int   st   = int (eS.at (b + 1) + 0.5f);   // 0 idle, 1 attack, 2 decay, 3 sustain, 4 release
+        float sus  = euK (m, 2);
+
+        if (gate && ! was)       st = 1;
+        else if (! gate && was)  st = 4;
+
+        eS.at (b + 2) = gate ? 1.0f : 0.0f;
+
+        if (st == 1)
+        {
+            env += euCoef (0.001f * float (pow (3000.0f, euK (m, 0)))) * (1.25f - env);
+
+            if (env >= 1.0f)
+            {
+                env = 1.0f;
+                st  = 2;
+            }
+        }
+        else if (st == 2)
+        {
+            env += euCoef (0.003f * float (pow (1500.0f, euK (m, 1)))) * (sus - env);
+
+            if (env <= sus + 0.001f)
+                st = eMode.at (m) == 1 && gate ? 1 : 3;
+        }
+        else if (st == 3)
+            env = sus;
+        else if (st == 4)
+        {
+            env += euCoef (0.003f * float (pow (1500.0f, euK (m, 3)))) * (0.0f - env);
+
+            if (env < 0.0001f)
+            {
+                env = 0.0f;
+                st  = 0;
+            }
+        }
+
+        eS.at (b)     = env;
+        eS.at (b + 1) = float (st);
+        eOut.at (5 + 2 * m)     = env;
+        eOut.at (5 + 2 * m + 1) = 1.0f - env;
+    }
+
+    void euVcf (int m)
+    {
+        int   b   = m * 16;
+        float fs  = float (processor.frequency);
+        float x   = euI (m, 0);
+        float fc  = clamp (20.0f * float (pow (1000.0f, euK (m, 0))) * float (pow (2.0f, euI (m, 1) * euK (m, 2) * 4.0f)), 10.0f, fs * 0.45f);
+        float r   = clamp (euK (m, 1) + euI (m, 2) * 0.5f, 0.0f, 1.0f);
+        float kq  = 2.0f * (1.0f - 0.99f * r);
+        float g   = float (tan (3.14159265f * fc / fs));
+        float dr  = 1.0f + max (0.0f, euK (m, 3) - 0.5f) * 16.0f;
+
+        if (dr > 1.001f)
+            x = float (tanh (x * dr));
+
+        float a1 = 1.0f / (1.0f + g * (g + kq));
+        float a2 = g * a1;
+        float a3 = g * a2;
+        float v3 = x - eS.at (b + 1);
+        float v1 = a1 * eS.at (b) + a2 * v3;
+        float v2 = eS.at (b + 1) + a2 * eS.at (b) + a3 * v3;
+        eS.at (b)     = clamp (2.0f * v1 - eS.at (b), -16.0f, 16.0f);
+        eS.at (b + 1) = clamp (2.0f * v2 - eS.at (b + 1), -16.0f, 16.0f);
+        int   md = eMode.at (m);
+        float y  = md == 0 ? v2 : (md == 1 ? x - kq * v1 - v2 : (md == 2 ? v1 : x - kq * v1));
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = v2;
+    }
+
+    void euVca (int m)
+    {
+        float gn = euP (m, 1) ? clamp (euI (m, 1), 0.0f, 2.0f) : 1.0f;
+
+        if (eMode.at (m) == 1)
+            gn = gn * gn;
+
+        float y = euI (m, 0) * gn * euK (m, 0) * 2.0f;
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = -y;
+    }
+
+    void euMixer (int m)
+    {
+        float y = (euI (m, 0) * euK (m, 0) + euI (m, 1) * euK (m, 1) + euI (m, 2) * euK (m, 2) + euI (m, 3) * euK (m, 3)) * 2.0f * euK (m, 4) * 2.0f;
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = -y;
+    }
+
+    void euNoise (int m)
+    {
+        int   b = m * 16;
+        float w = nextNoise();
+        float c = clamp (0.002f + euK (m, 1) * euK (m, 1), 0.002f, 1.0f);
+        eS.at (b) += c * (w - eS.at (b));
+        float comp = clamp (0.52f * float (sqrt ((2.0f - c) / c)), 0.5f, 12.0f);
+        eOut.at (5 + 2 * m)     = w * euK (m, 0);
+        eOut.at (5 + 2 * m + 1) = eS.at (b) * comp * euK (m, 0);
+    }
+
+    void euSh (int m)
+    {
+        int   b   = m * 16;
+        float sg  = euP (m, 0) ? euI (m, 0) : nextNoise();
+        bool  trg = euI (m, 1) > 0.5f;
+
+        if ((trg && eS.at (b + 2) < 0.5f) || (eMode.at (m) == 1 && trg))
+            eS.at (b) = sg;
+
+        eS.at (b + 2) = trg ? 1.0f : 0.0f;
+        float sl = euK (m, 0);
+        eS.at (b + 1) += (sl < 0.01f ? 1.0f : euCoef (sl * sl * 2.0f)) * (eS.at (b) - eS.at (b + 1));
+        eOut.at (5 + 2 * m)     = eS.at (b);
+        eOut.at (5 + 2 * m + 1) = eS.at (b + 1);
+    }
+
+    void euSeq (int m)
+    {
+        int   b   = m * 16;
+        int   n   = eMode.at (m) + 1;
+        bool  clk = euI (m, 0) > 0.5f;
+        bool  rst = euI (m, 1) > 0.5f;
+
+        if (rst && eS.at (b + 2) < 0.5f)
+            eS.at (b) = -1.0f;
+
+        if (clk && eS.at (b + 1) < 0.5f)
+            eS.at (b) = float ((int (eS.at (b)) + 1) % n);
+
+        eS.at (b + 1) = clk ? 1.0f : 0.0f;
+        eS.at (b + 2) = rst ? 1.0f : 0.0f;
+        int st = clamp (int (eS.at (b)), 0, 7);
+        eOut.at (5 + 2 * m)     = floor ((euK (m, st) - 0.5f) * 48.0f + 0.5f) / 12.0f;
+        eOut.at (5 + 2 * m + 1) = clk ? 1.0f : 0.0f;
+    }
+
+    void euClock (int m)
+    {
+        int   b    = m * 16;
+        int   md   = eMode.at (m);
+        float mult = md == 1 ? 2.0f : (md == 2 ? 4.0f : (md == 3 ? 0.5f : 1.0f));
+        float ph   = eS.at (b) + 30.0f * float (pow (10.0f, euK (m, 0))) / 60.0f * mult / float (processor.frequency);
+
+        if (ph >= 1.0f)
+        {
+            ph -= 1.0f;
+            eS.at (b + 1) = eS.at (b + 1) > 0.5f ? 0.0f : 1.0f;
+        }
+
+        eS.at (b) = ph;
+        float hi = ph < clamp (euK (m, 1), 0.05f, 0.95f) ? 1.0f : 0.0f;
+        eOut.at (5 + 2 * m)     = hi;
+        eOut.at (5 + 2 * m + 1) = eS.at (b + 1) > 0.5f ? hi : 0.0f;
+    }
+
+    void euAtt (int m)
+    {
+        float sg = eMode.at (m) == 1 ? -1.0f : 1.0f;
+        eOut.at (5 + 2 * m)     = euI (m, 0) * euK (m, 0) * 2.0f * sg + (euK (m, 1) - 0.5f) * 2.0f;
+        eOut.at (5 + 2 * m + 1) = euI (m, 1) * euK (m, 2) * 2.0f * sg + (euK (m, 3) - 0.5f) * 2.0f;
+    }
+
+    void euSlew (int m)
+    {
+        int   b  = m * 16;
+        float x  = euI (m, 0);
+        float y  = eS.at (b);
+        float tm = (x > y ? euK (m, 0) : euK (m, 1));
+        float t  = tm * tm * 3.0f + 0.0001f;
+
+        if (eMode.at (m) == 1)
+            y += euCoef (t) * (x - y);
+        else
+        {
+            float stp = 1.0f / (t * float (processor.frequency));
+            y = x > y ? min (x, y + stp) : max (x, y - stp);
+        }
+
+        eS.at (b) = y;
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = -y;
+    }
+
+    void euFold (int m)
+    {
+        float f = 1.0f + euK (m, 0) * 8.0f + euI (m, 1) * 4.0f;
+        float x = (euI (m, 0) * euK (m, 2) * 2.0f + (euK (m, 1) - 0.5f) * 2.0f) * f;
+        int   md = eMode.at (m);
+        float y;
+
+        if (md == 0)
+        {
+            float t = x * 0.25f + 0.25f;
+            y = 4.0f * abs (t - floor (t + 0.5f)) - 1.0f;
+        }
+        else if (md == 1)  y = clamp (x, -1.0f, 1.0f);
+        else               y = clamp (abs (x), 0.0f, 1.0f) * 2.0f - 1.0f;
+
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = float (tanh (x));
+    }
+
+    void euFx (int m)
+    {
+        float<2> y = fxRunSlot (10 + m, float<2> (euI (m, 0), euI (m, 0)));
+        eOut.at (5 + 2 * m)     = clamp (y[0], -8.0f, 8.0f);
+        eOut.at (5 + 2 * m + 1) = clamp (y[1], -8.0f, 8.0f);
+    }
+
+    void euOut (int m)
+    {
+        float lv = euK (m, 0) * 2.0f;
+
+        if (eMode.at (m) == 1)
+            eAcc += float<2> (euI (m, 0) + euI (m, 2), euI (m, 1) + euI (m, 3)) * lv;
+        else
+        {
+            float s = (euI (m, 0) + euI (m, 1) + euI (m, 2) + euI (m, 3)) * lv;
+            eAcc += float<2> (s, s);
+        }
+    }
+
+    void euRing (int m)
+    {
+        float y = (eMode.at (m) == 1 ? euI (m, 0) + euI (m, 1) : euI (m, 0) * euI (m, 1)) * euK (m, 0) * 2.0f;
+        eOut.at (5 + 2 * m)     = y;
+        eOut.at (5 + 2 * m + 1) = -y;
+    }
+
+    float<2> euroStep (float<2> synthLR, float<2> aud)
+    {
+        eOut.at (1) = synthLR[0];
+        eOut.at (2) = synthLR[1];
+        eOut.at (3) = aud[0];
+        eOut.at (4) = aud[1];
+        eAcc = float<2> (0.0f, 0.0f);
+
+        for (int m = 0; m < 20; ++m)
+        {
+            int t = eType.at (m);
+
+            if (eRst.at (m) != 0)
+            {
+                eRst.at (m) = 0;
+
+                for (int j = 0; j < 16; ++j)
+                    eS.at (m * 16 + j) = 0.0f;
+            }
+
+            if (t == 0)
+            {
+                eOut.at (5 + 2 * m)     = 0.0f;
+                eOut.at (5 + 2 * m + 1) = 0.0f;
+            }
+            else if (t == 1)   euMidiCv (m);
+            else if (t == 2)   euVco (m);
+            else if (t == 3)   euLfo (m);
+            else if (t == 4)   euAdsr (m);
+            else if (t == 5)   euVcf (m);
+            else if (t == 6)   euVca (m);
+            else if (t == 7)   euMixer (m);
+            else if (t == 8)   euNoise (m);
+            else if (t == 9)   euSh (m);
+            else if (t == 10)  euSeq (m);
+            else if (t == 11)  euClock (m);
+            else if (t == 12)  euAtt (m);
+            else if (t == 13)  euSlew (m);
+            else if (t == 14)  euFold (m);
+            else if (t == 15)  euFx (m);
+            else if (t == 16)  euOut (m);
+            else               euRing (m);
+        }
+
+        return eAcc;
+    }
+
