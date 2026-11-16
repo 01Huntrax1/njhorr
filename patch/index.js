@@ -3220,8 +3220,8 @@ const FX_TYPES = [
     // FX-WAVEGUIDE: the input excites resonating delay loops (FX type 32)
     { n: "Waveguide", mix: 0.5, modes: ["String", "Tube", "Dual Strings", "Fifth Drone", "Octave Drone"],
       p: [["Pitch", fxHz(30, 2000), 0.45], ["Decay", fxMs(50, 8000), 0.5], ["Damp", fxHz(500, 16000), 0.7], ["Detune", fxLin(0, 50, 0, "ct"), 0.1], ["Excite", fxPct, 0.5], ["Drive", fxPct, 0]] },
-    // FX-YAYBAHAR: string -> spring waveguide -> membrane resonator (FX type 33)
-    { n: "Yaybahar", mix: 0.6, modes: ["Single Spring", "Dual Spring", "Deep"],
+    // FX-YAYBAHAR: string -> two springs -> two drum membranes (FX type 33)
+    { n: "Yaybahar", mix: 0.6, modes: ["Classic", "Stereo", "Deep"],
       p: [["Pitch", fxHz(40, 800), 0.4], ["Spring", fxMs(20, 250), 0.5], ["Decay", fxPct, 0.5], ["Disper", fxPct, 0.5], ["Membran", fxHz(40, 250), 0.35], ["Damp", fxHz(500, 8000), 0.6]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)

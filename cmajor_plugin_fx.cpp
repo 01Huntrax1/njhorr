@@ -262617,17 +262617,21 @@ namespace performer
             float  T;
             float  w0;
             float  d;
-            int32_t  c;
-            int32_t  j;
-            float  len;
+            float  gSp;
+            float  gS;
             float  t60m;
+            Array<float, 8>  ratio;
+            Array<float, 8>  win;
+            Array<float, 8>  wout;
+            int32_t  v;
+            float  tune;
             int32_t  k;
-            float  ratio;
             float  fk;
             float  tk;
             float  r;
             float  w;
             bool  ok;
+            int32_t  ci;
 
             sr = static_cast<float> (1.0 * g__frequency);
             db = intrinsics::multiply (s, int32_t {16});
@@ -262638,7 +262642,7 @@ namespace performer
             sprT = 0.02f * intrinsics::pow (12.5f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {1}))], 0.0f, 1.0f));
             dec = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {2}))], 0.0f, 1.0f);
             disp = 0.75f * intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {3}))], 0.0f, 1.0f);
-            fm = (40.0f * intrinsics::pow (6.25f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {4}))], 0.0f, 1.0f))) * ((md == int32_t {2}) ? 0.6f : 1.0f);
+            fm = 40.0f * intrinsics::pow (6.25f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {4}))], 0.0f, 1.0f));
             fc = 500.0f * intrinsics::pow (16.0f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {5}))], 0.0f, 1.0f));
             aSp = intrinsics::exp ((-6.2831855f * intrinsics::min (fc, sr * 0.45f)) / sr);
             aSt = intrinsics::exp ((-6.2831855f * intrinsics::min (fc * 2.0f, sr * 0.45f)) / sr);
@@ -262647,64 +262651,61 @@ namespace performer
             T = sr / fS;
             w0 = (6.2831855f * fS) / sr;
             d = intrinsics::clamp (T - _Eisenpuls_Synth__wgLpDelay (aSt, w0), 4.0f, 8000.0f);
+            gSp = 0.55f + (0.42f * dec);
             _state.fxD[std__intrinsics___wrap_13056 (db)] = d;
             _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {1}))] = intrinsics::clamp (d * 1.004f, 4.0f, 8000.0f);
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {2}))] = intrinsics::min (intrinsics::exp ((-6.9078f * T) / (sr * t60)) / _Eisenpuls_Synth__wgLpGain (aSt, w0), 0.9998f);
+            gS = intrinsics::min (intrinsics::exp ((-6.9078f * T) / (sr * t60)) / _Eisenpuls_Synth__wgLpGain (aSt, w0), 0.9998f);
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {2}))] = gS;
             _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {3}))] = aSt;
             _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {4}))] = 0.5f;
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {5}))] = intrinsics::clamp (sprT * sr, 16.0f, 30000.0f);
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {6}))] = intrinsics::clamp ((sprT * ((md == int32_t {1}) ? 1.07f : 1.37f)) * sr, 16.0f, 30000.0f);
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {7}))] = ((0.3f * (1.0f - gS)) * (1.0f - gSp));
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {8}))] = (0.01f * (1.0f - gSp));
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {9}))] = gSp;
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {10}))] = aSp;
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {11}))] = disp;
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {12}))] = static_cast<float> (md);
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {13}))] = 1.4f;
+            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {14}))] = 0.8f;
+            t60m = 0.4f + (2.5f * dec);
+            ratio = Array<float, 8> { 1.0f, 1.634f, 1.527f, 2.0f, 2.335f, 2.133f, 2.604f, 2.494f };
+            win = Array<float, 8> { 0.968f, 0.243f, 0.422f, 0.106f, -0.908f, -0.784f, -0.395f, -0.197f };
+            wout = Array<float, 8> { 0.88f, 0.275f, 0.799f, 0.25f, -0.794f, -0.155f, -0.721f, -0.048f };
             {
-                c = int32_t {0};
+                v = int32_t {0};
                 for (;;)
                 {
-                    if  (! (c < int32_t {2}))
+                    if  (! (v < int32_t {2}))
                     {
                         break;
                     }
+                    tune = (v == int32_t {0}) ? ((md == int32_t {2}) ? 0.6f : 1.0f) : ((md == int32_t {0}) ? 0.5f : ((md == int32_t {1}) ? 0.94f : 0.3f));
                     {
-                        j = int32_t {0};
+                        k = int32_t {0};
                         for (;;)
                         {
-                            if  (! (j < int32_t {2}))
+                            if  (! (k < int32_t {8}))
                             {
                                 break;
                             }
-                            len = (sprT * ((j == int32_t {1}) ? 1.37f : 1.0f)) * ((c == int32_t {1}) ? 1.07f : 1.0f);
-                            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (intrinsics::add (intrinsics::add (db, int32_t {5}), intrinsics::multiply (c, int32_t {2})), j))] = intrinsics::clamp (len * sr, 16.0f, 30000.0f);
+                            fk = (fm * tune) * ratio[std__intrinsics___wrap_8 (k)];
+                            tk = t60m / (1.0f + (0.5f * (ratio[std__intrinsics___wrap_8 (k)] - 1.0f)));
+                            r = intrinsics::exp (-6.9078f / (tk * sr));
+                            w = (6.2831855f * fk) / sr;
+                            ok = fk < (sr * 0.45f);
+                            ci = intrinsics::add (cb, intrinsics::multiply (intrinsics::add (intrinsics::multiply (v, int32_t {8}), k), int32_t {4}));
+                            _state.csV[std__intrinsics___wrap_835584 (ci)] = (ok ? ((2.0f * r) * intrinsics::cos (w)) : 0.0f);
+                            _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {1}))] = (ok ? (r * r) : 0.0f);
+                            _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {2}))] = (ok ? ((((1.0f - r) * intrinsics::sin (w)) * 10.0f) * win[std__intrinsics___wrap_8 (k)]) : 0.0f);
+                            _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {3}))] = wout[std__intrinsics___wrap_8 (k)];
                             {
-                                intrinsics::addTo (j, 1);
+                                intrinsics::addTo (k, 1);
                             }
                         }
                     }
                     {
-                        intrinsics::addTo (c, 1);
-                    }
-                }
-            }
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {9}))] = (0.55f + (0.42f * dec));
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {10}))] = aSp;
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {11}))] = disp;
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {12}))] = ((md == int32_t {0}) ? 1.0f : 2.0f);
-            _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {13}))] = ((md == int32_t {0}) ? 2.0f : 1.5f);
-            t60m = 0.4f + (2.5f * dec);
-            {
-                k = int32_t {0};
-                for (;;)
-                {
-                    if  (! (k < int32_t {6}))
-                    {
-                        break;
-                    }
-                    ratio = (k == int32_t {0}) ? 1.0f : ((k == int32_t {1}) ? 1.593f : ((k == int32_t {2}) ? 2.136f : ((k == int32_t {3}) ? 2.296f : ((k == int32_t {4}) ? 2.653f : 2.918f))));
-                    fk = fm * ratio;
-                    tk = t60m / (1.0f + (0.35f * static_cast<float> (k)));
-                    r = intrinsics::exp (-6.9078f / (tk * sr));
-                    w = (6.2831855f * fk) / sr;
-                    ok = fk < (sr * 0.45f);
-                    _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (cb, intrinsics::multiply (k, int32_t {4})))] = (ok ? ((2.0f * r) * intrinsics::cos (w)) : 0.0f);
-                    _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, intrinsics::multiply (k, int32_t {4})), int32_t {1}))] = (ok ? (r * r) : 0.0f);
-                    _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, intrinsics::multiply (k, int32_t {4})), int32_t {2}))] = (ok ? ((((1.0f - r) * intrinsics::sin (w)) * 14.0f) / (1.0f + (0.5f * static_cast<float> (k)))) : 0.0f);
-                    {
-                        intrinsics::addTo (k, 1);
+                        intrinsics::addTo (v, 1);
                     }
                 }
             }
@@ -268788,38 +268789,52 @@ namespace performer
             int32_t  cb;
             int32_t  sp;
             int32_t  pp;
-            int32_t  ns;
+            bool  st;
             float  aSt;
             float  gSt;
             float  ing;
+            float  kc;
+            float  kb;
             float  gSp;
             float  aSp;
             float  aAp;
             float  og;
-            Vector<float, 2>  o;
-            int32_t  c;
+            float  pan;
+            float  xm;
+            Array<float, 2>  ys;
+            Array<float, 2>  fk;
+            Array<float, 2>  ls;
+            Array<float, 2>  ret;
+            Array<float, 2>  A;
+            int32_t  u;
             int32_t  sb;
             float  rp;
             int32_t  i0;
             float  fr;
-            float  ys;
+            float  y;
             float  lp;
-            float  sprOut;
-            int32_t  j;
-            int32_t  k;
+            int32_t  v;
+            int32_t  u_0;
             int32_t  pb;
             float  rq;
             int32_t  q0;
             float  qf;
-            float  y;
-            int32_t  st;
+            float  y_0;
+            int32_t  a;
             int32_t  ai;
             float  yo;
-            float  ls;
+            float  l;
+            int32_t  t;
+            int32_t  u_1;
+            int32_t  v_0;
+            float  drive;
             float  mem;
-            int32_t  k_0;
+            int32_t  k;
+            int32_t  ci;
             int32_t  mi;
             float  yv;
+            Vector<float, 2>  _temp;
+            Vector<float, 2>  _temp_0;
 
             ab = _Eisenpuls_Synth__fxAb (s);
             ib = intrinsics::multiply (s, int32_t {24});
@@ -268828,102 +268843,151 @@ namespace performer
             cb = intrinsics::multiply (s, int32_t {1024});
             sp = _state.fxI[std__intrinsics___wrap_19584 (ib)];
             pp = _state.fxI[std__intrinsics___wrap_19584 (intrinsics::add (ib, int32_t {1}))];
-            ns = static_cast<int32_t> (_state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {12}))] + 0.5f);
+            st = static_cast<int32_t> (_state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {12}))] + 0.5f) == int32_t {1};
             aSt = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {3}))];
             gSt = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {2}))];
             ing = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {4}))];
+            kc = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {7}))];
+            kb = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {8}))];
             gSp = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {9}))];
             aSp = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {10}))];
             aAp = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {11}))];
             og = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {13}))];
-            o = Vector<float, 2>();
+            pan = _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {14}))];
+            xm = 0.5f * (x[int32_t {0}] + x[int32_t {1}]);
+            ys = Array<float, 2> {};
+            fk = Array<float, 2> {};
+            ls = Array<float, 2> {};
+            ret = Array<float, 2> {};
+            A = Array<float, 2> {};
             {
-                c = int32_t {0};
+                u = int32_t {0};
                 for (;;)
                 {
-                    if  (! (c < int32_t {2}))
+                    if  (! (u < (st ? int32_t {2} : int32_t {1})))
                     {
                         break;
                     }
-                    sb = intrinsics::add (ab, intrinsics::multiply (c, int32_t {8192}));
-                    rp = static_cast<float> (sp) - _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, c))];
+                    sb = intrinsics::add (ab, intrinsics::multiply (u, int32_t {8192}));
+                    rp = static_cast<float> (sp) - _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, u))];
                     i0 = static_cast<int32_t> (intrinsics::floor (rp));
                     fr = rp - static_cast<float> (i0);
-                    ys = (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (sb, i0 & int32_t {8191}))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (sb, intrinsics::add (i0, int32_t {1}) & int32_t {8191}))] * fr);
-                    lp = ((1.0f - aSt) * ys) + (aSt * _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (fb, c))]);
-                    _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (fb, c))] = lp;
-                    _state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (sb, sp & int32_t {8191}))] = intrinsics::clamp ((x[std__intrinsics___wrap_2 (c)] * ing) + (lp * gSt), -8.0f, 8.0f);
-                    sprOut = 0.0f;
+                    y = (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (sb, i0 & int32_t {8191}))] * (1.0f - fr)) + (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (sb, intrinsics::add (i0, int32_t {1}) & int32_t {8191}))] * fr);
+                    lp = ((1.0f - aSt) * y) + (aSt * _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (fb, u))]);
+                    _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (fb, u))] = lp;
+                    ys[std__intrinsics___wrap_2 (u)] = y;
+                    fk[std__intrinsics___wrap_2 (u)] = (lp * gSt);
+                    ret[std__intrinsics___wrap_2 (u)] = 0.0f;
                     {
-                        j = int32_t {0};
+                        intrinsics::addTo (u, 1);
+                    }
+                }
+            }
+            {
+                v = int32_t {0};
+                for (;;)
+                {
+                    if  (! (v < int32_t {2}))
+                    {
+                        break;
+                    }
+                    u_0 = st ? v : int32_t {0};
+                    pb = intrinsics::add (intrinsics::add (ab, int32_t {16384}), intrinsics::multiply (v, int32_t {32768}));
+                    rq = static_cast<float> (pp) - _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (intrinsics::add (db, int32_t {5}), v))];
+                    q0 = static_cast<int32_t> (intrinsics::floor (rq));
+                    qf = rq - static_cast<float> (q0);
+                    y_0 = (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, q0 & int32_t {32767}))] * (1.0f - qf)) + (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, intrinsics::add (q0, int32_t {1}) & int32_t {32767}))] * qf);
+                    {
+                        a = int32_t {0};
                         for (;;)
                         {
-                            if  (! (j < ns))
+                            if  (! (a < int32_t {4}))
                             {
                                 break;
                             }
-                            k = intrinsics::add (intrinsics::multiply (c, int32_t {2}), j);
-                            pb = intrinsics::add (intrinsics::add (ab, int32_t {16384}), intrinsics::multiply (k, int32_t {32768}));
-                            rq = static_cast<float> (pp) - _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (intrinsics::add (db, int32_t {5}), k))];
-                            q0 = static_cast<int32_t> (intrinsics::floor (rq));
-                            qf = rq - static_cast<float> (q0);
-                            y = (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, q0 & int32_t {32767}))] * (1.0f - qf)) + (_state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, intrinsics::add (q0, int32_t {1}) & int32_t {32767}))] * qf);
+                            ai = intrinsics::add (intrinsics::add (intrinsics::add (fb, int32_t {6}), intrinsics::multiply (v, int32_t {4})), a);
+                            yo = ((- aAp) * y_0) + _state.fxF[std__intrinsics___wrap_32768 (ai)];
+                            _state.fxF[std__intrinsics___wrap_32768 (ai)] = intrinsics::clamp (y_0 + (aAp * yo), -16.0f, 16.0f);
+                            y_0 = yo;
                             {
-                                st = int32_t {0};
-                                for (;;)
-                                {
-                                    if  (! (st < int32_t {4}))
-                                    {
-                                        break;
-                                    }
-                                    ai = intrinsics::add (intrinsics::add (intrinsics::add (fb, int32_t {6}), intrinsics::multiply (k, int32_t {4})), st);
-                                    yo = ((- aAp) * y) + _state.fxF[std__intrinsics___wrap_32768 (ai)];
-                                    _state.fxF[std__intrinsics___wrap_32768 (ai)] = intrinsics::clamp (y + (aAp * yo), -16.0f, 16.0f);
-                                    y = yo;
-                                    {
-                                        intrinsics::addTo (st, 1);
-                                    }
-                                }
-                            }
-                            ls = ((1.0f - aSp) * y) + (aSp * _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (intrinsics::add (fb, int32_t {2}), k))]);
-                            _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (intrinsics::add (fb, int32_t {2}), k))] = ls;
-                            _state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, pp & int32_t {32767}))] = intrinsics::clamp ((ys * 0.7f) + (ls * gSp), -8.0f, 8.0f);
-                            sprOut = (sprOut + ls);
-                            {
-                                intrinsics::addTo (j, 1);
+                                intrinsics::addTo (a, 1);
                             }
                         }
                     }
-                    sprOut = (sprOut * og);
+                    l = ((1.0f - aSp) * y_0) + (aSp * _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (intrinsics::add (fb, int32_t {2}), v))]);
+                    _state.fxF[std__intrinsics___wrap_32768 (intrinsics::add (intrinsics::add (fb, int32_t {2}), v))] = l;
+                    ls[std__intrinsics___wrap_2 (v)] = l;
+                    {
+                        t = std__intrinsics___wrap_2 (u_0);
+                        ret[t] = (ret[t] + (l * kc));
+                    }
+                    _state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (pb, pp & int32_t {32767}))] = intrinsics::clamp (((ys[std__intrinsics___wrap_2 (u_0)] * 0.7f) + (_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, int32_t {600}), v))] * kb)) + (l * gSp), -8.0f, 8.0f);
+                    {
+                        intrinsics::addTo (v, 1);
+                    }
+                }
+            }
+            {
+                u_1 = int32_t {0};
+                for (;;)
+                {
+                    if  (! (u_1 < (st ? int32_t {2} : int32_t {1})))
+                    {
+                        break;
+                    }
+                    _state.fxArena[std__intrinsics___wrap_22020096 (intrinsics::add (intrinsics::add (ab, intrinsics::multiply (u_1, int32_t {8192})), sp & int32_t {8191}))] = intrinsics::clamp ((((st ? x[std__intrinsics___wrap_2 (u_1)] : xm) * ing) + fk[std__intrinsics___wrap_2 (u_1)]) + ret[std__intrinsics___wrap_2 (u_1)], -8.0f, 8.0f);
+                    {
+                        intrinsics::addTo (u_1, 1);
+                    }
+                }
+            }
+            {
+                v_0 = int32_t {0};
+                for (;;)
+                {
+                    if  (! (v_0 < int32_t {2}))
+                    {
+                        break;
+                    }
+                    drive = ls[std__intrinsics___wrap_2 (v_0)] * og;
                     mem = 0.0f;
                     {
-                        k_0 = int32_t {0};
+                        k = int32_t {0};
                         for (;;)
                         {
-                            if  (! (k_0 < int32_t {6}))
+                            if  (! (k < int32_t {8}))
                             {
                                 break;
                             }
-                            mi = intrinsics::add (intrinsics::add (cb, int32_t {512}), intrinsics::multiply (intrinsics::add (intrinsics::multiply (c, int32_t {6}), k_0), int32_t {2}));
-                            yv = ((_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (cb, intrinsics::multiply (k_0, int32_t {4})))] * _state.csV[std__intrinsics___wrap_835584 (mi)]) - (_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, intrinsics::multiply (k_0, int32_t {4})), int32_t {1}))] * _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (mi, int32_t {1}))])) + (_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, intrinsics::multiply (k_0, int32_t {4})), int32_t {2}))] * sprOut);
-                            yv = intrinsics::clamp (yv, -16.0f, 16.0f);
+                            ci = intrinsics::add (cb, intrinsics::multiply (intrinsics::add (intrinsics::multiply (v_0, int32_t {8}), k), int32_t {4}));
+                            mi = intrinsics::add (intrinsics::add (cb, int32_t {512}), intrinsics::multiply (intrinsics::add (intrinsics::multiply (v_0, int32_t {8}), k), int32_t {2}));
+                            yv = intrinsics::clamp (((_state.csV[std__intrinsics___wrap_835584 (ci)] * _state.csV[std__intrinsics___wrap_835584 (mi)]) - (_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {1}))] * _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (mi, int32_t {1}))])) + (_state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {2}))] * drive), -16.0f, 16.0f);
                             _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (mi, int32_t {1}))] = _state.csV[std__intrinsics___wrap_835584 (mi)];
                             _state.csV[std__intrinsics___wrap_835584 (mi)] = yv;
-                            mem = (mem + yv);
+                            mem = (mem + (yv * _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (ci, int32_t {3}))]));
                             {
-                                intrinsics::addTo (k_0, 1);
+                                intrinsics::addTo (k, 1);
                             }
                         }
                     }
-                    o[std__intrinsics___wrap_2 (c)] = intrinsics::tanh ((sprOut * 0.7f) + (mem * 0.8f));
+                    _state.csV[std__intrinsics___wrap_835584 (intrinsics::add (intrinsics::add (cb, int32_t {600}), v_0))] = mem;
+                    A[std__intrinsics___wrap_2 (v_0)] = ((drive * 0.7f) + (mem * 0.8f));
                     {
-                        intrinsics::addTo (c, 1);
+                        intrinsics::addTo (v_0, 1);
                     }
                 }
             }
             _state.fxI[std__intrinsics___wrap_19584 (ib)] = (intrinsics::add (sp, int32_t {1}) & int32_t {8191});
             _state.fxI[std__intrinsics___wrap_19584 (intrinsics::add (ib, int32_t {1}))] = (intrinsics::add (pp, int32_t {1}) & int32_t {32767});
-            return o;
+            if (st)
+            {
+                _temp[int32_t {0}] = intrinsics::tanh (A[int32_t {0}]);
+                _temp[int32_t {1}] = intrinsics::tanh (A[int32_t {1}]);
+                return _temp;
+            }
+            _temp_0[int32_t {0}] = intrinsics::tanh ((pan * A[int32_t {0}]) + ((1.0f - pan) * A[int32_t {1}]));
+            _temp_0[int32_t {1}] = intrinsics::tanh (((1.0f - pan) * A[int32_t {0}]) + (pan * A[int32_t {1}]));
+            return _temp_0;
         }
 
         float _Eisenpuls_Synth__shapeSig (_Eisenpuls_Synth_State& _state, float x, float d) noexcept

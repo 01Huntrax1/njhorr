@@ -11454,7 +11454,7 @@ static void fxTypes_16 (std::vector<FxType>& v)
 {
     v.insert (v.end(), {
         FxType { NJ_S("Waveguide"), 0.5f, { NJ_S("String"), NJ_S("Tube"), NJ_S("Dual Strings"), NJ_S("Fifth Drone"), NJ_S("Octave Drone") }, {  }, { { NJ_S("Pitch"), { "hz", 30.0, 2000.0, 0, NJ_S("") }, 0.45f }, { NJ_S("Decay"), { "ms", 50.0, 8000.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Damp"), { "hz", 500.0, 16000.0, 0, NJ_S("") }, 0.7f }, { NJ_S("Detune"), { "lin", 0.0, 50.0, 0, NJ_S("ct") }, 0.1f }, { NJ_S("Excite"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Drive"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.0f } } },
-        FxType { NJ_S("Yaybahar"), 0.6f, { NJ_S("Single Spring"), NJ_S("Dual Spring"), NJ_S("Deep") }, {  }, { { NJ_S("Pitch"), { "hz", 40.0, 800.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Spring"), { "ms", 20.0, 250.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Decay"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Disper"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Membran"), { "hz", 40.0, 250.0, 0, NJ_S("") }, 0.35f }, { NJ_S("Damp"), { "hz", 500.0, 8000.0, 0, NJ_S("") }, 0.6f } } },
+        FxType { NJ_S("Yaybahar"), 0.6f, { NJ_S("Classic"), NJ_S("Stereo"), NJ_S("Deep") }, {  }, { { NJ_S("Pitch"), { "hz", 40.0, 800.0, 0, NJ_S("") }, 0.4f }, { NJ_S("Spring"), { "ms", 20.0, 250.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Decay"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Disper"), { "pct", 0.0, 0.0, 0, NJ_S("") }, 0.5f }, { NJ_S("Membran"), { "hz", 40.0, 250.0, 0, NJ_S("") }, 0.35f }, { NJ_S("Damp"), { "hz", 500.0, 8000.0, 0, NJ_S("") }, 0.6f } } },
     });
 }
 const std::vector<FxType>& fxTypes()
