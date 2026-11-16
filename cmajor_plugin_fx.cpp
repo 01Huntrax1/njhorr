@@ -74188,6 +74188,7 @@ namespace performer
             Array<int32_t, 1088> fxEnvCt;
             int32_t fxNoteSeq = {};
             bool fxHeld = {};
+            int32_t fxLastNote = {};
             Array<int32_t, 1088> fxSync;
             float insOn = {};
             double fxBeat = {};
@@ -167129,6 +167130,8 @@ namespace performer
                 }
             }
             intrinsics::addTo (_state.fxNoteSeq, 1);
+            _state.fxLastNote = nn;
+            _Eisenpuls_Synth__fxKeyDirty (_state);
             velGainV = (1.0f - _state.velSens) + (_state.velSens * vel);
             monoMode = (_state.voiceMode > 0.5f) ? true : ((_state.arpOn > 0.5f) ? (static_cast<int32_t> (_state.arpMode + 0.5f) == int32_t {5}) : false);
             legato = (monoMode ? (_state.legatoOn > 0.5f) : false) ? (! _state.a3Hard) : false;
@@ -167405,6 +167408,39 @@ namespace performer
         int32_t std__intrinsics___wrap_8 (int32_t n) noexcept
         {
             return n & int32_t {7};
+        }
+
+        void _Eisenpuls_Synth__fxKeyDirty (_Eisenpuls_Synth_State& _state) noexcept
+        {
+            int32_t  ks;
+            int32_t  kt;
+
+            {
+                ks = int32_t {0};
+                for (;;)
+                {
+                    if  (! (ks < int32_t {48}))
+                    {
+                        break;
+                    }
+                    kt = _state.fxType[std__intrinsics___wrap_1088 (ks)];
+                    if (((kt == int32_t {33}) ? (_state.fxMode[std__intrinsics___wrap_1088 (ks)] >= int32_t {3}) : false) ? true : ((kt == int32_t {32}) ? (_state.fxMode[std__intrinsics___wrap_1088 (ks)] >= int32_t {5}) : false))
+                    {
+                        _state.fxDirty[std__intrinsics___wrap_1088 (ks)] = true;
+                    }
+                    {
+                        intrinsics::addTo (ks, 1);
+                    }
+                }
+            }
+        }
+
+        int32_t std__intrinsics___wrap_1088 (int32_t n) noexcept
+        {
+            int32_t  x;
+
+            x = intrinsics::modulo (n, int32_t {1088});
+            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {1088}) : x;
         }
 
         int32_t _Eisenpuls_Synth__findFreeVoice (_Eisenpuls_Synth_State& _state) noexcept
@@ -168230,14 +168266,6 @@ namespace performer
 
             x = intrinsics::modulo (n, int32_t {24576});
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {24576}) : x;
-        }
-
-        int32_t std__intrinsics___wrap_1088 (int32_t n) noexcept
-        {
-            int32_t  x;
-
-            x = intrinsics::modulo (n, int32_t {1088});
-            return (x < int32_t {0}) ? intrinsics::add (x, int32_t {1088}) : x;
         }
 
         void _Eisenpuls_Synth__fxResetSlot (_Eisenpuls_Synth_State& _state, int32_t s) noexcept
@@ -242768,6 +242796,7 @@ namespace performer
             _state.ins_hostPpq = 0.0;
             _state.ins_barTicks = int32_t {384};
             _state.ins_originOff = int32_t {0};
+            _state.fxLastNote = int32_t {60};
             _state.fxHeld = false;
             _state.fxNoteSeq = int32_t {0};
             _state.lastKeyV = 0.0f;
@@ -262514,8 +262543,10 @@ namespace performer
             float  sr;
             int32_t  db;
             int32_t  pb;
+            bool  key;
             int32_t  md;
             float  f;
+            float  _temp;
             float  t60;
             float  fc;
             float  cent;
@@ -262538,8 +262569,14 @@ namespace performer
             sr = static_cast<float> (1.0 * g__frequency);
             db = intrinsics::multiply (s, int32_t {16});
             pb = intrinsics::multiply (s, int32_t {6});
-            md = intrinsics::clamp (_state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {0}, int32_t {4});
+            key = (s < int32_t {48}) ? (_state.fxMode[std__intrinsics___wrap_1088 (s)] >= int32_t {5}) : false;
+            md = intrinsics::clamp ((_state.fxMode[std__intrinsics___wrap_1088 (s)] >= int32_t {5}) ? intrinsics::subtract (_state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {5}) : _state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {0}, int32_t {4});
             f = 30.0f * intrinsics::pow (66.666664f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (pb)], 0.0f, 1.0f));
+            if (key)
+            {
+                _temp = _Eisenpuls_Synth__fxKeyHz (_state);
+                f = ((_temp * f) / 261.63f);
+            }
             t60 = 0.05f * intrinsics::pow (160.0f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {1}))], 0.0f, 1.0f));
             fc = 500.0f * intrinsics::pow (32.0f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {2}))], 0.0f, 1.0f));
             cent = 50.0f * intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {3}))], 0.0f, 1.0f);
@@ -262597,14 +262634,21 @@ namespace performer
             _state.fxD[std__intrinsics___wrap_13056 (intrinsics::add (db, int32_t {11}))] = ((nl == int32_t {2}) ? 0.7f : 1.0f);
         }
 
+        float _Eisenpuls_Synth__fxKeyHz (_Eisenpuls_Synth_State& _state) noexcept
+        {
+            return 440.0f * intrinsics::pow (2.0f, static_cast<float> (intrinsics::subtract (_state.fxLastNote, int32_t {69})) / 12.0f);
+        }
+
         void _Eisenpuls_Synth__fxYbDerive (_Eisenpuls_Synth_State& _state, int32_t s) noexcept
         {
             float  sr;
             int32_t  db;
             int32_t  pb;
             int32_t  cb;
+            bool  key;
             int32_t  md;
             float  f;
+            float  _temp;
             float  sprT;
             float  dec;
             float  disp;
@@ -262637,8 +262681,14 @@ namespace performer
             db = intrinsics::multiply (s, int32_t {16});
             pb = intrinsics::multiply (s, int32_t {6});
             cb = intrinsics::multiply (s, int32_t {1024});
-            md = intrinsics::clamp (_state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {0}, int32_t {2});
+            key = _state.fxMode[std__intrinsics___wrap_1088 (s)] >= int32_t {3};
+            md = intrinsics::clamp (key ? intrinsics::subtract (_state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {3}) : _state.fxMode[std__intrinsics___wrap_1088 (s)], int32_t {0}, int32_t {2});
             f = 40.0f * intrinsics::pow (20.0f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (pb)], 0.0f, 1.0f));
+            if (key)
+            {
+                _temp = _Eisenpuls_Synth__fxKeyHz (_state);
+                f = ((_temp * f) / 261.63f);
+            }
             sprT = 0.02f * intrinsics::pow (12.5f, intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {1}))], 0.0f, 1.0f));
             dec = intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {2}))], 0.0f, 1.0f);
             disp = 0.75f * intrinsics::clamp (_state.fxP[std__intrinsics___wrap_4992 (intrinsics::add (pb, int32_t {3}))], 0.0f, 1.0f);

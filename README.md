@@ -537,3 +537,7 @@ Own implementation of Gorkem Sen's Yaybahar, written from the published architec
 - Modes: Classic (mono string, spring 2 is 1.37 x as long, drum 2 one octave lower, outputs panned 80 / 20 as on the instrument), Stereo (a string, spring and drum per channel), Deep (Classic with lower drums).
 - Knobs: Pitch 40-800 Hz, Spring 20-250 ms, Decay, Disper, Membran 40-250 Hz (drum 1), Damp.
 - Code `tools/fx/build_ybfx.py` (marker FX-YAYBAHAR), tests `python3 tools/fx/test_ybfx.py --host <dsp_host>`. Not verified by ear.
+
+### Key tracking (Waveguide and Yaybahar)
+
+Both pitched effects have key tracking modes ("... Key": Waveguide modes 6-10, Yaybahar modes 4-6). The string then follows the last played note: the **Pitch** knob transposes relative to the note, 261.6 Hz = unison, 130.8 Hz = an octave down, 523 Hz = an octave up. The effect is retuned on every note-on (also from the arpeggiator), and it works in the Bus / Main racks of the synth and of Njohrr Modular, and in the FX modules of the Eurorack rack; the per voice racks of the oscillators ignore it. Code `tools/fx/build_fxkey.py` (marker FX-KEYTRACK), tests in `tools/fx/test_ybfx.py`.

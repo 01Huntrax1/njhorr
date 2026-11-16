@@ -3218,10 +3218,10 @@ const FX_TYPES = [
     { n: "CloudSeed", mix: 0.3, modes: ["Dark Plate", "Hall", "Room", "Chamber", "Cathedral", "Cloud", "Ambience", "Echo Space"],
       p: [["Decay", fxMs(200, 30000), 0.45], ["Size", fxPct, 0.5], ["Damp", fxPct, 0.4], ["PreDly", fxLin(0, 80, 0, "ms"), 0.1], ["Mod", fxPct, 0.3], ["Early", fxPct, 0.3]] },
     // FX-WAVEGUIDE: the input excites resonating delay loops (FX type 32)
-    { n: "Waveguide", mix: 0.5, modes: ["String", "Tube", "Dual Strings", "Fifth Drone", "Octave Drone"],
+    { n: "Waveguide", mix: 0.5, modes: ["String", "Tube", "Dual Strings", "Fifth Drone", "Octave Drone", "String Key", "Tube Key", "Dual Strings Key", "Fifth Drone Key", "Octave Drone Key"],
       p: [["Pitch", fxHz(30, 2000), 0.45], ["Decay", fxMs(50, 8000), 0.5], ["Damp", fxHz(500, 16000), 0.7], ["Detune", fxLin(0, 50, 0, "ct"), 0.1], ["Excite", fxPct, 0.5], ["Drive", fxPct, 0]] },
     // FX-YAYBAHAR: string -> two springs -> two drum membranes (FX type 33)
-    { n: "Yaybahar", mix: 0.6, modes: ["Classic", "Stereo", "Deep"],
+    { n: "Yaybahar", mix: 0.6, modes: ["Classic", "Stereo", "Deep", "Classic Key", "Stereo Key", "Deep Key"],
       p: [["Pitch", fxHz(40, 800), 0.4], ["Spring", fxMs(20, 250), 0.5], ["Decay", fxPct, 0.5], ["Disper", fxPct, 0.5], ["Membran", fxHz(40, 250), 0.35], ["Damp", fxHz(500, 8000), 0.6]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)

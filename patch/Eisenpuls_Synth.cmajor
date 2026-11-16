@@ -7301,6 +7301,7 @@ processor Eisenpuls_Synth
     int[1088] fxEnvCt;
     int           fxNoteSeq = 0;   // counts accepted note-ons
     bool          fxHeld = false;  // any note is held (not yet released)
+    int           fxLastNote = 60; // FX-KEYTRACK: last played note
     int[1088] fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
     float         insOn = 0.0f;
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
@@ -17651,6 +17652,23 @@ processor Eisenpuls_Synth
         return acc * 1.4f;
     }
 
+    // FX-KEYTRACK: a note was played: the key tracking modes of Waveguide (modes 5..9) and Yaybahar (modes 3..5) retune
+    void fxKeyDirty()
+    {
+        for (int ks = 0; ks < 48; ++ks)
+        {
+            int kt = fxType.at (ks);
+
+            if ((kt == 33 && fxMode.at (ks) >= 3) || (kt == 32 && fxMode.at (ks) >= 5))
+                fxDirty.at (ks) = true;
+        }
+    }
+
+    float fxKeyHz()
+    {
+        return 440.0f * float (pow (2.0f, float (fxLastNote - 69) / 12.0f));
+    }
+
     // ---- FX-FENV: ADSR of the filter effect ----
     void fxGateUpdate()
     {
@@ -19839,8 +19857,13 @@ processor Eisenpuls_Synth
         float sr   = float (processor.frequency);
         int   db   = s * 16;
         int   pb   = s * 6;
-        int   md   = clamp (fxMode.at (s), 0, 4);
+        bool  key  = s < 48 && fxMode.at (s) >= 5;   // FX-KEYTRACK
+        int   md   = clamp (fxMode.at (s) >= 5 ? fxMode.at (s) - 5 : fxMode.at (s), 0, 4);
         float f    = 30.0f * float (pow (2000.0f / 30.0f, clamp (fxP.at (pb), 0.0f, 1.0f)));
+
+        if (key)
+            f = fxKeyHz() * f / 261.63f;
+
         float t60  = 0.05f * float (pow (160.0f, clamp (fxP.at (pb + 1), 0.0f, 1.0f)));
         float fc   = 500.0f * float (pow (32.0f, clamp (fxP.at (pb + 2), 0.0f, 1.0f)));
         float cent = 50.0f * clamp (fxP.at (pb + 3), 0.0f, 1.0f);
@@ -19943,8 +19966,13 @@ processor Eisenpuls_Synth
         int   db   = s * 16;
         int   pb   = s * 6;
         int   cb   = s * 1024;
-        int   md   = clamp (fxMode.at (s), 0, 2);
+        bool  key  = fxMode.at (s) >= 3;   // FX-KEYTRACK
+        int   md   = clamp (key ? fxMode.at (s) - 3 : fxMode.at (s), 0, 2);
         float f    = 40.0f * float (pow (20.0f, clamp (fxP.at (pb), 0.0f, 1.0f)));
+
+        if (key)
+            f = fxKeyHz() * f / 261.63f;
+
         float sprT = 0.02f * float (pow (12.5f, clamp (fxP.at (pb + 1), 0.0f, 1.0f)));
         float dec  = clamp (fxP.at (pb + 2), 0.0f, 1.0f);
         float disp = 0.75f * clamp (fxP.at (pb + 3), 0.0f, 1.0f);
@@ -25867,6 +25895,8 @@ processor Eisenpuls_Synth
                 return;
 
         fxNoteSeq++;   // FX-FENV: retriggers the filter effect envelopes
+        fxLastNote = nn;   // FX-KEYTRACK
+        fxKeyDirty();
         float velGainV = (1.0f - velSens) + velSens * vel;
         bool  monoMode = voiceMode > 0.5f || (arpOn > 0.5f && int (arpMode + 0.5f) == 5);   // MOD-ARP303: the 303 pattern plays mono
         bool  legato   = monoMode && legatoOn > 0.5f && ! a3Hard;   // LEGATO: Mono with the switch off restarts the oscillators on every note (the pitch still glides)

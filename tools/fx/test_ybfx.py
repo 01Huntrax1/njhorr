@@ -48,5 +48,15 @@ check("extreme settings (Stereo, decay and damp max) stay finite and bounded", n
 st_ = render(fx(YB, 1, 1.0, (kn(110, 40, 800), 0.5, 0.7, 0.5, 0.4, 0.6)), tag="stm")
 cl_ = render(fx(YB, 0, 1.0, (kn(110, 40, 800), 0.5, 0.7, 0.5, 0.4, 0.6)), tag="clm")
 check("Classic pans the two drums 80 / 20 (left louder than right in the tail)", rms(seg(cl_, 0.2, 1.2, 0)) != rms(seg(cl_, 0.2, 1.2, 1)))
+def peak(x, lo_, hi_):
+    S = np.abs(np.fft.rfft(x * np.hanning(len(x)))); f = np.fft.rfftfreq(len(x), 1.0 / RATE); m = (f > lo_) & (f < hi_); return float(f[m][np.argmax(S[m])])
+for note in (57, 69):
+    hz = 440.0 * 2 ** ((note - 69) / 12.0)
+    w = render(fx(32, 5, 1.0, (kn(261.63, 30, 2000), 0.75, 0.8, 0.1, 0.6, 0.0)), tag="wgk%d" % note, note=note)
+    pk = peak(seg(w, 0.25, 0.9), 100, 1200)
+    check("Waveguide String Key rings at the played note (%d = %.0f Hz)" % (note, hz), abs(pk - hz) < 0.03 * hz, "%.1f Hz" % pk)
+    y = render(fx(YB, 3, 1.0, (kn(261.63, 40, 800), 0.5, 0.7, 0.3, 0.4, 0.8)), tag="ybk%d" % note, note=note)
+    pk = peak(seg(y, 0.2, 1.0), 100, 1200)
+    check("Yaybahar Classic Key: strongest ring is a harmonic of the played note (%d = %.0f Hz)" % (note, hz), abs(pk / hz - round(pk / hz)) < 0.04 * pk / hz and round(pk / hz) >= 1, "%.1f Hz = %.2f x" % (pk, pk / hz))
 check("mix 0 = dry", np.allclose(render(fx(YB, 0, 0.0), tag="mix0")[:int(1.0 * RATE)], dry[:int(1.0 * RATE)], atol=1e-4))
 print("%d failures" % failures); sys.exit(1 if failures else 0)
