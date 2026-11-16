@@ -3220,6 +3220,9 @@ const FX_TYPES = [
     // FX-WAVEGUIDE: the input excites resonating delay loops (FX type 32)
     { n: "Waveguide", mix: 0.5, modes: ["String", "Tube", "Dual Strings", "Fifth Drone", "Octave Drone"],
       p: [["Pitch", fxHz(30, 2000), 0.45], ["Decay", fxMs(50, 8000), 0.5], ["Damp", fxHz(500, 16000), 0.7], ["Detune", fxLin(0, 50, 0, "ct"), 0.1], ["Excite", fxPct, 0.5], ["Drive", fxPct, 0]] },
+    // FX-YAYBAHAR: string -> spring waveguide -> membrane resonator (FX type 33)
+    { n: "Yaybahar", mix: 0.6, modes: ["Single Spring", "Dual Spring", "Deep"],
+      p: [["Pitch", fxHz(40, 800), 0.4], ["Spring", fxMs(20, 250), 0.5], ["Decay", fxPct, 0.5], ["Disper", fxPct, 0.5], ["Membran", fxHz(40, 250), 0.35], ["Damp", fxHz(500, 8000), 0.6]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];
@@ -3458,7 +3461,7 @@ const SPECS = (() => {
                 L.push([b + 10 + c, n + " In " + (c + 1) + " Src", 0, 44, 0, "", "sel", ESRC, 1, "Src"]);
                 L.push([b + 14 + c, n + " In " + (c + 1) + " Gain", 0, 2, 1, "", "sld", null, 1, "Gain"]);
             }
-            L.push([b + 18, n + " FX Type", 0, 32, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "FX"]);
+            L.push([b + 18, n + " FX Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "FX"]);
         }
     }
     // MODMAT: patch matrix of Njohrr Modular
