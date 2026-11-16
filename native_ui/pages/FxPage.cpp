@@ -243,11 +243,23 @@ namespace njo
         };
 
         // ---- display of the selected effect (schematic: follows the knobs, not the exact DSP) ----
-        struct Display : public juce::Component, private Ctx::Listener
+        struct Display : public juce::Component, private Ctx::Listener, private juce::Timer
         {
-            explicit Display (Impl& i) : im (i) { im.ctx.addListener (this); setInterceptsMouseClicks (false, false); }
-            ~Display() override { im.ctx.removeListener (this); }
+            explicit Display (Impl& i) : im (i) { im.ctx.addListener (this); setInterceptsMouseClicks (false, false); startTimerHz (30); }
+            ~Display() override { stopTimer(); if (monSent > 0) im.ctx.be.setParam (9890, 0.0f); im.ctx.removeListener (this); }
             void paramChanged (int, float) override { repaint(); }
+            // live data (FX-VIZ): the DSP only measures the slot the editor shows
+            void timerCallback() override
+            {
+                int sl = im.sel[im.current], want = 0;
+                if (isShowing() && sl >= 0 && im.osc < 0) { int gi = fxG (im.current, sl); if (gi < 48 && im.ctx.fxSlotTypes()[gi] != 0) want = gi + 1; }
+                if (want != monSent) { monSent = want; im.ctx.be.setParam (9890, (float) want); }
+                auto& v = im.ctx.be.fxViz;
+                const bool live = want > 0 && v.slot == want - 1 && juce::Time::getMillisecondCounter() - v.stamp < 400;
+                if (live || wasLive || v.stamp != lastStamp) repaint();
+                wasLive = live; lastStamp = v.stamp;
+            }
+            int monSent = 0; bool wasLive = false; juce::uint32 lastStamp = 0;
             Impl& im;
             void paint (juce::Graphics& g) override
             {
@@ -840,6 +852,43 @@ namespace njo
                     drum (X (0.77), Y (0.26), fm * (mm == 0 ? 0.5 : (mm == 1 ? 0.94 : 0.3)));
                     juce::ignoreUnused (xa, xb, damp);
                     label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (juce::roundToInt (f0)) + " Hz string   " + juce::String (juce::roundToInt (sprMs)) + " ms spring   " + juce::String (juce::roundToInt (fm)) + " Hz drum");
+                }
+
+                // ---- live data of the DSP (FX-VIZ): spectrum strip (output filled, input as ticks), level meters and the operating point on transfer curves ----
+                {
+                    auto& v = im.ctx.be.fxViz;
+                    if (v.slot == gi && gi < 48 && juce::Time::getMillisecondCounter() - v.stamp < 400)
+                    {
+                        const float sh = H * 0.30f; const auto strip = juce::Rectangle<float> (r.getX(), r.getBottom() - sh, W - 34.0f, sh);
+                        g.setColour (juce::Colours::black.withAlpha (0.28f)); g.fillRect (strip);
+                        const float bw = strip.getWidth() / 24.0f;
+                        for (int b = 0; b < 24; ++b)
+                        {
+                            const float ho = v.outB[b] * strip.getHeight(), hi = v.inB[b] * strip.getHeight();
+                            g.setColour (col.withAlpha (0.6f)); g.fillRect (strip.getX() + bw * (float) b + 1.0f, strip.getBottom() - ho, bw - 2.0f, ho);
+                            g.setColour (ink.withAlpha (0.75f)); g.fillRect (strip.getX() + bw * (float) b + 1.0f, strip.getBottom() - hi - 1.0f, bw - 2.0f, 1.5f);
+                        }
+                        g.setColour (dim); g.setFont (font (8.0f, true)); g.drawText ("LIVE  40 Hz - 16 kHz   bars = out, ticks = in", strip.toNearestInt().reduced (3, 1), juce::Justification::topRight, false);
+                        // level meters: in L, in R, out L, out R (-60 .. 0 dB)
+                        for (int k = 0; k < 4; ++k)
+                        {
+                            const float nrm = juce::jlimit (0.0f, 1.0f, (20.0f * std::log10 (juce::jmax (1e-4f, v.pk[k])) + 60.0f) / 60.0f);
+                            const float mx = r.getRight() - 30.0f + 7.0f * (float) k, mh = H - 6.0f;
+                            g.setColour (juce::Colours::black.withAlpha (0.4f)); g.fillRect (mx, r.getY() + 3.0f, 5.0f, mh);
+                            g.setColour (v.pk[k] > 0.98f ? juce::Colour (0xffff4040) : (k < 2 ? ink.withAlpha (0.7f) : col)); g.fillRect (mx, r.getY() + 3.0f + mh * (1.0f - nrm), 5.0f, mh * nrm);
+                        }
+                        g.setColour (dim); g.setFont (font (7.5f, true)); g.drawText ("IN   OUT", juce::Rectangle<float> (r.getRight() - 32.0f, r.getBottom() - 11.0f, 34.0f, 10.0f).toNearestInt(), juce::Justification::centred, false);
+                        // operating point on a transfer curve: where the loudest input of the last 50 ms ends up
+                        const float inA = juce::jmax (v.pk[0], v.pk[1]), outA = juce::jmax (v.pk[2], v.pk[3]);
+                        auto dot = [&] (double x, double y) { g.setColour (juce::Colours::white); g.fillEllipse (X (x) - 4.0f, Y (y) - 4.0f, 8.0f, 8.0f); g.setColour (col); g.drawEllipse (X (x) - 6.0f, Y (y) - 6.0f, 12.0f, 12.0f, 1.5f); };
+                        if (ty == 1 || ty == 14 || (ty >= 19 && ty <= 25) || ty == 28)
+                            dot (0.5 + 0.5 * juce::jlimit (0.0f, 1.0f, inA), 0.5 + 0.5 * juce::jlimit (0.0f, 1.0f, outA));
+                        else if (ty == 11)
+                        {
+                            auto nd = [] (float a) { return juce::jlimit (0.0, 1.0, (20.0 * std::log10 (juce::jmax (1e-4f, a)) + 60.0) / 60.0); };
+                            dot (nd (inA), nd (outA));
+                        }
+                    }
                 }
             }
         };

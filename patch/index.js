@@ -3447,6 +3447,7 @@ const SPECS = (() => {
         }
         for (let k = 0; k < 16; k++) L.push([8000 + 272 * o + 256 + k, "OSC " + (o + 1) + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
     }
+    L.push([9890, "FX Monitor (editor: 0 = none, 1 + slot)", 0, 48, 0, "", "stp", null, 1, "Monitor"]);   // FX-VIZ
     // EURO: Eurorack rack of Njohrr Modular
     {
         const ESRC = ["Off", "Synth L", "Synth R", "Audio In L", "Audio In R"];

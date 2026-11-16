@@ -540,6 +540,7 @@ processor Eisenpuls_Synth
     input event float param7577 [[ name: "RND10 Distribution", min: 0.0, max: 3.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7578 [[ name: "RND10 Polarity", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param7579 [[ name: "RND10 Seed", min: 0.0, max: 16.0, init: 0.0, step: 1.0, automatable: false ]];
+    output event float fxViz;   // FX-VIZ: live data of the effect slot the editor shows
     output event int seqPos;   // MOD-SEQPOS: sequencer * 16 + current step (playhead of the editor)
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
@@ -1572,6 +1573,7 @@ processor Eisenpuls_Synth
     input event float param1890 [[ name: "OSC 6 Juno Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     // PHYS-DECL-END
     // OSCFX-DSP: per oscillator effect rack
+    input event float param9890 [[ name: "FX Monitor (editor: 0 = none, 1 + slot)", min: 0.0, max: 48.0, init: 0.0, step: 1.0, automatable: false ]];   // FX-VIZ
     // EURO
     input event float param10000 [[ name: "Euro M1 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param10001 [[ name: "Euro M1 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
@@ -7239,6 +7241,18 @@ processor Eisenpuls_Synth
     float ampRelease   = 250.0f;
     float velSens      = 0.6f;
     float driveAmt     = 0.0f;
+    int       fxMon = -1;      // FX-VIZ: effect slot shown by the editor (-1 none)
+    float[24] vzB0;
+    float[24] vzA1;
+    float[24] vzA2;
+    float[128] vzZ;
+    float[48] vzEnv;
+    float[64] vzPkt;
+    float[4]  vzP;
+    float     vzK = 0.001f;
+    int       vzIdx = 99;
+    int       vzCount = 0;
+    int       vzGap = 0;
     int[68]   mrSrc;    // MODMAT: source of every cable (see build_matrix.py)
     float[68] mrGain;
     int[20]   eType;    // EURO: Eurorack rack (see build_euro.py)
@@ -10378,6 +10392,7 @@ processor Eisenpuls_Synth
     event param10621 (float v) { eSrc.at (79) = clamp (int (v + 0.5f), 0, 44); }
     event param10625 (float v) { eGain.at (79) = clamp (v, 0.0f, 2.0f); }
     event param10626 (float v) { fxSetType (29, int (v + 0.5f)); }
+    event param9890 (float v) { fxMon = clamp (int (v + 0.5f), 0, 48) - 1; vzInit(); }   // FX-VIZ
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -20129,6 +20144,95 @@ processor Eisenpuls_Synth
         return float<2> (float (tanh (pan * A.at (0) + (1.0f - pan) * A.at (1))), float (tanh ((1.0f - pan) * A.at (0) + pan * A.at (1))));
     }
 
+    // ================= FX-VIZ: live data of the monitored effect slot =================
+    void vzInit()
+    {
+        float sr = float (processor.frequency);
+
+        for (int b = 0; b < 24; ++b)
+        {
+            float fc = 40.0f * float (pow (400.0f, float (b) / 23.0f));
+            float w  = 6.2831853f * min (fc, sr * 0.45f) / sr;
+            float al = float (sin (w)) / (2.0f * 4.3f);
+            float a0 = 1.0f + al;
+            vzB0.at (b) = al / a0;
+            vzA1.at (b) = -2.0f * float (cos (w)) / a0;
+            vzA2.at (b) = (1.0f - al) / a0;
+        }
+
+        for (int i = 0; i < 128; ++i)
+            vzZ.at (i) = 0.0f;
+
+        for (int i = 0; i < 48; ++i)
+            vzEnv.at (i) = 0.0f;
+
+        for (int i = 0; i < 4; ++i)
+            vzP.at (i) = 0.0f;
+
+        vzK     = 1.0f - float (exp (-1.0f / (sr * 0.03f)));
+        vzIdx   = 99;
+        vzCount = 0;
+    }
+
+    float vzNorm (float e)
+    {
+        return clamp ((20.0f * float (log10 (max (e * 1.57f, 0.00001f))) + 72.0f) / 72.0f, 0.0f, 1.0f);
+    }
+
+    void vzTap (float<2> xin, float<2> yout)
+    {
+        vzP.at (0) = max (vzP.at (0), abs (xin[0]));
+        vzP.at (1) = max (vzP.at (1), abs (xin[1]));
+        vzP.at (2) = max (vzP.at (2), abs (yout[0]));
+        vzP.at (3) = max (vzP.at (3), abs (yout[1]));
+        float mi = (xin[0] + xin[1]) * 0.5f;
+        float mo = (yout[0] + yout[1]) * 0.5f;
+
+        for (int b = 0; b < 24; ++b)
+        {
+            float b0 = vzB0.at (b);
+            float a1 = vzA1.at (b);
+            float a2 = vzA2.at (b);
+            int   zi = b * 4;
+            float yi = b0 * mi + vzZ.at (zi);
+            vzZ.at (zi)     = clamp (-a1 * yi + vzZ.at (zi + 1), -64.0f, 64.0f);
+            vzZ.at (zi + 1) = clamp (-b0 * mi - a2 * yi, -64.0f, 64.0f);
+            float yo = b0 * mo + vzZ.at (zi + 2);
+            vzZ.at (zi + 2) = clamp (-a1 * yo + vzZ.at (zi + 3), -64.0f, 64.0f);
+            vzZ.at (zi + 3) = clamp (-b0 * mo - a2 * yo, -64.0f, 64.0f);
+            vzEnv.at (b)      += vzK * (abs (yi) - vzEnv.at (b));
+            vzEnv.at (24 + b) += vzK * (abs (yo) - vzEnv.at (24 + b));
+        }
+
+        vzCount++;
+        vzGap++;
+
+        if (vzIdx < 54 && vzGap >= 48)   // one event per 48 samples: the host keeps only 32 output events per block
+        {
+            vzGap = 0;
+            fxViz <- vzPkt.at (vzIdx);
+            vzIdx++;
+        }
+
+        if (vzCount >= int (float (processor.frequency) * 0.05f) && vzIdx >= 54)
+        {
+            vzCount = 0;
+            vzPkt.at (0) = -1.0f;
+            vzPkt.at (1) = float (fxMon);
+
+            for (int i = 0; i < 4; ++i)
+            {
+                vzPkt.at (2 + i) = min (vzP.at (i), 8.0f);
+                vzP.at (i) = 0.0f;
+            }
+
+            for (int b = 0; b < 48; ++b)
+                vzPkt.at (6 + b) = vzNorm (vzEnv.at (b));
+
+            vzIdx = 0;
+        }
+    }
+
     // One slot: dry/wet mix of the selected effect; empty and bypassed slots pass the signal through untouched
     float<2> fxRunSlot (int s, float<2> x)
     {
@@ -20212,7 +20316,12 @@ processor Eisenpuls_Synth
         }
 
         float mix = clamp (fxMix.at (s), 0.0f, 1.0f);
-        return x + (y - x) * mix;
+        float<2> res = x + (y - x) * mix;
+
+        if (s == fxMon)
+            vzTap (x, res);   // FX-VIZ
+
+        return res;
     }
 
     // The whole rack, in the user's order

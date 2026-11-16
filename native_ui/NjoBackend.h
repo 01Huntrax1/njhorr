@@ -69,6 +69,23 @@ namespace njo
             if (insIdx >= 24 + 2 * insExpect) { stage.count = insExpect; ins = stage; ++insVersion; insIdx = 0; }
         }
 
+        // ---- live data of the effect slot the editor shows (output event fxViz, tools/fx/build_fxviz.py): -1, slot, peaks in L / R, out L / R, 24 input bands, 24 output bands ----
+        struct FxViz { int slot = -1; float pk[4] = { 0, 0, 0, 0 }; float inB[24] = {}, outB[24] = {}; juce::uint32 stamp = 0; };
+        FxViz fxViz;                    // the last complete packet (stamp = time it arrived, ms counter)
+        void fxVizPush (float f)
+        {
+            if (f < -0.5f) { vzN = 1; return; }                       // start of a packet
+            if (vzN < 1) return;
+            vzBuf[vzN - 1] = f;
+            if (++vzN > 53)                                           // slot + 4 peaks + 48 bands
+            {
+                fxViz.slot = (int) (vzBuf[0] + 0.5f);
+                for (int i = 0; i < 4; ++i) fxViz.pk[i] = vzBuf[1 + i];
+                for (int i = 0; i < 24; ++i) { fxViz.inB[i] = vzBuf[5 + i]; fxViz.outB[i] = vzBuf[29 + i]; }
+                fxViz.stamp = juce::Time::getMillisecondCounter(); vzN = 0;
+            }
+        }
+
         struct Listener
         {
             virtual ~Listener() = default;
@@ -82,6 +99,7 @@ namespace njo
 
     private:
         InsPattern stage; int insExpect = 0, insIdx = 0;
+        int vzN = 0; float vzBuf[56] = {};   // fxViz packet in progress
         juce::ListenerList<Listener> listeners;
     };
 }

@@ -740,6 +740,20 @@ protected:
        #endif
 
        #if NJOHRR_NATIVE_UI
+        if (endpointID == "fxViz")   // live data of the effect slot shown by the editor (a float stream, see tools/fx/build_fxviz.py)
+        {
+            if (njoBridge)
+            {
+                float f = 0.0f;
+                if (value.isFloat32())        f = value.getFloat32();
+                else if (value.isFloat64())   f = (float) value.getFloat64();
+                njoBridge->backend.fxVizPush (f);
+            }
+            return;
+        }
+       #endif
+
+       #if NJOHRR_NATIVE_UI
         if (endpointID == "insDump" || endpointID == "insPos")   // Inspirator: the generated pattern (a float stream) and the playhead step
         {
             if (njoBridge)

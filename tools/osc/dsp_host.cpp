@@ -88,6 +88,17 @@ struct Host
                 totalFrames += (uint64_t) n;
             }
 #endif
+#ifdef FXVIZ_LOG   // prints the live data events of the monitored effect slot (output event fxViz) to stderr
+            {
+                auto hv = (Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::fxViz;
+                for (uint32_t i = 0; i < dsp.getNumOutputEvents (hv); ++i)
+                {
+                    float v = 0; unsigned char buf[8] = {}; dsp.readOutputEvent (hv, i, buf); memcpy (&v, buf, 4);
+                    fprintf (stderr, "viz %.6f\n", (double) v);
+                }
+                dsp.resetOutputEventCount (hv);
+            }
+#endif
             dsp.copyOutputFrames ((Eisenpuls_Synth::EndpointHandle) Eisenpuls_Synth::EndpointHandles::out, block.data(), (uint32_t) n);
             if (out) fwrite (block.data(), sizeof (float), (size_t) n * 2, out);
             frames -= n;
