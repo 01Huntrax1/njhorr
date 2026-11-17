@@ -257,8 +257,8 @@ const FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP1
     "MG Low 6", "MG Low 12", "MG Low 18", "MG Low 24", "Flange+", "Flange-"];
 const FILTER_GROUPS = [[0, "Basic"], [4, "6 / 18 dB"], [8, "24 dB / Notch"], [12, "Peak / Shelf / Allpass"], [16, "Ladder / Dirty"], [20, "Comb / Phaser / Vowel"], [24, "MG Low"], [28, "Flange"]];
 const TBL_FL = 512, TBL_MAX_FR = 64;   // Wavefilter / Wavedistortion tables
-const FX_FILTER_TYPES = FILTER_TYPES.concat(["Korg35 LP", "Korg35 HP", "Scream"]);   // the Filter effect has three more types than the oscillator filter
-const FX_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Korg / Scream"]]);
+const FX_FILTER_TYPES = FILTER_TYPES.concat(["Korg35 LP", "Korg35 HP", "Scream", "Polivoks LP", "Polivoks BP", "Polivoks HP", "OTA LP24 (Jupiter)", "CEM LP24 (Prophet)", "SSM LP24", "SEM LP", "SEM BP", "SEM Notch", "SEM HP", "Diode LP (303)", "Steiner LP", "Steiner HP"]);   // FX-FILTERS   // the Filter effect has three more types than the oscillator filter
+const FX_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Korg / Scream"], [33, "Polivoks"], [36, "OTA / CEM / SSM"], [39, "Oberheim SEM"], [43, "Diode / Steiner-Parker"]]);
 const OSC_FILTER_TYPES = FILTER_TYPES.concat(["Wavefilter"]);
 const OSC_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Table"]]);
 // LFO sync divisions, in the order of the DSP table
@@ -3412,7 +3412,7 @@ const SPECS = (() => {
             L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-            L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
+            L.push([b + 3, n + " Mode", 0, FX_FILTER_TYPES.length - 1, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
             for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
         }
         for (let k = 0; k < 10; k++) L.push([rack.ord + k, rack.name + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
@@ -3425,7 +3425,7 @@ const SPECS = (() => {
             L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-            L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
+            L.push([b + 3, n + " Mode", 0, FX_FILTER_TYPES.length - 1, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
             for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
             L.push([3380 + rk * 6 + j, rack.name + " FX Order " + (11 + j), 0, 15, 10 + j, "", "stp", null, 1, "Order"]);
             L.push([3400 + rk * 6 + j, n + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]);
@@ -3439,7 +3439,7 @@ const SPECS = (() => {
             L.push([b,     n + " Type", 0, FX_TYPES.length - 1, 0, "", "sel", FX_TYPES.map(t => t.n), 1, "Type"]);
             L.push([b + 1, n + " On",   0, 1, 1, "", "btn", ["Off", "On"], 1, "On"]);
             L.push([b + 2, n + " Mix",  0, 1, 1, "", "sld", null, 1, "Mix"]);
-            L.push([b + 3, n + " Mode", 0, 32, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
+            L.push([b + 3, n + " Mode", 0, FX_FILTER_TYPES.length - 1, 0, "", "sel", FX_FILTER_TYPES, 1, "Mode"]);
             for (let k = 0; k < 6; k++) L.push([b + 4 + k, n + " P" + (k + 1), 0, 1, 0.5, "", "sld", null, 1, "P" + (k + 1)]);
             L.push([b + 10, n + " Sync", 0, 18, 0, "", "sel", ["Off"].concat(SYNC_DIVS), 1, "Sync"]);
             L.push([b + 11, n + " Env Sustain", 0, 1, 1, "", "sld", null, 1, "Sustain"]);

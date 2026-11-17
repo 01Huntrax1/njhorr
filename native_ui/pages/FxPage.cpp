@@ -12,6 +12,18 @@
 
 namespace njo
 {
+
+// response shape of the Filter effect modes in the voice filter model (oscmodel::filterH knows types 0..29): Korg35 LP/HP, Scream, then Polivoks, OTA/CEM/SSM, SEM, Diode, Steiner-Parker
+static int fxFilterShape (int mode)
+{
+    static const int map[] = { 1, 2, 1,            // 30..32
+                               1, 3, 2,            // Polivoks LP BP HP
+                               0, 0, 0,            // OTA, CEM, SSM LP24
+                               1, 3, 10, 2,        // SEM LP BP Notch HP
+                               0,                  // Diode
+                               1, 2 };             // Steiner LP HP
+    return mode >= 30 ? map[juce::jlimit (0, 15, mode - 30)] : juce::jlimit (0, 29, mode);
+}
     using namespace theme;
 
     namespace
@@ -327,7 +339,7 @@ namespace njo
                     auto p = curve ([&] (double t)
                     {
                         double f = 20.0 * std::pow (1000.0, t);
-                        double db = 20.0 * std::log10 (juce::jmax (1e-5, std::abs (oscmodel::filterH (mode == 30 ? 1 : mode == 31 ? 2 : mode == 32 ? 1 : juce::jlimit (0, 29, mode), fc, res, f))));
+                        double db = 20.0 * std::log10 (juce::jmax (1e-5, std::abs (oscmodel::filterH (fxFilterShape (mode), fc, res, f))));
                         return (juce::jlimit (-48.0, 24.0, db) + 48.0) / 72.0;
                     });
                     fill (p, 0.0); stroke (p);

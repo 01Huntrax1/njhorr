@@ -483,7 +483,7 @@ m = re.search(r'int nt = clamp \(t, 0, (\d+)\)', cm)
 check("DSP: the type clamp allows every type", bool(m) and int(m.group(1)) == NT - 1, m.group(1) if m else "not found")
 gm = re.findall(r'NJ_S\("(?:Main|Bus \d) FX \d+ Type"\), 0\.0, ([0-9.]+),', gen)
 check("UI tables (NjoData.gen.cpp): the 48 Type specs allow every type - run gen_data.js after changing index.js", len(gm) == 48 and all(float(x) == NT - 1 for x in gm), "%d specs, max %s" % (len(gm), sorted(set(gm))))
-check("DSP: every type is dispatched", all(re.search(r'ty == %d\) +y = fx' % k, cm) for k in range(1, NT)), str([k for k in range(1, NT) if not re.search(r'ty == %d\) +y = fx' % k, cm)]))
+check("DSP: every type is dispatched", all(re.search(r'ty == %d\) +y = (?:s < 48 \? )?fx' % k, cm) for k in range(1, NT)), str([k for k in range(1, NT) if not re.search(r'ty == %d\) +y = (?:s < 48 \? )?fx' % k, cm)]))
 cl = re.search(r'static const juce::uint32 c\[\] = \{([^}]*)\}', fxp); ncol = len(re.findall(r'0x[0-9a-fA-F]+', cl.group(1))) if cl else 0
 check("UI: every type has a colour, and the colour index limit covers it", ncol >= NT and re.search(r'jlimit \(0, %d, type\)' % (ncol - 1), fxp) is not None, "%d colours" % ncol)
 outs = {}
