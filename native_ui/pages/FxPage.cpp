@@ -256,10 +256,13 @@ namespace njo
                 if (want != monSent) { monSent = want; im.ctx.be.setParam (9890, (float) want); }
                 auto& v = im.ctx.be.fxViz;
                 const bool live = want > 0 && v.slot == want - 1 && juce::Time::getMillisecondCounter() - v.stamp < 400;
+                if (monSent != histSlot) { hist.clear(); histSlot = monSent; }
+                if (live && v.stamp != lastStamp) { hist.push_back ({ juce::jmax (v.pk[0], v.pk[1]), juce::jmax (v.pk[2], v.pk[3]) }); if (hist.size() > 80) hist.erase (hist.begin()); }
                 if (live || wasLive || v.stamp != lastStamp) repaint();
                 wasLive = live; lastStamp = v.stamp;
             }
-            int monSent = 0; bool wasLive = false; juce::uint32 lastStamp = 0;
+            int monSent = 0, histSlot = 0; bool wasLive = false; juce::uint32 lastStamp = 0;
+            std::vector<std::pair<float, float>> hist;   // in / out peak of the last packets (about 4 s)
             Impl& im;
             void paint (juce::Graphics& g) override
             {
@@ -878,6 +881,24 @@ namespace njo
                             g.setColour (v.pk[k] > 0.98f ? juce::Colour (0xffff4040) : (k < 2 ? ink.withAlpha (0.7f) : col)); g.fillRect (mx, r.getY() + 3.0f + mh * (1.0f - nrm), 5.0f, mh * nrm);
                         }
                         g.setColour (dim); g.setFont (font (7.5f, true)); g.drawText ("IN   OUT", juce::Rectangle<float> (r.getRight() - 32.0f, r.getBottom() - 11.0f, 34.0f, 10.0f).toNearestInt(), juce::Justification::centred, false);
+                        // time based effects: the real level over the last 4 seconds (echoes, tremolo, reverb tail, grains ...)
+                        if (ty == 3 || (ty >= 4 && ty <= 8) || ty == 12 || (ty >= 29 && ty <= 33) || ty == 16)
+                        {
+                            const float th = H * 0.34f, ty0 = r.getY() + 4.0f;
+                            auto lv = [&] (float a) { return juce::jlimit (0.0f, 1.0f, (20.0f * std::log10 (juce::jmax (1e-4f, a)) + 60.0f) / 60.0f); };
+                            juce::Path pin, pout;
+                            const int n = (int) hist.size();
+                            for (int i = 0; i < n; ++i)
+                            {
+                                const float x = r.getX() + (W - 36.0f) * (float) (80 - n + i) / 79.0f;
+                                const float yi = ty0 + th * (1.0f - lv (hist[(size_t) i].first)), yo = ty0 + th * (1.0f - lv (hist[(size_t) i].second));
+                                if (i == 0) { pin.startNewSubPath (x, yi); pout.startNewSubPath (x, yo); } else { pin.lineTo (x, yi); pout.lineTo (x, yo); }
+                            }
+                            g.setColour (juce::Colours::black.withAlpha (0.28f)); g.fillRect (r.getX(), ty0 - 2.0f, W - 36.0f, th + 4.0f);
+                            g.setColour (ink.withAlpha (0.5f)); g.strokePath (pin, juce::PathStrokeType (1.0f));
+                            g.setColour (col); g.strokePath (pout, juce::PathStrokeType (1.8f));
+                            g.setColour (dim); g.setFont (font (8.0f, true)); g.drawText ("LEVEL, last 4 s   grey = in, colour = out", juce::Rectangle<float> (r.getX() + 4.0f, ty0, W - 44.0f, 11.0f).toNearestInt(), juce::Justification::topRight, false);
+                        }
                         // operating point on a transfer curve: where the loudest input of the last 50 ms ends up
                         const float inA = juce::jmax (v.pk[0], v.pk[1]), outA = juce::jmax (v.pk[2], v.pk[3]);
                         auto dot = [&] (double x, double y) { g.setColour (juce::Colours::white); g.fillEllipse (X (x) - 4.0f, Y (y) - 4.0f, 8.0f, 8.0f); g.setColour (col); g.drawEllipse (X (x) - 6.0f, Y (y) - 6.0f, 12.0f, 12.0f, 1.5f); };
