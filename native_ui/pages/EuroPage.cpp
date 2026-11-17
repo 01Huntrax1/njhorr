@@ -94,6 +94,22 @@ namespace njo
                 auto cell = juce::Rectangle<int> (kn.getX() + (k % 4) * (kn.getWidth() / 4), kn.getY() + (k / 4) * 64, kn.getWidth() / 4, 62);
                 add (makeWidget (ctx, pidOf (m, 1 + k), true), cell)->setLabelOverride (md.knobs[k]);
             }
+            if (ty == 15)   // FX-WET: Low Cut, High Cut, Width, Sat of the FX module (its effect runs in rack slot 10 + m)
+            {
+                auto wr = r.removeFromTop (64);
+                static const char* wl[4] = { "Low Cut", "High Cut", "Width", "Sat" };
+                for (int k = 0; k < 4; ++k)
+                {
+                    auto* w = add (makeWidget (ctx, fxWetId (10 + m, k), true), juce::Rectangle<int> (wr.getX() + k * (wr.getWidth() / 4), wr.getY(), wr.getWidth() / 4, 62));
+                    w->setLabelOverride (wl[k]);
+                    w->setValueTextOverride ([k] (float v)
+                    {
+                        if (k == 0) return v < 0.002f ? juce::String ("Off") : juce::String (juce::roundToInt (20.0 * std::pow (50.0, (double) v))) + " Hz";
+                        if (k == 1) return v > 0.998f ? juce::String ("Off") : juce::String (juce::roundToInt (1500.0 * std::pow (13.3333, (double) v))) + " Hz";
+                        return juce::String (juce::roundToInt (v * (k == 2 ? 200 : 100))) + "%";
+                    });
+                }
+            }
             r.removeFromTop (8);
             for (int c = 0; c < 4; ++c)
             {

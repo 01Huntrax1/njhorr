@@ -87,6 +87,7 @@ namespace njo
     inline int fxSlOf (int g)        { return g >= kFxMain ? (g - kFxMain) % 16 : (g < 30 ? g % 10 : 10 + (g - 30) % 6); }       // slot number inside its rack, 0..15
     inline int fxSlotId (int g)      { return g >= kFxMain ? kOscFxBase + kOscFxStride * ((g - kFxMain) / 16) + 16 * ((g - kFxMain) % 16) : g < 30 ? fxRacks()[(size_t) (g / 10)].id + (g % 10) * 10 : 3200 + (g - 30) * 10; }   // id of the Type parameter (+1 On, +2 Mix, +3 Mode, +4..+9 P1..P6)
     inline int fxOrdId (int rk, int k) { return rk >= 3 ? kOscFxBase + kOscFxStride * (rk - 3) + 256 + k : k < 10 ? fxRacks()[(size_t) rk].ord + k : 3380 + rk * 6 + (k - 10); }   // processing order parameter of position k
+    inline int fxWetId (int g, int k) { return 11000 + 4 * g + k; }   // FX-WET: P7..P10 (Low Cut, High Cut, Width, Sat) of slot g, k 0..3
     inline int fxEnvSusId (int g) { return g >= kFxMain ? fxSlotId (g) + 11 : g < 30 ? 3000 + g : 3000 + (g - 30); }                            // Filter effect envelope: Sustain / Release of slot g (Env Amt, Attack, Decay are P4..P6)
     inline int fxEnvRelId (int g) { return g >= kFxMain ? fxSlotId (g) + 12 : g < 30 ? 3030 + g : 3030 + (g - 30); }   // legacy, never shown
     inline int fxSyncId (int g) { return g >= kFxMain ? fxSlotId (g) + 10 : g < 30 ? 940 + g : 3400 + (g - 30); }                               // tempo sync division of slot g (0 = free, 1..18 = SYNC_DIVS)

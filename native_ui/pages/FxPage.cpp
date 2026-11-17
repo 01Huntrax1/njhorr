@@ -938,6 +938,18 @@ static int fxFilterShape (int mode)
                 syncS[g] = makeWidget (ctx, fxSyncId (g), false);
                 envS[g] = makeWidget (ctx, fxEnvSusId (g), true); envR[g] = makeWidget (ctx, fxEnvRelId (g), true);   // Filter effect: Sustain / Release
                 for (int k = 0; k < 6; ++k) pK[g][k] = makeWidget (ctx, b + 4 + k, true);
+                for (int k = 0; k < 4; ++k)   // FX-WET: Low Cut, High Cut, Width, Sat of every effect
+                {
+                    wK[g][k] = makeWidget (ctx, fxWetId (g, k), true);
+                    wK[g][k]->setValueTextOverride ([k] (float v)
+                    {
+                        if (k == 0) return v < 0.002f ? juce::String ("Off") : juce::String (juce::roundToInt (20.0 * std::pow (50.0, (double) v))) + " Hz";
+                        if (k == 1) return v > 0.998f ? juce::String ("Off") : juce::String (juce::roundToInt (1500.0 * std::pow (13.3333, (double) v))) + " Hz";
+                        return juce::String (juce::roundToInt (v * (k == 2 ? 200 : 100))) + "%";
+                    });
+                    owner.addChildComponent (*wK[g][k]);
+                    wK[g][k]->onModDropped = [this] (ParamWidget& w) { if (owner.onModDropped) owner.onModDropped (w); };
+                }
                 for (auto* w : { (ParamWidget*) onT[g].get(), mixK[g].get(), modeS[g].get(), syncS[g].get(), envS[g].get(), envR[g].get() }) owner.addChildComponent (w);
                 for (auto& w : pK[g]) owner.addChildComponent (*w);
                 auto drop = [this] (ParamWidget& p) { if (owner.onModDropped) owner.onModDropped (p); };
@@ -1084,6 +1096,7 @@ static int fxFilterShape (int mode)
             auto& t = fxTypes()[(size_t) juce::jlimit (0, (int) fxTypes().size() - 1, type)];
             ctx.set (b + 1, 1.0f); ctx.set (b + 2, t.mix); ctx.set (b + 3, 0.0f);
             for (size_t k = 0; k < t.params.size(); ++k) ctx.set (b + 4 + (int) k, t.params[k].def);
+            { const float wd[4] = { 0.0f, 1.0f, 0.5f, 0.0f }; for (int k = 0; k < 4; ++k) ctx.set (fxWetId (g, k), wd[k]); }   // FX-WET
         }
 
         // labels / mode list of the widgets of one slot follow its effect type
@@ -1122,6 +1135,7 @@ static int fxFilterShape (int mode)
             {
                 onT[g]->setVisible (false); mixK[g]->setVisible (false); modeS[g]->setVisible (false); syncS[g]->setVisible (false); envS[g]->setVisible (false); envR[g]->setVisible (false);
                 for (auto& w : pK[g]) w->setVisible (false);
+                for (auto& w : wK[g]) w->setVisible (false);   // FX-WET
             }
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[fxG (current, sl)] > 0;
@@ -1165,11 +1179,12 @@ static int fxFilterShape (int mode)
             c.removeFromBottom (6);
             if (ty == 15) { shEd->setBounds (c); shEd->setSlot (g, slotBase (g)); shEd->setVisible (true); }
             else { display.setVisible (true); display.setBounds (c); }
-            int n = 1 + (int) t.params.size(), colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
+            int n = 1 + (int) t.params.size() + 4, colW = juce::jmin (120, knobs.getWidth() / juce::jmax (1, n));
             int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
             auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
             put (*mixK[g], 0);
             for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
+            for (int k = 0; k < 4; ++k) put (*wK[g][k], 1 + (int) t.params.size() + k);   // FX-WET
             // controls that do nothing right now are dimmed: the rate / time follows the sync division, the gate knobs only matter for their modes
             const int md = juce::roundToInt (ctx.get (slotBase (g) + 3)), sy = juce::roundToInt (ctx.get (fxSyncId (g)));
             for (int k = 0; k < 6; ++k) pK[g][k]->setAlpha (1.0f);
@@ -1192,7 +1207,7 @@ static int fxFilterShape (int mode)
         std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
         juce::Viewport listVp; ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
-        std::unique_ptr<OnToggle> onT[kFxTotal]; std::unique_ptr<ParamWidget> mixK[kFxTotal], modeS[kFxTotal], syncS[kFxTotal], envS[kFxTotal], envR[kFxTotal], pK[kFxTotal][6]; juce::Rectangle<int> syncRect;
+        std::unique_ptr<OnToggle> onT[kFxTotal]; std::unique_ptr<ParamWidget> mixK[kFxTotal], modeS[kFxTotal], syncS[kFxTotal], envS[kFxTotal], envR[kFxTotal], pK[kFxTotal][6], wK[kFxTotal][4]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
         juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
         int osc, rkLo, rkHi, gLo, gHi;   // osc >= 0: the rack page of that oscillator (rack 3 + osc, global slots 48 + 16 * osc ..)

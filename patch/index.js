@@ -3448,6 +3448,9 @@ const SPECS = (() => {
         for (let k = 0; k < 16; k++) L.push([8000 + 272 * o + 256 + k, "OSC " + (o + 1) + " FX Order " + (k + 1), 0, 15, k, "", "stp", null, 1, "Order"]);
     }
     L.push([9890, "FX Monitor (editor: 0 = none, 1 + slot)", 0, 48, 0, "", "stp", null, 1, "Monitor"]);   // FX-VIZ
+    // FX-WET: P7..P10 of every effect slot: ids 11000 + 4 * g + k (g = global slot: 0..47 racks, 48 + 16 * osc + slot for the oscillator racks)
+    const wetName = g => g < 30 ? FX_RACKS[Math.floor(g / 10)].name + " FX " + (g % 10 + 1) : g < 48 ? FX_RACKS[Math.floor((g - 30) / 6)].name + " FX " + (11 + (g - 30) % 6) : "OSC " + (Math.floor((g - 48) / 16) + 1) + " FX " + ((g - 48) % 16 + 1);
+    for (let g = 0; g < 144; g++) [["Low Cut", 0], ["High Cut", 1], ["Width", 0.5], ["Sat", 0]].forEach((w, k) => L.push([11000 + 4 * g + k, wetName(g) + " " + w[0], 0, 1, w[1], "", "sld", null, 1, w[0]]));
     // EURO: Eurorack rack of Njohrr Modular
     {
         const ESRC = ["Off", "Synth L", "Synth R", "Audio In L", "Audio In R"];

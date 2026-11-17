@@ -1574,6 +1574,582 @@ processor Eisenpuls_Synth
     // PHYS-DECL-END
     // OSCFX-DSP: per oscillator effect rack
     input event float param9890 [[ name: "FX Monitor (editor: 0 = none, 1 + slot)", min: 0.0, max: 48.0, init: 0.0, step: 1.0, automatable: false ]];   // FX-VIZ
+    input event float param11000 [[ name: "Main FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11001 [[ name: "Main FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11002 [[ name: "Main FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11003 [[ name: "Main FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11004 [[ name: "Main FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11005 [[ name: "Main FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11006 [[ name: "Main FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11007 [[ name: "Main FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11008 [[ name: "Main FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11009 [[ name: "Main FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11010 [[ name: "Main FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11011 [[ name: "Main FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11012 [[ name: "Main FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11013 [[ name: "Main FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11014 [[ name: "Main FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11015 [[ name: "Main FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11016 [[ name: "Main FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11017 [[ name: "Main FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11018 [[ name: "Main FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11019 [[ name: "Main FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11020 [[ name: "Main FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11021 [[ name: "Main FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11022 [[ name: "Main FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11023 [[ name: "Main FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11024 [[ name: "Main FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11025 [[ name: "Main FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11026 [[ name: "Main FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11027 [[ name: "Main FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11028 [[ name: "Main FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11029 [[ name: "Main FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11030 [[ name: "Main FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11031 [[ name: "Main FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11032 [[ name: "Main FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11033 [[ name: "Main FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11034 [[ name: "Main FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11035 [[ name: "Main FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11036 [[ name: "Main FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11037 [[ name: "Main FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11038 [[ name: "Main FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11039 [[ name: "Main FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11040 [[ name: "Bus 1 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11041 [[ name: "Bus 1 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11042 [[ name: "Bus 1 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11043 [[ name: "Bus 1 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11044 [[ name: "Bus 1 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11045 [[ name: "Bus 1 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11046 [[ name: "Bus 1 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11047 [[ name: "Bus 1 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11048 [[ name: "Bus 1 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11049 [[ name: "Bus 1 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11050 [[ name: "Bus 1 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11051 [[ name: "Bus 1 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11052 [[ name: "Bus 1 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11053 [[ name: "Bus 1 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11054 [[ name: "Bus 1 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11055 [[ name: "Bus 1 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11056 [[ name: "Bus 1 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11057 [[ name: "Bus 1 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11058 [[ name: "Bus 1 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11059 [[ name: "Bus 1 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11060 [[ name: "Bus 1 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11061 [[ name: "Bus 1 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11062 [[ name: "Bus 1 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11063 [[ name: "Bus 1 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11064 [[ name: "Bus 1 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11065 [[ name: "Bus 1 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11066 [[ name: "Bus 1 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11067 [[ name: "Bus 1 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11068 [[ name: "Bus 1 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11069 [[ name: "Bus 1 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11070 [[ name: "Bus 1 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11071 [[ name: "Bus 1 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11072 [[ name: "Bus 1 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11073 [[ name: "Bus 1 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11074 [[ name: "Bus 1 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11075 [[ name: "Bus 1 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11076 [[ name: "Bus 1 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11077 [[ name: "Bus 1 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11078 [[ name: "Bus 1 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11079 [[ name: "Bus 1 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11080 [[ name: "Bus 2 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11081 [[ name: "Bus 2 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11082 [[ name: "Bus 2 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11083 [[ name: "Bus 2 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11084 [[ name: "Bus 2 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11085 [[ name: "Bus 2 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11086 [[ name: "Bus 2 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11087 [[ name: "Bus 2 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11088 [[ name: "Bus 2 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11089 [[ name: "Bus 2 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11090 [[ name: "Bus 2 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11091 [[ name: "Bus 2 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11092 [[ name: "Bus 2 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11093 [[ name: "Bus 2 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11094 [[ name: "Bus 2 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11095 [[ name: "Bus 2 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11096 [[ name: "Bus 2 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11097 [[ name: "Bus 2 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11098 [[ name: "Bus 2 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11099 [[ name: "Bus 2 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11100 [[ name: "Bus 2 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11101 [[ name: "Bus 2 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11102 [[ name: "Bus 2 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11103 [[ name: "Bus 2 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11104 [[ name: "Bus 2 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11105 [[ name: "Bus 2 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11106 [[ name: "Bus 2 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11107 [[ name: "Bus 2 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11108 [[ name: "Bus 2 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11109 [[ name: "Bus 2 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11110 [[ name: "Bus 2 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11111 [[ name: "Bus 2 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11112 [[ name: "Bus 2 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11113 [[ name: "Bus 2 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11114 [[ name: "Bus 2 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11115 [[ name: "Bus 2 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11116 [[ name: "Bus 2 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11117 [[ name: "Bus 2 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11118 [[ name: "Bus 2 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11119 [[ name: "Bus 2 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11120 [[ name: "Main FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11121 [[ name: "Main FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11122 [[ name: "Main FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11123 [[ name: "Main FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11124 [[ name: "Main FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11125 [[ name: "Main FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11126 [[ name: "Main FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11127 [[ name: "Main FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11128 [[ name: "Main FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11129 [[ name: "Main FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11130 [[ name: "Main FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11131 [[ name: "Main FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11132 [[ name: "Main FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11133 [[ name: "Main FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11134 [[ name: "Main FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11135 [[ name: "Main FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11136 [[ name: "Main FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11137 [[ name: "Main FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11138 [[ name: "Main FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11139 [[ name: "Main FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11140 [[ name: "Main FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11141 [[ name: "Main FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11142 [[ name: "Main FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11143 [[ name: "Main FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11144 [[ name: "Bus 1 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11145 [[ name: "Bus 1 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11146 [[ name: "Bus 1 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11147 [[ name: "Bus 1 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11148 [[ name: "Bus 1 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11149 [[ name: "Bus 1 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11150 [[ name: "Bus 1 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11151 [[ name: "Bus 1 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11152 [[ name: "Bus 1 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11153 [[ name: "Bus 1 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11154 [[ name: "Bus 1 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11155 [[ name: "Bus 1 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11156 [[ name: "Bus 1 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11157 [[ name: "Bus 1 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11158 [[ name: "Bus 1 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11159 [[ name: "Bus 1 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11160 [[ name: "Bus 1 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11161 [[ name: "Bus 1 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11162 [[ name: "Bus 1 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11163 [[ name: "Bus 1 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11164 [[ name: "Bus 1 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11165 [[ name: "Bus 1 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11166 [[ name: "Bus 1 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11167 [[ name: "Bus 1 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11168 [[ name: "Bus 2 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11169 [[ name: "Bus 2 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11170 [[ name: "Bus 2 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11171 [[ name: "Bus 2 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11172 [[ name: "Bus 2 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11173 [[ name: "Bus 2 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11174 [[ name: "Bus 2 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11175 [[ name: "Bus 2 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11176 [[ name: "Bus 2 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11177 [[ name: "Bus 2 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11178 [[ name: "Bus 2 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11179 [[ name: "Bus 2 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11180 [[ name: "Bus 2 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11181 [[ name: "Bus 2 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11182 [[ name: "Bus 2 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11183 [[ name: "Bus 2 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11184 [[ name: "Bus 2 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11185 [[ name: "Bus 2 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11186 [[ name: "Bus 2 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11187 [[ name: "Bus 2 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11188 [[ name: "Bus 2 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11189 [[ name: "Bus 2 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11190 [[ name: "Bus 2 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11191 [[ name: "Bus 2 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11192 [[ name: "OSC 1 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11193 [[ name: "OSC 1 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11194 [[ name: "OSC 1 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11195 [[ name: "OSC 1 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11196 [[ name: "OSC 1 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11197 [[ name: "OSC 1 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11198 [[ name: "OSC 1 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11199 [[ name: "OSC 1 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11200 [[ name: "OSC 1 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11201 [[ name: "OSC 1 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11202 [[ name: "OSC 1 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11203 [[ name: "OSC 1 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11204 [[ name: "OSC 1 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11205 [[ name: "OSC 1 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11206 [[ name: "OSC 1 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11207 [[ name: "OSC 1 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11208 [[ name: "OSC 1 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11209 [[ name: "OSC 1 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11210 [[ name: "OSC 1 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11211 [[ name: "OSC 1 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11212 [[ name: "OSC 1 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11213 [[ name: "OSC 1 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11214 [[ name: "OSC 1 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11215 [[ name: "OSC 1 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11216 [[ name: "OSC 1 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11217 [[ name: "OSC 1 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11218 [[ name: "OSC 1 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11219 [[ name: "OSC 1 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11220 [[ name: "OSC 1 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11221 [[ name: "OSC 1 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11222 [[ name: "OSC 1 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11223 [[ name: "OSC 1 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11224 [[ name: "OSC 1 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11225 [[ name: "OSC 1 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11226 [[ name: "OSC 1 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11227 [[ name: "OSC 1 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11228 [[ name: "OSC 1 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11229 [[ name: "OSC 1 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11230 [[ name: "OSC 1 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11231 [[ name: "OSC 1 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11232 [[ name: "OSC 1 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11233 [[ name: "OSC 1 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11234 [[ name: "OSC 1 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11235 [[ name: "OSC 1 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11236 [[ name: "OSC 1 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11237 [[ name: "OSC 1 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11238 [[ name: "OSC 1 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11239 [[ name: "OSC 1 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11240 [[ name: "OSC 1 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11241 [[ name: "OSC 1 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11242 [[ name: "OSC 1 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11243 [[ name: "OSC 1 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11244 [[ name: "OSC 1 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11245 [[ name: "OSC 1 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11246 [[ name: "OSC 1 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11247 [[ name: "OSC 1 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11248 [[ name: "OSC 1 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11249 [[ name: "OSC 1 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11250 [[ name: "OSC 1 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11251 [[ name: "OSC 1 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11252 [[ name: "OSC 1 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11253 [[ name: "OSC 1 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11254 [[ name: "OSC 1 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11255 [[ name: "OSC 1 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11256 [[ name: "OSC 2 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11257 [[ name: "OSC 2 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11258 [[ name: "OSC 2 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11259 [[ name: "OSC 2 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11260 [[ name: "OSC 2 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11261 [[ name: "OSC 2 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11262 [[ name: "OSC 2 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11263 [[ name: "OSC 2 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11264 [[ name: "OSC 2 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11265 [[ name: "OSC 2 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11266 [[ name: "OSC 2 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11267 [[ name: "OSC 2 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11268 [[ name: "OSC 2 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11269 [[ name: "OSC 2 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11270 [[ name: "OSC 2 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11271 [[ name: "OSC 2 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11272 [[ name: "OSC 2 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11273 [[ name: "OSC 2 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11274 [[ name: "OSC 2 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11275 [[ name: "OSC 2 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11276 [[ name: "OSC 2 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11277 [[ name: "OSC 2 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11278 [[ name: "OSC 2 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11279 [[ name: "OSC 2 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11280 [[ name: "OSC 2 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11281 [[ name: "OSC 2 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11282 [[ name: "OSC 2 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11283 [[ name: "OSC 2 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11284 [[ name: "OSC 2 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11285 [[ name: "OSC 2 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11286 [[ name: "OSC 2 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11287 [[ name: "OSC 2 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11288 [[ name: "OSC 2 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11289 [[ name: "OSC 2 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11290 [[ name: "OSC 2 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11291 [[ name: "OSC 2 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11292 [[ name: "OSC 2 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11293 [[ name: "OSC 2 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11294 [[ name: "OSC 2 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11295 [[ name: "OSC 2 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11296 [[ name: "OSC 2 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11297 [[ name: "OSC 2 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11298 [[ name: "OSC 2 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11299 [[ name: "OSC 2 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11300 [[ name: "OSC 2 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11301 [[ name: "OSC 2 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11302 [[ name: "OSC 2 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11303 [[ name: "OSC 2 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11304 [[ name: "OSC 2 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11305 [[ name: "OSC 2 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11306 [[ name: "OSC 2 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11307 [[ name: "OSC 2 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11308 [[ name: "OSC 2 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11309 [[ name: "OSC 2 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11310 [[ name: "OSC 2 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11311 [[ name: "OSC 2 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11312 [[ name: "OSC 2 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11313 [[ name: "OSC 2 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11314 [[ name: "OSC 2 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11315 [[ name: "OSC 2 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11316 [[ name: "OSC 2 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11317 [[ name: "OSC 2 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11318 [[ name: "OSC 2 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11319 [[ name: "OSC 2 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11320 [[ name: "OSC 3 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11321 [[ name: "OSC 3 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11322 [[ name: "OSC 3 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11323 [[ name: "OSC 3 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11324 [[ name: "OSC 3 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11325 [[ name: "OSC 3 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11326 [[ name: "OSC 3 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11327 [[ name: "OSC 3 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11328 [[ name: "OSC 3 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11329 [[ name: "OSC 3 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11330 [[ name: "OSC 3 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11331 [[ name: "OSC 3 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11332 [[ name: "OSC 3 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11333 [[ name: "OSC 3 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11334 [[ name: "OSC 3 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11335 [[ name: "OSC 3 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11336 [[ name: "OSC 3 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11337 [[ name: "OSC 3 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11338 [[ name: "OSC 3 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11339 [[ name: "OSC 3 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11340 [[ name: "OSC 3 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11341 [[ name: "OSC 3 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11342 [[ name: "OSC 3 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11343 [[ name: "OSC 3 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11344 [[ name: "OSC 3 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11345 [[ name: "OSC 3 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11346 [[ name: "OSC 3 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11347 [[ name: "OSC 3 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11348 [[ name: "OSC 3 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11349 [[ name: "OSC 3 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11350 [[ name: "OSC 3 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11351 [[ name: "OSC 3 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11352 [[ name: "OSC 3 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11353 [[ name: "OSC 3 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11354 [[ name: "OSC 3 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11355 [[ name: "OSC 3 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11356 [[ name: "OSC 3 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11357 [[ name: "OSC 3 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11358 [[ name: "OSC 3 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11359 [[ name: "OSC 3 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11360 [[ name: "OSC 3 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11361 [[ name: "OSC 3 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11362 [[ name: "OSC 3 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11363 [[ name: "OSC 3 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11364 [[ name: "OSC 3 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11365 [[ name: "OSC 3 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11366 [[ name: "OSC 3 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11367 [[ name: "OSC 3 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11368 [[ name: "OSC 3 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11369 [[ name: "OSC 3 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11370 [[ name: "OSC 3 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11371 [[ name: "OSC 3 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11372 [[ name: "OSC 3 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11373 [[ name: "OSC 3 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11374 [[ name: "OSC 3 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11375 [[ name: "OSC 3 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11376 [[ name: "OSC 3 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11377 [[ name: "OSC 3 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11378 [[ name: "OSC 3 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11379 [[ name: "OSC 3 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11380 [[ name: "OSC 3 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11381 [[ name: "OSC 3 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11382 [[ name: "OSC 3 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11383 [[ name: "OSC 3 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11384 [[ name: "OSC 4 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11385 [[ name: "OSC 4 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11386 [[ name: "OSC 4 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11387 [[ name: "OSC 4 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11388 [[ name: "OSC 4 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11389 [[ name: "OSC 4 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11390 [[ name: "OSC 4 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11391 [[ name: "OSC 4 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11392 [[ name: "OSC 4 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11393 [[ name: "OSC 4 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11394 [[ name: "OSC 4 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11395 [[ name: "OSC 4 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11396 [[ name: "OSC 4 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11397 [[ name: "OSC 4 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11398 [[ name: "OSC 4 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11399 [[ name: "OSC 4 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11400 [[ name: "OSC 4 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11401 [[ name: "OSC 4 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11402 [[ name: "OSC 4 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11403 [[ name: "OSC 4 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11404 [[ name: "OSC 4 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11405 [[ name: "OSC 4 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11406 [[ name: "OSC 4 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11407 [[ name: "OSC 4 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11408 [[ name: "OSC 4 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11409 [[ name: "OSC 4 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11410 [[ name: "OSC 4 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11411 [[ name: "OSC 4 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11412 [[ name: "OSC 4 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11413 [[ name: "OSC 4 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11414 [[ name: "OSC 4 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11415 [[ name: "OSC 4 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11416 [[ name: "OSC 4 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11417 [[ name: "OSC 4 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11418 [[ name: "OSC 4 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11419 [[ name: "OSC 4 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11420 [[ name: "OSC 4 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11421 [[ name: "OSC 4 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11422 [[ name: "OSC 4 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11423 [[ name: "OSC 4 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11424 [[ name: "OSC 4 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11425 [[ name: "OSC 4 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11426 [[ name: "OSC 4 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11427 [[ name: "OSC 4 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11428 [[ name: "OSC 4 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11429 [[ name: "OSC 4 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11430 [[ name: "OSC 4 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11431 [[ name: "OSC 4 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11432 [[ name: "OSC 4 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11433 [[ name: "OSC 4 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11434 [[ name: "OSC 4 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11435 [[ name: "OSC 4 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11436 [[ name: "OSC 4 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11437 [[ name: "OSC 4 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11438 [[ name: "OSC 4 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11439 [[ name: "OSC 4 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11440 [[ name: "OSC 4 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11441 [[ name: "OSC 4 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11442 [[ name: "OSC 4 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11443 [[ name: "OSC 4 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11444 [[ name: "OSC 4 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11445 [[ name: "OSC 4 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11446 [[ name: "OSC 4 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11447 [[ name: "OSC 4 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11448 [[ name: "OSC 5 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11449 [[ name: "OSC 5 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11450 [[ name: "OSC 5 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11451 [[ name: "OSC 5 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11452 [[ name: "OSC 5 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11453 [[ name: "OSC 5 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11454 [[ name: "OSC 5 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11455 [[ name: "OSC 5 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11456 [[ name: "OSC 5 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11457 [[ name: "OSC 5 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11458 [[ name: "OSC 5 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11459 [[ name: "OSC 5 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11460 [[ name: "OSC 5 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11461 [[ name: "OSC 5 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11462 [[ name: "OSC 5 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11463 [[ name: "OSC 5 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11464 [[ name: "OSC 5 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11465 [[ name: "OSC 5 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11466 [[ name: "OSC 5 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11467 [[ name: "OSC 5 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11468 [[ name: "OSC 5 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11469 [[ name: "OSC 5 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11470 [[ name: "OSC 5 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11471 [[ name: "OSC 5 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11472 [[ name: "OSC 5 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11473 [[ name: "OSC 5 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11474 [[ name: "OSC 5 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11475 [[ name: "OSC 5 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11476 [[ name: "OSC 5 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11477 [[ name: "OSC 5 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11478 [[ name: "OSC 5 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11479 [[ name: "OSC 5 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11480 [[ name: "OSC 5 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11481 [[ name: "OSC 5 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11482 [[ name: "OSC 5 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11483 [[ name: "OSC 5 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11484 [[ name: "OSC 5 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11485 [[ name: "OSC 5 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11486 [[ name: "OSC 5 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11487 [[ name: "OSC 5 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11488 [[ name: "OSC 5 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11489 [[ name: "OSC 5 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11490 [[ name: "OSC 5 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11491 [[ name: "OSC 5 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11492 [[ name: "OSC 5 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11493 [[ name: "OSC 5 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11494 [[ name: "OSC 5 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11495 [[ name: "OSC 5 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11496 [[ name: "OSC 5 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11497 [[ name: "OSC 5 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11498 [[ name: "OSC 5 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11499 [[ name: "OSC 5 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11500 [[ name: "OSC 5 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11501 [[ name: "OSC 5 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11502 [[ name: "OSC 5 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11503 [[ name: "OSC 5 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11504 [[ name: "OSC 5 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11505 [[ name: "OSC 5 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11506 [[ name: "OSC 5 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11507 [[ name: "OSC 5 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11508 [[ name: "OSC 5 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11509 [[ name: "OSC 5 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11510 [[ name: "OSC 5 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11511 [[ name: "OSC 5 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11512 [[ name: "OSC 6 FX 1 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11513 [[ name: "OSC 6 FX 1 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11514 [[ name: "OSC 6 FX 1 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11515 [[ name: "OSC 6 FX 1 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11516 [[ name: "OSC 6 FX 2 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11517 [[ name: "OSC 6 FX 2 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11518 [[ name: "OSC 6 FX 2 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11519 [[ name: "OSC 6 FX 2 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11520 [[ name: "OSC 6 FX 3 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11521 [[ name: "OSC 6 FX 3 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11522 [[ name: "OSC 6 FX 3 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11523 [[ name: "OSC 6 FX 3 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11524 [[ name: "OSC 6 FX 4 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11525 [[ name: "OSC 6 FX 4 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11526 [[ name: "OSC 6 FX 4 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11527 [[ name: "OSC 6 FX 4 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11528 [[ name: "OSC 6 FX 5 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11529 [[ name: "OSC 6 FX 5 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11530 [[ name: "OSC 6 FX 5 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11531 [[ name: "OSC 6 FX 5 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11532 [[ name: "OSC 6 FX 6 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11533 [[ name: "OSC 6 FX 6 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11534 [[ name: "OSC 6 FX 6 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11535 [[ name: "OSC 6 FX 6 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11536 [[ name: "OSC 6 FX 7 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11537 [[ name: "OSC 6 FX 7 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11538 [[ name: "OSC 6 FX 7 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11539 [[ name: "OSC 6 FX 7 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11540 [[ name: "OSC 6 FX 8 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11541 [[ name: "OSC 6 FX 8 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11542 [[ name: "OSC 6 FX 8 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11543 [[ name: "OSC 6 FX 8 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11544 [[ name: "OSC 6 FX 9 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11545 [[ name: "OSC 6 FX 9 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11546 [[ name: "OSC 6 FX 9 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11547 [[ name: "OSC 6 FX 9 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11548 [[ name: "OSC 6 FX 10 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11549 [[ name: "OSC 6 FX 10 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11550 [[ name: "OSC 6 FX 10 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11551 [[ name: "OSC 6 FX 10 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11552 [[ name: "OSC 6 FX 11 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11553 [[ name: "OSC 6 FX 11 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11554 [[ name: "OSC 6 FX 11 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11555 [[ name: "OSC 6 FX 11 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11556 [[ name: "OSC 6 FX 12 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11557 [[ name: "OSC 6 FX 12 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11558 [[ name: "OSC 6 FX 12 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11559 [[ name: "OSC 6 FX 12 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11560 [[ name: "OSC 6 FX 13 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11561 [[ name: "OSC 6 FX 13 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11562 [[ name: "OSC 6 FX 13 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11563 [[ name: "OSC 6 FX 13 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11564 [[ name: "OSC 6 FX 14 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11565 [[ name: "OSC 6 FX 14 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11566 [[ name: "OSC 6 FX 14 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11567 [[ name: "OSC 6 FX 14 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11568 [[ name: "OSC 6 FX 15 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11569 [[ name: "OSC 6 FX 15 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11570 [[ name: "OSC 6 FX 15 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11571 [[ name: "OSC 6 FX 15 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11572 [[ name: "OSC 6 FX 16 Low Cut", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11573 [[ name: "OSC 6 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
+    input event float param11574 [[ name: "OSC 6 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
+    input event float param11575 [[ name: "OSC 6 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
     // EURO
     input event float param10000 [[ name: "Euro M1 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param10001 [[ name: "Euro M1 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
@@ -7332,6 +7908,8 @@ processor Eisenpuls_Synth
     float         insOn = 0.0f;
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
+    float[8704] fxQ;   // FX-WET: per slot 8 floats: low cut, high cut, width, sat, low cut coefficient, high cut coefficient, active flag
+    float[8704] fxX;   // FX-WET: filter states (8 per slot)
     float[4992] fxP;  // padded to a power of two (cheap index wrap)
     bool[1088] fxDirty;  // padded to a power of two (cheap index wrap)
     int[64]       fxOrder;  // padded to a power of two (cheap index wrap)
@@ -10404,6 +10982,582 @@ processor Eisenpuls_Synth
     event param10625 (float v) { eGain.at (79) = clamp (v, 0.0f, 2.0f); }
     event param10626 (float v) { fxSetType (29, int (v + 0.5f)); }
     event param9890 (float v) { fxMon = clamp (int (v + 0.5f), 0, 48) - 1; vzInit(); }   // FX-VIZ
+    event param11000 (float v) { fxWetSet (0, 0, v); }
+    event param11001 (float v) { fxWetSet (0, 1, v); }
+    event param11002 (float v) { fxWetSet (0, 2, v); }
+    event param11003 (float v) { fxWetSet (0, 3, v); }
+    event param11004 (float v) { fxWetSet (1, 0, v); }
+    event param11005 (float v) { fxWetSet (1, 1, v); }
+    event param11006 (float v) { fxWetSet (1, 2, v); }
+    event param11007 (float v) { fxWetSet (1, 3, v); }
+    event param11008 (float v) { fxWetSet (2, 0, v); }
+    event param11009 (float v) { fxWetSet (2, 1, v); }
+    event param11010 (float v) { fxWetSet (2, 2, v); }
+    event param11011 (float v) { fxWetSet (2, 3, v); }
+    event param11012 (float v) { fxWetSet (3, 0, v); }
+    event param11013 (float v) { fxWetSet (3, 1, v); }
+    event param11014 (float v) { fxWetSet (3, 2, v); }
+    event param11015 (float v) { fxWetSet (3, 3, v); }
+    event param11016 (float v) { fxWetSet (4, 0, v); }
+    event param11017 (float v) { fxWetSet (4, 1, v); }
+    event param11018 (float v) { fxWetSet (4, 2, v); }
+    event param11019 (float v) { fxWetSet (4, 3, v); }
+    event param11020 (float v) { fxWetSet (5, 0, v); }
+    event param11021 (float v) { fxWetSet (5, 1, v); }
+    event param11022 (float v) { fxWetSet (5, 2, v); }
+    event param11023 (float v) { fxWetSet (5, 3, v); }
+    event param11024 (float v) { fxWetSet (6, 0, v); }
+    event param11025 (float v) { fxWetSet (6, 1, v); }
+    event param11026 (float v) { fxWetSet (6, 2, v); }
+    event param11027 (float v) { fxWetSet (6, 3, v); }
+    event param11028 (float v) { fxWetSet (7, 0, v); }
+    event param11029 (float v) { fxWetSet (7, 1, v); }
+    event param11030 (float v) { fxWetSet (7, 2, v); }
+    event param11031 (float v) { fxWetSet (7, 3, v); }
+    event param11032 (float v) { fxWetSet (8, 0, v); }
+    event param11033 (float v) { fxWetSet (8, 1, v); }
+    event param11034 (float v) { fxWetSet (8, 2, v); }
+    event param11035 (float v) { fxWetSet (8, 3, v); }
+    event param11036 (float v) { fxWetSet (9, 0, v); }
+    event param11037 (float v) { fxWetSet (9, 1, v); }
+    event param11038 (float v) { fxWetSet (9, 2, v); }
+    event param11039 (float v) { fxWetSet (9, 3, v); }
+    event param11040 (float v) { fxWetSet (10, 0, v); }
+    event param11041 (float v) { fxWetSet (10, 1, v); }
+    event param11042 (float v) { fxWetSet (10, 2, v); }
+    event param11043 (float v) { fxWetSet (10, 3, v); }
+    event param11044 (float v) { fxWetSet (11, 0, v); }
+    event param11045 (float v) { fxWetSet (11, 1, v); }
+    event param11046 (float v) { fxWetSet (11, 2, v); }
+    event param11047 (float v) { fxWetSet (11, 3, v); }
+    event param11048 (float v) { fxWetSet (12, 0, v); }
+    event param11049 (float v) { fxWetSet (12, 1, v); }
+    event param11050 (float v) { fxWetSet (12, 2, v); }
+    event param11051 (float v) { fxWetSet (12, 3, v); }
+    event param11052 (float v) { fxWetSet (13, 0, v); }
+    event param11053 (float v) { fxWetSet (13, 1, v); }
+    event param11054 (float v) { fxWetSet (13, 2, v); }
+    event param11055 (float v) { fxWetSet (13, 3, v); }
+    event param11056 (float v) { fxWetSet (14, 0, v); }
+    event param11057 (float v) { fxWetSet (14, 1, v); }
+    event param11058 (float v) { fxWetSet (14, 2, v); }
+    event param11059 (float v) { fxWetSet (14, 3, v); }
+    event param11060 (float v) { fxWetSet (15, 0, v); }
+    event param11061 (float v) { fxWetSet (15, 1, v); }
+    event param11062 (float v) { fxWetSet (15, 2, v); }
+    event param11063 (float v) { fxWetSet (15, 3, v); }
+    event param11064 (float v) { fxWetSet (16, 0, v); }
+    event param11065 (float v) { fxWetSet (16, 1, v); }
+    event param11066 (float v) { fxWetSet (16, 2, v); }
+    event param11067 (float v) { fxWetSet (16, 3, v); }
+    event param11068 (float v) { fxWetSet (17, 0, v); }
+    event param11069 (float v) { fxWetSet (17, 1, v); }
+    event param11070 (float v) { fxWetSet (17, 2, v); }
+    event param11071 (float v) { fxWetSet (17, 3, v); }
+    event param11072 (float v) { fxWetSet (18, 0, v); }
+    event param11073 (float v) { fxWetSet (18, 1, v); }
+    event param11074 (float v) { fxWetSet (18, 2, v); }
+    event param11075 (float v) { fxWetSet (18, 3, v); }
+    event param11076 (float v) { fxWetSet (19, 0, v); }
+    event param11077 (float v) { fxWetSet (19, 1, v); }
+    event param11078 (float v) { fxWetSet (19, 2, v); }
+    event param11079 (float v) { fxWetSet (19, 3, v); }
+    event param11080 (float v) { fxWetSet (20, 0, v); }
+    event param11081 (float v) { fxWetSet (20, 1, v); }
+    event param11082 (float v) { fxWetSet (20, 2, v); }
+    event param11083 (float v) { fxWetSet (20, 3, v); }
+    event param11084 (float v) { fxWetSet (21, 0, v); }
+    event param11085 (float v) { fxWetSet (21, 1, v); }
+    event param11086 (float v) { fxWetSet (21, 2, v); }
+    event param11087 (float v) { fxWetSet (21, 3, v); }
+    event param11088 (float v) { fxWetSet (22, 0, v); }
+    event param11089 (float v) { fxWetSet (22, 1, v); }
+    event param11090 (float v) { fxWetSet (22, 2, v); }
+    event param11091 (float v) { fxWetSet (22, 3, v); }
+    event param11092 (float v) { fxWetSet (23, 0, v); }
+    event param11093 (float v) { fxWetSet (23, 1, v); }
+    event param11094 (float v) { fxWetSet (23, 2, v); }
+    event param11095 (float v) { fxWetSet (23, 3, v); }
+    event param11096 (float v) { fxWetSet (24, 0, v); }
+    event param11097 (float v) { fxWetSet (24, 1, v); }
+    event param11098 (float v) { fxWetSet (24, 2, v); }
+    event param11099 (float v) { fxWetSet (24, 3, v); }
+    event param11100 (float v) { fxWetSet (25, 0, v); }
+    event param11101 (float v) { fxWetSet (25, 1, v); }
+    event param11102 (float v) { fxWetSet (25, 2, v); }
+    event param11103 (float v) { fxWetSet (25, 3, v); }
+    event param11104 (float v) { fxWetSet (26, 0, v); }
+    event param11105 (float v) { fxWetSet (26, 1, v); }
+    event param11106 (float v) { fxWetSet (26, 2, v); }
+    event param11107 (float v) { fxWetSet (26, 3, v); }
+    event param11108 (float v) { fxWetSet (27, 0, v); }
+    event param11109 (float v) { fxWetSet (27, 1, v); }
+    event param11110 (float v) { fxWetSet (27, 2, v); }
+    event param11111 (float v) { fxWetSet (27, 3, v); }
+    event param11112 (float v) { fxWetSet (28, 0, v); }
+    event param11113 (float v) { fxWetSet (28, 1, v); }
+    event param11114 (float v) { fxWetSet (28, 2, v); }
+    event param11115 (float v) { fxWetSet (28, 3, v); }
+    event param11116 (float v) { fxWetSet (29, 0, v); }
+    event param11117 (float v) { fxWetSet (29, 1, v); }
+    event param11118 (float v) { fxWetSet (29, 2, v); }
+    event param11119 (float v) { fxWetSet (29, 3, v); }
+    event param11120 (float v) { fxWetSet (30, 0, v); }
+    event param11121 (float v) { fxWetSet (30, 1, v); }
+    event param11122 (float v) { fxWetSet (30, 2, v); }
+    event param11123 (float v) { fxWetSet (30, 3, v); }
+    event param11124 (float v) { fxWetSet (31, 0, v); }
+    event param11125 (float v) { fxWetSet (31, 1, v); }
+    event param11126 (float v) { fxWetSet (31, 2, v); }
+    event param11127 (float v) { fxWetSet (31, 3, v); }
+    event param11128 (float v) { fxWetSet (32, 0, v); }
+    event param11129 (float v) { fxWetSet (32, 1, v); }
+    event param11130 (float v) { fxWetSet (32, 2, v); }
+    event param11131 (float v) { fxWetSet (32, 3, v); }
+    event param11132 (float v) { fxWetSet (33, 0, v); }
+    event param11133 (float v) { fxWetSet (33, 1, v); }
+    event param11134 (float v) { fxWetSet (33, 2, v); }
+    event param11135 (float v) { fxWetSet (33, 3, v); }
+    event param11136 (float v) { fxWetSet (34, 0, v); }
+    event param11137 (float v) { fxWetSet (34, 1, v); }
+    event param11138 (float v) { fxWetSet (34, 2, v); }
+    event param11139 (float v) { fxWetSet (34, 3, v); }
+    event param11140 (float v) { fxWetSet (35, 0, v); }
+    event param11141 (float v) { fxWetSet (35, 1, v); }
+    event param11142 (float v) { fxWetSet (35, 2, v); }
+    event param11143 (float v) { fxWetSet (35, 3, v); }
+    event param11144 (float v) { fxWetSet (36, 0, v); }
+    event param11145 (float v) { fxWetSet (36, 1, v); }
+    event param11146 (float v) { fxWetSet (36, 2, v); }
+    event param11147 (float v) { fxWetSet (36, 3, v); }
+    event param11148 (float v) { fxWetSet (37, 0, v); }
+    event param11149 (float v) { fxWetSet (37, 1, v); }
+    event param11150 (float v) { fxWetSet (37, 2, v); }
+    event param11151 (float v) { fxWetSet (37, 3, v); }
+    event param11152 (float v) { fxWetSet (38, 0, v); }
+    event param11153 (float v) { fxWetSet (38, 1, v); }
+    event param11154 (float v) { fxWetSet (38, 2, v); }
+    event param11155 (float v) { fxWetSet (38, 3, v); }
+    event param11156 (float v) { fxWetSet (39, 0, v); }
+    event param11157 (float v) { fxWetSet (39, 1, v); }
+    event param11158 (float v) { fxWetSet (39, 2, v); }
+    event param11159 (float v) { fxWetSet (39, 3, v); }
+    event param11160 (float v) { fxWetSet (40, 0, v); }
+    event param11161 (float v) { fxWetSet (40, 1, v); }
+    event param11162 (float v) { fxWetSet (40, 2, v); }
+    event param11163 (float v) { fxWetSet (40, 3, v); }
+    event param11164 (float v) { fxWetSet (41, 0, v); }
+    event param11165 (float v) { fxWetSet (41, 1, v); }
+    event param11166 (float v) { fxWetSet (41, 2, v); }
+    event param11167 (float v) { fxWetSet (41, 3, v); }
+    event param11168 (float v) { fxWetSet (42, 0, v); }
+    event param11169 (float v) { fxWetSet (42, 1, v); }
+    event param11170 (float v) { fxWetSet (42, 2, v); }
+    event param11171 (float v) { fxWetSet (42, 3, v); }
+    event param11172 (float v) { fxWetSet (43, 0, v); }
+    event param11173 (float v) { fxWetSet (43, 1, v); }
+    event param11174 (float v) { fxWetSet (43, 2, v); }
+    event param11175 (float v) { fxWetSet (43, 3, v); }
+    event param11176 (float v) { fxWetSet (44, 0, v); }
+    event param11177 (float v) { fxWetSet (44, 1, v); }
+    event param11178 (float v) { fxWetSet (44, 2, v); }
+    event param11179 (float v) { fxWetSet (44, 3, v); }
+    event param11180 (float v) { fxWetSet (45, 0, v); }
+    event param11181 (float v) { fxWetSet (45, 1, v); }
+    event param11182 (float v) { fxWetSet (45, 2, v); }
+    event param11183 (float v) { fxWetSet (45, 3, v); }
+    event param11184 (float v) { fxWetSet (46, 0, v); }
+    event param11185 (float v) { fxWetSet (46, 1, v); }
+    event param11186 (float v) { fxWetSet (46, 2, v); }
+    event param11187 (float v) { fxWetSet (46, 3, v); }
+    event param11188 (float v) { fxWetSet (47, 0, v); }
+    event param11189 (float v) { fxWetSet (47, 1, v); }
+    event param11190 (float v) { fxWetSet (47, 2, v); }
+    event param11191 (float v) { fxWetSet (47, 3, v); }
+    event param11192 (float v) { fxWetSetO (48, 0, v); }
+    event param11193 (float v) { fxWetSetO (48, 1, v); }
+    event param11194 (float v) { fxWetSetO (48, 2, v); }
+    event param11195 (float v) { fxWetSetO (48, 3, v); }
+    event param11196 (float v) { fxWetSetO (49, 0, v); }
+    event param11197 (float v) { fxWetSetO (49, 1, v); }
+    event param11198 (float v) { fxWetSetO (49, 2, v); }
+    event param11199 (float v) { fxWetSetO (49, 3, v); }
+    event param11200 (float v) { fxWetSetO (50, 0, v); }
+    event param11201 (float v) { fxWetSetO (50, 1, v); }
+    event param11202 (float v) { fxWetSetO (50, 2, v); }
+    event param11203 (float v) { fxWetSetO (50, 3, v); }
+    event param11204 (float v) { fxWetSetO (51, 0, v); }
+    event param11205 (float v) { fxWetSetO (51, 1, v); }
+    event param11206 (float v) { fxWetSetO (51, 2, v); }
+    event param11207 (float v) { fxWetSetO (51, 3, v); }
+    event param11208 (float v) { fxWetSetO (52, 0, v); }
+    event param11209 (float v) { fxWetSetO (52, 1, v); }
+    event param11210 (float v) { fxWetSetO (52, 2, v); }
+    event param11211 (float v) { fxWetSetO (52, 3, v); }
+    event param11212 (float v) { fxWetSetO (53, 0, v); }
+    event param11213 (float v) { fxWetSetO (53, 1, v); }
+    event param11214 (float v) { fxWetSetO (53, 2, v); }
+    event param11215 (float v) { fxWetSetO (53, 3, v); }
+    event param11216 (float v) { fxWetSetO (54, 0, v); }
+    event param11217 (float v) { fxWetSetO (54, 1, v); }
+    event param11218 (float v) { fxWetSetO (54, 2, v); }
+    event param11219 (float v) { fxWetSetO (54, 3, v); }
+    event param11220 (float v) { fxWetSetO (55, 0, v); }
+    event param11221 (float v) { fxWetSetO (55, 1, v); }
+    event param11222 (float v) { fxWetSetO (55, 2, v); }
+    event param11223 (float v) { fxWetSetO (55, 3, v); }
+    event param11224 (float v) { fxWetSetO (56, 0, v); }
+    event param11225 (float v) { fxWetSetO (56, 1, v); }
+    event param11226 (float v) { fxWetSetO (56, 2, v); }
+    event param11227 (float v) { fxWetSetO (56, 3, v); }
+    event param11228 (float v) { fxWetSetO (57, 0, v); }
+    event param11229 (float v) { fxWetSetO (57, 1, v); }
+    event param11230 (float v) { fxWetSetO (57, 2, v); }
+    event param11231 (float v) { fxWetSetO (57, 3, v); }
+    event param11232 (float v) { fxWetSetO (58, 0, v); }
+    event param11233 (float v) { fxWetSetO (58, 1, v); }
+    event param11234 (float v) { fxWetSetO (58, 2, v); }
+    event param11235 (float v) { fxWetSetO (58, 3, v); }
+    event param11236 (float v) { fxWetSetO (59, 0, v); }
+    event param11237 (float v) { fxWetSetO (59, 1, v); }
+    event param11238 (float v) { fxWetSetO (59, 2, v); }
+    event param11239 (float v) { fxWetSetO (59, 3, v); }
+    event param11240 (float v) { fxWetSetO (60, 0, v); }
+    event param11241 (float v) { fxWetSetO (60, 1, v); }
+    event param11242 (float v) { fxWetSetO (60, 2, v); }
+    event param11243 (float v) { fxWetSetO (60, 3, v); }
+    event param11244 (float v) { fxWetSetO (61, 0, v); }
+    event param11245 (float v) { fxWetSetO (61, 1, v); }
+    event param11246 (float v) { fxWetSetO (61, 2, v); }
+    event param11247 (float v) { fxWetSetO (61, 3, v); }
+    event param11248 (float v) { fxWetSetO (62, 0, v); }
+    event param11249 (float v) { fxWetSetO (62, 1, v); }
+    event param11250 (float v) { fxWetSetO (62, 2, v); }
+    event param11251 (float v) { fxWetSetO (62, 3, v); }
+    event param11252 (float v) { fxWetSetO (63, 0, v); }
+    event param11253 (float v) { fxWetSetO (63, 1, v); }
+    event param11254 (float v) { fxWetSetO (63, 2, v); }
+    event param11255 (float v) { fxWetSetO (63, 3, v); }
+    event param11256 (float v) { fxWetSetO (64, 0, v); }
+    event param11257 (float v) { fxWetSetO (64, 1, v); }
+    event param11258 (float v) { fxWetSetO (64, 2, v); }
+    event param11259 (float v) { fxWetSetO (64, 3, v); }
+    event param11260 (float v) { fxWetSetO (65, 0, v); }
+    event param11261 (float v) { fxWetSetO (65, 1, v); }
+    event param11262 (float v) { fxWetSetO (65, 2, v); }
+    event param11263 (float v) { fxWetSetO (65, 3, v); }
+    event param11264 (float v) { fxWetSetO (66, 0, v); }
+    event param11265 (float v) { fxWetSetO (66, 1, v); }
+    event param11266 (float v) { fxWetSetO (66, 2, v); }
+    event param11267 (float v) { fxWetSetO (66, 3, v); }
+    event param11268 (float v) { fxWetSetO (67, 0, v); }
+    event param11269 (float v) { fxWetSetO (67, 1, v); }
+    event param11270 (float v) { fxWetSetO (67, 2, v); }
+    event param11271 (float v) { fxWetSetO (67, 3, v); }
+    event param11272 (float v) { fxWetSetO (68, 0, v); }
+    event param11273 (float v) { fxWetSetO (68, 1, v); }
+    event param11274 (float v) { fxWetSetO (68, 2, v); }
+    event param11275 (float v) { fxWetSetO (68, 3, v); }
+    event param11276 (float v) { fxWetSetO (69, 0, v); }
+    event param11277 (float v) { fxWetSetO (69, 1, v); }
+    event param11278 (float v) { fxWetSetO (69, 2, v); }
+    event param11279 (float v) { fxWetSetO (69, 3, v); }
+    event param11280 (float v) { fxWetSetO (70, 0, v); }
+    event param11281 (float v) { fxWetSetO (70, 1, v); }
+    event param11282 (float v) { fxWetSetO (70, 2, v); }
+    event param11283 (float v) { fxWetSetO (70, 3, v); }
+    event param11284 (float v) { fxWetSetO (71, 0, v); }
+    event param11285 (float v) { fxWetSetO (71, 1, v); }
+    event param11286 (float v) { fxWetSetO (71, 2, v); }
+    event param11287 (float v) { fxWetSetO (71, 3, v); }
+    event param11288 (float v) { fxWetSetO (72, 0, v); }
+    event param11289 (float v) { fxWetSetO (72, 1, v); }
+    event param11290 (float v) { fxWetSetO (72, 2, v); }
+    event param11291 (float v) { fxWetSetO (72, 3, v); }
+    event param11292 (float v) { fxWetSetO (73, 0, v); }
+    event param11293 (float v) { fxWetSetO (73, 1, v); }
+    event param11294 (float v) { fxWetSetO (73, 2, v); }
+    event param11295 (float v) { fxWetSetO (73, 3, v); }
+    event param11296 (float v) { fxWetSetO (74, 0, v); }
+    event param11297 (float v) { fxWetSetO (74, 1, v); }
+    event param11298 (float v) { fxWetSetO (74, 2, v); }
+    event param11299 (float v) { fxWetSetO (74, 3, v); }
+    event param11300 (float v) { fxWetSetO (75, 0, v); }
+    event param11301 (float v) { fxWetSetO (75, 1, v); }
+    event param11302 (float v) { fxWetSetO (75, 2, v); }
+    event param11303 (float v) { fxWetSetO (75, 3, v); }
+    event param11304 (float v) { fxWetSetO (76, 0, v); }
+    event param11305 (float v) { fxWetSetO (76, 1, v); }
+    event param11306 (float v) { fxWetSetO (76, 2, v); }
+    event param11307 (float v) { fxWetSetO (76, 3, v); }
+    event param11308 (float v) { fxWetSetO (77, 0, v); }
+    event param11309 (float v) { fxWetSetO (77, 1, v); }
+    event param11310 (float v) { fxWetSetO (77, 2, v); }
+    event param11311 (float v) { fxWetSetO (77, 3, v); }
+    event param11312 (float v) { fxWetSetO (78, 0, v); }
+    event param11313 (float v) { fxWetSetO (78, 1, v); }
+    event param11314 (float v) { fxWetSetO (78, 2, v); }
+    event param11315 (float v) { fxWetSetO (78, 3, v); }
+    event param11316 (float v) { fxWetSetO (79, 0, v); }
+    event param11317 (float v) { fxWetSetO (79, 1, v); }
+    event param11318 (float v) { fxWetSetO (79, 2, v); }
+    event param11319 (float v) { fxWetSetO (79, 3, v); }
+    event param11320 (float v) { fxWetSetO (80, 0, v); }
+    event param11321 (float v) { fxWetSetO (80, 1, v); }
+    event param11322 (float v) { fxWetSetO (80, 2, v); }
+    event param11323 (float v) { fxWetSetO (80, 3, v); }
+    event param11324 (float v) { fxWetSetO (81, 0, v); }
+    event param11325 (float v) { fxWetSetO (81, 1, v); }
+    event param11326 (float v) { fxWetSetO (81, 2, v); }
+    event param11327 (float v) { fxWetSetO (81, 3, v); }
+    event param11328 (float v) { fxWetSetO (82, 0, v); }
+    event param11329 (float v) { fxWetSetO (82, 1, v); }
+    event param11330 (float v) { fxWetSetO (82, 2, v); }
+    event param11331 (float v) { fxWetSetO (82, 3, v); }
+    event param11332 (float v) { fxWetSetO (83, 0, v); }
+    event param11333 (float v) { fxWetSetO (83, 1, v); }
+    event param11334 (float v) { fxWetSetO (83, 2, v); }
+    event param11335 (float v) { fxWetSetO (83, 3, v); }
+    event param11336 (float v) { fxWetSetO (84, 0, v); }
+    event param11337 (float v) { fxWetSetO (84, 1, v); }
+    event param11338 (float v) { fxWetSetO (84, 2, v); }
+    event param11339 (float v) { fxWetSetO (84, 3, v); }
+    event param11340 (float v) { fxWetSetO (85, 0, v); }
+    event param11341 (float v) { fxWetSetO (85, 1, v); }
+    event param11342 (float v) { fxWetSetO (85, 2, v); }
+    event param11343 (float v) { fxWetSetO (85, 3, v); }
+    event param11344 (float v) { fxWetSetO (86, 0, v); }
+    event param11345 (float v) { fxWetSetO (86, 1, v); }
+    event param11346 (float v) { fxWetSetO (86, 2, v); }
+    event param11347 (float v) { fxWetSetO (86, 3, v); }
+    event param11348 (float v) { fxWetSetO (87, 0, v); }
+    event param11349 (float v) { fxWetSetO (87, 1, v); }
+    event param11350 (float v) { fxWetSetO (87, 2, v); }
+    event param11351 (float v) { fxWetSetO (87, 3, v); }
+    event param11352 (float v) { fxWetSetO (88, 0, v); }
+    event param11353 (float v) { fxWetSetO (88, 1, v); }
+    event param11354 (float v) { fxWetSetO (88, 2, v); }
+    event param11355 (float v) { fxWetSetO (88, 3, v); }
+    event param11356 (float v) { fxWetSetO (89, 0, v); }
+    event param11357 (float v) { fxWetSetO (89, 1, v); }
+    event param11358 (float v) { fxWetSetO (89, 2, v); }
+    event param11359 (float v) { fxWetSetO (89, 3, v); }
+    event param11360 (float v) { fxWetSetO (90, 0, v); }
+    event param11361 (float v) { fxWetSetO (90, 1, v); }
+    event param11362 (float v) { fxWetSetO (90, 2, v); }
+    event param11363 (float v) { fxWetSetO (90, 3, v); }
+    event param11364 (float v) { fxWetSetO (91, 0, v); }
+    event param11365 (float v) { fxWetSetO (91, 1, v); }
+    event param11366 (float v) { fxWetSetO (91, 2, v); }
+    event param11367 (float v) { fxWetSetO (91, 3, v); }
+    event param11368 (float v) { fxWetSetO (92, 0, v); }
+    event param11369 (float v) { fxWetSetO (92, 1, v); }
+    event param11370 (float v) { fxWetSetO (92, 2, v); }
+    event param11371 (float v) { fxWetSetO (92, 3, v); }
+    event param11372 (float v) { fxWetSetO (93, 0, v); }
+    event param11373 (float v) { fxWetSetO (93, 1, v); }
+    event param11374 (float v) { fxWetSetO (93, 2, v); }
+    event param11375 (float v) { fxWetSetO (93, 3, v); }
+    event param11376 (float v) { fxWetSetO (94, 0, v); }
+    event param11377 (float v) { fxWetSetO (94, 1, v); }
+    event param11378 (float v) { fxWetSetO (94, 2, v); }
+    event param11379 (float v) { fxWetSetO (94, 3, v); }
+    event param11380 (float v) { fxWetSetO (95, 0, v); }
+    event param11381 (float v) { fxWetSetO (95, 1, v); }
+    event param11382 (float v) { fxWetSetO (95, 2, v); }
+    event param11383 (float v) { fxWetSetO (95, 3, v); }
+    event param11384 (float v) { fxWetSetO (96, 0, v); }
+    event param11385 (float v) { fxWetSetO (96, 1, v); }
+    event param11386 (float v) { fxWetSetO (96, 2, v); }
+    event param11387 (float v) { fxWetSetO (96, 3, v); }
+    event param11388 (float v) { fxWetSetO (97, 0, v); }
+    event param11389 (float v) { fxWetSetO (97, 1, v); }
+    event param11390 (float v) { fxWetSetO (97, 2, v); }
+    event param11391 (float v) { fxWetSetO (97, 3, v); }
+    event param11392 (float v) { fxWetSetO (98, 0, v); }
+    event param11393 (float v) { fxWetSetO (98, 1, v); }
+    event param11394 (float v) { fxWetSetO (98, 2, v); }
+    event param11395 (float v) { fxWetSetO (98, 3, v); }
+    event param11396 (float v) { fxWetSetO (99, 0, v); }
+    event param11397 (float v) { fxWetSetO (99, 1, v); }
+    event param11398 (float v) { fxWetSetO (99, 2, v); }
+    event param11399 (float v) { fxWetSetO (99, 3, v); }
+    event param11400 (float v) { fxWetSetO (100, 0, v); }
+    event param11401 (float v) { fxWetSetO (100, 1, v); }
+    event param11402 (float v) { fxWetSetO (100, 2, v); }
+    event param11403 (float v) { fxWetSetO (100, 3, v); }
+    event param11404 (float v) { fxWetSetO (101, 0, v); }
+    event param11405 (float v) { fxWetSetO (101, 1, v); }
+    event param11406 (float v) { fxWetSetO (101, 2, v); }
+    event param11407 (float v) { fxWetSetO (101, 3, v); }
+    event param11408 (float v) { fxWetSetO (102, 0, v); }
+    event param11409 (float v) { fxWetSetO (102, 1, v); }
+    event param11410 (float v) { fxWetSetO (102, 2, v); }
+    event param11411 (float v) { fxWetSetO (102, 3, v); }
+    event param11412 (float v) { fxWetSetO (103, 0, v); }
+    event param11413 (float v) { fxWetSetO (103, 1, v); }
+    event param11414 (float v) { fxWetSetO (103, 2, v); }
+    event param11415 (float v) { fxWetSetO (103, 3, v); }
+    event param11416 (float v) { fxWetSetO (104, 0, v); }
+    event param11417 (float v) { fxWetSetO (104, 1, v); }
+    event param11418 (float v) { fxWetSetO (104, 2, v); }
+    event param11419 (float v) { fxWetSetO (104, 3, v); }
+    event param11420 (float v) { fxWetSetO (105, 0, v); }
+    event param11421 (float v) { fxWetSetO (105, 1, v); }
+    event param11422 (float v) { fxWetSetO (105, 2, v); }
+    event param11423 (float v) { fxWetSetO (105, 3, v); }
+    event param11424 (float v) { fxWetSetO (106, 0, v); }
+    event param11425 (float v) { fxWetSetO (106, 1, v); }
+    event param11426 (float v) { fxWetSetO (106, 2, v); }
+    event param11427 (float v) { fxWetSetO (106, 3, v); }
+    event param11428 (float v) { fxWetSetO (107, 0, v); }
+    event param11429 (float v) { fxWetSetO (107, 1, v); }
+    event param11430 (float v) { fxWetSetO (107, 2, v); }
+    event param11431 (float v) { fxWetSetO (107, 3, v); }
+    event param11432 (float v) { fxWetSetO (108, 0, v); }
+    event param11433 (float v) { fxWetSetO (108, 1, v); }
+    event param11434 (float v) { fxWetSetO (108, 2, v); }
+    event param11435 (float v) { fxWetSetO (108, 3, v); }
+    event param11436 (float v) { fxWetSetO (109, 0, v); }
+    event param11437 (float v) { fxWetSetO (109, 1, v); }
+    event param11438 (float v) { fxWetSetO (109, 2, v); }
+    event param11439 (float v) { fxWetSetO (109, 3, v); }
+    event param11440 (float v) { fxWetSetO (110, 0, v); }
+    event param11441 (float v) { fxWetSetO (110, 1, v); }
+    event param11442 (float v) { fxWetSetO (110, 2, v); }
+    event param11443 (float v) { fxWetSetO (110, 3, v); }
+    event param11444 (float v) { fxWetSetO (111, 0, v); }
+    event param11445 (float v) { fxWetSetO (111, 1, v); }
+    event param11446 (float v) { fxWetSetO (111, 2, v); }
+    event param11447 (float v) { fxWetSetO (111, 3, v); }
+    event param11448 (float v) { fxWetSetO (112, 0, v); }
+    event param11449 (float v) { fxWetSetO (112, 1, v); }
+    event param11450 (float v) { fxWetSetO (112, 2, v); }
+    event param11451 (float v) { fxWetSetO (112, 3, v); }
+    event param11452 (float v) { fxWetSetO (113, 0, v); }
+    event param11453 (float v) { fxWetSetO (113, 1, v); }
+    event param11454 (float v) { fxWetSetO (113, 2, v); }
+    event param11455 (float v) { fxWetSetO (113, 3, v); }
+    event param11456 (float v) { fxWetSetO (114, 0, v); }
+    event param11457 (float v) { fxWetSetO (114, 1, v); }
+    event param11458 (float v) { fxWetSetO (114, 2, v); }
+    event param11459 (float v) { fxWetSetO (114, 3, v); }
+    event param11460 (float v) { fxWetSetO (115, 0, v); }
+    event param11461 (float v) { fxWetSetO (115, 1, v); }
+    event param11462 (float v) { fxWetSetO (115, 2, v); }
+    event param11463 (float v) { fxWetSetO (115, 3, v); }
+    event param11464 (float v) { fxWetSetO (116, 0, v); }
+    event param11465 (float v) { fxWetSetO (116, 1, v); }
+    event param11466 (float v) { fxWetSetO (116, 2, v); }
+    event param11467 (float v) { fxWetSetO (116, 3, v); }
+    event param11468 (float v) { fxWetSetO (117, 0, v); }
+    event param11469 (float v) { fxWetSetO (117, 1, v); }
+    event param11470 (float v) { fxWetSetO (117, 2, v); }
+    event param11471 (float v) { fxWetSetO (117, 3, v); }
+    event param11472 (float v) { fxWetSetO (118, 0, v); }
+    event param11473 (float v) { fxWetSetO (118, 1, v); }
+    event param11474 (float v) { fxWetSetO (118, 2, v); }
+    event param11475 (float v) { fxWetSetO (118, 3, v); }
+    event param11476 (float v) { fxWetSetO (119, 0, v); }
+    event param11477 (float v) { fxWetSetO (119, 1, v); }
+    event param11478 (float v) { fxWetSetO (119, 2, v); }
+    event param11479 (float v) { fxWetSetO (119, 3, v); }
+    event param11480 (float v) { fxWetSetO (120, 0, v); }
+    event param11481 (float v) { fxWetSetO (120, 1, v); }
+    event param11482 (float v) { fxWetSetO (120, 2, v); }
+    event param11483 (float v) { fxWetSetO (120, 3, v); }
+    event param11484 (float v) { fxWetSetO (121, 0, v); }
+    event param11485 (float v) { fxWetSetO (121, 1, v); }
+    event param11486 (float v) { fxWetSetO (121, 2, v); }
+    event param11487 (float v) { fxWetSetO (121, 3, v); }
+    event param11488 (float v) { fxWetSetO (122, 0, v); }
+    event param11489 (float v) { fxWetSetO (122, 1, v); }
+    event param11490 (float v) { fxWetSetO (122, 2, v); }
+    event param11491 (float v) { fxWetSetO (122, 3, v); }
+    event param11492 (float v) { fxWetSetO (123, 0, v); }
+    event param11493 (float v) { fxWetSetO (123, 1, v); }
+    event param11494 (float v) { fxWetSetO (123, 2, v); }
+    event param11495 (float v) { fxWetSetO (123, 3, v); }
+    event param11496 (float v) { fxWetSetO (124, 0, v); }
+    event param11497 (float v) { fxWetSetO (124, 1, v); }
+    event param11498 (float v) { fxWetSetO (124, 2, v); }
+    event param11499 (float v) { fxWetSetO (124, 3, v); }
+    event param11500 (float v) { fxWetSetO (125, 0, v); }
+    event param11501 (float v) { fxWetSetO (125, 1, v); }
+    event param11502 (float v) { fxWetSetO (125, 2, v); }
+    event param11503 (float v) { fxWetSetO (125, 3, v); }
+    event param11504 (float v) { fxWetSetO (126, 0, v); }
+    event param11505 (float v) { fxWetSetO (126, 1, v); }
+    event param11506 (float v) { fxWetSetO (126, 2, v); }
+    event param11507 (float v) { fxWetSetO (126, 3, v); }
+    event param11508 (float v) { fxWetSetO (127, 0, v); }
+    event param11509 (float v) { fxWetSetO (127, 1, v); }
+    event param11510 (float v) { fxWetSetO (127, 2, v); }
+    event param11511 (float v) { fxWetSetO (127, 3, v); }
+    event param11512 (float v) { fxWetSetO (128, 0, v); }
+    event param11513 (float v) { fxWetSetO (128, 1, v); }
+    event param11514 (float v) { fxWetSetO (128, 2, v); }
+    event param11515 (float v) { fxWetSetO (128, 3, v); }
+    event param11516 (float v) { fxWetSetO (129, 0, v); }
+    event param11517 (float v) { fxWetSetO (129, 1, v); }
+    event param11518 (float v) { fxWetSetO (129, 2, v); }
+    event param11519 (float v) { fxWetSetO (129, 3, v); }
+    event param11520 (float v) { fxWetSetO (130, 0, v); }
+    event param11521 (float v) { fxWetSetO (130, 1, v); }
+    event param11522 (float v) { fxWetSetO (130, 2, v); }
+    event param11523 (float v) { fxWetSetO (130, 3, v); }
+    event param11524 (float v) { fxWetSetO (131, 0, v); }
+    event param11525 (float v) { fxWetSetO (131, 1, v); }
+    event param11526 (float v) { fxWetSetO (131, 2, v); }
+    event param11527 (float v) { fxWetSetO (131, 3, v); }
+    event param11528 (float v) { fxWetSetO (132, 0, v); }
+    event param11529 (float v) { fxWetSetO (132, 1, v); }
+    event param11530 (float v) { fxWetSetO (132, 2, v); }
+    event param11531 (float v) { fxWetSetO (132, 3, v); }
+    event param11532 (float v) { fxWetSetO (133, 0, v); }
+    event param11533 (float v) { fxWetSetO (133, 1, v); }
+    event param11534 (float v) { fxWetSetO (133, 2, v); }
+    event param11535 (float v) { fxWetSetO (133, 3, v); }
+    event param11536 (float v) { fxWetSetO (134, 0, v); }
+    event param11537 (float v) { fxWetSetO (134, 1, v); }
+    event param11538 (float v) { fxWetSetO (134, 2, v); }
+    event param11539 (float v) { fxWetSetO (134, 3, v); }
+    event param11540 (float v) { fxWetSetO (135, 0, v); }
+    event param11541 (float v) { fxWetSetO (135, 1, v); }
+    event param11542 (float v) { fxWetSetO (135, 2, v); }
+    event param11543 (float v) { fxWetSetO (135, 3, v); }
+    event param11544 (float v) { fxWetSetO (136, 0, v); }
+    event param11545 (float v) { fxWetSetO (136, 1, v); }
+    event param11546 (float v) { fxWetSetO (136, 2, v); }
+    event param11547 (float v) { fxWetSetO (136, 3, v); }
+    event param11548 (float v) { fxWetSetO (137, 0, v); }
+    event param11549 (float v) { fxWetSetO (137, 1, v); }
+    event param11550 (float v) { fxWetSetO (137, 2, v); }
+    event param11551 (float v) { fxWetSetO (137, 3, v); }
+    event param11552 (float v) { fxWetSetO (138, 0, v); }
+    event param11553 (float v) { fxWetSetO (138, 1, v); }
+    event param11554 (float v) { fxWetSetO (138, 2, v); }
+    event param11555 (float v) { fxWetSetO (138, 3, v); }
+    event param11556 (float v) { fxWetSetO (139, 0, v); }
+    event param11557 (float v) { fxWetSetO (139, 1, v); }
+    event param11558 (float v) { fxWetSetO (139, 2, v); }
+    event param11559 (float v) { fxWetSetO (139, 3, v); }
+    event param11560 (float v) { fxWetSetO (140, 0, v); }
+    event param11561 (float v) { fxWetSetO (140, 1, v); }
+    event param11562 (float v) { fxWetSetO (140, 2, v); }
+    event param11563 (float v) { fxWetSetO (140, 3, v); }
+    event param11564 (float v) { fxWetSetO (141, 0, v); }
+    event param11565 (float v) { fxWetSetO (141, 1, v); }
+    event param11566 (float v) { fxWetSetO (141, 2, v); }
+    event param11567 (float v) { fxWetSetO (141, 3, v); }
+    event param11568 (float v) { fxWetSetO (142, 0, v); }
+    event param11569 (float v) { fxWetSetO (142, 1, v); }
+    event param11570 (float v) { fxWetSetO (142, 2, v); }
+    event param11571 (float v) { fxWetSetO (142, 3, v); }
+    event param11572 (float v) { fxWetSetO (143, 0, v); }
+    event param11573 (float v) { fxWetSetO (143, 1, v); }
+    event param11574 (float v) { fxWetSetO (143, 2, v); }
+    event param11575 (float v) { fxWetSetO (143, 3, v); }
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -15281,6 +16435,9 @@ processor Eisenpuls_Synth
             fxF.at (s * 40 + i) = 0.0f;
 
         fxFcS.at (s) = 0.0f;   // FX-FENV2
+
+        for (int i = 0; i < 8; ++i)   // FX-WET
+            fxX.at (s * 8 + i) = 0.0f;
 
         for (int i = 0; i < 1024; ++i)   // FX-CLOUDSEED
             csV.at (s * 1024 + i) = 0.0f;
@@ -20356,6 +21513,78 @@ processor Eisenpuls_Synth
     }
 
     // One slot: dry/wet mix of the selected effect; empty and bypassed slots pass the signal through untouched
+    // FX-WET: wet signal post processing of every slot (P7..P10: Low Cut, High Cut, Width, Sat)
+    void fxWetSet (int s, int k, float v)
+    {
+        int q = s * 8;
+        fxQ.at (q + k) = v;
+        float sr = float (processor.frequency);
+        fxQ.at (q + 4) = 1.0f - float (exp (-6.283185307f * 20.0f * float (pow (50.0f, fxQ.at (q))) / sr));
+        fxQ.at (q + 5) = 1.0f - float (exp (-6.283185307f * 1500.0f * float (pow (13.3333f, fxQ.at (q + 1))) / sr));
+        bool act = fxQ.at (q) > 0.002f || fxQ.at (q + 1) < 0.998f || abs (fxQ.at (q + 2) - 0.5f) > 0.002f || fxQ.at (q + 3) > 0.002f;
+        fxQ.at (q + 6) = act ? 1.0f : 0.0f;
+    }
+
+    // the same for an oscillator rack slot g (48 + 16 * osc + slot): written to the copies of all 8 voices
+    void fxWetSetO (int g, int k, float v)
+    {
+        for (int vi = 0; vi < 8; ++vi)
+            fxWetSet (48 + vi * 96 + (g - 48), k, v);
+    }
+
+    float<2> fxWet (int s, float<2> y)
+    {
+        int q = s * 8;
+
+        if (fxQ.at (q + 6) < 0.5f)
+            return y;
+
+        float l = y[0];
+        float r = y[1];
+
+        if (fxQ.at (q) > 0.002f)
+        {
+            float c = fxQ.at (q + 4);
+            fxX.at (q)     += c * (l - fxX.at (q));
+            fxX.at (q + 1) += c * (r - fxX.at (q + 1));
+            l -= fxX.at (q);
+            r -= fxX.at (q + 1);
+        }
+
+        if (fxQ.at (q + 1) < 0.998f)
+        {
+            float c = fxQ.at (q + 5);
+            fxX.at (q + 2) += c * (l - fxX.at (q + 2));
+            fxX.at (q + 3) += c * (r - fxX.at (q + 3));
+            fxX.at (q + 4) += c * (fxX.at (q + 2) - fxX.at (q + 4));
+            fxX.at (q + 5) += c * (fxX.at (q + 3) - fxX.at (q + 5));
+            l = fxX.at (q + 4);
+            r = fxX.at (q + 5);
+        }
+
+        float sa = fxQ.at (q + 3);
+
+        if (sa > 0.002f)
+        {
+            float gs = 1.0f + 6.0f * sa;
+            float nr = 1.0f / sqrt (gs);
+            l = float (tanh (l * gs)) * nr;
+            r = float (tanh (r * gs)) * nr;
+        }
+
+        float wd = fxQ.at (q + 2);
+
+        if (abs (wd - 0.5f) > 0.002f)
+        {
+            float md = (l + r) * 0.5f;
+            float sd = (l - r) * 0.5f * (wd * 2.0f);
+            l = md + sd;
+            r = md - sd;
+        }
+
+        return float<2> (l, r);
+    }
+
     float<2> fxRunSlot (int s, float<2> x)
     {
         int ty = fxType.at (s);
@@ -20437,6 +21666,8 @@ processor Eisenpuls_Synth
             y = y * (1.0f / (1.0f + en * 12.0f));
         }
 
+        y = fxWet (s, y);   // FX-WET
+
         float mix = clamp (fxMix.at (s), 0.0f, 1.0f);
         float<2> res = x + (y - x) * mix;
 
@@ -20467,6 +21698,8 @@ processor Eisenpuls_Synth
             fxMix.at (s)   = 1.0f;
             fxMode.at (s)  = 0;
             fxDirty.at (s) = true;
+            fxQ.at (s * 8 + 1) = 1.0f;   // FX-WET: defaults High Cut open, Width 0.5 (unchanged)
+            fxQ.at (s * 8 + 2) = 0.5f;
 
             for (int k = 0; k < 6; ++k)
                 fxP.at (s * 6 + k) = 0.5f;
@@ -20482,6 +21715,8 @@ processor Eisenpuls_Synth
             fxSync.at (s)  = 0;
             fxEnvSus.at (s) = 1.0f;
             fxEnvRel.at (s) = 0.3f;
+            fxQ.at (s * 8 + 1) = 1.0f;   // FX-WET: defaults High Cut open, Width 0.5 (unchanged)
+            fxQ.at (s * 8 + 2) = 0.5f;
 
             for (int k = 0; k < 6; ++k)
                 fxP.at (s * 6 + k) = 0.5f;
