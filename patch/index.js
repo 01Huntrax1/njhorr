@@ -3223,6 +3223,9 @@ const FX_TYPES = [
     // FX-YAYBAHAR: string -> two springs -> two drum membranes (FX type 33)
     { n: "Yaybahar", mix: 0.6, modes: ["Classic", "Stereo", "Deep", "Classic Key", "Stereo Key", "Deep Key"],
       p: [["Pitch", fxHz(40, 800), 0.4], ["Spring", fxMs(20, 250), 0.5], ["Decay", fxPct, 0.5], ["Disper", fxPct, 0.5], ["Membran", fxHz(40, 250), 0.35], ["Damp", fxHz(500, 8000), 0.6]] },
+    // FX-SHTAB: distortion with the transfer curve of a shaper table frame (FX type 34)
+    { n: "Shaper Table", mix: 1, modes: ["Clip", "Fold", "Wrap", "Rect"],
+      p: [["Drive", fxLin(0, 36, 1, "dB"), 0.3], ["Pos", fxPct, 0], ["Table", fxLin(1, 6, 0, ""), 0], ["Bias", fxLin(-100, 100, 0, "%"), 0.5], ["Tone", fxHz(500, 20000), 1], ["Level", fxLin(-24, 12, 1, "dB"), 0.667]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

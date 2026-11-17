@@ -434,6 +434,26 @@ static int fxFilterShape (int mode)
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1)); 
                     stroke (p); label ("INPUT -> OUTPUT");
                 }
+                else if (ty == 34)   // Shaper Table: transfer curve = frame of the shaper table of the chosen oscillator (FX-SHTAB)
+                {
+                    const int osc = juce::jlimit (0, 5, juce::roundToInt (P (2) * 5.0));
+                    float tbl[512];
+                    auto* sl = im.mem.get (SoundMemory::ShaperTable, osc);
+                    oscmodel::tblFrame (sl ? &sl->data : nullptr, false, (float) P (1), tbl);
+                    const double drive = std::pow (10.0, P (0) * 36.0 / 20.0), bias = P (3) - 0.5;
+                    auto read = [&] (double u) { double x = juce::jlimit (0.0, 1.0, u) * 511.0; int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511); return (double) (tbl[i0] + (tbl[i1] - tbl[i0]) * (float) (x - i0)); };
+                    auto shape = [&] (double v)
+                    {
+                        if (mode == 0) return read (juce::jlimit (-1.0, 1.0, v) * 0.5 + 0.5);
+                        if (mode == 1) { double q = v * 0.25 + 0.25; q -= std::floor (q); return read ((1.0 - 4.0 * std::abs (q - 0.5)) * 0.5 + 0.5); }
+                        if (mode == 2) { double q = (v + 1.0) * 0.5; q -= std::floor (q); return read (q); }
+                        const double h = read (0.5 + 0.5 * juce::jmin (std::abs (v), 1.0)); return h;
+                    };
+                    auto p = curve ([&] (double t) { const double x = t * 2 - 1; return 0.5 + 0.5 * juce::jlimit (-1.0, 1.0, shape (x * drive + bias)); });
+                    g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
+                    g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1));
+                    stroke (p); label ("TABLE OSC " + juce::String (osc + 1) + "   INPUT -> OUTPUT");
+                }
                 else if (ty == 14)   // Saturator: transfer curve of the model
                 {
                     const double drive = std::pow (10.0, P (0) * 36.0 / 20.0), bias = (P (2) - 0.5);

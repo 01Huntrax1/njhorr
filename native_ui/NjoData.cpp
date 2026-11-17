@@ -114,7 +114,7 @@ namespace njo
     {
         switch (type)
         {
-            case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: return 0;
+            case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: case 34: return 0;
             case 17: case 23: case 24: case 25: case 26: return 1;
             case 9: case 10: case 13: case 18: case 27: return 2;
             case 11: return 3;
