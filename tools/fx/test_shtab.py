@@ -33,7 +33,7 @@ d01 = np.sqrt(np.mean((p0[10000:, 0] - p1[10000:, 0]) ** 2)); d12 = np.sqrt(np.m
 check("Pos changes the curve (frames differ)", d01 > 0.01 and d12 > 0.01, "%.3f %.3f" % (d01, d12))
 modes = [run(m, 12.0, 0.45, bias=0.65, src="sine 0.5 1000", tag="mm%d" % m) for m in range(4)]
 check("the four modes sound different", all(np.sqrt(np.mean((modes[i][10000:, 0] - modes[j][10000:, 0]) ** 2)) > 0.01 for i in range(4) for j in range(i + 1, 4)))
-lv0 = run(0, 6.0, 0.0, level=0.0, tag="l0"); lv1 = run(0, 6.0, 0.0, level=1.0, tag="l1")
+lv0 = run(0, 6.0, 0.0, level=0.0, src="sine 0.05 1000", tag="l0"); lv1 = run(0, 6.0, 0.0, level=1.0, src="sine 0.05 1000", tag="l1")
 check("Level spans -24 dB .. +12 dB", 20 * math.log10(rms(lv1) / rms(lv0)) > 30, "%.1f dB" % (20 * math.log10(rms(lv1) / rms(lv0))))
 tn = run(0, 30.0, 0.0, tone=0.0, tag="t0")
 check("Tone low-passes (6 kHz band lower)", band(tn, 5000, 12000) < 0.3 * band(hi, 5000, 12000))

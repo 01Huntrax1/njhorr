@@ -1,6 +1,7 @@
 // Eurorack rack of Njohrr Modular: 20 module slots shown as panels; the selected module is edited on the right.
 // Parameters (tools/modular/build_euro.py): slot m, id = kBase + kStride * m + k: 0 type, 1..8 knobs, 9 mode, 10..13 input source, 14..17 input gain, 18 FX type.
 #include "../NjoPages.h"
+#include "../NjoFxEx.h"
 #include "../NjoTheme.h"
 #include "../NjoEuro.h"
 
@@ -93,6 +94,17 @@ namespace njo
                 if (! md.knobs[k][0]) continue;
                 auto cell = juce::Rectangle<int> (kn.getX() + (k % 4) * (kn.getWidth() / 4), kn.getY() + (k / 4) * 64, kn.getWidth() / 4, 62);
                 add (makeWidget (ctx, pidOf (m, 1 + k), true), cell)->setLabelOverride (md.knobs[k]);
+            }
+            if (ty == 15)   // FX-EX: the four effect specific knobs of the effect in rack slot 10 + m
+            {
+                auto er = r.removeFromTop (64);
+                const int fty = ctx.fxSlotTypes()[10 + m];
+                for (int k = 0; k < 4; ++k)
+                {
+                    auto* w = add (makeWidget (ctx, fxExId (10 + m, k), true), juce::Rectangle<int> (er.getX() + k * (er.getWidth() / 4), er.getY(), er.getWidth() / 4, 62));
+                    w->setLabelOverride (fxExName (fxExTools (fty)[k]));
+                    w->setValueTextOverride ([this, m, k] (float v) { return fxExText (fxExTools (ctx.fxSlotTypes()[10 + m])[k], v); });
+                }
             }
             if (ty == 15)   // FX-WET: Low Cut, High Cut, Width, Sat of the FX module (its effect runs in rack slot 10 + m)
             {

@@ -2150,6 +2150,584 @@ processor Eisenpuls_Synth
     input event float param11573 [[ name: "OSC 6 FX 16 High Cut", min: 0.0, max: 1.0, init: 1.0 ]];   // FX-WET
     input event float param11574 [[ name: "OSC 6 FX 16 Width", min: 0.0, max: 1.0, init: 0.5 ]];   // FX-WET
     input event float param11575 [[ name: "OSC 6 FX 16 Sat", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-WET
+    input event float param11600 [[ name: "Out Limiter", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MASTER-OUT
+    input event float param11601 [[ name: "Out Ceiling", min: -6.0, max: 0.0, init: -0.3 ]];
+    input event float param11700 [[ name: "Main FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11701 [[ name: "Main FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11702 [[ name: "Main FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11703 [[ name: "Main FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11704 [[ name: "Main FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11705 [[ name: "Main FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11706 [[ name: "Main FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11707 [[ name: "Main FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11708 [[ name: "Main FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11709 [[ name: "Main FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11710 [[ name: "Main FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11711 [[ name: "Main FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11712 [[ name: "Main FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11713 [[ name: "Main FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11714 [[ name: "Main FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11715 [[ name: "Main FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11716 [[ name: "Main FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11717 [[ name: "Main FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11718 [[ name: "Main FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11719 [[ name: "Main FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11720 [[ name: "Main FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11721 [[ name: "Main FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11722 [[ name: "Main FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11723 [[ name: "Main FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11724 [[ name: "Main FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11725 [[ name: "Main FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11726 [[ name: "Main FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11727 [[ name: "Main FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11728 [[ name: "Main FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11729 [[ name: "Main FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11730 [[ name: "Main FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11731 [[ name: "Main FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11732 [[ name: "Main FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11733 [[ name: "Main FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11734 [[ name: "Main FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11735 [[ name: "Main FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11736 [[ name: "Main FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11737 [[ name: "Main FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11738 [[ name: "Main FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11739 [[ name: "Main FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11740 [[ name: "Bus 1 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11741 [[ name: "Bus 1 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11742 [[ name: "Bus 1 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11743 [[ name: "Bus 1 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11744 [[ name: "Bus 1 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11745 [[ name: "Bus 1 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11746 [[ name: "Bus 1 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11747 [[ name: "Bus 1 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11748 [[ name: "Bus 1 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11749 [[ name: "Bus 1 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11750 [[ name: "Bus 1 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11751 [[ name: "Bus 1 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11752 [[ name: "Bus 1 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11753 [[ name: "Bus 1 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11754 [[ name: "Bus 1 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11755 [[ name: "Bus 1 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11756 [[ name: "Bus 1 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11757 [[ name: "Bus 1 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11758 [[ name: "Bus 1 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11759 [[ name: "Bus 1 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11760 [[ name: "Bus 1 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11761 [[ name: "Bus 1 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11762 [[ name: "Bus 1 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11763 [[ name: "Bus 1 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11764 [[ name: "Bus 1 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11765 [[ name: "Bus 1 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11766 [[ name: "Bus 1 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11767 [[ name: "Bus 1 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11768 [[ name: "Bus 1 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11769 [[ name: "Bus 1 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11770 [[ name: "Bus 1 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11771 [[ name: "Bus 1 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11772 [[ name: "Bus 1 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11773 [[ name: "Bus 1 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11774 [[ name: "Bus 1 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11775 [[ name: "Bus 1 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11776 [[ name: "Bus 1 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11777 [[ name: "Bus 1 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11778 [[ name: "Bus 1 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11779 [[ name: "Bus 1 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11780 [[ name: "Bus 2 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11781 [[ name: "Bus 2 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11782 [[ name: "Bus 2 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11783 [[ name: "Bus 2 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11784 [[ name: "Bus 2 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11785 [[ name: "Bus 2 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11786 [[ name: "Bus 2 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11787 [[ name: "Bus 2 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11788 [[ name: "Bus 2 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11789 [[ name: "Bus 2 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11790 [[ name: "Bus 2 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11791 [[ name: "Bus 2 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11792 [[ name: "Bus 2 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11793 [[ name: "Bus 2 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11794 [[ name: "Bus 2 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11795 [[ name: "Bus 2 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11796 [[ name: "Bus 2 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11797 [[ name: "Bus 2 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11798 [[ name: "Bus 2 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11799 [[ name: "Bus 2 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11800 [[ name: "Bus 2 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11801 [[ name: "Bus 2 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11802 [[ name: "Bus 2 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11803 [[ name: "Bus 2 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11804 [[ name: "Bus 2 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11805 [[ name: "Bus 2 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11806 [[ name: "Bus 2 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11807 [[ name: "Bus 2 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11808 [[ name: "Bus 2 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11809 [[ name: "Bus 2 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11810 [[ name: "Bus 2 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11811 [[ name: "Bus 2 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11812 [[ name: "Bus 2 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11813 [[ name: "Bus 2 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11814 [[ name: "Bus 2 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11815 [[ name: "Bus 2 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11816 [[ name: "Bus 2 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11817 [[ name: "Bus 2 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11818 [[ name: "Bus 2 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11819 [[ name: "Bus 2 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11820 [[ name: "Main FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11821 [[ name: "Main FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11822 [[ name: "Main FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11823 [[ name: "Main FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11824 [[ name: "Main FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11825 [[ name: "Main FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11826 [[ name: "Main FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11827 [[ name: "Main FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11828 [[ name: "Main FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11829 [[ name: "Main FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11830 [[ name: "Main FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11831 [[ name: "Main FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11832 [[ name: "Main FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11833 [[ name: "Main FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11834 [[ name: "Main FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11835 [[ name: "Main FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11836 [[ name: "Main FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11837 [[ name: "Main FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11838 [[ name: "Main FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11839 [[ name: "Main FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11840 [[ name: "Main FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11841 [[ name: "Main FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11842 [[ name: "Main FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11843 [[ name: "Main FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11844 [[ name: "Bus 1 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11845 [[ name: "Bus 1 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11846 [[ name: "Bus 1 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11847 [[ name: "Bus 1 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11848 [[ name: "Bus 1 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11849 [[ name: "Bus 1 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11850 [[ name: "Bus 1 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11851 [[ name: "Bus 1 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11852 [[ name: "Bus 1 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11853 [[ name: "Bus 1 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11854 [[ name: "Bus 1 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11855 [[ name: "Bus 1 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11856 [[ name: "Bus 1 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11857 [[ name: "Bus 1 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11858 [[ name: "Bus 1 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11859 [[ name: "Bus 1 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11860 [[ name: "Bus 1 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11861 [[ name: "Bus 1 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11862 [[ name: "Bus 1 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11863 [[ name: "Bus 1 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11864 [[ name: "Bus 1 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11865 [[ name: "Bus 1 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11866 [[ name: "Bus 1 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11867 [[ name: "Bus 1 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11868 [[ name: "Bus 2 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11869 [[ name: "Bus 2 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11870 [[ name: "Bus 2 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11871 [[ name: "Bus 2 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11872 [[ name: "Bus 2 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11873 [[ name: "Bus 2 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11874 [[ name: "Bus 2 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11875 [[ name: "Bus 2 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11876 [[ name: "Bus 2 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11877 [[ name: "Bus 2 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11878 [[ name: "Bus 2 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11879 [[ name: "Bus 2 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11880 [[ name: "Bus 2 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11881 [[ name: "Bus 2 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11882 [[ name: "Bus 2 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11883 [[ name: "Bus 2 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11884 [[ name: "Bus 2 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11885 [[ name: "Bus 2 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11886 [[ name: "Bus 2 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11887 [[ name: "Bus 2 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11888 [[ name: "Bus 2 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11889 [[ name: "Bus 2 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11890 [[ name: "Bus 2 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11891 [[ name: "Bus 2 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11892 [[ name: "OSC 1 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11893 [[ name: "OSC 1 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11894 [[ name: "OSC 1 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11895 [[ name: "OSC 1 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11896 [[ name: "OSC 1 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11897 [[ name: "OSC 1 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11898 [[ name: "OSC 1 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11899 [[ name: "OSC 1 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11900 [[ name: "OSC 1 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11901 [[ name: "OSC 1 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11902 [[ name: "OSC 1 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11903 [[ name: "OSC 1 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11904 [[ name: "OSC 1 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11905 [[ name: "OSC 1 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11906 [[ name: "OSC 1 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11907 [[ name: "OSC 1 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11908 [[ name: "OSC 1 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11909 [[ name: "OSC 1 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11910 [[ name: "OSC 1 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11911 [[ name: "OSC 1 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11912 [[ name: "OSC 1 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11913 [[ name: "OSC 1 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11914 [[ name: "OSC 1 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11915 [[ name: "OSC 1 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11916 [[ name: "OSC 1 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11917 [[ name: "OSC 1 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11918 [[ name: "OSC 1 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11919 [[ name: "OSC 1 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11920 [[ name: "OSC 1 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11921 [[ name: "OSC 1 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11922 [[ name: "OSC 1 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11923 [[ name: "OSC 1 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11924 [[ name: "OSC 1 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11925 [[ name: "OSC 1 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11926 [[ name: "OSC 1 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11927 [[ name: "OSC 1 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11928 [[ name: "OSC 1 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11929 [[ name: "OSC 1 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11930 [[ name: "OSC 1 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11931 [[ name: "OSC 1 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11932 [[ name: "OSC 1 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11933 [[ name: "OSC 1 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11934 [[ name: "OSC 1 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11935 [[ name: "OSC 1 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11936 [[ name: "OSC 1 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11937 [[ name: "OSC 1 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11938 [[ name: "OSC 1 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11939 [[ name: "OSC 1 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11940 [[ name: "OSC 1 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11941 [[ name: "OSC 1 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11942 [[ name: "OSC 1 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11943 [[ name: "OSC 1 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11944 [[ name: "OSC 1 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11945 [[ name: "OSC 1 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11946 [[ name: "OSC 1 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11947 [[ name: "OSC 1 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11948 [[ name: "OSC 1 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11949 [[ name: "OSC 1 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11950 [[ name: "OSC 1 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11951 [[ name: "OSC 1 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11952 [[ name: "OSC 1 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11953 [[ name: "OSC 1 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11954 [[ name: "OSC 1 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11955 [[ name: "OSC 1 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11956 [[ name: "OSC 2 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11957 [[ name: "OSC 2 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11958 [[ name: "OSC 2 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11959 [[ name: "OSC 2 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11960 [[ name: "OSC 2 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11961 [[ name: "OSC 2 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11962 [[ name: "OSC 2 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11963 [[ name: "OSC 2 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11964 [[ name: "OSC 2 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11965 [[ name: "OSC 2 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11966 [[ name: "OSC 2 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11967 [[ name: "OSC 2 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11968 [[ name: "OSC 2 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11969 [[ name: "OSC 2 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11970 [[ name: "OSC 2 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11971 [[ name: "OSC 2 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11972 [[ name: "OSC 2 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11973 [[ name: "OSC 2 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11974 [[ name: "OSC 2 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11975 [[ name: "OSC 2 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11976 [[ name: "OSC 2 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11977 [[ name: "OSC 2 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11978 [[ name: "OSC 2 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11979 [[ name: "OSC 2 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11980 [[ name: "OSC 2 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11981 [[ name: "OSC 2 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11982 [[ name: "OSC 2 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11983 [[ name: "OSC 2 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11984 [[ name: "OSC 2 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11985 [[ name: "OSC 2 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11986 [[ name: "OSC 2 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11987 [[ name: "OSC 2 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11988 [[ name: "OSC 2 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11989 [[ name: "OSC 2 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11990 [[ name: "OSC 2 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11991 [[ name: "OSC 2 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11992 [[ name: "OSC 2 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11993 [[ name: "OSC 2 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11994 [[ name: "OSC 2 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11995 [[ name: "OSC 2 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11996 [[ name: "OSC 2 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11997 [[ name: "OSC 2 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11998 [[ name: "OSC 2 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param11999 [[ name: "OSC 2 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12000 [[ name: "OSC 2 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12001 [[ name: "OSC 2 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12002 [[ name: "OSC 2 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12003 [[ name: "OSC 2 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12004 [[ name: "OSC 2 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12005 [[ name: "OSC 2 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12006 [[ name: "OSC 2 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12007 [[ name: "OSC 2 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12008 [[ name: "OSC 2 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12009 [[ name: "OSC 2 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12010 [[ name: "OSC 2 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12011 [[ name: "OSC 2 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12012 [[ name: "OSC 2 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12013 [[ name: "OSC 2 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12014 [[ name: "OSC 2 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12015 [[ name: "OSC 2 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12016 [[ name: "OSC 2 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12017 [[ name: "OSC 2 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12018 [[ name: "OSC 2 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12019 [[ name: "OSC 2 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12020 [[ name: "OSC 3 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12021 [[ name: "OSC 3 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12022 [[ name: "OSC 3 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12023 [[ name: "OSC 3 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12024 [[ name: "OSC 3 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12025 [[ name: "OSC 3 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12026 [[ name: "OSC 3 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12027 [[ name: "OSC 3 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12028 [[ name: "OSC 3 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12029 [[ name: "OSC 3 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12030 [[ name: "OSC 3 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12031 [[ name: "OSC 3 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12032 [[ name: "OSC 3 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12033 [[ name: "OSC 3 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12034 [[ name: "OSC 3 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12035 [[ name: "OSC 3 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12036 [[ name: "OSC 3 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12037 [[ name: "OSC 3 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12038 [[ name: "OSC 3 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12039 [[ name: "OSC 3 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12040 [[ name: "OSC 3 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12041 [[ name: "OSC 3 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12042 [[ name: "OSC 3 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12043 [[ name: "OSC 3 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12044 [[ name: "OSC 3 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12045 [[ name: "OSC 3 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12046 [[ name: "OSC 3 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12047 [[ name: "OSC 3 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12048 [[ name: "OSC 3 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12049 [[ name: "OSC 3 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12050 [[ name: "OSC 3 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12051 [[ name: "OSC 3 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12052 [[ name: "OSC 3 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12053 [[ name: "OSC 3 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12054 [[ name: "OSC 3 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12055 [[ name: "OSC 3 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12056 [[ name: "OSC 3 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12057 [[ name: "OSC 3 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12058 [[ name: "OSC 3 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12059 [[ name: "OSC 3 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12060 [[ name: "OSC 3 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12061 [[ name: "OSC 3 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12062 [[ name: "OSC 3 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12063 [[ name: "OSC 3 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12064 [[ name: "OSC 3 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12065 [[ name: "OSC 3 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12066 [[ name: "OSC 3 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12067 [[ name: "OSC 3 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12068 [[ name: "OSC 3 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12069 [[ name: "OSC 3 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12070 [[ name: "OSC 3 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12071 [[ name: "OSC 3 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12072 [[ name: "OSC 3 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12073 [[ name: "OSC 3 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12074 [[ name: "OSC 3 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12075 [[ name: "OSC 3 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12076 [[ name: "OSC 3 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12077 [[ name: "OSC 3 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12078 [[ name: "OSC 3 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12079 [[ name: "OSC 3 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12080 [[ name: "OSC 3 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12081 [[ name: "OSC 3 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12082 [[ name: "OSC 3 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12083 [[ name: "OSC 3 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12084 [[ name: "OSC 4 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12085 [[ name: "OSC 4 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12086 [[ name: "OSC 4 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12087 [[ name: "OSC 4 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12088 [[ name: "OSC 4 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12089 [[ name: "OSC 4 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12090 [[ name: "OSC 4 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12091 [[ name: "OSC 4 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12092 [[ name: "OSC 4 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12093 [[ name: "OSC 4 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12094 [[ name: "OSC 4 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12095 [[ name: "OSC 4 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12096 [[ name: "OSC 4 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12097 [[ name: "OSC 4 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12098 [[ name: "OSC 4 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12099 [[ name: "OSC 4 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12100 [[ name: "OSC 4 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12101 [[ name: "OSC 4 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12102 [[ name: "OSC 4 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12103 [[ name: "OSC 4 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12104 [[ name: "OSC 4 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12105 [[ name: "OSC 4 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12106 [[ name: "OSC 4 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12107 [[ name: "OSC 4 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12108 [[ name: "OSC 4 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12109 [[ name: "OSC 4 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12110 [[ name: "OSC 4 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12111 [[ name: "OSC 4 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12112 [[ name: "OSC 4 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12113 [[ name: "OSC 4 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12114 [[ name: "OSC 4 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12115 [[ name: "OSC 4 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12116 [[ name: "OSC 4 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12117 [[ name: "OSC 4 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12118 [[ name: "OSC 4 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12119 [[ name: "OSC 4 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12120 [[ name: "OSC 4 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12121 [[ name: "OSC 4 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12122 [[ name: "OSC 4 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12123 [[ name: "OSC 4 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12124 [[ name: "OSC 4 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12125 [[ name: "OSC 4 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12126 [[ name: "OSC 4 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12127 [[ name: "OSC 4 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12128 [[ name: "OSC 4 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12129 [[ name: "OSC 4 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12130 [[ name: "OSC 4 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12131 [[ name: "OSC 4 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12132 [[ name: "OSC 4 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12133 [[ name: "OSC 4 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12134 [[ name: "OSC 4 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12135 [[ name: "OSC 4 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12136 [[ name: "OSC 4 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12137 [[ name: "OSC 4 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12138 [[ name: "OSC 4 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12139 [[ name: "OSC 4 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12140 [[ name: "OSC 4 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12141 [[ name: "OSC 4 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12142 [[ name: "OSC 4 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12143 [[ name: "OSC 4 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12144 [[ name: "OSC 4 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12145 [[ name: "OSC 4 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12146 [[ name: "OSC 4 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12147 [[ name: "OSC 4 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12148 [[ name: "OSC 5 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12149 [[ name: "OSC 5 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12150 [[ name: "OSC 5 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12151 [[ name: "OSC 5 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12152 [[ name: "OSC 5 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12153 [[ name: "OSC 5 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12154 [[ name: "OSC 5 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12155 [[ name: "OSC 5 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12156 [[ name: "OSC 5 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12157 [[ name: "OSC 5 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12158 [[ name: "OSC 5 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12159 [[ name: "OSC 5 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12160 [[ name: "OSC 5 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12161 [[ name: "OSC 5 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12162 [[ name: "OSC 5 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12163 [[ name: "OSC 5 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12164 [[ name: "OSC 5 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12165 [[ name: "OSC 5 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12166 [[ name: "OSC 5 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12167 [[ name: "OSC 5 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12168 [[ name: "OSC 5 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12169 [[ name: "OSC 5 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12170 [[ name: "OSC 5 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12171 [[ name: "OSC 5 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12172 [[ name: "OSC 5 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12173 [[ name: "OSC 5 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12174 [[ name: "OSC 5 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12175 [[ name: "OSC 5 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12176 [[ name: "OSC 5 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12177 [[ name: "OSC 5 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12178 [[ name: "OSC 5 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12179 [[ name: "OSC 5 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12180 [[ name: "OSC 5 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12181 [[ name: "OSC 5 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12182 [[ name: "OSC 5 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12183 [[ name: "OSC 5 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12184 [[ name: "OSC 5 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12185 [[ name: "OSC 5 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12186 [[ name: "OSC 5 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12187 [[ name: "OSC 5 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12188 [[ name: "OSC 5 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12189 [[ name: "OSC 5 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12190 [[ name: "OSC 5 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12191 [[ name: "OSC 5 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12192 [[ name: "OSC 5 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12193 [[ name: "OSC 5 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12194 [[ name: "OSC 5 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12195 [[ name: "OSC 5 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12196 [[ name: "OSC 5 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12197 [[ name: "OSC 5 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12198 [[ name: "OSC 5 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12199 [[ name: "OSC 5 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12200 [[ name: "OSC 5 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12201 [[ name: "OSC 5 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12202 [[ name: "OSC 5 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12203 [[ name: "OSC 5 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12204 [[ name: "OSC 5 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12205 [[ name: "OSC 5 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12206 [[ name: "OSC 5 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12207 [[ name: "OSC 5 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12208 [[ name: "OSC 5 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12209 [[ name: "OSC 5 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12210 [[ name: "OSC 5 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12211 [[ name: "OSC 5 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12212 [[ name: "OSC 6 FX 1 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12213 [[ name: "OSC 6 FX 1 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12214 [[ name: "OSC 6 FX 1 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12215 [[ name: "OSC 6 FX 1 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12216 [[ name: "OSC 6 FX 2 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12217 [[ name: "OSC 6 FX 2 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12218 [[ name: "OSC 6 FX 2 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12219 [[ name: "OSC 6 FX 2 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12220 [[ name: "OSC 6 FX 3 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12221 [[ name: "OSC 6 FX 3 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12222 [[ name: "OSC 6 FX 3 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12223 [[ name: "OSC 6 FX 3 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12224 [[ name: "OSC 6 FX 4 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12225 [[ name: "OSC 6 FX 4 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12226 [[ name: "OSC 6 FX 4 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12227 [[ name: "OSC 6 FX 4 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12228 [[ name: "OSC 6 FX 5 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12229 [[ name: "OSC 6 FX 5 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12230 [[ name: "OSC 6 FX 5 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12231 [[ name: "OSC 6 FX 5 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12232 [[ name: "OSC 6 FX 6 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12233 [[ name: "OSC 6 FX 6 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12234 [[ name: "OSC 6 FX 6 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12235 [[ name: "OSC 6 FX 6 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12236 [[ name: "OSC 6 FX 7 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12237 [[ name: "OSC 6 FX 7 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12238 [[ name: "OSC 6 FX 7 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12239 [[ name: "OSC 6 FX 7 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12240 [[ name: "OSC 6 FX 8 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12241 [[ name: "OSC 6 FX 8 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12242 [[ name: "OSC 6 FX 8 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12243 [[ name: "OSC 6 FX 8 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12244 [[ name: "OSC 6 FX 9 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12245 [[ name: "OSC 6 FX 9 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12246 [[ name: "OSC 6 FX 9 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12247 [[ name: "OSC 6 FX 9 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12248 [[ name: "OSC 6 FX 10 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12249 [[ name: "OSC 6 FX 10 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12250 [[ name: "OSC 6 FX 10 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12251 [[ name: "OSC 6 FX 10 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12252 [[ name: "OSC 6 FX 11 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12253 [[ name: "OSC 6 FX 11 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12254 [[ name: "OSC 6 FX 11 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12255 [[ name: "OSC 6 FX 11 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12256 [[ name: "OSC 6 FX 12 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12257 [[ name: "OSC 6 FX 12 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12258 [[ name: "OSC 6 FX 12 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12259 [[ name: "OSC 6 FX 12 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12260 [[ name: "OSC 6 FX 13 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12261 [[ name: "OSC 6 FX 13 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12262 [[ name: "OSC 6 FX 13 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12263 [[ name: "OSC 6 FX 13 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12264 [[ name: "OSC 6 FX 14 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12265 [[ name: "OSC 6 FX 14 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12266 [[ name: "OSC 6 FX 14 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12267 [[ name: "OSC 6 FX 14 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12268 [[ name: "OSC 6 FX 15 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12269 [[ name: "OSC 6 FX 15 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12270 [[ name: "OSC 6 FX 15 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12271 [[ name: "OSC 6 FX 15 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12272 [[ name: "OSC 6 FX 16 Ext 1", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12273 [[ name: "OSC 6 FX 16 Ext 2", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12274 [[ name: "OSC 6 FX 16 Ext 3", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
+    input event float param12275 [[ name: "OSC 6 FX 16 Ext 4", min: 0.0, max: 1.0, init: 0.0 ]];   // FX-EX
     // EURO
     input event float param10000 [[ name: "Euro M1 Type", min: 0.0, max: 17.0, init: 0.0, step: 1.0, automatable: false ]];
     input event float param10001 [[ name: "Euro M1 Knob 1", min: 0.0, max: 1.0, init: 0.5, step: 0.001, automatable: false ]];
@@ -7910,6 +8488,11 @@ processor Eisenpuls_Synth
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
     float[8704] fxQ;   // FX-WET: per slot 8 floats: low cut, high cut, width, sat, low cut coefficient, high cut coefficient, active flag
     float[8704] fxX;   // FX-WET: filter states (8 per slot)
+    float[8704] fxE;    // FX-EX: per slot 8 floats: 4 values, active flag, dirty flag, type of the last coefficient calculation
+    float[8704] fxEc;   // FX-EX: coefficients per slot (4 per tool, duck release, pan increment, shelf coefficients)
+    float[17408] fxW;   // FX-EX: filter / envelope states (16 per slot)
+    float[1572864] fxPd; // FX-EX: pre delay lines of the 48 rack slots (2 x 16384)
+    const int[160] fxExTab = (0, 0, 0, 0, 1, 2, 3, 11, 1, 2, 3, 11, 4, 5, 6, 8, 9, 10, 7, 8, 9, 10, 7, 8, 9, 10, 7, 8, 9, 10, 7, 8, 4, 5, 6, 8, 3, 7, 8, 11, 3, 7, 8, 11, 1, 3, 8, 11, 4, 5, 6, 8, 3, 7, 8, 11, 1, 2, 3, 11, 1, 2, 3, 11, 9, 10, 7, 8, 3, 7, 8, 11, 3, 7, 8, 11, 1, 2, 3, 11, 1, 2, 3, 11, 1, 2, 3, 11, 1, 2, 3, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 1, 2, 3, 11, 4, 5, 6, 8, 5, 7, 8, 11, 4, 5, 6, 8, 4, 5, 6, 8, 4, 5, 6, 8, 1, 2, 3, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     float[4992] fxP;  // padded to a power of two (cheap index wrap)
     bool[1088] fxDirty;  // padded to a power of two (cheap index wrap)
     int[64]       fxOrder;  // padded to a power of two (cheap index wrap)
@@ -7940,6 +8523,12 @@ processor Eisenpuls_Synth
 
     // Extra effects state
     float stereoWidth  = 1.0f;
+    float limOn        = 1.0f;     // MASTER-OUT: look-ahead limiter
+    float limCeil      = 0.9658f;
+    float limGain      = 1.0f;
+    float[64] limBufL;
+    float[64] limBufR;
+    int   limPos       = 0;
 
     // New state
     float driveAlg     = 0.0f;
@@ -11558,6 +12147,584 @@ processor Eisenpuls_Synth
     event param11573 (float v) { fxWetSetO (143, 1, v); }
     event param11574 (float v) { fxWetSetO (143, 2, v); }
     event param11575 (float v) { fxWetSetO (143, 3, v); }
+    event param11600 (float v) { limOn = v; }   // MASTER-OUT
+    event param11601 (float v) { limCeil = float (pow (10.0f, v / 20.0f)); }
+    event param11700 (float v) { fxExSet (0, 0, v); }
+    event param11701 (float v) { fxExSet (0, 1, v); }
+    event param11702 (float v) { fxExSet (0, 2, v); }
+    event param11703 (float v) { fxExSet (0, 3, v); }
+    event param11704 (float v) { fxExSet (1, 0, v); }
+    event param11705 (float v) { fxExSet (1, 1, v); }
+    event param11706 (float v) { fxExSet (1, 2, v); }
+    event param11707 (float v) { fxExSet (1, 3, v); }
+    event param11708 (float v) { fxExSet (2, 0, v); }
+    event param11709 (float v) { fxExSet (2, 1, v); }
+    event param11710 (float v) { fxExSet (2, 2, v); }
+    event param11711 (float v) { fxExSet (2, 3, v); }
+    event param11712 (float v) { fxExSet (3, 0, v); }
+    event param11713 (float v) { fxExSet (3, 1, v); }
+    event param11714 (float v) { fxExSet (3, 2, v); }
+    event param11715 (float v) { fxExSet (3, 3, v); }
+    event param11716 (float v) { fxExSet (4, 0, v); }
+    event param11717 (float v) { fxExSet (4, 1, v); }
+    event param11718 (float v) { fxExSet (4, 2, v); }
+    event param11719 (float v) { fxExSet (4, 3, v); }
+    event param11720 (float v) { fxExSet (5, 0, v); }
+    event param11721 (float v) { fxExSet (5, 1, v); }
+    event param11722 (float v) { fxExSet (5, 2, v); }
+    event param11723 (float v) { fxExSet (5, 3, v); }
+    event param11724 (float v) { fxExSet (6, 0, v); }
+    event param11725 (float v) { fxExSet (6, 1, v); }
+    event param11726 (float v) { fxExSet (6, 2, v); }
+    event param11727 (float v) { fxExSet (6, 3, v); }
+    event param11728 (float v) { fxExSet (7, 0, v); }
+    event param11729 (float v) { fxExSet (7, 1, v); }
+    event param11730 (float v) { fxExSet (7, 2, v); }
+    event param11731 (float v) { fxExSet (7, 3, v); }
+    event param11732 (float v) { fxExSet (8, 0, v); }
+    event param11733 (float v) { fxExSet (8, 1, v); }
+    event param11734 (float v) { fxExSet (8, 2, v); }
+    event param11735 (float v) { fxExSet (8, 3, v); }
+    event param11736 (float v) { fxExSet (9, 0, v); }
+    event param11737 (float v) { fxExSet (9, 1, v); }
+    event param11738 (float v) { fxExSet (9, 2, v); }
+    event param11739 (float v) { fxExSet (9, 3, v); }
+    event param11740 (float v) { fxExSet (10, 0, v); }
+    event param11741 (float v) { fxExSet (10, 1, v); }
+    event param11742 (float v) { fxExSet (10, 2, v); }
+    event param11743 (float v) { fxExSet (10, 3, v); }
+    event param11744 (float v) { fxExSet (11, 0, v); }
+    event param11745 (float v) { fxExSet (11, 1, v); }
+    event param11746 (float v) { fxExSet (11, 2, v); }
+    event param11747 (float v) { fxExSet (11, 3, v); }
+    event param11748 (float v) { fxExSet (12, 0, v); }
+    event param11749 (float v) { fxExSet (12, 1, v); }
+    event param11750 (float v) { fxExSet (12, 2, v); }
+    event param11751 (float v) { fxExSet (12, 3, v); }
+    event param11752 (float v) { fxExSet (13, 0, v); }
+    event param11753 (float v) { fxExSet (13, 1, v); }
+    event param11754 (float v) { fxExSet (13, 2, v); }
+    event param11755 (float v) { fxExSet (13, 3, v); }
+    event param11756 (float v) { fxExSet (14, 0, v); }
+    event param11757 (float v) { fxExSet (14, 1, v); }
+    event param11758 (float v) { fxExSet (14, 2, v); }
+    event param11759 (float v) { fxExSet (14, 3, v); }
+    event param11760 (float v) { fxExSet (15, 0, v); }
+    event param11761 (float v) { fxExSet (15, 1, v); }
+    event param11762 (float v) { fxExSet (15, 2, v); }
+    event param11763 (float v) { fxExSet (15, 3, v); }
+    event param11764 (float v) { fxExSet (16, 0, v); }
+    event param11765 (float v) { fxExSet (16, 1, v); }
+    event param11766 (float v) { fxExSet (16, 2, v); }
+    event param11767 (float v) { fxExSet (16, 3, v); }
+    event param11768 (float v) { fxExSet (17, 0, v); }
+    event param11769 (float v) { fxExSet (17, 1, v); }
+    event param11770 (float v) { fxExSet (17, 2, v); }
+    event param11771 (float v) { fxExSet (17, 3, v); }
+    event param11772 (float v) { fxExSet (18, 0, v); }
+    event param11773 (float v) { fxExSet (18, 1, v); }
+    event param11774 (float v) { fxExSet (18, 2, v); }
+    event param11775 (float v) { fxExSet (18, 3, v); }
+    event param11776 (float v) { fxExSet (19, 0, v); }
+    event param11777 (float v) { fxExSet (19, 1, v); }
+    event param11778 (float v) { fxExSet (19, 2, v); }
+    event param11779 (float v) { fxExSet (19, 3, v); }
+    event param11780 (float v) { fxExSet (20, 0, v); }
+    event param11781 (float v) { fxExSet (20, 1, v); }
+    event param11782 (float v) { fxExSet (20, 2, v); }
+    event param11783 (float v) { fxExSet (20, 3, v); }
+    event param11784 (float v) { fxExSet (21, 0, v); }
+    event param11785 (float v) { fxExSet (21, 1, v); }
+    event param11786 (float v) { fxExSet (21, 2, v); }
+    event param11787 (float v) { fxExSet (21, 3, v); }
+    event param11788 (float v) { fxExSet (22, 0, v); }
+    event param11789 (float v) { fxExSet (22, 1, v); }
+    event param11790 (float v) { fxExSet (22, 2, v); }
+    event param11791 (float v) { fxExSet (22, 3, v); }
+    event param11792 (float v) { fxExSet (23, 0, v); }
+    event param11793 (float v) { fxExSet (23, 1, v); }
+    event param11794 (float v) { fxExSet (23, 2, v); }
+    event param11795 (float v) { fxExSet (23, 3, v); }
+    event param11796 (float v) { fxExSet (24, 0, v); }
+    event param11797 (float v) { fxExSet (24, 1, v); }
+    event param11798 (float v) { fxExSet (24, 2, v); }
+    event param11799 (float v) { fxExSet (24, 3, v); }
+    event param11800 (float v) { fxExSet (25, 0, v); }
+    event param11801 (float v) { fxExSet (25, 1, v); }
+    event param11802 (float v) { fxExSet (25, 2, v); }
+    event param11803 (float v) { fxExSet (25, 3, v); }
+    event param11804 (float v) { fxExSet (26, 0, v); }
+    event param11805 (float v) { fxExSet (26, 1, v); }
+    event param11806 (float v) { fxExSet (26, 2, v); }
+    event param11807 (float v) { fxExSet (26, 3, v); }
+    event param11808 (float v) { fxExSet (27, 0, v); }
+    event param11809 (float v) { fxExSet (27, 1, v); }
+    event param11810 (float v) { fxExSet (27, 2, v); }
+    event param11811 (float v) { fxExSet (27, 3, v); }
+    event param11812 (float v) { fxExSet (28, 0, v); }
+    event param11813 (float v) { fxExSet (28, 1, v); }
+    event param11814 (float v) { fxExSet (28, 2, v); }
+    event param11815 (float v) { fxExSet (28, 3, v); }
+    event param11816 (float v) { fxExSet (29, 0, v); }
+    event param11817 (float v) { fxExSet (29, 1, v); }
+    event param11818 (float v) { fxExSet (29, 2, v); }
+    event param11819 (float v) { fxExSet (29, 3, v); }
+    event param11820 (float v) { fxExSet (30, 0, v); }
+    event param11821 (float v) { fxExSet (30, 1, v); }
+    event param11822 (float v) { fxExSet (30, 2, v); }
+    event param11823 (float v) { fxExSet (30, 3, v); }
+    event param11824 (float v) { fxExSet (31, 0, v); }
+    event param11825 (float v) { fxExSet (31, 1, v); }
+    event param11826 (float v) { fxExSet (31, 2, v); }
+    event param11827 (float v) { fxExSet (31, 3, v); }
+    event param11828 (float v) { fxExSet (32, 0, v); }
+    event param11829 (float v) { fxExSet (32, 1, v); }
+    event param11830 (float v) { fxExSet (32, 2, v); }
+    event param11831 (float v) { fxExSet (32, 3, v); }
+    event param11832 (float v) { fxExSet (33, 0, v); }
+    event param11833 (float v) { fxExSet (33, 1, v); }
+    event param11834 (float v) { fxExSet (33, 2, v); }
+    event param11835 (float v) { fxExSet (33, 3, v); }
+    event param11836 (float v) { fxExSet (34, 0, v); }
+    event param11837 (float v) { fxExSet (34, 1, v); }
+    event param11838 (float v) { fxExSet (34, 2, v); }
+    event param11839 (float v) { fxExSet (34, 3, v); }
+    event param11840 (float v) { fxExSet (35, 0, v); }
+    event param11841 (float v) { fxExSet (35, 1, v); }
+    event param11842 (float v) { fxExSet (35, 2, v); }
+    event param11843 (float v) { fxExSet (35, 3, v); }
+    event param11844 (float v) { fxExSet (36, 0, v); }
+    event param11845 (float v) { fxExSet (36, 1, v); }
+    event param11846 (float v) { fxExSet (36, 2, v); }
+    event param11847 (float v) { fxExSet (36, 3, v); }
+    event param11848 (float v) { fxExSet (37, 0, v); }
+    event param11849 (float v) { fxExSet (37, 1, v); }
+    event param11850 (float v) { fxExSet (37, 2, v); }
+    event param11851 (float v) { fxExSet (37, 3, v); }
+    event param11852 (float v) { fxExSet (38, 0, v); }
+    event param11853 (float v) { fxExSet (38, 1, v); }
+    event param11854 (float v) { fxExSet (38, 2, v); }
+    event param11855 (float v) { fxExSet (38, 3, v); }
+    event param11856 (float v) { fxExSet (39, 0, v); }
+    event param11857 (float v) { fxExSet (39, 1, v); }
+    event param11858 (float v) { fxExSet (39, 2, v); }
+    event param11859 (float v) { fxExSet (39, 3, v); }
+    event param11860 (float v) { fxExSet (40, 0, v); }
+    event param11861 (float v) { fxExSet (40, 1, v); }
+    event param11862 (float v) { fxExSet (40, 2, v); }
+    event param11863 (float v) { fxExSet (40, 3, v); }
+    event param11864 (float v) { fxExSet (41, 0, v); }
+    event param11865 (float v) { fxExSet (41, 1, v); }
+    event param11866 (float v) { fxExSet (41, 2, v); }
+    event param11867 (float v) { fxExSet (41, 3, v); }
+    event param11868 (float v) { fxExSet (42, 0, v); }
+    event param11869 (float v) { fxExSet (42, 1, v); }
+    event param11870 (float v) { fxExSet (42, 2, v); }
+    event param11871 (float v) { fxExSet (42, 3, v); }
+    event param11872 (float v) { fxExSet (43, 0, v); }
+    event param11873 (float v) { fxExSet (43, 1, v); }
+    event param11874 (float v) { fxExSet (43, 2, v); }
+    event param11875 (float v) { fxExSet (43, 3, v); }
+    event param11876 (float v) { fxExSet (44, 0, v); }
+    event param11877 (float v) { fxExSet (44, 1, v); }
+    event param11878 (float v) { fxExSet (44, 2, v); }
+    event param11879 (float v) { fxExSet (44, 3, v); }
+    event param11880 (float v) { fxExSet (45, 0, v); }
+    event param11881 (float v) { fxExSet (45, 1, v); }
+    event param11882 (float v) { fxExSet (45, 2, v); }
+    event param11883 (float v) { fxExSet (45, 3, v); }
+    event param11884 (float v) { fxExSet (46, 0, v); }
+    event param11885 (float v) { fxExSet (46, 1, v); }
+    event param11886 (float v) { fxExSet (46, 2, v); }
+    event param11887 (float v) { fxExSet (46, 3, v); }
+    event param11888 (float v) { fxExSet (47, 0, v); }
+    event param11889 (float v) { fxExSet (47, 1, v); }
+    event param11890 (float v) { fxExSet (47, 2, v); }
+    event param11891 (float v) { fxExSet (47, 3, v); }
+    event param11892 (float v) { fxExSetO (48, 0, v); }
+    event param11893 (float v) { fxExSetO (48, 1, v); }
+    event param11894 (float v) { fxExSetO (48, 2, v); }
+    event param11895 (float v) { fxExSetO (48, 3, v); }
+    event param11896 (float v) { fxExSetO (49, 0, v); }
+    event param11897 (float v) { fxExSetO (49, 1, v); }
+    event param11898 (float v) { fxExSetO (49, 2, v); }
+    event param11899 (float v) { fxExSetO (49, 3, v); }
+    event param11900 (float v) { fxExSetO (50, 0, v); }
+    event param11901 (float v) { fxExSetO (50, 1, v); }
+    event param11902 (float v) { fxExSetO (50, 2, v); }
+    event param11903 (float v) { fxExSetO (50, 3, v); }
+    event param11904 (float v) { fxExSetO (51, 0, v); }
+    event param11905 (float v) { fxExSetO (51, 1, v); }
+    event param11906 (float v) { fxExSetO (51, 2, v); }
+    event param11907 (float v) { fxExSetO (51, 3, v); }
+    event param11908 (float v) { fxExSetO (52, 0, v); }
+    event param11909 (float v) { fxExSetO (52, 1, v); }
+    event param11910 (float v) { fxExSetO (52, 2, v); }
+    event param11911 (float v) { fxExSetO (52, 3, v); }
+    event param11912 (float v) { fxExSetO (53, 0, v); }
+    event param11913 (float v) { fxExSetO (53, 1, v); }
+    event param11914 (float v) { fxExSetO (53, 2, v); }
+    event param11915 (float v) { fxExSetO (53, 3, v); }
+    event param11916 (float v) { fxExSetO (54, 0, v); }
+    event param11917 (float v) { fxExSetO (54, 1, v); }
+    event param11918 (float v) { fxExSetO (54, 2, v); }
+    event param11919 (float v) { fxExSetO (54, 3, v); }
+    event param11920 (float v) { fxExSetO (55, 0, v); }
+    event param11921 (float v) { fxExSetO (55, 1, v); }
+    event param11922 (float v) { fxExSetO (55, 2, v); }
+    event param11923 (float v) { fxExSetO (55, 3, v); }
+    event param11924 (float v) { fxExSetO (56, 0, v); }
+    event param11925 (float v) { fxExSetO (56, 1, v); }
+    event param11926 (float v) { fxExSetO (56, 2, v); }
+    event param11927 (float v) { fxExSetO (56, 3, v); }
+    event param11928 (float v) { fxExSetO (57, 0, v); }
+    event param11929 (float v) { fxExSetO (57, 1, v); }
+    event param11930 (float v) { fxExSetO (57, 2, v); }
+    event param11931 (float v) { fxExSetO (57, 3, v); }
+    event param11932 (float v) { fxExSetO (58, 0, v); }
+    event param11933 (float v) { fxExSetO (58, 1, v); }
+    event param11934 (float v) { fxExSetO (58, 2, v); }
+    event param11935 (float v) { fxExSetO (58, 3, v); }
+    event param11936 (float v) { fxExSetO (59, 0, v); }
+    event param11937 (float v) { fxExSetO (59, 1, v); }
+    event param11938 (float v) { fxExSetO (59, 2, v); }
+    event param11939 (float v) { fxExSetO (59, 3, v); }
+    event param11940 (float v) { fxExSetO (60, 0, v); }
+    event param11941 (float v) { fxExSetO (60, 1, v); }
+    event param11942 (float v) { fxExSetO (60, 2, v); }
+    event param11943 (float v) { fxExSetO (60, 3, v); }
+    event param11944 (float v) { fxExSetO (61, 0, v); }
+    event param11945 (float v) { fxExSetO (61, 1, v); }
+    event param11946 (float v) { fxExSetO (61, 2, v); }
+    event param11947 (float v) { fxExSetO (61, 3, v); }
+    event param11948 (float v) { fxExSetO (62, 0, v); }
+    event param11949 (float v) { fxExSetO (62, 1, v); }
+    event param11950 (float v) { fxExSetO (62, 2, v); }
+    event param11951 (float v) { fxExSetO (62, 3, v); }
+    event param11952 (float v) { fxExSetO (63, 0, v); }
+    event param11953 (float v) { fxExSetO (63, 1, v); }
+    event param11954 (float v) { fxExSetO (63, 2, v); }
+    event param11955 (float v) { fxExSetO (63, 3, v); }
+    event param11956 (float v) { fxExSetO (64, 0, v); }
+    event param11957 (float v) { fxExSetO (64, 1, v); }
+    event param11958 (float v) { fxExSetO (64, 2, v); }
+    event param11959 (float v) { fxExSetO (64, 3, v); }
+    event param11960 (float v) { fxExSetO (65, 0, v); }
+    event param11961 (float v) { fxExSetO (65, 1, v); }
+    event param11962 (float v) { fxExSetO (65, 2, v); }
+    event param11963 (float v) { fxExSetO (65, 3, v); }
+    event param11964 (float v) { fxExSetO (66, 0, v); }
+    event param11965 (float v) { fxExSetO (66, 1, v); }
+    event param11966 (float v) { fxExSetO (66, 2, v); }
+    event param11967 (float v) { fxExSetO (66, 3, v); }
+    event param11968 (float v) { fxExSetO (67, 0, v); }
+    event param11969 (float v) { fxExSetO (67, 1, v); }
+    event param11970 (float v) { fxExSetO (67, 2, v); }
+    event param11971 (float v) { fxExSetO (67, 3, v); }
+    event param11972 (float v) { fxExSetO (68, 0, v); }
+    event param11973 (float v) { fxExSetO (68, 1, v); }
+    event param11974 (float v) { fxExSetO (68, 2, v); }
+    event param11975 (float v) { fxExSetO (68, 3, v); }
+    event param11976 (float v) { fxExSetO (69, 0, v); }
+    event param11977 (float v) { fxExSetO (69, 1, v); }
+    event param11978 (float v) { fxExSetO (69, 2, v); }
+    event param11979 (float v) { fxExSetO (69, 3, v); }
+    event param11980 (float v) { fxExSetO (70, 0, v); }
+    event param11981 (float v) { fxExSetO (70, 1, v); }
+    event param11982 (float v) { fxExSetO (70, 2, v); }
+    event param11983 (float v) { fxExSetO (70, 3, v); }
+    event param11984 (float v) { fxExSetO (71, 0, v); }
+    event param11985 (float v) { fxExSetO (71, 1, v); }
+    event param11986 (float v) { fxExSetO (71, 2, v); }
+    event param11987 (float v) { fxExSetO (71, 3, v); }
+    event param11988 (float v) { fxExSetO (72, 0, v); }
+    event param11989 (float v) { fxExSetO (72, 1, v); }
+    event param11990 (float v) { fxExSetO (72, 2, v); }
+    event param11991 (float v) { fxExSetO (72, 3, v); }
+    event param11992 (float v) { fxExSetO (73, 0, v); }
+    event param11993 (float v) { fxExSetO (73, 1, v); }
+    event param11994 (float v) { fxExSetO (73, 2, v); }
+    event param11995 (float v) { fxExSetO (73, 3, v); }
+    event param11996 (float v) { fxExSetO (74, 0, v); }
+    event param11997 (float v) { fxExSetO (74, 1, v); }
+    event param11998 (float v) { fxExSetO (74, 2, v); }
+    event param11999 (float v) { fxExSetO (74, 3, v); }
+    event param12000 (float v) { fxExSetO (75, 0, v); }
+    event param12001 (float v) { fxExSetO (75, 1, v); }
+    event param12002 (float v) { fxExSetO (75, 2, v); }
+    event param12003 (float v) { fxExSetO (75, 3, v); }
+    event param12004 (float v) { fxExSetO (76, 0, v); }
+    event param12005 (float v) { fxExSetO (76, 1, v); }
+    event param12006 (float v) { fxExSetO (76, 2, v); }
+    event param12007 (float v) { fxExSetO (76, 3, v); }
+    event param12008 (float v) { fxExSetO (77, 0, v); }
+    event param12009 (float v) { fxExSetO (77, 1, v); }
+    event param12010 (float v) { fxExSetO (77, 2, v); }
+    event param12011 (float v) { fxExSetO (77, 3, v); }
+    event param12012 (float v) { fxExSetO (78, 0, v); }
+    event param12013 (float v) { fxExSetO (78, 1, v); }
+    event param12014 (float v) { fxExSetO (78, 2, v); }
+    event param12015 (float v) { fxExSetO (78, 3, v); }
+    event param12016 (float v) { fxExSetO (79, 0, v); }
+    event param12017 (float v) { fxExSetO (79, 1, v); }
+    event param12018 (float v) { fxExSetO (79, 2, v); }
+    event param12019 (float v) { fxExSetO (79, 3, v); }
+    event param12020 (float v) { fxExSetO (80, 0, v); }
+    event param12021 (float v) { fxExSetO (80, 1, v); }
+    event param12022 (float v) { fxExSetO (80, 2, v); }
+    event param12023 (float v) { fxExSetO (80, 3, v); }
+    event param12024 (float v) { fxExSetO (81, 0, v); }
+    event param12025 (float v) { fxExSetO (81, 1, v); }
+    event param12026 (float v) { fxExSetO (81, 2, v); }
+    event param12027 (float v) { fxExSetO (81, 3, v); }
+    event param12028 (float v) { fxExSetO (82, 0, v); }
+    event param12029 (float v) { fxExSetO (82, 1, v); }
+    event param12030 (float v) { fxExSetO (82, 2, v); }
+    event param12031 (float v) { fxExSetO (82, 3, v); }
+    event param12032 (float v) { fxExSetO (83, 0, v); }
+    event param12033 (float v) { fxExSetO (83, 1, v); }
+    event param12034 (float v) { fxExSetO (83, 2, v); }
+    event param12035 (float v) { fxExSetO (83, 3, v); }
+    event param12036 (float v) { fxExSetO (84, 0, v); }
+    event param12037 (float v) { fxExSetO (84, 1, v); }
+    event param12038 (float v) { fxExSetO (84, 2, v); }
+    event param12039 (float v) { fxExSetO (84, 3, v); }
+    event param12040 (float v) { fxExSetO (85, 0, v); }
+    event param12041 (float v) { fxExSetO (85, 1, v); }
+    event param12042 (float v) { fxExSetO (85, 2, v); }
+    event param12043 (float v) { fxExSetO (85, 3, v); }
+    event param12044 (float v) { fxExSetO (86, 0, v); }
+    event param12045 (float v) { fxExSetO (86, 1, v); }
+    event param12046 (float v) { fxExSetO (86, 2, v); }
+    event param12047 (float v) { fxExSetO (86, 3, v); }
+    event param12048 (float v) { fxExSetO (87, 0, v); }
+    event param12049 (float v) { fxExSetO (87, 1, v); }
+    event param12050 (float v) { fxExSetO (87, 2, v); }
+    event param12051 (float v) { fxExSetO (87, 3, v); }
+    event param12052 (float v) { fxExSetO (88, 0, v); }
+    event param12053 (float v) { fxExSetO (88, 1, v); }
+    event param12054 (float v) { fxExSetO (88, 2, v); }
+    event param12055 (float v) { fxExSetO (88, 3, v); }
+    event param12056 (float v) { fxExSetO (89, 0, v); }
+    event param12057 (float v) { fxExSetO (89, 1, v); }
+    event param12058 (float v) { fxExSetO (89, 2, v); }
+    event param12059 (float v) { fxExSetO (89, 3, v); }
+    event param12060 (float v) { fxExSetO (90, 0, v); }
+    event param12061 (float v) { fxExSetO (90, 1, v); }
+    event param12062 (float v) { fxExSetO (90, 2, v); }
+    event param12063 (float v) { fxExSetO (90, 3, v); }
+    event param12064 (float v) { fxExSetO (91, 0, v); }
+    event param12065 (float v) { fxExSetO (91, 1, v); }
+    event param12066 (float v) { fxExSetO (91, 2, v); }
+    event param12067 (float v) { fxExSetO (91, 3, v); }
+    event param12068 (float v) { fxExSetO (92, 0, v); }
+    event param12069 (float v) { fxExSetO (92, 1, v); }
+    event param12070 (float v) { fxExSetO (92, 2, v); }
+    event param12071 (float v) { fxExSetO (92, 3, v); }
+    event param12072 (float v) { fxExSetO (93, 0, v); }
+    event param12073 (float v) { fxExSetO (93, 1, v); }
+    event param12074 (float v) { fxExSetO (93, 2, v); }
+    event param12075 (float v) { fxExSetO (93, 3, v); }
+    event param12076 (float v) { fxExSetO (94, 0, v); }
+    event param12077 (float v) { fxExSetO (94, 1, v); }
+    event param12078 (float v) { fxExSetO (94, 2, v); }
+    event param12079 (float v) { fxExSetO (94, 3, v); }
+    event param12080 (float v) { fxExSetO (95, 0, v); }
+    event param12081 (float v) { fxExSetO (95, 1, v); }
+    event param12082 (float v) { fxExSetO (95, 2, v); }
+    event param12083 (float v) { fxExSetO (95, 3, v); }
+    event param12084 (float v) { fxExSetO (96, 0, v); }
+    event param12085 (float v) { fxExSetO (96, 1, v); }
+    event param12086 (float v) { fxExSetO (96, 2, v); }
+    event param12087 (float v) { fxExSetO (96, 3, v); }
+    event param12088 (float v) { fxExSetO (97, 0, v); }
+    event param12089 (float v) { fxExSetO (97, 1, v); }
+    event param12090 (float v) { fxExSetO (97, 2, v); }
+    event param12091 (float v) { fxExSetO (97, 3, v); }
+    event param12092 (float v) { fxExSetO (98, 0, v); }
+    event param12093 (float v) { fxExSetO (98, 1, v); }
+    event param12094 (float v) { fxExSetO (98, 2, v); }
+    event param12095 (float v) { fxExSetO (98, 3, v); }
+    event param12096 (float v) { fxExSetO (99, 0, v); }
+    event param12097 (float v) { fxExSetO (99, 1, v); }
+    event param12098 (float v) { fxExSetO (99, 2, v); }
+    event param12099 (float v) { fxExSetO (99, 3, v); }
+    event param12100 (float v) { fxExSetO (100, 0, v); }
+    event param12101 (float v) { fxExSetO (100, 1, v); }
+    event param12102 (float v) { fxExSetO (100, 2, v); }
+    event param12103 (float v) { fxExSetO (100, 3, v); }
+    event param12104 (float v) { fxExSetO (101, 0, v); }
+    event param12105 (float v) { fxExSetO (101, 1, v); }
+    event param12106 (float v) { fxExSetO (101, 2, v); }
+    event param12107 (float v) { fxExSetO (101, 3, v); }
+    event param12108 (float v) { fxExSetO (102, 0, v); }
+    event param12109 (float v) { fxExSetO (102, 1, v); }
+    event param12110 (float v) { fxExSetO (102, 2, v); }
+    event param12111 (float v) { fxExSetO (102, 3, v); }
+    event param12112 (float v) { fxExSetO (103, 0, v); }
+    event param12113 (float v) { fxExSetO (103, 1, v); }
+    event param12114 (float v) { fxExSetO (103, 2, v); }
+    event param12115 (float v) { fxExSetO (103, 3, v); }
+    event param12116 (float v) { fxExSetO (104, 0, v); }
+    event param12117 (float v) { fxExSetO (104, 1, v); }
+    event param12118 (float v) { fxExSetO (104, 2, v); }
+    event param12119 (float v) { fxExSetO (104, 3, v); }
+    event param12120 (float v) { fxExSetO (105, 0, v); }
+    event param12121 (float v) { fxExSetO (105, 1, v); }
+    event param12122 (float v) { fxExSetO (105, 2, v); }
+    event param12123 (float v) { fxExSetO (105, 3, v); }
+    event param12124 (float v) { fxExSetO (106, 0, v); }
+    event param12125 (float v) { fxExSetO (106, 1, v); }
+    event param12126 (float v) { fxExSetO (106, 2, v); }
+    event param12127 (float v) { fxExSetO (106, 3, v); }
+    event param12128 (float v) { fxExSetO (107, 0, v); }
+    event param12129 (float v) { fxExSetO (107, 1, v); }
+    event param12130 (float v) { fxExSetO (107, 2, v); }
+    event param12131 (float v) { fxExSetO (107, 3, v); }
+    event param12132 (float v) { fxExSetO (108, 0, v); }
+    event param12133 (float v) { fxExSetO (108, 1, v); }
+    event param12134 (float v) { fxExSetO (108, 2, v); }
+    event param12135 (float v) { fxExSetO (108, 3, v); }
+    event param12136 (float v) { fxExSetO (109, 0, v); }
+    event param12137 (float v) { fxExSetO (109, 1, v); }
+    event param12138 (float v) { fxExSetO (109, 2, v); }
+    event param12139 (float v) { fxExSetO (109, 3, v); }
+    event param12140 (float v) { fxExSetO (110, 0, v); }
+    event param12141 (float v) { fxExSetO (110, 1, v); }
+    event param12142 (float v) { fxExSetO (110, 2, v); }
+    event param12143 (float v) { fxExSetO (110, 3, v); }
+    event param12144 (float v) { fxExSetO (111, 0, v); }
+    event param12145 (float v) { fxExSetO (111, 1, v); }
+    event param12146 (float v) { fxExSetO (111, 2, v); }
+    event param12147 (float v) { fxExSetO (111, 3, v); }
+    event param12148 (float v) { fxExSetO (112, 0, v); }
+    event param12149 (float v) { fxExSetO (112, 1, v); }
+    event param12150 (float v) { fxExSetO (112, 2, v); }
+    event param12151 (float v) { fxExSetO (112, 3, v); }
+    event param12152 (float v) { fxExSetO (113, 0, v); }
+    event param12153 (float v) { fxExSetO (113, 1, v); }
+    event param12154 (float v) { fxExSetO (113, 2, v); }
+    event param12155 (float v) { fxExSetO (113, 3, v); }
+    event param12156 (float v) { fxExSetO (114, 0, v); }
+    event param12157 (float v) { fxExSetO (114, 1, v); }
+    event param12158 (float v) { fxExSetO (114, 2, v); }
+    event param12159 (float v) { fxExSetO (114, 3, v); }
+    event param12160 (float v) { fxExSetO (115, 0, v); }
+    event param12161 (float v) { fxExSetO (115, 1, v); }
+    event param12162 (float v) { fxExSetO (115, 2, v); }
+    event param12163 (float v) { fxExSetO (115, 3, v); }
+    event param12164 (float v) { fxExSetO (116, 0, v); }
+    event param12165 (float v) { fxExSetO (116, 1, v); }
+    event param12166 (float v) { fxExSetO (116, 2, v); }
+    event param12167 (float v) { fxExSetO (116, 3, v); }
+    event param12168 (float v) { fxExSetO (117, 0, v); }
+    event param12169 (float v) { fxExSetO (117, 1, v); }
+    event param12170 (float v) { fxExSetO (117, 2, v); }
+    event param12171 (float v) { fxExSetO (117, 3, v); }
+    event param12172 (float v) { fxExSetO (118, 0, v); }
+    event param12173 (float v) { fxExSetO (118, 1, v); }
+    event param12174 (float v) { fxExSetO (118, 2, v); }
+    event param12175 (float v) { fxExSetO (118, 3, v); }
+    event param12176 (float v) { fxExSetO (119, 0, v); }
+    event param12177 (float v) { fxExSetO (119, 1, v); }
+    event param12178 (float v) { fxExSetO (119, 2, v); }
+    event param12179 (float v) { fxExSetO (119, 3, v); }
+    event param12180 (float v) { fxExSetO (120, 0, v); }
+    event param12181 (float v) { fxExSetO (120, 1, v); }
+    event param12182 (float v) { fxExSetO (120, 2, v); }
+    event param12183 (float v) { fxExSetO (120, 3, v); }
+    event param12184 (float v) { fxExSetO (121, 0, v); }
+    event param12185 (float v) { fxExSetO (121, 1, v); }
+    event param12186 (float v) { fxExSetO (121, 2, v); }
+    event param12187 (float v) { fxExSetO (121, 3, v); }
+    event param12188 (float v) { fxExSetO (122, 0, v); }
+    event param12189 (float v) { fxExSetO (122, 1, v); }
+    event param12190 (float v) { fxExSetO (122, 2, v); }
+    event param12191 (float v) { fxExSetO (122, 3, v); }
+    event param12192 (float v) { fxExSetO (123, 0, v); }
+    event param12193 (float v) { fxExSetO (123, 1, v); }
+    event param12194 (float v) { fxExSetO (123, 2, v); }
+    event param12195 (float v) { fxExSetO (123, 3, v); }
+    event param12196 (float v) { fxExSetO (124, 0, v); }
+    event param12197 (float v) { fxExSetO (124, 1, v); }
+    event param12198 (float v) { fxExSetO (124, 2, v); }
+    event param12199 (float v) { fxExSetO (124, 3, v); }
+    event param12200 (float v) { fxExSetO (125, 0, v); }
+    event param12201 (float v) { fxExSetO (125, 1, v); }
+    event param12202 (float v) { fxExSetO (125, 2, v); }
+    event param12203 (float v) { fxExSetO (125, 3, v); }
+    event param12204 (float v) { fxExSetO (126, 0, v); }
+    event param12205 (float v) { fxExSetO (126, 1, v); }
+    event param12206 (float v) { fxExSetO (126, 2, v); }
+    event param12207 (float v) { fxExSetO (126, 3, v); }
+    event param12208 (float v) { fxExSetO (127, 0, v); }
+    event param12209 (float v) { fxExSetO (127, 1, v); }
+    event param12210 (float v) { fxExSetO (127, 2, v); }
+    event param12211 (float v) { fxExSetO (127, 3, v); }
+    event param12212 (float v) { fxExSetO (128, 0, v); }
+    event param12213 (float v) { fxExSetO (128, 1, v); }
+    event param12214 (float v) { fxExSetO (128, 2, v); }
+    event param12215 (float v) { fxExSetO (128, 3, v); }
+    event param12216 (float v) { fxExSetO (129, 0, v); }
+    event param12217 (float v) { fxExSetO (129, 1, v); }
+    event param12218 (float v) { fxExSetO (129, 2, v); }
+    event param12219 (float v) { fxExSetO (129, 3, v); }
+    event param12220 (float v) { fxExSetO (130, 0, v); }
+    event param12221 (float v) { fxExSetO (130, 1, v); }
+    event param12222 (float v) { fxExSetO (130, 2, v); }
+    event param12223 (float v) { fxExSetO (130, 3, v); }
+    event param12224 (float v) { fxExSetO (131, 0, v); }
+    event param12225 (float v) { fxExSetO (131, 1, v); }
+    event param12226 (float v) { fxExSetO (131, 2, v); }
+    event param12227 (float v) { fxExSetO (131, 3, v); }
+    event param12228 (float v) { fxExSetO (132, 0, v); }
+    event param12229 (float v) { fxExSetO (132, 1, v); }
+    event param12230 (float v) { fxExSetO (132, 2, v); }
+    event param12231 (float v) { fxExSetO (132, 3, v); }
+    event param12232 (float v) { fxExSetO (133, 0, v); }
+    event param12233 (float v) { fxExSetO (133, 1, v); }
+    event param12234 (float v) { fxExSetO (133, 2, v); }
+    event param12235 (float v) { fxExSetO (133, 3, v); }
+    event param12236 (float v) { fxExSetO (134, 0, v); }
+    event param12237 (float v) { fxExSetO (134, 1, v); }
+    event param12238 (float v) { fxExSetO (134, 2, v); }
+    event param12239 (float v) { fxExSetO (134, 3, v); }
+    event param12240 (float v) { fxExSetO (135, 0, v); }
+    event param12241 (float v) { fxExSetO (135, 1, v); }
+    event param12242 (float v) { fxExSetO (135, 2, v); }
+    event param12243 (float v) { fxExSetO (135, 3, v); }
+    event param12244 (float v) { fxExSetO (136, 0, v); }
+    event param12245 (float v) { fxExSetO (136, 1, v); }
+    event param12246 (float v) { fxExSetO (136, 2, v); }
+    event param12247 (float v) { fxExSetO (136, 3, v); }
+    event param12248 (float v) { fxExSetO (137, 0, v); }
+    event param12249 (float v) { fxExSetO (137, 1, v); }
+    event param12250 (float v) { fxExSetO (137, 2, v); }
+    event param12251 (float v) { fxExSetO (137, 3, v); }
+    event param12252 (float v) { fxExSetO (138, 0, v); }
+    event param12253 (float v) { fxExSetO (138, 1, v); }
+    event param12254 (float v) { fxExSetO (138, 2, v); }
+    event param12255 (float v) { fxExSetO (138, 3, v); }
+    event param12256 (float v) { fxExSetO (139, 0, v); }
+    event param12257 (float v) { fxExSetO (139, 1, v); }
+    event param12258 (float v) { fxExSetO (139, 2, v); }
+    event param12259 (float v) { fxExSetO (139, 3, v); }
+    event param12260 (float v) { fxExSetO (140, 0, v); }
+    event param12261 (float v) { fxExSetO (140, 1, v); }
+    event param12262 (float v) { fxExSetO (140, 2, v); }
+    event param12263 (float v) { fxExSetO (140, 3, v); }
+    event param12264 (float v) { fxExSetO (141, 0, v); }
+    event param12265 (float v) { fxExSetO (141, 1, v); }
+    event param12266 (float v) { fxExSetO (141, 2, v); }
+    event param12267 (float v) { fxExSetO (141, 3, v); }
+    event param12268 (float v) { fxExSetO (142, 0, v); }
+    event param12269 (float v) { fxExSetO (142, 1, v); }
+    event param12270 (float v) { fxExSetO (142, 2, v); }
+    event param12271 (float v) { fxExSetO (142, 3, v); }
+    event param12272 (float v) { fxExSetO (143, 0, v); }
+    event param12273 (float v) { fxExSetO (143, 1, v); }
+    event param12274 (float v) { fxExSetO (143, 2, v); }
+    event param12275 (float v) { fxExSetO (143, 3, v); }
     // RESO-HAND-BEGIN
     event param1056 (float v) { opSet (0, 56, v); }
     event param1057 (float v) { opSet (0, 57, v); }
@@ -16438,6 +17605,9 @@ processor Eisenpuls_Synth
 
         for (int i = 0; i < 8; ++i)   // FX-WET
             fxX.at (s * 8 + i) = 0.0f;
+
+        for (int i = 0; i < 16; ++i)   // FX-EX
+            fxW.at (s * 16 + i) = 0.0f;
 
         for (int i = 0; i < 1024; ++i)   // FX-CLOUDSEED
             csV.at (s * 1024 + i) = 0.0f;
@@ -21585,6 +22755,201 @@ processor Eisenpuls_Synth
         return o;
     }
 
+    // ================= FX-EX: effect specific extra parameters =================
+    void fxExSet (int s, int k, float v)
+    {
+        int q = s * 8;
+        fxE.at (q + k) = v;
+        fxE.at (q + 5) = 1.0f;
+        bool act = false;
+
+        for (int i = 0; i < 4; ++i)
+            if (fxE.at (q + i) > 0.002f)
+                act = true;
+
+        fxE.at (q + 4) = act ? 1.0f : 0.0f;
+    }
+
+    void fxExSetO (int g, int k, float v)
+    {
+        for (int vi = 0; vi < 8; ++vi)
+            fxExSet (48 + vi * 96 + (g - 48), k, v);
+    }
+
+    float fxExVal (int s, int ty, int tool)
+    {
+        for (int k = 0; k < 4; ++k)
+            if (fxExTab.at (ty * 4 + k) == tool)
+                return fxE.at (s * 8 + k);
+
+        return 0.0f;
+    }
+
+    float fxExA (float hz)
+    {
+        return 1.0f - float (exp (-6.283185307f * hz / float (processor.frequency)));
+    }
+
+    void fxExRecalc (int s, int ty)
+    {
+        int   q  = s * 8;
+        int   cq = s * 8;
+        float sr = float (processor.frequency);
+
+        for (int k = 0; k < 4; ++k)
+        {
+            int   tool = fxExTab.at (ty * 4 + k);
+            float v    = fxE.at (q + k);
+            float c    = 0.0f;
+
+            if (tool == 1)      c = fxExA (20.0f * float (pow (50.0f, v)));
+            else if (tool == 2) c = fxExA (20000.0f * float (pow (0.075f, v)));
+            else if (tool == 3) c = float (pow (10.0f, (-70.0f + 50.0f * v) / 20.0f));
+            else if (tool == 4) c = clamp (v * 0.25f * sr, 0.0f, 16000.0f);
+            else if (tool == 7 || tool == 8) c = float (pow (10.0f, 9.0f * v / 20.0f)) - 1.0f;
+            else if (tool == 11) c = float (pow (10.0f, -24.0f * v / 20.0f));
+
+            fxEc.at (cq + k) = c;
+        }
+
+        float rv  = fxExVal (s, ty, 6);
+        float ms  = fxExTab.at (ty * 4) == 6 || fxExTab.at (ty * 4 + 1) == 6 || fxExTab.at (ty * 4 + 2) == 6 || fxExTab.at (ty * 4 + 3) == 6 ? 40.0f * float (pow (37.5f, rv)) : 250.0f;
+        fxEc.at (cq + 4) = 1.0f - float (exp (-1.0f / (ms * 0.001f * sr)));
+        fxEc.at (cq + 5) = 0.1f * float (pow (80.0f, fxExVal (s, ty, 9))) / sr;
+        fxEc.at (cq + 6) = fxExA (200.0f);
+        fxEc.at (cq + 7) = fxExA (6000.0f);
+        fxE.at (q + 5) = 0.0f;
+        fxE.at (q + 6) = float (ty);
+    }
+
+    // input side: Pre HP, Pre LP, Gate, Pre Delay
+    float<2> fxExPre (int s, float<2> x)
+    {
+        int ty = fxType.at (s);
+        int q  = s * 8;
+        int wb = s * 16;
+
+        if (fxE.at (q + 5) > 0.5f || fxE.at (q + 6) != float (ty))
+            fxExRecalc (s, ty);
+
+        float l = x[0];
+        float r = x[1];
+
+        for (int k = 0; k < 4; ++k)
+        {
+            int tool = fxExTab.at (ty * 4 + k);
+
+            if (tool < 1 || tool > 4 || fxE.at (q + k) <= 0.002f)
+                continue;
+
+            float c = fxEc.at (q + k);
+
+            if (tool == 1)
+            {
+                fxW.at (wb)     += c * (l - fxW.at (wb));
+                fxW.at (wb + 1) += c * (r - fxW.at (wb + 1));
+                l -= fxW.at (wb);
+                r -= fxW.at (wb + 1);
+            }
+            else if (tool == 2)
+            {
+                fxW.at (wb + 2) += c * (l - fxW.at (wb + 2));
+                fxW.at (wb + 3) += c * (r - fxW.at (wb + 3));
+                fxW.at (wb + 4) += c * (fxW.at (wb + 2) - fxW.at (wb + 4));
+                fxW.at (wb + 5) += c * (fxW.at (wb + 3) - fxW.at (wb + 5));
+                l = fxW.at (wb + 4);
+                r = fxW.at (wb + 5);
+            }
+            else if (tool == 3)
+            {
+                float det = max (abs (l), abs (r));
+                float en  = fxW.at (wb + 6);
+                en += (det > en ? 0.05f : 0.0005f) * (det - en);
+                fxW.at (wb + 6) = en;
+                float gt = fxW.at (wb + 7);
+                gt += ((en > c ? 1.0f : 0.0f) - gt) * (en > c ? 0.01f : 0.001f);
+                fxW.at (wb + 7) = gt;
+                l *= gt;
+                r *= gt;
+            }
+            else if (s < 48)
+            {
+                int base = s * 32768;
+                int pos  = int (fxW.at (wb + 8));
+                fxPd.at (base + pos)         = l;
+                fxPd.at (base + 16384 + pos) = r;
+                int rp = (pos - int (c)) & 16383;
+                l = fxPd.at (base + rp);
+                r = fxPd.at (base + 16384 + rp);
+                fxW.at (wb + 8) = float ((pos + 1) & 16383);
+            }
+        }
+
+        return float<2> (l, r);
+    }
+
+    // output side: Duck, Warmth, Air, Pan, Trim (x0 = the input of the slot)
+    float<2> fxExPost (int s, float<2> y, float<2> x0)
+    {
+        int ty = fxType.at (s);
+        int q  = s * 8;
+        int wb = s * 16;
+        float l = y[0];
+        float r = y[1];
+
+        for (int k = 0; k < 4; ++k)
+        {
+            int tool = fxExTab.at (ty * 4 + k);
+
+            if (tool < 5 || fxE.at (q + k) <= 0.002f)
+                continue;
+
+            float v = fxE.at (q + k);
+            float c = fxEc.at (q + k);
+
+            if (tool == 5)
+            {
+                float det = max (abs (x0[0]), abs (x0[1]));
+                float en  = fxW.at (wb + 9);
+                en += (det > en ? 0.01f : fxEc.at (q + 4)) * (det - en);
+                fxW.at (wb + 9) = en;
+                float dg = 1.0f - v * clamp (en * 6.0f, 0.0f, 1.0f);
+                l *= dg;
+                r *= dg;
+            }
+            else if (tool == 7)
+            {
+                fxW.at (wb + 10) += fxEc.at (q + 6) * (l - fxW.at (wb + 10));
+                fxW.at (wb + 11) += fxEc.at (q + 6) * (r - fxW.at (wb + 11));
+                l += fxW.at (wb + 10) * c;
+                r += fxW.at (wb + 11) * c;
+            }
+            else if (tool == 8)
+            {
+                fxW.at (wb + 12) += fxEc.at (q + 7) * (l - fxW.at (wb + 12));
+                fxW.at (wb + 13) += fxEc.at (q + 7) * (r - fxW.at (wb + 13));
+                l += (l - fxW.at (wb + 12)) * c;
+                r += (r - fxW.at (wb + 13)) * c;
+            }
+            else if (tool == 10)
+            {
+                float ph = fxW.at (wb + 14) + fxEc.at (q + 5);
+                ph -= float (floor (ph));
+                fxW.at (wb + 14) = ph;
+                float pn = v * float (sin (6.283185307f * ph));
+                l *= pn > 0.0f ? 1.0f - pn : 1.0f;
+                r *= pn < 0.0f ? 1.0f + pn : 1.0f;
+            }
+            else if (tool == 11)
+            {
+                l *= c;
+                r *= c;
+            }
+        }
+
+        return float<2> (l, r);
+    }
+
     // One slot: dry/wet mix of the selected effect; empty and bypassed slots pass the signal through untouched
     // FX-WET: wet signal post processing of every slot (P7..P10: Low Cut, High Cut, Width, Sat)
     void fxWetSet (int s, int k, float v)
@@ -21671,6 +23036,12 @@ processor Eisenpuls_Synth
             fxDirty.at (s) = false;
         }
 
+        float<2> x0 = x;   // FX-EX
+        bool     exOn = fxE.at (s * 8 + 4) > 0.5f;
+
+        if (exOn)
+            x = fxExPre (s, x);
+
         float<2> y = x;
 
         if (ty == 1)       y = fxDist   (s, x);
@@ -21740,13 +23111,16 @@ processor Eisenpuls_Synth
             y = y * (1.0f / (1.0f + en * 12.0f));
         }
 
+        if (exOn)
+            y = fxExPost (s, y, x0);   // FX-EX
+
         y = fxWet (s, y);   // FX-WET
 
         float mix = clamp (fxMix.at (s), 0.0f, 1.0f);
-        float<2> res = x + (y - x) * mix;
+        float<2> res = x0 + (y - x0) * mix;
 
         if (s == fxMon)
-            vzTap (x, res);   // FX-VIZ
+            vzTap (x0, res);   // FX-VIZ
 
         return res;
     }
@@ -32943,8 +34317,8 @@ processor Eisenpuls_Synth
 
             for (int bg = 0; bg < 3; ++bg)
             {
-                float rawL = shapeSig (mixSynthL.at (bg) * 0.35f, driveEff) * gPanL;
-                float rawR = shapeSig (mixSynthR.at (bg) * 0.35f, driveEff) * gPanR;
+                float rawL = mixSynthL.at (bg) * 0.35f * gPanL;   // MASTER-OUT: no drive shaper any more
+                float rawR = mixSynthR.at (bg) * 0.35f * gPanR;
 
                 // always-on DC blocker (about 5 Hz): asymmetric shapers, ring mod and loaded samples can carry DC
                 // that the delay / chorus / flanger / reverb feedback loops would amplify
@@ -33007,14 +34381,7 @@ processor Eisenpuls_Synth
             outL = wdMid + wdSide;
             outR = wdMid - wdSide;
 
-            // ----- output tone (tilt: dark <-> bright) and output gain -----
-            float toneA = clamp (float (twoPi) * 1200.0f * dt, 0.0f, 1.0f);
-            toneStL += toneA * (outL - toneStL);
-            toneStR += toneA * (outR - toneStR);
-            float toneHiL = outL - toneStL;
-            float toneHiR = outR - toneStR;
-            outL = toneStL * (1.0f - 0.6f * toneAmt) + toneHiL * (1.0f + 0.6f * toneAmt);
-            outR = toneStR * (1.0f - 0.6f * toneAmt) + toneHiR * (1.0f + 0.6f * toneAmt);
+            // ----- output gain (MASTER-OUT: the tone tilt is gone) -----
             outL = outL * outGain * outGainMod;
             outR = outR * outGain * outGainMod;
 
@@ -33030,6 +34397,27 @@ processor Eisenpuls_Synth
             dcXR = dcInR;
             outL = dcYL;
             outR = dcYR;
+
+            // ----- MASTER-OUT: look-ahead limiter (48 samples), then the safety clamp -----
+            limBufL.at (limPos) = outL;
+            limBufR.at (limPos) = outR;
+
+            if (limOn > 0.5f)
+            {
+                float pk = 0.0f;
+
+                for (int li = 0; li < 48; ++li)
+                    pk = max (pk, max (abs (limBufL.at ((limPos - li) & 63)), abs (limBufR.at ((limPos - li) & 63))));
+
+                float tg = pk > limCeil ? limCeil / pk : 1.0f;
+                limGain += tg < limGain ? (tg - limGain) * 0.15f : (tg - limGain) * 0.00026f;
+                int   dp = (limPos - 47) & 63;
+                float ga = min (limGain, tg);
+                outL = limBufL.at (dp) * ga;
+                outR = limBufR.at (dp) * ga;
+            }
+
+            limPos = (limPos + 1) & 63;
 
             outL = clamp (outL, -1.0f, 1.0f);
             outR = clamp (outR, -1.0f, 1.0f);

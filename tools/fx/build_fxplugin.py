@@ -13,10 +13,10 @@ def rep(old, new, count=1):
     assert src.count(old) == count, (old[:80], src.count(old))
     src = src.replace(old, new)
 rep('    output stream float<2> out;\n', '    output stream float<2> out;\n    input stream float<2> audioIn;   // FX-PLUGIN: the signal the racks process\n')
-rep('                float rawL = shapeSig (mixSynthL.at (bg) * 0.35f, driveEff) * gPanL;\n                float rawR = shapeSig (mixSynthR.at (bg) * 0.35f, driveEff) * gPanR;\n',
+rep('                float rawL = mixSynthL.at (bg) * 0.35f * gPanL;   // MASTER-OUT: no drive shaper any more\n                float rawR = mixSynthR.at (bg) * 0.35f * gPanR;\n',
     '                float xinL = audioIn[0];\n                float xinR = audioIn[1];\n'
-    '                float rawL = (xinL + driveEff * (shapeSig (xinL, driveEff) - xinL)) * gPanL;   // FX-PLUGIN: Drive blends the shaped input in\n'
-    '                float rawR = (xinR + driveEff * (shapeSig (xinR, driveEff) - xinR)) * gPanR;\n')
+    '                float rawL = xinL * gPanL;   // FX-PLUGIN: the input signal (MASTER-OUT: no drive shaper)\n'
+    '                float rawR = xinR * gPanR;\n')
 rep('                busInL.at (bg) = dcL * masterLevel;\n                busInR.at (bg) = dcR * masterLevel;\n', '                busInL.at (bg) = dcL;\n                busInR.at (bg) = dcR;\n')
 rep('            outL = clamp (outL, -1.0f, 1.0f);\n            outR = clamp (outR, -1.0f, 1.0f);\n', '            outL = clamp (outL, -8.0f, 8.0f);\n            outR = clamp (outR, -8.0f, 8.0f);\n')
 rep('    float driveAmt     = 0.1f;\n', '    float driveAmt     = 0.0f;\n')

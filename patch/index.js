@@ -3454,6 +3454,10 @@ const SPECS = (() => {
     // FX-WET: P7..P10 of every effect slot: ids 11000 + 4 * g + k (g = global slot: 0..47 racks, 48 + 16 * osc + slot for the oscillator racks)
     const wetName = g => g < 30 ? FX_RACKS[Math.floor(g / 10)].name + " FX " + (g % 10 + 1) : g < 48 ? FX_RACKS[Math.floor((g - 30) / 6)].name + " FX " + (11 + (g - 30) % 6) : "OSC " + (Math.floor((g - 48) / 16) + 1) + " FX " + ((g - 48) % 16 + 1);
     for (let g = 0; g < 144; g++) [["Low Cut", 0], ["High Cut", 1], ["Width", 0.5], ["Sat", 0]].forEach((w, k) => L.push([11000 + 4 * g + k, wetName(g) + " " + w[0], 0, 1, w[1], "", "sld", null, 1, w[0]]));
+    L.push([11600, "Out Limiter", 0, 1, 1, "", "btn", ["Off", "On"], 1, "Limiter"]);   // MASTER-OUT
+    L.push([11601, "Out Ceiling", -6, 0, -0.3, "dB", "sld", null, 1, "Ceiling"]);
+    // FX-EX: effect specific extra parameters, ids 11700 + 4 * g + k (g like FX-WET); the meaning follows the effect type (native_ui/NjoFxEx.h)
+    for (let g = 0; g < 144; g++) for (let k = 0; k < 4; k++) L.push([11700 + 4 * g + k, wetName(g) + " Ext " + (k + 1), 0, 1, 0, "", "sld", null, 1, "Ext " + (k + 1)]);
     // EURO: Eurorack rack of Njohrr Modular
     {
         const ESRC = ["Off", "Synth L", "Synth R", "Audio In L", "Audio In R"];
@@ -3577,7 +3581,7 @@ const SPECS = (() => {
 const SPEC_BY_NUM = new Map(SPECS.map(s => [s.num, s]));
 
 // FX page
-const FX_OUT = [28, 536, 175, 189, 221, 222];
+const FX_OUT = [175, 221, 222, 11600, 11601];   // MASTER-OUT: Synth Drive, Drive Algorithm and Tone are gone
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const CHUNK = 256;
