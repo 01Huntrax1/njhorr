@@ -27,7 +27,8 @@ TAB.update({t: TIME for t in (3, 8, 12, 29, 31, 32, 33)})
 TAB.update({t: MOD for t in (4, 5, 6, 7, 16)})
 TAB.update({t: FLT for t in (9, 10, 13, 17, 18, 23, 24, 25, 26, 27)})
 TAB[11] = [HP, GATE, AIR, TRIM]; TAB[30] = [DUCK, WARM, AIR, TRIM]
-assert sorted(TAB) == list(range(1, 35))
+TAB[35] = [PD, DUCK, REL, AIR]; TAB[36] = [HP, GATE, WARM, TRIM]; TAB[37] = [HP, GATE, AIR, TRIM]   # Yaybahar parts (build_ybparts.py)
+assert sorted(TAB) == list(range(1, 38))
 NTY = 40
 flat = []
 for t in range(NTY): flat += TAB.get(t, [0, 0, 0, 0])

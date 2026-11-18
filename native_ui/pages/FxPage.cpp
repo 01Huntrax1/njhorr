@@ -889,6 +889,71 @@ static int fxFilterShape (int mode)
                     juce::ignoreUnused (xa, xb, damp);
                     label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (juce::roundToInt (f0)) + " Hz string   " + juce::String (juce::roundToInt (sprMs)) + " ms spring   " + juce::String (juce::roundToInt (fm)) + " Hz drum");
                 }
+                else if (ty == 35)   // Yb Spring: the dispersive spring (FX-YBPARTS)
+                {
+                    const double sprMs = 20.0 * std::pow (12.5, P (0)), dec = P (1), disp = P (2), damp = P (3), boing = P (4);
+                    const int two = (mode % 3) == 1 ? 2 : 1;
+                    for (int v = 0; v < ((mode % 3) == 0 ? 1 : 2); ++v)
+                    {
+                        const float cy = (mode % 3) == 0 ? Y (0.5) : Y (v == 0 ? 0.32 : 0.68);
+                        const int turns = 8 + juce::roundToInt ((v == 1 && (mode % 3) != 2 ? 1.37 : 1.0) * 16.0 * P (0));
+                        juce::Path p; const float x0 = X (0.08), x1 = x0 + (X (0.92) - x0) * (0.55f + 0.45f * (float) dec);
+                        for (int i = 0; i <= turns * 12; ++i)
+                        {
+                            float u = (float) i / (float) (turns * 12), uu = (float) std::pow ((double) u, 1.0 + 0.8 * disp);
+                            float amp = (0.10f - 0.05f * (float) damp * u) * H, wob = (float) boing * 0.05f * H * (float) std::sin (u * 9.0 + v);
+                            float xx = x0 + uu * (x1 - x0), yy = cy + wob + amp * (float) std::sin (u * turns * 2 * pi);
+                            if (i == 0) p.startNewSubPath (xx, yy); else p.lineTo (xx, yy);
+                        }
+                        stroke (p, 0.9f, 1.8f);
+                        g.setColour (ink.withAlpha (0.5f)); g.drawLine (X (0.02), cy, x0, cy, 1.4f);
+                    }
+                    juce::ignoreUnused (two);
+                    label (juce::String (juce::roundToInt (sprMs)) + " ms spring   " + juce::String (juce::roundToInt (dec * 100.0)) + "% decay");
+                }
+                else if (ty == 36)   // Yb Drum: rectangular membrane, mode bars
+                {
+                    const bool key = mode >= 3; const int mm = key ? mode - 3 : mode;
+                    const double fm = 40.0 * std::pow (6.25, P (0)), asp = 0.6 + P (2), xs = 0.1 + 0.4 * P (3), xp = 0.1 + 0.4 * P (4), dk = 0.2 + 1.8 * P (5), t60 = 0.4 + 2.5 * P (1);
+                    static const int mmv[8] = { 1, 1, 2, 2, 1, 3, 2, 3 }, nnv[8] = { 1, 2, 1, 2, 3, 1, 3, 2 };
+                    const double nrm = std::sqrt (1.0 + 1.0 / (asp * asp));
+                    const int drums = mm == 0 ? 1 : 2;
+                    for (int v = 0; v < drums; ++v)
+                    {
+                        const double tune = v == 0 ? 1.0 : (mm == 1 ? 0.5 : 0.94);
+                        const float base = drums == 1 ? Y (0.92) : (v == 0 ? Y (0.48) : Y (0.94));
+                        const float hh = drums == 1 ? 0.8f * H : 0.4f * H;
+                        for (int k = 0; k < 8; ++k)
+                        {
+                            const double ratio = std::sqrt ((double) (mmv[k] * mmv[k]) + (double) (nnv[k] * nnv[k]) / (asp * asp)) / nrm, f = fm * tune * ratio;
+                            const double w = std::abs (std::sin (pi * mmv[k] * xs) * std::sin (pi * nnv[k] * 0.46) * std::sin (pi * mmv[k] * xp) * std::sin (pi * nnv[k] * 0.45));
+                            const double tk = t60 / (1.0 + dk * (ratio - 1.0));
+                            const float x = X (std::log (f / 30.0) / std::log (2000.0 / 30.0)), a = (float) juce::jlimit (0.04, 1.0, w * 1.4) * hh;
+                            g.setColour (col.withAlpha ((float) juce::jlimit (0.25, 0.95, tk / (t60 + 0.01) + 0.2))); g.fillRect (x - 2.0f, base - a, 4.0f, a);
+                        }
+                    }
+                    label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (juce::roundToInt (fm)) + " Hz drum   aspect " + juce::String (asp, 2));
+                }
+                else if (ty == 37)   // Yb String: string loop with harmonic bars
+                {
+                    const bool key = mode >= 3; const int mm = key ? mode - 3 : mode;
+                    const double f0 = 40.0 * std::pow (20.0, P (0)), dec = P (1), damp = P (2), bow = P (3), ct = (P (4) - 0.5) * 50.0;
+                    const float cy = Y (0.3);
+                    g.setColour (ink.withAlpha (0.6f)); g.drawLine (X (0.04), cy, X (0.96), cy, 1.5f);
+                    juce::Path sp; for (int i = 0; i <= 80; ++i) { float u = (float) i / 80.0f, yy = cy + (float) (0.14 * H * (0.4 + 0.6 * bow) * std::sin (u * pi) * std::sin (u * 2 * pi * 3.0)); if (i == 0) sp.startNewSubPath (X (0.04) + u * (X (0.96) - X (0.04)), yy); else sp.lineTo (X (0.04) + u * (X (0.96) - X (0.04)), yy); }
+                    stroke (sp, 0.9f, 1.8f);
+                    const float base = Y (0.92);
+                    for (int s2 = 0; s2 < (mm == 0 ? 1 : 2); ++s2)
+                        for (int h = 1; h <= 24; ++h)
+                        {
+                            const double f = f0 * h * (s2 == 0 ? 1.0 : (mm == 2 ? 0.5 : 1.0) * std::pow (2.0, ct / 1200.0));
+                            if (f > 18000.0) break;
+                            const double a = std::pow (0.5 + 0.5 * dec, h) * (1.0 / (1.0 + h * (1.2 - damp)));
+                            const float x = X (std::log (f / 30.0) / std::log (18000.0 / 30.0)), hh = (float) juce::jlimit (0.02, 1.0, a * 2.0) * 0.5f * H;
+                            g.setColour (col.withAlpha (s2 == 0 ? 0.9f : 0.5f)); g.fillRect (x - 1.5f, base - hh, 3.0f, hh);
+                        }
+                    label ((key ? juce::String ("KEY TRACK  ") : juce::String()) + juce::String (juce::roundToInt (f0)) + " Hz string");
+                }
 
                 // ---- live data of the DSP (FX-VIZ): spectrum strip (output filled, input as ticks), level meters and the operating point on transfer curves ----
                 {
@@ -915,7 +980,7 @@ static int fxFilterShape (int mode)
                         }
                         g.setColour (dim); g.setFont (font (7.5f, true)); g.drawText ("IN   OUT", juce::Rectangle<float> (r.getRight() - 32.0f, r.getBottom() - 11.0f, 34.0f, 10.0f).toNearestInt(), juce::Justification::centred, false);
                         // time based effects: the real level over the last 4 seconds (echoes, tremolo, reverb tail, grains ...)
-                        if (ty == 3 || (ty >= 4 && ty <= 8) || ty == 12 || (ty >= 29 && ty <= 33) || ty == 16)
+                        if (ty == 3 || (ty >= 4 && ty <= 8) || ty == 12 || (ty >= 29 && ty <= 33) || (ty >= 35 && ty <= 37) || ty == 16)
                         {
                             const float th = H * 0.34f, ty0 = r.getY() + 4.0f;
                             auto lv = [&] (float a) { return juce::jlimit (0.0f, 1.0f, (20.0f * std::log10 (juce::jmax (1e-4f, a)) + 60.0f) / 60.0f); };
