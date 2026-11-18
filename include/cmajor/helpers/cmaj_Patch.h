@@ -327,6 +327,7 @@ struct Patch
     std::function<void()> handleInfiniteLoop;
 
     LoadParams lastLoadParams;
+    bool loadParamsPending = false;   // a build with lastLoadParams (project state) has not replaced the renderer yet: the live parameter values are stale
 
 private:
     //==============================================================================
@@ -2022,6 +2023,8 @@ inline bool Patch::loadPatch (const LoadParams& params, bool synchronous)
     if (std::addressof (lastLoadParams) != std::addressof (params))
         lastLoadParams = params;
 
+    loadParamsPending = true;
+
     auto build = std::make_unique<Build> (*this, params, true, true);
 
     setStatus ("Loading: " + params.manifest.manifestFile);
@@ -2183,7 +2186,8 @@ inline void Patch::rebuild (bool synchronous)
 {
     try
     {
-        if (isPlayable())
+        // not while a load is still being built: the live values are those of the old DSP (defaults) and would overwrite the project's values
+        if (isPlayable() && ! loadParamsPending)
             for (auto& param : getParameterList())
                 lastLoadParams.parameterValues[param->properties.endpointID] = param->currentValue;
 
@@ -2625,6 +2629,7 @@ inline void Patch::setNewRenderer (std::shared_ptr<PatchRenderer> newRenderer)
     fileChangeChecker.reset();
     renderer.reset();
     sendPatchChange();
+    loadParamsPending = false;
 
     if (newRenderer != nullptr)
     {
