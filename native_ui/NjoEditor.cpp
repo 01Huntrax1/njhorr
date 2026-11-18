@@ -298,18 +298,21 @@ namespace njo
             static const Seg gH[] = {{6.6f,8.9f,10.8f,7.0f},{0.8f,19.4f,0.6f,13.9f},{1.0f,-9.2f,0.9f,-15.2f},{13.2f,2.0f,9.0f,-2.5f}};
             static const Seg gR[] = {{0.0f,18.4f,0.0f,11.6f},{0.2f,-11.9f,-0.1f,-18.5f},{13.4f,-8.5f,7.5f,-8.5f},{4.2f,-10.8f,0.9f,-11.1f},{11.5f,-1.4f,8.8f,-4.1f},{6.2f,-12.2f,8.8f,-15.0f},{8.2f,-5.2f,7.6f,-8.4f}};
             struct G { const Seg* s; int n; float ox; };
-            const G glyphs[] = {{gN,6,-4.0f},{gJ,7,-1.0f},{gO,4,0.0f},{gH,4,-4.0f},{gR,7,-4.0f},{gR,7,-4.0f}};
-            const float sc = 0.82f, pitch = 19.5f;
-            float cx = t.getX() + 16.0f + 8.0f, cyy = t.getCentreY();
+            const G glyphs[] = {{gN,6,0.0f},{gJ,7,0.0f},{gO,4,0.0f},{gH,4,0.0f},{gR,7,0.0f},{gR,7,0.0f}};
+            const float sc = 0.9f, gap = 5.0f;
+            float cx = t.getX() + 22.0f, cyy = t.getCentreY();
             g.setColour (red);
             for (auto& gl : glyphs)
             {
+                float mn = 1e9f, mx = -1e9f;
+                for (int i = 0; i < gl.n; ++i) { mn = juce::jmin (mn, gl.s[i].x0, gl.s[i].x1); mx = juce::jmax (mx, gl.s[i].x0, gl.s[i].x1); }
                 for (int i = 0; i < gl.n; ++i)
                 {
                     auto& q = gl.s[i];
-                    g.drawLine (cx + (q.x0 + gl.ox) * sc, cyy + q.y0 * sc, cx + (q.x1 + gl.ox) * sc, cyy + q.y1 * sc, 3.0f);
+                    juce::Path sp; sp.startNewSubPath (cx + (q.x0 - mn) * sc, cyy + q.y0 * sc); sp.lineTo (cx + (q.x1 - mn) * sc, cyy + q.y1 * sc);
+                    g.strokePath (sp, juce::PathStrokeType (2.4f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
                 }
-                cx += pitch;
+                cx += (mx - mn) * sc + gap;
             }
         }
         auto model = juce::Rectangle<float> (t.getX() + 138, t.getY() + 13, 72, 18);
