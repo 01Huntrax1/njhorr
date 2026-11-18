@@ -290,8 +290,28 @@ namespace njo
         g.setColour (juce::Colour (0xff5c6067)); g.strokePath (tp, juce::PathStrokeType (2.0f));
         g.setColour (red.withAlpha (0.5f)); g.drawLine (t.getX() + 3.0f, t.getY() + 26.0f, t.getX() + 26.0f, t.getY() + 3.0f, 1.2f);    // etched cut
         g.drawLine (t.getRight() - 26.0f - 3.0f, t.getBottom() - 3.0f, t.getRight() - 3.0f, t.getBottom() - 26.0f - 3.0f, 1.2f);
-        g.setColour (red); g.setFont (impact (21.0f));
-        g.drawText ("NJOHRR", juce::Rectangle<int> (impl->topBar.getX() + 16, impl->topBar.getY(), 130, impl->topBar.getHeight()), juce::Justification::centredLeft);
+        {   // title in Yautja glyphs (traced strokes, cell-relative coordinates)
+            struct Seg { float x0, y0, x1, y1; };
+            static const Seg gN[] = {{0.0f,-12.2f,0.0f,-15.6f},{0.1f,-7.5f,0.1f,-13.2f},{13.1f,-5.5f,7.5f,-5.5f},{8.1f,-1.8f,7.6f,-4.6f},{12.6f,2.9f,9.5f,-0.6f},{6.6f,-9.8f,9.2f,-12.6f}};
+            static const Seg gJ[] = {{-7.1f,5.2f,-10.8f,4.2f},{0.6f,17.0f,0.8f,14.1f},{1.6f,-11.5f,0.9f,-14.2f},{5.2f,-11.4f,10.0f,-15.8f},{8.5f,5.1f,11.2f,4.5f},{0.9f,-13.6f,1.0f,-17.8f},{2.1f,-11.1f,5.5f,-11.4f}};
+            static const Seg gO[] = {{0.0f,19.1f,0.0f,12.6f},{0.1f,-11.4f,0.1f,-15.9f},{7.1f,7.4f,10.5f,6.5f},{-6.6f,7.9f,-10.9f,6.2f}};
+            static const Seg gH[] = {{6.6f,8.9f,10.8f,7.0f},{0.8f,19.4f,0.6f,13.9f},{1.0f,-9.2f,0.9f,-15.2f},{13.2f,2.0f,9.0f,-2.5f}};
+            static const Seg gR[] = {{0.0f,18.4f,0.0f,11.6f},{0.2f,-11.9f,-0.1f,-18.5f},{13.4f,-8.5f,7.5f,-8.5f},{4.2f,-10.8f,0.9f,-11.1f},{11.5f,-1.4f,8.8f,-4.1f},{6.2f,-12.2f,8.8f,-15.0f},{8.2f,-5.2f,7.6f,-8.4f}};
+            struct G { const Seg* s; int n; float ox; };
+            const G glyphs[] = {{gN,6,-4.0f},{gJ,7,-1.0f},{gO,4,0.0f},{gH,4,-4.0f},{gR,7,-4.0f},{gR,7,-4.0f}};
+            const float sc = 0.82f, pitch = 19.5f;
+            float cx = t.getX() + 16.0f + 8.0f, cyy = t.getCentreY();
+            g.setColour (red);
+            for (auto& gl : glyphs)
+            {
+                for (int i = 0; i < gl.n; ++i)
+                {
+                    auto& q = gl.s[i];
+                    g.drawLine (cx + (q.x0 + gl.ox) * sc, cyy + q.y0 * sc, cx + (q.x1 + gl.ox) * sc, cyy + q.y1 * sc, 3.0f);
+                }
+                cx += pitch;
+            }
+        }
         auto model = juce::Rectangle<float> (t.getX() + 138, t.getY() + 13, 72, 18);
         g.setColour (red); g.fillRoundedRectangle (model, 1.5f);
         g.setColour (juce::Colour (0xff101112)); g.setFont (font (10.0f, true)); g.drawText (NJOHRR_FX_ONLY ? "FX" : (NJOHRR_MODULAR ? "MODULAR" : "SYNTH"), model.toNearestInt(), juce::Justification::centred);
