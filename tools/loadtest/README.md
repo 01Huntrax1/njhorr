@@ -1,0 +1,2 @@
+Reproduces the plugin's load path without a host: `cmaj::Patch` with the generated engine, the project state (osc 1 = Kick) applied by a message-thread build while the host thread rebuilds for a new sample rate.
+Needs `perf_ns.inc` (lines 27..312176 of cmajor_plugin.cpp: the `performer` namespace) and a stub of choc_MessageLoop.h (no GTK). `./loadtest 8 <delay ms>` must print a non-zero rms for every delay.

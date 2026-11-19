@@ -359,6 +359,8 @@ private:
 
     std::unique_ptr<BuildThread> buildThread;
     std::atomic<uint16_t> nextViewID { 0 };
+    std::atomic<uint32_t> buildGeneration { 0 };   // number of the most recently started build: when several builds run at once (the host changes the rate while the project state loads) only the latest may replace the renderer
+    std::recursive_mutex installRendererLock;
 
     void sendPatchChange();
     void setNewRenderer (std::shared_ptr<PatchRenderer>);
@@ -1682,6 +1684,7 @@ struct Patch::PatchRenderer  : public std::enable_shared_from_this<PatchRenderer
     cmaj::DiagnosticMessageList errors;
     std::string lastBuildLog;
     PlaybackParams configuredPlaybackParams;
+    uint32_t generation = 0;
 
     choc::value::Value programDetails;
     std::vector<PatchParameterPtr> parameterList;
@@ -1822,7 +1825,8 @@ struct Patch::Build
     Build (Patch& p, LoadParams lp, bool shouldResolveExternals, bool shouldLink)
        : patch (p), loadParams (std::move (lp)),
          resolveExternals (shouldResolveExternals),
-         performLink (shouldLink)
+         performLink (shouldLink),
+         generation (++p.buildGeneration)
     {}
 
     cmaj::DiagnosticMessageList& getMessageList()
@@ -1841,6 +1845,7 @@ struct Patch::Build
             sourceTransformer = std::make_unique<SourceTransformer> (patch, engine.getBuildSettings().getTransformTimeout());
 
         renderer = std::make_shared<PatchRenderer> (patch);
+        renderer->generation = generation;
         renderer->build (engine, loadParams, patch.currentPlaybackParams,
                          resolveExternals, performLink, patch.cache,
                          [&] (DiagnosticMessageList& errors, const std::string& filename, const std::string& content) -> std::string { return transformSource (errors, filename, content); },
@@ -1866,6 +1871,7 @@ private:
     Patch& patch;
     LoadParams loadParams;
     const bool resolveExternals, performLink;
+    const uint32_t generation;
     std::shared_ptr<PatchRenderer> renderer;
     std::unique_ptr<AudioMIDIPerformer::Builder> performerBuilder;
     std::unique_ptr<SourceTransformer> sourceTransformer;
@@ -2618,6 +2624,12 @@ inline void Patch::sendPatchChange()
 inline void Patch::setNewRenderer (std::shared_ptr<PatchRenderer> newRenderer)
 {
     if (renderer == nullptr && newRenderer == nullptr)
+        return;
+
+    std::scoped_lock installLock (installRendererLock);
+
+    // a newer build was started while this one was running (e.g. the host's prepareToPlay rebuild against the project state): this one is stale
+    if (newRenderer != nullptr && newRenderer->generation != buildGeneration.load())
         return;
 
     if (currentPlaybackParams != newRenderer->configuredPlaybackParams)
