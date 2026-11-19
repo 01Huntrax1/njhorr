@@ -13,8 +13,10 @@
 #include "../NjoSp.h"
 #include "../NjoSf.h"
 #include "../NjoBp.h"
+#include "../NjoSm.h"
 #include "OscDisplays.h"
 #include "Editors.h"
+#include "SampleEditor.h"
 #include <array>
 
 namespace njo
@@ -202,6 +204,19 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Sampler extras: their own id block (SM_BASE + 16 * osc + j)
+            for (auto key : smKeys)
+            {
+                auto w = makeWidget (ctx, sm::smId (o, sm::key (key)), true);
+                owner.addAndMakeVisible (*w);
+                widgets[key] = std::move (w);
+            }
+            if (pageMode == 0)
+            {
+                sedit = std::make_unique<SampleEditor> (c, m, osc);
+                owner.addChildComponent (sedit.get());
+                sedit->onClose = [this] { layoutChildren(); };
+            }
             // Waveguide source: its own id block (WG_BASE + 16 * osc + j)
             for (auto key : wgKeys)
             {
@@ -333,6 +348,7 @@ namespace njo
         void openEditor()
         {
             if (tedit) tedit->open();
+            else if (sedit && srcType() == 1) sedit->open();
             else if (medit) { medit->open (mode == 3 ? 2 : 0); }
             layoutChildren();
         }
@@ -341,6 +357,7 @@ namespace njo
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
+        static constexpr const char* smKeys[] = { "send", "slps", "slpe", "spp", "sxf", "srev", "sint", "sgain", "svst", "sslice", "swid" };
         static constexpr const char* grKeys[] = { "gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gdrive", "gvel" };
         static constexpr const char* adKeys[] = { "ashape", "ashapeb", "amorph", "acount", "atilt", "aodd", "ainh", "aform", "aformg", "ashim", "ashimr", "adec", "adrive", "awid", "avel" };
         static constexpr const char* spKeys[] = { "smode", "spos", "spos2", "smorph", "sscan", "sblur", "sshift", "stilt", "sharm", "sodd", "scomb", "scont", "sjit", "sspr", "swid", "svel" };
@@ -568,9 +585,22 @@ namespace njo
                 put ("w2m", 13, 358, colW, 36, c, wt);     strip ("w2m", 13, 358, colW, c, false, wt);
                 knob ("w2a", x2 + colW / 2, 348, c, wt);
 
-                put ("root", 13, grf ? 200 : 248, 106, 17, c, sm || grf);     strip ("root", 13, grf ? 188 : 236, 106, c, true, sm || grf);
-                knob ("sstart", 179, 222, c, sm);
-                put ("sloop", 13, 337, w - 26, 32, c, sm);
+                put ("root", 13, 200, 106, 17, c, grf);     strip ("root", 13, 188, 106, c, true, grf);
+                if (! sm) knob ("sstart", 179, 222, c, false);
+                else
+                {   // Sampler: five knobs (play region and loop), three knobs (gain, width, velocity > start), switches and the slice count
+                    const float fw = (float) (w - 26);
+                    const char* r1[] = { "sstart", "send", "slps", "slpe", "sxf" };
+                    for (int i = 0; i < 5; ++i) knob (r1[i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 168, c, true);
+                    const char* r2[] = { "sgain", "swid", "svst" };
+                    for (int i = 0; i < 3; ++i) knob (r2[i], 13 + juce::roundToInt (fw * (2 * i + 1) / 10), 228, c, true);
+                    put ("sslice", 13 + juce::roundToInt (fw * 6.0f / 10.0f) + 3, 244, juce::roundToInt (fw * 0.4f) - 6, 22, c, true);
+                    strip ("sslice", 13 + juce::roundToInt (fw * 6.0f / 10.0f) + 3, 232, juce::roundToInt (fw * 0.4f) - 6, c, true, true);
+                    put ("root", 13, 316, 106, 17, c, true);   strip ("root", 13, 304, 106, c, true, true);
+                    const int bw = (w - 26 - 3 * 6) / 4, by = 346;
+                    const char* bs[] = { "sloop", "spp", "srev", "sint" };
+                    for (int i = 0; i < 4; ++i) put (bs[i], 13 + i * (bw + 6), by, bw, 32, c, true);
+                }
 
                 {   // Wave Terrain: two terrain selectors, then the macro knobs, the orbit and the output, five knobs per row
                     const int cw2 = (w - 26 - 8) / 2;
@@ -822,11 +852,12 @@ namespace njo
             {
                 const bool tbl = (mode == 1 || mode == 2);
                 const bool res = (mode == 3) || (mode == 0 && type == 3);
-                if (tbl) { editBtn.setBounds (cardOut.getRight() - 12 - 84, 6, 84, 18); editBtn.setVisible (true); }
+                if (mode == 0 && type == 1 && sedit) { editBtn.setBounds (cardSrc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
+                else if (tbl) { editBtn.setBounds (cardOut.getRight() - 12 - 84, 6, 84, 18); editBtn.setVisible (true); }
                 else if (res) { auto& cc = mode == 3 ? cardFlt : cardSrc; editBtn.setBounds (cc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
-                for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get() })
+                for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get(), (juce::Component*) sedit.get() })
                     if (e) { e->setBounds (owner.getLocalBounds()); }
-                if ((tedit && tedit->isVisible()) || (medit && medit->isVisible())) editBtn.setVisible (false);
+                if ((tedit && tedit->isVisible()) || (medit && medit->isVisible()) || (sedit && sedit->isVisible())) editBtn.setVisible (false);
             }
             modeA.setOn (! (mode == 1 ? juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30 : juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7));
             modeB.setOn (! modeA.on);
@@ -919,7 +950,7 @@ if (! wf)
         OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
         ResoDisplay rdisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault, presetBtn { "PRESET" };
-        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit;
+        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit; std::unique_ptr<SampleEditor> sedit;
          std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
     };

@@ -6327,6 +6327,74 @@ processor Eisenpuls_Synth
     input event float param3594 [[ name: "OSC 6 Bagpipe Vibrato", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param3595 [[ name: "OSC 6 Bagpipe Blow", min: 0.0, max: 1.0, init: 0.0 ]];
     // BP-DECL-END
+    // SM-DECL-BEGIN
+    input event float param12300 [[ name: "OSC 1 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12301 [[ name: "OSC 1 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12302 [[ name: "OSC 1 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12303 [[ name: "OSC 1 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12304 [[ name: "OSC 1 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12305 [[ name: "OSC 1 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12306 [[ name: "OSC 1 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12307 [[ name: "OSC 1 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12308 [[ name: "OSC 1 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12309 [[ name: "OSC 1 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12310 [[ name: "OSC 1 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    input event float param12316 [[ name: "OSC 2 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12317 [[ name: "OSC 2 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12318 [[ name: "OSC 2 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12319 [[ name: "OSC 2 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12320 [[ name: "OSC 2 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12321 [[ name: "OSC 2 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12322 [[ name: "OSC 2 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12323 [[ name: "OSC 2 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12324 [[ name: "OSC 2 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12325 [[ name: "OSC 2 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12326 [[ name: "OSC 2 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    input event float param12332 [[ name: "OSC 3 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12333 [[ name: "OSC 3 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12334 [[ name: "OSC 3 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12335 [[ name: "OSC 3 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12336 [[ name: "OSC 3 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12337 [[ name: "OSC 3 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12338 [[ name: "OSC 3 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12339 [[ name: "OSC 3 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12340 [[ name: "OSC 3 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12341 [[ name: "OSC 3 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12342 [[ name: "OSC 3 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    input event float param12348 [[ name: "OSC 4 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12349 [[ name: "OSC 4 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12350 [[ name: "OSC 4 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12351 [[ name: "OSC 4 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12352 [[ name: "OSC 4 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12353 [[ name: "OSC 4 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12354 [[ name: "OSC 4 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12355 [[ name: "OSC 4 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12356 [[ name: "OSC 4 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12357 [[ name: "OSC 4 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12358 [[ name: "OSC 4 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    input event float param12364 [[ name: "OSC 5 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12365 [[ name: "OSC 5 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12366 [[ name: "OSC 5 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12367 [[ name: "OSC 5 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12368 [[ name: "OSC 5 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12369 [[ name: "OSC 5 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12370 [[ name: "OSC 5 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12371 [[ name: "OSC 5 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12372 [[ name: "OSC 5 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12373 [[ name: "OSC 5 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12374 [[ name: "OSC 5 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    input event float param12380 [[ name: "OSC 6 Sample End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12381 [[ name: "OSC 6 Sample Loop Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12382 [[ name: "OSC 6 Sample Loop End", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12383 [[ name: "OSC 6 Sample Loop Mode", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12384 [[ name: "OSC 6 Sample Loop Crossfade", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12385 [[ name: "OSC 6 Sample Reverse", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param12386 [[ name: "OSC 6 Sample Interpolation", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
+    input event float param12387 [[ name: "OSC 6 Sample Gain", min: -24.0, max: 12.0, init: 0.0 ]];
+    input event float param12388 [[ name: "OSC 6 Sample Vel Start", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param12389 [[ name: "OSC 6 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
+    input event float param12390 [[ name: "OSC 6 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
+    // SM-DECL-END
     input event float param1600 [[ name: "Freq Mod 1 Rate (ms)", min: 5.0, max: 10000.0, init: 300.0 ]];
     input event float param1601 [[ name: "Freq Mod 1 Transpose (semitones)", min: -48.0, max: 48.0, init: 0.0 ]];
     input event float param1602 [[ name: "Freq Mod 1 Retrig", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
@@ -15595,6 +15663,74 @@ processor Eisenpuls_Synth
     event param3594 (float v) { bpSet (5, 14, v); }
     event param3595 (float v) { bpSet (5, 15, v); }
     // BP-HAND-END
+    // SM-HAND-BEGIN
+    event param12300 (float v) { smP.at (0) = v; }
+    event param12301 (float v) { smP.at (1) = v; }
+    event param12302 (float v) { smP.at (2) = v; }
+    event param12303 (float v) { smP.at (3) = v; }
+    event param12304 (float v) { smP.at (4) = v; }
+    event param12305 (float v) { smP.at (5) = v; }
+    event param12306 (float v) { smP.at (6) = v; }
+    event param12307 (float v) { smP.at (7) = v; }
+    event param12308 (float v) { smP.at (8) = v; }
+    event param12309 (float v) { smP.at (9) = v; }
+    event param12310 (float v) { smP.at (10) = v; }
+    event param12316 (float v) { smP.at (16) = v; }
+    event param12317 (float v) { smP.at (17) = v; }
+    event param12318 (float v) { smP.at (18) = v; }
+    event param12319 (float v) { smP.at (19) = v; }
+    event param12320 (float v) { smP.at (20) = v; }
+    event param12321 (float v) { smP.at (21) = v; }
+    event param12322 (float v) { smP.at (22) = v; }
+    event param12323 (float v) { smP.at (23) = v; }
+    event param12324 (float v) { smP.at (24) = v; }
+    event param12325 (float v) { smP.at (25) = v; }
+    event param12326 (float v) { smP.at (26) = v; }
+    event param12332 (float v) { smP.at (32) = v; }
+    event param12333 (float v) { smP.at (33) = v; }
+    event param12334 (float v) { smP.at (34) = v; }
+    event param12335 (float v) { smP.at (35) = v; }
+    event param12336 (float v) { smP.at (36) = v; }
+    event param12337 (float v) { smP.at (37) = v; }
+    event param12338 (float v) { smP.at (38) = v; }
+    event param12339 (float v) { smP.at (39) = v; }
+    event param12340 (float v) { smP.at (40) = v; }
+    event param12341 (float v) { smP.at (41) = v; }
+    event param12342 (float v) { smP.at (42) = v; }
+    event param12348 (float v) { smP.at (48) = v; }
+    event param12349 (float v) { smP.at (49) = v; }
+    event param12350 (float v) { smP.at (50) = v; }
+    event param12351 (float v) { smP.at (51) = v; }
+    event param12352 (float v) { smP.at (52) = v; }
+    event param12353 (float v) { smP.at (53) = v; }
+    event param12354 (float v) { smP.at (54) = v; }
+    event param12355 (float v) { smP.at (55) = v; }
+    event param12356 (float v) { smP.at (56) = v; }
+    event param12357 (float v) { smP.at (57) = v; }
+    event param12358 (float v) { smP.at (58) = v; }
+    event param12364 (float v) { smP.at (64) = v; }
+    event param12365 (float v) { smP.at (65) = v; }
+    event param12366 (float v) { smP.at (66) = v; }
+    event param12367 (float v) { smP.at (67) = v; }
+    event param12368 (float v) { smP.at (68) = v; }
+    event param12369 (float v) { smP.at (69) = v; }
+    event param12370 (float v) { smP.at (70) = v; }
+    event param12371 (float v) { smP.at (71) = v; }
+    event param12372 (float v) { smP.at (72) = v; }
+    event param12373 (float v) { smP.at (73) = v; }
+    event param12374 (float v) { smP.at (74) = v; }
+    event param12380 (float v) { smP.at (80) = v; }
+    event param12381 (float v) { smP.at (81) = v; }
+    event param12382 (float v) { smP.at (82) = v; }
+    event param12383 (float v) { smP.at (83) = v; }
+    event param12384 (float v) { smP.at (84) = v; }
+    event param12385 (float v) { smP.at (85) = v; }
+    event param12386 (float v) { smP.at (86) = v; }
+    event param12387 (float v) { smP.at (87) = v; }
+    event param12388 (float v) { smP.at (88) = v; }
+    event param12389 (float v) { smP.at (89) = v; }
+    event param12390 (float v) { smP.at (90) = v; }
+    // SM-HAND-END
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -17068,6 +17204,19 @@ processor Eisenpuls_Synth
             bpP.at (io * 16 + 14) = 0.0f;
             bpP.at (io * 16 + 15) = 0.0f;
             // BP-INIT-END
+            // SM-INIT-BEGIN
+            smP.at (io * 16 + 0) = 1.0f;
+            smP.at (io * 16 + 1) = 0.0f;
+            smP.at (io * 16 + 2) = 1.0f;
+            smP.at (io * 16 + 3) = 0.0f;
+            smP.at (io * 16 + 4) = 0.0f;
+            smP.at (io * 16 + 5) = 0.0f;
+            smP.at (io * 16 + 6) = 1.0f;
+            smP.at (io * 16 + 7) = 0.0f;
+            smP.at (io * 16 + 8) = 0.0f;
+            smP.at (io * 16 + 9) = 1.0f;
+            smP.at (io * 16 + 10) = 1.0f;
+            // SM-INIT-END
             op.at (io * 64 + 11) = 3.0f;
             op.at (io * 64 + 12) = 60.0f;
             op.at (io * 64 + 13) = 1.0f;
@@ -24552,7 +24701,7 @@ processor Eisenpuls_Synth
     // sample memories (one per slot)
     bool[8]       smpHas;  // padded to a power of two (cheap index wrap)
     int[8]        smpLen;  // padded to a power of two (cheap index wrap)
-    float[1048576] smpBuf;
+    float[4194304] smpBuf;
 
     // UNI-ALL: delay lines / phases of the generic unison (all sources except Wavetable and Alpha Juno)
     float[196608] gUniBuf;
@@ -24903,33 +25052,51 @@ processor Eisenpuls_Synth
 
     event smpBankLoad (BankChunk c)
     {
-        int o = clamp (c.bank, 0, 5);
+        bool right = c.bank >= 8;
+        int  o     = clamp (right ? c.bank - 8 : c.bank, 0, 5);
+        int  base  = o * 524288;
 
         if (c.total <= 0)
         {
-            smpHas.at (o) = false;
-            smpLen.at (o) = 0;
+            if (! right)
+            {
+                smpHas.at (o) = false;
+                smpLen.at (o) = 0;
+            }
+
+            smSt.at (o) = false;
             return;
         }
 
         if (c.offset == 0)
-            smpHas.at (o) = false;
+        {
+            if (right)  smSt.at (o) = false;
+            else        smpHas.at (o) = false;
+        }
 
-        int cnt  = clamp (c.count, 0, 256);
-        int base = o * 96000;
+        int cnt = clamp (c.count, 0, 256);
 
         for (int i = 0; i < cnt; ++i)
         {
             int pos = c.offset + i;
-            if (pos >= 0 && pos < 96000)
-                smpBuf.at (base + pos) = c.data.at (i);
+            if (pos >= 0 && pos < 524288)
+            {
+                if (right)  smBufR.at (base + pos) = c.data.at (i);
+                else        smpBuf.at (base + pos) = c.data.at (i);
+            }
         }
 
         if (c.offset + cnt >= c.total)
         {
-            smpLen.at (o) = clamp (c.total, 1, 96000);
-            smpHas.at (o) = true;
-            spInvalidate (o);   // SP: the spectral analysis cache
+            if (right)
+                smSt.at (o) = smpHas.at (o) && clamp (c.total, 1, 524288) == smpLen.at (o);
+            else
+            {
+                smpLen.at (o) = clamp (c.total, 1, 524288);
+                smpHas.at (o) = true;
+                smSt.at (o) = false;
+                spInvalidate (o);   // SP: the spectral analysis cache
+            }
         }
     }
 
@@ -25166,18 +25333,15 @@ processor Eisenpuls_Synth
         return float<2> (sL, sR);
     }
 
-    // linear-interpolated sample read
+    // linear-interpolated sample read (mono sum of the memory: Granular, Spectral)
     float smpRead (int o, float64 pos)
     {
-        int base = o * 96000;
-        int i0   = int (pos);
+        int   i0 = int (pos);
         float fr = float (pos - float64 (i0));
-        int i1   = i0 + 1;
-        int len  = smpLen.at (o);
+        int   i1 = i0 + 1;
+        int   len  = smpLen.at (o);
         if (i1 >= len) i1 = i0;
-        i0 = clamp (i0, 0, 95999);
-        i1 = clamp (i1, 0, 95999);
-        return smpBuf.at (base + i0) * (1.0f - fr) + smpBuf.at (base + i1) * fr;
+        return smMono (o, i0) * (1.0f - fr) + smMono (o, i1) * fr;
     }
 
     // one step of the sampler slot o; returns the sample at the current read position and advances it
@@ -27412,13 +27576,13 @@ processor Eisenpuls_Synth
         int   len   = smpLen.at (o);
         int   start = clamp (q * 1024, 0, max (len - 2048, 0));
         float sr    = float (processor.frequency);
-        int   sb    = o * 96000;
+        int   sb    = o * 524288;
 
         for (int i = 0; i < 2048; ++i)
         {
             int   p = start + i;
             float w = 0.5f - 0.5f * float (cos (6.283185307179586 * float64 (i) / 2048.0));
-            spRe.at (i) = p < len ? smpBuf.at (sb + p) * w : 0.0f;
+            spRe.at (i) = p < len ? smMono (o, p) * w : 0.0f;
             spIm.at (i) = 0.0f;
         }
 
@@ -28198,6 +28362,206 @@ processor Eisenpuls_Synth
     }
 
     // BP-DSP-END
+    // SM-DSP-BEGIN
+    // ---------------- Sampler source (tools/osc/build_sm.py) ----------------
+    float[96]   smP;       // slot * 16 + parameter
+    float[64]   smDir;     // voice * 8 + slot: +1 / -1 playing direction, 0 = a one-shot has ended
+    float[64]   smSl;      // voice * 8 + slot: slice number (-1 = no slice mode)
+    float[4194304] smBufR;   // right channel (stereo samples), slot * 524288
+    bool[8]     smSt;      // the slot holds a stereo sample
+
+    float smq (int o, int j)
+    {
+        return smP.at (o * 16 + j);
+    }
+
+    // mono sum of the memory (Granular, Spectral)
+    float smMono (int o, int idx)
+    {
+        int i = o * 524288 + clamp (idx, 0, 524288 - 1);
+        if (smSt.at (o))
+            return (smpBuf.at (i) + smBufR.at (i)) * 0.5f;
+        return smpBuf.at (i);
+    }
+
+    // interpolated stereo read at a position of the slot
+    float<2> smGet (int o, float64 pos, bool cubic)
+    {
+        int   len  = smpLen.at (o);
+        int   last = max (len - 1, 0);
+        int   i1   = clamp (int (pos), 0, last);
+        float t    = float (pos - float64 (i1));
+        int   i2   = min (i1 + 1, last);
+        int   base = o * 524288;
+        float aL = smpBuf.at (base + i1);
+        float bL = smpBuf.at (base + i2);
+        float aR = aL;
+        float bR = bL;
+        bool  st = smSt.at (o);
+
+        if (st)
+        {
+            aR = smBufR.at (base + i1);
+            bR = smBufR.at (base + i2);
+        }
+
+        if (! cubic)
+            return float<2> (aL + (bL - aL) * t, aR + (bR - aR) * t);
+
+        int i0 = max (i1 - 1, 0);
+        int i3 = min (i1 + 2, last);
+        float y0 = smpBuf.at (base + i0);
+        float y3 = smpBuf.at (base + i3);
+        float oL = ((((-0.5f * y0 + 1.5f * aL - 1.5f * bL + 0.5f * y3) * t) + (y0 - 2.5f * aL + 2.0f * bL - 0.5f * y3)) * t + (-0.5f * y0 + 0.5f * bL)) * t + aL;
+        float oR = oL;
+
+        if (st)
+        {
+            float z0 = smBufR.at (base + i0);
+            float z3 = smBufR.at (base + i3);
+            oR = ((((-0.5f * z0 + 1.5f * aR - 1.5f * bR + 0.5f * z3) * t) + (z0 - 2.5f * aR + 2.0f * bR - 0.5f * z3)) * t + (-0.5f * z0 + 0.5f * bR)) * t + aR;
+        }
+
+        return float<2> (oL, oR);
+    }
+
+    // play region (start, end) and loop region (start, end) of a voice, in samples
+    float<4> smRegion (int o, int vi)
+    {
+        float fl = float (smpLen.at (o));
+        float rs = clamp (opv (o, 22), 0.0f, 1.0f) * fl;
+        float re = fl;
+        float sl = smSl.at (vi * 8 + o);
+
+        if (sl >= 0.0f)
+        {
+            float n = float (clamp (int (smq (o, 9) + 0.5f), 1, 64));
+            rs = fl * sl / n;
+            re = fl * (sl + 1.0f) / n;
+        }
+        else
+            re = clamp (smq (o, 0), 0.0f, 1.0f) * fl;
+
+        re = clamp (max (re, rs + 8.0f), 0.0f, fl);
+        rs = min (rs, re - 8.0f);
+        float span = re - rs;
+        float ls   = rs + clamp (smq (o, 1), 0.0f, 1.0f) * span;
+        float le   = rs + clamp (smq (o, 2), 0.0f, 1.0f) * span;
+        le = clamp (max (le, ls + 8.0f), 0.0f, re);
+        ls = min (ls, le - 8.0f);
+        return float<4> (rs, re, ls, le);
+    }
+
+    // note on: starting position (and direction) of the slot's voice
+    float64 smNoteOn (int v, int o, int nn, float vel, int oldStart)
+    {
+        int len = smpLen.at (o);
+
+        if (len < 2)
+            return float64 (oldStart);
+
+        int n = clamp (int (smq (o, 9) + 0.5f), 1, 64);
+        smSl.at (v * 8 + o) = n > 1 ? float (clamp (nn - int (opv (o, 12) + 0.5f), 0, n - 1)) : -1.0f;
+        float<4> r = smRegion (o, v);
+        float dir  = smq (o, 5) > 0.5f ? -1.0f : 1.0f;
+        smDir.at (v * 8 + o) = dir;
+        float off = clamp (smq (o, 8), 0.0f, 1.0f) * clamp (vel, 0.0f, 1.0f) * (r[1] - r[0]) * 0.9f;
+
+        if (dir > 0.0f)
+            return float64 (r[0] + off);
+
+        return float64 (r[1] - 1.0f - off);
+    }
+
+    // one step of the sampler slot o: stereo sample at the read position, then the position advances
+    float<2> smpStep2 (int o, int vi, float freq, float curFreq, float pm, float st)
+    {
+        float sr  = float (processor.frequency);
+        int   len = smpLen.at (o);
+        float64 sp = voices.at (vi).synPos.at (o);
+        float dir  = smDir.at (vi * 8 + o);
+        float<4> rg = smRegion (o, vi);
+        float rs = rg[0];
+        float re = rg[1];
+        float ls = rg[2];
+        float le = rg[3];
+        bool  lpOn  = opv (o, 23) > 0.5f;
+        bool  pp    = smq (o, 3) > 0.5f;
+        bool  cubic = smq (o, 6) > 0.5f;
+        bool  slice = smSl.at (vi * 8 + o) >= 0.0f;
+
+        float rate = 1.0f;
+        if (! slice && opv (o, 7) > 0.5f)
+            rate = curFreq / max (float (std::notes::noteToFrequency (int (opv (o, 12) + 0.5f))), 1.0f);
+        rate = clamp (rate * float (pow (2.0f, st)) * (48000.0f / sr), 0.0f, 16.0f);
+
+        float<2> out = float<2> (0.0f, 0.0f);
+
+        if (dir != 0.0f)
+        {
+            float64 rp = sp;
+
+            if (pm != 0.0f)
+            {
+                rp = sp + float64 (pm * rate * sr / max (freq, 20.0f));
+                rp = clamp (rp, 0.0, float64 (len - 1));
+            }
+
+            out = smGet (o, rp, cubic);
+            float xf = lpOn && ! pp && dir > 0.0f ? clamp (smq (o, 4), 0.0f, 1.0f) * 0.5f * (le - ls) : 0.0f;
+
+            if (xf > 2.0f && float (sp) > le - xf)
+            {
+                float w  = clamp ((float (sp) - (le - xf)) / xf, 0.0f, 1.0f);
+                float<2> o2 = smGet (o, sp - float64 (le - ls - xf), cubic);
+                out = out * float (cos (w * 1.5707964f)) + o2 * float (sin (w * 1.5707964f));
+            }
+
+            if (! lpOn)   // declick: fade out over the last 48 samples
+            {
+                float fd = dir > 0.0f ? (re - float (sp)) : (float (sp) - rs);
+                out = out * clamp (fd / 48.0f, 0.0f, 1.0f);
+            }
+
+            sp += float64 (dir * rate);
+
+            if (lpOn)
+            {
+                if (pp)
+                {
+                    if (sp >= float64 (le))       { sp = float64 (2.0f * le) - sp; dir = -1.0f; }
+                    else if (sp < float64 (ls))   { sp = float64 (2.0f * ls) - sp; dir = 1.0f; }
+                }
+                else if (dir > 0.0f)
+                {
+                    if (sp >= float64 (le))       sp -= float64 (le - ls - xf);
+                }
+                else if (sp < float64 (ls))
+                    sp += float64 (le - ls);
+
+                sp = clamp (sp, 0.0, float64 (len - 1));
+            }
+            else if ((dir > 0.0f && sp >= float64 (re)) || (dir < 0.0f && sp <= float64 (rs)))
+                dir = 0.0f;
+
+            voices.at (vi).synPos.at (o) = sp;
+            smDir.at (vi * 8 + o) = dir;
+        }
+
+        float g   = float (pow (10.0f, smq (o, 7) / 20.0f));
+        float wd  = smq (o, 10);
+
+        if (wd != 1.0f && smSt.at (o))
+        {
+            float m = (out[0] + out[1]) * 0.5f;
+            float s = (out[0] - out[1]) * 0.5f * wd;
+            out = float<2> (m + s, m - s);
+        }
+
+        return out * g;
+    }
+
+    // SM-DSP-END
     // PHYS-DSP-BEGIN
     // ---------------- physical modelling source (modal resonators, tools/phys/build_phys.py) ----------------
     // two resonators A and B of 16 modes each (2-pole resonators per mode), excited by a mallet impulse and / or a noise burst.
@@ -29075,7 +29439,7 @@ processor Eisenpuls_Synth
             {
                 int sLen   = smpLen.at (o);
                 int sStart = clamp (int (opv (o, 22) * float (sLen)), 0, max (sLen - 1, 0));
-                voices.at (v).synPos.at (o) = float64 (sStart);
+                voices.at (v).synPos.at (o) = smNoteOn (v, o, nn, vel, sStart);   // SM
                 resetWtUni (v, o);
                 uniGenReset (v, o);   // UNI-ALL
                 phyNoteOn (v, o);
@@ -33758,8 +34122,10 @@ processor Eisenpuls_Synth
                     {
                         if (smpHas.at (o) && smpLen.at (o) > 1)
                         {
-                            sL = smpStep (o, i, freq, cf, pm + pdPm, sExp);
-                            sR = sL;
+                            float<2> smw = smpStep2 (o, i, freq, cf, pm + pdPm, sExp);   // SM
+                            sL = smw[0];
+                            sR = smw[1];
+                            stereo = smSt.at (o);
                         }
                     }
                     else if (ty == 5)
