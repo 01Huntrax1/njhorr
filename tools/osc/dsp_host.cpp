@@ -155,6 +155,21 @@ struct Host
     }
 
     // loads a wavetable (kind) or sample memory into a slot
+    // smpx <slot> <sine|ramp|click> <hz> <seconds> [hzRight]: long and / or stereo sample memory (right channel = bank slot + 8)
+    void bankX (int slot, const std::string& kind, float hz, float secs, float hzR)
+    {
+        const int n = (int) (secs * 48000.0f);
+        std::vector<float> l ((size_t) n), r ((size_t) n);
+        for (int i = 0; i < n; ++i)
+        {
+            if (kind == "ramp") { l[(size_t) i] = r[(size_t) i] = -0.9f + 1.8f * (float) i / (float) n; }
+            else if (kind == "click") { l[(size_t) i] = r[(size_t) i] = i == 0 ? 0.9f : 0.0f; }
+            else { l[(size_t) i] = 0.8f * (float) sin (6.283185307179586 * hz * i / 48000.0); r[(size_t) i] = 0.8f * (float) sin (6.283185307179586 * (hzR > 0 ? hzR : hz) * i / 48000.0); }
+        }
+        sendBank (false, slot, l);
+        if (hzR > 0 || kind == "stereo") sendBank (false, slot + 8, r);
+    }
+
     void bank (bool wt, int slot, const std::string& kind, float a)
     {
         std::vector<float> d;
@@ -350,6 +365,7 @@ int main (int argc, char** argv)
         else if (cmd == "fshape") { int m; std::string k; float v = 0; ls >> m >> k >> v; h.freqShape (m, k, v); }
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
+        else if (cmd == "smpx") { int n; std::string k; float hz = 261.6256f, secs = 1.0f, hzR = 0.0f; ls >> n >> k >> hz >> secs >> hzR; h.bankX (n, k, hz, secs, hzR); }
         else if (cmd == "sf")  { int n; std::string f; ls >> n >> f; h.sfLoad (n, f); }
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }

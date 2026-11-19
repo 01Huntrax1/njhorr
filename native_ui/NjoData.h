@@ -17,7 +17,7 @@ namespace njo
      #define NJOHRR_FX_ONLY 0
     #endif
     constexpr int BASE_W = 1180, BASE_H = NJOHRR_FX_ONLY ? 564 : 760;
-    constexpr int MAX_SMP = 96000, CHUNK = 256;
+    constexpr int MAX_SMP = 524288, CHUNK = 256;
     constexpr int MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
     inline int oscId (int o, int k) { return OSC_BASE + OSC_STRIDE * o + k; }
     inline int fmId (int s, int d) { return FM_BASE + 6 * s + d; }

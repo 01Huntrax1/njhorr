@@ -653,6 +653,9 @@ const spId = (o, key) => SP_BASE + SP_STRIDE * o + SP_K[key];
 const BP_BASE = 3500, BP_STRIDE = 16;
 const BP_K = {"bpscale": 0, "bpreed": 1, "bpdouble": 2, "bpconic": 3, "bpcoup": 4, "bpbore": 5, "bpfluct": 6, "bpair": 7, "bpcolmix": 8, "bpcolf": 9, "bpdrone": 10, "bpchord": 11, "bpkey": 12, "bpstrike": 13, "bpvib": 14, "bpblow": 15};
 const bpId = (o, key) => BP_BASE + BP_STRIDE * o + BP_K[key];
+const SM_BASE = 12300, SM_STRIDE = 16;
+const SM_K = {"send": 0, "slps": 1, "slpe": 2, "spp": 3, "sxf": 4, "srev": 5, "sint": 6, "sgain": 7, "svst": 8, "sslice": 9, "swid": 10};
+const smId = (o, key) => SM_BASE + SM_STRIDE * o + SM_K[key];
 const SF_BASE = 2800, SF_STRIDE = 16;
 const SF_K = {"sfgain": 0, "sfvel": 1, "sfatk": 2, "sfdec": 3, "sfsus": 4, "sfrel": 5, "sfloop": 6, "sfpan": 7, "sfstart": 8, "sfdrive": 9};
 const sfId = (o, key) => SF_BASE + SF_STRIDE * o + SF_K[key];
@@ -3029,7 +3032,75 @@ const OSC_SPEC_ROWS = [
     [3592, "OSC 6 Bagpipe Drone Key", 0, 11, 9, "", "sel", ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"], 1, "Key", null],
     [3593, "OSC 6 Bagpipe Strike-In", 0, 1, 0.4, "", "sld", null, 1, "Strike-In", null],
     [3594, "OSC 6 Bagpipe Vibrato", 0, 1, 0.0, "", "sld", null, 1, "Vibrato", null],
-    [3595, "OSC 6 Bagpipe Blow", 0, 1, 0.0, "", "sld", null, 1, "Blow", null]
+    [3595, "OSC 6 Bagpipe Blow", 0, 1, 0.0, "", "sld", null, 1, "Blow", null],,
+    // SM-BEGIN
+    [12300, "OSC 1 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12301, "OSC 1 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12302, "OSC 1 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12303, "OSC 1 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12304, "OSC 1 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12305, "OSC 1 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12306, "OSC 1 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12307, "OSC 1 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12308, "OSC 1 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12309, "OSC 1 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12310, "OSC 1 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
+    [12316, "OSC 2 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12317, "OSC 2 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12318, "OSC 2 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12319, "OSC 2 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12320, "OSC 2 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12321, "OSC 2 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12322, "OSC 2 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12323, "OSC 2 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12324, "OSC 2 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12325, "OSC 2 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12326, "OSC 2 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
+    [12332, "OSC 3 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12333, "OSC 3 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12334, "OSC 3 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12335, "OSC 3 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12336, "OSC 3 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12337, "OSC 3 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12338, "OSC 3 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12339, "OSC 3 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12340, "OSC 3 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12341, "OSC 3 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12342, "OSC 3 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
+    [12348, "OSC 4 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12349, "OSC 4 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12350, "OSC 4 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12351, "OSC 4 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12352, "OSC 4 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12353, "OSC 4 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12354, "OSC 4 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12355, "OSC 4 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12356, "OSC 4 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12357, "OSC 4 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12358, "OSC 4 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
+    [12364, "OSC 5 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12365, "OSC 5 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12366, "OSC 5 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12367, "OSC 5 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12368, "OSC 5 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12369, "OSC 5 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12370, "OSC 5 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12371, "OSC 5 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12372, "OSC 5 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12373, "OSC 5 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12374, "OSC 5 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
+    [12380, "OSC 6 Sample End", 0, 1, 1.0, "", "sld", null, 1, "End", null],
+    [12381, "OSC 6 Sample Loop Start", 0, 1, 0.0, "", "sld", null, 1, "Loop Start", null],
+    [12382, "OSC 6 Sample Loop End", 0, 1, 1.0, "", "sld", null, 1, "Loop End", null],
+    [12383, "OSC 6 Sample Loop Mode", 0, 1, 0.0, "", "btn", ["Forward", "Ping-Pong"], 1, "Loop Mode", null],
+    [12384, "OSC 6 Sample Loop Crossfade", 0, 1, 0.0, "", "sld", null, 1, "Crossfade", null],
+    [12385, "OSC 6 Sample Reverse", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Reverse", null],
+    [12386, "OSC 6 Sample Interpolation", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null],
+    [12387, "OSC 6 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
+    [12388, "OSC 6 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
+    [12389, "OSC 6 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
+    [12390, "OSC 6 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null]
+    // SM-END
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -3592,7 +3663,7 @@ const FX_OUT = [175, 221, 222, 11600, 11601];   // MASTER-OUT: Synth Drive, Driv
 
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const CHUNK = 256;
-const MAX_SMP = 96000;
+const MAX_SMP = 524288;
 const MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
 const FRAME_SIZES = [256, 512, 1024, 2048, 4096];
 const SMP_DZ_EMPTY = "DROP A SAMPLE / CLICK TO LOAD";
@@ -4846,6 +4917,7 @@ class EisenpulsPatchView extends HTMLElement {
         const gx = key => this.controlHTML(grId(o, key), true);
         const dx = key => this.controlHTML(dkId(o, key), true);
         const sx = key => this.controlHTML(spId(o, key), true);
+        const mx = key => this.controlHTML(smId(o, key), true);
         const fx = key => this.controlHTML(sfId(o, key), true);
         const bx = key => this.controlHTML(bpId(o, key), true);
         const ax = key => this.controlHTML(adId(o, key), true);
@@ -4856,7 +4928,7 @@ class EisenpulsPatchView extends HTMLElement {
             <div class="osc-info" data-o="${o}">--</div>
             <div class="o-mem" data-o="${o}" data-show="0,1,8,11"><div class="dz dz-osc" data-o="${o}"><span class="dz-txt"></span><span class="dz-clr" title="Clear this memory">&times;</span></div><button type="button" class="pb dz-lib" data-o="${o}" data-slot="wt${o}" title="Open the sound vault">VAULT</button></div>
             ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join("") + this.controlHTML(2000 + o, true), "cgrid o-g2")}
-            ${sh("1", ["root", "sstart", "sloop"].map(c).join(""), "cgrid o-g3")}
+            ${sh("1", ["root", "sstart", "sloop"].map(c).join("") + ["send", "slps", "slpe", "spp", "sxf", "srev", "sint", "sgain", "svst", "sslice", "swid"].map(mx).join(""), "cgrid o-g3")}
             ${sh("8", ["root"].map(c).join("") + ["gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gvel", "gdrive"].map(gx).join(""), "cgrid o-g3 o-pl")}
             ${sh("13", ["bpscale", "bpreed", "bpdouble", "bpconic", "bpcoup", "bpbore", "bpfluct", "bpair", "bpcolmix", "bpcolf", "bpdrone", "bpchord", "bpkey", "bpstrike", "bpvib", "bpblow"].map(bx).join(""), "cgrid o-g3 o-pl")}
             ${sh("12", ["sfgain", "sfvel", "sfatk", "sfdec", "sfsus", "sfrel", "sfloop", "sfpan", "sfstart", "sfdrive"].map(fx).join(""), "cgrid o-g3 o-pl")}

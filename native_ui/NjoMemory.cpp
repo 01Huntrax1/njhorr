@@ -70,6 +70,17 @@ namespace njo
             o->setProperty ("name", s.name);
             o->setProperty ("total", (int) s.data.size());
             o->setProperty ("pcm16", juce::Base64::toBase64 (mb.getData(), mb.getSize()));
+            if (! s.dataR.empty() && s.dataR.size() == s.data.size())    // stereo sample: the right channel next to the left one
+            {
+                juce::MemoryBlock mr (s.dataR.size() * 2);
+                auto* q = (juce::uint8*) mr.getData();
+                for (size_t i = 0; i < s.dataR.size(); ++i)
+                {
+                    int v = juce::roundToInt (juce::jlimit (-1.0f, 1.0f, s.dataR[i]) * 32767.0f);
+                    q[i * 2] = (juce::uint8) (v & 255); q[i * 2 + 1] = (juce::uint8) ((v >> 8) & 255);
+                }
+                o->setProperty ("pcm16R", juce::Base64::toBase64 (mr.getData(), mr.getSize()));
+            }
             if (s.libId.isNotEmpty()) o->setProperty ("lib", s.libId);
             return juce::var (o);
         }
@@ -104,6 +115,17 @@ namespace njo
                 int s = p[i * 2] | (p[i * 2 + 1] << 8);
                 if (s & 0x8000) s -= 0x10000;
                 out.data[(size_t) i] = (float) s / 32767.0f * scale;
+            }
+            out.dataR.clear();
+            if (v.hasProperty ("pcm16R"))
+            {
+                juce::MemoryOutputStream mr;
+                if (juce::Base64::convertFromBase64 (mr, v.getProperty ("pcm16R", {}).toString()) && (int) (mr.getDataSize() >> 1) >= n)
+                {
+                    auto* q = (const juce::uint8*) mr.getData();
+                    out.dataR.resize ((size_t) n);
+                    for (int i = 0; i < n; ++i) { int sv = q[i * 2] | (q[i * 2 + 1] << 8); if (sv & 0x8000) sv -= 0x10000; out.dataR[(size_t) i] = (float) sv / 32767.0f; }
+                }
             }
             auto nm = v.getProperty ("name", {}).toString();
             out.name = nm.isNotEmpty() ? nm : fallbackName;
@@ -143,7 +165,7 @@ namespace njo
             return true;
         }
 
-        struct Decoded { std::vector<float> mono; bool ok = false; juce::String name; };
+        struct Decoded { std::vector<float> mono, right; bool ok = false; juce::String name; };   // samples: mono = left channel (or the mono sum), right = right channel of a stereo file (else empty)
 
         // more than 128 frames: thinned out evenly (first and last frame are kept)
         std::vector<float> trimWavetable (std::vector<float> x)
@@ -258,33 +280,41 @@ namespace njo
             if (ch.empty() || ch[0].empty()) return r;
 
             size_t frames = ch[0].size();
-            std::vector<float> mono (frames, 0.0f);
-            for (auto& c : ch) for (size_t i = 0; i < frames; ++i) mono[i] += c[i] / (float) ch.size();
+            const bool stereo = ! wavetable && ch.size() == 2 && ch[1].size() == frames;   // a two channel sample keeps both channels (sampler source); the other sources hear the sum
+            std::vector<float> mono, right;
+            if (stereo) { mono = ch[0]; right = ch[1]; }
+            else { mono.assign (frames, 0.0f); for (auto& c : ch) for (size_t i = 0; i < frames; ++i) mono[i] += c[i] / (float) ch.size(); }
 
             // samples are converted to the host rate; wavetables are not (their frames are single cycles of N samples)
             if (! wavetable && rate > 0 && std::abs (rate - kRate) > 0.5)
             {
                 double ratio = rate / kRate;
                 int outN = juce::jmax (1, (int) std::floor ((double) frames / ratio));
-                std::vector<float> out ((size_t) outN);
-                juce::LagrangeInterpolator li;
-                li.process (ratio, mono.data(), out.data(), outN);
-                mono.swap (out);
+                for (auto* v : { &mono, &right })
+                {
+                    if (v->empty()) continue;
+                    std::vector<float> out ((size_t) outN);
+                    juce::LagrangeInterpolator li;
+                    li.process (ratio, v->data(), out.data(), outN);
+                    v->swap (out);
+                }
             }
             if (wavetable) mono = trimWavetable (std::move (mono));
             const int cap = wavetable ? MAX_WT : MAX_SMP;
             if ((int) mono.size() > cap) mono.resize ((size_t) cap);
-            float peak = 0; for (float v : mono) peak = juce::jmax (peak, std::abs (v));
+            if (! right.empty()) right.resize (mono.size());
+            float peak = 0; for (float v : mono) peak = juce::jmax (peak, std::abs (v)); for (float v : right) peak = juce::jmax (peak, std::abs (v));
             float g = peak > 0.0001f ? 0.9f / peak : 1.0f;
             for (auto& v : mono) v *= g;
-            r.mono = std::move (mono); r.ok = ! r.mono.empty();
+            for (auto& v : right) v *= g;
+            r.mono = std::move (mono); r.right = std::move (right); r.ok = ! r.mono.empty();
             return r;
         }
     }
 
     struct SoundMemory::Impl : private juce::Timer
     {
-        struct Stream { Kind kind; int osc; std::shared_ptr<std::vector<float>> data; size_t offset = 0; juce::int64 startAt = 0; unsigned long long sig = 0; };
+        struct Stream { Kind kind; int osc; std::shared_ptr<std::vector<float>> data; size_t offset = 0; juce::int64 startAt = 0; unsigned long long sig = 0; int bankAdd = 0; };   // bankAdd 8: the right channel of a stereo sample (sent after the left one)
 
         Impl (SoundMemory& o, Backend& b) : owner (o), be (b) {}
         ~Impl() override { stopTimer(); }
@@ -301,6 +331,7 @@ namespace njo
             if (s.sig != 0) return s.sig;
             unsigned long long h = 1469598103934665603ull ^ (unsigned long long) s.data.size();
             for (float v : s.data) { unsigned int b; std::memcpy (&b, &v, 4); h ^= b; h *= 1099511628211ull; }
+            for (float v : s.dataR) { unsigned int b; std::memcpy (&b, &v, 4); h ^= b + 0x9e3779b9u; h *= 1099511628211ull; }
             return s.sig = (h != 0 ? h : 1);
         }
         void cancel (Kind k, int o)
@@ -315,15 +346,16 @@ namespace njo
             dspSig[k][o] = 0;     // the bank is overwritten from the start: until the last chunk arrived it holds nothing usable
             Stream s { k, o, std::make_shared<std::vector<float>> (sl->data), 0, juce::Time::getMillisecondCounter() + (juce::int64) delayMs, sigOf (*sl) };
             streams.push_back (std::move (s));
+            if (! sl->dataR.empty()) streams.push_back (Stream { k, o, std::make_shared<std::vector<float>> (sl->dataR), 0, juce::Time::getMillisecondCounter() + (juce::int64) delayMs, sigOf (*sl), 8 });
             if (! isTimerRunning()) startTimer (kTickMs);
         }
-        void sendChunk (Kind k, int o, const std::vector<float>& d, size_t offset, size_t total)
+        void sendChunk (Kind k, int o, const std::vector<float>& d, size_t offset, size_t total, int bankAdd = 0)
         {
             auto* ev = new juce::DynamicObject();
             int count = (int) juce::jmin ((size_t) CHUNK, total - offset);
             juce::Array<juce::var> arr; arr.ensureStorageAllocated (CHUNK);
             for (int i = 0; i < CHUNK; ++i) arr.add (i < count ? (double) d[offset + (size_t) i] : 0.0);
-            ev->setProperty ("bank", bankFor (k, o)); ev->setProperty ("offset", (int) offset); ev->setProperty ("count", count);
+            ev->setProperty ("bank", bankFor (k, o) + bankAdd); ev->setProperty ("offset", (int) offset); ev->setProperty ("count", count);
             ev->setProperty ("total", (int) total); ev->setProperty ("data", juce::var (arr));
             be.sendEvent (endpointFor (k), juce::var (ev));
         }
@@ -333,10 +365,16 @@ namespace njo
             for (auto& s : streams)
             {
                 if (s.startAt > now) continue;
+                if (s.bankAdd != 0)   // the right channel waits until the left one is complete (the DSP checks the lengths)
+                {
+                    bool leftBusy = false;
+                    for (auto& q : streams) if (q.kind == s.kind && q.osc == s.osc && q.bankAdd == 0 && q.offset < q.data->size()) leftBusy = true;
+                    if (leftBusy) continue;
+                }
                 for (int i = 0; i < kChunksPerTick && s.offset < s.data->size(); ++i)
-                { sendChunk (s.kind, s.osc, *s.data, s.offset, s.data->size()); s.offset += (size_t) CHUNK; }
+                { sendChunk (s.kind, s.osc, *s.data, s.offset, s.data->size(), s.bankAdd); s.offset += (size_t) CHUNK; }
             }
-            for (auto& s : streams) if (s.offset >= s.data->size()) dspSig[s.kind][s.osc] = s.sig;     // complete: the DSP has it
+            for (auto& s : streams) if (s.offset >= s.data->size() && (s.bankAdd != 0 || (slots[s.kind][s.osc] && slots[s.kind][s.osc]->dataR.empty()))) dspSig[s.kind][s.osc] = s.sig;     // complete: the DSP has it
             streams.erase (std::remove_if (streams.begin(), streams.end(), [] (const Stream& s) { return s.offset >= s.data->size(); }), streams.end());
             if (streams.empty()) stopTimer();
         }
@@ -368,7 +406,7 @@ namespace njo
         return impl->slots[k][o].get();
     }
 
-    void SoundMemory::set (Kind k, int o, const juce::String& name, const juce::String& libId, std::vector<float> data)
+    void SoundMemory::set (Kind k, int o, const juce::String& name, const juce::String& libId, std::vector<float> data, std::vector<float> dataRight)
     {
         if (o < 0 || o >= kMaxIdx) return;
         if (data.empty()) { clear (k, o); return; }
@@ -376,6 +414,7 @@ namespace njo
         if ((int) data.size() > cap) data.resize ((size_t) cap);
         auto s = std::make_unique<Slot>();
         s->name = name; s->libId = libId; s->data = std::move (data);
+        if (k == Sample && dataRight.size() >= s->data.size()) { dataRight.resize (s->data.size()); s->dataR = std::move (dataRight); }
         impl->slots[k][o] = std::move (s);
         impl->persist (k, o);
         impl->startStream (k, o, 0);
@@ -456,8 +495,8 @@ namespace njo
         }
         auto name = (dec.name.isNotEmpty() ? dec.name : f.getFileNameWithoutExtension()).substring (0, 14).toUpperCase();
         if (name.isEmpty()) name = k == Sample ? "SAMPLE" : k == ImpulseResponse ? "IR" : k == SoundFont ? "SOUNDFONT" : "TABLE";
-        set (k, o, name, {}, std::move (dec.mono));
-        status ("LOADED " + name);
+        set (k, o, name, {}, std::move (dec.mono), std::move (dec.right));
+        status ("LOADED " + name + (dec.right.empty() ? juce::String() : " (STEREO)"));
         if (done) done (true, "LOADED " + name);
     }
 
