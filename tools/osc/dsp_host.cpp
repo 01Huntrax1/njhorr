@@ -170,6 +170,19 @@ struct Host
         if (hzR > 0 || kind == "stereo") sendBank (false, slot + 8, r);
     }
 
+    // wtx <slot> <frames> <harm|saw>: a wavetable of frames x 2048; "harm": frame f = sine of harmonic (f % 16) + 1 (each frame its own clearly different sound)
+    void bankW (int slot, int frames, const std::string& kind)
+    {
+        std::vector<float> d;
+        for (int f = 0; f < frames; ++f)
+            for (int i = 0; i < 2048; ++i)
+            {
+                double ph = (double) i / 2048.0;
+                d.push_back (kind == "saw" ? (float) (0.9 * (2.0 * ph - 1.0)) : (float) (0.8 * sin (6.283185307179586 * ph * (1 + f % 16))));
+            }
+        sendBank (true, slot, d);
+    }
+
     void bank (bool wt, int slot, const std::string& kind, float a)
     {
         std::vector<float> d;
@@ -366,6 +379,7 @@ int main (int argc, char** argv)
         else if (cmd == "tbl") { int b; std::string k; ls >> b >> k; h.table (b, k); }
         else if (cmd == "wt" || cmd == "smp") { int n; std::string k; float a = 0; ls >> n >> k >> a; h.bank (cmd == "wt", n, k, a); }
         else if (cmd == "smpx") { int n; std::string k; float hz = 261.6256f, secs = 1.0f, hzR = 0.0f; ls >> n >> k >> hz >> secs >> hzR; h.bankX (n, k, hz, secs, hzR); }
+        else if (cmd == "wtx") { int n, fr = 16; std::string k; ls >> n >> fr >> k; h.bankW (n, fr, k); }
         else if (cmd == "sf")  { int n; std::string f; ls >> n >> f; h.sfLoad (n, f); }
         else if (cmd == "ir")  { int r, n = 0; std::string k; ls >> r >> k >> n; h.irLoad (r, k, n); }
         else if (cmd == "moded") { int b; std::string k; ls >> b >> k; if (k == "reset") h.modEd (b, true, 0, 1, 1, 1); else { float f, g, d; ls >> f >> g >> d; h.modEd (b, false, std::stoi (k), f, g, d); } }
