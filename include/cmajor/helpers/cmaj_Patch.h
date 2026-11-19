@@ -349,9 +349,9 @@ private:
 
     struct ClientEventQueue;
     std::unique_ptr<ClientEventQueue> clientEventQueue;
-    static constexpr uint32_t clientEventQueueSize = 65536;
+    static constexpr uint32_t clientEventQueueSize = 1u << 20;   // bytes: loading a project posts one entry per parameter (8300+), 64 KB overflowed and silently dropped values
 
-    static constexpr uint32_t performerEventQueueSize = 65536;
+    static constexpr uint32_t performerEventQueueSize = 1u << 20;   // bytes: see clientEventQueueSize; a full queue dropped about half of the loaded parameter values (the UI showed them, the DSP ran defaults)
 
     std::vector<char> midiMessageSpace;
     std::vector<choc::audio::AudioMIDIBlockDispatcher::MIDIMessage> midiMessages;
