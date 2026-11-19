@@ -1,4 +1,5 @@
 #include "OscDisplays.h"
+#include "../NjoWt.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
 #include "../NjoTer.h"
@@ -115,13 +116,24 @@ namespace njo
             if (mode == 4) { float w = 0.5f - 0.45f * amt; return ph < w ? ph * 0.5f / w : 0.5f + (ph - w) * 0.5f / (1.0f - w); }
             if (mode == 5) { float x = ph * (1.0f + amt); if (x > 1.0f) x = 2.0f - x; return juce::jlimit (0.0f, 1.0f, x); }
             if (mode == 6) return ph * (1.0f - amt) + (1.0f - ph) * amt;
+            if (mode == 9) return ph + amt * 0.159155f * std::sin (6.2831853f * ph);
+            if (mode == 10) return ph + amt * 0.05f * std::sin (31.415927f * ph);
+            if (mode == 11) { float x = ph * 4.0f, i = std::floor (x), f = x - i, sm = f * f * (3.0f - 2.0f * f); return (i + f + (sm - f) * amt) * 0.25f; }
+            if (mode == 12) { float x = ph * (1.0f + 3.0f * amt) * 0.5f, t = (x - std::floor (x)) * 2.0f; return t < 1.0f ? t : 2.0f - t; }
             return ph;
         }
+        bool warpIsPhase (int m) { return (m >= 1 && m <= 6) || (m >= 9 && m <= 12); }
+        bool warpIsAmp (int m) { return m == 7 || m == 8 || m >= 13; }
 
         float warpAmp (int mode, float amt, float y)
         {
             if (mode == 7) { float s = 2.0f + (1.0f - amt) * 254.0f; return std::floor (y * s + 0.5f) / s; }
             if (mode == 8) return y * (1.0f - amt) + amt * std::sin (y * (1.0f + 4.0f * amt) * 1.5708f);
+            if (mode == 13) return juce::jlimit (-1.0f, 1.0f, y * (1.0f + 6.0f * amt));
+            if (mode == 14) return y + (std::abs (y) - y) * amt;
+            if (mode == 15) { float z = y * (1.0f + 3.0f * amt); return z - 2.0f * std::floor ((z + 1.0f) * 0.5f); }
+            if (mode == 16) return y > 0.0f ? y : y * (1.0f - 0.9f * amt);
+            if (mode == 17) { float d = 1.0f + 6.0f * amt; return std::tanh (y * d) / std::tanh (d); }
             return y;
         }
 
@@ -264,23 +276,25 @@ namespace njo
                     mean /= Wp;
                     for (auto& v : cyc) v -= (float) mean;
 
-                    int m1 = juce::roundToInt (pv ("w1m")), m2 = juce::roundToInt (pv ("w2m"));
-                    float a1 = pv ("w1a"), a2 = pv ("w2a");
+                    int m1 = juce::roundToInt (pv ("w1m")), m2 = juce::roundToInt (pv ("w2m")), m3 = juce::roundToInt (ctx.get (wt::wtId (o, wt::key ("w3m"))));
+                    float a1 = pv ("w1a"), a2 = pv ("w2a"), a3 = ctx.get (wt::wtId (o, wt::key ("w3a")));
                     juce::String tag;
-                    if (m1 != 0 || m2 != 0)
+                    if (m1 != 0 || m2 != 0 || m3 != 0)
                     {
                         std::vector<float> w ((size_t) Wp);
                         double wm = 0;
                         for (int x = 0; x < Wp; ++x)
                         {
                             float rp = (float) x / W;
-                            if (m1 >= 1 && m1 <= 6) rp = oscmodel::warpPhase (m1, a1, rp);
-                            if (m2 >= 1 && m2 <= 6) rp = oscmodel::warpPhase (m2, a2, rp);
+                            if (oscmodel::warpIsPhase (m1)) rp = oscmodel::warpPhase (m1, a1, rp);
+                            if (oscmodel::warpIsPhase (m2)) rp = oscmodel::warpPhase (m2, a2, rp);
+                            if (oscmodel::warpIsPhase (m3)) rp = oscmodel::warpPhase (m3, a3, rp);
                             rp = juce::jlimit (0.0f, 0.99999f, rp);
                             float fi = rp * (float) Wp; int i0 = (int) std::floor (fi); float fr = fi - (float) i0;
                             float y = cyc[(size_t) i0] * (1 - fr) + cyc[(size_t) ((i0 + 1) % Wp)] * fr;
-                            if (m1 >= 7) y = oscmodel::warpAmp (m1, a1, y);
-                            if (m2 >= 7) y = oscmodel::warpAmp (m2, a2, y);
+                            if (oscmodel::warpIsAmp (m1)) y = oscmodel::warpAmp (m1, a1, y);
+                            if (oscmodel::warpIsAmp (m2)) y = oscmodel::warpAmp (m2, a2, y);
+                            if (oscmodel::warpIsAmp (m3)) y = oscmodel::warpAmp (m3, a3, y);
                             w[(size_t) x] = y; wm += y;
                         }
                         wm /= Wp;
@@ -288,6 +302,7 @@ namespace njo
                         juce::StringArray used;
                         if (m1 > 0) used.add (warpModes()[juce::jlimit (0, warpModes().size() - 1, m1)]);
                         if (m2 > 0) used.add (warpModes()[juce::jlimit (0, warpModes().size() - 1, m2)]);
+                        if (m3 > 0) used.add (warpModes()[juce::jlimit (0, warpModes().size() - 1, m3)]);
                         if (used.size()) tag = " / WARP " + used.joinIntoString (" + ");
                         glowStroke (g, traceOf (cyc), juce::Colour (0xffff948d).withAlpha (0.40f), 1.0f, false);
                         glowStroke (g, traceOf (w), juce::Colour (0xffff7a45), 2.0f, true);

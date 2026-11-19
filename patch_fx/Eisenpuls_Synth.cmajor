@@ -586,9 +586,9 @@ processor Eisenpuls_Synth
     input event float param1015 [[ name: "OSC 1 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1016 [[ name: "OSC 1 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1017 [[ name: "OSC 1 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1018 [[ name: "OSC 1 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1018 [[ name: "OSC 1 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1019 [[ name: "OSC 1 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1020 [[ name: "OSC 1 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1020 [[ name: "OSC 1 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1021 [[ name: "OSC 1 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1022 [[ name: "OSC 1 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1023 [[ name: "OSC 1 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -640,9 +640,9 @@ processor Eisenpuls_Synth
     input event float param1079 [[ name: "OSC 2 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1080 [[ name: "OSC 2 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1081 [[ name: "OSC 2 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1082 [[ name: "OSC 2 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1082 [[ name: "OSC 2 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1083 [[ name: "OSC 2 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1084 [[ name: "OSC 2 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1084 [[ name: "OSC 2 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1085 [[ name: "OSC 2 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1086 [[ name: "OSC 2 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1087 [[ name: "OSC 2 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -694,9 +694,9 @@ processor Eisenpuls_Synth
     input event float param1143 [[ name: "OSC 3 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1144 [[ name: "OSC 3 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1145 [[ name: "OSC 3 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1146 [[ name: "OSC 3 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1146 [[ name: "OSC 3 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1147 [[ name: "OSC 3 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1148 [[ name: "OSC 3 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1148 [[ name: "OSC 3 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1149 [[ name: "OSC 3 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1150 [[ name: "OSC 3 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1151 [[ name: "OSC 3 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -748,9 +748,9 @@ processor Eisenpuls_Synth
     input event float param1207 [[ name: "OSC 4 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1208 [[ name: "OSC 4 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1209 [[ name: "OSC 4 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1210 [[ name: "OSC 4 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1210 [[ name: "OSC 4 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1211 [[ name: "OSC 4 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1212 [[ name: "OSC 4 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1212 [[ name: "OSC 4 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1213 [[ name: "OSC 4 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1214 [[ name: "OSC 4 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1215 [[ name: "OSC 4 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -802,9 +802,9 @@ processor Eisenpuls_Synth
     input event float param1271 [[ name: "OSC 5 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1272 [[ name: "OSC 5 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1273 [[ name: "OSC 5 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1274 [[ name: "OSC 5 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1274 [[ name: "OSC 5 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1275 [[ name: "OSC 5 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1276 [[ name: "OSC 5 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1276 [[ name: "OSC 5 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1277 [[ name: "OSC 5 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1278 [[ name: "OSC 5 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1279 [[ name: "OSC 5 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -856,9 +856,9 @@ processor Eisenpuls_Synth
     input event float param1335 [[ name: "OSC 6 Unison Blend", min: 0.0, max: 1.0, init: 1.0 ]];
     input event float param1336 [[ name: "OSC 6 Unison Width", min: 0.0, max: 1.0, init: 0.75 ]];
     input event float param1337 [[ name: "OSC 6 Unison Style", min: 0.0, max: 5.0, init: 0.0, step: 1.0 ]];
-    input event float param1338 [[ name: "OSC 6 Warp 1 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1338 [[ name: "OSC 6 Warp 1 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1339 [[ name: "OSC 6 Warp 1 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
-    input event float param1340 [[ name: "OSC 6 Warp 2 Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];
+    input event float param1340 [[ name: "OSC 6 Warp 2 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
     input event float param1341 [[ name: "OSC 6 Warp 2 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
     input event float param1342 [[ name: "OSC 6 Sample Start", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param1343 [[ name: "OSC 6 Sample Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
@@ -6395,6 +6395,32 @@ processor Eisenpuls_Synth
     input event float param12389 [[ name: "OSC 6 Sample Slices", min: 1.0, max: 64.0, init: 1.0, step: 1.0 ]];
     input event float param12390 [[ name: "OSC 6 Sample Width", min: 0.0, max: 2.0, init: 1.0 ]];
     // SM-DECL-END
+    // WT2-DECL-BEGIN
+    input event float param12500 [[ name: "OSC 1 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12501 [[ name: "OSC 1 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12502 [[ name: "OSC 1 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12503 [[ name: "OSC 1 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12516 [[ name: "OSC 2 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12517 [[ name: "OSC 2 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12518 [[ name: "OSC 2 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12519 [[ name: "OSC 2 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12532 [[ name: "OSC 3 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12533 [[ name: "OSC 3 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12534 [[ name: "OSC 3 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12535 [[ name: "OSC 3 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12548 [[ name: "OSC 4 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12549 [[ name: "OSC 4 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12550 [[ name: "OSC 4 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12551 [[ name: "OSC 4 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12564 [[ name: "OSC 5 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12565 [[ name: "OSC 5 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12566 [[ name: "OSC 5 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12567 [[ name: "OSC 5 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param12580 [[ name: "OSC 6 Warp 3 Mode", min: 0.0, max: 17.0, init: 0.0, step: 1.0 ]];
+    input event float param12581 [[ name: "OSC 6 Warp 3 Amount", min: 0.0, max: 1.0, init: 0.5 ]];
+    input event float param12582 [[ name: "OSC 6 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param12583 [[ name: "OSC 6 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
+    // WT2-DECL-END
     input event float param1600 [[ name: "Freq Mod 1 Rate (ms)", min: 5.0, max: 10000.0, init: 300.0 ]];
     input event float param1601 [[ name: "Freq Mod 1 Transpose (semitones)", min: -48.0, max: 48.0, init: 0.0 ]];
     input event float param1602 [[ name: "Freq Mod 1 Retrig", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
@@ -15731,6 +15757,32 @@ processor Eisenpuls_Synth
     event param12389 (float v) { smP.at (89) = v; }
     event param12390 (float v) { smP.at (90) = v; }
     // SM-HAND-END
+    // WT2-HAND-BEGIN
+    event param12500 (float v) { wtP.at (0) = v; }
+    event param12501 (float v) { wtP.at (1) = v; }
+    event param12502 (float v) { wtP.at (2) = v; }
+    event param12503 (float v) { wtP.at (3) = v; }
+    event param12516 (float v) { wtP.at (16) = v; }
+    event param12517 (float v) { wtP.at (17) = v; }
+    event param12518 (float v) { wtP.at (18) = v; }
+    event param12519 (float v) { wtP.at (19) = v; }
+    event param12532 (float v) { wtP.at (32) = v; }
+    event param12533 (float v) { wtP.at (33) = v; }
+    event param12534 (float v) { wtP.at (34) = v; }
+    event param12535 (float v) { wtP.at (35) = v; }
+    event param12548 (float v) { wtP.at (48) = v; }
+    event param12549 (float v) { wtP.at (49) = v; }
+    event param12550 (float v) { wtP.at (50) = v; }
+    event param12551 (float v) { wtP.at (51) = v; }
+    event param12564 (float v) { wtP.at (64) = v; }
+    event param12565 (float v) { wtP.at (65) = v; }
+    event param12566 (float v) { wtP.at (66) = v; }
+    event param12567 (float v) { wtP.at (67) = v; }
+    event param12580 (float v) { wtP.at (80) = v; }
+    event param12581 (float v) { wtP.at (81) = v; }
+    event param12582 (float v) { wtP.at (82) = v; }
+    event param12583 (float v) { wtP.at (83) = v; }
+    // WT2-HAND-END
     event param1600 (float v) { frqRate.at (0) = v; }
     event param1601 (float v) { frqTrans.at (0) = v; }
     event param1602 (float v) { frqRetrig.at (0) = v; }
@@ -17217,6 +17269,12 @@ processor Eisenpuls_Synth
             smP.at (io * 16 + 9) = 1.0f;
             smP.at (io * 16 + 10) = 1.0f;
             // SM-INIT-END
+            // WT2-INIT-BEGIN
+            wtP.at (io * 16 + 0) = 0.0f;
+            wtP.at (io * 16 + 1) = 0.5f;
+            wtP.at (io * 16 + 2) = 0.0f;
+            wtP.at (io * 16 + 3) = 1.0f;
+            // WT2-INIT-END
             op.at (io * 64 + 11) = 3.0f;
             op.at (io * 64 + 12) = 60.0f;
             op.at (io * 64 + 13) = 1.0f;
@@ -23594,7 +23652,7 @@ processor Eisenpuls_Synth
     }
 
     // Phase warp (modes 1-6) of one warp slot: maps the 0..1 oscillator phase to the table read phase
-    float wtWarpPhase (int mode, float amt, float ph)
+    float wtWarpPhase (int mode, float amt, float ph)   // WT2-WARP
     {
         if (mode == 1)
             return float (pow (ph, 1.0f + 3.0f * amt));                    // bend +
@@ -23625,10 +23683,32 @@ processor Eisenpuls_Synth
         if (mode == 6)
             return ph * (1.0f - amt) + (1.0f - ph) * amt;                 // flip
 
+        if (mode == 9)
+            return ph + amt * 0.159155f * float (sin (6.2831853f * ph));  // smear: a smooth bulge of the phase
+
+        if (mode == 10)
+            return ph + amt * 0.05f * float (sin (31.415927f * ph));      // ripple: fast phase wobble (adds harmonics)
+
+        if (mode == 11)
+        {
+            float x = ph * 4.0f;                                          // stairs: four smoothed steps per cycle
+            float i = float (floor (x));
+            float f = x - i;
+            float s = f * f * (3.0f - 2.0f * f);
+            return (i + f + (s - f) * amt) * 0.25f;
+        }
+
+        if (mode == 12)
+        {
+            float x = ph * (1.0f + 3.0f * amt) * 0.5f;                    // fold phase: the phase runs forth and back
+            float t = (x - float (floor (x))) * 2.0f;
+            return t < 1.0f ? t : 2.0f - t;
+        }
+
         return ph;
     }
 
-    // Amplitude warp (modes 7-8) of one warp slot
+    // Amplitude warp (modes 7, 8, 13 .. 17) of one warp slot
     float wtWarpAmp (int mode, float amt, float y)
     {
         if (mode == 7)
@@ -23640,7 +23720,38 @@ processor Eisenpuls_Synth
         if (mode == 8)
             return y * (1.0f - amt) + amt * float (sin (y * (1.0f + 4.0f * amt) * 1.5708f));   // fold
 
+        if (mode == 13)
+            return clamp (y * (1.0f + 6.0f * amt), -1.0f, 1.0f);           // clip
+
+        if (mode == 14)
+            return y + (float (abs (y)) - y) * amt;                        // rectify (the DC is removed afterwards)
+
+        if (mode == 15)
+        {
+            float z = y * (1.0f + 3.0f * amt);                            // wrap around
+            return z - 2.0f * float (floor ((z + 1.0f) * 0.5f));
+        }
+
+        if (mode == 16)
+            return y > 0.0f ? y : y * (1.0f - 0.9f * amt);                 // asymmetric
+
+        if (mode == 17)
+        {
+            float d = 1.0f + 6.0f * amt;                                  // soft drive
+            return float (tanh (y * d)) / float (tanh (d));
+        }
+
         return y;
+    }
+
+    bool wtIsAmp (int m)
+    {
+        return m == 7 || m == 8 || m >= 13;
+    }
+
+    bool wtIsPhase (int m)
+    {
+        return (m >= 1 && m <= 6) || (m >= 9 && m <= 12);
     }
 
     float nextNoise()
@@ -24678,8 +24789,9 @@ processor Eisenpuls_Synth
     // frequency, so there is no aliasing, and reads it with cubic interpolation. The chain is built in small time slices.
     bool[8]       wtHas;          // the mip tables of the slot are complete
     int[8]        wtLen;          // length of the source in samples
-    float[1572864] wtBuf;         // source, slot * 262144
-    float[4194304] wtMip;         // (slot * 128 + frame) * 4096 + level offset
+    float[4194304] wtBuf;         // source, slot * 524288
+    float[8388608] wtMip;         // (slot * 256 + frame) * 4096 + level offset
+    float[96]      wtP;           // WT2: slot * 16 + parameter (Warp 3, Morph, Tone)
     bool[8]       wtBuilding;  // padded to a power of two (cheap index wrap)
     int[8]        wtFr;           // frames in the mip tables
     int[8]        wtBFl;          // frame length the source was cut with
@@ -24905,7 +25017,7 @@ processor Eisenpuls_Synth
     void wtBuildFrame (int o, int f)
     {
         int fl   = wtBFl.at (o);
-        int base = o * 262144 + f * fl;
+        int base = o * 524288 + f * fl;
 
         if (fl > 2048)
         {
@@ -24944,7 +25056,7 @@ processor Eisenpuls_Synth
             mean += wtTmpA.at (i);
         mean = mean / 2048.0f;
 
-        int mb = (o * 128 + f) * 4096;
+        int mb = (o * 256 + f) * 4096;
 
         for (int i = 0; i < 2048; ++i)
         {
@@ -24984,7 +25096,7 @@ processor Eisenpuls_Synth
 
         int fl = min (wtFrameLen (opv (o, 11)), len);
         wtBFl.at (o)  = fl;
-        wtFr.at (o)   = clamp (len / fl, 1, 128);
+        wtFr.at (o)   = clamp (len / fl, 1, 256);
         wtBNext.at (o) = 0;
         wtHas.at (o)  = false;
         wtBuilding.at (o) = true;
@@ -25034,18 +25146,18 @@ processor Eisenpuls_Synth
             wtBuilding.at (o) = false;
 
         int cnt  = clamp (c.count, 0, 256);
-        int base = o * 262144;
+        int base = o * 524288;
 
         for (int i = 0; i < cnt; ++i)
         {
             int pos = c.offset + i;
-            if (pos >= 0 && pos < 262144)
+            if (pos >= 0 && pos < 524288)
                 wtBuf.at (base + pos) = c.data.at (i);
         }
 
         if (c.offset + cnt >= c.total)
         {
-            wtLen.at (o) = clamp (c.total, 1, 262144);
+            wtLen.at (o) = clamp (c.total, 1, 524288);
             wtStartBuild (o);
         }
     }
@@ -25228,18 +25340,26 @@ processor Eisenpuls_Synth
         return p1 + 0.5f * t * (p2 - p0 + t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3 + t * (3.0f * (p1 - p2) + p3 - p0)));
     }
 
-    // wavetable read: frames fa / fb crossfaded by ff, phase (0..1) scans one cycle of mip level lvl
-    float wtRead (int o, int lvl, float64 phase, int fa, int fb, float ff)
+    // wavetable read (WT2): frames fa / fb crossfaded by ff, or (fmode 1) the cubic of four frames fm / fa / fb / fc, phase (0..1) scans one cycle of mip level lvl
+    float wtRead (int o, int lvl, float64 phase, int fa, int fb, float ff, int fmode, int fm, int fc)
     {
         int   len = 2048 >> lvl;
         int   off = 4096 - (4096 >> lvl);
         float x   = float (phase) * float (len);
-        float va  = wtMipRead ((o * 128 + fa) * 4096 + off, len, x);
+        float va  = wtMipRead ((o * 256 + fa) * 4096 + off, len, x);
 
         if (fb == fa || ff <= 0.0f)
             return va;
 
-        float vb = wtMipRead ((o * 128 + fb) * 4096 + off, len, x);
+        float vb = wtMipRead ((o * 256 + fb) * 4096 + off, len, x);
+
+        if (fmode == 1)
+        {
+            float p0 = wtMipRead ((o * 256 + fm) * 4096 + off, len, x);
+            float p3 = wtMipRead ((o * 256 + fc) * 4096 + off, len, x);
+            return va + 0.5f * ff * (vb - p0 + ff * (2.0f * p0 - 5.0f * va + 4.0f * vb - p3 + ff * (3.0f * (va - vb) + p3 - p0)));
+        }
+
         return va + (vb - va) * ff;
     }
 
@@ -25248,10 +25368,14 @@ processor Eisenpuls_Synth
     {
         float sr  = float (processor.frequency);
         int   n   = uniCnt.at (o);
-        int   m1  = clamp (int (opv (o, 18) + 0.5f), 0, 8);
-        int   m2  = clamp (int (opv (o, 20) + 0.5f), 0, 8);
+        int   m1  = clamp (int (opv (o, 18) + 0.5f), 0, 17);
+        int   m2  = clamp (int (opv (o, 20) + 0.5f), 0, 17);
+        int   m3  = clamp (int (wtP.at (o * 16) + 0.5f), 0, 17);
         float a1  = clamp (opv (o, 19) + a1m * 0.5f, 0.0f, 1.0f);
         float a2  = clamp (opv (o, 21) + a2m * 0.5f, 0.0f, 1.0f);
+        float a3  = clamp (wtP.at (o * 16 + 1), 0.0f, 1.0f);
+        int   fmode = clamp (int (wtP.at (o * 16 + 2) + 0.5f), 0, 2);
+        int   lvBias = int ((1.0f - clamp (wtP.at (o * 16 + 3), 0.0f, 1.0f)) * 6.0f + 0.5f);
         float sL  = 0.0f;
         float sR  = 0.0f;
 
@@ -25260,6 +25384,16 @@ processor Eisenpuls_Synth
         int   fa  = clamp (int (fp), 0, nFr - 1);
         int   fb  = min (fa + 1, nFr - 1);
         float ff  = fp - float (fa);
+
+        if (fmode == 2)
+        {
+            fa = clamp (int (fp + 0.5f), 0, nFr - 1);
+            fb = fa;
+            ff = 0.0f;
+        }
+
+        int fm = max (fa - 1, 0);
+        int fc = min (fb + 1, nFr - 1);
 
         // the unison voices are at most +-50 cents (a ratio of 0.9715 .. 1.0293) apart: when the lowest and the highest fall into the same
         // mip level every voice does, and the level is looked up twice instead of once per voice
@@ -25291,14 +25425,18 @@ processor Eisenpuls_Synth
                 rp = rp + pm;
                 rp = rp - float (floor (rp));
             }
-            if (m1 >= 1 && m1 <= 6) rp = wtWarpPhase (m1, a1, rp);
-            if (m2 >= 1 && m2 <= 6) rp = wtWarpPhase (m2, a2, rp);
+            if (wtIsPhase (m1)) rp = wtWarpPhase (m1, a1, rp);
+            if (wtIsPhase (m2)) rp = wtWarpPhase (m2, a2, rp);
+            if (wtIsPhase (m3)) rp = wtWarpPhase (m3, a3, rp);
             float64 rph = float64 (clamp (rp, 0.0f, 0.99999f));
 
-            float y = wtRead (o, lvlAll >= 0 ? lvlAll : wtLevel (f), rph, fa, fb, ff);
+            int lv = lvlAll >= 0 ? lvlAll : wtLevel (f);
+            if (lvBias > 0) lv = min (lv + lvBias, 8);
+            float y = wtRead (o, lv, rph, fa, fb, ff, fmode, fm, fc);
 
-            if (m1 >= 7) y = wtWarpAmp (m1, a1, y);
-            if (m2 >= 7) y = wtWarpAmp (m2, a2, y);
+            if (wtIsAmp (m1)) y = wtWarpAmp (m1, a1, y);
+            if (wtIsAmp (m2)) y = wtWarpAmp (m2, a2, y);
+            if (wtIsAmp (m3)) y = wtWarpAmp (m3, a3, y);
 
             sL += y * uniGL.at (si);
             sR += y * uniGR.at (si);
@@ -25311,7 +25449,7 @@ processor Eisenpuls_Synth
         // warping changes the average level of the cycle: remove the DC it creates (bypassed without warp)
         int zi = o * 4;
 
-        if (m1 != 0 || m2 != 0)
+        if (m1 != 0 || m2 != 0 || m3 != 0)
         {
             float yl = sL - voices.at (vi).wtDcS.at (zi)     + 0.9995f * voices.at (vi).wtDcS.at (zi + 1);
             float yr = sR - voices.at (vi).wtDcS.at (zi + 2) + 0.9995f * voices.at (vi).wtDcS.at (zi + 3);

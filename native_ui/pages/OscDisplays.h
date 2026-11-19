@@ -11,6 +11,8 @@ namespace njo
         std::complex<double> filterH (int ft, double fc, double res, double f, double sweep = 1.0);
         float warpPhase (int mode, float amt, float ph);
         float warpAmp (int mode, float amt, float y);
+        bool warpIsPhase (int m);
+        bool warpIsAmp (int m);
         int pickFrameIndex (int len);                      // frame size index (0-4) that fits a freshly loaded wavetable
         constexpr int frameSizes[5] = { 256, 512, 1024, 2048, 4096 };
         // Wavefilter / Wavedistortion tables: built-in frame values (mirror of tblDefault in the DSP) and the frame at position pos (0..1),

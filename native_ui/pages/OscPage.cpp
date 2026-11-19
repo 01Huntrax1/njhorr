@@ -14,9 +14,11 @@
 #include "../NjoSf.h"
 #include "../NjoBp.h"
 #include "../NjoSm.h"
+#include "../NjoWt.h"
 #include "OscDisplays.h"
 #include "Editors.h"
 #include "SampleEditor.h"
+#include "WavetableEditor.h"
 #include <array>
 
 namespace njo
@@ -204,6 +206,14 @@ namespace njo
                 owner.addAndMakeVisible (*w);
                 widgets[key] = std::move (w);
             }
+            // Wavetable extras: their own id block (WT_BASE + 16 * osc + j)
+            for (auto key : wtKeys)
+            {
+                auto w = makeWidget (ctx, wt::wtId (o, wt::key (key)), true);
+                w->onModDropped = [this] (ParamWidget& pw) { if (owner.onModDropped) owner.onModDropped (pw); };
+                owner.addAndMakeVisible (*w);
+                widgets[juce::String (key) == "wtone" ? "wttone" : key] = std::move (w);   // "wtone" is the waveguide's tone knob
+            }
             // Sampler extras: their own id block (SM_BASE + 16 * osc + j)
             for (auto key : smKeys)
             {
@@ -216,6 +226,9 @@ namespace njo
                 sedit = std::make_unique<SampleEditor> (c, m, osc);
                 owner.addChildComponent (sedit.get());
                 sedit->onClose = [this] { layoutChildren(); };
+                wedit = std::make_unique<WavetableEditor> (c, m, osc);
+                owner.addChildComponent (wedit.get());
+                wedit->onClose = [this] { layoutChildren(); };
             }
             // Waveguide source: its own id block (WG_BASE + 16 * osc + j)
             for (auto key : wgKeys)
@@ -349,6 +362,7 @@ namespace njo
         {
             if (tedit) tedit->open();
             else if (sedit && srcType() == 1) sedit->open();
+            else if (wedit && srcType() == 0) wedit->open();
             else if (medit) { medit->open (mode == 3 ? 2 : 0); }
             layoutChildren();
         }
@@ -357,6 +371,7 @@ namespace njo
         static constexpr const char* terKeys[] = { "tcx", "tcy", "trx", "try", "trot", "tratio", "tphase", "tshape", "tmrate", "tmdep", "tterr2", "tmorph", "tsmooth", "tdrive", "tbits", "tvel" };
         static constexpr const char* wgKeys[] = { "wmodel", "wdecay", "wtone", "wexc", "wgpos", "wnoise", "wnl", "wstretch", "watk", "wsnare", "wbody", "wbodyf", "wvel", "wdrive", "wglide", "wktrack" };   // "wgpos" = the Waveguide Position (plain "wpos" is the wavetable one)
         static constexpr const char* jpKeys[] = { "jpwave", "jppw", "jppwm", "jppwr", "jpdet", "jpmix", "jpwid", "jpfb", "jpfbc", "jptmd", "jptmr", "jpstilt", "jpspk", "jpnz", "jpdrv", "jpsub" };
+        static constexpr const char* wtKeys[] = { "w3m", "w3a", "wmorph", "wtone" };
         static constexpr const char* smKeys[] = { "send", "slps", "slpe", "spp", "sxf", "srev", "sint", "sgain", "svst", "sslice", "swid" };
         static constexpr const char* grKeys[] = { "gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gdrive", "gvel" };
         static constexpr const char* adKeys[] = { "ashape", "ashapeb", "amorph", "acount", "atilt", "aodd", "ainh", "aform", "aformg", "ashim", "ashimr", "adec", "adrive", "awid", "avel" };
@@ -577,13 +592,17 @@ namespace njo
                 presetBtn.setBounds (c.getX() + 13, c.getY() + 166, w - 26, 24); presetBtn.setVisible (sff);
 
                 const int colW = (w - 26 - 7) / 2, x2 = 13 + colW + 7;
-                put ("wpos", 13 + colW / 2 - 35, 190, 70, 54, c, wt);
+                put ("wpos", 13 + colW / 4 - 35, 190, 70, 54, c, wt);
+                knob ("wttone", 13 + 3 * colW / 4, 190, c, wt);
                 put ("wsize", x2, 202, colW, 36, c, wt);   strip ("wsize", x2, 202, colW, c, false, wt);
-                put ("walias", x2, 241, colW, 33, c, wt);
-                put ("w1m", 13, 279, colW, 36, c, wt);     strip ("w1m", 13, 279, colW, c, false, wt);
-                knob ("w1a", x2 + colW / 2, 269, c, wt);
-                put ("w2m", 13, 358, colW, 36, c, wt);     strip ("w2m", 13, 358, colW, c, false, wt);
-                knob ("w2a", x2 + colW / 2, 348, c, wt);
+                put ("walias", x2, 238, colW * 2 / 5, 30, c, wt);
+                put ("wmorph", x2 + colW * 2 / 5 + 4, 238, colW - colW * 2 / 5 - 4, 30, c, wt);
+                put ("w1m", 13, 275, colW, 36, c, wt);     strip ("w1m", 13, 275, colW, c, false, wt);
+                knob ("w1a", x2 + colW / 2, 265, c, wt);
+                put ("w2m", 13, 326, colW, 36, c, wt);     strip ("w2m", 13, 326, colW, c, false, wt);
+                knob ("w2a", x2 + colW / 2, 316, c, wt);
+                put ("w3m", 13, 377, colW, 36, c, wt);     strip ("w3m", 13, 377, colW, c, false, wt);
+                knob ("w3a", x2 + colW / 2, 367, c, wt);
 
                 put ("root", 13, 200, 106, 17, c, grf);     strip ("root", 13, 188, 106, c, true, grf);
                 if (! sm) knob ("sstart", 179, 222, c, false);
@@ -852,12 +871,12 @@ namespace njo
             {
                 const bool tbl = (mode == 1 || mode == 2);
                 const bool res = (mode == 3) || (mode == 0 && type == 3);
-                if (mode == 0 && type == 1 && sedit) { editBtn.setBounds (cardSrc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
+                if (mode == 0 && (type == 1 || type == 0) && sedit) { editBtn.setBounds (cardSrc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
                 else if (tbl) { editBtn.setBounds (cardOut.getRight() - 12 - 84, 6, 84, 18); editBtn.setVisible (true); }
                 else if (res) { auto& cc = mode == 3 ? cardFlt : cardSrc; editBtn.setBounds (cc.getRight() - 12 - 96, 6, 96, 18); editBtn.setVisible (true); }
-                for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get(), (juce::Component*) sedit.get() })
+                for (juce::Component* e : { (juce::Component*) tedit.get(), (juce::Component*) medit.get(), (juce::Component*) sedit.get(), (juce::Component*) wedit.get() })
                     if (e) { e->setBounds (owner.getLocalBounds()); }
-                if ((tedit && tedit->isVisible()) || (medit && medit->isVisible()) || (sedit && sedit->isVisible())) editBtn.setVisible (false);
+                if ((tedit && tedit->isVisible()) || (medit && medit->isVisible()) || (sedit && sedit->isVisible()) || (wedit && wedit->isVisible())) editBtn.setVisible (false);
             }
             modeA.setOn (! (mode == 1 ? juce::roundToInt (ctx.get (pnum ("ftype"))) >= 30 : juce::roundToInt (ctx.get (pnum ("dtype"))) >= 7));
             modeB.setOn (! modeA.on);
@@ -950,7 +969,7 @@ if (! wf)
         OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
         ResoDisplay rdisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault, presetBtn { "PRESET" };
-        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit; std::unique_ptr<SampleEditor> sedit;
+        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit; std::unique_ptr<SampleEditor> sedit; std::unique_ptr<WavetableEditor> wedit;
          std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
     };

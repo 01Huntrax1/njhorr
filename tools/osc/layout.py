@@ -42,9 +42,9 @@ PARAMS = [
  (17, "ustyle", "Unison Style",  "Detune Curve", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"]),
  (28, "udrift", "Unison Drift",  "Drift",     0, 1, 0, "", "sld", None),    # slow random pitch wander per unison voice (up to about 12 cents)
  (29, "uphase", "Unison Phase",  "Phase Spread", 0, 1, 0, "", "sld", None), # random start phase per unison voice
- (18, "w1m",    "Warp 1 Mode",   "Warp 1",    0, 8, 0, "", "sel", None),   # labels in UI (WARP_MODES)
+ (18, "w1m",    "Warp 1 Mode",   "Warp 1",    0, 17, 0, "", "sel", None),   # labels in UI (WARP_MODES)
  (19, "w1a",    "Warp 1 Amount", "Warp 1 Amt",0, 1, 0.5, "", "sld", None),
- (20, "w2m",    "Warp 2 Mode",   "Warp 2",    0, 8, 0, "", "sel", None),
+ (20, "w2m",    "Warp 2 Mode",   "Warp 2",    0, 17, 0, "", "sel", None),
  (21, "w2a",    "Warp 2 Amount", "Warp 2 Amt",0, 1, 0.5, "", "sld", None),
  (22, "sstart", "Sample Start",  "Start",     0, 1, 0, "", "sld", None),
  (23, "sloop",  "Sample Loop",   "Loop",      0, 1, 0, "", "btn", ["Off", "On"]),

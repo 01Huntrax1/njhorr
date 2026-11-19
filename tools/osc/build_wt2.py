@@ -13,7 +13,7 @@ WARP_NAMES = ["Off", "Bend +", "Bend −", "Sync", "PWM", "Mirror", "Flip", "Qua
 WT = [
  (0, "w3m",   "Warp 3 Mode",   "Warp 3",    0, NMODES - 1, 0.0, "", "sel", None),
  (1, "w3a",   "Warp 3 Amount", "Warp 3 Amt",0, 1, 0.5, "", "sld", None),
- (2, "wmorph","WT Morph",      "Morph",     0, 2, 0.0, "", "btn", ["Crossfade", "Smooth", "Stepped"]),
+ (2, "wmorph","WT Morph",      "Morph",     0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"]),
  (3, "wtone", "WT Tone",       "Tone",      0, 1, 1.0, "", "sld", None),
 ]
 def wt_id(o, j): return WT_BASE + WT_STRIDE * o + j

@@ -250,7 +250,7 @@ class SelectControl {
 }
 
 const UNI_STYLES = ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"];
-const WARP_MODES = ["Off", "Bend +", "Bend \u2212", "Sync", "PWM", "Mirror", "Flip", "Quantize", "Fold"];
+const WARP_MODES = ["Off", "Bend +", "Bend \u2212", "Sync", "PWM", "Mirror", "Flip", "Quantize", "Fold", "Smear", "Ripple", "Stairs", "Fold Phase", "Clip", "Rectify", "Wrap", "Asym", "Drive"];
 
 const FILTER_TYPES = ["LP24", "LP12", "HP12", "BP12", "LP6", "LP18", "HP6", "HP18", "HP24", "BP24", "Notch12", "Notch24",
     "Peak", "LowShelf", "HighShelf", "Allpass", "Ladder", "Diode", "Acid", "Dirty LP", "Comb+", "Comb-", "Phaser", "Vowel",
@@ -656,6 +656,9 @@ const bpId = (o, key) => BP_BASE + BP_STRIDE * o + BP_K[key];
 const SM_BASE = 12300, SM_STRIDE = 16;
 const SM_K = {"send": 0, "slps": 1, "slpe": 2, "spp": 3, "sxf": 4, "srev": 5, "sint": 6, "sgain": 7, "svst": 8, "sslice": 9, "swid": 10};
 const smId = (o, key) => SM_BASE + SM_STRIDE * o + SM_K[key];
+const WT_BASE = 12500, WT_STRIDE = 16;
+const WT_K = {"w3m": 0, "w3a": 1, "wmorph": 2, "wtone": 3};
+const wtId = (o, key) => WT_BASE + WT_STRIDE * o + WT_K[key];
 const SF_BASE = 2800, SF_STRIDE = 16;
 const SF_K = {"sfgain": 0, "sfvel": 1, "sfatk": 2, "sfdec": 3, "sfsus": 4, "sfrel": 5, "sfloop": 6, "sfpan": 7, "sfstart": 8, "sfdrive": 9};
 const sfId = (o, key) => SF_BASE + SF_STRIDE * o + SF_K[key];
@@ -698,9 +701,9 @@ const OSC_SPEC_ROWS = [
     [1017, "OSC 1 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1028, "OSC 1 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1029, "OSC 1 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1018, "OSC 1 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1018, "OSC 1 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1019, "OSC 1 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1020, "OSC 1 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1020, "OSC 1 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1021, "OSC 1 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1022, "OSC 1 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1023, "OSC 1 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -1287,9 +1290,9 @@ const OSC_SPEC_ROWS = [
     [1081, "OSC 2 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1092, "OSC 2 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1093, "OSC 2 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1082, "OSC 2 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1082, "OSC 2 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1083, "OSC 2 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1084, "OSC 2 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1084, "OSC 2 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1085, "OSC 2 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1086, "OSC 2 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1087, "OSC 2 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -1351,9 +1354,9 @@ const OSC_SPEC_ROWS = [
     [1145, "OSC 3 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1156, "OSC 3 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1157, "OSC 3 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1146, "OSC 3 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1146, "OSC 3 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1147, "OSC 3 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1148, "OSC 3 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1148, "OSC 3 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1149, "OSC 3 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1150, "OSC 3 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1151, "OSC 3 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -1415,9 +1418,9 @@ const OSC_SPEC_ROWS = [
     [1209, "OSC 4 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1220, "OSC 4 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1221, "OSC 4 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1210, "OSC 4 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1210, "OSC 4 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1211, "OSC 4 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1212, "OSC 4 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1212, "OSC 4 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1213, "OSC 4 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1214, "OSC 4 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1215, "OSC 4 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -1479,9 +1482,9 @@ const OSC_SPEC_ROWS = [
     [1273, "OSC 5 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1284, "OSC 5 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1285, "OSC 5 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1274, "OSC 5 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1274, "OSC 5 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1275, "OSC 5 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1276, "OSC 5 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1276, "OSC 5 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1277, "OSC 5 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1278, "OSC 5 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1279, "OSC 5 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -1543,9 +1546,9 @@ const OSC_SPEC_ROWS = [
     [1337, "OSC 6 Unison Style", 0, 5, 0, "", "btn", ["Lin", "Exp", "Inv", "Rnd", "Super", "Hyper"], 1, "Detune Curve", null],
     [1348, "OSC 6 Unison Drift", 0, 1, 0, "", "sld", null, 1, "Drift", null],
     [1349, "OSC 6 Unison Phase", 0, 1, 0, "", "sld", null, 1, "Phase Spread", null],
-    [1338, "OSC 6 Warp 1 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
+    [1338, "OSC 6 Warp 1 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 1", null],
     [1339, "OSC 6 Warp 1 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 1 Amt", null],
-    [1340, "OSC 6 Warp 2 Mode", 0, 8, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
+    [1340, "OSC 6 Warp 2 Mode", 0, 17, 0, "", "sel", WARP_MODES, 1, "Warp 2", null],
     [1341, "OSC 6 Warp 2 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 2 Amt", null],
     [1342, "OSC 6 Sample Start", 0, 1, 0, "", "sld", null, 1, "Start", null],
     [1343, "OSC 6 Sample Loop", 0, 1, 0, "", "btn", ["Off", "On"], 1, "Loop", null],
@@ -3099,8 +3102,34 @@ const OSC_SPEC_ROWS = [
     [12387, "OSC 6 Sample Gain", -24, 12, 0.0, "dB", "sld", null, 1, "Gain", null],
     [12388, "OSC 6 Sample Vel Start", 0, 1, 0.0, "", "sld", null, 1, "Vel > Start", null],
     [12389, "OSC 6 Sample Slices", 1, 64, 1.0, "", "stp", null, 1, "Slices", null],
-    [12390, "OSC 6 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null]
+    [12390, "OSC 6 Sample Width", 0, 2, 1.0, "", "sld", null, 1, "Width", null],
     // SM-END
+    // WT2-BEGIN
+    [12500, "OSC 1 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12501, "OSC 1 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12502, "OSC 1 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12503, "OSC 1 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null],
+    [12516, "OSC 2 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12517, "OSC 2 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12518, "OSC 2 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12519, "OSC 2 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null],
+    [12532, "OSC 3 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12533, "OSC 3 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12534, "OSC 3 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12535, "OSC 3 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null],
+    [12548, "OSC 4 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12549, "OSC 4 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12550, "OSC 4 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12551, "OSC 4 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null],
+    [12564, "OSC 5 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12565, "OSC 5 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12566, "OSC 5 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12567, "OSC 5 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null],
+    [12580, "OSC 6 Warp 3 Mode", 0, 17, 0.0, "", "sel", WARP_MODES, 1, "Warp 3", null],
+    [12581, "OSC 6 Warp 3 Amount", 0, 1, 0.5, "", "sld", null, 1, "Warp 3 Amt", null],
+    [12582, "OSC 6 WT Morph", 0, 2, 0.0, "", "btn", ["Fade", "Smooth", "Stepped"], 1, "Morph", null],
+    [12583, "OSC 6 WT Tone", 0, 1, 1.0, "", "sld", null, 1, "Tone", null]
+    // WT2-END
 ];
 
 // option groups of the dropdowns: [first index, group title]
@@ -3664,7 +3693,7 @@ const FX_OUT = [175, 221, 222, 11600, 11601];   // MASTER-OUT: Synth Drive, Driv
 const NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 const CHUNK = 256;
 const MAX_SMP = 524288;
-const MAX_WT = 262144, MAX_WT_FRAMES = 128;   // wavetables: up to 128 frames of 2048 samples (Vital style)
+const MAX_WT = 524288, MAX_WT_FRAMES = 256;   // wavetables: up to 256 frames of 2048 samples (Vital style)
 const FRAME_SIZES = [256, 512, 1024, 2048, 4096];
 const SMP_DZ_EMPTY = "DROP A SAMPLE / CLICK TO LOAD";
 const WT_DZ_EMPTY = "DROP A WAVETABLE / CLICK TO LOAD";
@@ -4917,6 +4946,7 @@ class EisenpulsPatchView extends HTMLElement {
         const gx = key => this.controlHTML(grId(o, key), true);
         const dx = key => this.controlHTML(dkId(o, key), true);
         const sx = key => this.controlHTML(spId(o, key), true);
+        const wtc = key => this.controlHTML(wtId(o, key), true);
         const mx = key => this.controlHTML(smId(o, key), true);
         const fx = key => this.controlHTML(sfId(o, key), true);
         const bx = key => this.controlHTML(bpId(o, key), true);
@@ -4927,7 +4957,7 @@ class EisenpulsPatchView extends HTMLElement {
             <canvas class="osc-canvas" data-o="${o}" width="640" height="190"></canvas>
             <div class="osc-info" data-o="${o}">--</div>
             <div class="o-mem" data-o="${o}" data-show="0,1,8,11"><div class="dz dz-osc" data-o="${o}"><span class="dz-txt"></span><span class="dz-clr" title="Clear this memory">&times;</span></div><button type="button" class="pb dz-lib" data-o="${o}" data-slot="wt${o}" title="Open the sound vault">VAULT</button></div>
-            ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join("") + this.controlHTML(2000 + o, true), "cgrid o-g2")}
+            ${sh("0", ["wpos", "wsize", "w1m", "w1a", "w2m", "w2a"].map(c).join("") + this.controlHTML(2000 + o, true) + ["w3m", "w3a", "wmorph", "wtone"].map(wtc).join(""), "cgrid o-g2")}
             ${sh("1", ["root", "sstart", "sloop"].map(c).join("") + ["send", "slps", "slpe", "spp", "sxf", "srev", "sint", "sgain", "svst", "sslice", "swid"].map(mx).join(""), "cgrid o-g3")}
             ${sh("8", ["root"].map(c).join("") + ["gpos", "gsize", "gdens", "gspray", "gpitch", "gpan", "gshape", "grev", "gscan", "gjit", "gvel", "gdrive"].map(gx).join(""), "cgrid o-g3 o-pl")}
             ${sh("13", ["bpscale", "bpreed", "bpdouble", "bpconic", "bpcoup", "bpbore", "bpfluct", "bpair", "bpcolmix", "bpcolf", "bpdrone", "bpchord", "bpkey", "bpstrike", "bpvib", "bpblow"].map(bx).join(""), "cgrid o-g3 o-pl")}
