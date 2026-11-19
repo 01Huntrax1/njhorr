@@ -379,6 +379,13 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& data) override
     {
+        // a host state that has not been applied yet (the load is asynchronous): hand it back unchanged instead of the defaults of the old DSP
+        if (hasUnappliedHostState.load() && pendingHostState.getSize() > 0)
+        {
+            data.append (pendingHostState.getData(), pendingHostState.getSize());
+            return;
+        }
+
         juce::MemoryOutputStream m (data, false);
         getUpdatedState().writeToStream (m);
     }
@@ -392,7 +399,9 @@ public:
         if (lastLoadedStateHash != stateHash)
         {
             lastLoadedStateHash = stateHash;
-            setNewStateAsync (juce::ValueTree::readFromData (data, static_cast<size_t> (size)));
+            pendingHostState.replaceAll (data, static_cast<size_t> (size));
+            hasUnappliedHostState = true;
+            setNewStateAsync (juce::ValueTree::readFromData (data, static_cast<size_t> (size)), stateHash);
         }
     }
 
@@ -427,6 +436,8 @@ public:
 
 protected:
     uint64_t lastLoadedStateHash = 0;
+    juce::MemoryBlock pendingHostState;
+    std::atomic<bool> hasUnappliedHostState { false };
 
     //==============================================================================
     static bool initialiseDLL()
@@ -580,20 +591,33 @@ protected:
 
         juce::ValueTree paramList (ids.PARAMS);
 
+        const bool useLoading = patch->loadParamsPending;   // a build with the project's values is still running: the live values belong to the old DSP
+
         for (auto& p : patch->getParameterList())
+        {
+            float v = p->currentValue;
+
+            if (useLoading)
+            {
+                auto f = patch->lastLoadParams.parameterValues.find (p->properties.endpointID);
+                if (f != patch->lastLoadParams.parameterValues.end()) v = f->second;
+            }
+
             paramList.appendChild (juce::ValueTree (ids.PARAM,
                                                     { { ids.ID, juce::String (p->properties.endpointID) },
-                                                      { ids.V, p->currentValue } }),
+                                                      { ids.V, v } }),
                                    nullptr);
+        }
 
         state.appendChild (paramList, nullptr);
         return state;
     }
 
-    void setNewStateAsync (juce::ValueTree&& newState)
+    void setNewStateAsync (juce::ValueTree&& newState, uint64_t hostStateHash = 0)
     {
         auto m = std::make_unique<NewStateMessage>();
         m->newState = std::move (newState);
+        m->hostStateHash = hostStateHash;
         postMessage (m.release());
     }
 
@@ -715,12 +739,16 @@ protected:
     struct NewStateMessage  : public juce::Message
     {
         juce::ValueTree newState;
+        uint64_t hostStateHash = 0;   // != 0: this message carries the state the host handed to setStateInformation
     };
 
     void handleMessage (const juce::Message& message) override
     {
         if (auto m = dynamic_cast<const NewStateMessage*> (&message))
+        {
             setNewState (const_cast<NewStateMessage*> (m)->newState);
+            if (m->hostStateHash != 0 && m->hostStateHash == lastLoadedStateHash) hasUnappliedHostState = false;
+        }
     }
 
     void handleOutputEvent (uint64_t, std::string_view endpointID, const choc::value::ValueView& value)
