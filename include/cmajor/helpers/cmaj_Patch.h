@@ -22,6 +22,9 @@
 #include "cmaj_AudioMIDIPerformer.h"
 
 #include <mutex>
+#include <fstream>
+#include <filesystem>
+#include <thread>
 #include <unordered_map>
 #include <unordered_set>
 #include <chrono>
@@ -29,6 +32,23 @@
 
 namespace cmaj
 {
+
+/// Trace of the project load path (which build wins, how many parameter values reached the DSP): <temp folder>/njohrr_load.log
+inline void njoLoadTrace (const std::string& text)
+{
+    try
+    {
+        static std::mutex m;
+        std::scoped_lock l (m);
+        auto path = std::filesystem::temp_directory_path() / "njohrr_load.log";
+        std::error_code ec;
+        if (std::filesystem::exists (path, ec) && std::filesystem::file_size (path, ec) > 400000) std::filesystem::remove (path, ec);
+        auto t = std::chrono::duration_cast<std::chrono::milliseconds> (std::chrono::system_clock::now().time_since_epoch()).count();
+        std::ofstream f (path, std::ios::app);
+        f << (t % 100000000) << " [" << (std::hash<std::thread::id>{} (std::this_thread::get_id()) % 10000) << "] " << text << "\n";
+    }
+    catch (...) {}
+}
 
 struct PatchView;
 struct PatchParameter;
@@ -1507,15 +1527,25 @@ struct Patch::PatchRenderer  : public std::enable_shared_from_this<PatchRenderer
 
     void applyParameterValues (const std::unordered_map<std::string, float>& values, int32_t rampFrames, uint32_t timeoutMilliseconds) const
     {
+        int failed = 0, fromState = 0;
+
         for (auto& p : parameterIDMap)
         {
             auto oldValue = values.find (p.first);
+            bool ok;
 
             if (oldValue != values.end())
-                p.second->setValue (oldValue->second, true, rampFrames, timeoutMilliseconds);
+            {
+                ok = p.second->setValue (oldValue->second, true, rampFrames, timeoutMilliseconds);
+                ++fromState;
+            }
             else
-                p.second->resetToDefaultValue (true, rampFrames, timeoutMilliseconds);
+                ok = p.second->resetToDefaultValue (true, rampFrames, timeoutMilliseconds);
+
+            if (! ok) ++failed;
         }
+
+        njoLoadTrace ("applyParameterValues parameters=" + std::to_string (parameterIDMap.size()) + " fromState=" + std::to_string (fromState) + " failedToPost=" + std::to_string (failed));
     }
 
     bool sendEventOrValueToPatch (ClientEventQueue& queue, const EndpointID& endpointID, const choc::value::ValueView& value,
@@ -2030,6 +2060,13 @@ inline bool Patch::loadPatch (const LoadParams& params, bool synchronous)
         lastLoadParams = params;
 
     loadParamsPending = true;
+
+    {
+        auto f = params.parameterValues.find ("param1000");
+        njoLoadTrace ("loadPatch sync=" + std::to_string ((int) synchronous) + " values=" + std::to_string (params.parameterValues.size())
+                       + " param1000=" + (f != params.parameterValues.end() ? std::to_string (f->second) : std::string ("none"))
+                       + " rate=" + std::to_string (currentPlaybackParams.sampleRate) + " block=" + std::to_string (currentPlaybackParams.blockSize));
+    }
 
     auto build = std::make_unique<Build> (*this, params, true, true);
 
@@ -2630,10 +2667,18 @@ inline void Patch::setNewRenderer (std::shared_ptr<PatchRenderer> newRenderer)
 
     // a newer build was started while this one was running (e.g. the host's prepareToPlay rebuild against the project state): this one is stale
     if (newRenderer != nullptr && newRenderer->generation != buildGeneration.load())
+    {
+        njoLoadTrace ("setNewRenderer: DROPPED stale build generation " + std::to_string (newRenderer->generation) + " (latest " + std::to_string (buildGeneration.load()) + ")");
         return;
+    }
 
     if (currentPlaybackParams != newRenderer->configuredPlaybackParams)
+    {
+        njoLoadTrace ("setNewRenderer: DROPPED build with other playback params (" + std::to_string (newRenderer->configuredPlaybackParams.sampleRate) + "/" + std::to_string (newRenderer->configuredPlaybackParams.blockSize) + ")");
         return;
+    }
+
+    njoLoadTrace ("setNewRenderer: INSTALL generation " + std::to_string (newRenderer->generation));
 
     if (stopPlayback)
         stopPlayback();

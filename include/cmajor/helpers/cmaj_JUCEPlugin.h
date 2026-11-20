@@ -306,6 +306,7 @@ public:
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override
     {
+        cmaj::njoLoadTrace ("prepareToPlay rate=" + std::to_string (sampleRate) + " block=" + std::to_string (samplesPerBlock));
         applyRateAndBlockSize (sampleRate, static_cast<uint32_t> (samplesPerBlock));
     }
 
@@ -380,6 +381,8 @@ public:
     void getStateInformation (juce::MemoryBlock& data) override
     {
         // a host state that has not been applied yet (the load is asynchronous): hand it back unchanged instead of the defaults of the old DSP
+        cmaj::njoLoadTrace ("getStateInformation unapplied=" + std::to_string ((int) hasUnappliedHostState.load()) + " pendingLoad=" + std::to_string ((int) patch->loadParamsPending));
+
         if (hasUnappliedHostState.load() && pendingHostState.getSize() > 0)
         {
             data.append (pendingHostState.getData(), pendingHostState.getSize());
@@ -395,6 +398,8 @@ public:
         choc::hash::xxHash64 hash (1);
         hash.addInput (data, static_cast<size_t> (size));
         auto stateHash = hash.getHash();
+
+        cmaj::njoLoadTrace ("setStateInformation size=" + std::to_string (size) + " hash=" + std::to_string (stateHash) + " same-as-last=" + std::to_string ((int) (lastLoadedStateHash == stateHash)) + " sampleRate=" + std::to_string (getSampleRate()));
 
         if (lastLoadedStateHash != stateHash)
         {
@@ -691,6 +696,9 @@ protected:
                     if (auto endpointID = endpointIDProp->toString().toStdString(); ! endpointID.empty())
                         if (auto valProp = param.getPropertyPointer (ids.V))
                             loadParams.parameterValues[endpointID] = static_cast<float> (*valProp);
+
+        auto f = loadParams.parameterValues.find ("param1000");
+        cmaj::njoLoadTrace ("readParametersFromState values=" + std::to_string (loadParams.parameterValues.size()) + " param1000=" + (f != loadParams.parameterValues.end() ? std::to_string (f->second) : std::string ("none")));
     }
 
     static choc::value::Value convertVarToValue (const juce::var& v)
