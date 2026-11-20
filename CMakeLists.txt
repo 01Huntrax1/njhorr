@@ -10,7 +10,9 @@ project(
 OPTION (WEBKIT2_GTK_VERSION "Which version of webkit to use")
 option (NJOHRR_NATIVE_UI "Use the native JUCE C++ editor (native_ui/) instead of the WebView UI (patch/index.js)" ON)
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
+# Link-time optimisation made the Windows and macOS builds run for hours (and time out): the DSP is one huge translation unit, there is nothing to gain across files
+option (NJOHRR_LTO "Link-time optimisation for Release builds (very slow with the generated DSP)" OFF)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ${NJOHRR_LTO})
 set(JUCE_ENABLE_MODULE_SOURCE_GROUPS ON)
 
 
