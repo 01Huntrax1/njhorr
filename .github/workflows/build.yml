@@ -7,6 +7,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - name: Linux dependencies
@@ -17,8 +18,17 @@ jobs:
           git init JUCE
           git -C JUCE fetch --depth 1 https://github.com/juce-framework/JUCE.git 454fe891acc8204f99f4ef1e3a28c84b1a4da145
           git -C JUCE checkout FETCH_HEAD
+      - name: Pin the MSVC toolset (14.52 made the link of the generated DSP run for hours; 14.51 built it in 20 minutes)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $dirs = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC" -Directory | ForEach-Object { $_.Name }
+          Write-Host "Installed MSVC toolsets: $dirs"
+          $t = $dirs | Where-Object { $_ -like '14.51*' } | Select-Object -First 1
+          if ($t) { "NJO_TOOLSET=-T version=$t" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8; Write-Host "Using toolset $t" }
+          else { Write-Host "14.51 is not installed: using the default toolset" }
       - name: Configure
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DJUCE_PATH=${{ github.workspace }}/JUCE
+        run: cmake -S . -B build ${{ env.NJO_TOOLSET }} -DCMAKE_BUILD_TYPE=Release -DJUCE_PATH=${{ github.workspace }}/JUCE
       - name: Build
         run: cmake --build build --config Release --parallel
       - uses: actions/upload-artifact@v4
