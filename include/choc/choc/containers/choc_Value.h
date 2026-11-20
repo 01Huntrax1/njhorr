@@ -26,6 +26,8 @@
 #include <algorithm>
 #include <memory>
 #include <exception>
+#include <atomic>
+#include <mutex>
 #include "../platform/choc_Assert.h"
 
 namespace choc::value
@@ -1395,24 +1397,55 @@ struct Type::ComplexArray
 
     ElementTypeAndOffset getElementInfo (uint32_t index) const
     {
-        size_t offset = 0;
-
-        for (auto& g : groups)
+        // Njohrr: an array of thousands of differently typed objects (the endpoint list of the plugin) made every lookup walk
+        // all the groups and size every element type: a lazily built table of the start index and byte offset of each group
+        if (! cacheValid.load (std::memory_order_acquire))
         {
-            auto elementSize = g.elementType.getValueDataSize();
+            std::lock_guard<std::mutex> lock (cacheLock);
 
-            if (index < g.repetitions)
-                return { g.elementType, offset + elementSize * index };
+            if (! cacheValid.load (std::memory_order_relaxed))
+            {
+                groupStartIndex.clear();
+                groupStartOffset.clear();
+                uint32_t count = 0;
+                size_t offset = 0;
 
-            index -= g.repetitions;
-            offset += elementSize * g.repetitions;
+                for (auto& g : groups)
+                {
+                    groupStartIndex.push_back (count);
+                    groupStartOffset.push_back (offset);
+                    count += g.repetitions;
+                    offset += g.repetitions * g.elementType.getValueDataSize();
+                }
+
+                cacheValid.store (true, std::memory_order_release);
+            }
+        }
+
+        auto it = std::upper_bound (groupStartIndex.begin(), groupStartIndex.end(), index);
+
+        if (it != groupStartIndex.begin())
+        {
+            auto groupIndex = static_cast<size_t> (it - groupStartIndex.begin()) - 1;
+            auto& g = groups[static_cast<uint32_t> (groupIndex)];
+            auto indexInGroup = index - groupStartIndex[groupIndex];
+
+            if (indexInGroup < g.repetitions)
+                return { g.elementType, groupStartOffset[groupIndex] + g.elementType.getValueDataSize() * indexInGroup };
         }
 
         throwError ("Index out of range");
     }
 
+    mutable std::vector<uint32_t> groupStartIndex;
+    mutable std::vector<size_t> groupStartOffset;
+    mutable std::atomic<bool> cacheValid { false };
+    mutable std::mutex cacheLock;
+
     void addElements (Type&& elementType, uint32_t numElementsToAdd)
     {
+        cacheValid.store (false);
+
         if (! groups.empty() && groups.back().elementType == elementType)
             groups.back().repetitions += numElementsToAdd;
         else

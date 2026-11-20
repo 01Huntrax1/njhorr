@@ -21,6 +21,8 @@
 #include "cmaj_Performer.h"
 
 #include <functional>
+#include <mutex>
+#include <string>
 #include <vector>
 
 namespace cmaj
@@ -362,7 +364,25 @@ inline choc::value::Value Engine::getProgramDetails() const
         {
             try
             {
-                return choc::json::parse (choc::com::StringPtr (details));
+                // Njohrr: the program details of the generated plugin are one JSON document of about a megabyte (8000+ endpoints) which
+                // every build asked for several times: parse each distinct text once
+                choc::com::StringPtr text (details);
+                std::string_view view (text.get());
+                static std::mutex cacheLock;
+                static std::string cachedText;
+                static choc::value::Value cachedValue;
+                std::scoped_lock lock (cacheLock);
+
+                if (view.length() < 100000)
+                    return choc::json::parse (view);
+
+                if (cachedText.size() != view.length() || view != cachedText)
+                {
+                    cachedValue = choc::json::parse (view);
+                    cachedText = std::string (view);
+                }
+
+                return cachedValue;
             }
             catch (...) {}
         }

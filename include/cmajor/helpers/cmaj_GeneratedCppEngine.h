@@ -18,6 +18,10 @@
 
 #pragma once
 
+#include <unordered_map>
+#include <string_view>
+#include <iterator>
+
 #include <cstdlib>
 #include "../API/cmaj_Engine.h"
 
@@ -97,7 +101,23 @@ struct GeneratedCppEngine  : public choc::com::ObjectWithAtomicRefCount<EngineIn
     EndpointHandle getEndpointHandle (const char* endpointName) override
     {
         if (endpointName != nullptr)
-            return static_cast<EndpointHandle> (GeneratedCppClass::getEndpointHandleForName (endpointName));
+        {
+            // Njohrr: the generated getEndpointHandleForName() compares the name with every endpoint in turn (8000+ of them,
+            // asked for each endpoint at every build): look the name up in a table made once from the endpoint lists
+            static const auto table = []
+            {
+                std::unordered_map<std::string_view, uint32_t> m;
+                m.reserve (std::size (GeneratedCppClass::inputEndpoints) + std::size (GeneratedCppClass::outputEndpoints));
+
+                for (auto& e : GeneratedCppClass::inputEndpoints)   m.emplace (e.name, e.handle);
+                for (auto& e : GeneratedCppClass::outputEndpoints)  m.emplace (e.name, e.handle);
+
+                return m;
+            }();
+
+            auto found = table.find (endpointName);
+            return found != table.end() ? static_cast<EndpointHandle> (found->second) : EndpointHandle();
+        }
 
         return {};
     }

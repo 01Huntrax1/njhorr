@@ -4,6 +4,8 @@
 #include <cstdio>
 #include <thread>
 #include <fstream>
+#include <chrono>
+static double nowMs() { return std::chrono::duration<double, std::milli> (std::chrono::steady_clock::now().time_since_epoch()).count(); }
 using namespace cmaj;
 using Perf = performer::Eisenpuls_Synth;
 
@@ -46,7 +48,9 @@ int main (int argc, char** argv)
 
     Patch::LoadParams lp; setupManifest (lp);
     // the plugin's constructor: the default state
+    double t0 = nowMs();
     patch->loadPatch (lp, true);
+    printf ("default build %.0f ms\n", nowMs() - t0);
     printf ("default load: playable=%d\n", (int) patch->isPlayable());
     if (mode >= 8)
     {   // the host thread changes the rate (prepareToPlay) while the message thread applies the project state, both synchronous builds
@@ -83,7 +87,8 @@ int main (int argc, char** argv)
         for (auto& p : patch->getParameterList()) if (p->properties.endpointID == "param1000") p->setValue (5.0f, true, 0, 0);
     }
     if (mode >= 5) { for (auto& p : patch->getParameterList()) if (p->properties.endpointID == "param1000") printf ("final type=%g playable=%d pending=%d\n", (double) p->currentValue, (int) patch->isPlayable(), (int) patch->loadParamsPending); }
-    printf ("rms %.5f\n", renderRms (*patch, 48));
+    { double t1 = nowMs(); double r = renderRms (*patch, 48); double t2 = nowMs();
+      printf ("rms %.5f  render %.0f ms for %d blocks (idle+1 voice)\n", r, t2 - t1, 400 * 128 / (int) patch->getPlaybackParams().blockSize); }
     return 0;
 }
 cmaj::ProgramPtr cmaj::Library::createProgram() { return {}; }

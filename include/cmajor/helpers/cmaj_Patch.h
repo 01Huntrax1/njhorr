@@ -2054,6 +2054,10 @@ inline bool Patch::loadPatch (const LoadParams& params, bool synchronous)
     if (! currentPlaybackParams.isValid())
         return false;
 
+    // one load / rebuild at a time: the host thread (prepareToPlay) and the message thread (project state) both come here, and
+    // a rebuild that snapshots the live values must not interleave with a load that sets the project's values
+    std::scoped_lock loadLock (installRendererLock);
+
     fileChangeChecker.reset();
 
     if (std::addressof (lastLoadParams) != std::addressof (params))
@@ -2227,6 +2231,8 @@ inline void Patch::handleFileChange (PatchFileChangeChecker::ChangeType change)
 
 inline void Patch::rebuild (bool synchronous)
 {
+    std::scoped_lock loadLock (installRendererLock);
+
     try
     {
         // not while a load is still being built: the live values are those of the old DSP (defaults) and would overwrite the project's values
@@ -2685,7 +2691,11 @@ inline void Patch::setNewRenderer (std::shared_ptr<PatchRenderer> newRenderer)
 
     fileChangeChecker.reset();
     renderer.reset();
-    sendPatchChange();
+
+    // the plugin updates its host parameters (8000+) on every change: when a new renderer follows at once, one notification is enough
+    if (newRenderer == nullptr)
+        sendPatchChange();
+
     loadParamsPending = false;
 
     if (newRenderer != nullptr)
