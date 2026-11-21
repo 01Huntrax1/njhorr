@@ -661,10 +661,10 @@ namespace njo
                 lfoChips[i]->on = i == li; lfoChips[i]->repaint();
                 envChips[i]->on = i == ei; envChips[i]->repaint();
                 for (int k = 0; k < 4; ++k) { envKnobs[i * 4 + k]->setVisible (i == ei); envKnobs[i * 4 + k]->setAlpha (ctx.get (7200 + 30 * i) > 0.5f && k != 3 ? 0.3f : 1.0f); }
-                envPol[i]->setVisible (i == ei); envLoop[i]->setVisible (i == ei && ctx.get (7200 + 30 * i) < 0.5f);
+                envPol[i]->setVisible (full && i == ei); envLoop[i]->setVisible (i == ei && ctx.get (7200 + 30 * i) < 0.5f);
                 for (int k = 0; k < 8; ++k) envX[i * 8 + k]->setVisible (i == ei);
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
-                modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (i == li);
+                modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (full && i == li);
                 divSel[i]->setVisible (i == li);
                 keyBtn[i]->setVisible (i == li); intBtn[i]->setVisible (i == li);
                 for (int k = 0; k < 8; ++k) lfoX[i * 8 + k]->setVisible (i == li);
@@ -725,7 +725,9 @@ namespace njo
                 int kw = kr.getWidth() / 8;
                 for (int i = 0; i < 10; ++i) for (int k = 0; k < 8; ++k) I.envX[i * 8 + k]->setBounds (kr.getX() + k * kw, kr.getY(), kw, kr.getHeight());
             }
-            {   // polarity switches under the display: selected envelope | velocity
+            I.envPolLbl = I.velPolLbl = {}; I.velPol->setVisible (I.full);
+            if (I.full)
+            {   // polarity switches under the display: selected envelope | velocity (only on the full modulation page, not on the synth page)
                 auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
                 const int lw = 52, half = (pr.getWidth() - 10) / 2;
                 auto left = pr.removeFromLeft (half); pr.removeFromLeft (10);
@@ -745,11 +747,15 @@ namespace njo
             auto row = c.removeFromTop (ch); c.removeFromTop (4);
             for (int i = 0; i < 10; ++i) I.lfoChips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
             I.helpRect = c.removeFromBottom (12);
-            {   // polarity switch of the selected LFO under the display
+            I.lfoPolLbl = {};
+            {   // polarity switch of the selected LFO under the display (full modulation page); the Key / Interp / Table buttons stay on both pages
                 auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
-                I.lfoPolLbl = pr.removeFromLeft (52);
-                auto pb = pr.removeFromLeft (juce::jmin (pr.getWidth() / 3, 110)); pr.removeFromLeft (4);
-                for (int i = 0; i < 10; ++i) I.lfoPol[i]->setBounds (pb);
+                if (I.full)
+                {
+                    I.lfoPolLbl = pr.removeFromLeft (52);
+                    auto pb = pr.removeFromLeft (juce::jmin (pr.getWidth() / 3, 110)); pr.removeFromLeft (4);
+                    for (int i = 0; i < 10; ++i) I.lfoPol[i]->setBounds (pb);
+                }
                 int bw = (pr.getWidth() - 8) / 3;
                 auto kb = pr.removeFromLeft (bw); pr.removeFromLeft (4); auto ib = pr.removeFromLeft (bw); pr.removeFromLeft (4);
                 for (int i = 0; i < 10; ++i) { I.keyBtn[i]->setBounds (kb); I.intBtn[i]->setBounds (ib); }
@@ -784,6 +790,7 @@ namespace njo
                 for (int k = 0; k < 5; ++k) I.lfoKnobs[i * 5 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
             }
         }
+        I.refreshAll();   // visibility of the polarity switches depends on the size
     }
 }
 
