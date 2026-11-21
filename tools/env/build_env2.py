@@ -44,6 +44,13 @@ CODE = r'''    // ENV2-BEGIN
         return (float (exp (-k * q)) - float (exp (-k))) / (1.0f - float (exp (-k)));
     }
 
+    // true while every extra of envelope k is at its default
+    void xeRefresh (int k)
+    {
+        xeSimple.at (k) = xeDelay.at (k) == 0.0f && xeHold.at (k) == 0.0f && xeAC.at (k) == 0.0f && xeDC.at (k) == 0.0f && xeRC.at (k) == 0.0f
+                          && xeVel.at (k) == 0.0f && xeKey.at (k) == 0.0f && xeLvl.at (k) == 1.0f && xeLoop.at (k) < 0.5f;
+    }
+
     // One sample of envelope k of voice vi. st: 0 idle, 1 attack (delay, rise, hold), 2 decay / sustain, 3 release
     EnvR envX (int vi, int k, int st, float lv, float dt, float a, float d, float sus, float r)
     {
@@ -53,6 +60,24 @@ CODE = r'''    // ENV2-BEGIN
 
         if (st == 0)
             return o;
+
+        // all extras at their defaults: exactly the old envelope (cheap path)
+        if (xeSimple.at (k))
+        {
+            voices.at (vi).exPrev.at (k) = 0;
+
+            if (st == 1)
+            {
+                o.lv = lv + dt / max (a * 0.001f, 0.0005f);
+                if (o.lv >= 1.0f) { o.lv = 1.0f; o.st = 2; }
+            }
+            else if (st == 2)
+                o.lv = lv + (sus - lv) * clamp (dt * 5.0f / (max (d, 1.0f) * 0.001f), 0.0f, 0.99f);
+            else
+                o.lv = lv - lv * clamp (dt * 5.0f / (max (r, 1.0f) * 0.001f), 0.0f, 0.99f);
+
+            return o;
+        }
 
         float kt   = xeKey.at (k);
         float ts   = 1.0f;
@@ -213,6 +238,8 @@ else:
 rep("    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n", "    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n" + "".join("    float[32]   %s;       // ENV2\n" % q[2] for q in E2), 1) if False else None
 if "float[32]   xeDelay;" not in s:
     rep("    float[16]   mEnvA;  // padded to a power of two (cheap index wrap)\n", "".join("    float[32]   %s;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)\n" % q[2] for q in E2) + "    float[16]   mEnvA;  // padded to a power of two (cheap index wrap)\n")
+if "bool[32]    xeSimple;" not in s:
+    rep("    float[16]   mEnvA;  // padded to a power of two (cheap index wrap)\n", "    bool[32]    xeSimple;       // ENV2: every extra of the envelope is at its default\n    float[16]   mEnvA;  // padded to a power of two (cheap index wrap)\n")
 rep("        int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)\n",
     "        int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)\n        float[32] exT;        // ENV2: stage timer\n        float[32] exQ;        // ENV2: progress of the stage (0..1)\n        float[32] exL;        // ENV2: level at the start of the stage\n        int[32]   exSub;      // ENV2: sub stage (attack: 0 delay / rise, 1 hold)\n        int[32]   exPrev;     // ENV2: stage seen on the previous sample (0 = restart)\n")
 rep("            voices.at (v).mstage.at (ms) = 1;\n", "            voices.at (v).mstage.at (ms) = 1;\n            voices.at (v).exPrev.at (ms) = 0;\n")
@@ -270,10 +297,14 @@ if "EnvR me2 = envX" not in s:
     a = s.index("            int   ms = voices.at (vi).mstage.at (m);\n            float me = voices.at (vi).menv.at (m);\n\n            if (ms == 1)")
     b = s.index("            voices.at (vi).menv.at (m)   = me;\n            voices.at (vi).mstage.at (m) = ms;\n", a)
     s = s[:a] + "            int   ms = voices.at (vi).mstage.at (m);\n            float me = voices.at (vi).menv.at (m);\n\n            EnvR me2 = envX (vi, m, ms, me, dtv, mEnvA.at (m), mEnvD.at (m), mEnvS.at (m), mEnvR.at (m));   // ENV2\n            ms = me2.st;\n            me = me2.lv;\n\n" + s[b:]
+# mod envelopes that no matrix slot uses are not advanced (CPU)
+rep("    int         frqMask = 0;  // bit m: Freq modulator m is used by the matrix\n", "    int         frqMask = 0;  // bit m: Freq modulator m is used by the matrix\n    int         envMask = 0;  // ENV2: bit m: mod envelope m is a source of a matrix slot\n")
+if "envMask = 0;   // ENV2" not in s: rep("            frqMask = 0;\n", "            envMask = 0;   // ENV2\n            for (int es = 0; es < mmTop; ++es)\n                if (mmSrcI.at (es) >= 11 && mmSrcI.at (es) <= 20 && mmDstI.at (es) > 0)\n                    envMask |= 1 << (mmSrcI.at (es) - 11);\n            frqMask = 0;\n")
+rep("            int   ms = voices.at (vi).mstage.at (m);\n            float me = voices.at (vi).menv.at (m);\n\n            EnvR me2", "            if ((envMask & (1 << m)) == 0)\n                continue;\n\n            int   ms = voices.at (vi).mstage.at (m);\n            float me = voices.at (vi).menv.at (m);\n\n            EnvR me2")
 # parameters
 decl = "".join('    input event float param%d [[ name: "%s %s", min: %s, max: %s, init: %s%s ]];\n' % (eid(k, q[0]), ename(k), q[3], repr(float(q[5])), repr(float(q[6])), repr(float(q[7])), ", step: 1.0" if q[9] == "btn" else "") for k in range(NK) for q in E2)
-hand = "".join("    event param%d (float v) { %s.at (%d) = v; }\n" % (eid(k, q[0]), q[2], k) for k in range(NK) for q in E2)
-init = "".join("            %s.at (ie) = %sf;\n" % (a, repr(float(v))) for a, v in sorted({(q[2], q[7]) for q in E2}))
+hand = "".join("    event param%d (float v) { %s.at (%d) = v; xeRefresh (%d); }\n" % (eid(k, q[0]), q[2], k, k) for k in range(NK) for q in E2)
+init = "".join("            %s.at (ie) = %sf;\n" % (a, repr(float(v))) for a, v in sorted({(q[2], q[7]) for q in E2})) + "            xeSimple.at (ie) = true;\n"
 block("DECL", decl, r"^    input event float param1600 ")
 block("HAND", hand, r"^    event param1600 ")
 block("INIT", "        for (int ie = 0; ie < 32; ++ie)\n        {\n" + init + "        }\n", r"^        fxGateInit\(\);\n", "        ")

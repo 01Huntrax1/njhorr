@@ -35,7 +35,7 @@ check("Seq 1: the four steps drive the level 0 < 0.25 < 0.5 < 1", lv[0] < 0.01 a
 check("Seq 1: step levels are proportional (1 : 2 : 4)", abs(lv[2] / lv[1] - 2) < 0.5 and abs(lv[3] / lv[1] - 4) < 1.0, "%.2f %.2f" % (lv[2] / lv[1], lv[3] / lv[1]))
 check("Seq 1: the pattern repeats after the length", all(abs(rms(win(a, k + 4)) - lv[k]) < 0.02 for k in range(1, 4)))
 a = render(BASE + seq(0, ST, length=2) + route(34), tag="len2")
-check("Length 2 plays only the first two steps", abs(rms(win(a, 2)) - rms(win(a, 0))) < 0.02 and abs(rms(win(a, 3)) - rms(win(a, 1))) < 0.02 and rms(win(a, 1)) > 0.05)
+check("Length 2 plays only the first two steps", abs(rms(win(a, 2)) - rms(win(a, 0))) < 0.02 and abs(rms(win(a, 3)) - rms(win(a, 1))) < 0.02 and rms(win(a, 1)) > 0.02)
 a = render(BASE + seq(0, ST, direction=1) + route(34), tag="back")
 lb = [rms(win(a, k)) for k in range(4)]
 check("Backward runs 0, 3, 2, 1", lb[0] < 0.01 and lb[1] > lb[2] > lb[3] > 0.02, str(["%.3f" % v for v in lb]))

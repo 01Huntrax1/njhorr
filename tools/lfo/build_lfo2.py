@@ -224,6 +224,9 @@ CODE = r'''    // LFO2-BEGIN
             }
             mLfoPhase.at (m) = np;
 
+            if ((lfoMask & (1 << m)) == 0)   // no matrix slot uses this LFO: only the phase runs on
+                continue;
+
             float p = float (np) + mLfoStart.at (m);
             if (p >= 1.0f) p -= 1.0f;
 
@@ -236,9 +239,12 @@ CODE = r'''    // LFO2-BEGIN
     // Per-voice LFOs (Trig, Env, Key follow): phase restarts on note-on, Delay / Rise fade the output in, Env stops at the end of the shape
     void updateVoiceLfos (int vi, float dtv)
     {
+        if (lfoMask == 0)
+            return;
+
         for (int m = 0; m < 10; ++m)
         {
-            if (! lfoPerVoice (m))
+            if ((lfoMask & (1 << m)) == 0 || ! lfoPerVoice (m))
                 continue;
 
             bool    oneShot = mLfoMode.at (m) > 1.5f;
@@ -345,6 +351,9 @@ rep("            voices.at (v).lfoSh.at (lm)  = nextNoise();\n", "            vo
 # routing: per-voice when Trig / Env / Key
 rep("            if (mLfoMode.at (src - 1) > 0.5f)\n                return lfoPol (voices.at (vi)", "            if (lfoPerVoice (src - 1))\n                return lfoPol (voices.at (vi)")
 rep("            if (mLfoMode.at (src - 1) > 0.5f)\n                return lfoPol (voices.at (lastVoice)", "            if (lfoPerVoice (src - 1))\n                return lfoPol (voices.at (lastVoice)")
+# which LFOs are matrix sources (CPU: the others only advance their phase)
+rep("    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n", "    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n    int         lfoMask = 0;  // LFO2: bit m: LFO m is a source of a matrix slot\n") if "int         lfoMask" not in s else None
+rep("            frqMask = 0;\n", "            lfoMask = 0;   // LFO2\n            for (int ls = 0; ls < mmTop; ++ls)\n                if (mmSrcI.at (ls) >= 1 && mmSrcI.at (ls) <= 10 && mmDstI.at (ls) > 0)\n                    lfoMask |= 1 << (mmSrcI.at (ls) - 1);\n            frqMask = 0;\n") if "lfoMask = 0;   // LFO2" not in s else None
 # wave range 0..7
 s = re.sub(r'(name: "Mod LFO \d+ Wave \(Sin/Tri/Sq/S&H/SawUp/SawDn/Drawn)\)",(\s+)min: 0\.0, max: 6\.0', r'\1/Table)",\2min: 0.0, max: 7.0', s)
 # parameters

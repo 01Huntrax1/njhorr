@@ -8824,29 +8824,29 @@ processor Eisenpuls_Synth
 
     // Wavetable 3 memory bank (1 memory x 96000 samples)
     // ---------------- FX RACK STATE ----------------
-    int[1088] fxType;  // padded to a power of two (cheap index wrap)
-    float[1088] fxOn;  // padded to a power of two (cheap index wrap)
-    float[1088] fxMix;  // padded to a power of two (cheap index wrap)
-    int[1088] fxMode;  // padded to a power of two (cheap index wrap)
+    int[2048] fxType;  // padded to a power of two (cheap index wrap)
+    float[2048] fxOn;  // padded to a power of two (cheap index wrap)
+    float[2048] fxMix;  // padded to a power of two (cheap index wrap)
+    int[2048] fxMode;  // padded to a power of two (cheap index wrap)
     // FX-PEQ: band table (10 values per band, 24 bands per slot, normalised), biquad sections (64 per slot, 5 coefficients, 4 states), combs (4 values per band)
     float[195840] peqB;
     float[261120] peqC;
     float[208896] peqZ;
     int[52224] peqCh;
-    int[1088] peqN;
+    int[2048] peqN;
     float[78336] peqK;
-    float[1088] fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
-    float[1088] fxEnvRel;
-    float[1088] fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
-    int[1088] fxEnvSt;
-    int[1088] fxEnvSeen;
-    float[1088] fxEnvGc;
-    float[1088] fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
-    int[1088] fxEnvCt;
+    float[2048] fxEnvSus;  // FX-FENV: sustain level (0..1) and release (0..1 on an exponential 5 ms - 5 s map) of the filter effect envelope, per slot
+    float[2048] fxEnvRel;
+    float[2048] fxEnvLv;   // envelope level, stage (0 idle, 1 attack, 2 decay, 3 sustain, 4 release), the note counter it has seen, cutoff coefficient cache
+    int[2048] fxEnvSt;
+    int[2048] fxEnvSeen;
+    float[2048] fxEnvGc;
+    float[2048] fxFcS;     // FX-FENV2: smoothed cutoff (Hz) of the filter effect
+    int[2048] fxEnvCt;
     int           fxNoteSeq = 0;   // counts accepted note-ons
     bool          fxHeld = false;  // any note is held (not yet released)
     int           fxLastNote = 60; // FX-KEYTRACK: last played note
-    int[1088] fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
+    int[2048] fxSync;  // FX-SYNC: 0 = free, 1..18 = tempo division (the LFO divisions, one per slot)
     float         insOn = 0.0f;
     float64       fxBeat = 0.0;     // FX-SYNC: quarter notes, locked to the host position, advanced with the tempo
     float[512]    fxGate;           // FX-SYNC: 24 trance gate patterns x 16 steps
@@ -8857,13 +8857,13 @@ processor Eisenpuls_Synth
     float[17408] fxW;   // FX-EX: filter / envelope states (16 per slot)
     float[1572864] fxPd; // FX-EX: pre delay lines of the 48 rack slots (2 x 16384)
     const int[160] fxExTab = (0, 0, 0, 0, 1, 2, 3, 11, 1, 2, 3, 11, 4, 5, 6, 8, 9, 10, 7, 8, 9, 10, 7, 8, 9, 10, 7, 8, 9, 10, 7, 8, 4, 5, 6, 8, 3, 7, 8, 11, 3, 7, 8, 11, 1, 3, 8, 11, 4, 5, 6, 8, 3, 7, 8, 11, 1, 2, 3, 11, 1, 2, 3, 11, 9, 10, 7, 8, 3, 7, 8, 11, 3, 7, 8, 11, 1, 2, 3, 11, 1, 2, 3, 11, 1, 2, 3, 11, 1, 2, 3, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 3, 7, 8, 11, 1, 2, 3, 11, 4, 5, 6, 8, 5, 7, 8, 11, 4, 5, 6, 8, 4, 5, 6, 8, 4, 5, 6, 8, 1, 2, 3, 11, 4, 5, 6, 8, 1, 3, 7, 11, 1, 3, 8, 11, 0, 0, 0, 0, 0, 0, 0, 0);
-    float[4992] fxP;  // padded to a power of two (cheap index wrap)
-    bool[1088] fxDirty;  // padded to a power of two (cheap index wrap)
+    float[8192] fxP;  // padded to a power of two (cheap index wrap)
+    bool[2048] fxDirty;  // padded to a power of two (cheap index wrap)
     int[64]       fxOrder;  // padded to a power of two (cheap index wrap)
-    int[96]       oscOrd;   // OSCFX4-DSP: processing order of the oscillator racks (position -> slot), 16 per oscillator
-    int[96]       oscSeq;
+    int[128]       oscOrd;   // OSCFX4-DSP: processing order of the oscillator racks (position -> slot), 16 per oscillator
+    int[128]       oscSeq;
     int[64]       fxSeq;  // padded to a power of two (cheap index wrap)
-    float[13056] fxD;  // padded to a power of two (cheap index wrap)
+    float[16384] fxD;  // padded to a power of two (cheap index wrap)
     float[32768] fxF;  // padded to a power of two (cheap index wrap)
     float64[32768] awS;  // FX-AW: Airwindows effects, state (40 per slot)
     float64[19584] awD;  // FX-AW: derived values (24 per slot)
@@ -8875,7 +8875,7 @@ processor Eisenpuls_Synth
     int64[1632] plN;   // FX-PLASMA: noise generator state (2 per slot)
     float64[39168] awT;  // FX-AW-MACK: MackEQ state (48 per slot)
     int[19584] fxI;  // padded to a power of two (cheap index wrap)
-    float64[3264] fxPh;  // padded to a power of two (cheap index wrap)
+    float64[4096] fxPh;  // padded to a power of two (cheap index wrap)
     float[22020096] fxArena;   // FX-SLOTS: 48 slots x 196608 floats
     float[8]      busDcX;  // padded to a power of two (cheap index wrap)
     float[8]      busDcY;  // padded to a power of two (cheap index wrap)
@@ -8962,6 +8962,7 @@ processor Eisenpuls_Synth
     float[16]   mLfoTpos;
     // LFO2-STATE-END
     float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs
+    int         lfoMask = 0;  // LFO2: bit m: LFO m is a source of a matrix slot
     float[2560] lfoTab;       // drawn shapes, 256 points per LFO
     int         lastVoice = 0;
 
@@ -8974,6 +8975,7 @@ processor Eisenpuls_Synth
     float[32]   xeKey;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
     float[32]   xeLoop;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
     float[32]   xeLvl;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    bool[32]    xeSimple;       // ENV2: every extra of the envelope is at its default
     float[16]   mEnvA;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvD;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
@@ -9029,7 +9031,7 @@ processor Eisenpuls_Synth
     float[32]   sqEu;                 // 4 lanes x 8: on, steps, pulses, rotation, offset, probability, ratchet
     float[16]   sqGn;                 // generative: type, scale, range, shift, loop, mutation, max step, bias, rest, ratchet
     float       sqMlLen = 16.0f;
-    float[448]  sqMl;                 // melodic: 7 rows x 64 steps (note, velocity, length, chord, probability, ratchet, gate)
+    float[512]  sqMl;                 // melodic: 7 rows x 64 steps (note, velocity, length, chord, probability, ratchet, gate)
     int[16]     sqN;                  // sounding notes
     float64[16] sqEnd;                // ... and the time (in steps) at which they end
     int         sqCnt = 0;
@@ -9068,6 +9070,7 @@ processor Eisenpuls_Synth
     float[16]   frqGT;        // free running time (s)
     float[16]   frqGV;        // free running value (units of 4 octaves)
     int         frqMask = 0;  // bit m: Freq modulator m is used by the matrix
+    int         envMask = 0;  // ENV2: bit m: mod envelope m is a source of a matrix slot
 
     float[2048] vmod;  // padded to a power of two (cheap index wrap)
     int[256]    vmodDirty;  // padded to a power of two (cheap index wrap)
@@ -16090,159 +16093,159 @@ processor Eisenpuls_Synth
     event param12583 (float v) { wtP.at (83) = v; }
     // WT2-HAND-END
     // ENV2-HAND-BEGIN
-    event param13300 (float v) { xeDelay.at (0) = v; }
-    event param13301 (float v) { xeHold.at (0) = v; }
-    event param13302 (float v) { xeAC.at (0) = v; }
-    event param13303 (float v) { xeDC.at (0) = v; }
-    event param13304 (float v) { xeRC.at (0) = v; }
-    event param13305 (float v) { xeVel.at (0) = v; }
-    event param13306 (float v) { xeKey.at (0) = v; }
-    event param13307 (float v) { xeLoop.at (0) = v; }
-    event param13308 (float v) { xeLvl.at (0) = v; }
-    event param13316 (float v) { xeDelay.at (1) = v; }
-    event param13317 (float v) { xeHold.at (1) = v; }
-    event param13318 (float v) { xeAC.at (1) = v; }
-    event param13319 (float v) { xeDC.at (1) = v; }
-    event param13320 (float v) { xeRC.at (1) = v; }
-    event param13321 (float v) { xeVel.at (1) = v; }
-    event param13322 (float v) { xeKey.at (1) = v; }
-    event param13323 (float v) { xeLoop.at (1) = v; }
-    event param13324 (float v) { xeLvl.at (1) = v; }
-    event param13332 (float v) { xeDelay.at (2) = v; }
-    event param13333 (float v) { xeHold.at (2) = v; }
-    event param13334 (float v) { xeAC.at (2) = v; }
-    event param13335 (float v) { xeDC.at (2) = v; }
-    event param13336 (float v) { xeRC.at (2) = v; }
-    event param13337 (float v) { xeVel.at (2) = v; }
-    event param13338 (float v) { xeKey.at (2) = v; }
-    event param13339 (float v) { xeLoop.at (2) = v; }
-    event param13340 (float v) { xeLvl.at (2) = v; }
-    event param13348 (float v) { xeDelay.at (3) = v; }
-    event param13349 (float v) { xeHold.at (3) = v; }
-    event param13350 (float v) { xeAC.at (3) = v; }
-    event param13351 (float v) { xeDC.at (3) = v; }
-    event param13352 (float v) { xeRC.at (3) = v; }
-    event param13353 (float v) { xeVel.at (3) = v; }
-    event param13354 (float v) { xeKey.at (3) = v; }
-    event param13355 (float v) { xeLoop.at (3) = v; }
-    event param13356 (float v) { xeLvl.at (3) = v; }
-    event param13364 (float v) { xeDelay.at (4) = v; }
-    event param13365 (float v) { xeHold.at (4) = v; }
-    event param13366 (float v) { xeAC.at (4) = v; }
-    event param13367 (float v) { xeDC.at (4) = v; }
-    event param13368 (float v) { xeRC.at (4) = v; }
-    event param13369 (float v) { xeVel.at (4) = v; }
-    event param13370 (float v) { xeKey.at (4) = v; }
-    event param13371 (float v) { xeLoop.at (4) = v; }
-    event param13372 (float v) { xeLvl.at (4) = v; }
-    event param13380 (float v) { xeDelay.at (5) = v; }
-    event param13381 (float v) { xeHold.at (5) = v; }
-    event param13382 (float v) { xeAC.at (5) = v; }
-    event param13383 (float v) { xeDC.at (5) = v; }
-    event param13384 (float v) { xeRC.at (5) = v; }
-    event param13385 (float v) { xeVel.at (5) = v; }
-    event param13386 (float v) { xeKey.at (5) = v; }
-    event param13387 (float v) { xeLoop.at (5) = v; }
-    event param13388 (float v) { xeLvl.at (5) = v; }
-    event param13396 (float v) { xeDelay.at (6) = v; }
-    event param13397 (float v) { xeHold.at (6) = v; }
-    event param13398 (float v) { xeAC.at (6) = v; }
-    event param13399 (float v) { xeDC.at (6) = v; }
-    event param13400 (float v) { xeRC.at (6) = v; }
-    event param13401 (float v) { xeVel.at (6) = v; }
-    event param13402 (float v) { xeKey.at (6) = v; }
-    event param13403 (float v) { xeLoop.at (6) = v; }
-    event param13404 (float v) { xeLvl.at (6) = v; }
-    event param13412 (float v) { xeDelay.at (7) = v; }
-    event param13413 (float v) { xeHold.at (7) = v; }
-    event param13414 (float v) { xeAC.at (7) = v; }
-    event param13415 (float v) { xeDC.at (7) = v; }
-    event param13416 (float v) { xeRC.at (7) = v; }
-    event param13417 (float v) { xeVel.at (7) = v; }
-    event param13418 (float v) { xeKey.at (7) = v; }
-    event param13419 (float v) { xeLoop.at (7) = v; }
-    event param13420 (float v) { xeLvl.at (7) = v; }
-    event param13428 (float v) { xeDelay.at (8) = v; }
-    event param13429 (float v) { xeHold.at (8) = v; }
-    event param13430 (float v) { xeAC.at (8) = v; }
-    event param13431 (float v) { xeDC.at (8) = v; }
-    event param13432 (float v) { xeRC.at (8) = v; }
-    event param13433 (float v) { xeVel.at (8) = v; }
-    event param13434 (float v) { xeKey.at (8) = v; }
-    event param13435 (float v) { xeLoop.at (8) = v; }
-    event param13436 (float v) { xeLvl.at (8) = v; }
-    event param13444 (float v) { xeDelay.at (9) = v; }
-    event param13445 (float v) { xeHold.at (9) = v; }
-    event param13446 (float v) { xeAC.at (9) = v; }
-    event param13447 (float v) { xeDC.at (9) = v; }
-    event param13448 (float v) { xeRC.at (9) = v; }
-    event param13449 (float v) { xeVel.at (9) = v; }
-    event param13450 (float v) { xeKey.at (9) = v; }
-    event param13451 (float v) { xeLoop.at (9) = v; }
-    event param13452 (float v) { xeLvl.at (9) = v; }
-    event param13460 (float v) { xeDelay.at (10) = v; }
-    event param13461 (float v) { xeHold.at (10) = v; }
-    event param13462 (float v) { xeAC.at (10) = v; }
-    event param13463 (float v) { xeDC.at (10) = v; }
-    event param13464 (float v) { xeRC.at (10) = v; }
-    event param13465 (float v) { xeVel.at (10) = v; }
-    event param13466 (float v) { xeKey.at (10) = v; }
-    event param13467 (float v) { xeLoop.at (10) = v; }
-    event param13468 (float v) { xeLvl.at (10) = v; }
-    event param13476 (float v) { xeDelay.at (11) = v; }
-    event param13477 (float v) { xeHold.at (11) = v; }
-    event param13478 (float v) { xeAC.at (11) = v; }
-    event param13479 (float v) { xeDC.at (11) = v; }
-    event param13480 (float v) { xeRC.at (11) = v; }
-    event param13481 (float v) { xeVel.at (11) = v; }
-    event param13482 (float v) { xeKey.at (11) = v; }
-    event param13483 (float v) { xeLoop.at (11) = v; }
-    event param13484 (float v) { xeLvl.at (11) = v; }
-    event param13492 (float v) { xeDelay.at (12) = v; }
-    event param13493 (float v) { xeHold.at (12) = v; }
-    event param13494 (float v) { xeAC.at (12) = v; }
-    event param13495 (float v) { xeDC.at (12) = v; }
-    event param13496 (float v) { xeRC.at (12) = v; }
-    event param13497 (float v) { xeVel.at (12) = v; }
-    event param13498 (float v) { xeKey.at (12) = v; }
-    event param13499 (float v) { xeLoop.at (12) = v; }
-    event param13500 (float v) { xeLvl.at (12) = v; }
-    event param13508 (float v) { xeDelay.at (13) = v; }
-    event param13509 (float v) { xeHold.at (13) = v; }
-    event param13510 (float v) { xeAC.at (13) = v; }
-    event param13511 (float v) { xeDC.at (13) = v; }
-    event param13512 (float v) { xeRC.at (13) = v; }
-    event param13513 (float v) { xeVel.at (13) = v; }
-    event param13514 (float v) { xeKey.at (13) = v; }
-    event param13515 (float v) { xeLoop.at (13) = v; }
-    event param13516 (float v) { xeLvl.at (13) = v; }
-    event param13524 (float v) { xeDelay.at (14) = v; }
-    event param13525 (float v) { xeHold.at (14) = v; }
-    event param13526 (float v) { xeAC.at (14) = v; }
-    event param13527 (float v) { xeDC.at (14) = v; }
-    event param13528 (float v) { xeRC.at (14) = v; }
-    event param13529 (float v) { xeVel.at (14) = v; }
-    event param13530 (float v) { xeKey.at (14) = v; }
-    event param13531 (float v) { xeLoop.at (14) = v; }
-    event param13532 (float v) { xeLvl.at (14) = v; }
-    event param13540 (float v) { xeDelay.at (15) = v; }
-    event param13541 (float v) { xeHold.at (15) = v; }
-    event param13542 (float v) { xeAC.at (15) = v; }
-    event param13543 (float v) { xeDC.at (15) = v; }
-    event param13544 (float v) { xeRC.at (15) = v; }
-    event param13545 (float v) { xeVel.at (15) = v; }
-    event param13546 (float v) { xeKey.at (15) = v; }
-    event param13547 (float v) { xeLoop.at (15) = v; }
-    event param13548 (float v) { xeLvl.at (15) = v; }
-    event param13556 (float v) { xeDelay.at (16) = v; }
-    event param13557 (float v) { xeHold.at (16) = v; }
-    event param13558 (float v) { xeAC.at (16) = v; }
-    event param13559 (float v) { xeDC.at (16) = v; }
-    event param13560 (float v) { xeRC.at (16) = v; }
-    event param13561 (float v) { xeVel.at (16) = v; }
-    event param13562 (float v) { xeKey.at (16) = v; }
-    event param13563 (float v) { xeLoop.at (16) = v; }
-    event param13564 (float v) { xeLvl.at (16) = v; }
+    event param13300 (float v) { xeDelay.at (0) = v; xeRefresh (0); }
+    event param13301 (float v) { xeHold.at (0) = v; xeRefresh (0); }
+    event param13302 (float v) { xeAC.at (0) = v; xeRefresh (0); }
+    event param13303 (float v) { xeDC.at (0) = v; xeRefresh (0); }
+    event param13304 (float v) { xeRC.at (0) = v; xeRefresh (0); }
+    event param13305 (float v) { xeVel.at (0) = v; xeRefresh (0); }
+    event param13306 (float v) { xeKey.at (0) = v; xeRefresh (0); }
+    event param13307 (float v) { xeLoop.at (0) = v; xeRefresh (0); }
+    event param13308 (float v) { xeLvl.at (0) = v; xeRefresh (0); }
+    event param13316 (float v) { xeDelay.at (1) = v; xeRefresh (1); }
+    event param13317 (float v) { xeHold.at (1) = v; xeRefresh (1); }
+    event param13318 (float v) { xeAC.at (1) = v; xeRefresh (1); }
+    event param13319 (float v) { xeDC.at (1) = v; xeRefresh (1); }
+    event param13320 (float v) { xeRC.at (1) = v; xeRefresh (1); }
+    event param13321 (float v) { xeVel.at (1) = v; xeRefresh (1); }
+    event param13322 (float v) { xeKey.at (1) = v; xeRefresh (1); }
+    event param13323 (float v) { xeLoop.at (1) = v; xeRefresh (1); }
+    event param13324 (float v) { xeLvl.at (1) = v; xeRefresh (1); }
+    event param13332 (float v) { xeDelay.at (2) = v; xeRefresh (2); }
+    event param13333 (float v) { xeHold.at (2) = v; xeRefresh (2); }
+    event param13334 (float v) { xeAC.at (2) = v; xeRefresh (2); }
+    event param13335 (float v) { xeDC.at (2) = v; xeRefresh (2); }
+    event param13336 (float v) { xeRC.at (2) = v; xeRefresh (2); }
+    event param13337 (float v) { xeVel.at (2) = v; xeRefresh (2); }
+    event param13338 (float v) { xeKey.at (2) = v; xeRefresh (2); }
+    event param13339 (float v) { xeLoop.at (2) = v; xeRefresh (2); }
+    event param13340 (float v) { xeLvl.at (2) = v; xeRefresh (2); }
+    event param13348 (float v) { xeDelay.at (3) = v; xeRefresh (3); }
+    event param13349 (float v) { xeHold.at (3) = v; xeRefresh (3); }
+    event param13350 (float v) { xeAC.at (3) = v; xeRefresh (3); }
+    event param13351 (float v) { xeDC.at (3) = v; xeRefresh (3); }
+    event param13352 (float v) { xeRC.at (3) = v; xeRefresh (3); }
+    event param13353 (float v) { xeVel.at (3) = v; xeRefresh (3); }
+    event param13354 (float v) { xeKey.at (3) = v; xeRefresh (3); }
+    event param13355 (float v) { xeLoop.at (3) = v; xeRefresh (3); }
+    event param13356 (float v) { xeLvl.at (3) = v; xeRefresh (3); }
+    event param13364 (float v) { xeDelay.at (4) = v; xeRefresh (4); }
+    event param13365 (float v) { xeHold.at (4) = v; xeRefresh (4); }
+    event param13366 (float v) { xeAC.at (4) = v; xeRefresh (4); }
+    event param13367 (float v) { xeDC.at (4) = v; xeRefresh (4); }
+    event param13368 (float v) { xeRC.at (4) = v; xeRefresh (4); }
+    event param13369 (float v) { xeVel.at (4) = v; xeRefresh (4); }
+    event param13370 (float v) { xeKey.at (4) = v; xeRefresh (4); }
+    event param13371 (float v) { xeLoop.at (4) = v; xeRefresh (4); }
+    event param13372 (float v) { xeLvl.at (4) = v; xeRefresh (4); }
+    event param13380 (float v) { xeDelay.at (5) = v; xeRefresh (5); }
+    event param13381 (float v) { xeHold.at (5) = v; xeRefresh (5); }
+    event param13382 (float v) { xeAC.at (5) = v; xeRefresh (5); }
+    event param13383 (float v) { xeDC.at (5) = v; xeRefresh (5); }
+    event param13384 (float v) { xeRC.at (5) = v; xeRefresh (5); }
+    event param13385 (float v) { xeVel.at (5) = v; xeRefresh (5); }
+    event param13386 (float v) { xeKey.at (5) = v; xeRefresh (5); }
+    event param13387 (float v) { xeLoop.at (5) = v; xeRefresh (5); }
+    event param13388 (float v) { xeLvl.at (5) = v; xeRefresh (5); }
+    event param13396 (float v) { xeDelay.at (6) = v; xeRefresh (6); }
+    event param13397 (float v) { xeHold.at (6) = v; xeRefresh (6); }
+    event param13398 (float v) { xeAC.at (6) = v; xeRefresh (6); }
+    event param13399 (float v) { xeDC.at (6) = v; xeRefresh (6); }
+    event param13400 (float v) { xeRC.at (6) = v; xeRefresh (6); }
+    event param13401 (float v) { xeVel.at (6) = v; xeRefresh (6); }
+    event param13402 (float v) { xeKey.at (6) = v; xeRefresh (6); }
+    event param13403 (float v) { xeLoop.at (6) = v; xeRefresh (6); }
+    event param13404 (float v) { xeLvl.at (6) = v; xeRefresh (6); }
+    event param13412 (float v) { xeDelay.at (7) = v; xeRefresh (7); }
+    event param13413 (float v) { xeHold.at (7) = v; xeRefresh (7); }
+    event param13414 (float v) { xeAC.at (7) = v; xeRefresh (7); }
+    event param13415 (float v) { xeDC.at (7) = v; xeRefresh (7); }
+    event param13416 (float v) { xeRC.at (7) = v; xeRefresh (7); }
+    event param13417 (float v) { xeVel.at (7) = v; xeRefresh (7); }
+    event param13418 (float v) { xeKey.at (7) = v; xeRefresh (7); }
+    event param13419 (float v) { xeLoop.at (7) = v; xeRefresh (7); }
+    event param13420 (float v) { xeLvl.at (7) = v; xeRefresh (7); }
+    event param13428 (float v) { xeDelay.at (8) = v; xeRefresh (8); }
+    event param13429 (float v) { xeHold.at (8) = v; xeRefresh (8); }
+    event param13430 (float v) { xeAC.at (8) = v; xeRefresh (8); }
+    event param13431 (float v) { xeDC.at (8) = v; xeRefresh (8); }
+    event param13432 (float v) { xeRC.at (8) = v; xeRefresh (8); }
+    event param13433 (float v) { xeVel.at (8) = v; xeRefresh (8); }
+    event param13434 (float v) { xeKey.at (8) = v; xeRefresh (8); }
+    event param13435 (float v) { xeLoop.at (8) = v; xeRefresh (8); }
+    event param13436 (float v) { xeLvl.at (8) = v; xeRefresh (8); }
+    event param13444 (float v) { xeDelay.at (9) = v; xeRefresh (9); }
+    event param13445 (float v) { xeHold.at (9) = v; xeRefresh (9); }
+    event param13446 (float v) { xeAC.at (9) = v; xeRefresh (9); }
+    event param13447 (float v) { xeDC.at (9) = v; xeRefresh (9); }
+    event param13448 (float v) { xeRC.at (9) = v; xeRefresh (9); }
+    event param13449 (float v) { xeVel.at (9) = v; xeRefresh (9); }
+    event param13450 (float v) { xeKey.at (9) = v; xeRefresh (9); }
+    event param13451 (float v) { xeLoop.at (9) = v; xeRefresh (9); }
+    event param13452 (float v) { xeLvl.at (9) = v; xeRefresh (9); }
+    event param13460 (float v) { xeDelay.at (10) = v; xeRefresh (10); }
+    event param13461 (float v) { xeHold.at (10) = v; xeRefresh (10); }
+    event param13462 (float v) { xeAC.at (10) = v; xeRefresh (10); }
+    event param13463 (float v) { xeDC.at (10) = v; xeRefresh (10); }
+    event param13464 (float v) { xeRC.at (10) = v; xeRefresh (10); }
+    event param13465 (float v) { xeVel.at (10) = v; xeRefresh (10); }
+    event param13466 (float v) { xeKey.at (10) = v; xeRefresh (10); }
+    event param13467 (float v) { xeLoop.at (10) = v; xeRefresh (10); }
+    event param13468 (float v) { xeLvl.at (10) = v; xeRefresh (10); }
+    event param13476 (float v) { xeDelay.at (11) = v; xeRefresh (11); }
+    event param13477 (float v) { xeHold.at (11) = v; xeRefresh (11); }
+    event param13478 (float v) { xeAC.at (11) = v; xeRefresh (11); }
+    event param13479 (float v) { xeDC.at (11) = v; xeRefresh (11); }
+    event param13480 (float v) { xeRC.at (11) = v; xeRefresh (11); }
+    event param13481 (float v) { xeVel.at (11) = v; xeRefresh (11); }
+    event param13482 (float v) { xeKey.at (11) = v; xeRefresh (11); }
+    event param13483 (float v) { xeLoop.at (11) = v; xeRefresh (11); }
+    event param13484 (float v) { xeLvl.at (11) = v; xeRefresh (11); }
+    event param13492 (float v) { xeDelay.at (12) = v; xeRefresh (12); }
+    event param13493 (float v) { xeHold.at (12) = v; xeRefresh (12); }
+    event param13494 (float v) { xeAC.at (12) = v; xeRefresh (12); }
+    event param13495 (float v) { xeDC.at (12) = v; xeRefresh (12); }
+    event param13496 (float v) { xeRC.at (12) = v; xeRefresh (12); }
+    event param13497 (float v) { xeVel.at (12) = v; xeRefresh (12); }
+    event param13498 (float v) { xeKey.at (12) = v; xeRefresh (12); }
+    event param13499 (float v) { xeLoop.at (12) = v; xeRefresh (12); }
+    event param13500 (float v) { xeLvl.at (12) = v; xeRefresh (12); }
+    event param13508 (float v) { xeDelay.at (13) = v; xeRefresh (13); }
+    event param13509 (float v) { xeHold.at (13) = v; xeRefresh (13); }
+    event param13510 (float v) { xeAC.at (13) = v; xeRefresh (13); }
+    event param13511 (float v) { xeDC.at (13) = v; xeRefresh (13); }
+    event param13512 (float v) { xeRC.at (13) = v; xeRefresh (13); }
+    event param13513 (float v) { xeVel.at (13) = v; xeRefresh (13); }
+    event param13514 (float v) { xeKey.at (13) = v; xeRefresh (13); }
+    event param13515 (float v) { xeLoop.at (13) = v; xeRefresh (13); }
+    event param13516 (float v) { xeLvl.at (13) = v; xeRefresh (13); }
+    event param13524 (float v) { xeDelay.at (14) = v; xeRefresh (14); }
+    event param13525 (float v) { xeHold.at (14) = v; xeRefresh (14); }
+    event param13526 (float v) { xeAC.at (14) = v; xeRefresh (14); }
+    event param13527 (float v) { xeDC.at (14) = v; xeRefresh (14); }
+    event param13528 (float v) { xeRC.at (14) = v; xeRefresh (14); }
+    event param13529 (float v) { xeVel.at (14) = v; xeRefresh (14); }
+    event param13530 (float v) { xeKey.at (14) = v; xeRefresh (14); }
+    event param13531 (float v) { xeLoop.at (14) = v; xeRefresh (14); }
+    event param13532 (float v) { xeLvl.at (14) = v; xeRefresh (14); }
+    event param13540 (float v) { xeDelay.at (15) = v; xeRefresh (15); }
+    event param13541 (float v) { xeHold.at (15) = v; xeRefresh (15); }
+    event param13542 (float v) { xeAC.at (15) = v; xeRefresh (15); }
+    event param13543 (float v) { xeDC.at (15) = v; xeRefresh (15); }
+    event param13544 (float v) { xeRC.at (15) = v; xeRefresh (15); }
+    event param13545 (float v) { xeVel.at (15) = v; xeRefresh (15); }
+    event param13546 (float v) { xeKey.at (15) = v; xeRefresh (15); }
+    event param13547 (float v) { xeLoop.at (15) = v; xeRefresh (15); }
+    event param13548 (float v) { xeLvl.at (15) = v; xeRefresh (15); }
+    event param13556 (float v) { xeDelay.at (16) = v; xeRefresh (16); }
+    event param13557 (float v) { xeHold.at (16) = v; xeRefresh (16); }
+    event param13558 (float v) { xeAC.at (16) = v; xeRefresh (16); }
+    event param13559 (float v) { xeDC.at (16) = v; xeRefresh (16); }
+    event param13560 (float v) { xeRC.at (16) = v; xeRefresh (16); }
+    event param13561 (float v) { xeVel.at (16) = v; xeRefresh (16); }
+    event param13562 (float v) { xeKey.at (16) = v; xeRefresh (16); }
+    event param13563 (float v) { xeLoop.at (16) = v; xeRefresh (16); }
+    event param13564 (float v) { xeLvl.at (16) = v; xeRefresh (16); }
     // ENV2-HAND-END
     // LFO2-HAND-BEGIN
     event param13000 (float v) { mLfoKey.at (0) = v; }
@@ -17380,6 +17383,7 @@ processor Eisenpuls_Synth
             xeLvl.at (ie) = 1.0f;
             xeRC.at (ie) = 0.0f;
             xeVel.at (ie) = 0.0f;
+            xeSimple.at (ie) = true;
         }
         // ENV2-INIT-END
         // LFO2-INIT-BEGIN
@@ -24603,6 +24607,9 @@ processor Eisenpuls_Synth
             }
             mLfoPhase.at (m) = np;
 
+            if ((lfoMask & (1 << m)) == 0)   // no matrix slot uses this LFO: only the phase runs on
+                continue;
+
             float p = float (np) + mLfoStart.at (m);
             if (p >= 1.0f) p -= 1.0f;
 
@@ -24615,9 +24622,12 @@ processor Eisenpuls_Synth
     // Per-voice LFOs (Trig, Env, Key follow): phase restarts on note-on, Delay / Rise fade the output in, Env stops at the end of the shape
     void updateVoiceLfos (int vi, float dtv)
     {
+        if (lfoMask == 0)
+            return;
+
         for (int m = 0; m < 10; ++m)
         {
-            if (! lfoPerVoice (m))
+            if ((lfoMask & (1 << m)) == 0 || ! lfoPerVoice (m))
                 continue;
 
             bool    oneShot = mLfoMode.at (m) > 1.5f;
@@ -24874,6 +24884,13 @@ processor Eisenpuls_Synth
         return (float (exp (-k * q)) - float (exp (-k))) / (1.0f - float (exp (-k)));
     }
 
+    // true while every extra of envelope k is at its default
+    void xeRefresh (int k)
+    {
+        xeSimple.at (k) = xeDelay.at (k) == 0.0f && xeHold.at (k) == 0.0f && xeAC.at (k) == 0.0f && xeDC.at (k) == 0.0f && xeRC.at (k) == 0.0f
+                          && xeVel.at (k) == 0.0f && xeKey.at (k) == 0.0f && xeLvl.at (k) == 1.0f && xeLoop.at (k) < 0.5f;
+    }
+
     // One sample of envelope k of voice vi. st: 0 idle, 1 attack (delay, rise, hold), 2 decay / sustain, 3 release
     EnvR envX (int vi, int k, int st, float lv, float dt, float a, float d, float sus, float r)
     {
@@ -24883,6 +24900,24 @@ processor Eisenpuls_Synth
 
         if (st == 0)
             return o;
+
+        // all extras at their defaults: exactly the old envelope (cheap path)
+        if (xeSimple.at (k))
+        {
+            voices.at (vi).exPrev.at (k) = 0;
+
+            if (st == 1)
+            {
+                o.lv = lv + dt / max (a * 0.001f, 0.0005f);
+                if (o.lv >= 1.0f) { o.lv = 1.0f; o.st = 2; }
+            }
+            else if (st == 2)
+                o.lv = lv + (sus - lv) * clamp (dt * 5.0f / (max (d, 1.0f) * 0.001f), 0.0f, 0.99f);
+            else
+                o.lv = lv - lv * clamp (dt * 5.0f / (max (r, 1.0f) * 0.001f), 0.0f, 0.99f);
+
+            return o;
+        }
 
         float kt   = xeKey.at (k);
         float ts   = 1.0f;
@@ -25029,6 +25064,9 @@ processor Eisenpuls_Synth
                 msStep (vi, m, dtv);
                 continue;
             }
+
+            if ((envMask & (1 << m)) == 0)
+                continue;
 
             int   ms = voices.at (vi).mstage.at (m);
             float me = voices.at (vi).menv.at (m);
@@ -25709,7 +25747,7 @@ processor Eisenpuls_Synth
     int[8]        wtLen;          // length of the source in samples
     float[4194304] wtBuf;         // source, slot * 524288
     float[8388608] wtMip;         // (slot * 256 + frame) * 4096 + level offset
-    float[96]      wtP;           // WT2: slot * 16 + parameter (Warp 3, Morph, Tone)
+    float[128]      wtP;           // WT2: slot * 16 + parameter (Warp 3, Morph, Tone)
     bool[8]       wtBuilding;  // padded to a power of two (cheap index wrap)
     int[8]        wtFr;           // frames in the mip tables
     int[8]        wtBFl;          // frame length the source was cut with
@@ -26671,7 +26709,7 @@ processor Eisenpuls_Synth
     // z = T (x, y) read along an orbit: x = cx + rx * shape (cos a), y = cy + ry * shape (sin (ratio * a + phase)), a = 2 pi * oscillator phase, the ellipse rotated
     // around its center.  The center can wobble slowly.  State per voice and slot in Voice.phs 2000 + 6 * slot: 0 phase, 1 smoothing low-pass, 2 / 3 DC blocker,
     // 4 phase of the moving center.
-    float[96] terP;       // slot * 16 + parameter
+    float[128] terP;       // slot * 16 + parameter
     const float[16] trLo  = (-1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.25f, 0.0f, 0.0f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 2.0f, -1.0f);
     const float[16] trHi  = (1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 8.0f, 1.0f, 1.0f, 20.0f, 1.0f, 11.0f, 1.0f, 1.0f, 1.0f, 16.0f, 1.0f);
     const float[16] trLog = (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -26872,7 +26910,7 @@ processor Eisenpuls_Synth
     // 18 allpass coefficient, 19 loop gain, 20 low-pass coefficient, 21 stiffness coefficient, 22 delay M2 (bridge), 23 envelope rate, 24 / 25 exciter pulse left / length,
     // 28 .. 31 model values, 32 body, 33 drive, 34 snare, 35 excitation scale, 36 .. 41 body filter coefficients, 48.. banded bands, 96.. drum modes, 160.. weights.
     // Delay lines: Voice.wgd (slot * 16384): one line of 8192 (Karplus-Strong, Clarinet), two of 8192 (Bowed), four of 4096 (Banded).
-    float[96] wgP;        // slot * 16 + parameter
+    float[128] wgP;        // slot * 16 + parameter
     const float[16] wgLo = (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] wgHi = (16.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     const float[6]  wgOut = (1.1f, 2.0f, 1.0f, 0.8f, 0.4f, 3.0f);                  // output level per engine
@@ -27592,7 +27630,7 @@ processor Eisenpuls_Synth
     // WG-DSP-END
     // JP-DSP-BEGIN
     // ---------------- JP-8080 source (tools/osc/build_jp.py) ----------------
-    float[96] jpP;        // slot * 16 + parameter
+    float[128] jpP;        // slot * 16 + parameter
     const float[16] jpLo = (0.0f, 0.05f, 0.0f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] jpHi = (8.0f, 0.95f, 1.0f, 20.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     const float[7] jpOff = (-0.11002313f, -0.06288439f, -0.01952356f, 0.0f, 0.01991221f, 0.06216538f, 0.10745242f);   // Super Saw detune of the 7 saws
@@ -27868,7 +27906,7 @@ processor Eisenpuls_Synth
     // JP-DSP-END
     // GR-DSP-BEGIN
     // ---------------- Granular source (tools/osc/build_gr.py) ----------------
-    float[96] grP;        // slot * 16 + parameter
+    float[128] grP;        // slot * 16 + parameter
     const float[16] grLo = (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] grHi = (1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -28013,7 +28051,7 @@ processor Eisenpuls_Synth
     // GR-DSP-END
     // AD-DSP-BEGIN
     // ---------------- Additive source (tools/osc/build_ad.py) ----------------
-    float[96] adP;        // slot * 16 + parameter
+    float[128] adP;        // slot * 16 + parameter
     const float[16] adLo = (0.0f, 0.0f, 0.0f, 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] adHi = (7.0f, 7.0f, 1.0f, 64.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 20.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -28231,7 +28269,7 @@ processor Eisenpuls_Synth
     // state per voice and slot (Voice.dks, slot * 192): 0 pulse left, 1 pulse length, 2 control counter, 3 energy follower, 4 energy peak, 5 velocity factor, 6 / 7 DC blocker,
     // 8 snare noise low-pass, 9 rattle envelope, 12 trigger, 13 batter sum (previous sample), 16.. batter modes (y1 16, y2 28, a1 40, a2 52, b 64, weight 76),
     // 88.. resonant head (y1 88, y2 100, a1 112, a2 124, b 136, direct b 180), 148.. shell modes (y1 148, y2 154, a1 160, a2 166, b 172)
-    float[96] dkP;        // slot * 16 + parameter
+    float[128] dkP;        // slot * 16 + parameter
     const float[16] dkLo = (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] dkHi = (1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     const float[6]  dkSR = (1.0f, 1.62f, 2.31f, 3.05f, 3.9f, 4.8f);   // shell mode ratios
@@ -28508,7 +28546,7 @@ processor Eisenpuls_Synth
     // DK-DSP-END
     // SP-DSP-BEGIN
     // ---------------- Spectral source (tools/osc/build_sp.py) ----------------
-    float[96]    spP;        // slot * 16 + parameter
+    float[128]    spP;        // slot * 16 + parameter
     const float[16] spLo = (0.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] spHi = (1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     float[49152] spEnv;      // analysis cache: (slot * 8 + entry) * 1024 + level * 256 + grid point (magnitude)
@@ -28908,7 +28946,7 @@ processor Eisenpuls_Synth
     // SP-DSP-END
     // SF-DSP-BEGIN
     // ---------------- SoundFont source (tools/osc/build_sf.py) ----------------
-    float[96]    sfP;        // slot * 16 + parameter
+    float[128]    sfP;        // slot * 16 + parameter
     const float[16] sfLo = (-1.0f, 0.0f, -1.0f, -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] sfHi = (1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 2.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
     float[1580592] sfBuf;   // slot * 263432: preamble, zone records, audio
@@ -29172,7 +29210,7 @@ processor Eisenpuls_Synth
     // 9..12 DC blockers (L x, L y, R x, R y), 13 comb write position; pipe p (0 chanter, 1..3 drones) at 20 + 20 * p: 0 write, 1 loop length, 2 (unused), 3 loop gain, 4 damping,
     // 5 low-pass state, 6 (unused), 7 reed phase, 8 current Hz, 9 noise low-pass, 10 amplitude, 11 DC x, 12 DC y
     // lines (Voice.bpd, slot * 18432): chanter 0..4095, comb 4096..5119, drone d 5120 + 4096 * d
-    float[96] bpP;        // slot * 16 + parameter
+    float[128] bpP;        // slot * 16 + parameter
     const float[16] bpLo = (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     const float[16] bpHi = (2.0f, 8.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 4.0f, 11.0f, 1.0f, 1.0f, 1.0f);
     const float[12] bpJust = (0.0f, 11.7f, 3.9f, 15.6f, -13.7f, -2.0f, -9.8f, 2.0f, 13.7f, -15.6f, 17.6f, -11.7f);      // cents against equal temperament above the key (just intonation)
@@ -29420,7 +29458,7 @@ processor Eisenpuls_Synth
     // BP-DSP-END
     // SM-DSP-BEGIN
     // ---------------- Sampler source (tools/osc/build_sm.py) ----------------
-    float[96]   smP;       // slot * 16 + parameter
+    float[128]   smP;       // slot * 16 + parameter
     float[64]   smDir;     // voice * 8 + slot: +1 / -1 playing direction, 0 = a one-shot has ended
     float[64]   smSl;      // voice * 8 + slot: slice number (-1 = no slice mode)
     float[4194304] smBufR;   // right channel (stereo samples), slot * 524288
@@ -29624,7 +29662,7 @@ processor Eisenpuls_Synth
     // per slot and voice 176 floats of state in Voice.phs: 0..31 A states (y1, y2 per mode), 32..63 B states, 64..111 A coefficients
     // (c1 [16], c2 [16], gain [16]), 112..159 B coefficients, 160 noise envelope, 161 mallet flag, 162 mallet low-pass, 163 noise low-pass,
     // 164 refresh counter, 165 signature, 166 last frequency, 167 low-pass coefficient, 168 noise decay per sample
-    float[192] phyP;      // slot * 32 + parameter
+    float[256] phyP;      // slot * 32 + parameter
     const float[144] phyRat = (1.00000f, 2.00000f, 3.00000f, 4.00000f, 5.00000f, 6.00000f, 7.00000f, 8.00000f, 9.00000f, 10.00000f, 11.00000f, 12.00000f, 13.00000f, 14.00000f, 15.00000f, 16.00000f, 1.00000f, 2.77778f, 5.44444f, 9.00000f, 13.44444f, 18.77778f, 25.00000f, 32.11111f, 40.11111f, 49.00000f, 58.77778f, 69.44444f, 81.00000f, 93.44444f, 106.77778f, 121.00000f, 1.00000f, 1.58114f, 2.00000f, 2.23607f, 2.54951f, 2.91548f, 3.00000f, 3.16228f, 3.53553f, 3.60555f, 3.80789f, 4.00000f, 4.12310f, 4.30116f, 4.47213f, 4.52769f, 1.00000f, 1.59335f, 2.13556f, 2.29545f, 2.65311f, 2.91733f, 3.15548f, 3.50017f, 3.59851f, 3.64750f, 4.05897f, 4.13178f, 4.23050f, 4.60109f, 4.61011f, 4.83192f, 1.00000f, 2.11524f, 2.88476f, 3.97398f, 4.00000f, 5.85874f, 6.02602f, 6.57621f, 7.14126f, 8.46097f, 9.00000f, 9.92193f, 10.42379f, 11.53903f, 11.60223f, 11.80669f, 1.00000f, 1.29668f, 1.56778f, 1.64773f, 1.82656f, 1.95867f, 2.07774f, 2.25008f, 2.29926f, 2.32375f, 2.52948f, 2.56589f, 2.61525f, 2.80054f, 2.80506f, 2.91596f, 1.00000f, 4.00000f, 10.00000f, 17.82000f, 26.62000f, 37.18000f, 49.50000f, 63.58000f, 79.42000f, 97.02000f, 116.38000f, 137.50000f, 160.38000f, 185.02000f, 211.42000f, 239.58000f, 1.00000f, 2.00000f, 3.00000f, 4.00000f, 5.00000f, 6.00000f, 7.00000f, 8.00000f, 9.00000f, 10.00000f, 11.00000f, 12.00000f, 13.00000f, 14.00000f, 15.00000f, 16.00000f, 1.00000f, 3.00000f, 5.00000f, 7.00000f, 9.00000f, 11.00000f, 13.00000f, 15.00000f, 17.00000f, 19.00000f, 21.00000f, 23.00000f, 25.00000f, 27.00000f, 29.00000f, 31.00000f);
     const float[9] phyAmpExp = (0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.50f, 0.35f, 1.00f, 1.00f);
 
@@ -30282,7 +30320,7 @@ processor Eisenpuls_Synth
     // resonant circuit, saturated, pulse excited), 2 Punch (two stage pitch fall, second harmonic), 3 Hardstyle (long fall, hard clipped).
     // state per voice and slot in Voice.phs 1900 + 8 * slot: 0 time (s), 1 body phase, 2 sub phase, 3 feedback, 4 click high-pass memory, 5 click low-pass,
     // 6 noise low-pass, 7 unused
-    float[96] kickP;      // slot * 16 + parameter
+    float[128] kickP;      // slot * 16 + parameter
     const float[16] kqLo  = (0.0f, 0.0f, 5.0f, 0.0f, 20.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -24.0f, 1.0f, 0.0f);
     const float[16] kqHi  = (3.0f, 6.0f, 1000.0f, 1.0f, 3000.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 5.0f, 1.0f, 1.0f, 24.0f, 40.0f, 1.0f);
     const float[16] kqLog = (0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -34963,6 +35001,14 @@ processor Eisenpuls_Synth
             arpTick (dt);   // MOD-ARP
             ins_frame();    // INSPIRATOR-DSP
             updateModLfos (dt);
+            envMask = 0;   // ENV2
+            for (int es = 0; es < mmTop; ++es)
+                if (mmSrcI.at (es) >= 11 && mmSrcI.at (es) <= 20 && mmDstI.at (es) > 0)
+                    envMask |= 1 << (mmSrcI.at (es) - 11);
+            lfoMask = 0;   // LFO2
+            for (int ls = 0; ls < mmTop; ++ls)
+                if (mmSrcI.at (ls) >= 1 && mmSrcI.at (ls) <= 10 && mmDstI.at (ls) > 0)
+                    lfoMask |= 1 << (mmSrcI.at (ls) - 1);
             frqMask = 0;
             for (int fs = 0; fs < mmTop; ++fs)
                 if (mmSrcI.at (fs) >= 24 && mmSrcI.at (fs) <= 33 && mmDstI.at (fs) > 0)
