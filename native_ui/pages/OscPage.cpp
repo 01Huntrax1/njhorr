@@ -2,6 +2,7 @@
 // Port of buildOscPages / updateOscUi / oscPageHTML of the web UI; the layout follows the 1180 x 760 screenshots.
 #include <cstdio>
 #include "../NjoPages.h"
+#include "../NjoEnv2.h"
 #include "../NjoPhys.h"
 #include "../NjoKick.h"
 #include "../NjoTer.h"
@@ -170,9 +171,11 @@ namespace njo
     {
         Impl (OscPage& p, Ctx& c, SoundMemory& m, int osc, int pageMode)
             : owner (p), ctx (c), mem (m), o (osc), mode (pageMode), display (c, m, osc), fdisplay (c, m, osc), ddisplay (c, m, osc), rdisplay (c, osc), tdisplay (c, m, osc, pageMode != 2), vault ("VAULT"),
-              modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER"), editBtn ("EDIT")
+              modeA (pageMode == 2 ? "DISTORTION" : "FILTER"), modeB (pageMode == 2 ? "WAVEDISTORTION" : "WAVEFILTER"), editBtn ("EDIT"), envPlus ("ENV +")
         {
             editBtn.onClick = [this] { openEditor(); };
+            envPlus.onClick = [this] { openEnvExtras(); };
+            owner.addChildComponent (envPlus);
             owner.addAndMakeVisible (editBtn);
             if (pageMode == 1 || pageMode == 2) tedit = std::make_unique<TableEditor> (c, m, osc, pageMode == 1);
             if (pageMode == 0 || pageMode == 3) medit = std::make_unique<ModeEditor> (c, m, osc);
@@ -544,6 +547,34 @@ namespace njo
             owner.repaint();
         }
 
+        // ---- extras of the filter envelope (Delay, Hold, curves, Vel, Key, Loop, Level) in a call-out
+        struct EnvExtraPanel : juce::Component
+        {
+            juce::OwnedArray<ParamWidget> w;
+            EnvExtraPanel (Ctx& c, int k)
+            {
+                static const int js[9] = { 0, 1, 2, 3, 4, 5, 6, 8, 7 };
+                for (int j : js) { auto* x = w.add (makeWidget (c, env2::envId (k, j), j != 7).release()); if (j != 7) x->setLook (true); addAndMakeVisible (x); }
+                setSize (400, 190);
+            }
+            void paint (juce::Graphics& g) override
+            {
+                g.fillAll (juce::Colour (0xff141516)); g.setColour (juce::Colours::white.withAlpha (0.7f)); g.setFont (font (10.0f, true));
+                g.drawText ("FILTER ENVELOPE - EXTRAS", 12, 6, 300, 14, juce::Justification::centredLeft);
+            }
+            void resized() override
+            {
+                auto r = getLocalBounds().reduced (10, 8); r.removeFromTop (18);
+                int cw = r.getWidth() / 5, ch = 72;
+                for (int i = 0; i < 8; ++i) w[i]->setBounds (r.getX() + (i % 5) * cw, r.getY() + (i / 5) * ch, cw, ch - 4);
+                w[8]->setBounds (r.getX() + 3 * cw + 4, r.getY() + ch + 12, 2 * cw - 8, 34);
+            }
+        };
+        void openEnvExtras()
+        {
+            juce::CallOutBox::launchAsynchronously (std::make_unique<EnvExtraPanel> (ctx, 11 + o), envPlus.getScreenBounds(), nullptr);
+        }
+
         // ---- layout ----
         struct Strip { ParamWidget* w; juce::Rectangle<int> r; bool withLabel; };
         std::vector<Strip> strips;
@@ -568,7 +599,7 @@ namespace njo
             for (auto& kv : widgets) kv.second->setVisible (false);
             for (juce::Component* c : { (juce::Component*) &display, (juce::Component*) &fdisplay, (juce::Component*) &ddisplay, (juce::Component*) &rdisplay, (juce::Component*) &tdisplay,
                                         (juce::Component*) &dz, (juce::Component*) &dzF, (juce::Component*) &dzS, (juce::Component*) &vault,
-                                        (juce::Component*) &presetBtn, (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn })
+                                        (juce::Component*) &presetBtn, (juce::Component*) &modeA, (juce::Component*) &modeB, (juce::Component*) &editBtn, (juce::Component*) &envPlus })
                 c->setVisible (false);
             for (auto& c : chips) c->setVisible (false);
             const int type = srcType();
@@ -810,6 +841,7 @@ namespace njo
                 modeA.setBounds (c.getX() + w - 12 - 2 * modeW, c.getY() + 201, modeW, 26); modeB.setBounds (c.getX() + w - 12 - modeW, c.getY() + 201, modeW, 26);
                 modeA.setVisible (true); modeB.setVisible (true);
                 const double pitch = (w - 24) / 5.0;
+                envPlus.setBounds (c.getX() + w - 12 - 84, c.getY() + 238, 84, 18); envPlus.setVisible (true);
                 const char* keys[10] = { "fcut", "fres", "fdrv", "fkey", "feg", "fvel", "fatk", "fdec", "fsus", "frel" };
                 for (int i = 0; i < 10; ++i)
                     knob (keys[i], 12 + juce::roundToInt (pitch * (i % 5) + pitch / 2), 262 + 84 * (i / 5), c);
@@ -969,7 +1001,7 @@ if (! wf)
         OscDisplay display; FilterDisplay fdisplay; DistDisplay ddisplay;
         ResoDisplay rdisplay; TableDisplay tdisplay;
         DropZone dz, dzF, dzS; PushButton vault, presetBtn { "PRESET" };
-        PushButton modeA, modeB, editBtn; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit; std::unique_ptr<SampleEditor> sedit; std::unique_ptr<WavetableEditor> wedit;
+        PushButton modeA, modeB, editBtn, envPlus; std::unique_ptr<TableEditor> tedit; std::unique_ptr<ModeEditor> medit; std::unique_ptr<SampleEditor> sedit; std::unique_ptr<WavetableEditor> wedit;
          std::array<std::unique_ptr<PushButton>, OSC_N> chips;
         std::shared_ptr<juce::FileChooser> chooser;
     };

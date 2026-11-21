@@ -1,6 +1,7 @@
 // Envelope + LFO editors with the drag handles for the modulation sources.
 #include <random>
 #include "ModUi.h"
+#include "../NjoEnv2.h"
 #include "../NjoLfo2.h"
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
@@ -165,21 +166,33 @@ namespace njo
             float W = (float) getWidth(), H = (float) getHeight();
             int b = envParam (E());
             float A = ctx.get (b), D = ctx.get (b + 1), S = ctx.get (b + 2), R = ctx.get (b + 3);
+            auto x2 = [&] (int j) { return ctx.get (env2::envId (E(), j)); };
+            const float dl = x2 (0), hd = x2 (1), ac = x2 (2), dc = x2 (3), rc = x2 (4), va = x2 (5), lvl = x2 (8); const bool lp = x2 (7) > 0.5f;
+            const float peak = lvl * (1.0f - 0.5f * va), sus = S * peak;   // the display shows a medium velocity
             auto t = [] (float ms) { return std::sqrt (juce::jmax (ms, 0.0f) / 5000.0f); };
-            float seg[4] = { juce::jmax (t (A), 0.03f), juce::jmax (t (D), 0.05f), 0.18f, juce::jmax (t (R), 0.05f) };
-            float tt = seg[0] + seg[1] + seg[2] + seg[3];
+            float seg[6] = { dl > 0 ? juce::jmax (t (dl), 0.03f) : 0.0f, juce::jmax (t (A), 0.03f), hd > 0 ? juce::jmax (t (hd), 0.03f) : 0.0f, juce::jmax (t (D), 0.05f), 0.18f, juce::jmax (t (R), 0.05f) };
+            float tt = 0; for (float v : seg) tt += v;
             auto XX = [&] (float f) { return pad + f / tt * (W - 2 * pad); };
-            float x1 = seg[0], x2 = x1 + seg[1], x3 = x2 + seg[2], x4 = x3 + seg[3];
-            juce::Path p; p.startNewSubPath (XX (0), Y (0)); p.lineTo (XX (x1), Y (1));
-            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (x1 + seg[1] * f), Y (S + (1 - S) * std::exp (-4 * f))); }
-            p.lineTo (XX (x3), Y (S));
-            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (x3 + seg[3] * f), Y (S * std::exp (-4 * f))); }
-            p.lineTo (XX (x4), Y (0));
+            auto fall = [] (float q, float c) { float k = 5.0f + 6.0f * c; if (q >= 1) return 0.0f; if (std::abs (k) < 0.01f) return 1 - q; return (std::exp (-k * q) - std::exp (-k)) / (1 - std::exp (-k)); };
+            float xs[7]; xs[0] = 0; for (int k = 0; k < 6; ++k) xs[k + 1] = xs[k] + seg[k];
+            juce::Path p; p.startNewSubPath (XX (0), Y (0)); if (seg[0] > 0) p.lineTo (XX (xs[1]), Y (0));
+            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (xs[1] + seg[1] * f), Y (peak * std::pow (f, std::pow (4.0f, -ac)))); }
+            if (seg[2] > 0) p.lineTo (XX (xs[3]), Y (peak));
+            for (int k = 1; k <= 20; ++k)
+            {
+                float f = k / 20.0f;
+                float y = dc == 0 && ! lp ? sus + (peak - sus) * std::exp (-4 * f) : sus + (peak - sus) * fall (f, dc);
+                p.lineTo (XX (xs[3] + seg[3] * f), Y (y));
+            }
+            p.lineTo (XX (xs[5]), Y (sus));
+            for (int k = 1; k <= 20; ++k) { float f = k / 20.0f; p.lineTo (XX (xs[5] + seg[5] * f), Y (sus * (rc == 0 ? std::exp (-4 * f) : fall (f, rc)))); }
+            p.lineTo (XX (xs[6]), Y (0));
             g.setGradientFill (juce::ColourGradient (blue.withAlpha (0.30f), 0, 0, blue.withAlpha (0.03f), 0, H, false)); g.fillPath (p);
             g.setColour (blue); g.strokePath (p, juce::PathStrokeType (2.0f));
+            if (lp) { g.setColour (juce::Colour::fromFloatRGBA (1, 0.8f, 0.2f, 0.5f)); g.drawVerticalLine ((int) XX (xs[1]), pad, H - pad); g.drawVerticalLine ((int) XX (xs[4]), pad, H - pad); }
             g.setColour (juce::Colours::white.withAlpha (0.45f)); g.setFont (font (8.5f, true));
-            const char* l[4] = { "A", "D", "S", "R" }; float xs[4] = { 0, x1, x2, x3 };
-            for (int k = 0; k < 4; ++k) g.drawText (l[k], (int) XX (xs[k]) + 4, (int) H - 26, 14, 14, juce::Justification::centredLeft);
+            const char* l[6] = { dl > 0 ? "DL" : "", "A", hd > 0 ? "H" : "", "D", "S", "R" };
+            for (int k = 0; k < 6; ++k) if (seg[k] > 0) g.drawText (l[k], (int) XX (xs[k]) + 4, (int) H - 26, 14, 14, juce::Justification::centredLeft);
         }
 
         // ---- editing
@@ -450,6 +463,7 @@ namespace njo
         std::unique_ptr<ParamWidget> velPol;     // Unipolar / Bipolar switches of the envelopes (ids 3100 + i) and of Velocity (3110)
         juce::Rectangle<int> envPolLbl, velPolLbl, lfoPolLbl;
         juce::OwnedArray<MiniSelect> divSel;
+        juce::OwnedArray<ParamWidget> envX, envLoop;   // envelope extras: 8 knobs (Delay, Hold, A / D / R Curve, Vel, Key, Level) and Loop of every mod envelope
         juce::OwnedArray<ParamWidget> lfoX, keyBtn, intBtn;   // LFO extras: 8 knobs (Skew, Steps, Jitter, Spread, Depth, Pos, Ratio, Fine), Key follow, Interp
         struct TableBtn : juce::Component
         {
@@ -578,6 +592,9 @@ namespace njo
             for (int i = 0; i < 10; ++i)
             {
                 for (int k = 0; k < 4; ++k) { auto* w = envKnobs.add (makeWidget (ctx, envParam (i) + k, true).release()); w->setLook (true); owner.addChildComponent (w); }
+                static const int ek[8] = { 0, 1, 2, 3, 4, 5, 6, 8 };
+                for (int k : ek) { auto* w = envX.add (makeWidget (ctx, env2::envId (i, k), true).release()); w->setLook (true); owner.addChildComponent (w); }
+                { auto* lb = static_cast<ButtonsWidget*> (envLoop.add (makeWidget (ctx, env2::envId (i, 7), false).release())); lb->setShowLabel (false); owner.addChildComponent (lb); }
                 int ks[5] = { lfoRateParam (i), lfoModeParam (i) + 1, lfoModeParam (i) + 2, lfoModeParam (i) + 3, lfoModeParam (i) + 4 };
                 for (int k : ks) { auto* w = lfoKnobs.add (makeWidget (ctx, k, true).release()); w->setLook (true); owner.addChildComponent (w); }
                 auto* m = static_cast<ButtonsWidget*> (modeBtn.add (makeWidget (ctx, lfoModeParam (i), false).release())); m->setShowLabel (false); owner.addChildComponent (m);
@@ -629,6 +646,7 @@ namespace njo
         {
             int i = ctx.selectedLfo, e = ctx.selectedEnv;
             if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e || (n >= 7200 + 30 * e && n < 7230 + 30 * e)) { envCv.repaint(); if (n == 7200 + 30 * e) refreshAll(); }
+            if (n >= env2::envId (e, 0) && n <= env2::envId (e, 15)) envCv.repaint();
             if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); tableBtn.repaint(); }
             if (n >= lfo2::lfoId (i, 0) && n <= lfo2::lfoId (i, 15)) { lfoCv.repaint(); refreshAll(); }
             if (n == lfoSyncParam (i)) refreshAll();
@@ -643,7 +661,8 @@ namespace njo
                 lfoChips[i]->on = i == li; lfoChips[i]->repaint();
                 envChips[i]->on = i == ei; envChips[i]->repaint();
                 for (int k = 0; k < 4; ++k) { envKnobs[i * 4 + k]->setVisible (i == ei); envKnobs[i * 4 + k]->setAlpha (ctx.get (7200 + 30 * i) > 0.5f && k != 3 ? 0.3f : 1.0f); }
-                envPol[i]->setVisible (i == ei);
+                envPol[i]->setVisible (i == ei); envLoop[i]->setVisible (i == ei && ctx.get (7200 + 30 * i) < 0.5f);
+                for (int k = 0; k < 8; ++k) envX[i * 8 + k]->setVisible (i == ei);
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
                 modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (i == li);
                 divSel[i]->setVisible (i == li);
@@ -701,6 +720,11 @@ namespace njo
             for (int k = 0; k < 3; ++k) I.miscChips[k]->setBounds (row2.getRight() - (3 - k) * cw - (2 - k) * cg, row2.getY(), cw, ch);
             auto knobs = c.removeFromBottom (46);
             c.removeFromBottom (3);
+            {   // extras of the selected envelope (Delay, Hold, curves, Vel, Key, Level)
+                auto kr = c.removeFromBottom (46); c.removeFromBottom (3);
+                int kw = kr.getWidth() / 8;
+                for (int i = 0; i < 10; ++i) for (int k = 0; k < 8; ++k) I.envX[i * 8 + k]->setBounds (kr.getX() + k * kw, kr.getY(), kw, kr.getHeight());
+            }
             {   // polarity switches under the display: selected envelope | velocity
                 auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
                 const int lw = 52, half = (pr.getWidth() - 10) / 2;
@@ -710,6 +734,7 @@ namespace njo
                 I.velPol->setBounds (pr);
             }
             I.envCv.setBounds (c);
+            for (int i = 0; i < 10; ++i) I.envLoop[i]->setBounds (c.getX() + 8, c.getY() + 6, 84, 20);
             int kw = knobs.getWidth() / 4;
             for (int i = 0; i < 10; ++i) for (int k = 0; k < 4; ++k) I.envKnobs[i * 4 + k]->setBounds (knobs.getX() + k * kw, knobs.getY(), kw, knobs.getHeight());
         }

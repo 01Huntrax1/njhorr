@@ -1,5 +1,6 @@
 // Global page: Voice, Amp EG, Pitch EG and Output cards (12 column grid like the web UI: 2 / 3 / 2 / 5).
 #include "../NjoPages.h"
+#include "../NjoEnv2.h"
 
 namespace njo
 {
@@ -11,9 +12,9 @@ namespace njo
         explicit Impl (GlobalPage& p, Ctx& c) : owner (p), ctx (c)
         {
             cards = { { "VOICE", 0, 2, 1, { 2, 4, 3, 63 }, {} },
-                      { "AMP EG", 2, 3, 2, { 18, 19, 20, 21, 22 }, {} },
-                      { "PITCH EG", 5, 2, 1, { 45, 46 }, {} },
-                      { "OUTPUT", 7, 5, 2, { 29, 190, 36, 522 }, {} } };
+                      { "AMP EG", 2, 5, 6, { 18, 19, 20, 21, 22, env2::envId (10, 0), env2::envId (10, 1), env2::envId (10, 2), env2::envId (10, 3), env2::envId (10, 4), env2::envId (10, 6), env2::envId (10, 8) }, {} },
+                      { "PITCH EG", 7, 2, 1, { 45, 46 }, {} },
+                      { "OUTPUT", 9, 3, 2, { 29, 190, 36, 522 }, {} } };
             for (auto& card : cards)
                 for (int id : card.ids)
                 {

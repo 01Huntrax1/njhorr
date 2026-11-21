@@ -11,7 +11,7 @@ PATCH = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "..", "pa
 BASE, STRIDE = 13000, 16
 # j, key, array, label, short, min, max, init, unit, kind, labels
 L2 = [
- (0, "key",    "mLfoKey",    "Key Follow", "Key",    0, 1,   0.0, "",   "btn", ["Off", "On"]),
+ (0, "key",    "mLfoKey",    "Key Follow", "Key",    0, 1,   0.0, "",   "btn", ["Key Off", "Key On"]),
  (1, "ratio",  "mLfoRatio",  "Key Ratio",  "Ratio",  0.25, 16, 1.0, "x", "sld", None),
  (2, "fine",   "mLfoFine",   "Key Fine",   "Fine",   -100, 100, 0.0, "ct", "sld", None),
  (3, "skew",   "mLfoSkew",   "Skew",       "Skew",   -1, 1,  0.0, "",   "sld", None),

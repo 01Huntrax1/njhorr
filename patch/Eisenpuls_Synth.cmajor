@@ -6420,6 +6420,161 @@ processor Eisenpuls_Synth
     input event float param12582 [[ name: "OSC 6 WT Morph", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     input event float param12583 [[ name: "OSC 6 WT Tone", min: 0.0, max: 1.0, init: 1.0 ]];
     // WT2-DECL-END
+    // ENV2-DECL-BEGIN
+    input event float param13300 [[ name: "Mod Env 1 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13301 [[ name: "Mod Env 1 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13302 [[ name: "Mod Env 1 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13303 [[ name: "Mod Env 1 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13304 [[ name: "Mod Env 1 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13305 [[ name: "Mod Env 1 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13306 [[ name: "Mod Env 1 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13307 [[ name: "Mod Env 1 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13308 [[ name: "Mod Env 1 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13316 [[ name: "Mod Env 2 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13317 [[ name: "Mod Env 2 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13318 [[ name: "Mod Env 2 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13319 [[ name: "Mod Env 2 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13320 [[ name: "Mod Env 2 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13321 [[ name: "Mod Env 2 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13322 [[ name: "Mod Env 2 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13323 [[ name: "Mod Env 2 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13324 [[ name: "Mod Env 2 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13332 [[ name: "Mod Env 3 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13333 [[ name: "Mod Env 3 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13334 [[ name: "Mod Env 3 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13335 [[ name: "Mod Env 3 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13336 [[ name: "Mod Env 3 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13337 [[ name: "Mod Env 3 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13338 [[ name: "Mod Env 3 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13339 [[ name: "Mod Env 3 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13340 [[ name: "Mod Env 3 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13348 [[ name: "Mod Env 4 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13349 [[ name: "Mod Env 4 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13350 [[ name: "Mod Env 4 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13351 [[ name: "Mod Env 4 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13352 [[ name: "Mod Env 4 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13353 [[ name: "Mod Env 4 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13354 [[ name: "Mod Env 4 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13355 [[ name: "Mod Env 4 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13356 [[ name: "Mod Env 4 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13364 [[ name: "Mod Env 5 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13365 [[ name: "Mod Env 5 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13366 [[ name: "Mod Env 5 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13367 [[ name: "Mod Env 5 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13368 [[ name: "Mod Env 5 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13369 [[ name: "Mod Env 5 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13370 [[ name: "Mod Env 5 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13371 [[ name: "Mod Env 5 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13372 [[ name: "Mod Env 5 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13380 [[ name: "Mod Env 6 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13381 [[ name: "Mod Env 6 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13382 [[ name: "Mod Env 6 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13383 [[ name: "Mod Env 6 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13384 [[ name: "Mod Env 6 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13385 [[ name: "Mod Env 6 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13386 [[ name: "Mod Env 6 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13387 [[ name: "Mod Env 6 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13388 [[ name: "Mod Env 6 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13396 [[ name: "Mod Env 7 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13397 [[ name: "Mod Env 7 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13398 [[ name: "Mod Env 7 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13399 [[ name: "Mod Env 7 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13400 [[ name: "Mod Env 7 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13401 [[ name: "Mod Env 7 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13402 [[ name: "Mod Env 7 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13403 [[ name: "Mod Env 7 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13404 [[ name: "Mod Env 7 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13412 [[ name: "Mod Env 8 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13413 [[ name: "Mod Env 8 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13414 [[ name: "Mod Env 8 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13415 [[ name: "Mod Env 8 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13416 [[ name: "Mod Env 8 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13417 [[ name: "Mod Env 8 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13418 [[ name: "Mod Env 8 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13419 [[ name: "Mod Env 8 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13420 [[ name: "Mod Env 8 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13428 [[ name: "Mod Env 9 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13429 [[ name: "Mod Env 9 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13430 [[ name: "Mod Env 9 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13431 [[ name: "Mod Env 9 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13432 [[ name: "Mod Env 9 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13433 [[ name: "Mod Env 9 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13434 [[ name: "Mod Env 9 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13435 [[ name: "Mod Env 9 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13436 [[ name: "Mod Env 9 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13444 [[ name: "Mod Env 10 Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13445 [[ name: "Mod Env 10 Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13446 [[ name: "Mod Env 10 Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13447 [[ name: "Mod Env 10 Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13448 [[ name: "Mod Env 10 Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13449 [[ name: "Mod Env 10 Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13450 [[ name: "Mod Env 10 Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13451 [[ name: "Mod Env 10 Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13452 [[ name: "Mod Env 10 Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13460 [[ name: "Amp Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13461 [[ name: "Amp Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13462 [[ name: "Amp Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13463 [[ name: "Amp Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13464 [[ name: "Amp Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13465 [[ name: "Amp Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13466 [[ name: "Amp Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13467 [[ name: "Amp Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13468 [[ name: "Amp Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13476 [[ name: "OSC 1 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13477 [[ name: "OSC 1 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13478 [[ name: "OSC 1 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13479 [[ name: "OSC 1 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13480 [[ name: "OSC 1 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13481 [[ name: "OSC 1 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13482 [[ name: "OSC 1 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13483 [[ name: "OSC 1 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13484 [[ name: "OSC 1 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13492 [[ name: "OSC 2 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13493 [[ name: "OSC 2 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13494 [[ name: "OSC 2 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13495 [[ name: "OSC 2 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13496 [[ name: "OSC 2 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13497 [[ name: "OSC 2 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13498 [[ name: "OSC 2 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13499 [[ name: "OSC 2 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13500 [[ name: "OSC 2 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13508 [[ name: "OSC 3 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13509 [[ name: "OSC 3 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13510 [[ name: "OSC 3 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13511 [[ name: "OSC 3 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13512 [[ name: "OSC 3 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13513 [[ name: "OSC 3 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13514 [[ name: "OSC 3 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13515 [[ name: "OSC 3 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13516 [[ name: "OSC 3 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13524 [[ name: "OSC 4 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13525 [[ name: "OSC 4 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13526 [[ name: "OSC 4 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13527 [[ name: "OSC 4 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13528 [[ name: "OSC 4 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13529 [[ name: "OSC 4 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13530 [[ name: "OSC 4 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13531 [[ name: "OSC 4 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13532 [[ name: "OSC 4 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13540 [[ name: "OSC 5 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13541 [[ name: "OSC 5 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13542 [[ name: "OSC 5 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13543 [[ name: "OSC 5 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13544 [[ name: "OSC 5 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13545 [[ name: "OSC 5 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13546 [[ name: "OSC 5 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13547 [[ name: "OSC 5 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13548 [[ name: "OSC 5 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    input event float param13556 [[ name: "OSC 6 Filter Env Delay", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13557 [[ name: "OSC 6 Filter Env Hold", min: 0.0, max: 5000.0, init: 0.0 ]];
+    input event float param13558 [[ name: "OSC 6 Filter Env Attack Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13559 [[ name: "OSC 6 Filter Env Decay Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13560 [[ name: "OSC 6 Filter Env Release Curve", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13561 [[ name: "OSC 6 Filter Env Velocity", min: 0.0, max: 1.0, init: 0.0 ]];
+    input event float param13562 [[ name: "OSC 6 Filter Env Key Track", min: -1.0, max: 1.0, init: 0.0 ]];
+    input event float param13563 [[ name: "OSC 6 Filter Env Loop", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param13564 [[ name: "OSC 6 Filter Env Level", min: 0.0, max: 1.0, init: 1.0 ]];
+    // ENV2-DECL-END
     // LFO2-DECL-BEGIN
     input event float param13000 [[ name: "LFO 1 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
     input event float param13001 [[ name: "LFO 1 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
@@ -8780,6 +8935,15 @@ processor Eisenpuls_Synth
     float[2560] lfoTab;       // drawn shapes, 256 points per LFO
     int         lastVoice = 0;
 
+    float[32]   xeDelay;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeHold;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeAC;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeDC;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeRC;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeVel;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeKey;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeLoop;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
+    float[32]   xeLvl;       // ENV2: extra envelope parameter, index = envelope (0..9 mod, 10 amp, 11..16 filter)
     float[16]   mEnvA;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvD;  // padded to a power of two (cheap index wrap)
     float[16]   mEnvS;  // padded to a power of two (cheap index wrap)
@@ -15895,6 +16059,161 @@ processor Eisenpuls_Synth
     event param12582 (float v) { wtP.at (82) = v; }
     event param12583 (float v) { wtP.at (83) = v; }
     // WT2-HAND-END
+    // ENV2-HAND-BEGIN
+    event param13300 (float v) { xeDelay.at (0) = v; }
+    event param13301 (float v) { xeHold.at (0) = v; }
+    event param13302 (float v) { xeAC.at (0) = v; }
+    event param13303 (float v) { xeDC.at (0) = v; }
+    event param13304 (float v) { xeRC.at (0) = v; }
+    event param13305 (float v) { xeVel.at (0) = v; }
+    event param13306 (float v) { xeKey.at (0) = v; }
+    event param13307 (float v) { xeLoop.at (0) = v; }
+    event param13308 (float v) { xeLvl.at (0) = v; }
+    event param13316 (float v) { xeDelay.at (1) = v; }
+    event param13317 (float v) { xeHold.at (1) = v; }
+    event param13318 (float v) { xeAC.at (1) = v; }
+    event param13319 (float v) { xeDC.at (1) = v; }
+    event param13320 (float v) { xeRC.at (1) = v; }
+    event param13321 (float v) { xeVel.at (1) = v; }
+    event param13322 (float v) { xeKey.at (1) = v; }
+    event param13323 (float v) { xeLoop.at (1) = v; }
+    event param13324 (float v) { xeLvl.at (1) = v; }
+    event param13332 (float v) { xeDelay.at (2) = v; }
+    event param13333 (float v) { xeHold.at (2) = v; }
+    event param13334 (float v) { xeAC.at (2) = v; }
+    event param13335 (float v) { xeDC.at (2) = v; }
+    event param13336 (float v) { xeRC.at (2) = v; }
+    event param13337 (float v) { xeVel.at (2) = v; }
+    event param13338 (float v) { xeKey.at (2) = v; }
+    event param13339 (float v) { xeLoop.at (2) = v; }
+    event param13340 (float v) { xeLvl.at (2) = v; }
+    event param13348 (float v) { xeDelay.at (3) = v; }
+    event param13349 (float v) { xeHold.at (3) = v; }
+    event param13350 (float v) { xeAC.at (3) = v; }
+    event param13351 (float v) { xeDC.at (3) = v; }
+    event param13352 (float v) { xeRC.at (3) = v; }
+    event param13353 (float v) { xeVel.at (3) = v; }
+    event param13354 (float v) { xeKey.at (3) = v; }
+    event param13355 (float v) { xeLoop.at (3) = v; }
+    event param13356 (float v) { xeLvl.at (3) = v; }
+    event param13364 (float v) { xeDelay.at (4) = v; }
+    event param13365 (float v) { xeHold.at (4) = v; }
+    event param13366 (float v) { xeAC.at (4) = v; }
+    event param13367 (float v) { xeDC.at (4) = v; }
+    event param13368 (float v) { xeRC.at (4) = v; }
+    event param13369 (float v) { xeVel.at (4) = v; }
+    event param13370 (float v) { xeKey.at (4) = v; }
+    event param13371 (float v) { xeLoop.at (4) = v; }
+    event param13372 (float v) { xeLvl.at (4) = v; }
+    event param13380 (float v) { xeDelay.at (5) = v; }
+    event param13381 (float v) { xeHold.at (5) = v; }
+    event param13382 (float v) { xeAC.at (5) = v; }
+    event param13383 (float v) { xeDC.at (5) = v; }
+    event param13384 (float v) { xeRC.at (5) = v; }
+    event param13385 (float v) { xeVel.at (5) = v; }
+    event param13386 (float v) { xeKey.at (5) = v; }
+    event param13387 (float v) { xeLoop.at (5) = v; }
+    event param13388 (float v) { xeLvl.at (5) = v; }
+    event param13396 (float v) { xeDelay.at (6) = v; }
+    event param13397 (float v) { xeHold.at (6) = v; }
+    event param13398 (float v) { xeAC.at (6) = v; }
+    event param13399 (float v) { xeDC.at (6) = v; }
+    event param13400 (float v) { xeRC.at (6) = v; }
+    event param13401 (float v) { xeVel.at (6) = v; }
+    event param13402 (float v) { xeKey.at (6) = v; }
+    event param13403 (float v) { xeLoop.at (6) = v; }
+    event param13404 (float v) { xeLvl.at (6) = v; }
+    event param13412 (float v) { xeDelay.at (7) = v; }
+    event param13413 (float v) { xeHold.at (7) = v; }
+    event param13414 (float v) { xeAC.at (7) = v; }
+    event param13415 (float v) { xeDC.at (7) = v; }
+    event param13416 (float v) { xeRC.at (7) = v; }
+    event param13417 (float v) { xeVel.at (7) = v; }
+    event param13418 (float v) { xeKey.at (7) = v; }
+    event param13419 (float v) { xeLoop.at (7) = v; }
+    event param13420 (float v) { xeLvl.at (7) = v; }
+    event param13428 (float v) { xeDelay.at (8) = v; }
+    event param13429 (float v) { xeHold.at (8) = v; }
+    event param13430 (float v) { xeAC.at (8) = v; }
+    event param13431 (float v) { xeDC.at (8) = v; }
+    event param13432 (float v) { xeRC.at (8) = v; }
+    event param13433 (float v) { xeVel.at (8) = v; }
+    event param13434 (float v) { xeKey.at (8) = v; }
+    event param13435 (float v) { xeLoop.at (8) = v; }
+    event param13436 (float v) { xeLvl.at (8) = v; }
+    event param13444 (float v) { xeDelay.at (9) = v; }
+    event param13445 (float v) { xeHold.at (9) = v; }
+    event param13446 (float v) { xeAC.at (9) = v; }
+    event param13447 (float v) { xeDC.at (9) = v; }
+    event param13448 (float v) { xeRC.at (9) = v; }
+    event param13449 (float v) { xeVel.at (9) = v; }
+    event param13450 (float v) { xeKey.at (9) = v; }
+    event param13451 (float v) { xeLoop.at (9) = v; }
+    event param13452 (float v) { xeLvl.at (9) = v; }
+    event param13460 (float v) { xeDelay.at (10) = v; }
+    event param13461 (float v) { xeHold.at (10) = v; }
+    event param13462 (float v) { xeAC.at (10) = v; }
+    event param13463 (float v) { xeDC.at (10) = v; }
+    event param13464 (float v) { xeRC.at (10) = v; }
+    event param13465 (float v) { xeVel.at (10) = v; }
+    event param13466 (float v) { xeKey.at (10) = v; }
+    event param13467 (float v) { xeLoop.at (10) = v; }
+    event param13468 (float v) { xeLvl.at (10) = v; }
+    event param13476 (float v) { xeDelay.at (11) = v; }
+    event param13477 (float v) { xeHold.at (11) = v; }
+    event param13478 (float v) { xeAC.at (11) = v; }
+    event param13479 (float v) { xeDC.at (11) = v; }
+    event param13480 (float v) { xeRC.at (11) = v; }
+    event param13481 (float v) { xeVel.at (11) = v; }
+    event param13482 (float v) { xeKey.at (11) = v; }
+    event param13483 (float v) { xeLoop.at (11) = v; }
+    event param13484 (float v) { xeLvl.at (11) = v; }
+    event param13492 (float v) { xeDelay.at (12) = v; }
+    event param13493 (float v) { xeHold.at (12) = v; }
+    event param13494 (float v) { xeAC.at (12) = v; }
+    event param13495 (float v) { xeDC.at (12) = v; }
+    event param13496 (float v) { xeRC.at (12) = v; }
+    event param13497 (float v) { xeVel.at (12) = v; }
+    event param13498 (float v) { xeKey.at (12) = v; }
+    event param13499 (float v) { xeLoop.at (12) = v; }
+    event param13500 (float v) { xeLvl.at (12) = v; }
+    event param13508 (float v) { xeDelay.at (13) = v; }
+    event param13509 (float v) { xeHold.at (13) = v; }
+    event param13510 (float v) { xeAC.at (13) = v; }
+    event param13511 (float v) { xeDC.at (13) = v; }
+    event param13512 (float v) { xeRC.at (13) = v; }
+    event param13513 (float v) { xeVel.at (13) = v; }
+    event param13514 (float v) { xeKey.at (13) = v; }
+    event param13515 (float v) { xeLoop.at (13) = v; }
+    event param13516 (float v) { xeLvl.at (13) = v; }
+    event param13524 (float v) { xeDelay.at (14) = v; }
+    event param13525 (float v) { xeHold.at (14) = v; }
+    event param13526 (float v) { xeAC.at (14) = v; }
+    event param13527 (float v) { xeDC.at (14) = v; }
+    event param13528 (float v) { xeRC.at (14) = v; }
+    event param13529 (float v) { xeVel.at (14) = v; }
+    event param13530 (float v) { xeKey.at (14) = v; }
+    event param13531 (float v) { xeLoop.at (14) = v; }
+    event param13532 (float v) { xeLvl.at (14) = v; }
+    event param13540 (float v) { xeDelay.at (15) = v; }
+    event param13541 (float v) { xeHold.at (15) = v; }
+    event param13542 (float v) { xeAC.at (15) = v; }
+    event param13543 (float v) { xeDC.at (15) = v; }
+    event param13544 (float v) { xeRC.at (15) = v; }
+    event param13545 (float v) { xeVel.at (15) = v; }
+    event param13546 (float v) { xeKey.at (15) = v; }
+    event param13547 (float v) { xeLoop.at (15) = v; }
+    event param13548 (float v) { xeLvl.at (15) = v; }
+    event param13556 (float v) { xeDelay.at (16) = v; }
+    event param13557 (float v) { xeHold.at (16) = v; }
+    event param13558 (float v) { xeAC.at (16) = v; }
+    event param13559 (float v) { xeDC.at (16) = v; }
+    event param13560 (float v) { xeRC.at (16) = v; }
+    event param13561 (float v) { xeVel.at (16) = v; }
+    event param13562 (float v) { xeKey.at (16) = v; }
+    event param13563 (float v) { xeLoop.at (16) = v; }
+    event param13564 (float v) { xeLvl.at (16) = v; }
+    // ENV2-HAND-END
     // LFO2-HAND-BEGIN
     event param13000 (float v) { mLfoKey.at (0) = v; }
     event param13001 (float v) { mLfoRatio.at (0) = v; }
@@ -16915,6 +17234,11 @@ processor Eisenpuls_Synth
         float[16] lfoSm;      // per-voice smoothing state
         float[16] lfoJ;       // LFO2: per-voice jitter draw
         int[16]   mstage;     // mod envelope stages (0 off, 1 attack, 2 decay/sustain, 3 release)
+        float[32] exT;        // ENV2: stage timer
+        float[32] exQ;        // ENV2: progress of the stage (0..1)
+        float[32] exL;        // ENV2: level at the start of the stage
+        int[32]   exSub;      // ENV2: sub stage (attack: 0 delay / rise, 1 hold)
+        int[32]   exPrev;     // ENV2: stage seen on the previous sample (0 = restart)
         int[16]   vmNode;     // MSEG-DSP: target node (held node in stage 2)
         int[16]   rS;         // RND-DSP: random state
         float[16] rV;         // RND-DSP: output (-1..1)
@@ -16992,6 +17316,20 @@ processor Eisenpuls_Synth
         for (int ld = 0; ld < 10; ++ld)
             mLfoDiv.at (ld) = 8.0f;
 
+        // ENV2-INIT-BEGIN
+        for (int ie = 0; ie < 32; ++ie)
+        {
+            xeAC.at (ie) = 0.0f;
+            xeDC.at (ie) = 0.0f;
+            xeDelay.at (ie) = 0.0f;
+            xeHold.at (ie) = 0.0f;
+            xeKey.at (ie) = 0.0f;
+            xeLoop.at (ie) = 0.0f;
+            xeLvl.at (ie) = 1.0f;
+            xeRC.at (ie) = 0.0f;
+            xeVel.at (ie) = 0.0f;
+        }
+        // ENV2-INIT-END
         // LFO2-INIT-BEGIN
         for (int il = 0; il < 10; ++il)
         {
@@ -24433,6 +24771,172 @@ processor Eisenpuls_Synth
             envMaxNext.at (m) = me;
     }
 
+    // ENV2-BEGIN
+    struct EnvR
+    {
+        int   st;
+        float lv;
+    }
+
+    // remaining fraction (1 -> 0) of a shaped fall at progress q (0..1); c = 0 is about the old exponential (99 % at the end), -1 nearly linear, +1 very snappy
+    float envFall (float q, float c)
+    {
+        float k = 5.0f + 6.0f * c;
+
+        if (q >= 1.0f)
+            return 0.0f;
+
+        if (abs (k) < 0.01f)
+            return 1.0f - q;
+
+        return (float (exp (-k * q)) - float (exp (-k))) / (1.0f - float (exp (-k)));
+    }
+
+    // One sample of envelope k of voice vi. st: 0 idle, 1 attack (delay, rise, hold), 2 decay / sustain, 3 release
+    EnvR envX (int vi, int k, int st, float lv, float dt, float a, float d, float sus, float r)
+    {
+        EnvR o;
+        o.st = st;
+        o.lv = lv;
+
+        if (st == 0)
+            return o;
+
+        float kt   = xeKey.at (k);
+        float ts   = 1.0f;
+        if (kt != 0.0f)
+            ts = float (pow (2.0f, -kt * (float (voices.at (vi).noteNumber) - 60.0f) / 12.0f));
+
+        float va   = 0.0f;
+        if (k != 10)
+            va = xeVel.at (k);
+        float peak = xeLvl.at (k) * (1.0f - va + va * voices.at (vi).velRaw);
+        float susE = sus * peak;
+        float ac   = xeAC.at (k);
+        float dc   = xeDC.at (k);
+        float rc   = xeRC.at (k);
+        bool  isLoop = k != 10 && xeLoop.at (k) > 0.5f;
+
+        // entering a stage: timers reset, progress of the attack continues from the current level
+        if (st != voices.at (vi).exPrev.at (k))
+        {
+            voices.at (vi).exPrev.at (k) = st;
+            voices.at (vi).exT.at (k)    = 0.0f;
+            voices.at (vi).exSub.at (k)  = 0;
+            voices.at (vi).exL.at (k)    = lv;
+            voices.at (vi).exQ.at (k)    = 0.0f;
+
+            if (st == 1)
+            {
+                float x = 1.0f;
+                if (peak > 0.0001f)
+                    x = clamp (lv / peak, 0.0f, 1.0f);
+                if (ac != 0.0f)
+                    x = float (pow (x, float (pow (4.0f, ac))));
+                voices.at (vi).exQ.at (k) = x;
+            }
+        }
+
+        if (st == 1)
+        {
+            if (voices.at (vi).exSub.at (k) == 0)
+            {
+                float t = voices.at (vi).exT.at (k);
+
+                if (t < xeDelay.at (k) * 0.001f)
+                    voices.at (vi).exT.at (k) = t + dt;
+                else
+                {
+                    float q = voices.at (vi).exQ.at (k) + dt / max (a * ts * 0.001f, 0.0005f);
+
+                    if (q >= 1.0f)
+                    {
+                        q    = 1.0f;
+                        o.lv = peak;
+
+                        if (xeHold.at (k) > 0.0f)
+                        {
+                            voices.at (vi).exSub.at (k) = 1;
+                            voices.at (vi).exT.at (k)   = 0.0f;
+                        }
+                        else
+                        {
+                            o.st = 2;
+                            voices.at (vi).exPrev.at (k) = 2;
+                            voices.at (vi).exL.at (k)    = peak;
+                            voices.at (vi).exQ.at (k)    = 0.0f;
+                            voices.at (vi).exT.at (k)    = 0.0f;
+                            voices.at (vi).exSub.at (k)  = 0;
+                            return o;
+                        }
+                    }
+                    else if (ac != 0.0f)
+                        o.lv = peak * float (pow (q, float (pow (4.0f, -ac))));
+                    else
+                        o.lv = peak * q;
+
+                    voices.at (vi).exQ.at (k) = q;
+                }
+            }
+            else
+            {
+                float t = voices.at (vi).exT.at (k) + dt;
+                o.lv = peak;
+                voices.at (vi).exT.at (k) = t;
+
+                if (t >= xeHold.at (k) * 0.001f)
+                {
+                    o.st = 2;
+                    voices.at (vi).exPrev.at (k) = 2;
+                    voices.at (vi).exL.at (k)    = peak;
+                    voices.at (vi).exQ.at (k)    = 0.0f;
+                    voices.at (vi).exT.at (k)    = 0.0f;
+                    voices.at (vi).exSub.at (k)  = 0;
+                }
+            }
+        }
+        else if (st == 2)
+        {
+            if (dc == 0.0f && ! isLoop)
+                o.lv = lv + (susE - lv) * clamp (dt * 5.0f / (max (d * ts, 1.0f) * 0.001f), 0.0f, 0.99f);
+            else
+            {
+                float q = voices.at (vi).exQ.at (k) + dt / max (d * ts * 0.001f, 0.0005f);
+                voices.at (vi).exQ.at (k) = min (q, 1.0f);
+                o.lv = susE + (voices.at (vi).exL.at (k) - susE) * envFall (q, dc);
+
+                if (q >= 1.0f && isLoop)
+                {
+                    o.st = 1;
+                    voices.at (vi).exPrev.at (k) = 1;
+                    voices.at (vi).exSub.at (k)  = 0;
+                    voices.at (vi).exT.at (k)    = xeDelay.at (k) * 0.001f;
+                    voices.at (vi).exL.at (k)    = o.lv;
+                    float x = 1.0f;
+                    if (peak > 0.0001f)
+                        x = clamp (o.lv / peak, 0.0f, 1.0f);
+                    if (ac != 0.0f)
+                        x = float (pow (x, float (pow (4.0f, ac))));
+                    voices.at (vi).exQ.at (k) = x;
+                }
+            }
+        }
+        else
+        {
+            if (rc == 0.0f)
+                o.lv = lv - lv * clamp (dt * 5.0f / (max (r * ts, 1.0f) * 0.001f), 0.0f, 0.99f);
+            else
+            {
+                float q = voices.at (vi).exQ.at (k) + dt / max (r * ts * 0.001f, 0.0005f);
+                voices.at (vi).exQ.at (k) = min (q, 1.0f);
+                o.lv = voices.at (vi).exL.at (k) * envFall (q, rc);
+            }
+        }
+
+        return o;
+    }
+    // ENV2-END
+
     // Advances the 10 mod envelopes of one voice by one sample
     void updateModEnvs (int vi, float dtv)
     {
@@ -24447,23 +24951,9 @@ processor Eisenpuls_Synth
             int   ms = voices.at (vi).mstage.at (m);
             float me = voices.at (vi).menv.at (m);
 
-            if (ms == 1)
-            {
-                me += dtv / max (mEnvA.at (m) * 0.001f, 0.0005f);
-                if (me >= 1.0f)
-                {
-                    me = 1.0f;
-                    ms = 2;
-                }
-            }
-            else if (ms == 2)
-            {
-                me += (mEnvS.at (m) - me) * clamp (dtv * 5.0f / (max (mEnvD.at (m), 1.0f) * 0.001f), 0.0f, 0.99f);
-            }
-            else if (ms == 3)
-            {
-                me -= me * clamp (dtv * 5.0f / (max (mEnvR.at (m), 1.0f) * 0.001f), 0.0f, 0.99f);
-            }
+            EnvR me2 = envX (vi, m, ms, me, dtv, mEnvA.at (m), mEnvD.at (m), mEnvS.at (m), mEnvR.at (m));   // ENV2
+            ms = me2.st;
+            me = me2.lv;
 
             voices.at (vi).menv.at (m)   = me;
             voices.at (vi).mstage.at (m) = ms;
@@ -29978,10 +30468,12 @@ processor Eisenpuls_Synth
         }
 
         voices.at (v).stage = 1;
+        voices.at (v).exPrev.at (10) = 0;
 
         for (int o = 0; o < 6; ++o)
         {
             voices.at (v).fstage.at (o) = 1;
+            voices.at (v).exPrev.at (11 + o) = 0;
             for (int fq = 0; fq < 16; ++fq)   // OSCFX3-DSP: fresh effect state at the start of the voice
             {
                 int fs = 48 + v * 96 + o * 16 + fq;
@@ -29995,6 +30487,7 @@ processor Eisenpuls_Synth
         for (int ms = 0; ms < 10; ++ms)
         {
             voices.at (v).mstage.at (ms) = 1;
+            voices.at (v).exPrev.at (ms) = 0;
             voices.at (v).vmNode.at (ms) = 0;
             voices.at (v).vmFlag.at (ms) = 0;
             voices.at (v).vmT.at (ms)    = 0.0f;
@@ -34443,23 +34936,14 @@ processor Eisenpuls_Synth
                 int   st = voices.at (i).stage;
                 float e  = voices.at (i).env;
 
-                if (st == 1)
+                EnvR ae = envX (i, 10, st, e, dt, ampAttack, ampDecay, ampSustain, ampRelease);   // ENV2
+                st = ae.st;
+                e  = ae.lv;
+
+                if (st == 3 && e < 0.0003f)
                 {
-                    e += dt / max (ampAttack * 0.001f, 0.0005f);
-                    if (e >= 1.0f) { e = 1.0f; st = 2; }
-                }
-                else if (st == 2)
-                {
-                    e += (ampSustain - e) * clamp (dt * 5.0f / (max (ampDecay, 1.0f) * 0.001f), 0.0f, 0.99f);
-                }
-                else
-                {
-                    e -= e * clamp (dt * 5.0f / (max (ampRelease, 1.0f) * 0.001f), 0.0f, 0.99f);
-                    if (e < 0.0003f)
-                    {
-                        e = 0.0f;
-                        voices.at (i).active = false;
-                    }
+                    e = 0.0f;
+                    voices.at (i).active = false;
                 }
                 voices.at (i).env   = e;
                 voices.at (i).stage = st;
@@ -34720,19 +35204,9 @@ processor Eisenpuls_Synth
                     // ----- filter envelope of the slot -----
                     int   fst = voices.at (i).fstage.at (o);
                     float fe  = voices.at (i).fenv.at (o);
-                    if (fst == 1)
-                    {
-                        fe += dt / max (op.at (ob + 38) * 0.001f, 0.0005f);
-                        if (fe >= 1.0f) { fe = 1.0f; fst = 2; }
-                    }
-                    else if (fst == 2)
-                    {
-                        fe += (op.at (ob + 40) - fe) * clamp (dt * 5.0f / (max (op.at (ob + 39), 1.0f) * 0.001f), 0.0f, 0.99f);
-                    }
-                    else
-                    {
-                        fe -= fe * clamp (dt * 5.0f / (max (op.at (ob + 41), 1.0f) * 0.001f), 0.0f, 0.99f);
-                    }
+                    EnvR fr = envX (i, 11 + o, fst, fe, dt, op.at (ob + 38), op.at (ob + 39), op.at (ob + 40), op.at (ob + 41));   // ENV2
+                    fst = fr.st;
+                    fe  = fr.lv;
                     voices.at (i).fenv.at (o)   = fe;
                     voices.at (i).fstage.at (o) = fst;
 
