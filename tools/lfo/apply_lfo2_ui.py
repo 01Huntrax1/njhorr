@@ -12,13 +12,15 @@ s = s.replace('L.push([247 + 2 * i, "LFO " + (i + 1) + " Wave", 0, 6, 0,', 'L.pu
 rows = []
 for i in range(10):
     for j, key, arr, label, short, lo, hi, init, unit, kind, labels in L2:
-        lab = json.dumps(labels) if labels else ("LFO_STEPS" if key == "steps" else "null")
+        lab = json.dumps(labels) if isinstance(labels, list) else {"steps": "LFO_STEPS", "oct": "LFO_OCT", "semi": "LFO_SEMI"}.get(key, "null")
         rows.append('    L.push([%d, "LFO %d %s", %s, %s, %s, %s, %s, %s, 1, %s, null]);' % (lid(i, j), i + 1, label, lo, hi, init, json.dumps(unit), json.dumps(kind), lab, json.dumps(short)))
 blk = "    // LFO2-BEGIN\n" + "\n".join(rows) + "\n    // LFO2-END\n"
 s = re.sub(r"    // LFO2-BEGIN\n.*?    // LFO2-END\n", "", s, flags=re.S)
 anchor = "    // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar\n"
 assert s.count(anchor) == 1
 s = s.replace(anchor, blk + anchor)
+if "const LFO_OCT" not in s:
+    s = s.replace("const MOD_WAVES = ", 'const LFO_OCT = ["-4 oct", "-3 oct", "-2 oct", "-1 oct", "0", "+1 oct", "+2 oct", "+3 oct", "+4 oct"];\nconst LFO_SEMI = Array.from({ length: 25 }, (_, k) => (k - 12 > 0 ? "+" : "") + (k - 12) + " st");\nconst MOD_WAVES = ', 1)
 if "const LFO_STEPS" not in s:
     s = s.replace("const MOD_WAVES = ", 'const LFO_STEPS = ["Off", "Off"].concat(Array.from({ length: 31 }, (_, k) => String(k + 2)));\nconst MOD_WAVES = ', 1)
 open(P, "w").write(s); print("ok")

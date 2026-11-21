@@ -8,7 +8,8 @@ namespace njo::lfo2
     inline int key (const char* name)
     {
         if (std::string_view (name) == "key") return 0;
-        if (std::string_view (name) == "ratio") return 1;
+        if (std::string_view (name) == "oct") return 10;
+        if (std::string_view (name) == "semi") return 11;
         if (std::string_view (name) == "fine") return 2;
         if (std::string_view (name) == "skew") return 3;
         if (std::string_view (name) == "steps") return 4;

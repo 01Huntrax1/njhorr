@@ -12,7 +12,8 @@ BASE, STRIDE = 13000, 16
 # j, key, array, label, short, min, max, init, unit, kind, labels
 L2 = [
  (0, "key",    "mLfoKey",    "Key Follow", "Key",    0, 1,   0.0, "",   "btn", ["Key Off", "Key On"]),
- (1, "ratio",  "mLfoRatio",  "Key Ratio",  "Ratio",  0.25, 16, 1.0, "x", "sld", None),
+ (10, "oct",   "mLfoOct",    "Key Octave", "Octave", 0, 8,   4.0, "",   "sel", "OCT"),
+ (11, "semi",  "mLfoSemi",   "Key Semi",   "Semi",   0, 24,  12.0, "",  "sel", "SEMI"),
  (2, "fine",   "mLfoFine",   "Key Fine",   "Fine",   -100, 100, 0.0, "ct", "sld", None),
  (3, "skew",   "mLfoSkew",   "Skew",       "Skew",   -1, 1,  0.0, "",   "sld", None),
  (4, "steps",  "mLfoSteps",  "Steps",      "Steps",  0, 32,  0.0, "",   "sel", None),
@@ -117,25 +118,42 @@ CODE = r'''    // LFO2-BEGIN
         return lfoTabRead (m, p, wrapEnd);
     }
 
-    // Output of LFO m at phase p; wave 7 = wavetable (Position scans sine, triangle, saw, square, drawn)
+    // frame fr of the wavetable of LFO m at phase p (always looping; linear or cubic)
+    float lfoWtRead (int m, int fr, float p)
+    {
+        float pos = clamp (p, 0.0f, 1.0f) * 256.0f;
+        int   i0  = int (pos) & 255;
+        float f   = pos - float (int (pos));
+        int   b   = ((m * 16 + fr) * 256);
+        float y0  = lfoWt.at (b + i0);
+        float y1  = lfoWt.at (b + ((i0 + 1) & 255));
+
+        if (mLfoCubic.at (m) < 0.5f)
+            return y0 + (y1 - y0) * f;
+
+        float ym = lfoWt.at (b + ((i0 + 255) & 255));
+        float y2 = lfoWt.at (b + ((i0 + 2) & 255));
+        return clamp (y0 + 0.5f * f * (y1 - ym + f * (2.0f * ym - 5.0f * y0 + 4.0f * y1 - y2 + f * (3.0f * (y0 - y1) + y2 - ym))), -1.0f, 1.0f);
+    }
+
+    // Output of LFO m at phase p; wave 7 = the editable wavetable (up to 16 frames of 256 points, Position scans the frames)
     float lfoWaveVal (int m, float p, float sh, bool wrapEnd, float dp)
     {
         int w = int (mLfoWave.at (m) + 0.5f);
 
         if (w == 7)
         {
-            float fp = clamp (mLfoTpos.at (m), 0.0f, 1.0f) * 4.0f;
-            int   fa = min (int (fp), 3);
+            int   n  = clamp (lfoWtN.at (m), 1, 16);
+            float fp = clamp (mLfoTpos.at (m), 0.0f, 1.0f) * float (n - 1);
+            int   fa = min (int (fp), n - 1);
+            int   fb = min (fa + 1, n - 1);
             float ff = fp - float (fa);
-            int   wa = 0;
-            int   wb = 1;
+            float a  = lfoWtRead (m, fa, p);
 
-            if (fa == 1) { wa = 1; wb = 4; }
-            if (fa == 2) { wa = 4; wb = 2; }
-            if (fa == 3) { wa = 2; wb = 6; }
+            if (fb == fa || ff <= 0.0f)
+                return a;
 
-            float a = lfoBasic (wa, m, p, sh, wrapEnd, dp);
-            return a + (lfoBasic (wb, m, p, sh, wrapEnd, dp) - a) * ff;
+            return a + (lfoWtRead (m, fb, p) - a) * ff;
         }
 
         return lfoBasic (w, m, p, sh, wrapEnd, dp);
@@ -231,7 +249,7 @@ CODE = r'''    // LFO2-BEGIN
             float   rate    = lfoRateHz (m);
 
             if (keyed)
-                rate = clamp (voices.at (vi).curFreq * mLfoRatio.at (m) * float (pow (2.0f, mLfoFine.at (m) / 1200.0f)), 0.001f, float (processor.frequency) * 0.45f);
+                rate = clamp (voices.at (vi).curFreq * float (pow (2.0f, mLfoOct.at (m) - 4.0f + (mLfoSemi.at (m) - 12.0f) / 12.0f + mLfoFine.at (m) / 1200.0f)), 0.001f, float (processor.frequency) * 0.45f);
 
             rate *= 1.0f + mLfoJit.at (m) * 0.5f * voices.at (vi).lfoJ.at (m);
 
@@ -314,10 +332,14 @@ else:
     a = s.index("    // Reads the drawn shape of LFO m at phase p")
     b = s.index("    // Moves the per-sample maxima of each mod envelope")
     s = s[:a] + CODE + s[b:]
-# state
-rep("    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n",
-    "    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs\n    float[16]   mLfoJ;        // LFO2: jitter draw of the current cycle (global LFOs)\n" +
-    "".join("    float[16]   %s;\n" % a for a in sorted({q[2] for q in L2})))
+# state (regenerated block; older versions declared the arrays one by one)
+for nm in [q[2] for q in L2] + ["mLfoRatio", "mLfoJ"]:
+    s = re.sub(r"    float\[16\]   %s;[^\n]*\n" % nm, "", s)
+block("STATE", "    float[16]   mLfoJ;        // LFO2: jitter draw of the current cycle (global LFOs)\n    float[65536] lfoWt;       // LFO2: wavetable LFO, (lfo * 16 + frame) * 256 + point\n    int[16]     lfoWtN;       // LFO2: number of frames of every wavetable LFO\n" + "".join("    float[16]   %s;\n" % a for a in sorted({q[2] for q in L2})), r"^    float\[16\]   mLfoSm;")
+# wavetable LFO transport: chunk = one frame of one LFO
+block("TYPES", "    struct LfoTableChunk\n    {\n        int        lfo;\n        int        frame;\n        int        frames;\n        float[256] data;\n    }\n\n", r"^    struct LfoShapeChunk\n")
+block("EP", "    // Wavetable LFO: one frame (256 points) of one LFO per event; frames = number of frames of that LFO\n    input event LfoTableChunk lfoTableLoad;\n\n", r"^    input event LfoShapeChunk lfoShapeLoad;\n")
+block("EV", "    event lfoTableLoad (LfoTableChunk c)\n    {\n        int m = clamp (c.lfo, 0, 9);\n        int f = clamp (c.frame, 0, 15);\n        lfoWtN.at (m) = clamp (c.frames, 1, 16);\n\n        for (int i = 0; i < 256; ++i)\n            lfoWt.at ((m * 16 + f) * 256 + i) = clamp (c.data.at (i), -1.0f, 1.0f);\n    }\n\n", r"^    event lfoShapeLoad \(LfoShapeChunk c\)")
 rep("        float[16] lfoSm;      // per-voice smoothing state\n", "        float[16] lfoSm;      // per-voice smoothing state\n        float[16] lfoJ;       // LFO2: per-voice jitter draw\n")
 rep("            voices.at (v).lfoSh.at (lm)  = nextNoise();\n", "            voices.at (v).lfoSh.at (lm)  = nextNoise();\n            voices.at (v).lfoJ.at (lm)   = nextNoise();\n")
 # routing: per-voice when Trig / Env / Key
@@ -331,7 +353,19 @@ hand = "".join("    event param%d (float v) { %s.at (%d) = v; }\n" % (lid(i, q[0
 init = "".join("            %s.at (il) = %sf;\n" % (a, repr(float(v))) for a, v in sorted({(q[2], q[7]) for q in L2}))
 block("DECL", decl, r"^    input event float param1600 ")
 block("HAND", hand, r"^    event param1600 ")
-block("INIT", "        for (int il = 0; il < 10; ++il)\n        {\n" + init + "        }\n", r"^        fxGateInit\(\);\n", "        ")
+block("INIT", "        for (int il = 0; il < 10; ++il)\n        {\n" + init + """            lfoWtN.at (il) = 5;
+
+            for (int ip = 0; ip < 256; ++ip)
+            {
+                float fph = float (ip) / 256.0f;
+                int   wb  = il * 4096 + ip;
+                lfoWt.at (wb)        = float (sin (float (twoPi) * fph));
+                lfoWt.at (wb + 256)  = 4.0f * abs (fph - 0.5f) - 1.0f;
+                lfoWt.at (wb + 512)  = 2.0f * fph - 1.0f;
+                lfoWt.at (wb + 768)  = fph < 0.5f ? 1.0f : -1.0f;
+                lfoWt.at (wb + 1024) = fph < 0.25f ? 1.0f : -1.0f;
+            }
+        }\n""", r"^        fxGateInit\(\);\n", "        ")
 open(PATCH, "w").write(s)
 hdr = os.path.join(os.path.dirname(os.path.abspath(PATCH)), "..", "native_ui", "NjoLfo2.h")
 with open(hdr, "w") as f:

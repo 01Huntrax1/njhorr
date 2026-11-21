@@ -266,6 +266,8 @@ const SEQ_SHAPES = ["Flat", "Ramp down", "Ramp up", "Triangle", "Half sine", "Ga
 const SYNC_DIVS = ["8/1", "4/1", "2/1", "1/1", "1/2.", "1/2", "1/2T", "1/4.", "1/4", "1/4T", "1/8.", "1/8", "1/8T", "1/16.", "1/16", "1/16T", "1/32", "1/32T"];
 
 const LFO_STEPS = ["Off", "Off"].concat(Array.from({ length: 31 }, (_, k) => String(k + 2)));
+const LFO_OCT = ["-4 oct", "-3 oct", "-2 oct", "-1 oct", "0", "+1 oct", "+2 oct", "+3 oct", "+4 oct"];
+const LFO_SEMI = Array.from({ length: 25 }, (_, k) => (k - 12 > 0 ? "+" : "") + (k - 12) + " st");
 const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn", "Drawn", "Table"];
 const MOD_SRC = ["Off"].concat(
     Array.from({ length: 10 }, (_, i) => "LFO " + (i + 1)),
@@ -3815,7 +3817,8 @@ const SPECS = (() => {
     // ENV2-END
     // LFO2-BEGIN
     L.push([13000, "LFO 1 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13001, "LFO 1 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13010, "LFO 1 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13011, "LFO 1 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13002, "LFO 1 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13003, "LFO 1 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13004, "LFO 1 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3825,7 +3828,8 @@ const SPECS = (() => {
     L.push([13008, "LFO 1 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13009, "LFO 1 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13016, "LFO 2 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13017, "LFO 2 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13026, "LFO 2 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13027, "LFO 2 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13018, "LFO 2 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13019, "LFO 2 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13020, "LFO 2 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3835,7 +3839,8 @@ const SPECS = (() => {
     L.push([13024, "LFO 2 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13025, "LFO 2 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13032, "LFO 3 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13033, "LFO 3 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13042, "LFO 3 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13043, "LFO 3 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13034, "LFO 3 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13035, "LFO 3 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13036, "LFO 3 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3845,7 +3850,8 @@ const SPECS = (() => {
     L.push([13040, "LFO 3 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13041, "LFO 3 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13048, "LFO 4 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13049, "LFO 4 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13058, "LFO 4 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13059, "LFO 4 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13050, "LFO 4 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13051, "LFO 4 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13052, "LFO 4 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3855,7 +3861,8 @@ const SPECS = (() => {
     L.push([13056, "LFO 4 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13057, "LFO 4 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13064, "LFO 5 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13065, "LFO 5 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13074, "LFO 5 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13075, "LFO 5 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13066, "LFO 5 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13067, "LFO 5 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13068, "LFO 5 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3865,7 +3872,8 @@ const SPECS = (() => {
     L.push([13072, "LFO 5 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13073, "LFO 5 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13080, "LFO 6 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13081, "LFO 6 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13090, "LFO 6 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13091, "LFO 6 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13082, "LFO 6 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13083, "LFO 6 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13084, "LFO 6 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3875,7 +3883,8 @@ const SPECS = (() => {
     L.push([13088, "LFO 6 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13089, "LFO 6 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13096, "LFO 7 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13097, "LFO 7 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13106, "LFO 7 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13107, "LFO 7 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13098, "LFO 7 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13099, "LFO 7 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13100, "LFO 7 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3885,7 +3894,8 @@ const SPECS = (() => {
     L.push([13104, "LFO 7 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13105, "LFO 7 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13112, "LFO 8 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13113, "LFO 8 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13122, "LFO 8 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13123, "LFO 8 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13114, "LFO 8 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13115, "LFO 8 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13116, "LFO 8 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3895,7 +3905,8 @@ const SPECS = (() => {
     L.push([13120, "LFO 8 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13121, "LFO 8 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13128, "LFO 9 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13129, "LFO 9 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13138, "LFO 9 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13139, "LFO 9 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13130, "LFO 9 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13131, "LFO 9 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13132, "LFO 9 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
@@ -3905,7 +3916,8 @@ const SPECS = (() => {
     L.push([13136, "LFO 9 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
     L.push([13137, "LFO 9 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
     L.push([13144, "LFO 10 Key Follow", 0, 1, 0.0, "", "btn", ["Key Off", "Key On"], 1, "Key", null]);
-    L.push([13145, "LFO 10 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13154, "LFO 10 Key Octave", 0, 8, 4.0, "", "sel", LFO_OCT, 1, "Octave", null]);
+    L.push([13155, "LFO 10 Key Semi", 0, 24, 12.0, "", "sel", LFO_SEMI, 1, "Semi", null]);
     L.push([13146, "LFO 10 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
     L.push([13147, "LFO 10 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
     L.push([13148, "LFO 10 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);

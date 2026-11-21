@@ -2,6 +2,8 @@
 #include <random>
 #include "ModUi.h"
 #include "../NjoEnv2.h"
+#include "../NjoLfoTable.h"
+#include "LfoTableEditor.h"
 #include "../NjoLfo2.h"
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
@@ -340,16 +342,18 @@ namespace njo
             }
             const int li = lfo();
             auto x2 = [&] (int j) { return ctx.get (lfo2::lfoId (li, j)); };
-            auto base = [&] (int ww, float p) { return ww == LFO_DRAWN ? LfoShapes::sampleAt (shapes (ctx).points (li), p) : builtinAt (ww, p); };
             auto fn = [&] (float p)
             {
                 float sk = x2 (3); if (std::abs (sk) > 0.001f) p = std::pow (p, std::pow (2.0f, sk * 2.0f));
                 float v;
                 if (w == LFO_TABLE)
                 {
-                    float fp = juce::jlimit (0.0f, 1.0f, x2 (8)) * 4.0f; int fa = juce::jmin ((int) fp, 3); float ff = fp - (float) fa;
-                    static const int wa[] = { 0, 1, 4, 2 }, wb[] = { 1, 4, 2, LFO_DRAWN };
-                    float a = base (wa[fa], p); v = a + (base (wb[fa], p) - a) * ff;
+                    if (! ctx.lfoTables) ctx.lfoTables = std::make_shared<LfoTables> (ctx);
+                    auto& T = *ctx.lfoTables; int nf = T.count (li);
+                    float fp = juce::jlimit (0.0f, 1.0f, x2 (8)) * (float) (nf - 1); int fa = juce::jmin ((int) fp, nf - 1), fb = juce::jmin (fa + 1, nf - 1); float ff = fp - (float) fa;
+                    float ph = juce::jlimit (0.0f, 1.0f, p) * 256.0f; int i0 = (int) ph & 255, i1 = (i0 + 1) & 255; float fr = ph - std::floor (ph);
+                    auto rd = [&] (int f) { auto& d = T.frame (li, f); return d[(size_t) i0] + (d[(size_t) i1] - d[(size_t) i0]) * fr; };
+                    float a = rd (fa); v = fb == fa ? a : a + (rd (fb) - a) * ff;
                 }
                 else v = P ? LfoShapes::sampleAt (*P, p) : builtinAt (w, p);
                 float n = x2 (4);
@@ -486,7 +490,8 @@ namespace njo
                 g.setColour (ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds(), juce::Justification::centred);
             }
             void mouseDown (const juce::MouseEvent&) override { if (click) click(); }
-        } presetBtn;
+        } presetBtn, editTab;
+        std::unique_ptr<LfoTableEditor> tabEd;
 
         // ---- user LFO presets: <root>/LfoPresets/<name>.njolfo (every parameter of one LFO + its drawn shape)
         juce::File presetDir() const { return ctx.be.rootFolder().getChildFile ("LfoPresets"); }
@@ -606,11 +611,14 @@ namespace njo
                 d->getIndex = [this, dp] { return juce::roundToInt (ctx.get (dp)); };
                 d->setIndex = [this, dp] (int v) { ctx.begin (dp); ctx.set (dp, (float) v); ctx.end (dp); };
                 owner.addChildComponent (d);
-                static const int xk[8] = { 3, 4, 5, 6, 7, 8, 1, 2 };
+                static const int xk[9] = { 3, 4, 5, 6, 7, 8, 10, 11, 2 };
                 for (int k : xk) { auto* w = lfoX.add (makeWidget (ctx, lfo2::lfoId (i, k), true).release()); w->setLook (true); owner.addChildComponent (w); }
                 auto* kb = static_cast<ButtonsWidget*> (keyBtn.add (makeWidget (ctx, lfo2::lfoId (i, 0), false).release())); kb->setShowLabel (false); owner.addChildComponent (kb);
                 auto* ib = static_cast<ButtonsWidget*> (intBtn.add (makeWidget (ctx, lfo2::lfoId (i, 9), false).release())); ib->setShowLabel (false); owner.addChildComponent (ib);
             }
+            tabEd = std::make_unique<LfoTableEditor> (ctx); owner.addChildComponent (*tabEd);
+            editTab.text = "EDIT TABLE"; editTab.click = [this] { tabEd->setBounds (owner.getLocalBounds()); tabEd->open(); tabEd->toFront (false); }; owner.addChildComponent (editTab);
+            tabEd->onClose = [this] { refreshAll(); };
             presetBtn.text = "LFO PRESETS"; presetBtn.click = [this] { presetMenu(); }; owner.addAndMakeVisible (presetBtn);
             tableBtn.ctx = &ctx; tableBtn.changed = [this] { for (auto* a : gAll) a->refreshAll(); };
             owner.addAndMakeVisible (tableBtn);
@@ -667,12 +675,13 @@ namespace njo
                 modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (full && i == li);
                 divSel[i]->setVisible (i == li);
                 keyBtn[i]->setVisible (i == li); intBtn[i]->setVisible (i == li);
-                for (int k = 0; k < 8; ++k) lfoX[i * 8 + k]->setVisible (i == li);
-                { bool key = ctx.get (lfo2::lfoId (i, 0)) > 0.5f; lfoX[i * 8 + 6]->setAlpha (key ? 1.0f : 0.35f); lfoX[i * 8 + 7]->setAlpha (key ? 1.0f : 0.35f);
+                for (int k = 0; k < 9; ++k) lfoX[i * 9 + k]->setVisible (i == li);
+                { bool key = ctx.get (lfo2::lfoId (i, 0)) > 0.5f; for (int kk = 6; kk < 9; ++kk) lfoX[i * 9 + kk]->setAlpha (key ? 1.0f : 0.35f);
                   lfoKnobs[i * 5]->setAlpha (key ? 0.35f : (ctx.get (lfoSyncParam (i)) > 0.5f ? 0.45f : 1.0f)); }
                 bool sync = ctx.get (lfoSyncParam (i)) > 0.5f;
                 divSel[i]->dimmed = ! sync; divSel[i]->repaint();
             }
+            editTab.setVisible (juce::roundToInt (ctx.get (lfoWaveParam (li))) == LFO_TABLE);
             envCv.repaint(); lfoCv.repaint(); shape.repaint(); grid.repaint(); owner.repaint();
         }
     };
@@ -763,10 +772,12 @@ namespace njo
             }
             {   // extra knobs of the selected LFO
                 auto kr = c.removeFromBottom (46); c.removeFromBottom (3);
-                int kw = kr.getWidth() / 8;
-                for (int i = 0; i < 10; ++i) for (int k = 0; k < 8; ++k) I.lfoX[i * 8 + k]->setBounds (kr.getX() + k * kw, kr.getY(), kw, kr.getHeight());
+                int kw = kr.getWidth() / 9;
+                for (int i = 0; i < 10; ++i) for (int k = 0; k < 9; ++k) I.lfoX[i * 9 + k]->setBounds (kr.getX() + k * kw, kr.getY(), kw, kr.getHeight());
             }
             I.lfoCv.setBounds (c.withTrimmedBottom (2));
+            I.editTab.setBounds (I.lfoCv.getRight() - 96, I.lfoCv.getY() + 6, 90, 20);
+            if (I.tabEd) I.tabEd->setBounds (getLocalBounds());
         }
         // control column
         {

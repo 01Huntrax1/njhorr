@@ -545,6 +545,11 @@ processor Eisenpuls_Synth
 
     // Drawn LFO shapes: one 256-point table per LFO (-1..1)
     input event InsImportChunk insImport;
+    // LFO2-EP-BEGIN
+    // Wavetable LFO: one frame (256 points) of one LFO per event; frames = number of frames of that LFO
+    input event LfoTableChunk lfoTableLoad;
+
+    // LFO2-EP-END
     input event LfoShapeChunk lfoShapeLoad;
     input event BankChunk wtBankLoad;
     input event LfoShapeChunk frqShapeLoad;   // drawn curve of a Freq modulator (256 points, 0..1)
@@ -6578,7 +6583,8 @@ processor Eisenpuls_Synth
     // ENV2-DECL-END
     // LFO2-DECL-BEGIN
     input event float param13000 [[ name: "LFO 1 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13001 [[ name: "LFO 1 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13010 [[ name: "LFO 1 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13011 [[ name: "LFO 1 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13002 [[ name: "LFO 1 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13003 [[ name: "LFO 1 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13004 [[ name: "LFO 1 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6588,7 +6594,8 @@ processor Eisenpuls_Synth
     input event float param13008 [[ name: "LFO 1 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13009 [[ name: "LFO 1 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13016 [[ name: "LFO 2 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13017 [[ name: "LFO 2 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13026 [[ name: "LFO 2 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13027 [[ name: "LFO 2 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13018 [[ name: "LFO 2 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13019 [[ name: "LFO 2 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13020 [[ name: "LFO 2 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6598,7 +6605,8 @@ processor Eisenpuls_Synth
     input event float param13024 [[ name: "LFO 2 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13025 [[ name: "LFO 2 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13032 [[ name: "LFO 3 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13033 [[ name: "LFO 3 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13042 [[ name: "LFO 3 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13043 [[ name: "LFO 3 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13034 [[ name: "LFO 3 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13035 [[ name: "LFO 3 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13036 [[ name: "LFO 3 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6608,7 +6616,8 @@ processor Eisenpuls_Synth
     input event float param13040 [[ name: "LFO 3 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13041 [[ name: "LFO 3 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13048 [[ name: "LFO 4 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13049 [[ name: "LFO 4 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13058 [[ name: "LFO 4 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13059 [[ name: "LFO 4 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13050 [[ name: "LFO 4 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13051 [[ name: "LFO 4 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13052 [[ name: "LFO 4 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6618,7 +6627,8 @@ processor Eisenpuls_Synth
     input event float param13056 [[ name: "LFO 4 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13057 [[ name: "LFO 4 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13064 [[ name: "LFO 5 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13065 [[ name: "LFO 5 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13074 [[ name: "LFO 5 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13075 [[ name: "LFO 5 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13066 [[ name: "LFO 5 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13067 [[ name: "LFO 5 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13068 [[ name: "LFO 5 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6628,7 +6638,8 @@ processor Eisenpuls_Synth
     input event float param13072 [[ name: "LFO 5 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13073 [[ name: "LFO 5 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13080 [[ name: "LFO 6 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13081 [[ name: "LFO 6 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13090 [[ name: "LFO 6 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13091 [[ name: "LFO 6 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13082 [[ name: "LFO 6 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13083 [[ name: "LFO 6 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13084 [[ name: "LFO 6 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6638,7 +6649,8 @@ processor Eisenpuls_Synth
     input event float param13088 [[ name: "LFO 6 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13089 [[ name: "LFO 6 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13096 [[ name: "LFO 7 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13097 [[ name: "LFO 7 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13106 [[ name: "LFO 7 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13107 [[ name: "LFO 7 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13098 [[ name: "LFO 7 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13099 [[ name: "LFO 7 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13100 [[ name: "LFO 7 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6648,7 +6660,8 @@ processor Eisenpuls_Synth
     input event float param13104 [[ name: "LFO 7 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13105 [[ name: "LFO 7 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13112 [[ name: "LFO 8 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13113 [[ name: "LFO 8 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13122 [[ name: "LFO 8 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13123 [[ name: "LFO 8 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13114 [[ name: "LFO 8 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13115 [[ name: "LFO 8 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13116 [[ name: "LFO 8 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6658,7 +6671,8 @@ processor Eisenpuls_Synth
     input event float param13120 [[ name: "LFO 8 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13121 [[ name: "LFO 8 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13128 [[ name: "LFO 9 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13129 [[ name: "LFO 9 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13138 [[ name: "LFO 9 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13139 [[ name: "LFO 9 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13130 [[ name: "LFO 9 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13131 [[ name: "LFO 9 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13132 [[ name: "LFO 9 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -6668,7 +6682,8 @@ processor Eisenpuls_Synth
     input event float param13136 [[ name: "LFO 9 Table Pos", min: 0.0, max: 1.0, init: 0.0 ]];
     input event float param13137 [[ name: "LFO 9 Interp", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];
     input event float param13144 [[ name: "LFO 10 Key Follow", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param13145 [[ name: "LFO 10 Key Ratio", min: 0.25, max: 16.0, init: 1.0 ]];
+    input event float param13154 [[ name: "LFO 10 Key Octave", min: 0.0, max: 8.0, init: 4.0, step: 1.0 ]];
+    input event float param13155 [[ name: "LFO 10 Key Semi", min: 0.0, max: 24.0, init: 12.0, step: 1.0 ]];
     input event float param13146 [[ name: "LFO 10 Key Fine", min: -100.0, max: 100.0, init: 0.0 ]];
     input event float param13147 [[ name: "LFO 10 Skew", min: -1.0, max: 1.0, init: 0.0 ]];
     input event float param13148 [[ name: "LFO 10 Steps", min: 0.0, max: 32.0, init: 0.0, step: 1.0 ]];
@@ -8724,6 +8739,16 @@ processor Eisenpuls_Synth
         float[256] data;
     }
 
+    // LFO2-TYPES-BEGIN
+    struct LfoTableChunk
+    {
+        int        lfo;
+        int        frame;
+        int        frames;
+        float[256] data;
+    }
+
+    // LFO2-TYPES-END
     struct LfoShapeChunk
     {
         int        lfo;
@@ -8932,18 +8957,23 @@ processor Eisenpuls_Synth
     float[16]   mLfoRise;  // padded to a power of two (cheap index wrap)
     float[16]   mLfoSmooth;  // padded to a power of two (cheap index wrap)
     float[16]   mLfoStart;  // padded to a power of two (cheap index wrap)
-    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs
+    // LFO2-STATE-BEGIN
     float[16]   mLfoJ;        // LFO2: jitter draw of the current cycle (global LFOs)
+    float[65536] lfoWt;       // LFO2: wavetable LFO, (lfo * 16 + frame) * 256 + point
+    int[16]     lfoWtN;       // LFO2: number of frames of every wavetable LFO
     float[16]   mLfoCubic;
     float[16]   mLfoDepth;
     float[16]   mLfoFine;
     float[16]   mLfoJit;
     float[16]   mLfoKey;
-    float[16]   mLfoRatio;
+    float[16]   mLfoOct;
+    float[16]   mLfoSemi;
     float[16]   mLfoSkew;
     float[16]   mLfoSpread;
     float[16]   mLfoSteps;
     float[16]   mLfoTpos;
+    // LFO2-STATE-END
+    float[16]   mLfoSm;       // smoothing state of the free-running (global) LFOs
     float[2560] lfoTab;       // drawn shapes, 256 points per LFO
     int         lastVoice = 0;
 
@@ -16228,7 +16258,8 @@ processor Eisenpuls_Synth
     // ENV2-HAND-END
     // LFO2-HAND-BEGIN
     event param13000 (float v) { mLfoKey.at (0) = v; }
-    event param13001 (float v) { mLfoRatio.at (0) = v; }
+    event param13010 (float v) { mLfoOct.at (0) = v; }
+    event param13011 (float v) { mLfoSemi.at (0) = v; }
     event param13002 (float v) { mLfoFine.at (0) = v; }
     event param13003 (float v) { mLfoSkew.at (0) = v; }
     event param13004 (float v) { mLfoSteps.at (0) = v; }
@@ -16238,7 +16269,8 @@ processor Eisenpuls_Synth
     event param13008 (float v) { mLfoTpos.at (0) = v; }
     event param13009 (float v) { mLfoCubic.at (0) = v; }
     event param13016 (float v) { mLfoKey.at (1) = v; }
-    event param13017 (float v) { mLfoRatio.at (1) = v; }
+    event param13026 (float v) { mLfoOct.at (1) = v; }
+    event param13027 (float v) { mLfoSemi.at (1) = v; }
     event param13018 (float v) { mLfoFine.at (1) = v; }
     event param13019 (float v) { mLfoSkew.at (1) = v; }
     event param13020 (float v) { mLfoSteps.at (1) = v; }
@@ -16248,7 +16280,8 @@ processor Eisenpuls_Synth
     event param13024 (float v) { mLfoTpos.at (1) = v; }
     event param13025 (float v) { mLfoCubic.at (1) = v; }
     event param13032 (float v) { mLfoKey.at (2) = v; }
-    event param13033 (float v) { mLfoRatio.at (2) = v; }
+    event param13042 (float v) { mLfoOct.at (2) = v; }
+    event param13043 (float v) { mLfoSemi.at (2) = v; }
     event param13034 (float v) { mLfoFine.at (2) = v; }
     event param13035 (float v) { mLfoSkew.at (2) = v; }
     event param13036 (float v) { mLfoSteps.at (2) = v; }
@@ -16258,7 +16291,8 @@ processor Eisenpuls_Synth
     event param13040 (float v) { mLfoTpos.at (2) = v; }
     event param13041 (float v) { mLfoCubic.at (2) = v; }
     event param13048 (float v) { mLfoKey.at (3) = v; }
-    event param13049 (float v) { mLfoRatio.at (3) = v; }
+    event param13058 (float v) { mLfoOct.at (3) = v; }
+    event param13059 (float v) { mLfoSemi.at (3) = v; }
     event param13050 (float v) { mLfoFine.at (3) = v; }
     event param13051 (float v) { mLfoSkew.at (3) = v; }
     event param13052 (float v) { mLfoSteps.at (3) = v; }
@@ -16268,7 +16302,8 @@ processor Eisenpuls_Synth
     event param13056 (float v) { mLfoTpos.at (3) = v; }
     event param13057 (float v) { mLfoCubic.at (3) = v; }
     event param13064 (float v) { mLfoKey.at (4) = v; }
-    event param13065 (float v) { mLfoRatio.at (4) = v; }
+    event param13074 (float v) { mLfoOct.at (4) = v; }
+    event param13075 (float v) { mLfoSemi.at (4) = v; }
     event param13066 (float v) { mLfoFine.at (4) = v; }
     event param13067 (float v) { mLfoSkew.at (4) = v; }
     event param13068 (float v) { mLfoSteps.at (4) = v; }
@@ -16278,7 +16313,8 @@ processor Eisenpuls_Synth
     event param13072 (float v) { mLfoTpos.at (4) = v; }
     event param13073 (float v) { mLfoCubic.at (4) = v; }
     event param13080 (float v) { mLfoKey.at (5) = v; }
-    event param13081 (float v) { mLfoRatio.at (5) = v; }
+    event param13090 (float v) { mLfoOct.at (5) = v; }
+    event param13091 (float v) { mLfoSemi.at (5) = v; }
     event param13082 (float v) { mLfoFine.at (5) = v; }
     event param13083 (float v) { mLfoSkew.at (5) = v; }
     event param13084 (float v) { mLfoSteps.at (5) = v; }
@@ -16288,7 +16324,8 @@ processor Eisenpuls_Synth
     event param13088 (float v) { mLfoTpos.at (5) = v; }
     event param13089 (float v) { mLfoCubic.at (5) = v; }
     event param13096 (float v) { mLfoKey.at (6) = v; }
-    event param13097 (float v) { mLfoRatio.at (6) = v; }
+    event param13106 (float v) { mLfoOct.at (6) = v; }
+    event param13107 (float v) { mLfoSemi.at (6) = v; }
     event param13098 (float v) { mLfoFine.at (6) = v; }
     event param13099 (float v) { mLfoSkew.at (6) = v; }
     event param13100 (float v) { mLfoSteps.at (6) = v; }
@@ -16298,7 +16335,8 @@ processor Eisenpuls_Synth
     event param13104 (float v) { mLfoTpos.at (6) = v; }
     event param13105 (float v) { mLfoCubic.at (6) = v; }
     event param13112 (float v) { mLfoKey.at (7) = v; }
-    event param13113 (float v) { mLfoRatio.at (7) = v; }
+    event param13122 (float v) { mLfoOct.at (7) = v; }
+    event param13123 (float v) { mLfoSemi.at (7) = v; }
     event param13114 (float v) { mLfoFine.at (7) = v; }
     event param13115 (float v) { mLfoSkew.at (7) = v; }
     event param13116 (float v) { mLfoSteps.at (7) = v; }
@@ -16308,7 +16346,8 @@ processor Eisenpuls_Synth
     event param13120 (float v) { mLfoTpos.at (7) = v; }
     event param13121 (float v) { mLfoCubic.at (7) = v; }
     event param13128 (float v) { mLfoKey.at (8) = v; }
-    event param13129 (float v) { mLfoRatio.at (8) = v; }
+    event param13138 (float v) { mLfoOct.at (8) = v; }
+    event param13139 (float v) { mLfoSemi.at (8) = v; }
     event param13130 (float v) { mLfoFine.at (8) = v; }
     event param13131 (float v) { mLfoSkew.at (8) = v; }
     event param13132 (float v) { mLfoSteps.at (8) = v; }
@@ -16318,7 +16357,8 @@ processor Eisenpuls_Synth
     event param13136 (float v) { mLfoTpos.at (8) = v; }
     event param13137 (float v) { mLfoCubic.at (8) = v; }
     event param13144 (float v) { mLfoKey.at (9) = v; }
-    event param13145 (float v) { mLfoRatio.at (9) = v; }
+    event param13154 (float v) { mLfoOct.at (9) = v; }
+    event param13155 (float v) { mLfoSemi.at (9) = v; }
     event param13146 (float v) { mLfoFine.at (9) = v; }
     event param13147 (float v) { mLfoSkew.at (9) = v; }
     event param13148 (float v) { mLfoSteps.at (9) = v; }
@@ -17179,6 +17219,18 @@ processor Eisenpuls_Synth
     event param930    (float v) { mLfoSmooth.at (9) = v; }
     event param931    (float v) { mLfoStart.at (9) = v; }
 
+    // LFO2-EV-BEGIN
+    event lfoTableLoad (LfoTableChunk c)
+    {
+        int m = clamp (c.lfo, 0, 9);
+        int f = clamp (c.frame, 0, 15);
+        lfoWtN.at (m) = clamp (c.frames, 1, 16);
+
+        for (int i = 0; i < 256; ++i)
+            lfoWt.at ((m * 16 + f) * 256 + i) = clamp (c.data.at (i), -1.0f, 1.0f);
+    }
+
+    // LFO2-EV-END
     event lfoShapeLoad (LfoShapeChunk c)
     {
         int m = clamp (c.lfo, 0, 9);
@@ -17350,11 +17402,24 @@ processor Eisenpuls_Synth
             mLfoFine.at (il) = 0.0f;
             mLfoJit.at (il) = 0.0f;
             mLfoKey.at (il) = 0.0f;
-            mLfoRatio.at (il) = 1.0f;
+            mLfoOct.at (il) = 4.0f;
+            mLfoSemi.at (il) = 12.0f;
             mLfoSkew.at (il) = 0.0f;
             mLfoSpread.at (il) = 0.0f;
             mLfoSteps.at (il) = 0.0f;
             mLfoTpos.at (il) = 0.0f;
+            lfoWtN.at (il) = 5;
+
+            for (int ip = 0; ip < 256; ++ip)
+            {
+                float fph = float (ip) / 256.0f;
+                int   wb  = il * 4096 + ip;
+                lfoWt.at (wb)        = float (sin (float (twoPi) * fph));
+                lfoWt.at (wb + 256)  = 4.0f * abs (fph - 0.5f) - 1.0f;
+                lfoWt.at (wb + 512)  = 2.0f * fph - 1.0f;
+                lfoWt.at (wb + 768)  = fph < 0.5f ? 1.0f : -1.0f;
+                lfoWt.at (wb + 1024) = fph < 0.25f ? 1.0f : -1.0f;
+            }
         }
         // LFO2-INIT-END
         fxGateInit();
@@ -24444,25 +24509,42 @@ processor Eisenpuls_Synth
         return lfoTabRead (m, p, wrapEnd);
     }
 
-    // Output of LFO m at phase p; wave 7 = wavetable (Position scans sine, triangle, saw, square, drawn)
+    // frame fr of the wavetable of LFO m at phase p (always looping; linear or cubic)
+    float lfoWtRead (int m, int fr, float p)
+    {
+        float pos = clamp (p, 0.0f, 1.0f) * 256.0f;
+        int   i0  = int (pos) & 255;
+        float f   = pos - float (int (pos));
+        int   b   = ((m * 16 + fr) * 256);
+        float y0  = lfoWt.at (b + i0);
+        float y1  = lfoWt.at (b + ((i0 + 1) & 255));
+
+        if (mLfoCubic.at (m) < 0.5f)
+            return y0 + (y1 - y0) * f;
+
+        float ym = lfoWt.at (b + ((i0 + 255) & 255));
+        float y2 = lfoWt.at (b + ((i0 + 2) & 255));
+        return clamp (y0 + 0.5f * f * (y1 - ym + f * (2.0f * ym - 5.0f * y0 + 4.0f * y1 - y2 + f * (3.0f * (y0 - y1) + y2 - ym))), -1.0f, 1.0f);
+    }
+
+    // Output of LFO m at phase p; wave 7 = the editable wavetable (up to 16 frames of 256 points, Position scans the frames)
     float lfoWaveVal (int m, float p, float sh, bool wrapEnd, float dp)
     {
         int w = int (mLfoWave.at (m) + 0.5f);
 
         if (w == 7)
         {
-            float fp = clamp (mLfoTpos.at (m), 0.0f, 1.0f) * 4.0f;
-            int   fa = min (int (fp), 3);
+            int   n  = clamp (lfoWtN.at (m), 1, 16);
+            float fp = clamp (mLfoTpos.at (m), 0.0f, 1.0f) * float (n - 1);
+            int   fa = min (int (fp), n - 1);
+            int   fb = min (fa + 1, n - 1);
             float ff = fp - float (fa);
-            int   wa = 0;
-            int   wb = 1;
+            float a  = lfoWtRead (m, fa, p);
 
-            if (fa == 1) { wa = 1; wb = 4; }
-            if (fa == 2) { wa = 4; wb = 2; }
-            if (fa == 3) { wa = 2; wb = 6; }
+            if (fb == fa || ff <= 0.0f)
+                return a;
 
-            float a = lfoBasic (wa, m, p, sh, wrapEnd, dp);
-            return a + (lfoBasic (wb, m, p, sh, wrapEnd, dp) - a) * ff;
+            return a + (lfoWtRead (m, fb, p) - a) * ff;
         }
 
         return lfoBasic (w, m, p, sh, wrapEnd, dp);
@@ -24558,7 +24640,7 @@ processor Eisenpuls_Synth
             float   rate    = lfoRateHz (m);
 
             if (keyed)
-                rate = clamp (voices.at (vi).curFreq * mLfoRatio.at (m) * float (pow (2.0f, mLfoFine.at (m) / 1200.0f)), 0.001f, float (processor.frequency) * 0.45f);
+                rate = clamp (voices.at (vi).curFreq * float (pow (2.0f, mLfoOct.at (m) - 4.0f + (mLfoSemi.at (m) - 12.0f) / 12.0f + mLfoFine.at (m) / 1200.0f)), 0.001f, float (processor.frequency) * 0.45f);
 
             rate *= 1.0f + mLfoJit.at (m) * 0.5f * voices.at (vi).lfoJ.at (m);
 

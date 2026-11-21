@@ -1,4 +1,5 @@
 #include "NjoEditor.h"
+#include "NjoLfoTable.h"
 #include "NjoLfo.h"
 #include "NjoFreq.h"
 
@@ -61,6 +62,7 @@ namespace njo
     {
         if (sharedMemory) memory.onStatus = [this] (const juce::String& t) { ctx.status (t); };
         ctx.lfoShapes = std::make_shared<LfoShapes> (ctx);
+        ctx.lfoTables = std::make_shared<LfoTables> (ctx);
         if (! ctx.freqShapes) ctx.freqShapes = std::make_shared<FreqShapes> (ctx);
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
         ctx.onStatus = [this] (const juce::String& t) { status = t; statusUntil = juce::Time::getMillisecondCounterHiRes() + 2500; repaint (impl->lcdRect); };
