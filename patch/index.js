@@ -265,7 +265,8 @@ const OSC_FILTER_GROUPS = FILTER_GROUPS.concat([[30, "Table"]]);
 const SEQ_SHAPES = ["Flat", "Ramp down", "Ramp up", "Triangle", "Half sine", "Gate 50%", "Gate 25%", "Decay"];   // MOD-SEQ2
 const SYNC_DIVS = ["8/1", "4/1", "2/1", "1/1", "1/2.", "1/2", "1/2T", "1/4.", "1/4", "1/4T", "1/8.", "1/8", "1/8T", "1/16.", "1/16", "1/16T", "1/32", "1/32T"];
 
-const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn", "Drawn"];
+const LFO_STEPS = ["Off", "Off"].concat(Array.from({ length: 31 }, (_, k) => String(k + 2)));
+const MOD_WAVES = ["Sin", "Tri", "Sqr", "S&H", "Up", "Dn", "Drawn", "Table"];
 const MOD_SRC = ["Off"].concat(
     Array.from({ length: 10 }, (_, i) => "LFO " + (i + 1)),
     Array.from({ length: 10 }, (_, i) => "Env " + (i + 1)),
@@ -3476,7 +3477,7 @@ const SPECS = (() => {
     ];
     // mod page: 10 LFOs (wave stepper + rate), 10 ADSR envelopes, 10 matrix slots
     for (let i = 0; i < 10; i++) {
-        L.push([247 + 2 * i, "LFO " + (i + 1) + " Wave", 0, 6, 0, "", "btn", MOD_WAVES]);
+        L.push([247 + 2 * i, "LFO " + (i + 1) + " Wave", 0, 7, 0, "", "btn", MOD_WAVES]);
         const lb = 882 + 5 * i, ln = "LFO " + (i + 1);
         L.push([lb,     ln + " Mode",   0, 2, 0, "", "btn", LFO_MODES, 1, "Mode"]);
         L.push([lb + 1, ln + " Delay",  0, 5000, 0, "ms", "sld", null, 1, "Delay"]);
@@ -3657,6 +3658,108 @@ const SPECS = (() => {
                       ["Chord", 0, 8, () => 0, "", "sel", CHORDS], ["Probability", 0, 100, () => 100, "%", "stp", null], ["Ratchet", 1, 4, () => 1, "", "stp", null], ["Gate", 0, 1, i => GATE[i % 16], "", "btn", ["Off", "On"]]];
         ROWS.forEach((r, ri) => { for (let k = 0; k < 64; k++) L.push([5810 + 64 * ri + k, "Melodic Step " + (k + 1) + " " + r[0], r[1], r[2], r[3](k), r[4], r[5], r[6], 1, r[0]]); });
     }
+    // LFO2-BEGIN
+    L.push([13000, "LFO 1 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13001, "LFO 1 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13002, "LFO 1 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13003, "LFO 1 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13004, "LFO 1 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13005, "LFO 1 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13006, "LFO 1 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13007, "LFO 1 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13008, "LFO 1 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13009, "LFO 1 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13016, "LFO 2 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13017, "LFO 2 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13018, "LFO 2 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13019, "LFO 2 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13020, "LFO 2 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13021, "LFO 2 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13022, "LFO 2 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13023, "LFO 2 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13024, "LFO 2 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13025, "LFO 2 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13032, "LFO 3 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13033, "LFO 3 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13034, "LFO 3 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13035, "LFO 3 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13036, "LFO 3 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13037, "LFO 3 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13038, "LFO 3 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13039, "LFO 3 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13040, "LFO 3 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13041, "LFO 3 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13048, "LFO 4 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13049, "LFO 4 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13050, "LFO 4 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13051, "LFO 4 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13052, "LFO 4 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13053, "LFO 4 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13054, "LFO 4 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13055, "LFO 4 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13056, "LFO 4 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13057, "LFO 4 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13064, "LFO 5 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13065, "LFO 5 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13066, "LFO 5 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13067, "LFO 5 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13068, "LFO 5 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13069, "LFO 5 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13070, "LFO 5 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13071, "LFO 5 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13072, "LFO 5 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13073, "LFO 5 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13080, "LFO 6 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13081, "LFO 6 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13082, "LFO 6 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13083, "LFO 6 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13084, "LFO 6 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13085, "LFO 6 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13086, "LFO 6 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13087, "LFO 6 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13088, "LFO 6 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13089, "LFO 6 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13096, "LFO 7 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13097, "LFO 7 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13098, "LFO 7 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13099, "LFO 7 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13100, "LFO 7 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13101, "LFO 7 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13102, "LFO 7 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13103, "LFO 7 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13104, "LFO 7 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13105, "LFO 7 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13112, "LFO 8 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13113, "LFO 8 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13114, "LFO 8 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13115, "LFO 8 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13116, "LFO 8 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13117, "LFO 8 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13118, "LFO 8 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13119, "LFO 8 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13120, "LFO 8 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13121, "LFO 8 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13128, "LFO 9 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13129, "LFO 9 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13130, "LFO 9 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13131, "LFO 9 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13132, "LFO 9 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13133, "LFO 9 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13134, "LFO 9 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13135, "LFO 9 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13136, "LFO 9 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13137, "LFO 9 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    L.push([13144, "LFO 10 Key Follow", 0, 1, 0.0, "", "btn", ["Off", "On"], 1, "Key", null]);
+    L.push([13145, "LFO 10 Key Ratio", 0.25, 16, 1.0, "x", "sld", null, 1, "Ratio", null]);
+    L.push([13146, "LFO 10 Key Fine", -100, 100, 0.0, "ct", "sld", null, 1, "Fine", null]);
+    L.push([13147, "LFO 10 Skew", -1, 1, 0.0, "", "sld", null, 1, "Skew", null]);
+    L.push([13148, "LFO 10 Steps", 0, 32, 0.0, "", "sel", LFO_STEPS, 1, "Steps", null]);
+    L.push([13149, "LFO 10 Jitter", 0, 1, 0.0, "", "sld", null, 1, "Jitter", null]);
+    L.push([13150, "LFO 10 Voice Spread", 0, 1, 0.0, "", "sld", null, 1, "Spread", null]);
+    L.push([13151, "LFO 10 Depth", 0, 1, 1.0, "", "sld", null, 1, "Depth", null]);
+    L.push([13152, "LFO 10 Table Pos", 0, 1, 0.0, "", "sld", null, 1, "Pos", null]);
+    L.push([13153, "LFO 10 Interp", 0, 1, 1.0, "", "btn", ["Linear", "Cubic"], 1, "Interp", null]);
+    // LFO2-END
     // MOD-LFOBIP: Polarity of every LFO (3111 + i), default Bipolar
     for (let i = 0; i < 10; i++) L.push([3111 + i, "LFO " + (i + 1) + " Polarity", 0, 1, 1, "", "btn", ["Unipolar", "Bipolar"], 1, "Polarity", null]);
     // MOD-SEQ: 10 step sequencers (modulation sources 34..43), ids 3600 + 32 * m + k
