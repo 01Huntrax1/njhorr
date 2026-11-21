@@ -100,6 +100,7 @@ namespace njo
     const std::vector<LfoPreset>& lfoPresets();
 
     constexpr int LFO_DRAWN = 6;
+    constexpr int LFO_TABLE = 7;
     inline int lfoWaveParam (int i) { return 247 + 2 * i; }
     inline int lfoRateParam (int i) { return 248 + 2 * i; }
     inline int lfoSyncParam (int i) { return 502 + 2 * i; }

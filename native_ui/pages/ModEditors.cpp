@@ -1,6 +1,7 @@
 // Envelope + LFO editors with the drag handles for the modulation sources.
 #include <random>
 #include "ModUi.h"
+#include "../NjoLfo2.h"
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
 #include "../NjoA3Bank.h"
@@ -305,7 +306,7 @@ namespace njo
         float iy (float Y) const { return (getHeight() / 2.0f - Y) / (getHeight() / 2.0f - pad); }
         int lfo() const { return ctx.selectedLfo; }
         int wave() const { return juce::roundToInt (ctx.get (lfoWaveParam (lfo()))); }
-        bool drawn() { return shapes (ctx).isDrawn (lfo()) || wave() >= LFO_DRAWN; }
+        bool drawn() { return shapes (ctx).isDrawn (lfo()) || wave() == LFO_DRAWN; }
 
         void paint (juce::Graphics& g) override
         {
@@ -324,7 +325,24 @@ namespace njo
                 g.setColour (juce::Colours::white.withAlpha (k == 0 ? 0.22f : 0.05f));
                 g.drawHorizontalLine ((int) std::round (py ((float) k / ys)), 0, W);
             }
-            auto fn = [&] (float p) { return P ? LfoShapes::sampleAt (*P, p) : builtinAt (w, p); };
+            const int li = lfo();
+            auto x2 = [&] (int j) { return ctx.get (lfo2::lfoId (li, j)); };
+            auto base = [&] (int ww, float p) { return ww == LFO_DRAWN ? LfoShapes::sampleAt (shapes (ctx).points (li), p) : builtinAt (ww, p); };
+            auto fn = [&] (float p)
+            {
+                float sk = x2 (3); if (std::abs (sk) > 0.001f) p = std::pow (p, std::pow (2.0f, sk * 2.0f));
+                float v;
+                if (w == LFO_TABLE)
+                {
+                    float fp = juce::jlimit (0.0f, 1.0f, x2 (8)) * 4.0f; int fa = juce::jmin ((int) fp, 3); float ff = fp - (float) fa;
+                    static const int wa[] = { 0, 1, 4, 2 }, wb[] = { 1, 4, 2, LFO_DRAWN };
+                    float a = base (wa[fa], p); v = a + (base (wb[fa], p) - a) * ff;
+                }
+                else v = P ? LfoShapes::sampleAt (*P, p) : builtinAt (w, p);
+                float n = x2 (4);
+                if (n >= 1.5f) { float q = std::floor ((v * 0.5f + 0.5f) * n - 0.0001f); v = juce::jlimit (0.0f, n - 1.0f, q) / (n - 1.0f) * 2.0f - 1.0f; }
+                return v * x2 (7);
+            };
             juce::Path line;
             for (int k = 0; k <= 400; ++k) { float p = k / 400.0f; if (k == 0) line.startNewSubPath (px (p), py (fn (p))); else line.lineTo (px (p), py (fn (p))); }
             juce::Path fill (line); fill.lineTo (px (1), py (0)); fill.lineTo (px (0), py (0)); fill.closeSubPath();
@@ -432,6 +450,103 @@ namespace njo
         std::unique_ptr<ParamWidget> velPol;     // Unipolar / Bipolar switches of the envelopes (ids 3100 + i) and of Velocity (3110)
         juce::Rectangle<int> envPolLbl, velPolLbl, lfoPolLbl;
         juce::OwnedArray<MiniSelect> divSel;
+        juce::OwnedArray<ParamWidget> lfoX, keyBtn, intBtn;   // LFO extras: 8 knobs (Skew, Steps, Jitter, Spread, Depth, Pos, Ratio, Fine), Key follow, Interp
+        struct TableBtn : juce::Component
+        {
+            Ctx* ctx = nullptr; std::function<void()> changed;
+            int wp() const { return lfoWaveParam (ctx->selectedLfo); }
+            bool on() const { return juce::roundToInt (ctx->get (wp())) == LFO_TABLE; }
+            void paint (juce::Graphics& g) override
+            {
+                paintButton (g, getLocalBounds().toFloat(), on(), false, false, 3.0f);
+                g.setColour (ink); g.setFont (font (9.0f, true)); g.drawText ("TABLE", getLocalBounds(), juce::Justification::centred);
+            }
+            void mouseDown (const juce::MouseEvent&) override { ctx->begin (wp()); ctx->set (wp(), on() ? 0.0f : (float) LFO_TABLE); ctx->end (wp()); if (changed) changed(); }
+        } tableBtn;
+        struct TextBtn : juce::Component
+        {
+            juce::String text; std::function<void()> click;
+            void paint (juce::Graphics& g) override
+            {
+                paintButton (g, getLocalBounds().toFloat(), false, isMouseOver(), false, 3.0f);
+                g.setColour (ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds(), juce::Justification::centred);
+            }
+            void mouseDown (const juce::MouseEvent&) override { if (click) click(); }
+        } presetBtn;
+
+        // ---- user LFO presets: <root>/LfoPresets/<name>.njolfo (every parameter of one LFO + its drawn shape)
+        juce::File presetDir() const { return ctx.be.rootFolder().getChildFile ("LfoPresets"); }
+        static std::vector<int> lfoParamIds (int i)
+        {
+            std::vector<int> v { 247 + 2 * i, 248 + 2 * i, 502 + 2 * i, 503 + 2 * i, 3111 + i };
+            for (int k = 0; k < 5; ++k) v.push_back (882 + 5 * i + k);
+            for (int k = 0; k < 10; ++k) v.push_back (lfo2::lfoId (i, k));
+            return v;
+        }
+        void savePreset (const juce::String& rawName)
+        {
+            auto name = rawName.trim(); if (name.isEmpty()) return;
+            int i = ctx.selectedLfo; auto* o = new juce::DynamicObject();
+            auto* pr = new juce::DynamicObject();
+            for (int id : lfoParamIds (i)) pr->setProperty (juce::String (id - 0), (double) ctx.get (id));
+            o->setProperty ("format", "njohrr-lfo"); o->setProperty ("name", name); o->setProperty ("params", juce::var (pr));
+            if (shapes (ctx).isDrawn (i))
+            {
+                juce::Array<juce::var> pts;
+                for (auto& pt : shapes (ctx).points (i)) { juce::Array<juce::var> q; q.add (pt.x); q.add (pt.y); q.add (pt.c); pts.add (juce::var (q)); }
+                o->setProperty ("points", juce::var (pts));
+            }
+            auto dir = presetDir(); dir.createDirectory();
+            auto f = dir.getChildFile (juce::File::createLegalFileName (name) + ".njolfo");
+            f.replaceWithText (juce::JSON::toString (juce::var (o), true));
+            ctx.status ("LFO PRESET SAVED: " + name.toUpperCase());
+        }
+        void loadPreset (const juce::File& f)
+        {
+            auto v = juce::JSON::parse (f.loadFileAsString()); if (! v.isObject() || v.getProperty ("format", {}).toString() != "njohrr-lfo") return;
+            int i = ctx.selectedLfo; auto pr = v.getProperty ("params", {});
+            if (auto* d = pr.getDynamicObject())
+                for (auto& nv : d->getProperties())
+                {
+                    int id = nv.name.toString().getIntValue();
+                    // the saved ids belong to the LFO the preset was made on: map them to the selected one
+                    int src = -1; for (int j = 0; j < 10 && src < 0; ++j) { auto ids = lfoParamIds (j); if (std::find (ids.begin(), ids.end(), id) != ids.end()) src = j; }
+                    if (src < 0) continue;
+                    auto a = lfoParamIds (src), b = lfoParamIds (i); size_t k = (size_t) (std::find (a.begin(), a.end(), id) - a.begin());
+                    ctx.begin (b[k]); ctx.set (b[k], (float) (double) nv.value); ctx.end (b[k]);
+                }
+            auto pts = v.getProperty ("points", {});
+            if (pts.isArray())
+            {
+                std::vector<LfoPoint> P;
+                for (auto& q : *pts.getArray()) if (q.isArray() && q.size() >= 3) P.push_back ({ (float) (double) q[0], (float) (double) q[1], (float) (double) q[2] });
+                if (P.size() >= 2) { shapes (ctx).setPoints (i, P); shapes (ctx).commit (i, true); }
+            }
+            else shapes (ctx).reset (i);
+            for (auto* a : gAll) a->refreshAll();
+            ctx.status ("LFO PRESET LOADED: " + f.getFileNameWithoutExtension().toUpperCase());
+        }
+        void presetMenu()
+        {
+            juce::PopupMenu m, del; auto files = presetDir().findChildFiles (juce::File::findFiles, false, "*.njolfo"); files.sort();
+            m.addItem (1, "Save current LFO as...");
+            if (! files.isEmpty()) m.addSeparator();
+            for (int k = 0; k < files.size(); ++k) { m.addItem (100 + k, files[k].getFileNameWithoutExtension()); del.addItem (500 + k, files[k].getFileNameWithoutExtension()); }
+            if (! files.isEmpty()) m.addSubMenu ("Delete", del);
+            m.addSeparator(); m.addItem (2, "Open preset folder");
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this, files] (int r)
+            {
+                if (r == 1)
+                {
+                    auto* w = new juce::AlertWindow ("Save LFO preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
+                    w->addTextEditor ("n", "My LFO " + juce::String (ctx.selectedLfo + 1), {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+                    w->enterModalState (true, juce::ModalCallbackFunction::create ([this, w] (int rr) { if (rr == 1) savePreset (w->getTextEditorContents ("n")); }), true);
+                }
+                else if (r == 2) { presetDir().createDirectory(); presetDir().revealToUser(); }
+                else if (r >= 500 && r - 500 < files.size()) files[r - 500].deleteFile();
+                else if (r >= 100 && r - 100 < files.size()) loadPreset (files[r - 100]);
+            });
+        }
         MiniSelect shape;
         struct GridButton : juce::Component
         {
@@ -474,12 +589,19 @@ namespace njo
                 d->getIndex = [this, dp] { return juce::roundToInt (ctx.get (dp)); };
                 d->setIndex = [this, dp] (int v) { ctx.begin (dp); ctx.set (dp, (float) v); ctx.end (dp); };
                 owner.addChildComponent (d);
+                static const int xk[8] = { 3, 4, 5, 6, 7, 8, 1, 2 };
+                for (int k : xk) { auto* w = lfoX.add (makeWidget (ctx, lfo2::lfoId (i, k), true).release()); w->setLook (true); owner.addChildComponent (w); }
+                auto* kb = static_cast<ButtonsWidget*> (keyBtn.add (makeWidget (ctx, lfo2::lfoId (i, 0), false).release())); kb->setShowLabel (false); owner.addChildComponent (kb);
+                auto* ib = static_cast<ButtonsWidget*> (intBtn.add (makeWidget (ctx, lfo2::lfoId (i, 9), false).release())); ib->setShowLabel (false); owner.addChildComponent (ib);
             }
+            presetBtn.text = "LFO PRESETS"; presetBtn.click = [this] { presetMenu(); }; owner.addAndMakeVisible (presetBtn);
+            tableBtn.ctx = &ctx; tableBtn.changed = [this] { for (auto* a : gAll) a->refreshAll(); };
+            owner.addAndMakeVisible (tableBtn);
             // shape menu: built-in waves, drawn presets, "Drawn"
             for (auto& p : lfoPresets()) shape.names.add (p.name);
             shape.extraItem = (int) lfoPresets().size(); shape.extraName = "Drawn";
             shape.getIndex = [this] { int i = ctx.selectedLfo; int w = juce::roundToInt (ctx.get (lfoWaveParam (i)));
-                                      return (shapes (ctx).isDrawn (i) || w >= LFO_DRAWN) ? (int) lfoPresets().size() : juce::jlimit (0, (int) lfoPresets().size() - 1, w); };
+                                      return (shapes (ctx).isDrawn (i) || w == LFO_DRAWN) ? (int) lfoPresets().size() : juce::jlimit (0, (int) lfoPresets().size() - 1, w); };
             shape.setIndex = [this] (int idx) { applyPreset (ctx.selectedLfo, idx); };
             owner.addAndMakeVisible (shape);
             grid.click = [] { gGrid = (gGrid + 1) % 5; for (auto* a : gAll) a->refreshAll(); };
@@ -507,7 +629,8 @@ namespace njo
         {
             int i = ctx.selectedLfo, e = ctx.selectedEnv;
             if ((n >= envParam (e) && n < envParam (e) + 4) || n == 3100 + e || (n >= 7200 + 30 * e && n < 7230 + 30 * e)) { envCv.repaint(); if (n == 7200 + 30 * e) refreshAll(); }
-            if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); }
+            if (n == lfoWaveParam (i)) { lfoCv.repaint(); shape.repaint(); tableBtn.repaint(); }
+            if (n >= lfo2::lfoId (i, 0) && n <= lfo2::lfoId (i, 15)) { lfoCv.repaint(); refreshAll(); }
             if (n == lfoSyncParam (i)) refreshAll();
             if (n == 3111 + i) lfoCv.repaint();
         }
@@ -524,9 +647,12 @@ namespace njo
                 for (int k = 0; k < 5; ++k) lfoKnobs[i * 5 + k]->setVisible (i == li);
                 modeBtn[i]->setVisible (i == li); syncBtn[i]->setVisible (i == li); lfoPol[i]->setVisible (i == li);
                 divSel[i]->setVisible (i == li);
+                keyBtn[i]->setVisible (i == li); intBtn[i]->setVisible (i == li);
+                for (int k = 0; k < 8; ++k) lfoX[i * 8 + k]->setVisible (i == li);
+                { bool key = ctx.get (lfo2::lfoId (i, 0)) > 0.5f; lfoX[i * 8 + 6]->setAlpha (key ? 1.0f : 0.35f); lfoX[i * 8 + 7]->setAlpha (key ? 1.0f : 0.35f);
+                  lfoKnobs[i * 5]->setAlpha (key ? 0.35f : (ctx.get (lfoSyncParam (i)) > 0.5f ? 0.45f : 1.0f)); }
                 bool sync = ctx.get (lfoSyncParam (i)) > 0.5f;
                 divSel[i]->dimmed = ! sync; divSel[i]->repaint();
-                lfoKnobs[i * 5]->setAlpha (sync ? 0.45f : 1.0f);
             }
             envCv.repaint(); lfoCv.repaint(); shape.repaint(); grid.repaint(); owner.repaint();
         }
@@ -597,8 +723,17 @@ namespace njo
             {   // polarity switch of the selected LFO under the display
                 auto pr = c.removeFromBottom (20); c.removeFromBottom (3);
                 I.lfoPolLbl = pr.removeFromLeft (52);
-                auto pb = pr.removeFromLeft (juce::jmin (pr.getWidth(), 150));
+                auto pb = pr.removeFromLeft (juce::jmin (pr.getWidth() / 3, 110)); pr.removeFromLeft (4);
                 for (int i = 0; i < 10; ++i) I.lfoPol[i]->setBounds (pb);
+                int bw = (pr.getWidth() - 8) / 3;
+                auto kb = pr.removeFromLeft (bw); pr.removeFromLeft (4); auto ib = pr.removeFromLeft (bw); pr.removeFromLeft (4);
+                for (int i = 0; i < 10; ++i) { I.keyBtn[i]->setBounds (kb); I.intBtn[i]->setBounds (ib); }
+                I.tableBtn.setBounds (pr);
+            }
+            {   // extra knobs of the selected LFO
+                auto kr = c.removeFromBottom (46); c.removeFromBottom (3);
+                int kw = kr.getWidth() / 8;
+                for (int i = 0; i < 10; ++i) for (int k = 0; k < 8; ++k) I.lfoX[i * 8 + k]->setBounds (kr.getX() + k * kw, kr.getY(), kw, kr.getHeight());
             }
             I.lfoCv.setBounds (c.withTrimmedBottom (2));
         }
@@ -606,7 +741,7 @@ namespace njo
         {
             auto c = ctlCol; 
             auto top = c.removeFromTop (18); c.removeFromTop (4);
-            I.grid.setBounds (top.removeFromRight (66));
+            I.grid.setBounds (top.removeFromRight (66)); top.removeFromRight (4); I.presetBtn.setBounds (top.removeFromRight (96));
             auto sh = c.removeFromTop (12 + 24);
             I.shape.setBounds (sh.withTrimmedTop (12));
             I.shapeLabel = sh.withHeight (12);
