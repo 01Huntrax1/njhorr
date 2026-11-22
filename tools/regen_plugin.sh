@@ -31,6 +31,7 @@ fi
 NEW="$TMP/juce/cmajor_plugin.cpp"
 [ -f "$NEW" ] || { echo "the juce target produced no cmajor_plugin.cpp"; exit 2; }
 grep -q "JUCE_CALLTYPE createPluginFilter" "$NEW" || { echo "generated file has no createPluginFilter()"; exit 2; }
+python3 "$ROOT/tools/perf/fast_handles.py" "$NEW" >/dev/null   # hash table instead of ~9000 string compares per parameter lookup
 grep -q "GeneratedPlugin<::Eisenpuls_Synth>" "$NEW" || { echo "generated file does not name the plugin class"; exit 2; }
 if cmp -s "$NEW" "$ROOT/cmajor_plugin.cpp"; then
     echo "cmajor_plugin.cpp is up to date"
@@ -54,6 +55,7 @@ if [ $fail = 0 ] || [ $CHECK = 0 ]; then
     NEWFX="$TMP/juce_fx/cmajor_plugin.cpp"
     [ -f "$NEWFX" ] || { echo "the juce target produced no cmajor_plugin.cpp for the FX plugin"; exit 2; }
     grep -q "JUCE_CALLTYPE createPluginFilter" "$NEWFX" || { echo "generated FX file has no createPluginFilter()"; exit 2; }
+    python3 "$ROOT/tools/perf/fast_handles.py" "$NEWFX" >/dev/null   # hash table instead of ~9000 string compares per parameter lookup
     if cmp -s "$NEWFX" "$ROOT/cmajor_plugin_fx.cpp"; then
         echo "cmajor_plugin_fx.cpp is up to date"
     elif [ $CHECK = 1 ]; then
@@ -77,6 +79,7 @@ if [ $fail = 0 ] || [ $CHECK = 0 ]; then
     NEWMOD="$TMP/juce_mod/cmajor_plugin.cpp"
     [ -f "$NEWMOD" ] || { echo "the juce target produced no cmajor_plugin.cpp for the Modular plugin"; exit 2; }
     grep -q "JUCE_CALLTYPE createPluginFilter" "$NEWMOD" || { echo "generated Modular file has no createPluginFilter()"; exit 2; }
+    python3 "$ROOT/tools/perf/fast_handles.py" "$NEWMOD" >/dev/null   # hash table instead of ~9000 string compares per parameter lookup
     if cmp -s "$NEWMOD" "$ROOT/cmajor_plugin_mod.cpp"; then
         echo "cmajor_plugin_mod.cpp is up to date"
     elif [ $CHECK = 1 ]; then
