@@ -4700,12 +4700,12 @@ processor Eisenpuls_Synth
     input event float param1349 [[ name: "OSC 6 Unison Phase", min: 0.0, max: 1.0, init: 0.0 ]];
     // UNI-DECL-END
     // ALIAS-DECL-BEGIN
-    input event float param2000 [[ name: "OSC 1 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param2001 [[ name: "OSC 2 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param2002 [[ name: "OSC 3 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param2003 [[ name: "OSC 4 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param2004 [[ name: "OSC 5 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
-    input event float param2005 [[ name: "OSC 6 WT Aliasing", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];
+    input event float param2000 [[ name: "OSC 1 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param2001 [[ name: "OSC 2 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param2002 [[ name: "OSC 3 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param2003 [[ name: "OSC 4 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param2004 [[ name: "OSC 5 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
+    input event float param2005 [[ name: "OSC 6 WT Quality", min: 0.0, max: 2.0, init: 0.0, step: 1.0 ]];
     // ALIAS-DECL-END
     // TER-DECL-BEGIN
     input event float param2100 [[ name: "OSC 1 Terrain Orbit Center X", min: -1.0, max: 1.0, init: 0.0 ]];
@@ -58977,7 +58977,7 @@ processor Eisenpuls_Synth
     }
 
     // ALIAS-DSP-BEGIN
-    float[6] wtAlias;     // Wavetable Aliasing switch per slot (ids 2000 + slot)
+    float[6] wtAlias;     // Wavetable quality per slot (ids 2000 + slot): 0 Clean, 1 Alias, 2 Eco
 
     // ALIAS-DSP-END
     // mip level for a note frequency (Hz): the level whose content (up to 40% of its length in harmonics) stays below Nyquist
@@ -59007,6 +59007,31 @@ processor Eisenpuls_Synth
         float p2   = wtMip.at (base + ((i + 1) & mask));
         float p3   = wtMip.at (base + ((i + 2) & mask));
         return p1 + 0.5f * t * (p2 - p0 + t * (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3 + t * (3.0f * (p1 - p2) + p3 - p0)));
+    }
+
+    // linear read of one cycle (Eco quality)
+    float wtMipReadLin (int base, int len, float x)
+    {
+        int   mask = len - 1;
+        int   i    = int (x);
+        float t    = x - float (i);
+        float p1   = wtMip.at (base + (i & mask));
+        float p2   = wtMip.at (base + ((i + 1) & mask));
+        return p1 + t * (p2 - p1);
+    }
+
+    float wtReadEco (int o, int lvl, float64 phase, int fa, int fb, float ff)
+    {
+        int   len = 2048 >> lvl;
+        int   off = 4096 - (4096 >> lvl);
+        float x   = float (phase) * float (len);
+        float va  = wtMipReadLin ((o * 256 + fa) * 4096 + off, len, x);
+
+        if (fb == fa || ff <= 0.0f)
+            return va;
+
+        float vb = wtMipReadLin ((o * 256 + fb) * 4096 + off, len, x);
+        return va + (vb - va) * ff;
     }
 
     // wavetable read (WT2): frames fa / fb crossfaded by ff, or (fmode 1) the cubic of four frames fm / fa / fb / fc, phase (0..1) scans one cycle of mip level lvl
@@ -59077,7 +59102,10 @@ processor Eisenpuls_Synth
         }
 
         // Aliasing switch: no band-limiting, always the full level
-        if (wtAlias.at (o) > 0.5f)
+        float alv = wtAlias.at (o);
+        bool  eco = alv > 1.5f;
+
+        if (alv > 0.5f && ! eco)
             lvlAll = 0;
 
         float udr = clamp (opv (o, 28), 0.0f, 1.0f) * 0.007f;
@@ -59101,7 +59129,7 @@ processor Eisenpuls_Synth
 
             int lv = lvlAll >= 0 ? lvlAll : wtLevel (f);
             if (lvBias > 0) lv = min (lv + lvBias, 8);
-            float y = wtRead (o, lv, rph, fa, fb, ff, fmode, fm, fc);
+            float y = eco ? wtReadEco (o, lv, rph, fa, fb, ff) : wtRead (o, lv, rph, fa, fb, ff, fmode, fm, fc);
 
             if (wtIsAmp (m1)) y = wtWarpAmp (m1, a1, y);
             if (wtIsAmp (m2)) y = wtWarpAmp (m2, a2, y);
