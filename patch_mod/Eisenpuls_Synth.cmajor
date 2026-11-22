@@ -24562,7 +24562,7 @@ processor Eisenpuls_Synth
         if (s > -0.001f && s < 0.001f)
             return p;
 
-        return float (pow (clamp (p, 0.0f, 1.0f), float (pow (2.0f, s * 2.0f))));
+        return float (pow (clamp (p, 0.0f, 1.0f), lfoSkewExp (m, s)));
     }
 
     float lfoShape (int m, float v)
@@ -24579,6 +24579,61 @@ processor Eisenpuls_Synth
     }
 
     // one-pole lag of the Smooth control (0 = off, 1 = about 250 ms)
+    // LFOFAST-BEGIN: parameter dependent values are computed when the parameters change, not for every voice and sample
+    float[16] lfoKmArg;
+    float[16] lfoKmVal;
+    int[16]   lfoKmOk;
+    float[16] lfoSkArg;
+    float[16] lfoSkVal;
+    int[16]   lfoSkOk;
+    float[16] lfoLgS;
+    float[16] lfoLgD;
+    float[16] lfoLgK;
+    int[16]   lfoLgOk;
+
+    float lfoKeyMul (int m)
+    {
+        float a = mLfoOct.at (m) - 4.0f + (mLfoSemi.at (m) - 12.0f) / 12.0f + mLfoFine.at (m) / 1200.0f;
+
+        if (lfoKmOk.at (m) == 0 || a != lfoKmArg.at (m))
+        {
+            lfoKmArg.at (m) = a;
+            lfoKmVal.at (m) = float (pow (2.0f, a));
+            lfoKmOk.at (m)  = 1;
+        }
+
+        return lfoKmVal.at (m);
+    }
+
+    float lfoSkewExp (int m, float s)
+    {
+        if (lfoSkOk.at (m) == 0 || s != lfoSkArg.at (m))
+        {
+            lfoSkArg.at (m) = s;
+            lfoSkVal.at (m) = float (pow (2.0f, s * 2.0f));
+            lfoSkOk.at (m)  = 1;
+        }
+
+        return lfoSkVal.at (m);
+    }
+
+    float lfoLagM (int m, float state, float x, float smooth, float dtv)
+    {
+        if (smooth <= 0.001f)
+            return x;
+
+        if (lfoLgOk.at (m) == 0 || smooth != lfoLgS.at (m) || dtv != lfoLgD.at (m))
+        {
+            lfoLgS.at (m)  = smooth;
+            lfoLgD.at (m)  = dtv;
+            lfoLgK.at (m)  = 1.0f - float (exp (-dtv / (0.0002f + smooth * 0.25f)));
+            lfoLgOk.at (m) = 1;
+        }
+
+        return state + (x - state) * lfoLgK.at (m);
+    }
+    // LFOFAST-END
+
     float lfoLag (float state, float x, float smooth, float dtv)
     {
         if (smooth <= 0.001f)
@@ -24626,7 +24681,7 @@ processor Eisenpuls_Synth
             if (p >= 1.0f) p -= 1.0f;
 
             float val = lfoShape (m, lfoWaveVal (m, lfoSkewPhase (m, p), mLfoSh.at (m), true, rate * float (processor.period)));
-            mLfoSm.at (m) = lfoLag (mLfoSm.at (m), val, mLfoSmooth.at (m), dtv);
+            mLfoSm.at (m) = lfoLagM (m, mLfoSm.at (m), val, mLfoSmooth.at (m), dtv);
             mLfoV.at (m)  = mLfoSm.at (m);
         }
     }
@@ -24650,7 +24705,7 @@ processor Eisenpuls_Synth
             float   rate    = lfoRateHz (m);
 
             if (keyed)
-                rate = clamp (voices.at (vi).curFreq * float (pow (2.0f, mLfoOct.at (m) - 4.0f + (mLfoSemi.at (m) - 12.0f) / 12.0f + mLfoFine.at (m) / 1200.0f)), 0.001f, float (processor.frequency) * 0.45f);
+                rate = clamp (voices.at (vi).curFreq * lfoKeyMul (m), 0.001f, float (processor.frequency) * 0.45f);
 
             rate *= 1.0f + mLfoJit.at (m) * 0.5f * voices.at (vi).lfoJ.at (m);
 
@@ -24703,7 +24758,7 @@ processor Eisenpuls_Synth
             if (first)
                 st = val;
 
-            st = lfoLag (st, val, mLfoSmooth.at (m), dtv);
+            st = lfoLagM (m, st, val, mLfoSmooth.at (m), dtv);
             voices.at (vi).lfoSm.at (m) = st;
             voices.at (vi).lfoV.at (m)  = st;
         }

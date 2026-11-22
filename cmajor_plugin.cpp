@@ -89342,6 +89342,16 @@ namespace performer
             Array<int32_t, 128> cvI;
             Array<float, 128> cvF;
             Array<int32_t, 4> cvOwner;
+            Array<float, 16> lfoKmArg;
+            Array<float, 16> lfoKmVal;
+            Array<int32_t, 16> lfoKmOk;
+            Array<float, 16> lfoSkArg;
+            Array<float, 16> lfoSkVal;
+            Array<int32_t, 16> lfoSkOk;
+            Array<float, 16> lfoLgS;
+            Array<float, 16> lfoLgD;
+            Array<float, 16> lfoLgK;
+            Array<int32_t, 16> lfoLgOk;
             Array<float, 4078> genBase;
             Array<int32_t, 4078> genSet;
             Array<float, 4078> genNorm;
@@ -331563,7 +331573,7 @@ namespace performer
                         _temp_1 = m;
                         _temp_2 = _Eisenpuls_Synth__lfoSkewPhase (_state, m, p);
                         val = _Eisenpuls_Synth__lfoShape (_state, _temp_0, _Eisenpuls_Synth__lfoWaveVal (_state, _temp_1, _temp_2, _state.mLfoSh[std__intrinsics___wrap_16 (m)], true, rate * static_cast<float> (1.0 / (1.0 * g__frequency))));
-                        _state.mLfoSm[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__lfoLag (_state.mLfoSm[std__intrinsics___wrap_16 (m)], val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
+                        _state.mLfoSm[std__intrinsics___wrap_16 (m)] = _Eisenpuls_Synth__lfoLagM (_state, m, _state.mLfoSm[std__intrinsics___wrap_16 (m)], val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
                         _state.mLfoV[std__intrinsics___wrap_16 (m)] = _state.mLfoSm[std__intrinsics___wrap_16 (m)];
                     }
                     _break_0: {}
@@ -331772,22 +331782,42 @@ namespace performer
         float _Eisenpuls_Synth__lfoSkewPhase (_Eisenpuls_Synth_State& _state, int32_t m, float p) noexcept
         {
             float  s;
+            float  _temp;
 
             s = _state.mLfoSkew[std__intrinsics___wrap_16 (m)];
             if ((s > -0.001f) ? (s < 0.001f) : false)
             {
                 return p;
             }
-            return intrinsics::pow (intrinsics::clamp (p, 0.0f, 1.0f), intrinsics::pow (2.0f, s * 2.0f));
+            _temp = intrinsics::clamp (p, 0.0f, 1.0f);
+            return intrinsics::pow (_temp, _Eisenpuls_Synth__lfoSkewExp (_state, m, s));
         }
 
-        float _Eisenpuls_Synth__lfoLag (float state, float x, float smooth, float dtv) noexcept
+        float _Eisenpuls_Synth__lfoSkewExp (_Eisenpuls_Synth_State& _state, int32_t m, float s) noexcept
+        {
+            if ((_state.lfoSkOk[std__intrinsics___wrap_16 (m)] == int32_t {0}) ? true : (s != _state.lfoSkArg[std__intrinsics___wrap_16 (m)]))
+            {
+                _state.lfoSkArg[std__intrinsics___wrap_16 (m)] = s;
+                _state.lfoSkVal[std__intrinsics___wrap_16 (m)] = intrinsics::pow (2.0f, s * 2.0f);
+                _state.lfoSkOk[std__intrinsics___wrap_16 (m)] = int32_t {1};
+            }
+            return _state.lfoSkVal[std__intrinsics___wrap_16 (m)];
+        }
+
+        float _Eisenpuls_Synth__lfoLagM (_Eisenpuls_Synth_State& _state, int32_t m, float state, float x, float smooth, float dtv) noexcept
         {
             if (smooth <= 0.001f)
             {
                 return x;
             }
-            return state + ((x - state) * (1.0f - intrinsics::exp ((- dtv) / (0.0002f + (smooth * 0.25f)))));
+            if (((_state.lfoLgOk[std__intrinsics___wrap_16 (m)] == int32_t {0}) ? true : (smooth != _state.lfoLgS[std__intrinsics___wrap_16 (m)])) ? true : (dtv != _state.lfoLgD[std__intrinsics___wrap_16 (m)]))
+            {
+                _state.lfoLgS[std__intrinsics___wrap_16 (m)] = smooth;
+                _state.lfoLgD[std__intrinsics___wrap_16 (m)] = dtv;
+                _state.lfoLgK[std__intrinsics___wrap_16 (m)] = (1.0f - intrinsics::exp ((- dtv) / (0.0002f + (smooth * 0.25f))));
+                _state.lfoLgOk[std__intrinsics___wrap_16 (m)] = int32_t {1};
+            }
+            return state + ((x - state) * _state.lfoLgK[std__intrinsics___wrap_16 (m)]);
         }
 
         void _Eisenpuls_Synth__updateSeqGlobal (_Eisenpuls_Synth_State& _state, float dt) noexcept
@@ -361407,10 +361437,12 @@ namespace performer
             bool  first;
             double  np;
             float  rate;
+            float  _temp_0;
+            float  _temp_1;
             float  p;
-            int32_t  _temp_0;
-            int32_t  _temp_1;
-            float  _temp_2;
+            int32_t  _temp_2;
+            int32_t  _temp_3;
+            float  _temp_4;
             float  val;
             float  fade;
             float  dl;
@@ -361450,7 +361482,9 @@ namespace performer
                         rate = _Eisenpuls_Synth__lfoRateHz (_state, m);
                         if (keyed)
                         {
-                            rate = intrinsics::clamp (_state.voices[std__intrinsics___wrap_8 (vi)].curFreq * intrinsics::pow (2.0f, ((_state.mLfoOct[std__intrinsics___wrap_16 (m)] - 4.0f) + ((_state.mLfoSemi[std__intrinsics___wrap_16 (m)] - 12.0f) / 12.0f)) + (_state.mLfoFine[std__intrinsics___wrap_16 (m)] / 1200.0f)), 0.001f, static_cast<float> (1.0 * g__frequency) * 0.45f);
+                            _temp_0 = _state.voices[std__intrinsics___wrap_8 (vi)].curFreq;
+                            _temp_1 = _temp_0 * _Eisenpuls_Synth__lfoKeyMul (_state, m);
+                            rate = intrinsics::clamp (_temp_1, 0.001f, static_cast<float> (1.0 * g__frequency) * 0.45f);
                         }
                         rate = (rate * (1.0f + ((_state.mLfoJit[std__intrinsics___wrap_16 (m)] * 0.5f) * _state.voices[std__intrinsics___wrap_8 (vi)].lfoJ[std__intrinsics___wrap_16 (m)])));
                         if (first)
@@ -361487,10 +361521,10 @@ namespace performer
                                 p = (p - 1.0f);
                             }
                         }
-                        _temp_0 = m;
-                        _temp_1 = m;
-                        _temp_2 = _Eisenpuls_Synth__lfoSkewPhase (_state, m, p);
-                        val = _Eisenpuls_Synth__lfoShape (_state, _temp_0, _Eisenpuls_Synth__lfoWaveVal (_state, _temp_1, _temp_2, _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_16 (m)], ! oneShot, rate * static_cast<float> (1.0 / (1.0 * g__frequency))));
+                        _temp_2 = m;
+                        _temp_3 = m;
+                        _temp_4 = _Eisenpuls_Synth__lfoSkewPhase (_state, m, p);
+                        val = _Eisenpuls_Synth__lfoShape (_state, _temp_2, _Eisenpuls_Synth__lfoWaveVal (_state, _temp_3, _temp_4, _state.voices[std__intrinsics___wrap_8 (vi)].lfoSh[std__intrinsics___wrap_16 (m)], ! oneShot, rate * static_cast<float> (1.0 / (1.0 * g__frequency))));
                         fade = 1.0f;
                         dl = _state.mLfoDelay[std__intrinsics___wrap_16 (m)] * 0.001f;
                         rs = _state.mLfoRise[std__intrinsics___wrap_16 (m)] * 0.001f;
@@ -361511,7 +361545,7 @@ namespace performer
                         {
                             st = val;
                         }
-                        st = _Eisenpuls_Synth__lfoLag (st, val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
+                        st = _Eisenpuls_Synth__lfoLagM (_state, m, st, val, _state.mLfoSmooth[std__intrinsics___wrap_16 (m)], dtv);
                         _state.voices[std__intrinsics___wrap_8 (vi)].lfoSm[std__intrinsics___wrap_16 (m)] = st;
                         _state.voices[std__intrinsics___wrap_8 (vi)].lfoV[std__intrinsics___wrap_16 (m)] = st;
                     }
@@ -361521,6 +361555,20 @@ namespace performer
                     }
                 }
             }
+        }
+
+        float _Eisenpuls_Synth__lfoKeyMul (_Eisenpuls_Synth_State& _state, int32_t m) noexcept
+        {
+            float  a;
+
+            a = ((_state.mLfoOct[std__intrinsics___wrap_16 (m)] - 4.0f) + ((_state.mLfoSemi[std__intrinsics___wrap_16 (m)] - 12.0f) / 12.0f)) + (_state.mLfoFine[std__intrinsics___wrap_16 (m)] / 1200.0f);
+            if ((_state.lfoKmOk[std__intrinsics___wrap_16 (m)] == int32_t {0}) ? true : (a != _state.lfoKmArg[std__intrinsics___wrap_16 (m)]))
+            {
+                _state.lfoKmArg[std__intrinsics___wrap_16 (m)] = a;
+                _state.lfoKmVal[std__intrinsics___wrap_16 (m)] = intrinsics::pow (2.0f, a);
+                _state.lfoKmOk[std__intrinsics___wrap_16 (m)] = int32_t {1};
+            }
+            return _state.lfoKmVal[std__intrinsics___wrap_16 (m)];
         }
 
         float _Eisenpuls_Synth__lfoFrac (float x) noexcept
