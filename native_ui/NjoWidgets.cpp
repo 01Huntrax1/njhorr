@@ -9,6 +9,8 @@ namespace njo
         sp = findSpec (n);
         jassert (sp != nullptr);
         val = ctx.get (n);
+        fxWidget  = ((sp->num >= 541 && sp->num < 891) || (sp->num >= 3200 && sp->num < 3380) || (sp->num >= kOscFxBase && sp->num < kOscFxBase + kOscFxStride * 6)) && fxLocate (sp->num).valid;
+        modWidget = ctx.isModTarget (n);
         ctx.addListener (this);
         setRepaintsOnMouseActivity (false);
     }
@@ -24,8 +26,8 @@ namespace njo
     void ParamWidget::paramChanged (int n, float v)
     {
         if (n == paramNum) { val = v; valueUpdated(); if (hover || dragging) ctx.lcd (sp->label, valueString()); }
-        else if (((sp->num >= 541 && sp->num < 891) || (sp->num >= 3200 && sp->num < 3380) || (sp->num >= kOscFxBase && sp->num < kOscFxBase + kOscFxStride * 6)) && fxLocate (sp->num).valid) repaint();   // fx knobs depend on the slot type
-        else if (ctx.isModTarget (paramNum) && isModSlotParam (n)) repaint();   // modulation ring
+        else if (fxWidget && ctx.fxTypeEvent()) repaint();   // a slot type changed: the label of an effect parameter follows it
+        else if (modWidget && isModSlotParam (n)) repaint();   // modulation ring
     }
 
     void ParamWidget::setValueFromUser (float v)

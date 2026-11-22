@@ -42,6 +42,7 @@ namespace njo
         int paramNum;
         float val = 0;
         bool hover = false, dragging = false, modHover = false, compact = false;
+        bool fxWidget = false, modWidget = false;   // fixed at construction: an effect parameter (label follows the slot type) / a modulation target (ring)
         juce::String labelOverride;
         std::function<juce::String (float)> valueText;
     };

@@ -40,6 +40,8 @@ namespace njo
         struct Listener { virtual ~Listener() = default; virtual void paramChanged (int num, float v) = 0; };
         void addListener (Listener* l) { listeners.add (l); }
         void removeListener (Listener* l) { listeners.remove (l); }
+        bool fxTypeEvent() const { return fxTypeChanged; }   // true while the listeners are told about a slot type change
+        void touchShapes();                                 // re-send the wave / freq parameters so the shape editors redraw
         void touchAll();                                    // re-send every parameter to the listeners (after a preset load)
 
         // ---- feedback to the shell ----
@@ -68,5 +70,6 @@ namespace njo
         void paramChanged (int num, float v) override;
         int fxTypes[kFxTotal] = {};
         juce::ListenerList<Listener> listeners;
+        bool fxTypeChanged = false;
     };
 }

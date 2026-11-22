@@ -20,8 +20,20 @@ namespace njo
     void Ctx::paramChanged (int num, float v)
     {
         auto loc = fxLocate (num);
-        if (loc.valid && loc.ord < 0 && loc.off == 0) fxTypes[loc.g] = juce::roundToInt (v);
+        fxTypeChanged = loc.valid && loc.ord < 0 && loc.off == 0;
+        if (fxTypeChanged) fxTypes[loc.g] = juce::roundToInt (v);
         listeners.call ([&] (Listener& l) { l.paramChanged (num, v); });
+        fxTypeChanged = false;
+    }
+
+    void Ctx::touchShapes()
+    {
+        for (int i = 0; i < 10; ++i)
+            for (int n : { lfoWaveParam (i), frqParam (i) })
+            {
+                float v = be.getParam (n);
+                listeners.call ([&] (Listener& l) { l.paramChanged (n, v); });
+            }
     }
 
     void Ctx::touchAll()

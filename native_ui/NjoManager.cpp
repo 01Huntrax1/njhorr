@@ -386,11 +386,12 @@ void ManagerBar::Impl::presetApply (const PresetRec& rec, const juce::String& la
     {
         auto it = rec.params.find (s.num);
         double v = it != rec.params.end() && std::isfinite (it->second) ? it->second : s.init;
-        ctx.set (s.num, (float) v);
+        float f = juce::jlimit ((float) s.min, (float) s.max, (float) v);
+        if (f != ctx.get (s.num)) ctx.set (s.num, f);   // only what differs: every set reaches the DSP and every widget (a full preset used to take seconds)
     }
     if (ctx.lfoShapes) ctx.lfoShapes->fromVar (rec.lfo);
     if (ctx.freqShapes) ctx.freqShapes->fromVar (rec.frq);
-    ctx.touchAll();
+    ctx.touchShapes();   // the drawn LFO / Freq shapes changed without a parameter change
     applying = false;
     cur = { rec.id, label.isNotEmpty() ? label : rec.name, false };
     updateBar();
