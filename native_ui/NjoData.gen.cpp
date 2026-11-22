@@ -193,37 +193,37 @@ static void allSpecs_4 (std::vector<Spec>& v)
         Spec { 1638, NJ_S("Freq 10 Retrig"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
         Spec { 1639, NJ_S("Freq 10 Loop"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Off"), NJ_S("On") }, 1, NJ_S(""), {  } },
         Spec { 307, NJ_S("Slot 1 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 308, NJ_S("Slot 1 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 308, NJ_S("Slot 1 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 309, NJ_S("Slot 1 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 310, NJ_S("Slot 2 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 311, NJ_S("Slot 2 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 311, NJ_S("Slot 2 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 312, NJ_S("Slot 2 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 313, NJ_S("Slot 3 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 314, NJ_S("Slot 3 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 314, NJ_S("Slot 3 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 315, NJ_S("Slot 3 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 316, NJ_S("Slot 4 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 317, NJ_S("Slot 4 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 317, NJ_S("Slot 4 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 318, NJ_S("Slot 4 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 319, NJ_S("Slot 5 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 320, NJ_S("Slot 5 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 320, NJ_S("Slot 5 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 321, NJ_S("Slot 5 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 322, NJ_S("Slot 6 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 323, NJ_S("Slot 6 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 323, NJ_S("Slot 6 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 324, NJ_S("Slot 6 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 325, NJ_S("Slot 7 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 326, NJ_S("Slot 7 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 326, NJ_S("Slot 7 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 327, NJ_S("Slot 7 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 328, NJ_S("Slot 8 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 329, NJ_S("Slot 8 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 329, NJ_S("Slot 8 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 330, NJ_S("Slot 8 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 331, NJ_S("Slot 9 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 332, NJ_S("Slot 9 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 332, NJ_S("Slot 9 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 333, NJ_S("Slot 9 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 334, NJ_S("Slot 10 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 335, NJ_S("Slot 10 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 335, NJ_S("Slot 10 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 336, NJ_S("Slot 10 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 472, NJ_S("Slot 11 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 473, NJ_S("Slot 11 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 473, NJ_S("Slot 11 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 474, NJ_S("Slot 11 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -231,43 +231,43 @@ static void allSpecs_5 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 475, NJ_S("Slot 12 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 476, NJ_S("Slot 12 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 476, NJ_S("Slot 12 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 477, NJ_S("Slot 12 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 478, NJ_S("Slot 13 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 479, NJ_S("Slot 13 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 479, NJ_S("Slot 13 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 480, NJ_S("Slot 13 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 481, NJ_S("Slot 14 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 482, NJ_S("Slot 14 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 482, NJ_S("Slot 14 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 483, NJ_S("Slot 14 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 484, NJ_S("Slot 15 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 485, NJ_S("Slot 15 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 485, NJ_S("Slot 15 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 486, NJ_S("Slot 15 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 487, NJ_S("Slot 16 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 488, NJ_S("Slot 16 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 488, NJ_S("Slot 16 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 489, NJ_S("Slot 16 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 490, NJ_S("Slot 17 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 491, NJ_S("Slot 17 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 491, NJ_S("Slot 17 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 492, NJ_S("Slot 17 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 493, NJ_S("Slot 18 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 494, NJ_S("Slot 18 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 494, NJ_S("Slot 18 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 495, NJ_S("Slot 18 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 496, NJ_S("Slot 19 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 497, NJ_S("Slot 19 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 497, NJ_S("Slot 19 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 498, NJ_S("Slot 19 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 499, NJ_S("Slot 20 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 500, NJ_S("Slot 20 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 500, NJ_S("Slot 20 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 501, NJ_S("Slot 20 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4000, NJ_S("Slot 21 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4001, NJ_S("Slot 21 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4001, NJ_S("Slot 21 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4002, NJ_S("Slot 21 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4003, NJ_S("Slot 22 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4004, NJ_S("Slot 22 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4004, NJ_S("Slot 22 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4005, NJ_S("Slot 22 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4006, NJ_S("Slot 23 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4007, NJ_S("Slot 23 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4007, NJ_S("Slot 23 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4008, NJ_S("Slot 23 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4009, NJ_S("Slot 24 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4010, NJ_S("Slot 24 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4010, NJ_S("Slot 24 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4011, NJ_S("Slot 24 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4012, NJ_S("Slot 25 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -275,46 +275,46 @@ static void allSpecs_5 (std::vector<Spec>& v)
 static void allSpecs_6 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4013, NJ_S("Slot 25 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4013, NJ_S("Slot 25 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4014, NJ_S("Slot 25 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4015, NJ_S("Slot 26 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4016, NJ_S("Slot 26 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4016, NJ_S("Slot 26 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4017, NJ_S("Slot 26 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4018, NJ_S("Slot 27 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4019, NJ_S("Slot 27 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4019, NJ_S("Slot 27 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4020, NJ_S("Slot 27 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4021, NJ_S("Slot 28 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4022, NJ_S("Slot 28 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4022, NJ_S("Slot 28 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4023, NJ_S("Slot 28 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4024, NJ_S("Slot 29 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4025, NJ_S("Slot 29 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4025, NJ_S("Slot 29 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4026, NJ_S("Slot 29 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4027, NJ_S("Slot 30 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4028, NJ_S("Slot 30 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4028, NJ_S("Slot 30 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4029, NJ_S("Slot 30 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4030, NJ_S("Slot 31 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4031, NJ_S("Slot 31 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4031, NJ_S("Slot 31 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4032, NJ_S("Slot 31 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4033, NJ_S("Slot 32 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4034, NJ_S("Slot 32 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4034, NJ_S("Slot 32 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4035, NJ_S("Slot 32 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4036, NJ_S("Slot 33 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4037, NJ_S("Slot 33 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4037, NJ_S("Slot 33 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4038, NJ_S("Slot 33 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4039, NJ_S("Slot 34 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4040, NJ_S("Slot 34 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4040, NJ_S("Slot 34 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4041, NJ_S("Slot 34 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4042, NJ_S("Slot 35 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4043, NJ_S("Slot 35 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4043, NJ_S("Slot 35 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4044, NJ_S("Slot 35 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4045, NJ_S("Slot 36 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4046, NJ_S("Slot 36 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4046, NJ_S("Slot 36 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4047, NJ_S("Slot 36 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4048, NJ_S("Slot 37 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4049, NJ_S("Slot 37 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4049, NJ_S("Slot 37 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4050, NJ_S("Slot 37 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4051, NJ_S("Slot 38 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4052, NJ_S("Slot 38 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4052, NJ_S("Slot 38 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_7 (std::vector<Spec>& v)
@@ -322,43 +322,43 @@ static void allSpecs_7 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4053, NJ_S("Slot 38 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4054, NJ_S("Slot 39 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4055, NJ_S("Slot 39 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4055, NJ_S("Slot 39 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4056, NJ_S("Slot 39 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4057, NJ_S("Slot 40 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4058, NJ_S("Slot 40 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4058, NJ_S("Slot 40 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4059, NJ_S("Slot 40 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4060, NJ_S("Slot 41 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4061, NJ_S("Slot 41 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4061, NJ_S("Slot 41 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4062, NJ_S("Slot 41 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4063, NJ_S("Slot 42 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4064, NJ_S("Slot 42 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4064, NJ_S("Slot 42 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4065, NJ_S("Slot 42 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4066, NJ_S("Slot 43 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4067, NJ_S("Slot 43 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4067, NJ_S("Slot 43 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4068, NJ_S("Slot 43 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4069, NJ_S("Slot 44 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4070, NJ_S("Slot 44 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4070, NJ_S("Slot 44 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4071, NJ_S("Slot 44 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4072, NJ_S("Slot 45 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4073, NJ_S("Slot 45 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4073, NJ_S("Slot 45 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4074, NJ_S("Slot 45 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4075, NJ_S("Slot 46 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4076, NJ_S("Slot 46 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4076, NJ_S("Slot 46 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4077, NJ_S("Slot 46 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4078, NJ_S("Slot 47 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4079, NJ_S("Slot 47 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4079, NJ_S("Slot 47 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4080, NJ_S("Slot 47 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4081, NJ_S("Slot 48 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4082, NJ_S("Slot 48 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4082, NJ_S("Slot 48 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4083, NJ_S("Slot 48 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4084, NJ_S("Slot 49 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4085, NJ_S("Slot 49 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4085, NJ_S("Slot 49 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4086, NJ_S("Slot 49 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4087, NJ_S("Slot 50 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4088, NJ_S("Slot 50 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4088, NJ_S("Slot 50 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4089, NJ_S("Slot 50 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4090, NJ_S("Slot 51 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4091, NJ_S("Slot 51 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4091, NJ_S("Slot 51 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4092, NJ_S("Slot 51 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -366,43 +366,43 @@ static void allSpecs_8 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4093, NJ_S("Slot 52 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4094, NJ_S("Slot 52 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4094, NJ_S("Slot 52 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4095, NJ_S("Slot 52 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4096, NJ_S("Slot 53 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4097, NJ_S("Slot 53 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4097, NJ_S("Slot 53 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4098, NJ_S("Slot 53 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4099, NJ_S("Slot 54 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4100, NJ_S("Slot 54 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4100, NJ_S("Slot 54 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4101, NJ_S("Slot 54 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4102, NJ_S("Slot 55 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4103, NJ_S("Slot 55 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4103, NJ_S("Slot 55 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4104, NJ_S("Slot 55 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4105, NJ_S("Slot 56 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4106, NJ_S("Slot 56 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4106, NJ_S("Slot 56 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4107, NJ_S("Slot 56 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4108, NJ_S("Slot 57 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4109, NJ_S("Slot 57 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4109, NJ_S("Slot 57 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4110, NJ_S("Slot 57 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4111, NJ_S("Slot 58 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4112, NJ_S("Slot 58 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4112, NJ_S("Slot 58 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4113, NJ_S("Slot 58 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4114, NJ_S("Slot 59 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4115, NJ_S("Slot 59 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4115, NJ_S("Slot 59 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4116, NJ_S("Slot 59 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4117, NJ_S("Slot 60 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4118, NJ_S("Slot 60 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4118, NJ_S("Slot 60 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4119, NJ_S("Slot 60 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4120, NJ_S("Slot 61 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4121, NJ_S("Slot 61 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4121, NJ_S("Slot 61 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4122, NJ_S("Slot 61 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4123, NJ_S("Slot 62 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4124, NJ_S("Slot 62 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4124, NJ_S("Slot 62 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4125, NJ_S("Slot 62 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4126, NJ_S("Slot 63 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4127, NJ_S("Slot 63 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4127, NJ_S("Slot 63 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4128, NJ_S("Slot 63 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4129, NJ_S("Slot 64 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4130, NJ_S("Slot 64 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4130, NJ_S("Slot 64 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4131, NJ_S("Slot 64 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4132, NJ_S("Slot 65 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -410,46 +410,46 @@ static void allSpecs_8 (std::vector<Spec>& v)
 static void allSpecs_9 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4133, NJ_S("Slot 65 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4133, NJ_S("Slot 65 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4134, NJ_S("Slot 65 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4135, NJ_S("Slot 66 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4136, NJ_S("Slot 66 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4136, NJ_S("Slot 66 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4137, NJ_S("Slot 66 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4138, NJ_S("Slot 67 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4139, NJ_S("Slot 67 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4139, NJ_S("Slot 67 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4140, NJ_S("Slot 67 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4141, NJ_S("Slot 68 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4142, NJ_S("Slot 68 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4142, NJ_S("Slot 68 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4143, NJ_S("Slot 68 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4144, NJ_S("Slot 69 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4145, NJ_S("Slot 69 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4145, NJ_S("Slot 69 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4146, NJ_S("Slot 69 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4147, NJ_S("Slot 70 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4148, NJ_S("Slot 70 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4148, NJ_S("Slot 70 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4149, NJ_S("Slot 70 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4150, NJ_S("Slot 71 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4151, NJ_S("Slot 71 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4151, NJ_S("Slot 71 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4152, NJ_S("Slot 71 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4153, NJ_S("Slot 72 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4154, NJ_S("Slot 72 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4154, NJ_S("Slot 72 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4155, NJ_S("Slot 72 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4156, NJ_S("Slot 73 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4157, NJ_S("Slot 73 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4157, NJ_S("Slot 73 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4158, NJ_S("Slot 73 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4159, NJ_S("Slot 74 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4160, NJ_S("Slot 74 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4160, NJ_S("Slot 74 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4161, NJ_S("Slot 74 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4162, NJ_S("Slot 75 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4163, NJ_S("Slot 75 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4163, NJ_S("Slot 75 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4164, NJ_S("Slot 75 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4165, NJ_S("Slot 76 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4166, NJ_S("Slot 76 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4166, NJ_S("Slot 76 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4167, NJ_S("Slot 76 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4168, NJ_S("Slot 77 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4169, NJ_S("Slot 77 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4169, NJ_S("Slot 77 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4170, NJ_S("Slot 77 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4171, NJ_S("Slot 78 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4172, NJ_S("Slot 78 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4172, NJ_S("Slot 78 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_10 (std::vector<Spec>& v)
@@ -457,43 +457,43 @@ static void allSpecs_10 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4173, NJ_S("Slot 78 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4174, NJ_S("Slot 79 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4175, NJ_S("Slot 79 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4175, NJ_S("Slot 79 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4176, NJ_S("Slot 79 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4177, NJ_S("Slot 80 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4178, NJ_S("Slot 80 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4178, NJ_S("Slot 80 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4179, NJ_S("Slot 80 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4180, NJ_S("Slot 81 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4181, NJ_S("Slot 81 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4181, NJ_S("Slot 81 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4182, NJ_S("Slot 81 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4183, NJ_S("Slot 82 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4184, NJ_S("Slot 82 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4184, NJ_S("Slot 82 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4185, NJ_S("Slot 82 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4186, NJ_S("Slot 83 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4187, NJ_S("Slot 83 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4187, NJ_S("Slot 83 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4188, NJ_S("Slot 83 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4189, NJ_S("Slot 84 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4190, NJ_S("Slot 84 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4190, NJ_S("Slot 84 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4191, NJ_S("Slot 84 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4192, NJ_S("Slot 85 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4193, NJ_S("Slot 85 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4193, NJ_S("Slot 85 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4194, NJ_S("Slot 85 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4195, NJ_S("Slot 86 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4196, NJ_S("Slot 86 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4196, NJ_S("Slot 86 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4197, NJ_S("Slot 86 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4198, NJ_S("Slot 87 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4199, NJ_S("Slot 87 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4199, NJ_S("Slot 87 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4200, NJ_S("Slot 87 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4201, NJ_S("Slot 88 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4202, NJ_S("Slot 88 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4202, NJ_S("Slot 88 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4203, NJ_S("Slot 88 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4204, NJ_S("Slot 89 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4205, NJ_S("Slot 89 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4205, NJ_S("Slot 89 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4206, NJ_S("Slot 89 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4207, NJ_S("Slot 90 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4208, NJ_S("Slot 90 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4208, NJ_S("Slot 90 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4209, NJ_S("Slot 90 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4210, NJ_S("Slot 91 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4211, NJ_S("Slot 91 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4211, NJ_S("Slot 91 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4212, NJ_S("Slot 91 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -501,43 +501,43 @@ static void allSpecs_11 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4213, NJ_S("Slot 92 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4214, NJ_S("Slot 92 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4214, NJ_S("Slot 92 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4215, NJ_S("Slot 92 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4216, NJ_S("Slot 93 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4217, NJ_S("Slot 93 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4217, NJ_S("Slot 93 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4218, NJ_S("Slot 93 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4219, NJ_S("Slot 94 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4220, NJ_S("Slot 94 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4220, NJ_S("Slot 94 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4221, NJ_S("Slot 94 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4222, NJ_S("Slot 95 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4223, NJ_S("Slot 95 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4223, NJ_S("Slot 95 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4224, NJ_S("Slot 95 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4225, NJ_S("Slot 96 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4226, NJ_S("Slot 96 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4226, NJ_S("Slot 96 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4227, NJ_S("Slot 96 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4228, NJ_S("Slot 97 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4229, NJ_S("Slot 97 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4229, NJ_S("Slot 97 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4230, NJ_S("Slot 97 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4231, NJ_S("Slot 98 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4232, NJ_S("Slot 98 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4232, NJ_S("Slot 98 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4233, NJ_S("Slot 98 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4234, NJ_S("Slot 99 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4235, NJ_S("Slot 99 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4235, NJ_S("Slot 99 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4236, NJ_S("Slot 99 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4237, NJ_S("Slot 100 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4238, NJ_S("Slot 100 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4238, NJ_S("Slot 100 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4239, NJ_S("Slot 100 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4240, NJ_S("Slot 101 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4241, NJ_S("Slot 101 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4241, NJ_S("Slot 101 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4242, NJ_S("Slot 101 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4243, NJ_S("Slot 102 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4244, NJ_S("Slot 102 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4244, NJ_S("Slot 102 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4245, NJ_S("Slot 102 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4246, NJ_S("Slot 103 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4247, NJ_S("Slot 103 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4247, NJ_S("Slot 103 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4248, NJ_S("Slot 103 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4249, NJ_S("Slot 104 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4250, NJ_S("Slot 104 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4250, NJ_S("Slot 104 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4251, NJ_S("Slot 104 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4252, NJ_S("Slot 105 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -545,46 +545,46 @@ static void allSpecs_11 (std::vector<Spec>& v)
 static void allSpecs_12 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4253, NJ_S("Slot 105 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4253, NJ_S("Slot 105 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4254, NJ_S("Slot 105 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4255, NJ_S("Slot 106 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4256, NJ_S("Slot 106 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4256, NJ_S("Slot 106 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4257, NJ_S("Slot 106 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4258, NJ_S("Slot 107 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4259, NJ_S("Slot 107 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4259, NJ_S("Slot 107 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4260, NJ_S("Slot 107 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4261, NJ_S("Slot 108 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4262, NJ_S("Slot 108 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4262, NJ_S("Slot 108 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4263, NJ_S("Slot 108 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4264, NJ_S("Slot 109 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4265, NJ_S("Slot 109 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4265, NJ_S("Slot 109 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4266, NJ_S("Slot 109 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4267, NJ_S("Slot 110 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4268, NJ_S("Slot 110 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4268, NJ_S("Slot 110 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4269, NJ_S("Slot 110 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4270, NJ_S("Slot 111 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4271, NJ_S("Slot 111 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4271, NJ_S("Slot 111 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4272, NJ_S("Slot 111 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4273, NJ_S("Slot 112 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4274, NJ_S("Slot 112 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4274, NJ_S("Slot 112 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4275, NJ_S("Slot 112 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4276, NJ_S("Slot 113 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4277, NJ_S("Slot 113 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4277, NJ_S("Slot 113 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4278, NJ_S("Slot 113 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4279, NJ_S("Slot 114 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4280, NJ_S("Slot 114 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4280, NJ_S("Slot 114 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4281, NJ_S("Slot 114 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4282, NJ_S("Slot 115 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4283, NJ_S("Slot 115 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4283, NJ_S("Slot 115 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4284, NJ_S("Slot 115 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4285, NJ_S("Slot 116 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4286, NJ_S("Slot 116 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4286, NJ_S("Slot 116 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4287, NJ_S("Slot 116 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4288, NJ_S("Slot 117 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4289, NJ_S("Slot 117 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4289, NJ_S("Slot 117 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4290, NJ_S("Slot 117 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4291, NJ_S("Slot 118 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4292, NJ_S("Slot 118 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4292, NJ_S("Slot 118 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_13 (std::vector<Spec>& v)
@@ -592,43 +592,43 @@ static void allSpecs_13 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4293, NJ_S("Slot 118 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4294, NJ_S("Slot 119 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4295, NJ_S("Slot 119 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4295, NJ_S("Slot 119 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4296, NJ_S("Slot 119 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4297, NJ_S("Slot 120 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4298, NJ_S("Slot 120 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4298, NJ_S("Slot 120 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4299, NJ_S("Slot 120 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4300, NJ_S("Slot 121 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4301, NJ_S("Slot 121 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4301, NJ_S("Slot 121 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4302, NJ_S("Slot 121 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4303, NJ_S("Slot 122 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4304, NJ_S("Slot 122 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4304, NJ_S("Slot 122 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4305, NJ_S("Slot 122 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4306, NJ_S("Slot 123 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4307, NJ_S("Slot 123 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4307, NJ_S("Slot 123 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4308, NJ_S("Slot 123 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4309, NJ_S("Slot 124 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4310, NJ_S("Slot 124 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4310, NJ_S("Slot 124 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4311, NJ_S("Slot 124 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4312, NJ_S("Slot 125 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4313, NJ_S("Slot 125 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4313, NJ_S("Slot 125 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4314, NJ_S("Slot 125 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4315, NJ_S("Slot 126 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4316, NJ_S("Slot 126 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4316, NJ_S("Slot 126 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4317, NJ_S("Slot 126 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4318, NJ_S("Slot 127 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4319, NJ_S("Slot 127 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4319, NJ_S("Slot 127 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4320, NJ_S("Slot 127 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4321, NJ_S("Slot 128 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4322, NJ_S("Slot 128 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4322, NJ_S("Slot 128 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4323, NJ_S("Slot 128 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4324, NJ_S("Slot 129 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4325, NJ_S("Slot 129 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4325, NJ_S("Slot 129 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4326, NJ_S("Slot 129 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4327, NJ_S("Slot 130 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4328, NJ_S("Slot 130 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4328, NJ_S("Slot 130 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4329, NJ_S("Slot 130 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4330, NJ_S("Slot 131 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4331, NJ_S("Slot 131 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4331, NJ_S("Slot 131 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4332, NJ_S("Slot 131 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -636,43 +636,43 @@ static void allSpecs_14 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4333, NJ_S("Slot 132 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4334, NJ_S("Slot 132 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4334, NJ_S("Slot 132 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4335, NJ_S("Slot 132 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4336, NJ_S("Slot 133 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4337, NJ_S("Slot 133 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4337, NJ_S("Slot 133 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4338, NJ_S("Slot 133 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4339, NJ_S("Slot 134 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4340, NJ_S("Slot 134 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4340, NJ_S("Slot 134 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4341, NJ_S("Slot 134 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4342, NJ_S("Slot 135 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4343, NJ_S("Slot 135 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4343, NJ_S("Slot 135 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4344, NJ_S("Slot 135 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4345, NJ_S("Slot 136 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4346, NJ_S("Slot 136 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4346, NJ_S("Slot 136 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4347, NJ_S("Slot 136 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4348, NJ_S("Slot 137 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4349, NJ_S("Slot 137 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4349, NJ_S("Slot 137 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4350, NJ_S("Slot 137 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4351, NJ_S("Slot 138 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4352, NJ_S("Slot 138 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4352, NJ_S("Slot 138 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4353, NJ_S("Slot 138 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4354, NJ_S("Slot 139 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4355, NJ_S("Slot 139 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4355, NJ_S("Slot 139 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4356, NJ_S("Slot 139 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4357, NJ_S("Slot 140 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4358, NJ_S("Slot 140 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4358, NJ_S("Slot 140 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4359, NJ_S("Slot 140 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4360, NJ_S("Slot 141 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4361, NJ_S("Slot 141 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4361, NJ_S("Slot 141 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4362, NJ_S("Slot 141 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4363, NJ_S("Slot 142 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4364, NJ_S("Slot 142 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4364, NJ_S("Slot 142 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4365, NJ_S("Slot 142 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4366, NJ_S("Slot 143 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4367, NJ_S("Slot 143 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4367, NJ_S("Slot 143 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4368, NJ_S("Slot 143 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4369, NJ_S("Slot 144 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4370, NJ_S("Slot 144 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4370, NJ_S("Slot 144 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4371, NJ_S("Slot 144 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4372, NJ_S("Slot 145 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -680,46 +680,46 @@ static void allSpecs_14 (std::vector<Spec>& v)
 static void allSpecs_15 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4373, NJ_S("Slot 145 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4373, NJ_S("Slot 145 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4374, NJ_S("Slot 145 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4375, NJ_S("Slot 146 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4376, NJ_S("Slot 146 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4376, NJ_S("Slot 146 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4377, NJ_S("Slot 146 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4378, NJ_S("Slot 147 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4379, NJ_S("Slot 147 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4379, NJ_S("Slot 147 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4380, NJ_S("Slot 147 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4381, NJ_S("Slot 148 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4382, NJ_S("Slot 148 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4382, NJ_S("Slot 148 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4383, NJ_S("Slot 148 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4384, NJ_S("Slot 149 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4385, NJ_S("Slot 149 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4385, NJ_S("Slot 149 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4386, NJ_S("Slot 149 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4387, NJ_S("Slot 150 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4388, NJ_S("Slot 150 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4388, NJ_S("Slot 150 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4389, NJ_S("Slot 150 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4390, NJ_S("Slot 151 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4391, NJ_S("Slot 151 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4391, NJ_S("Slot 151 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4392, NJ_S("Slot 151 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4393, NJ_S("Slot 152 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4394, NJ_S("Slot 152 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4394, NJ_S("Slot 152 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4395, NJ_S("Slot 152 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4396, NJ_S("Slot 153 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4397, NJ_S("Slot 153 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4397, NJ_S("Slot 153 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4398, NJ_S("Slot 153 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4399, NJ_S("Slot 154 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4400, NJ_S("Slot 154 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4400, NJ_S("Slot 154 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4401, NJ_S("Slot 154 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4402, NJ_S("Slot 155 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4403, NJ_S("Slot 155 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4403, NJ_S("Slot 155 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4404, NJ_S("Slot 155 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4405, NJ_S("Slot 156 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4406, NJ_S("Slot 156 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4406, NJ_S("Slot 156 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4407, NJ_S("Slot 156 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4408, NJ_S("Slot 157 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4409, NJ_S("Slot 157 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4409, NJ_S("Slot 157 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4410, NJ_S("Slot 157 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4411, NJ_S("Slot 158 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4412, NJ_S("Slot 158 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4412, NJ_S("Slot 158 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_16 (std::vector<Spec>& v)
@@ -727,43 +727,43 @@ static void allSpecs_16 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4413, NJ_S("Slot 158 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4414, NJ_S("Slot 159 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4415, NJ_S("Slot 159 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4415, NJ_S("Slot 159 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4416, NJ_S("Slot 159 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4417, NJ_S("Slot 160 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4418, NJ_S("Slot 160 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4418, NJ_S("Slot 160 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4419, NJ_S("Slot 160 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4420, NJ_S("Slot 161 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4421, NJ_S("Slot 161 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4421, NJ_S("Slot 161 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4422, NJ_S("Slot 161 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4423, NJ_S("Slot 162 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4424, NJ_S("Slot 162 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4424, NJ_S("Slot 162 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4425, NJ_S("Slot 162 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4426, NJ_S("Slot 163 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4427, NJ_S("Slot 163 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4427, NJ_S("Slot 163 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4428, NJ_S("Slot 163 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4429, NJ_S("Slot 164 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4430, NJ_S("Slot 164 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4430, NJ_S("Slot 164 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4431, NJ_S("Slot 164 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4432, NJ_S("Slot 165 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4433, NJ_S("Slot 165 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4433, NJ_S("Slot 165 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4434, NJ_S("Slot 165 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4435, NJ_S("Slot 166 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4436, NJ_S("Slot 166 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4436, NJ_S("Slot 166 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4437, NJ_S("Slot 166 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4438, NJ_S("Slot 167 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4439, NJ_S("Slot 167 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4439, NJ_S("Slot 167 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4440, NJ_S("Slot 167 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4441, NJ_S("Slot 168 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4442, NJ_S("Slot 168 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4442, NJ_S("Slot 168 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4443, NJ_S("Slot 168 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4444, NJ_S("Slot 169 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4445, NJ_S("Slot 169 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4445, NJ_S("Slot 169 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4446, NJ_S("Slot 169 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4447, NJ_S("Slot 170 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4448, NJ_S("Slot 170 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4448, NJ_S("Slot 170 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4449, NJ_S("Slot 170 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4450, NJ_S("Slot 171 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4451, NJ_S("Slot 171 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4451, NJ_S("Slot 171 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4452, NJ_S("Slot 171 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -771,43 +771,43 @@ static void allSpecs_17 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4453, NJ_S("Slot 172 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4454, NJ_S("Slot 172 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4454, NJ_S("Slot 172 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4455, NJ_S("Slot 172 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4456, NJ_S("Slot 173 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4457, NJ_S("Slot 173 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4457, NJ_S("Slot 173 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4458, NJ_S("Slot 173 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4459, NJ_S("Slot 174 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4460, NJ_S("Slot 174 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4460, NJ_S("Slot 174 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4461, NJ_S("Slot 174 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4462, NJ_S("Slot 175 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4463, NJ_S("Slot 175 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4463, NJ_S("Slot 175 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4464, NJ_S("Slot 175 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4465, NJ_S("Slot 176 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4466, NJ_S("Slot 176 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4466, NJ_S("Slot 176 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4467, NJ_S("Slot 176 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4468, NJ_S("Slot 177 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4469, NJ_S("Slot 177 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4469, NJ_S("Slot 177 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4470, NJ_S("Slot 177 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4471, NJ_S("Slot 178 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4472, NJ_S("Slot 178 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4472, NJ_S("Slot 178 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4473, NJ_S("Slot 178 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4474, NJ_S("Slot 179 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4475, NJ_S("Slot 179 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4475, NJ_S("Slot 179 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4476, NJ_S("Slot 179 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4477, NJ_S("Slot 180 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4478, NJ_S("Slot 180 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4478, NJ_S("Slot 180 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4479, NJ_S("Slot 180 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4480, NJ_S("Slot 181 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4481, NJ_S("Slot 181 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4481, NJ_S("Slot 181 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4482, NJ_S("Slot 181 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4483, NJ_S("Slot 182 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4484, NJ_S("Slot 182 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4484, NJ_S("Slot 182 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4485, NJ_S("Slot 182 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4486, NJ_S("Slot 183 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4487, NJ_S("Slot 183 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4487, NJ_S("Slot 183 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4488, NJ_S("Slot 183 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4489, NJ_S("Slot 184 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4490, NJ_S("Slot 184 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4490, NJ_S("Slot 184 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4491, NJ_S("Slot 184 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4492, NJ_S("Slot 185 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -815,46 +815,46 @@ static void allSpecs_17 (std::vector<Spec>& v)
 static void allSpecs_18 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4493, NJ_S("Slot 185 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4493, NJ_S("Slot 185 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4494, NJ_S("Slot 185 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4495, NJ_S("Slot 186 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4496, NJ_S("Slot 186 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4496, NJ_S("Slot 186 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4497, NJ_S("Slot 186 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4498, NJ_S("Slot 187 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4499, NJ_S("Slot 187 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4499, NJ_S("Slot 187 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4500, NJ_S("Slot 187 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4501, NJ_S("Slot 188 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4502, NJ_S("Slot 188 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4502, NJ_S("Slot 188 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4503, NJ_S("Slot 188 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4504, NJ_S("Slot 189 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4505, NJ_S("Slot 189 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4505, NJ_S("Slot 189 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4506, NJ_S("Slot 189 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4507, NJ_S("Slot 190 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4508, NJ_S("Slot 190 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4508, NJ_S("Slot 190 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4509, NJ_S("Slot 190 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4510, NJ_S("Slot 191 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4511, NJ_S("Slot 191 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4511, NJ_S("Slot 191 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4512, NJ_S("Slot 191 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4513, NJ_S("Slot 192 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4514, NJ_S("Slot 192 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4514, NJ_S("Slot 192 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4515, NJ_S("Slot 192 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4516, NJ_S("Slot 193 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4517, NJ_S("Slot 193 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4517, NJ_S("Slot 193 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4518, NJ_S("Slot 193 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4519, NJ_S("Slot 194 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4520, NJ_S("Slot 194 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4520, NJ_S("Slot 194 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4521, NJ_S("Slot 194 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4522, NJ_S("Slot 195 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4523, NJ_S("Slot 195 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4523, NJ_S("Slot 195 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4524, NJ_S("Slot 195 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4525, NJ_S("Slot 196 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4526, NJ_S("Slot 196 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4526, NJ_S("Slot 196 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4527, NJ_S("Slot 196 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4528, NJ_S("Slot 197 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4529, NJ_S("Slot 197 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4529, NJ_S("Slot 197 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4530, NJ_S("Slot 197 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4531, NJ_S("Slot 198 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4532, NJ_S("Slot 198 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4532, NJ_S("Slot 198 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_19 (std::vector<Spec>& v)
@@ -862,43 +862,43 @@ static void allSpecs_19 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4533, NJ_S("Slot 198 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4534, NJ_S("Slot 199 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4535, NJ_S("Slot 199 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4535, NJ_S("Slot 199 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4536, NJ_S("Slot 199 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4537, NJ_S("Slot 200 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4538, NJ_S("Slot 200 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4538, NJ_S("Slot 200 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4539, NJ_S("Slot 200 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4540, NJ_S("Slot 201 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4541, NJ_S("Slot 201 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4541, NJ_S("Slot 201 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4542, NJ_S("Slot 201 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4543, NJ_S("Slot 202 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4544, NJ_S("Slot 202 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4544, NJ_S("Slot 202 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4545, NJ_S("Slot 202 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4546, NJ_S("Slot 203 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4547, NJ_S("Slot 203 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4547, NJ_S("Slot 203 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4548, NJ_S("Slot 203 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4549, NJ_S("Slot 204 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4550, NJ_S("Slot 204 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4550, NJ_S("Slot 204 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4551, NJ_S("Slot 204 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4552, NJ_S("Slot 205 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4553, NJ_S("Slot 205 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4553, NJ_S("Slot 205 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4554, NJ_S("Slot 205 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4555, NJ_S("Slot 206 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4556, NJ_S("Slot 206 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4556, NJ_S("Slot 206 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4557, NJ_S("Slot 206 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4558, NJ_S("Slot 207 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4559, NJ_S("Slot 207 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4559, NJ_S("Slot 207 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4560, NJ_S("Slot 207 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4561, NJ_S("Slot 208 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4562, NJ_S("Slot 208 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4562, NJ_S("Slot 208 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4563, NJ_S("Slot 208 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4564, NJ_S("Slot 209 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4565, NJ_S("Slot 209 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4565, NJ_S("Slot 209 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4566, NJ_S("Slot 209 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4567, NJ_S("Slot 210 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4568, NJ_S("Slot 210 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4568, NJ_S("Slot 210 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4569, NJ_S("Slot 210 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4570, NJ_S("Slot 211 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4571, NJ_S("Slot 211 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4571, NJ_S("Slot 211 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4572, NJ_S("Slot 211 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -906,43 +906,43 @@ static void allSpecs_20 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4573, NJ_S("Slot 212 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4574, NJ_S("Slot 212 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4574, NJ_S("Slot 212 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4575, NJ_S("Slot 212 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4576, NJ_S("Slot 213 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4577, NJ_S("Slot 213 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4577, NJ_S("Slot 213 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4578, NJ_S("Slot 213 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4579, NJ_S("Slot 214 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4580, NJ_S("Slot 214 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4580, NJ_S("Slot 214 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4581, NJ_S("Slot 214 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4582, NJ_S("Slot 215 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4583, NJ_S("Slot 215 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4583, NJ_S("Slot 215 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4584, NJ_S("Slot 215 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4585, NJ_S("Slot 216 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4586, NJ_S("Slot 216 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4586, NJ_S("Slot 216 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4587, NJ_S("Slot 216 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4588, NJ_S("Slot 217 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4589, NJ_S("Slot 217 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4589, NJ_S("Slot 217 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4590, NJ_S("Slot 217 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4591, NJ_S("Slot 218 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4592, NJ_S("Slot 218 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4592, NJ_S("Slot 218 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4593, NJ_S("Slot 218 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4594, NJ_S("Slot 219 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4595, NJ_S("Slot 219 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4595, NJ_S("Slot 219 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4596, NJ_S("Slot 219 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4597, NJ_S("Slot 220 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4598, NJ_S("Slot 220 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4598, NJ_S("Slot 220 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4599, NJ_S("Slot 220 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4600, NJ_S("Slot 221 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4601, NJ_S("Slot 221 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4601, NJ_S("Slot 221 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4602, NJ_S("Slot 221 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4603, NJ_S("Slot 222 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4604, NJ_S("Slot 222 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4604, NJ_S("Slot 222 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4605, NJ_S("Slot 222 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4606, NJ_S("Slot 223 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4607, NJ_S("Slot 223 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4607, NJ_S("Slot 223 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4608, NJ_S("Slot 223 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4609, NJ_S("Slot 224 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4610, NJ_S("Slot 224 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4610, NJ_S("Slot 224 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4611, NJ_S("Slot 224 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4612, NJ_S("Slot 225 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
     });
@@ -950,46 +950,46 @@ static void allSpecs_20 (std::vector<Spec>& v)
 static void allSpecs_21 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
-        Spec { 4613, NJ_S("Slot 225 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4613, NJ_S("Slot 225 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4614, NJ_S("Slot 225 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4615, NJ_S("Slot 226 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4616, NJ_S("Slot 226 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4616, NJ_S("Slot 226 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4617, NJ_S("Slot 226 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4618, NJ_S("Slot 227 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4619, NJ_S("Slot 227 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4619, NJ_S("Slot 227 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4620, NJ_S("Slot 227 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4621, NJ_S("Slot 228 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4622, NJ_S("Slot 228 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4622, NJ_S("Slot 228 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4623, NJ_S("Slot 228 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4624, NJ_S("Slot 229 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4625, NJ_S("Slot 229 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4625, NJ_S("Slot 229 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4626, NJ_S("Slot 229 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4627, NJ_S("Slot 230 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4628, NJ_S("Slot 230 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4628, NJ_S("Slot 230 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4629, NJ_S("Slot 230 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4630, NJ_S("Slot 231 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4631, NJ_S("Slot 231 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4631, NJ_S("Slot 231 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4632, NJ_S("Slot 231 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4633, NJ_S("Slot 232 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4634, NJ_S("Slot 232 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4634, NJ_S("Slot 232 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4635, NJ_S("Slot 232 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4636, NJ_S("Slot 233 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4637, NJ_S("Slot 233 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4637, NJ_S("Slot 233 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4638, NJ_S("Slot 233 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4639, NJ_S("Slot 234 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4640, NJ_S("Slot 234 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4640, NJ_S("Slot 234 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4641, NJ_S("Slot 234 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4642, NJ_S("Slot 235 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4643, NJ_S("Slot 235 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4643, NJ_S("Slot 235 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4644, NJ_S("Slot 235 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4645, NJ_S("Slot 236 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4646, NJ_S("Slot 236 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4646, NJ_S("Slot 236 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4647, NJ_S("Slot 236 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4648, NJ_S("Slot 237 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4649, NJ_S("Slot 237 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4649, NJ_S("Slot 237 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4650, NJ_S("Slot 237 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4651, NJ_S("Slot 238 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4652, NJ_S("Slot 238 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4652, NJ_S("Slot 238 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
     });
 }
 static void allSpecs_22 (std::vector<Spec>& v)
@@ -997,43 +997,43 @@ static void allSpecs_22 (std::vector<Spec>& v)
     v.insert (v.end(), {
         Spec { 4653, NJ_S("Slot 238 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4654, NJ_S("Slot 239 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4655, NJ_S("Slot 239 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4655, NJ_S("Slot 239 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4656, NJ_S("Slot 239 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4657, NJ_S("Slot 240 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4658, NJ_S("Slot 240 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4658, NJ_S("Slot 240 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4659, NJ_S("Slot 240 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4660, NJ_S("Slot 241 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4661, NJ_S("Slot 241 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4661, NJ_S("Slot 241 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4662, NJ_S("Slot 241 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4663, NJ_S("Slot 242 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4664, NJ_S("Slot 242 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4664, NJ_S("Slot 242 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4665, NJ_S("Slot 242 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4666, NJ_S("Slot 243 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4667, NJ_S("Slot 243 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4667, NJ_S("Slot 243 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4668, NJ_S("Slot 243 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4669, NJ_S("Slot 244 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4670, NJ_S("Slot 244 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4670, NJ_S("Slot 244 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4671, NJ_S("Slot 244 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4672, NJ_S("Slot 245 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4673, NJ_S("Slot 245 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4673, NJ_S("Slot 245 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4674, NJ_S("Slot 245 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4675, NJ_S("Slot 246 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4676, NJ_S("Slot 246 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4676, NJ_S("Slot 246 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4677, NJ_S("Slot 246 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4678, NJ_S("Slot 247 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4679, NJ_S("Slot 247 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4679, NJ_S("Slot 247 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4680, NJ_S("Slot 247 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4681, NJ_S("Slot 248 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4682, NJ_S("Slot 248 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4682, NJ_S("Slot 248 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4683, NJ_S("Slot 248 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4684, NJ_S("Slot 249 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4685, NJ_S("Slot 249 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4685, NJ_S("Slot 249 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4686, NJ_S("Slot 249 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4687, NJ_S("Slot 250 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4688, NJ_S("Slot 250 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4688, NJ_S("Slot 250 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4689, NJ_S("Slot 250 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4690, NJ_S("Slot 251 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4691, NJ_S("Slot 251 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4691, NJ_S("Slot 251 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4692, NJ_S("Slot 251 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
     });
 }
@@ -1041,19 +1041,19 @@ static void allSpecs_23 (std::vector<Spec>& v)
 {
     v.insert (v.end(), {
         Spec { 4693, NJ_S("Slot 252 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4694, NJ_S("Slot 252 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4694, NJ_S("Slot 252 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4695, NJ_S("Slot 252 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4696, NJ_S("Slot 253 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4697, NJ_S("Slot 253 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4697, NJ_S("Slot 253 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4698, NJ_S("Slot 253 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4699, NJ_S("Slot 254 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4700, NJ_S("Slot 254 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4700, NJ_S("Slot 254 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4701, NJ_S("Slot 254 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4702, NJ_S("Slot 255 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4703, NJ_S("Slot 255 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4703, NJ_S("Slot 255 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4704, NJ_S("Slot 255 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 4705, NJ_S("Slot 256 Source"), 0.0, 52.0, 0.0, NJ_S(""), NJ_S("sel"), modSrc(), 10, NJ_S(""), modSrcGroups() },
-        Spec { 4706, NJ_S("Slot 256 Dest"), 0.0, 1583.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
+        Spec { 4706, NJ_S("Slot 256 Dest"), 0.0, 5661.0, 0.0, NJ_S(""), NJ_S("sel"), modDst(), 5, NJ_S(""), modDstGroups() },
         Spec { 4707, NJ_S("Slot 256 Amount"), -4.0, 4.0, 0.0, NJ_S(""), NJ_S("sld"), {  }, 1, NJ_S(""), {  } },
         Spec { 502, NJ_S("LFO 1 Sync"), 0.0, 1.0, 0.0, NJ_S(""), NJ_S("btn"), { NJ_S("Free"), NJ_S("Sync") }, 1, NJ_S("Sync"), {  } },
         Spec { 503, NJ_S("LFO 1 Division"), 0.0, 17.0, 8.0, NJ_S(""), NJ_S("sel"), { NJ_S("8/1"), NJ_S("4/1"), NJ_S("2/1"), NJ_S("1/1"), NJ_S("1/2."), NJ_S("1/2"), NJ_S("1/2T"), NJ_S("1/4."), NJ_S("1/4"), NJ_S("1/4T"), NJ_S("1/8."), NJ_S("1/8"), NJ_S("1/8T"), NJ_S("1/16."), NJ_S("1/16"), NJ_S("1/16T"), NJ_S("1/32"), NJ_S("1/32T") }, 1, NJ_S("Division"), {  } },
@@ -11417,10 +11417,4211 @@ static void modDst_15 (juce::StringArray& v)
     v.add (NJ_S("OSC 6 Bagpipe Strike-In"));
     v.add (NJ_S("OSC 6 Bagpipe Vibrato"));
     v.add (NJ_S("OSC 6 Bagpipe Blow"));
+    v.add (NJ_S("Attack"));
+    v.add (NJ_S("Decay"));
+    v.add (NJ_S("Sustain"));
+    v.add (NJ_S("Release"));
+    v.add (NJ_S("Velocity"));
+    v.add (NJ_S("Synth Drive"));
+    v.add (NJ_S("Master"));
+    v.add (NJ_S("Pitch EG"));
+    v.add (NJ_S("P.EG Decay"));
+    v.add (NJ_S("Master Tune"));
+    v.add (NJ_S("Stereo Width"));
+    v.add (NJ_S("Tone"));
+    v.add (NJ_S("Out Gain"));
+    v.add (NJ_S("DC Block Freq"));
+    v.add (NJ_S("LFO 1 Rate"));
+    v.add (NJ_S("LFO 2 Rate"));
+}
+static void modDst_16 (juce::StringArray& v)
+{
+    v.add (NJ_S("LFO 3 Rate"));
+    v.add (NJ_S("LFO 4 Rate"));
+    v.add (NJ_S("LFO 5 Rate"));
+    v.add (NJ_S("LFO 6 Rate"));
+    v.add (NJ_S("LFO 7 Rate"));
+    v.add (NJ_S("LFO 8 Rate"));
+    v.add (NJ_S("LFO 9 Rate"));
+    v.add (NJ_S("LFO 10 Rate"));
+    v.add (NJ_S("Env 1 Attack"));
+    v.add (NJ_S("Env 1 Decay"));
+    v.add (NJ_S("Env 1 Sustain"));
+    v.add (NJ_S("Env 1 Release"));
+    v.add (NJ_S("Env 2 Attack"));
+    v.add (NJ_S("Env 2 Decay"));
+    v.add (NJ_S("Env 2 Sustain"));
+    v.add (NJ_S("Env 2 Release"));
+    v.add (NJ_S("Env 3 Attack"));
+    v.add (NJ_S("Env 3 Decay"));
+    v.add (NJ_S("Env 3 Sustain"));
+    v.add (NJ_S("Env 3 Release"));
+    v.add (NJ_S("Env 4 Attack"));
+    v.add (NJ_S("Env 4 Decay"));
+    v.add (NJ_S("Env 4 Sustain"));
+    v.add (NJ_S("Env 4 Release"));
+    v.add (NJ_S("Env 5 Attack"));
+    v.add (NJ_S("Env 5 Decay"));
+    v.add (NJ_S("Env 5 Sustain"));
+    v.add (NJ_S("Env 5 Release"));
+    v.add (NJ_S("Env 6 Attack"));
+    v.add (NJ_S("Env 6 Decay"));
+    v.add (NJ_S("Env 6 Sustain"));
+    v.add (NJ_S("Env 6 Release"));
+    v.add (NJ_S("Env 7 Attack"));
+    v.add (NJ_S("Env 7 Decay"));
+    v.add (NJ_S("Env 7 Sustain"));
+    v.add (NJ_S("Env 7 Release"));
+    v.add (NJ_S("Env 8 Attack"));
+    v.add (NJ_S("Env 8 Decay"));
+    v.add (NJ_S("Env 8 Sustain"));
+    v.add (NJ_S("Env 8 Release"));
+    v.add (NJ_S("Env 9 Attack"));
+    v.add (NJ_S("Env 9 Decay"));
+    v.add (NJ_S("Env 9 Sustain"));
+    v.add (NJ_S("Env 9 Release"));
+    v.add (NJ_S("Env 10 Attack"));
+    v.add (NJ_S("Env 10 Decay"));
+    v.add (NJ_S("Env 10 Sustain"));
+    v.add (NJ_S("Env 10 Release"));
+    v.add (NJ_S("Sync BPM"));
+    v.add (NJ_S("OSC 1 Level"));
+    v.add (NJ_S("OSC 1 Pan"));
+    v.add (NJ_S("OSC 1 Fine"));
+    v.add (NJ_S("OSC 1 Start Phase"));
+    v.add (NJ_S("OSC 1 WT Position"));
+    v.add (NJ_S("OSC 1 Unison Detune"));
+    v.add (NJ_S("OSC 1 Unison Blend"));
+    v.add (NJ_S("OSC 1 Unison Width"));
+    v.add (NJ_S("OSC 1 Warp 1 Amount"));
+    v.add (NJ_S("OSC 1 Warp 2 Amount"));
+    v.add (NJ_S("OSC 1 Sample Start"));
+    v.add (NJ_S("OSC 1 Terrain Scale"));
+    v.add (NJ_S("OSC 1 Terrain Warp"));
+    v.add (NJ_S("OSC 1 Terrain Fold"));
+    v.add (NJ_S("OSC 1 Unison Drift"));
+    v.add (NJ_S("OSC 1 Unison Phase"));
+    v.add (NJ_S("OSC 1 Filter Cutoff"));
+    v.add (NJ_S("OSC 1 Filter Resonance"));
+    v.add (NJ_S("OSC 1 Filter Drive"));
+    v.add (NJ_S("OSC 1 Filter Key Track"));
+    v.add (NJ_S("OSC 1 Filter EG Int"));
+    v.add (NJ_S("OSC 1 Filter Velocity"));
+    v.add (NJ_S("OSC 1 Filter EG Attack"));
+    v.add (NJ_S("OSC 1 Filter EG Decay"));
+    v.add (NJ_S("OSC 1 Filter EG Sustain"));
+    v.add (NJ_S("OSC 1 Filter EG Release"));
+    v.add (NJ_S("OSC 1 Distortion Drive"));
+    v.add (NJ_S("OSC 1 Distortion Mix"));
+    v.add (NJ_S("OSC 1 Wavefilter Position"));
+    v.add (NJ_S("OSC 1 Wavedistortion Position"));
+    v.add (NJ_S("OSC 1 Frequency"));
+    v.add (NJ_S("OSC 1 Wavefilter Mix"));
+    v.add (NJ_S("OSC 1 Wavefilter Range"));
+    v.add (NJ_S("OSC 1 Wavefilter Warp"));
+    v.add (NJ_S("OSC 1 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 1 Wavefilter Tilt"));
+    v.add (NJ_S("OSC 1 Wavefilter Spread"));
+    v.add (NJ_S("OSC 1 Resonator Decay"));
+    v.add (NJ_S("OSC 1 Resonator Material"));
+    v.add (NJ_S("OSC 1 Resonator Position"));
+    v.add (NJ_S("OSC 1 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 1 Resonator Tune"));
+    v.add (NJ_S("OSC 1 Resonator Mix"));
+    v.add (NJ_S("OSC 2 Level"));
+    v.add (NJ_S("OSC 2 Pan"));
+    v.add (NJ_S("OSC 2 Fine"));
+    v.add (NJ_S("OSC 2 Start Phase"));
+    v.add (NJ_S("OSC 2 WT Position"));
+    v.add (NJ_S("OSC 2 Unison Detune"));
+    v.add (NJ_S("OSC 2 Unison Blend"));
+    v.add (NJ_S("OSC 2 Unison Width"));
+}
+static void modDst_17 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 2 Warp 1 Amount"));
+    v.add (NJ_S("OSC 2 Warp 2 Amount"));
+    v.add (NJ_S("OSC 2 Sample Start"));
+    v.add (NJ_S("OSC 2 Terrain Scale"));
+    v.add (NJ_S("OSC 2 Terrain Warp"));
+    v.add (NJ_S("OSC 2 Terrain Fold"));
+    v.add (NJ_S("OSC 2 Unison Drift"));
+    v.add (NJ_S("OSC 2 Unison Phase"));
+    v.add (NJ_S("OSC 2 Filter Cutoff"));
+    v.add (NJ_S("OSC 2 Filter Resonance"));
+    v.add (NJ_S("OSC 2 Filter Drive"));
+    v.add (NJ_S("OSC 2 Filter Key Track"));
+    v.add (NJ_S("OSC 2 Filter EG Int"));
+    v.add (NJ_S("OSC 2 Filter Velocity"));
+    v.add (NJ_S("OSC 2 Filter EG Attack"));
+    v.add (NJ_S("OSC 2 Filter EG Decay"));
+    v.add (NJ_S("OSC 2 Filter EG Sustain"));
+    v.add (NJ_S("OSC 2 Filter EG Release"));
+    v.add (NJ_S("OSC 2 Distortion Drive"));
+    v.add (NJ_S("OSC 2 Distortion Mix"));
+    v.add (NJ_S("OSC 2 Wavefilter Position"));
+    v.add (NJ_S("OSC 2 Wavedistortion Position"));
+    v.add (NJ_S("OSC 2 Frequency"));
+    v.add (NJ_S("OSC 2 Wavefilter Mix"));
+    v.add (NJ_S("OSC 2 Wavefilter Range"));
+    v.add (NJ_S("OSC 2 Wavefilter Warp"));
+    v.add (NJ_S("OSC 2 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 2 Wavefilter Tilt"));
+    v.add (NJ_S("OSC 2 Wavefilter Spread"));
+    v.add (NJ_S("OSC 2 Resonator Decay"));
+    v.add (NJ_S("OSC 2 Resonator Material"));
+    v.add (NJ_S("OSC 2 Resonator Position"));
+    v.add (NJ_S("OSC 2 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 2 Resonator Tune"));
+    v.add (NJ_S("OSC 2 Resonator Mix"));
+    v.add (NJ_S("OSC 3 Level"));
+    v.add (NJ_S("OSC 3 Pan"));
+    v.add (NJ_S("OSC 3 Fine"));
+    v.add (NJ_S("OSC 3 Start Phase"));
+    v.add (NJ_S("OSC 3 WT Position"));
+    v.add (NJ_S("OSC 3 Unison Detune"));
+    v.add (NJ_S("OSC 3 Unison Blend"));
+    v.add (NJ_S("OSC 3 Unison Width"));
+    v.add (NJ_S("OSC 3 Warp 1 Amount"));
+    v.add (NJ_S("OSC 3 Warp 2 Amount"));
+    v.add (NJ_S("OSC 3 Sample Start"));
+    v.add (NJ_S("OSC 3 Terrain Scale"));
+    v.add (NJ_S("OSC 3 Terrain Warp"));
+    v.add (NJ_S("OSC 3 Terrain Fold"));
+    v.add (NJ_S("OSC 3 Unison Drift"));
+    v.add (NJ_S("OSC 3 Unison Phase"));
+    v.add (NJ_S("OSC 3 Filter Cutoff"));
+    v.add (NJ_S("OSC 3 Filter Resonance"));
+    v.add (NJ_S("OSC 3 Filter Drive"));
+    v.add (NJ_S("OSC 3 Filter Key Track"));
+    v.add (NJ_S("OSC 3 Filter EG Int"));
+    v.add (NJ_S("OSC 3 Filter Velocity"));
+    v.add (NJ_S("OSC 3 Filter EG Attack"));
+    v.add (NJ_S("OSC 3 Filter EG Decay"));
+    v.add (NJ_S("OSC 3 Filter EG Sustain"));
+    v.add (NJ_S("OSC 3 Filter EG Release"));
+    v.add (NJ_S("OSC 3 Distortion Drive"));
+    v.add (NJ_S("OSC 3 Distortion Mix"));
+    v.add (NJ_S("OSC 3 Wavefilter Position"));
+    v.add (NJ_S("OSC 3 Wavedistortion Position"));
+    v.add (NJ_S("OSC 3 Frequency"));
+    v.add (NJ_S("OSC 3 Wavefilter Mix"));
+    v.add (NJ_S("OSC 3 Wavefilter Range"));
+    v.add (NJ_S("OSC 3 Wavefilter Warp"));
+    v.add (NJ_S("OSC 3 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 3 Wavefilter Tilt"));
+    v.add (NJ_S("OSC 3 Wavefilter Spread"));
+    v.add (NJ_S("OSC 3 Resonator Decay"));
+    v.add (NJ_S("OSC 3 Resonator Material"));
+    v.add (NJ_S("OSC 3 Resonator Position"));
+    v.add (NJ_S("OSC 3 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 3 Resonator Tune"));
+    v.add (NJ_S("OSC 3 Resonator Mix"));
+    v.add (NJ_S("OSC 4 Level"));
+    v.add (NJ_S("OSC 4 Pan"));
+    v.add (NJ_S("OSC 4 Fine"));
+    v.add (NJ_S("OSC 4 Start Phase"));
+    v.add (NJ_S("OSC 4 WT Position"));
+    v.add (NJ_S("OSC 4 Unison Detune"));
+    v.add (NJ_S("OSC 4 Unison Blend"));
+    v.add (NJ_S("OSC 4 Unison Width"));
+    v.add (NJ_S("OSC 4 Warp 1 Amount"));
+    v.add (NJ_S("OSC 4 Warp 2 Amount"));
+    v.add (NJ_S("OSC 4 Sample Start"));
+    v.add (NJ_S("OSC 4 Terrain Scale"));
+    v.add (NJ_S("OSC 4 Terrain Warp"));
+    v.add (NJ_S("OSC 4 Terrain Fold"));
+    v.add (NJ_S("OSC 4 Unison Drift"));
+    v.add (NJ_S("OSC 4 Unison Phase"));
+    v.add (NJ_S("OSC 4 Filter Cutoff"));
+    v.add (NJ_S("OSC 4 Filter Resonance"));
+    v.add (NJ_S("OSC 4 Filter Drive"));
+    v.add (NJ_S("OSC 4 Filter Key Track"));
+    v.add (NJ_S("OSC 4 Filter EG Int"));
+    v.add (NJ_S("OSC 4 Filter Velocity"));
+}
+static void modDst_18 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 Filter EG Attack"));
+    v.add (NJ_S("OSC 4 Filter EG Decay"));
+    v.add (NJ_S("OSC 4 Filter EG Sustain"));
+    v.add (NJ_S("OSC 4 Filter EG Release"));
+    v.add (NJ_S("OSC 4 Distortion Drive"));
+    v.add (NJ_S("OSC 4 Distortion Mix"));
+    v.add (NJ_S("OSC 4 Wavefilter Position"));
+    v.add (NJ_S("OSC 4 Wavedistortion Position"));
+    v.add (NJ_S("OSC 4 Frequency"));
+    v.add (NJ_S("OSC 4 Wavefilter Mix"));
+    v.add (NJ_S("OSC 4 Wavefilter Range"));
+    v.add (NJ_S("OSC 4 Wavefilter Warp"));
+    v.add (NJ_S("OSC 4 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 4 Wavefilter Tilt"));
+    v.add (NJ_S("OSC 4 Wavefilter Spread"));
+    v.add (NJ_S("OSC 4 Resonator Decay"));
+    v.add (NJ_S("OSC 4 Resonator Material"));
+    v.add (NJ_S("OSC 4 Resonator Position"));
+    v.add (NJ_S("OSC 4 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 4 Resonator Tune"));
+    v.add (NJ_S("OSC 4 Resonator Mix"));
+    v.add (NJ_S("OSC 5 Level"));
+    v.add (NJ_S("OSC 5 Pan"));
+    v.add (NJ_S("OSC 5 Fine"));
+    v.add (NJ_S("OSC 5 Start Phase"));
+    v.add (NJ_S("OSC 5 WT Position"));
+    v.add (NJ_S("OSC 5 Unison Detune"));
+    v.add (NJ_S("OSC 5 Unison Blend"));
+    v.add (NJ_S("OSC 5 Unison Width"));
+    v.add (NJ_S("OSC 5 Warp 1 Amount"));
+    v.add (NJ_S("OSC 5 Warp 2 Amount"));
+    v.add (NJ_S("OSC 5 Sample Start"));
+    v.add (NJ_S("OSC 5 Terrain Scale"));
+    v.add (NJ_S("OSC 5 Terrain Warp"));
+    v.add (NJ_S("OSC 5 Terrain Fold"));
+    v.add (NJ_S("OSC 5 Unison Drift"));
+    v.add (NJ_S("OSC 5 Unison Phase"));
+    v.add (NJ_S("OSC 5 Filter Cutoff"));
+    v.add (NJ_S("OSC 5 Filter Resonance"));
+    v.add (NJ_S("OSC 5 Filter Drive"));
+    v.add (NJ_S("OSC 5 Filter Key Track"));
+    v.add (NJ_S("OSC 5 Filter EG Int"));
+    v.add (NJ_S("OSC 5 Filter Velocity"));
+    v.add (NJ_S("OSC 5 Filter EG Attack"));
+    v.add (NJ_S("OSC 5 Filter EG Decay"));
+    v.add (NJ_S("OSC 5 Filter EG Sustain"));
+    v.add (NJ_S("OSC 5 Filter EG Release"));
+    v.add (NJ_S("OSC 5 Distortion Drive"));
+    v.add (NJ_S("OSC 5 Distortion Mix"));
+    v.add (NJ_S("OSC 5 Wavefilter Position"));
+    v.add (NJ_S("OSC 5 Wavedistortion Position"));
+    v.add (NJ_S("OSC 5 Frequency"));
+    v.add (NJ_S("OSC 5 Wavefilter Mix"));
+    v.add (NJ_S("OSC 5 Wavefilter Range"));
+    v.add (NJ_S("OSC 5 Wavefilter Warp"));
+    v.add (NJ_S("OSC 5 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 5 Wavefilter Tilt"));
+    v.add (NJ_S("OSC 5 Wavefilter Spread"));
+    v.add (NJ_S("OSC 5 Resonator Decay"));
+    v.add (NJ_S("OSC 5 Resonator Material"));
+    v.add (NJ_S("OSC 5 Resonator Position"));
+    v.add (NJ_S("OSC 5 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 5 Resonator Tune"));
+    v.add (NJ_S("OSC 5 Resonator Mix"));
+    v.add (NJ_S("OSC 6 Level"));
+    v.add (NJ_S("OSC 6 Pan"));
+    v.add (NJ_S("OSC 6 Fine"));
+    v.add (NJ_S("OSC 6 Start Phase"));
+    v.add (NJ_S("OSC 6 WT Position"));
+    v.add (NJ_S("OSC 6 Unison Detune"));
+    v.add (NJ_S("OSC 6 Unison Blend"));
+    v.add (NJ_S("OSC 6 Unison Width"));
+    v.add (NJ_S("OSC 6 Warp 1 Amount"));
+    v.add (NJ_S("OSC 6 Warp 2 Amount"));
+    v.add (NJ_S("OSC 6 Sample Start"));
+    v.add (NJ_S("OSC 6 Terrain Scale"));
+    v.add (NJ_S("OSC 6 Terrain Warp"));
+    v.add (NJ_S("OSC 6 Terrain Fold"));
+    v.add (NJ_S("OSC 6 Unison Drift"));
+    v.add (NJ_S("OSC 6 Unison Phase"));
+    v.add (NJ_S("OSC 6 Filter Cutoff"));
+    v.add (NJ_S("OSC 6 Filter Resonance"));
+    v.add (NJ_S("OSC 6 Filter Drive"));
+    v.add (NJ_S("OSC 6 Filter Key Track"));
+    v.add (NJ_S("OSC 6 Filter EG Int"));
+    v.add (NJ_S("OSC 6 Filter Velocity"));
+    v.add (NJ_S("OSC 6 Filter EG Attack"));
+    v.add (NJ_S("OSC 6 Filter EG Decay"));
+    v.add (NJ_S("OSC 6 Filter EG Sustain"));
+    v.add (NJ_S("OSC 6 Filter EG Release"));
+    v.add (NJ_S("OSC 6 Distortion Drive"));
+    v.add (NJ_S("OSC 6 Distortion Mix"));
+    v.add (NJ_S("OSC 6 Wavefilter Position"));
+    v.add (NJ_S("OSC 6 Wavedistortion Position"));
+    v.add (NJ_S("OSC 6 Frequency"));
+    v.add (NJ_S("OSC 6 Wavefilter Mix"));
+    v.add (NJ_S("OSC 6 Wavefilter Range"));
+    v.add (NJ_S("OSC 6 Wavefilter Warp"));
+    v.add (NJ_S("OSC 6 Wavefilter Contrast"));
+    v.add (NJ_S("OSC 6 Wavefilter Tilt"));
+}
+static void modDst_19 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 6 Wavefilter Spread"));
+    v.add (NJ_S("OSC 6 Resonator Decay"));
+    v.add (NJ_S("OSC 6 Resonator Material"));
+    v.add (NJ_S("OSC 6 Resonator Position"));
+    v.add (NJ_S("OSC 6 Resonator Inharmonicity"));
+    v.add (NJ_S("OSC 6 Resonator Tune"));
+    v.add (NJ_S("OSC 6 Resonator Mix"));
+    v.add (NJ_S("Freq 1 Rate"));
+    v.add (NJ_S("Freq 1 Transpose"));
+    v.add (NJ_S("Freq 2 Rate"));
+    v.add (NJ_S("Freq 2 Transpose"));
+    v.add (NJ_S("Freq 3 Rate"));
+    v.add (NJ_S("Freq 3 Transpose"));
+    v.add (NJ_S("Freq 4 Rate"));
+    v.add (NJ_S("Freq 4 Transpose"));
+    v.add (NJ_S("Freq 5 Rate"));
+    v.add (NJ_S("Freq 5 Transpose"));
+    v.add (NJ_S("Freq 6 Rate"));
+    v.add (NJ_S("Freq 6 Transpose"));
+    v.add (NJ_S("Freq 7 Rate"));
+    v.add (NJ_S("Freq 7 Transpose"));
+    v.add (NJ_S("Freq 8 Rate"));
+    v.add (NJ_S("Freq 8 Transpose"));
+    v.add (NJ_S("Freq 9 Rate"));
+    v.add (NJ_S("Freq 9 Transpose"));
+    v.add (NJ_S("Freq 10 Rate"));
+    v.add (NJ_S("Freq 10 Transpose"));
+    v.add (NJ_S("OSC 1 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 1 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 1 Physical Noise Time"));
+    v.add (NJ_S("OSC 1 Physical A Decay"));
+    v.add (NJ_S("OSC 1 Physical A Material"));
+    v.add (NJ_S("OSC 1 Physical A Hit Position"));
+    v.add (NJ_S("OSC 1 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 1 Physical B Decay"));
+    v.add (NJ_S("OSC 1 Physical B Material"));
+    v.add (NJ_S("OSC 1 Physical B Hit Position"));
+    v.add (NJ_S("OSC 1 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 1 Physical B Tune"));
+    v.add (NJ_S("OSC 1 Physical A / B Balance"));
+    v.add (NJ_S("OSC 1 Juno Saw Level"));
+    v.add (NJ_S("OSC 1 Juno Pulse Level"));
+    v.add (NJ_S("OSC 1 Juno Pulse Width"));
+    v.add (NJ_S("OSC 1 Juno PWM Depth"));
+    v.add (NJ_S("OSC 1 Juno PWM Rate"));
+    v.add (NJ_S("OSC 1 Juno Sub Level"));
+    v.add (NJ_S("OSC 1 Juno Noise Level"));
+    v.add (NJ_S("OSC 1 Juno Drift"));
+    v.add (NJ_S("OSC 1 Juno Saw Curve"));
+    v.add (NJ_S("OSC 1 Juno Vibrato"));
+    v.add (NJ_S("OSC 2 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 2 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 2 Physical Noise Time"));
+    v.add (NJ_S("OSC 2 Physical A Decay"));
+    v.add (NJ_S("OSC 2 Physical A Material"));
+    v.add (NJ_S("OSC 2 Physical A Hit Position"));
+    v.add (NJ_S("OSC 2 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 2 Physical B Decay"));
+    v.add (NJ_S("OSC 2 Physical B Material"));
+    v.add (NJ_S("OSC 2 Physical B Hit Position"));
+    v.add (NJ_S("OSC 2 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 2 Physical B Tune"));
+    v.add (NJ_S("OSC 2 Physical A / B Balance"));
+    v.add (NJ_S("OSC 2 Juno Saw Level"));
+    v.add (NJ_S("OSC 2 Juno Pulse Level"));
+    v.add (NJ_S("OSC 2 Juno Pulse Width"));
+    v.add (NJ_S("OSC 2 Juno PWM Depth"));
+    v.add (NJ_S("OSC 2 Juno PWM Rate"));
+    v.add (NJ_S("OSC 2 Juno Sub Level"));
+    v.add (NJ_S("OSC 2 Juno Noise Level"));
+    v.add (NJ_S("OSC 2 Juno Drift"));
+    v.add (NJ_S("OSC 2 Juno Saw Curve"));
+    v.add (NJ_S("OSC 2 Juno Vibrato"));
+    v.add (NJ_S("OSC 3 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 3 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 3 Physical Noise Time"));
+    v.add (NJ_S("OSC 3 Physical A Decay"));
+    v.add (NJ_S("OSC 3 Physical A Material"));
+    v.add (NJ_S("OSC 3 Physical A Hit Position"));
+    v.add (NJ_S("OSC 3 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 3 Physical B Decay"));
+    v.add (NJ_S("OSC 3 Physical B Material"));
+    v.add (NJ_S("OSC 3 Physical B Hit Position"));
+    v.add (NJ_S("OSC 3 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 3 Physical B Tune"));
+    v.add (NJ_S("OSC 3 Physical A / B Balance"));
+    v.add (NJ_S("OSC 3 Juno Saw Level"));
+    v.add (NJ_S("OSC 3 Juno Pulse Level"));
+    v.add (NJ_S("OSC 3 Juno Pulse Width"));
+    v.add (NJ_S("OSC 3 Juno PWM Depth"));
+    v.add (NJ_S("OSC 3 Juno PWM Rate"));
+    v.add (NJ_S("OSC 3 Juno Sub Level"));
+    v.add (NJ_S("OSC 3 Juno Noise Level"));
+    v.add (NJ_S("OSC 3 Juno Drift"));
+    v.add (NJ_S("OSC 3 Juno Saw Curve"));
+    v.add (NJ_S("OSC 3 Juno Vibrato"));
+    v.add (NJ_S("OSC 4 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 4 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 4 Physical Noise Time"));
+    v.add (NJ_S("OSC 4 Physical A Decay"));
+}
+static void modDst_20 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 Physical A Material"));
+    v.add (NJ_S("OSC 4 Physical A Hit Position"));
+    v.add (NJ_S("OSC 4 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 4 Physical B Decay"));
+    v.add (NJ_S("OSC 4 Physical B Material"));
+    v.add (NJ_S("OSC 4 Physical B Hit Position"));
+    v.add (NJ_S("OSC 4 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 4 Physical B Tune"));
+    v.add (NJ_S("OSC 4 Physical A / B Balance"));
+    v.add (NJ_S("OSC 4 Juno Saw Level"));
+    v.add (NJ_S("OSC 4 Juno Pulse Level"));
+    v.add (NJ_S("OSC 4 Juno Pulse Width"));
+    v.add (NJ_S("OSC 4 Juno PWM Depth"));
+    v.add (NJ_S("OSC 4 Juno PWM Rate"));
+    v.add (NJ_S("OSC 4 Juno Sub Level"));
+    v.add (NJ_S("OSC 4 Juno Noise Level"));
+    v.add (NJ_S("OSC 4 Juno Drift"));
+    v.add (NJ_S("OSC 4 Juno Saw Curve"));
+    v.add (NJ_S("OSC 4 Juno Vibrato"));
+    v.add (NJ_S("OSC 5 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 5 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 5 Physical Noise Time"));
+    v.add (NJ_S("OSC 5 Physical A Decay"));
+    v.add (NJ_S("OSC 5 Physical A Material"));
+    v.add (NJ_S("OSC 5 Physical A Hit Position"));
+    v.add (NJ_S("OSC 5 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 5 Physical B Decay"));
+    v.add (NJ_S("OSC 5 Physical B Material"));
+    v.add (NJ_S("OSC 5 Physical B Hit Position"));
+    v.add (NJ_S("OSC 5 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 5 Physical B Tune"));
+    v.add (NJ_S("OSC 5 Physical A / B Balance"));
+    v.add (NJ_S("OSC 5 Juno Saw Level"));
+    v.add (NJ_S("OSC 5 Juno Pulse Level"));
+    v.add (NJ_S("OSC 5 Juno Pulse Width"));
+    v.add (NJ_S("OSC 5 Juno PWM Depth"));
+    v.add (NJ_S("OSC 5 Juno PWM Rate"));
+    v.add (NJ_S("OSC 5 Juno Sub Level"));
+    v.add (NJ_S("OSC 5 Juno Noise Level"));
+    v.add (NJ_S("OSC 5 Juno Drift"));
+    v.add (NJ_S("OSC 5 Juno Saw Curve"));
+    v.add (NJ_S("OSC 5 Juno Vibrato"));
+    v.add (NJ_S("OSC 6 Physical Noise vs Mallet"));
+    v.add (NJ_S("OSC 6 Physical Mallet Hardness"));
+    v.add (NJ_S("OSC 6 Physical Noise Time"));
+    v.add (NJ_S("OSC 6 Physical A Decay"));
+    v.add (NJ_S("OSC 6 Physical A Material"));
+    v.add (NJ_S("OSC 6 Physical A Hit Position"));
+    v.add (NJ_S("OSC 6 Physical A Inharmonicity"));
+    v.add (NJ_S("OSC 6 Physical B Decay"));
+    v.add (NJ_S("OSC 6 Physical B Material"));
+    v.add (NJ_S("OSC 6 Physical B Hit Position"));
+    v.add (NJ_S("OSC 6 Physical B Inharmonicity"));
+    v.add (NJ_S("OSC 6 Physical B Tune"));
+    v.add (NJ_S("OSC 6 Physical A / B Balance"));
+    v.add (NJ_S("OSC 6 Juno Saw Level"));
+    v.add (NJ_S("OSC 6 Juno Pulse Level"));
+    v.add (NJ_S("OSC 6 Juno Pulse Width"));
+    v.add (NJ_S("OSC 6 Juno PWM Depth"));
+    v.add (NJ_S("OSC 6 Juno PWM Rate"));
+    v.add (NJ_S("OSC 6 Juno Sub Level"));
+    v.add (NJ_S("OSC 6 Juno Noise Level"));
+    v.add (NJ_S("OSC 6 Juno Drift"));
+    v.add (NJ_S("OSC 6 Juno Saw Curve"));
+    v.add (NJ_S("OSC 6 Juno Vibrato"));
+    v.add (NJ_S("OSC 1 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 1 Kick Sweep Time"));
+    v.add (NJ_S("OSC 1 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 1 Kick Decay"));
+    v.add (NJ_S("OSC 1 Kick Tone"));
+    v.add (NJ_S("OSC 1 Kick Click Level"));
+    v.add (NJ_S("OSC 1 Kick Click Tone"));
+    v.add (NJ_S("OSC 1 Kick Noise Level"));
+    v.add (NJ_S("OSC 1 Kick Drive"));
+    v.add (NJ_S("OSC 1 Kick Sub Level"));
+    v.add (NJ_S("OSC 1 Kick Punch"));
+    v.add (NJ_S("OSC 1 Kick Tune"));
+    v.add (NJ_S("OSC 1 Kick Click Decay"));
+    v.add (NJ_S("OSC 1 Kick Character"));
+    v.add (NJ_S("OSC 2 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 2 Kick Sweep Time"));
+    v.add (NJ_S("OSC 2 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 2 Kick Decay"));
+    v.add (NJ_S("OSC 2 Kick Tone"));
+    v.add (NJ_S("OSC 2 Kick Click Level"));
+    v.add (NJ_S("OSC 2 Kick Click Tone"));
+    v.add (NJ_S("OSC 2 Kick Noise Level"));
+    v.add (NJ_S("OSC 2 Kick Drive"));
+    v.add (NJ_S("OSC 2 Kick Sub Level"));
+    v.add (NJ_S("OSC 2 Kick Punch"));
+    v.add (NJ_S("OSC 2 Kick Tune"));
+    v.add (NJ_S("OSC 2 Kick Click Decay"));
+    v.add (NJ_S("OSC 2 Kick Character"));
+    v.add (NJ_S("OSC 3 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 3 Kick Sweep Time"));
+    v.add (NJ_S("OSC 3 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 3 Kick Decay"));
+    v.add (NJ_S("OSC 3 Kick Tone"));
+    v.add (NJ_S("OSC 3 Kick Click Level"));
+    v.add (NJ_S("OSC 3 Kick Click Tone"));
+}
+static void modDst_21 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 Kick Noise Level"));
+    v.add (NJ_S("OSC 3 Kick Drive"));
+    v.add (NJ_S("OSC 3 Kick Sub Level"));
+    v.add (NJ_S("OSC 3 Kick Punch"));
+    v.add (NJ_S("OSC 3 Kick Tune"));
+    v.add (NJ_S("OSC 3 Kick Click Decay"));
+    v.add (NJ_S("OSC 3 Kick Character"));
+    v.add (NJ_S("OSC 4 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 4 Kick Sweep Time"));
+    v.add (NJ_S("OSC 4 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 4 Kick Decay"));
+    v.add (NJ_S("OSC 4 Kick Tone"));
+    v.add (NJ_S("OSC 4 Kick Click Level"));
+    v.add (NJ_S("OSC 4 Kick Click Tone"));
+    v.add (NJ_S("OSC 4 Kick Noise Level"));
+    v.add (NJ_S("OSC 4 Kick Drive"));
+    v.add (NJ_S("OSC 4 Kick Sub Level"));
+    v.add (NJ_S("OSC 4 Kick Punch"));
+    v.add (NJ_S("OSC 4 Kick Tune"));
+    v.add (NJ_S("OSC 4 Kick Click Decay"));
+    v.add (NJ_S("OSC 4 Kick Character"));
+    v.add (NJ_S("OSC 5 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 5 Kick Sweep Time"));
+    v.add (NJ_S("OSC 5 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 5 Kick Decay"));
+    v.add (NJ_S("OSC 5 Kick Tone"));
+    v.add (NJ_S("OSC 5 Kick Click Level"));
+    v.add (NJ_S("OSC 5 Kick Click Tone"));
+    v.add (NJ_S("OSC 5 Kick Noise Level"));
+    v.add (NJ_S("OSC 5 Kick Drive"));
+    v.add (NJ_S("OSC 5 Kick Sub Level"));
+    v.add (NJ_S("OSC 5 Kick Punch"));
+    v.add (NJ_S("OSC 5 Kick Tune"));
+    v.add (NJ_S("OSC 5 Kick Click Decay"));
+    v.add (NJ_S("OSC 5 Kick Character"));
+    v.add (NJ_S("OSC 6 Kick Pitch Sweep"));
+    v.add (NJ_S("OSC 6 Kick Sweep Time"));
+    v.add (NJ_S("OSC 6 Kick Sweep Curve"));
+    v.add (NJ_S("OSC 6 Kick Decay"));
+    v.add (NJ_S("OSC 6 Kick Tone"));
+    v.add (NJ_S("OSC 6 Kick Click Level"));
+    v.add (NJ_S("OSC 6 Kick Click Tone"));
+    v.add (NJ_S("OSC 6 Kick Noise Level"));
+    v.add (NJ_S("OSC 6 Kick Drive"));
+    v.add (NJ_S("OSC 6 Kick Sub Level"));
+    v.add (NJ_S("OSC 6 Kick Punch"));
+    v.add (NJ_S("OSC 6 Kick Tune"));
+    v.add (NJ_S("OSC 6 Kick Click Decay"));
+    v.add (NJ_S("OSC 6 Kick Character"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 1 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 1 Terrain Move Rate"));
+    v.add (NJ_S("OSC 1 Terrain Move Depth"));
+    v.add (NJ_S("OSC 1 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 1 Terrain Smooth"));
+    v.add (NJ_S("OSC 1 Terrain Drive"));
+    v.add (NJ_S("OSC 1 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 1 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 2 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 2 Terrain Move Rate"));
+    v.add (NJ_S("OSC 2 Terrain Move Depth"));
+    v.add (NJ_S("OSC 2 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 2 Terrain Smooth"));
+    v.add (NJ_S("OSC 2 Terrain Drive"));
+    v.add (NJ_S("OSC 2 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 2 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 3 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 3 Terrain Move Rate"));
+    v.add (NJ_S("OSC 3 Terrain Move Depth"));
+    v.add (NJ_S("OSC 3 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 3 Terrain Smooth"));
+    v.add (NJ_S("OSC 3 Terrain Drive"));
+    v.add (NJ_S("OSC 3 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 3 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Ratio"));
+}
+static void modDst_22 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 4 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 4 Terrain Move Rate"));
+    v.add (NJ_S("OSC 4 Terrain Move Depth"));
+    v.add (NJ_S("OSC 4 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 4 Terrain Smooth"));
+    v.add (NJ_S("OSC 4 Terrain Drive"));
+    v.add (NJ_S("OSC 4 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 4 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 5 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 5 Terrain Move Rate"));
+    v.add (NJ_S("OSC 5 Terrain Move Depth"));
+    v.add (NJ_S("OSC 5 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 5 Terrain Smooth"));
+    v.add (NJ_S("OSC 5 Terrain Drive"));
+    v.add (NJ_S("OSC 5 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 5 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Center X"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Center Y"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Radius X"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Radius Y"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Rotation"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Ratio"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Phase"));
+    v.add (NJ_S("OSC 6 Terrain Orbit Shape"));
+    v.add (NJ_S("OSC 6 Terrain Move Rate"));
+    v.add (NJ_S("OSC 6 Terrain Move Depth"));
+    v.add (NJ_S("OSC 6 Terrain Morph A to B"));
+    v.add (NJ_S("OSC 6 Terrain Smooth"));
+    v.add (NJ_S("OSC 6 Terrain Drive"));
+    v.add (NJ_S("OSC 6 Terrain Bit Depth"));
+    v.add (NJ_S("OSC 6 Terrain Velocity to Radius"));
+    v.add (NJ_S("OSC 1 Waveguide Decay"));
+    v.add (NJ_S("OSC 1 Waveguide Tone"));
+    v.add (NJ_S("OSC 1 Waveguide Excite"));
+    v.add (NJ_S("OSC 1 Waveguide Position"));
+    v.add (NJ_S("OSC 1 Waveguide Noise"));
+    v.add (NJ_S("OSC 1 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 1 Waveguide Stretch"));
+    v.add (NJ_S("OSC 1 Waveguide Attack"));
+    v.add (NJ_S("OSC 1 Waveguide Snare"));
+    v.add (NJ_S("OSC 1 Waveguide Body"));
+    v.add (NJ_S("OSC 1 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 1 Waveguide Velocity"));
+    v.add (NJ_S("OSC 1 Waveguide Drive"));
+    v.add (NJ_S("OSC 1 Waveguide Tension"));
+    v.add (NJ_S("OSC 1 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 2 Waveguide Decay"));
+    v.add (NJ_S("OSC 2 Waveguide Tone"));
+    v.add (NJ_S("OSC 2 Waveguide Excite"));
+    v.add (NJ_S("OSC 2 Waveguide Position"));
+    v.add (NJ_S("OSC 2 Waveguide Noise"));
+    v.add (NJ_S("OSC 2 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 2 Waveguide Stretch"));
+    v.add (NJ_S("OSC 2 Waveguide Attack"));
+    v.add (NJ_S("OSC 2 Waveguide Snare"));
+    v.add (NJ_S("OSC 2 Waveguide Body"));
+    v.add (NJ_S("OSC 2 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 2 Waveguide Velocity"));
+    v.add (NJ_S("OSC 2 Waveguide Drive"));
+    v.add (NJ_S("OSC 2 Waveguide Tension"));
+    v.add (NJ_S("OSC 2 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 3 Waveguide Decay"));
+    v.add (NJ_S("OSC 3 Waveguide Tone"));
+    v.add (NJ_S("OSC 3 Waveguide Excite"));
+    v.add (NJ_S("OSC 3 Waveguide Position"));
+    v.add (NJ_S("OSC 3 Waveguide Noise"));
+    v.add (NJ_S("OSC 3 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 3 Waveguide Stretch"));
+    v.add (NJ_S("OSC 3 Waveguide Attack"));
+    v.add (NJ_S("OSC 3 Waveguide Snare"));
+    v.add (NJ_S("OSC 3 Waveguide Body"));
+    v.add (NJ_S("OSC 3 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 3 Waveguide Velocity"));
+    v.add (NJ_S("OSC 3 Waveguide Drive"));
+    v.add (NJ_S("OSC 3 Waveguide Tension"));
+    v.add (NJ_S("OSC 3 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 4 Waveguide Decay"));
+    v.add (NJ_S("OSC 4 Waveguide Tone"));
+    v.add (NJ_S("OSC 4 Waveguide Excite"));
+    v.add (NJ_S("OSC 4 Waveguide Position"));
+    v.add (NJ_S("OSC 4 Waveguide Noise"));
+    v.add (NJ_S("OSC 4 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 4 Waveguide Stretch"));
+    v.add (NJ_S("OSC 4 Waveguide Attack"));
+    v.add (NJ_S("OSC 4 Waveguide Snare"));
+    v.add (NJ_S("OSC 4 Waveguide Body"));
+    v.add (NJ_S("OSC 4 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 4 Waveguide Velocity"));
+    v.add (NJ_S("OSC 4 Waveguide Drive"));
+    v.add (NJ_S("OSC 4 Waveguide Tension"));
+    v.add (NJ_S("OSC 4 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 5 Waveguide Decay"));
+}
+static void modDst_23 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 Waveguide Tone"));
+    v.add (NJ_S("OSC 5 Waveguide Excite"));
+    v.add (NJ_S("OSC 5 Waveguide Position"));
+    v.add (NJ_S("OSC 5 Waveguide Noise"));
+    v.add (NJ_S("OSC 5 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 5 Waveguide Stretch"));
+    v.add (NJ_S("OSC 5 Waveguide Attack"));
+    v.add (NJ_S("OSC 5 Waveguide Snare"));
+    v.add (NJ_S("OSC 5 Waveguide Body"));
+    v.add (NJ_S("OSC 5 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 5 Waveguide Velocity"));
+    v.add (NJ_S("OSC 5 Waveguide Drive"));
+    v.add (NJ_S("OSC 5 Waveguide Tension"));
+    v.add (NJ_S("OSC 5 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 6 Waveguide Decay"));
+    v.add (NJ_S("OSC 6 Waveguide Tone"));
+    v.add (NJ_S("OSC 6 Waveguide Excite"));
+    v.add (NJ_S("OSC 6 Waveguide Position"));
+    v.add (NJ_S("OSC 6 Waveguide Noise"));
+    v.add (NJ_S("OSC 6 Waveguide Nonlinear"));
+    v.add (NJ_S("OSC 6 Waveguide Stretch"));
+    v.add (NJ_S("OSC 6 Waveguide Attack"));
+    v.add (NJ_S("OSC 6 Waveguide Snare"));
+    v.add (NJ_S("OSC 6 Waveguide Body"));
+    v.add (NJ_S("OSC 6 Waveguide Body Tune"));
+    v.add (NJ_S("OSC 6 Waveguide Velocity"));
+    v.add (NJ_S("OSC 6 Waveguide Drive"));
+    v.add (NJ_S("OSC 6 Waveguide Tension"));
+    v.add (NJ_S("OSC 6 Waveguide Key Decay"));
+    v.add (NJ_S("OSC 1 JP Pulse Width"));
+    v.add (NJ_S("OSC 1 JP PWM Depth"));
+    v.add (NJ_S("OSC 1 JP PWM Rate"));
+    v.add (NJ_S("OSC 1 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 1 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 1 JP Stereo Width"));
+    v.add (NJ_S("OSC 1 JP Feedback"));
+    v.add (NJ_S("OSC 1 JP Feedback Color"));
+    v.add (NJ_S("OSC 1 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 1 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 1 JP Spectrum Tilt"));
+    v.add (NJ_S("OSC 1 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 1 JP Noise Mix"));
+    v.add (NJ_S("OSC 1 JP Drive"));
+    v.add (NJ_S("OSC 1 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 2 JP Pulse Width"));
+    v.add (NJ_S("OSC 2 JP PWM Depth"));
+    v.add (NJ_S("OSC 2 JP PWM Rate"));
+    v.add (NJ_S("OSC 2 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 2 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 2 JP Stereo Width"));
+    v.add (NJ_S("OSC 2 JP Feedback"));
+    v.add (NJ_S("OSC 2 JP Feedback Color"));
+    v.add (NJ_S("OSC 2 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 2 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 2 JP Spectrum Tilt"));
+    v.add (NJ_S("OSC 2 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 2 JP Noise Mix"));
+    v.add (NJ_S("OSC 2 JP Drive"));
+    v.add (NJ_S("OSC 2 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 3 JP Pulse Width"));
+    v.add (NJ_S("OSC 3 JP PWM Depth"));
+    v.add (NJ_S("OSC 3 JP PWM Rate"));
+    v.add (NJ_S("OSC 3 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 3 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 3 JP Stereo Width"));
+    v.add (NJ_S("OSC 3 JP Feedback"));
+    v.add (NJ_S("OSC 3 JP Feedback Color"));
+    v.add (NJ_S("OSC 3 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 3 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 3 JP Spectrum Tilt"));
+    v.add (NJ_S("OSC 3 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 3 JP Noise Mix"));
+    v.add (NJ_S("OSC 3 JP Drive"));
+    v.add (NJ_S("OSC 3 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 4 JP Pulse Width"));
+    v.add (NJ_S("OSC 4 JP PWM Depth"));
+    v.add (NJ_S("OSC 4 JP PWM Rate"));
+    v.add (NJ_S("OSC 4 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 4 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 4 JP Stereo Width"));
+    v.add (NJ_S("OSC 4 JP Feedback"));
+    v.add (NJ_S("OSC 4 JP Feedback Color"));
+    v.add (NJ_S("OSC 4 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 4 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 4 JP Spectrum Tilt"));
+    v.add (NJ_S("OSC 4 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 4 JP Noise Mix"));
+    v.add (NJ_S("OSC 4 JP Drive"));
+    v.add (NJ_S("OSC 4 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 5 JP Pulse Width"));
+    v.add (NJ_S("OSC 5 JP PWM Depth"));
+    v.add (NJ_S("OSC 5 JP PWM Rate"));
+    v.add (NJ_S("OSC 5 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 5 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 5 JP Stereo Width"));
+    v.add (NJ_S("OSC 5 JP Feedback"));
+    v.add (NJ_S("OSC 5 JP Feedback Color"));
+    v.add (NJ_S("OSC 5 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 5 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 5 JP Spectrum Tilt"));
+}
+static void modDst_24 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 5 JP Noise Mix"));
+    v.add (NJ_S("OSC 5 JP Drive"));
+    v.add (NJ_S("OSC 5 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 6 JP Pulse Width"));
+    v.add (NJ_S("OSC 6 JP PWM Depth"));
+    v.add (NJ_S("OSC 6 JP PWM Rate"));
+    v.add (NJ_S("OSC 6 JP Super Saw Detune"));
+    v.add (NJ_S("OSC 6 JP Super Saw Mix"));
+    v.add (NJ_S("OSC 6 JP Stereo Width"));
+    v.add (NJ_S("OSC 6 JP Feedback"));
+    v.add (NJ_S("OSC 6 JP Feedback Color"));
+    v.add (NJ_S("OSC 6 JP Tri Mod Depth"));
+    v.add (NJ_S("OSC 6 JP Tri Mod Ratio"));
+    v.add (NJ_S("OSC 6 JP Spectrum Tilt"));
+    v.add (NJ_S("OSC 6 JP Spectrum Peak"));
+    v.add (NJ_S("OSC 6 JP Noise Mix"));
+    v.add (NJ_S("OSC 6 JP Drive"));
+    v.add (NJ_S("OSC 6 JP Sub Oscillator"));
+    v.add (NJ_S("OSC 1 Granular Position"));
+    v.add (NJ_S("OSC 1 Granular Grain Size"));
+    v.add (NJ_S("OSC 1 Granular Density"));
+    v.add (NJ_S("OSC 1 Granular Spray"));
+    v.add (NJ_S("OSC 1 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 1 Granular Pan Spread"));
+    v.add (NJ_S("OSC 1 Granular Window"));
+    v.add (NJ_S("OSC 1 Granular Reverse"));
+    v.add (NJ_S("OSC 1 Granular Scan"));
+    v.add (NJ_S("OSC 1 Granular Timing"));
+    v.add (NJ_S("OSC 1 Granular Drive"));
+    v.add (NJ_S("OSC 1 Granular Velocity"));
+    v.add (NJ_S("OSC 2 Granular Position"));
+    v.add (NJ_S("OSC 2 Granular Grain Size"));
+    v.add (NJ_S("OSC 2 Granular Density"));
+    v.add (NJ_S("OSC 2 Granular Spray"));
+    v.add (NJ_S("OSC 2 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 2 Granular Pan Spread"));
+    v.add (NJ_S("OSC 2 Granular Window"));
+    v.add (NJ_S("OSC 2 Granular Reverse"));
+    v.add (NJ_S("OSC 2 Granular Scan"));
+    v.add (NJ_S("OSC 2 Granular Timing"));
+    v.add (NJ_S("OSC 2 Granular Drive"));
+    v.add (NJ_S("OSC 2 Granular Velocity"));
+    v.add (NJ_S("OSC 3 Granular Position"));
+    v.add (NJ_S("OSC 3 Granular Grain Size"));
+    v.add (NJ_S("OSC 3 Granular Density"));
+    v.add (NJ_S("OSC 3 Granular Spray"));
+    v.add (NJ_S("OSC 3 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 3 Granular Pan Spread"));
+    v.add (NJ_S("OSC 3 Granular Window"));
+    v.add (NJ_S("OSC 3 Granular Reverse"));
+    v.add (NJ_S("OSC 3 Granular Scan"));
+    v.add (NJ_S("OSC 3 Granular Timing"));
+    v.add (NJ_S("OSC 3 Granular Drive"));
+    v.add (NJ_S("OSC 3 Granular Velocity"));
+    v.add (NJ_S("OSC 4 Granular Position"));
+    v.add (NJ_S("OSC 4 Granular Grain Size"));
+    v.add (NJ_S("OSC 4 Granular Density"));
+    v.add (NJ_S("OSC 4 Granular Spray"));
+    v.add (NJ_S("OSC 4 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 4 Granular Pan Spread"));
+    v.add (NJ_S("OSC 4 Granular Window"));
+    v.add (NJ_S("OSC 4 Granular Reverse"));
+    v.add (NJ_S("OSC 4 Granular Scan"));
+    v.add (NJ_S("OSC 4 Granular Timing"));
+    v.add (NJ_S("OSC 4 Granular Drive"));
+    v.add (NJ_S("OSC 4 Granular Velocity"));
+    v.add (NJ_S("OSC 5 Granular Position"));
+    v.add (NJ_S("OSC 5 Granular Grain Size"));
+    v.add (NJ_S("OSC 5 Granular Density"));
+    v.add (NJ_S("OSC 5 Granular Spray"));
+    v.add (NJ_S("OSC 5 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 5 Granular Pan Spread"));
+    v.add (NJ_S("OSC 5 Granular Window"));
+    v.add (NJ_S("OSC 5 Granular Reverse"));
+    v.add (NJ_S("OSC 5 Granular Scan"));
+    v.add (NJ_S("OSC 5 Granular Timing"));
+    v.add (NJ_S("OSC 5 Granular Drive"));
+    v.add (NJ_S("OSC 5 Granular Velocity"));
+    v.add (NJ_S("OSC 6 Granular Position"));
+    v.add (NJ_S("OSC 6 Granular Grain Size"));
+    v.add (NJ_S("OSC 6 Granular Density"));
+    v.add (NJ_S("OSC 6 Granular Spray"));
+    v.add (NJ_S("OSC 6 Granular Pitch Spread"));
+    v.add (NJ_S("OSC 6 Granular Pan Spread"));
+    v.add (NJ_S("OSC 6 Granular Window"));
+    v.add (NJ_S("OSC 6 Granular Reverse"));
+    v.add (NJ_S("OSC 6 Granular Scan"));
+    v.add (NJ_S("OSC 6 Granular Timing"));
+    v.add (NJ_S("OSC 6 Granular Drive"));
+    v.add (NJ_S("OSC 6 Granular Velocity"));
+    v.add (NJ_S("OSC 1 Additive Morph"));
+    v.add (NJ_S("OSC 1 Additive Partials"));
+    v.add (NJ_S("OSC 1 Additive Tilt"));
+    v.add (NJ_S("OSC 1 Additive Odd / Even"));
+    v.add (NJ_S("OSC 1 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 1 Additive Formant"));
+    v.add (NJ_S("OSC 1 Additive Formant Gain"));
+    v.add (NJ_S("OSC 1 Additive Shimmer"));
+    v.add (NJ_S("OSC 1 Additive Shimmer Rate"));
+}
+static void modDst_25 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 1 Additive Partial Decay"));
+    v.add (NJ_S("OSC 1 Additive Drive"));
+    v.add (NJ_S("OSC 1 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 1 Additive Velocity"));
+    v.add (NJ_S("OSC 2 Additive Morph"));
+    v.add (NJ_S("OSC 2 Additive Partials"));
+    v.add (NJ_S("OSC 2 Additive Tilt"));
+    v.add (NJ_S("OSC 2 Additive Odd / Even"));
+    v.add (NJ_S("OSC 2 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 2 Additive Formant"));
+    v.add (NJ_S("OSC 2 Additive Formant Gain"));
+    v.add (NJ_S("OSC 2 Additive Shimmer"));
+    v.add (NJ_S("OSC 2 Additive Shimmer Rate"));
+    v.add (NJ_S("OSC 2 Additive Partial Decay"));
+    v.add (NJ_S("OSC 2 Additive Drive"));
+    v.add (NJ_S("OSC 2 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 2 Additive Velocity"));
+    v.add (NJ_S("OSC 3 Additive Morph"));
+    v.add (NJ_S("OSC 3 Additive Partials"));
+    v.add (NJ_S("OSC 3 Additive Tilt"));
+    v.add (NJ_S("OSC 3 Additive Odd / Even"));
+    v.add (NJ_S("OSC 3 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 3 Additive Formant"));
+    v.add (NJ_S("OSC 3 Additive Formant Gain"));
+    v.add (NJ_S("OSC 3 Additive Shimmer"));
+    v.add (NJ_S("OSC 3 Additive Shimmer Rate"));
+    v.add (NJ_S("OSC 3 Additive Partial Decay"));
+    v.add (NJ_S("OSC 3 Additive Drive"));
+    v.add (NJ_S("OSC 3 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 3 Additive Velocity"));
+    v.add (NJ_S("OSC 4 Additive Morph"));
+    v.add (NJ_S("OSC 4 Additive Partials"));
+    v.add (NJ_S("OSC 4 Additive Tilt"));
+    v.add (NJ_S("OSC 4 Additive Odd / Even"));
+    v.add (NJ_S("OSC 4 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 4 Additive Formant"));
+    v.add (NJ_S("OSC 4 Additive Formant Gain"));
+    v.add (NJ_S("OSC 4 Additive Shimmer"));
+    v.add (NJ_S("OSC 4 Additive Shimmer Rate"));
+    v.add (NJ_S("OSC 4 Additive Partial Decay"));
+    v.add (NJ_S("OSC 4 Additive Drive"));
+    v.add (NJ_S("OSC 4 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 4 Additive Velocity"));
+    v.add (NJ_S("OSC 5 Additive Morph"));
+    v.add (NJ_S("OSC 5 Additive Partials"));
+    v.add (NJ_S("OSC 5 Additive Tilt"));
+    v.add (NJ_S("OSC 5 Additive Odd / Even"));
+    v.add (NJ_S("OSC 5 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 5 Additive Formant"));
+    v.add (NJ_S("OSC 5 Additive Formant Gain"));
+    v.add (NJ_S("OSC 5 Additive Shimmer"));
+    v.add (NJ_S("OSC 5 Additive Shimmer Rate"));
+    v.add (NJ_S("OSC 5 Additive Partial Decay"));
+    v.add (NJ_S("OSC 5 Additive Drive"));
+    v.add (NJ_S("OSC 5 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 5 Additive Velocity"));
+    v.add (NJ_S("OSC 6 Additive Morph"));
+    v.add (NJ_S("OSC 6 Additive Partials"));
+    v.add (NJ_S("OSC 6 Additive Tilt"));
+    v.add (NJ_S("OSC 6 Additive Odd / Even"));
+    v.add (NJ_S("OSC 6 Additive Inharmonicity"));
+    v.add (NJ_S("OSC 6 Additive Formant"));
+    v.add (NJ_S("OSC 6 Additive Formant Gain"));
+    v.add (NJ_S("OSC 6 Additive Shimmer"));
+    v.add (NJ_S("OSC 6 Additive Shimmer Rate"));
+    v.add (NJ_S("OSC 6 Additive Partial Decay"));
+    v.add (NJ_S("OSC 6 Additive Drive"));
+    v.add (NJ_S("OSC 6 Additive Stereo Spread"));
+    v.add (NJ_S("OSC 6 Additive Velocity"));
+    v.add (NJ_S("OSC 1 Drum Decay"));
+    v.add (NJ_S("OSC 1 Drum Head Tone"));
+    v.add (NJ_S("OSC 1 Drum Hit Position"));
+    v.add (NJ_S("OSC 1 Drum Stick"));
+    v.add (NJ_S("OSC 1 Drum Edge"));
+    v.add (NJ_S("OSC 1 Drum Reso Head"));
+    v.add (NJ_S("OSC 1 Drum Reso Tune"));
+    v.add (NJ_S("OSC 1 Drum Shell"));
+    v.add (NJ_S("OSC 1 Drum Shell Depth"));
+    v.add (NJ_S("OSC 1 Drum Snare"));
+    v.add (NJ_S("OSC 1 Drum Snare Tension"));
+    v.add (NJ_S("OSC 1 Drum Sympathetic"));
+    v.add (NJ_S("OSC 1 Drum Tension"));
+    v.add (NJ_S("OSC 1 Drum Velocity"));
+    v.add (NJ_S("OSC 1 Drum Drive"));
+    v.add (NJ_S("OSC 1 Drum Size"));
+    v.add (NJ_S("OSC 2 Drum Decay"));
+    v.add (NJ_S("OSC 2 Drum Head Tone"));
+    v.add (NJ_S("OSC 2 Drum Hit Position"));
+    v.add (NJ_S("OSC 2 Drum Stick"));
+    v.add (NJ_S("OSC 2 Drum Edge"));
+    v.add (NJ_S("OSC 2 Drum Reso Head"));
+    v.add (NJ_S("OSC 2 Drum Reso Tune"));
+    v.add (NJ_S("OSC 2 Drum Shell"));
+    v.add (NJ_S("OSC 2 Drum Shell Depth"));
+    v.add (NJ_S("OSC 2 Drum Snare"));
+    v.add (NJ_S("OSC 2 Drum Snare Tension"));
+    v.add (NJ_S("OSC 2 Drum Sympathetic"));
+    v.add (NJ_S("OSC 2 Drum Tension"));
+    v.add (NJ_S("OSC 2 Drum Velocity"));
+    v.add (NJ_S("OSC 2 Drum Drive"));
+}
+static void modDst_26 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 2 Drum Size"));
+    v.add (NJ_S("OSC 3 Drum Decay"));
+    v.add (NJ_S("OSC 3 Drum Head Tone"));
+    v.add (NJ_S("OSC 3 Drum Hit Position"));
+    v.add (NJ_S("OSC 3 Drum Stick"));
+    v.add (NJ_S("OSC 3 Drum Edge"));
+    v.add (NJ_S("OSC 3 Drum Reso Head"));
+    v.add (NJ_S("OSC 3 Drum Reso Tune"));
+    v.add (NJ_S("OSC 3 Drum Shell"));
+    v.add (NJ_S("OSC 3 Drum Shell Depth"));
+    v.add (NJ_S("OSC 3 Drum Snare"));
+    v.add (NJ_S("OSC 3 Drum Snare Tension"));
+    v.add (NJ_S("OSC 3 Drum Sympathetic"));
+    v.add (NJ_S("OSC 3 Drum Tension"));
+    v.add (NJ_S("OSC 3 Drum Velocity"));
+    v.add (NJ_S("OSC 3 Drum Drive"));
+    v.add (NJ_S("OSC 3 Drum Size"));
+    v.add (NJ_S("OSC 4 Drum Decay"));
+    v.add (NJ_S("OSC 4 Drum Head Tone"));
+    v.add (NJ_S("OSC 4 Drum Hit Position"));
+    v.add (NJ_S("OSC 4 Drum Stick"));
+    v.add (NJ_S("OSC 4 Drum Edge"));
+    v.add (NJ_S("OSC 4 Drum Reso Head"));
+    v.add (NJ_S("OSC 4 Drum Reso Tune"));
+    v.add (NJ_S("OSC 4 Drum Shell"));
+    v.add (NJ_S("OSC 4 Drum Shell Depth"));
+    v.add (NJ_S("OSC 4 Drum Snare"));
+    v.add (NJ_S("OSC 4 Drum Snare Tension"));
+    v.add (NJ_S("OSC 4 Drum Sympathetic"));
+    v.add (NJ_S("OSC 4 Drum Tension"));
+    v.add (NJ_S("OSC 4 Drum Velocity"));
+    v.add (NJ_S("OSC 4 Drum Drive"));
+    v.add (NJ_S("OSC 4 Drum Size"));
+    v.add (NJ_S("OSC 5 Drum Decay"));
+    v.add (NJ_S("OSC 5 Drum Head Tone"));
+    v.add (NJ_S("OSC 5 Drum Hit Position"));
+    v.add (NJ_S("OSC 5 Drum Stick"));
+    v.add (NJ_S("OSC 5 Drum Edge"));
+    v.add (NJ_S("OSC 5 Drum Reso Head"));
+    v.add (NJ_S("OSC 5 Drum Reso Tune"));
+    v.add (NJ_S("OSC 5 Drum Shell"));
+    v.add (NJ_S("OSC 5 Drum Shell Depth"));
+    v.add (NJ_S("OSC 5 Drum Snare"));
+    v.add (NJ_S("OSC 5 Drum Snare Tension"));
+    v.add (NJ_S("OSC 5 Drum Sympathetic"));
+    v.add (NJ_S("OSC 5 Drum Tension"));
+    v.add (NJ_S("OSC 5 Drum Velocity"));
+    v.add (NJ_S("OSC 5 Drum Drive"));
+    v.add (NJ_S("OSC 5 Drum Size"));
+    v.add (NJ_S("OSC 6 Drum Decay"));
+    v.add (NJ_S("OSC 6 Drum Head Tone"));
+    v.add (NJ_S("OSC 6 Drum Hit Position"));
+    v.add (NJ_S("OSC 6 Drum Stick"));
+    v.add (NJ_S("OSC 6 Drum Edge"));
+    v.add (NJ_S("OSC 6 Drum Reso Head"));
+    v.add (NJ_S("OSC 6 Drum Reso Tune"));
+    v.add (NJ_S("OSC 6 Drum Shell"));
+    v.add (NJ_S("OSC 6 Drum Shell Depth"));
+    v.add (NJ_S("OSC 6 Drum Snare"));
+    v.add (NJ_S("OSC 6 Drum Snare Tension"));
+    v.add (NJ_S("OSC 6 Drum Sympathetic"));
+    v.add (NJ_S("OSC 6 Drum Tension"));
+    v.add (NJ_S("OSC 6 Drum Velocity"));
+    v.add (NJ_S("OSC 6 Drum Drive"));
+    v.add (NJ_S("OSC 6 Drum Size"));
+    v.add (NJ_S("OSC 1 Spectral Position"));
+    v.add (NJ_S("OSC 1 Spectral Position B"));
+    v.add (NJ_S("OSC 1 Spectral Morph"));
+    v.add (NJ_S("OSC 1 Spectral Scan"));
+    v.add (NJ_S("OSC 1 Spectral Blur"));
+    v.add (NJ_S("OSC 1 Spectral Shift"));
+    v.add (NJ_S("OSC 1 Spectral Tilt"));
+    v.add (NJ_S("OSC 1 Spectral Harmonics"));
+    v.add (NJ_S("OSC 1 Spectral Odd Even"));
+    v.add (NJ_S("OSC 1 Spectral Comb"));
+    v.add (NJ_S("OSC 1 Spectral Contrast"));
+    v.add (NJ_S("OSC 1 Spectral Jitter"));
+    v.add (NJ_S("OSC 1 Spectral Spread"));
+    v.add (NJ_S("OSC 1 Spectral Width"));
+    v.add (NJ_S("OSC 1 Spectral Velocity"));
+    v.add (NJ_S("OSC 2 Spectral Position"));
+    v.add (NJ_S("OSC 2 Spectral Position B"));
+    v.add (NJ_S("OSC 2 Spectral Morph"));
+    v.add (NJ_S("OSC 2 Spectral Scan"));
+    v.add (NJ_S("OSC 2 Spectral Blur"));
+    v.add (NJ_S("OSC 2 Spectral Shift"));
+    v.add (NJ_S("OSC 2 Spectral Tilt"));
+    v.add (NJ_S("OSC 2 Spectral Harmonics"));
+    v.add (NJ_S("OSC 2 Spectral Odd Even"));
+    v.add (NJ_S("OSC 2 Spectral Comb"));
+    v.add (NJ_S("OSC 2 Spectral Contrast"));
+    v.add (NJ_S("OSC 2 Spectral Jitter"));
+    v.add (NJ_S("OSC 2 Spectral Spread"));
+    v.add (NJ_S("OSC 2 Spectral Width"));
+    v.add (NJ_S("OSC 2 Spectral Velocity"));
+    v.add (NJ_S("OSC 3 Spectral Position"));
+    v.add (NJ_S("OSC 3 Spectral Position B"));
+    v.add (NJ_S("OSC 3 Spectral Morph"));
+    v.add (NJ_S("OSC 3 Spectral Scan"));
+    v.add (NJ_S("OSC 3 Spectral Blur"));
+}
+static void modDst_27 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 Spectral Shift"));
+    v.add (NJ_S("OSC 3 Spectral Tilt"));
+    v.add (NJ_S("OSC 3 Spectral Harmonics"));
+    v.add (NJ_S("OSC 3 Spectral Odd Even"));
+    v.add (NJ_S("OSC 3 Spectral Comb"));
+    v.add (NJ_S("OSC 3 Spectral Contrast"));
+    v.add (NJ_S("OSC 3 Spectral Jitter"));
+    v.add (NJ_S("OSC 3 Spectral Spread"));
+    v.add (NJ_S("OSC 3 Spectral Width"));
+    v.add (NJ_S("OSC 3 Spectral Velocity"));
+    v.add (NJ_S("OSC 4 Spectral Position"));
+    v.add (NJ_S("OSC 4 Spectral Position B"));
+    v.add (NJ_S("OSC 4 Spectral Morph"));
+    v.add (NJ_S("OSC 4 Spectral Scan"));
+    v.add (NJ_S("OSC 4 Spectral Blur"));
+    v.add (NJ_S("OSC 4 Spectral Shift"));
+    v.add (NJ_S("OSC 4 Spectral Tilt"));
+    v.add (NJ_S("OSC 4 Spectral Harmonics"));
+    v.add (NJ_S("OSC 4 Spectral Odd Even"));
+    v.add (NJ_S("OSC 4 Spectral Comb"));
+    v.add (NJ_S("OSC 4 Spectral Contrast"));
+    v.add (NJ_S("OSC 4 Spectral Jitter"));
+    v.add (NJ_S("OSC 4 Spectral Spread"));
+    v.add (NJ_S("OSC 4 Spectral Width"));
+    v.add (NJ_S("OSC 4 Spectral Velocity"));
+    v.add (NJ_S("OSC 5 Spectral Position"));
+    v.add (NJ_S("OSC 5 Spectral Position B"));
+    v.add (NJ_S("OSC 5 Spectral Morph"));
+    v.add (NJ_S("OSC 5 Spectral Scan"));
+    v.add (NJ_S("OSC 5 Spectral Blur"));
+    v.add (NJ_S("OSC 5 Spectral Shift"));
+    v.add (NJ_S("OSC 5 Spectral Tilt"));
+    v.add (NJ_S("OSC 5 Spectral Harmonics"));
+    v.add (NJ_S("OSC 5 Spectral Odd Even"));
+    v.add (NJ_S("OSC 5 Spectral Comb"));
+    v.add (NJ_S("OSC 5 Spectral Contrast"));
+    v.add (NJ_S("OSC 5 Spectral Jitter"));
+    v.add (NJ_S("OSC 5 Spectral Spread"));
+    v.add (NJ_S("OSC 5 Spectral Width"));
+    v.add (NJ_S("OSC 5 Spectral Velocity"));
+    v.add (NJ_S("OSC 6 Spectral Position"));
+    v.add (NJ_S("OSC 6 Spectral Position B"));
+    v.add (NJ_S("OSC 6 Spectral Morph"));
+    v.add (NJ_S("OSC 6 Spectral Scan"));
+    v.add (NJ_S("OSC 6 Spectral Blur"));
+    v.add (NJ_S("OSC 6 Spectral Shift"));
+    v.add (NJ_S("OSC 6 Spectral Tilt"));
+    v.add (NJ_S("OSC 6 Spectral Harmonics"));
+    v.add (NJ_S("OSC 6 Spectral Odd Even"));
+    v.add (NJ_S("OSC 6 Spectral Comb"));
+    v.add (NJ_S("OSC 6 Spectral Contrast"));
+    v.add (NJ_S("OSC 6 Spectral Jitter"));
+    v.add (NJ_S("OSC 6 Spectral Spread"));
+    v.add (NJ_S("OSC 6 Spectral Width"));
+    v.add (NJ_S("OSC 6 Spectral Velocity"));
+    v.add (NJ_S("OSC 1 SoundFont Gain"));
+    v.add (NJ_S("OSC 1 SoundFont Velocity"));
+    v.add (NJ_S("OSC 1 SoundFont Attack"));
+    v.add (NJ_S("OSC 1 SoundFont Decay"));
+    v.add (NJ_S("OSC 1 SoundFont Sustain"));
+    v.add (NJ_S("OSC 1 SoundFont Release"));
+    v.add (NJ_S("OSC 1 SoundFont Stereo"));
+    v.add (NJ_S("OSC 1 SoundFont Start"));
+    v.add (NJ_S("OSC 1 SoundFont Drive"));
+    v.add (NJ_S("OSC 2 SoundFont Gain"));
+    v.add (NJ_S("OSC 2 SoundFont Velocity"));
+    v.add (NJ_S("OSC 2 SoundFont Attack"));
+    v.add (NJ_S("OSC 2 SoundFont Decay"));
+    v.add (NJ_S("OSC 2 SoundFont Sustain"));
+    v.add (NJ_S("OSC 2 SoundFont Release"));
+    v.add (NJ_S("OSC 2 SoundFont Stereo"));
+    v.add (NJ_S("OSC 2 SoundFont Start"));
+    v.add (NJ_S("OSC 2 SoundFont Drive"));
+    v.add (NJ_S("OSC 3 SoundFont Gain"));
+    v.add (NJ_S("OSC 3 SoundFont Velocity"));
+    v.add (NJ_S("OSC 3 SoundFont Attack"));
+    v.add (NJ_S("OSC 3 SoundFont Decay"));
+    v.add (NJ_S("OSC 3 SoundFont Sustain"));
+    v.add (NJ_S("OSC 3 SoundFont Release"));
+    v.add (NJ_S("OSC 3 SoundFont Stereo"));
+    v.add (NJ_S("OSC 3 SoundFont Start"));
+    v.add (NJ_S("OSC 3 SoundFont Drive"));
+    v.add (NJ_S("OSC 4 SoundFont Gain"));
+    v.add (NJ_S("OSC 4 SoundFont Velocity"));
+    v.add (NJ_S("OSC 4 SoundFont Attack"));
+    v.add (NJ_S("OSC 4 SoundFont Decay"));
+    v.add (NJ_S("OSC 4 SoundFont Sustain"));
+    v.add (NJ_S("OSC 4 SoundFont Release"));
+    v.add (NJ_S("OSC 4 SoundFont Stereo"));
+    v.add (NJ_S("OSC 4 SoundFont Start"));
+    v.add (NJ_S("OSC 4 SoundFont Drive"));
+    v.add (NJ_S("OSC 5 SoundFont Gain"));
+    v.add (NJ_S("OSC 5 SoundFont Velocity"));
+    v.add (NJ_S("OSC 5 SoundFont Attack"));
+    v.add (NJ_S("OSC 5 SoundFont Decay"));
+    v.add (NJ_S("OSC 5 SoundFont Sustain"));
+    v.add (NJ_S("OSC 5 SoundFont Release"));
+    v.add (NJ_S("OSC 5 SoundFont Stereo"));
+    v.add (NJ_S("OSC 5 SoundFont Start"));
+    v.add (NJ_S("OSC 5 SoundFont Drive"));
+}
+static void modDst_28 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 6 SoundFont Gain"));
+    v.add (NJ_S("OSC 6 SoundFont Velocity"));
+    v.add (NJ_S("OSC 6 SoundFont Attack"));
+    v.add (NJ_S("OSC 6 SoundFont Decay"));
+    v.add (NJ_S("OSC 6 SoundFont Sustain"));
+    v.add (NJ_S("OSC 6 SoundFont Release"));
+    v.add (NJ_S("OSC 6 SoundFont Stereo"));
+    v.add (NJ_S("OSC 6 SoundFont Start"));
+    v.add (NJ_S("OSC 6 SoundFont Drive"));
+    v.add (NJ_S("Main FX 1 Env Sustain"));
+    v.add (NJ_S("Main FX 2 Env Sustain"));
+    v.add (NJ_S("Main FX 3 Env Sustain"));
+    v.add (NJ_S("Main FX 4 Env Sustain"));
+    v.add (NJ_S("Main FX 5 Env Sustain"));
+    v.add (NJ_S("Main FX 6 Env Sustain"));
+    v.add (NJ_S("Main FX 7 Env Sustain"));
+    v.add (NJ_S("Main FX 8 Env Sustain"));
+    v.add (NJ_S("Main FX 9 Env Sustain"));
+    v.add (NJ_S("Main FX 10 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 1 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 2 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 3 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 4 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 5 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 6 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 7 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 8 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 9 Env Sustain"));
+    v.add (NJ_S("Bus 1 FX 10 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 1 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 2 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 3 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 4 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 5 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 6 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 7 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 8 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 9 Env Sustain"));
+    v.add (NJ_S("Bus 2 FX 10 Env Sustain"));
+    v.add (NJ_S("Main FX 1 Env Release"));
+    v.add (NJ_S("Main FX 2 Env Release"));
+    v.add (NJ_S("Main FX 3 Env Release"));
+    v.add (NJ_S("Main FX 4 Env Release"));
+    v.add (NJ_S("Main FX 5 Env Release"));
+    v.add (NJ_S("Main FX 6 Env Release"));
+    v.add (NJ_S("Main FX 7 Env Release"));
+    v.add (NJ_S("Main FX 8 Env Release"));
+    v.add (NJ_S("Main FX 9 Env Release"));
+    v.add (NJ_S("Main FX 10 Env Release"));
+    v.add (NJ_S("Bus 1 FX 1 Env Release"));
+    v.add (NJ_S("Bus 1 FX 2 Env Release"));
+    v.add (NJ_S("Bus 1 FX 3 Env Release"));
+    v.add (NJ_S("Bus 1 FX 4 Env Release"));
+    v.add (NJ_S("Bus 1 FX 5 Env Release"));
+    v.add (NJ_S("Bus 1 FX 6 Env Release"));
+    v.add (NJ_S("Bus 1 FX 7 Env Release"));
+    v.add (NJ_S("Bus 1 FX 8 Env Release"));
+    v.add (NJ_S("Bus 1 FX 9 Env Release"));
+    v.add (NJ_S("Bus 1 FX 10 Env Release"));
+    v.add (NJ_S("Bus 2 FX 1 Env Release"));
+    v.add (NJ_S("Bus 2 FX 2 Env Release"));
+    v.add (NJ_S("Bus 2 FX 3 Env Release"));
+    v.add (NJ_S("Bus 2 FX 4 Env Release"));
+    v.add (NJ_S("Bus 2 FX 5 Env Release"));
+    v.add (NJ_S("Bus 2 FX 6 Env Release"));
+    v.add (NJ_S("Bus 2 FX 7 Env Release"));
+    v.add (NJ_S("Bus 2 FX 8 Env Release"));
+    v.add (NJ_S("Bus 2 FX 9 Env Release"));
+    v.add (NJ_S("Bus 2 FX 10 Env Release"));
+    v.add (NJ_S("Main FX 11 Mix"));
+    v.add (NJ_S("Main FX 11 P1"));
+    v.add (NJ_S("Main FX 11 P2"));
+    v.add (NJ_S("Main FX 11 P3"));
+    v.add (NJ_S("Main FX 11 P4"));
+    v.add (NJ_S("Main FX 11 P5"));
+    v.add (NJ_S("Main FX 11 P6"));
+    v.add (NJ_S("Main FX 12 Mix"));
+    v.add (NJ_S("Main FX 12 P1"));
+    v.add (NJ_S("Main FX 12 P2"));
+    v.add (NJ_S("Main FX 12 P3"));
+    v.add (NJ_S("Main FX 12 P4"));
+    v.add (NJ_S("Main FX 12 P5"));
+    v.add (NJ_S("Main FX 12 P6"));
+    v.add (NJ_S("Main FX 13 Mix"));
+    v.add (NJ_S("Main FX 13 P1"));
+    v.add (NJ_S("Main FX 13 P2"));
+    v.add (NJ_S("Main FX 13 P3"));
+    v.add (NJ_S("Main FX 13 P4"));
+    v.add (NJ_S("Main FX 13 P5"));
+    v.add (NJ_S("Main FX 13 P6"));
+    v.add (NJ_S("Main FX 14 Mix"));
+    v.add (NJ_S("Main FX 14 P1"));
+    v.add (NJ_S("Main FX 14 P2"));
+    v.add (NJ_S("Main FX 14 P3"));
+    v.add (NJ_S("Main FX 14 P4"));
+    v.add (NJ_S("Main FX 14 P5"));
+    v.add (NJ_S("Main FX 14 P6"));
+    v.add (NJ_S("Main FX 15 Mix"));
+    v.add (NJ_S("Main FX 15 P1"));
+    v.add (NJ_S("Main FX 15 P2"));
+}
+static void modDst_29 (juce::StringArray& v)
+{
+    v.add (NJ_S("Main FX 15 P3"));
+    v.add (NJ_S("Main FX 15 P4"));
+    v.add (NJ_S("Main FX 15 P5"));
+    v.add (NJ_S("Main FX 15 P6"));
+    v.add (NJ_S("Main FX 16 Mix"));
+    v.add (NJ_S("Main FX 16 P1"));
+    v.add (NJ_S("Main FX 16 P2"));
+    v.add (NJ_S("Main FX 16 P3"));
+    v.add (NJ_S("Main FX 16 P4"));
+    v.add (NJ_S("Main FX 16 P5"));
+    v.add (NJ_S("Main FX 16 P6"));
+    v.add (NJ_S("Bus 1 FX 11 Mix"));
+    v.add (NJ_S("Bus 1 FX 11 P1"));
+    v.add (NJ_S("Bus 1 FX 11 P2"));
+    v.add (NJ_S("Bus 1 FX 11 P3"));
+    v.add (NJ_S("Bus 1 FX 11 P4"));
+    v.add (NJ_S("Bus 1 FX 11 P5"));
+    v.add (NJ_S("Bus 1 FX 11 P6"));
+    v.add (NJ_S("Bus 1 FX 12 Mix"));
+    v.add (NJ_S("Bus 1 FX 12 P1"));
+    v.add (NJ_S("Bus 1 FX 12 P2"));
+    v.add (NJ_S("Bus 1 FX 12 P3"));
+    v.add (NJ_S("Bus 1 FX 12 P4"));
+    v.add (NJ_S("Bus 1 FX 12 P5"));
+    v.add (NJ_S("Bus 1 FX 12 P6"));
+    v.add (NJ_S("Bus 1 FX 13 Mix"));
+    v.add (NJ_S("Bus 1 FX 13 P1"));
+    v.add (NJ_S("Bus 1 FX 13 P2"));
+    v.add (NJ_S("Bus 1 FX 13 P3"));
+    v.add (NJ_S("Bus 1 FX 13 P4"));
+    v.add (NJ_S("Bus 1 FX 13 P5"));
+    v.add (NJ_S("Bus 1 FX 13 P6"));
+    v.add (NJ_S("Bus 1 FX 14 Mix"));
+    v.add (NJ_S("Bus 1 FX 14 P1"));
+    v.add (NJ_S("Bus 1 FX 14 P2"));
+    v.add (NJ_S("Bus 1 FX 14 P3"));
+    v.add (NJ_S("Bus 1 FX 14 P4"));
+    v.add (NJ_S("Bus 1 FX 14 P5"));
+    v.add (NJ_S("Bus 1 FX 14 P6"));
+    v.add (NJ_S("Bus 1 FX 15 Mix"));
+    v.add (NJ_S("Bus 1 FX 15 P1"));
+    v.add (NJ_S("Bus 1 FX 15 P2"));
+    v.add (NJ_S("Bus 1 FX 15 P3"));
+    v.add (NJ_S("Bus 1 FX 15 P4"));
+    v.add (NJ_S("Bus 1 FX 15 P5"));
+    v.add (NJ_S("Bus 1 FX 15 P6"));
+    v.add (NJ_S("Bus 1 FX 16 Mix"));
+    v.add (NJ_S("Bus 1 FX 16 P1"));
+    v.add (NJ_S("Bus 1 FX 16 P2"));
+    v.add (NJ_S("Bus 1 FX 16 P3"));
+    v.add (NJ_S("Bus 1 FX 16 P4"));
+    v.add (NJ_S("Bus 1 FX 16 P5"));
+    v.add (NJ_S("Bus 1 FX 16 P6"));
+    v.add (NJ_S("Bus 2 FX 11 Mix"));
+    v.add (NJ_S("Bus 2 FX 11 P1"));
+    v.add (NJ_S("Bus 2 FX 11 P2"));
+    v.add (NJ_S("Bus 2 FX 11 P3"));
+    v.add (NJ_S("Bus 2 FX 11 P4"));
+    v.add (NJ_S("Bus 2 FX 11 P5"));
+    v.add (NJ_S("Bus 2 FX 11 P6"));
+    v.add (NJ_S("Bus 2 FX 12 Mix"));
+    v.add (NJ_S("Bus 2 FX 12 P1"));
+    v.add (NJ_S("Bus 2 FX 12 P2"));
+    v.add (NJ_S("Bus 2 FX 12 P3"));
+    v.add (NJ_S("Bus 2 FX 12 P4"));
+    v.add (NJ_S("Bus 2 FX 12 P5"));
+    v.add (NJ_S("Bus 2 FX 12 P6"));
+    v.add (NJ_S("Bus 2 FX 13 Mix"));
+    v.add (NJ_S("Bus 2 FX 13 P1"));
+    v.add (NJ_S("Bus 2 FX 13 P2"));
+    v.add (NJ_S("Bus 2 FX 13 P3"));
+    v.add (NJ_S("Bus 2 FX 13 P4"));
+    v.add (NJ_S("Bus 2 FX 13 P5"));
+    v.add (NJ_S("Bus 2 FX 13 P6"));
+    v.add (NJ_S("Bus 2 FX 14 Mix"));
+    v.add (NJ_S("Bus 2 FX 14 P1"));
+    v.add (NJ_S("Bus 2 FX 14 P2"));
+    v.add (NJ_S("Bus 2 FX 14 P3"));
+    v.add (NJ_S("Bus 2 FX 14 P4"));
+    v.add (NJ_S("Bus 2 FX 14 P5"));
+    v.add (NJ_S("Bus 2 FX 14 P6"));
+    v.add (NJ_S("Bus 2 FX 15 Mix"));
+    v.add (NJ_S("Bus 2 FX 15 P1"));
+    v.add (NJ_S("Bus 2 FX 15 P2"));
+    v.add (NJ_S("Bus 2 FX 15 P3"));
+    v.add (NJ_S("Bus 2 FX 15 P4"));
+    v.add (NJ_S("Bus 2 FX 15 P5"));
+    v.add (NJ_S("Bus 2 FX 15 P6"));
+    v.add (NJ_S("Bus 2 FX 16 Mix"));
+    v.add (NJ_S("Bus 2 FX 16 P1"));
+    v.add (NJ_S("Bus 2 FX 16 P2"));
+    v.add (NJ_S("Bus 2 FX 16 P3"));
+    v.add (NJ_S("Bus 2 FX 16 P4"));
+    v.add (NJ_S("Bus 2 FX 16 P5"));
+    v.add (NJ_S("Bus 2 FX 16 P6"));
+    v.add (NJ_S("OSC 1 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 1 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 1 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 1 Bagpipe Bore"));
+    v.add (NJ_S("OSC 1 Bagpipe Fluctuation"));
+}
+static void modDst_30 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 1 Bagpipe Air"));
+    v.add (NJ_S("OSC 1 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 1 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 1 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 1 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 1 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 1 Bagpipe Blow"));
+    v.add (NJ_S("OSC 2 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 2 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 2 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 2 Bagpipe Bore"));
+    v.add (NJ_S("OSC 2 Bagpipe Fluctuation"));
+    v.add (NJ_S("OSC 2 Bagpipe Air"));
+    v.add (NJ_S("OSC 2 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 2 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 2 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 2 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 2 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 2 Bagpipe Blow"));
+    v.add (NJ_S("OSC 3 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 3 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 3 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 3 Bagpipe Bore"));
+    v.add (NJ_S("OSC 3 Bagpipe Fluctuation"));
+    v.add (NJ_S("OSC 3 Bagpipe Air"));
+    v.add (NJ_S("OSC 3 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 3 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 3 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 3 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 3 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 3 Bagpipe Blow"));
+    v.add (NJ_S("OSC 4 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 4 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 4 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 4 Bagpipe Bore"));
+    v.add (NJ_S("OSC 4 Bagpipe Fluctuation"));
+    v.add (NJ_S("OSC 4 Bagpipe Air"));
+    v.add (NJ_S("OSC 4 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 4 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 4 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 4 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 4 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 4 Bagpipe Blow"));
+    v.add (NJ_S("OSC 5 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 5 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 5 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 5 Bagpipe Bore"));
+    v.add (NJ_S("OSC 5 Bagpipe Fluctuation"));
+    v.add (NJ_S("OSC 5 Bagpipe Air"));
+    v.add (NJ_S("OSC 5 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 5 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 5 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 5 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 5 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 5 Bagpipe Blow"));
+    v.add (NJ_S("OSC 6 Bagpipe Reed Type"));
+    v.add (NJ_S("OSC 6 Bagpipe Bore Shape"));
+    v.add (NJ_S("OSC 6 Bagpipe Coupling"));
+    v.add (NJ_S("OSC 6 Bagpipe Bore"));
+    v.add (NJ_S("OSC 6 Bagpipe Fluctuation"));
+    v.add (NJ_S("OSC 6 Bagpipe Air"));
+    v.add (NJ_S("OSC 6 Bagpipe Colour Mix"));
+    v.add (NJ_S("OSC 6 Bagpipe Colour Freq"));
+    v.add (NJ_S("OSC 6 Bagpipe Drone Level"));
+    v.add (NJ_S("OSC 6 Bagpipe Strike-In"));
+    v.add (NJ_S("OSC 6 Bagpipe Vibrato"));
+    v.add (NJ_S("OSC 6 Bagpipe Blow"));
+    v.add (NJ_S("Seq 1 Rate"));
+    v.add (NJ_S("Seq 1 Glide"));
+    v.add (NJ_S("Seq 2 Rate"));
+    v.add (NJ_S("Seq 2 Glide"));
+    v.add (NJ_S("Seq 3 Rate"));
+    v.add (NJ_S("Seq 3 Glide"));
+    v.add (NJ_S("Seq 4 Rate"));
+    v.add (NJ_S("Seq 4 Glide"));
+    v.add (NJ_S("Seq 5 Rate"));
+    v.add (NJ_S("Seq 5 Glide"));
+    v.add (NJ_S("Seq 6 Rate"));
+    v.add (NJ_S("Seq 6 Glide"));
+    v.add (NJ_S("Seq 7 Rate"));
+    v.add (NJ_S("Seq 7 Glide"));
+    v.add (NJ_S("Seq 8 Rate"));
+    v.add (NJ_S("Seq 8 Glide"));
+    v.add (NJ_S("Seq 9 Rate"));
+    v.add (NJ_S("Seq 9 Glide"));
+    v.add (NJ_S("Seq 10 Rate"));
+    v.add (NJ_S("Seq 10 Glide"));
+    v.add (NJ_S("OSC 1 FX 1 Mix"));
+    v.add (NJ_S("OSC 1 FX 1 P1"));
+    v.add (NJ_S("OSC 1 FX 1 P2"));
+    v.add (NJ_S("OSC 1 FX 1 P3"));
+    v.add (NJ_S("OSC 1 FX 1 P4"));
+    v.add (NJ_S("OSC 1 FX 1 P5"));
+    v.add (NJ_S("OSC 1 FX 1 P6"));
+    v.add (NJ_S("OSC 1 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 1 Env Release"));
+    v.add (NJ_S("OSC 1 FX 2 Mix"));
+    v.add (NJ_S("OSC 1 FX 2 P1"));
+    v.add (NJ_S("OSC 1 FX 2 P2"));
+    v.add (NJ_S("OSC 1 FX 2 P3"));
+}
+static void modDst_31 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 1 FX 2 P4"));
+    v.add (NJ_S("OSC 1 FX 2 P5"));
+    v.add (NJ_S("OSC 1 FX 2 P6"));
+    v.add (NJ_S("OSC 1 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 2 Env Release"));
+    v.add (NJ_S("OSC 1 FX 3 Mix"));
+    v.add (NJ_S("OSC 1 FX 3 P1"));
+    v.add (NJ_S("OSC 1 FX 3 P2"));
+    v.add (NJ_S("OSC 1 FX 3 P3"));
+    v.add (NJ_S("OSC 1 FX 3 P4"));
+    v.add (NJ_S("OSC 1 FX 3 P5"));
+    v.add (NJ_S("OSC 1 FX 3 P6"));
+    v.add (NJ_S("OSC 1 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 3 Env Release"));
+    v.add (NJ_S("OSC 1 FX 4 Mix"));
+    v.add (NJ_S("OSC 1 FX 4 P1"));
+    v.add (NJ_S("OSC 1 FX 4 P2"));
+    v.add (NJ_S("OSC 1 FX 4 P3"));
+    v.add (NJ_S("OSC 1 FX 4 P4"));
+    v.add (NJ_S("OSC 1 FX 4 P5"));
+    v.add (NJ_S("OSC 1 FX 4 P6"));
+    v.add (NJ_S("OSC 1 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 4 Env Release"));
+    v.add (NJ_S("OSC 1 FX 5 Mix"));
+    v.add (NJ_S("OSC 1 FX 5 P1"));
+    v.add (NJ_S("OSC 1 FX 5 P2"));
+    v.add (NJ_S("OSC 1 FX 5 P3"));
+    v.add (NJ_S("OSC 1 FX 5 P4"));
+    v.add (NJ_S("OSC 1 FX 5 P5"));
+    v.add (NJ_S("OSC 1 FX 5 P6"));
+    v.add (NJ_S("OSC 1 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 5 Env Release"));
+    v.add (NJ_S("OSC 1 FX 6 Mix"));
+    v.add (NJ_S("OSC 1 FX 6 P1"));
+    v.add (NJ_S("OSC 1 FX 6 P2"));
+    v.add (NJ_S("OSC 1 FX 6 P3"));
+    v.add (NJ_S("OSC 1 FX 6 P4"));
+    v.add (NJ_S("OSC 1 FX 6 P5"));
+    v.add (NJ_S("OSC 1 FX 6 P6"));
+    v.add (NJ_S("OSC 1 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 6 Env Release"));
+    v.add (NJ_S("OSC 1 FX 7 Mix"));
+    v.add (NJ_S("OSC 1 FX 7 P1"));
+    v.add (NJ_S("OSC 1 FX 7 P2"));
+    v.add (NJ_S("OSC 1 FX 7 P3"));
+    v.add (NJ_S("OSC 1 FX 7 P4"));
+    v.add (NJ_S("OSC 1 FX 7 P5"));
+    v.add (NJ_S("OSC 1 FX 7 P6"));
+    v.add (NJ_S("OSC 1 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 7 Env Release"));
+    v.add (NJ_S("OSC 1 FX 8 Mix"));
+    v.add (NJ_S("OSC 1 FX 8 P1"));
+    v.add (NJ_S("OSC 1 FX 8 P2"));
+    v.add (NJ_S("OSC 1 FX 8 P3"));
+    v.add (NJ_S("OSC 1 FX 8 P4"));
+    v.add (NJ_S("OSC 1 FX 8 P5"));
+    v.add (NJ_S("OSC 1 FX 8 P6"));
+    v.add (NJ_S("OSC 1 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 8 Env Release"));
+    v.add (NJ_S("OSC 1 FX 9 Mix"));
+    v.add (NJ_S("OSC 1 FX 9 P1"));
+    v.add (NJ_S("OSC 1 FX 9 P2"));
+    v.add (NJ_S("OSC 1 FX 9 P3"));
+    v.add (NJ_S("OSC 1 FX 9 P4"));
+    v.add (NJ_S("OSC 1 FX 9 P5"));
+    v.add (NJ_S("OSC 1 FX 9 P6"));
+    v.add (NJ_S("OSC 1 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 9 Env Release"));
+    v.add (NJ_S("OSC 1 FX 10 Mix"));
+    v.add (NJ_S("OSC 1 FX 10 P1"));
+    v.add (NJ_S("OSC 1 FX 10 P2"));
+    v.add (NJ_S("OSC 1 FX 10 P3"));
+    v.add (NJ_S("OSC 1 FX 10 P4"));
+    v.add (NJ_S("OSC 1 FX 10 P5"));
+    v.add (NJ_S("OSC 1 FX 10 P6"));
+    v.add (NJ_S("OSC 1 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 10 Env Release"));
+    v.add (NJ_S("OSC 1 FX 11 Mix"));
+    v.add (NJ_S("OSC 1 FX 11 P1"));
+    v.add (NJ_S("OSC 1 FX 11 P2"));
+    v.add (NJ_S("OSC 1 FX 11 P3"));
+    v.add (NJ_S("OSC 1 FX 11 P4"));
+    v.add (NJ_S("OSC 1 FX 11 P5"));
+    v.add (NJ_S("OSC 1 FX 11 P6"));
+    v.add (NJ_S("OSC 1 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 11 Env Release"));
+    v.add (NJ_S("OSC 1 FX 12 Mix"));
+    v.add (NJ_S("OSC 1 FX 12 P1"));
+    v.add (NJ_S("OSC 1 FX 12 P2"));
+    v.add (NJ_S("OSC 1 FX 12 P3"));
+    v.add (NJ_S("OSC 1 FX 12 P4"));
+    v.add (NJ_S("OSC 1 FX 12 P5"));
+    v.add (NJ_S("OSC 1 FX 12 P6"));
+    v.add (NJ_S("OSC 1 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 12 Env Release"));
+    v.add (NJ_S("OSC 1 FX 13 Mix"));
+    v.add (NJ_S("OSC 1 FX 13 P1"));
+    v.add (NJ_S("OSC 1 FX 13 P2"));
+    v.add (NJ_S("OSC 1 FX 13 P3"));
+    v.add (NJ_S("OSC 1 FX 13 P4"));
+}
+static void modDst_32 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 1 FX 13 P5"));
+    v.add (NJ_S("OSC 1 FX 13 P6"));
+    v.add (NJ_S("OSC 1 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 13 Env Release"));
+    v.add (NJ_S("OSC 1 FX 14 Mix"));
+    v.add (NJ_S("OSC 1 FX 14 P1"));
+    v.add (NJ_S("OSC 1 FX 14 P2"));
+    v.add (NJ_S("OSC 1 FX 14 P3"));
+    v.add (NJ_S("OSC 1 FX 14 P4"));
+    v.add (NJ_S("OSC 1 FX 14 P5"));
+    v.add (NJ_S("OSC 1 FX 14 P6"));
+    v.add (NJ_S("OSC 1 FX 14 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 14 Env Release"));
+    v.add (NJ_S("OSC 1 FX 15 Mix"));
+    v.add (NJ_S("OSC 1 FX 15 P1"));
+    v.add (NJ_S("OSC 1 FX 15 P2"));
+    v.add (NJ_S("OSC 1 FX 15 P3"));
+    v.add (NJ_S("OSC 1 FX 15 P4"));
+    v.add (NJ_S("OSC 1 FX 15 P5"));
+    v.add (NJ_S("OSC 1 FX 15 P6"));
+    v.add (NJ_S("OSC 1 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 15 Env Release"));
+    v.add (NJ_S("OSC 1 FX 16 Mix"));
+    v.add (NJ_S("OSC 1 FX 16 P1"));
+    v.add (NJ_S("OSC 1 FX 16 P2"));
+    v.add (NJ_S("OSC 1 FX 16 P3"));
+    v.add (NJ_S("OSC 1 FX 16 P4"));
+    v.add (NJ_S("OSC 1 FX 16 P5"));
+    v.add (NJ_S("OSC 1 FX 16 P6"));
+    v.add (NJ_S("OSC 1 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 1 FX 16 Env Release"));
+    v.add (NJ_S("OSC 2 FX 1 Mix"));
+    v.add (NJ_S("OSC 2 FX 1 P1"));
+    v.add (NJ_S("OSC 2 FX 1 P2"));
+    v.add (NJ_S("OSC 2 FX 1 P3"));
+    v.add (NJ_S("OSC 2 FX 1 P4"));
+    v.add (NJ_S("OSC 2 FX 1 P5"));
+    v.add (NJ_S("OSC 2 FX 1 P6"));
+    v.add (NJ_S("OSC 2 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 1 Env Release"));
+    v.add (NJ_S("OSC 2 FX 2 Mix"));
+    v.add (NJ_S("OSC 2 FX 2 P1"));
+    v.add (NJ_S("OSC 2 FX 2 P2"));
+    v.add (NJ_S("OSC 2 FX 2 P3"));
+    v.add (NJ_S("OSC 2 FX 2 P4"));
+    v.add (NJ_S("OSC 2 FX 2 P5"));
+    v.add (NJ_S("OSC 2 FX 2 P6"));
+    v.add (NJ_S("OSC 2 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 2 Env Release"));
+    v.add (NJ_S("OSC 2 FX 3 Mix"));
+    v.add (NJ_S("OSC 2 FX 3 P1"));
+    v.add (NJ_S("OSC 2 FX 3 P2"));
+    v.add (NJ_S("OSC 2 FX 3 P3"));
+    v.add (NJ_S("OSC 2 FX 3 P4"));
+    v.add (NJ_S("OSC 2 FX 3 P5"));
+    v.add (NJ_S("OSC 2 FX 3 P6"));
+    v.add (NJ_S("OSC 2 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 3 Env Release"));
+    v.add (NJ_S("OSC 2 FX 4 Mix"));
+    v.add (NJ_S("OSC 2 FX 4 P1"));
+    v.add (NJ_S("OSC 2 FX 4 P2"));
+    v.add (NJ_S("OSC 2 FX 4 P3"));
+    v.add (NJ_S("OSC 2 FX 4 P4"));
+    v.add (NJ_S("OSC 2 FX 4 P5"));
+    v.add (NJ_S("OSC 2 FX 4 P6"));
+    v.add (NJ_S("OSC 2 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 4 Env Release"));
+    v.add (NJ_S("OSC 2 FX 5 Mix"));
+    v.add (NJ_S("OSC 2 FX 5 P1"));
+    v.add (NJ_S("OSC 2 FX 5 P2"));
+    v.add (NJ_S("OSC 2 FX 5 P3"));
+    v.add (NJ_S("OSC 2 FX 5 P4"));
+    v.add (NJ_S("OSC 2 FX 5 P5"));
+    v.add (NJ_S("OSC 2 FX 5 P6"));
+    v.add (NJ_S("OSC 2 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 5 Env Release"));
+    v.add (NJ_S("OSC 2 FX 6 Mix"));
+    v.add (NJ_S("OSC 2 FX 6 P1"));
+    v.add (NJ_S("OSC 2 FX 6 P2"));
+    v.add (NJ_S("OSC 2 FX 6 P3"));
+    v.add (NJ_S("OSC 2 FX 6 P4"));
+    v.add (NJ_S("OSC 2 FX 6 P5"));
+    v.add (NJ_S("OSC 2 FX 6 P6"));
+    v.add (NJ_S("OSC 2 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 6 Env Release"));
+    v.add (NJ_S("OSC 2 FX 7 Mix"));
+    v.add (NJ_S("OSC 2 FX 7 P1"));
+    v.add (NJ_S("OSC 2 FX 7 P2"));
+    v.add (NJ_S("OSC 2 FX 7 P3"));
+    v.add (NJ_S("OSC 2 FX 7 P4"));
+    v.add (NJ_S("OSC 2 FX 7 P5"));
+    v.add (NJ_S("OSC 2 FX 7 P6"));
+    v.add (NJ_S("OSC 2 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 7 Env Release"));
+    v.add (NJ_S("OSC 2 FX 8 Mix"));
+    v.add (NJ_S("OSC 2 FX 8 P1"));
+    v.add (NJ_S("OSC 2 FX 8 P2"));
+    v.add (NJ_S("OSC 2 FX 8 P3"));
+    v.add (NJ_S("OSC 2 FX 8 P4"));
+    v.add (NJ_S("OSC 2 FX 8 P5"));
+}
+static void modDst_33 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 2 FX 8 P6"));
+    v.add (NJ_S("OSC 2 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 8 Env Release"));
+    v.add (NJ_S("OSC 2 FX 9 Mix"));
+    v.add (NJ_S("OSC 2 FX 9 P1"));
+    v.add (NJ_S("OSC 2 FX 9 P2"));
+    v.add (NJ_S("OSC 2 FX 9 P3"));
+    v.add (NJ_S("OSC 2 FX 9 P4"));
+    v.add (NJ_S("OSC 2 FX 9 P5"));
+    v.add (NJ_S("OSC 2 FX 9 P6"));
+    v.add (NJ_S("OSC 2 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 9 Env Release"));
+    v.add (NJ_S("OSC 2 FX 10 Mix"));
+    v.add (NJ_S("OSC 2 FX 10 P1"));
+    v.add (NJ_S("OSC 2 FX 10 P2"));
+    v.add (NJ_S("OSC 2 FX 10 P3"));
+    v.add (NJ_S("OSC 2 FX 10 P4"));
+    v.add (NJ_S("OSC 2 FX 10 P5"));
+    v.add (NJ_S("OSC 2 FX 10 P6"));
+    v.add (NJ_S("OSC 2 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 10 Env Release"));
+    v.add (NJ_S("OSC 2 FX 11 Mix"));
+    v.add (NJ_S("OSC 2 FX 11 P1"));
+    v.add (NJ_S("OSC 2 FX 11 P2"));
+    v.add (NJ_S("OSC 2 FX 11 P3"));
+    v.add (NJ_S("OSC 2 FX 11 P4"));
+    v.add (NJ_S("OSC 2 FX 11 P5"));
+    v.add (NJ_S("OSC 2 FX 11 P6"));
+    v.add (NJ_S("OSC 2 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 11 Env Release"));
+    v.add (NJ_S("OSC 2 FX 12 Mix"));
+    v.add (NJ_S("OSC 2 FX 12 P1"));
+    v.add (NJ_S("OSC 2 FX 12 P2"));
+    v.add (NJ_S("OSC 2 FX 12 P3"));
+    v.add (NJ_S("OSC 2 FX 12 P4"));
+    v.add (NJ_S("OSC 2 FX 12 P5"));
+    v.add (NJ_S("OSC 2 FX 12 P6"));
+    v.add (NJ_S("OSC 2 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 12 Env Release"));
+    v.add (NJ_S("OSC 2 FX 13 Mix"));
+    v.add (NJ_S("OSC 2 FX 13 P1"));
+    v.add (NJ_S("OSC 2 FX 13 P2"));
+    v.add (NJ_S("OSC 2 FX 13 P3"));
+    v.add (NJ_S("OSC 2 FX 13 P4"));
+    v.add (NJ_S("OSC 2 FX 13 P5"));
+    v.add (NJ_S("OSC 2 FX 13 P6"));
+    v.add (NJ_S("OSC 2 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 13 Env Release"));
+    v.add (NJ_S("OSC 2 FX 14 Mix"));
+    v.add (NJ_S("OSC 2 FX 14 P1"));
+    v.add (NJ_S("OSC 2 FX 14 P2"));
+    v.add (NJ_S("OSC 2 FX 14 P3"));
+    v.add (NJ_S("OSC 2 FX 14 P4"));
+    v.add (NJ_S("OSC 2 FX 14 P5"));
+    v.add (NJ_S("OSC 2 FX 14 P6"));
+    v.add (NJ_S("OSC 2 FX 14 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 14 Env Release"));
+    v.add (NJ_S("OSC 2 FX 15 Mix"));
+    v.add (NJ_S("OSC 2 FX 15 P1"));
+    v.add (NJ_S("OSC 2 FX 15 P2"));
+    v.add (NJ_S("OSC 2 FX 15 P3"));
+    v.add (NJ_S("OSC 2 FX 15 P4"));
+    v.add (NJ_S("OSC 2 FX 15 P5"));
+    v.add (NJ_S("OSC 2 FX 15 P6"));
+    v.add (NJ_S("OSC 2 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 15 Env Release"));
+    v.add (NJ_S("OSC 2 FX 16 Mix"));
+    v.add (NJ_S("OSC 2 FX 16 P1"));
+    v.add (NJ_S("OSC 2 FX 16 P2"));
+    v.add (NJ_S("OSC 2 FX 16 P3"));
+    v.add (NJ_S("OSC 2 FX 16 P4"));
+    v.add (NJ_S("OSC 2 FX 16 P5"));
+    v.add (NJ_S("OSC 2 FX 16 P6"));
+    v.add (NJ_S("OSC 2 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 2 FX 16 Env Release"));
+    v.add (NJ_S("OSC 3 FX 1 Mix"));
+    v.add (NJ_S("OSC 3 FX 1 P1"));
+    v.add (NJ_S("OSC 3 FX 1 P2"));
+    v.add (NJ_S("OSC 3 FX 1 P3"));
+    v.add (NJ_S("OSC 3 FX 1 P4"));
+    v.add (NJ_S("OSC 3 FX 1 P5"));
+    v.add (NJ_S("OSC 3 FX 1 P6"));
+    v.add (NJ_S("OSC 3 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 1 Env Release"));
+    v.add (NJ_S("OSC 3 FX 2 Mix"));
+    v.add (NJ_S("OSC 3 FX 2 P1"));
+    v.add (NJ_S("OSC 3 FX 2 P2"));
+    v.add (NJ_S("OSC 3 FX 2 P3"));
+    v.add (NJ_S("OSC 3 FX 2 P4"));
+    v.add (NJ_S("OSC 3 FX 2 P5"));
+    v.add (NJ_S("OSC 3 FX 2 P6"));
+    v.add (NJ_S("OSC 3 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 2 Env Release"));
+    v.add (NJ_S("OSC 3 FX 3 Mix"));
+    v.add (NJ_S("OSC 3 FX 3 P1"));
+    v.add (NJ_S("OSC 3 FX 3 P2"));
+    v.add (NJ_S("OSC 3 FX 3 P3"));
+    v.add (NJ_S("OSC 3 FX 3 P4"));
+    v.add (NJ_S("OSC 3 FX 3 P5"));
+    v.add (NJ_S("OSC 3 FX 3 P6"));
+}
+static void modDst_34 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 3 Env Release"));
+    v.add (NJ_S("OSC 3 FX 4 Mix"));
+    v.add (NJ_S("OSC 3 FX 4 P1"));
+    v.add (NJ_S("OSC 3 FX 4 P2"));
+    v.add (NJ_S("OSC 3 FX 4 P3"));
+    v.add (NJ_S("OSC 3 FX 4 P4"));
+    v.add (NJ_S("OSC 3 FX 4 P5"));
+    v.add (NJ_S("OSC 3 FX 4 P6"));
+    v.add (NJ_S("OSC 3 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 4 Env Release"));
+    v.add (NJ_S("OSC 3 FX 5 Mix"));
+    v.add (NJ_S("OSC 3 FX 5 P1"));
+    v.add (NJ_S("OSC 3 FX 5 P2"));
+    v.add (NJ_S("OSC 3 FX 5 P3"));
+    v.add (NJ_S("OSC 3 FX 5 P4"));
+    v.add (NJ_S("OSC 3 FX 5 P5"));
+    v.add (NJ_S("OSC 3 FX 5 P6"));
+    v.add (NJ_S("OSC 3 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 5 Env Release"));
+    v.add (NJ_S("OSC 3 FX 6 Mix"));
+    v.add (NJ_S("OSC 3 FX 6 P1"));
+    v.add (NJ_S("OSC 3 FX 6 P2"));
+    v.add (NJ_S("OSC 3 FX 6 P3"));
+    v.add (NJ_S("OSC 3 FX 6 P4"));
+    v.add (NJ_S("OSC 3 FX 6 P5"));
+    v.add (NJ_S("OSC 3 FX 6 P6"));
+    v.add (NJ_S("OSC 3 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 6 Env Release"));
+    v.add (NJ_S("OSC 3 FX 7 Mix"));
+    v.add (NJ_S("OSC 3 FX 7 P1"));
+    v.add (NJ_S("OSC 3 FX 7 P2"));
+    v.add (NJ_S("OSC 3 FX 7 P3"));
+    v.add (NJ_S("OSC 3 FX 7 P4"));
+    v.add (NJ_S("OSC 3 FX 7 P5"));
+    v.add (NJ_S("OSC 3 FX 7 P6"));
+    v.add (NJ_S("OSC 3 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 7 Env Release"));
+    v.add (NJ_S("OSC 3 FX 8 Mix"));
+    v.add (NJ_S("OSC 3 FX 8 P1"));
+    v.add (NJ_S("OSC 3 FX 8 P2"));
+    v.add (NJ_S("OSC 3 FX 8 P3"));
+    v.add (NJ_S("OSC 3 FX 8 P4"));
+    v.add (NJ_S("OSC 3 FX 8 P5"));
+    v.add (NJ_S("OSC 3 FX 8 P6"));
+    v.add (NJ_S("OSC 3 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 8 Env Release"));
+    v.add (NJ_S("OSC 3 FX 9 Mix"));
+    v.add (NJ_S("OSC 3 FX 9 P1"));
+    v.add (NJ_S("OSC 3 FX 9 P2"));
+    v.add (NJ_S("OSC 3 FX 9 P3"));
+    v.add (NJ_S("OSC 3 FX 9 P4"));
+    v.add (NJ_S("OSC 3 FX 9 P5"));
+    v.add (NJ_S("OSC 3 FX 9 P6"));
+    v.add (NJ_S("OSC 3 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 9 Env Release"));
+    v.add (NJ_S("OSC 3 FX 10 Mix"));
+    v.add (NJ_S("OSC 3 FX 10 P1"));
+    v.add (NJ_S("OSC 3 FX 10 P2"));
+    v.add (NJ_S("OSC 3 FX 10 P3"));
+    v.add (NJ_S("OSC 3 FX 10 P4"));
+    v.add (NJ_S("OSC 3 FX 10 P5"));
+    v.add (NJ_S("OSC 3 FX 10 P6"));
+    v.add (NJ_S("OSC 3 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 10 Env Release"));
+    v.add (NJ_S("OSC 3 FX 11 Mix"));
+    v.add (NJ_S("OSC 3 FX 11 P1"));
+    v.add (NJ_S("OSC 3 FX 11 P2"));
+    v.add (NJ_S("OSC 3 FX 11 P3"));
+    v.add (NJ_S("OSC 3 FX 11 P4"));
+    v.add (NJ_S("OSC 3 FX 11 P5"));
+    v.add (NJ_S("OSC 3 FX 11 P6"));
+    v.add (NJ_S("OSC 3 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 11 Env Release"));
+    v.add (NJ_S("OSC 3 FX 12 Mix"));
+    v.add (NJ_S("OSC 3 FX 12 P1"));
+    v.add (NJ_S("OSC 3 FX 12 P2"));
+    v.add (NJ_S("OSC 3 FX 12 P3"));
+    v.add (NJ_S("OSC 3 FX 12 P4"));
+    v.add (NJ_S("OSC 3 FX 12 P5"));
+    v.add (NJ_S("OSC 3 FX 12 P6"));
+    v.add (NJ_S("OSC 3 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 12 Env Release"));
+    v.add (NJ_S("OSC 3 FX 13 Mix"));
+    v.add (NJ_S("OSC 3 FX 13 P1"));
+    v.add (NJ_S("OSC 3 FX 13 P2"));
+    v.add (NJ_S("OSC 3 FX 13 P3"));
+    v.add (NJ_S("OSC 3 FX 13 P4"));
+    v.add (NJ_S("OSC 3 FX 13 P5"));
+    v.add (NJ_S("OSC 3 FX 13 P6"));
+    v.add (NJ_S("OSC 3 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 13 Env Release"));
+    v.add (NJ_S("OSC 3 FX 14 Mix"));
+    v.add (NJ_S("OSC 3 FX 14 P1"));
+    v.add (NJ_S("OSC 3 FX 14 P2"));
+    v.add (NJ_S("OSC 3 FX 14 P3"));
+    v.add (NJ_S("OSC 3 FX 14 P4"));
+    v.add (NJ_S("OSC 3 FX 14 P5"));
+    v.add (NJ_S("OSC 3 FX 14 P6"));
+    v.add (NJ_S("OSC 3 FX 14 Env Sustain"));
+}
+static void modDst_35 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 FX 14 Env Release"));
+    v.add (NJ_S("OSC 3 FX 15 Mix"));
+    v.add (NJ_S("OSC 3 FX 15 P1"));
+    v.add (NJ_S("OSC 3 FX 15 P2"));
+    v.add (NJ_S("OSC 3 FX 15 P3"));
+    v.add (NJ_S("OSC 3 FX 15 P4"));
+    v.add (NJ_S("OSC 3 FX 15 P5"));
+    v.add (NJ_S("OSC 3 FX 15 P6"));
+    v.add (NJ_S("OSC 3 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 15 Env Release"));
+    v.add (NJ_S("OSC 3 FX 16 Mix"));
+    v.add (NJ_S("OSC 3 FX 16 P1"));
+    v.add (NJ_S("OSC 3 FX 16 P2"));
+    v.add (NJ_S("OSC 3 FX 16 P3"));
+    v.add (NJ_S("OSC 3 FX 16 P4"));
+    v.add (NJ_S("OSC 3 FX 16 P5"));
+    v.add (NJ_S("OSC 3 FX 16 P6"));
+    v.add (NJ_S("OSC 3 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 3 FX 16 Env Release"));
+    v.add (NJ_S("OSC 4 FX 1 Mix"));
+    v.add (NJ_S("OSC 4 FX 1 P1"));
+    v.add (NJ_S("OSC 4 FX 1 P2"));
+    v.add (NJ_S("OSC 4 FX 1 P3"));
+    v.add (NJ_S("OSC 4 FX 1 P4"));
+    v.add (NJ_S("OSC 4 FX 1 P5"));
+    v.add (NJ_S("OSC 4 FX 1 P6"));
+    v.add (NJ_S("OSC 4 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 1 Env Release"));
+    v.add (NJ_S("OSC 4 FX 2 Mix"));
+    v.add (NJ_S("OSC 4 FX 2 P1"));
+    v.add (NJ_S("OSC 4 FX 2 P2"));
+    v.add (NJ_S("OSC 4 FX 2 P3"));
+    v.add (NJ_S("OSC 4 FX 2 P4"));
+    v.add (NJ_S("OSC 4 FX 2 P5"));
+    v.add (NJ_S("OSC 4 FX 2 P6"));
+    v.add (NJ_S("OSC 4 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 2 Env Release"));
+    v.add (NJ_S("OSC 4 FX 3 Mix"));
+    v.add (NJ_S("OSC 4 FX 3 P1"));
+    v.add (NJ_S("OSC 4 FX 3 P2"));
+    v.add (NJ_S("OSC 4 FX 3 P3"));
+    v.add (NJ_S("OSC 4 FX 3 P4"));
+    v.add (NJ_S("OSC 4 FX 3 P5"));
+    v.add (NJ_S("OSC 4 FX 3 P6"));
+    v.add (NJ_S("OSC 4 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 3 Env Release"));
+    v.add (NJ_S("OSC 4 FX 4 Mix"));
+    v.add (NJ_S("OSC 4 FX 4 P1"));
+    v.add (NJ_S("OSC 4 FX 4 P2"));
+    v.add (NJ_S("OSC 4 FX 4 P3"));
+    v.add (NJ_S("OSC 4 FX 4 P4"));
+    v.add (NJ_S("OSC 4 FX 4 P5"));
+    v.add (NJ_S("OSC 4 FX 4 P6"));
+    v.add (NJ_S("OSC 4 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 4 Env Release"));
+    v.add (NJ_S("OSC 4 FX 5 Mix"));
+    v.add (NJ_S("OSC 4 FX 5 P1"));
+    v.add (NJ_S("OSC 4 FX 5 P2"));
+    v.add (NJ_S("OSC 4 FX 5 P3"));
+    v.add (NJ_S("OSC 4 FX 5 P4"));
+    v.add (NJ_S("OSC 4 FX 5 P5"));
+    v.add (NJ_S("OSC 4 FX 5 P6"));
+    v.add (NJ_S("OSC 4 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 5 Env Release"));
+    v.add (NJ_S("OSC 4 FX 6 Mix"));
+    v.add (NJ_S("OSC 4 FX 6 P1"));
+    v.add (NJ_S("OSC 4 FX 6 P2"));
+    v.add (NJ_S("OSC 4 FX 6 P3"));
+    v.add (NJ_S("OSC 4 FX 6 P4"));
+    v.add (NJ_S("OSC 4 FX 6 P5"));
+    v.add (NJ_S("OSC 4 FX 6 P6"));
+    v.add (NJ_S("OSC 4 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 6 Env Release"));
+    v.add (NJ_S("OSC 4 FX 7 Mix"));
+    v.add (NJ_S("OSC 4 FX 7 P1"));
+    v.add (NJ_S("OSC 4 FX 7 P2"));
+    v.add (NJ_S("OSC 4 FX 7 P3"));
+    v.add (NJ_S("OSC 4 FX 7 P4"));
+    v.add (NJ_S("OSC 4 FX 7 P5"));
+    v.add (NJ_S("OSC 4 FX 7 P6"));
+    v.add (NJ_S("OSC 4 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 7 Env Release"));
+    v.add (NJ_S("OSC 4 FX 8 Mix"));
+    v.add (NJ_S("OSC 4 FX 8 P1"));
+    v.add (NJ_S("OSC 4 FX 8 P2"));
+    v.add (NJ_S("OSC 4 FX 8 P3"));
+    v.add (NJ_S("OSC 4 FX 8 P4"));
+    v.add (NJ_S("OSC 4 FX 8 P5"));
+    v.add (NJ_S("OSC 4 FX 8 P6"));
+    v.add (NJ_S("OSC 4 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 8 Env Release"));
+    v.add (NJ_S("OSC 4 FX 9 Mix"));
+    v.add (NJ_S("OSC 4 FX 9 P1"));
+    v.add (NJ_S("OSC 4 FX 9 P2"));
+    v.add (NJ_S("OSC 4 FX 9 P3"));
+    v.add (NJ_S("OSC 4 FX 9 P4"));
+    v.add (NJ_S("OSC 4 FX 9 P5"));
+    v.add (NJ_S("OSC 4 FX 9 P6"));
+    v.add (NJ_S("OSC 4 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 9 Env Release"));
+}
+static void modDst_36 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 FX 10 Mix"));
+    v.add (NJ_S("OSC 4 FX 10 P1"));
+    v.add (NJ_S("OSC 4 FX 10 P2"));
+    v.add (NJ_S("OSC 4 FX 10 P3"));
+    v.add (NJ_S("OSC 4 FX 10 P4"));
+    v.add (NJ_S("OSC 4 FX 10 P5"));
+    v.add (NJ_S("OSC 4 FX 10 P6"));
+    v.add (NJ_S("OSC 4 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 10 Env Release"));
+    v.add (NJ_S("OSC 4 FX 11 Mix"));
+    v.add (NJ_S("OSC 4 FX 11 P1"));
+    v.add (NJ_S("OSC 4 FX 11 P2"));
+    v.add (NJ_S("OSC 4 FX 11 P3"));
+    v.add (NJ_S("OSC 4 FX 11 P4"));
+    v.add (NJ_S("OSC 4 FX 11 P5"));
+    v.add (NJ_S("OSC 4 FX 11 P6"));
+    v.add (NJ_S("OSC 4 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 11 Env Release"));
+    v.add (NJ_S("OSC 4 FX 12 Mix"));
+    v.add (NJ_S("OSC 4 FX 12 P1"));
+    v.add (NJ_S("OSC 4 FX 12 P2"));
+    v.add (NJ_S("OSC 4 FX 12 P3"));
+    v.add (NJ_S("OSC 4 FX 12 P4"));
+    v.add (NJ_S("OSC 4 FX 12 P5"));
+    v.add (NJ_S("OSC 4 FX 12 P6"));
+    v.add (NJ_S("OSC 4 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 12 Env Release"));
+    v.add (NJ_S("OSC 4 FX 13 Mix"));
+    v.add (NJ_S("OSC 4 FX 13 P1"));
+    v.add (NJ_S("OSC 4 FX 13 P2"));
+    v.add (NJ_S("OSC 4 FX 13 P3"));
+    v.add (NJ_S("OSC 4 FX 13 P4"));
+    v.add (NJ_S("OSC 4 FX 13 P5"));
+    v.add (NJ_S("OSC 4 FX 13 P6"));
+    v.add (NJ_S("OSC 4 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 13 Env Release"));
+    v.add (NJ_S("OSC 4 FX 14 Mix"));
+    v.add (NJ_S("OSC 4 FX 14 P1"));
+    v.add (NJ_S("OSC 4 FX 14 P2"));
+    v.add (NJ_S("OSC 4 FX 14 P3"));
+    v.add (NJ_S("OSC 4 FX 14 P4"));
+    v.add (NJ_S("OSC 4 FX 14 P5"));
+    v.add (NJ_S("OSC 4 FX 14 P6"));
+    v.add (NJ_S("OSC 4 FX 14 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 14 Env Release"));
+    v.add (NJ_S("OSC 4 FX 15 Mix"));
+    v.add (NJ_S("OSC 4 FX 15 P1"));
+    v.add (NJ_S("OSC 4 FX 15 P2"));
+    v.add (NJ_S("OSC 4 FX 15 P3"));
+    v.add (NJ_S("OSC 4 FX 15 P4"));
+    v.add (NJ_S("OSC 4 FX 15 P5"));
+    v.add (NJ_S("OSC 4 FX 15 P6"));
+    v.add (NJ_S("OSC 4 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 15 Env Release"));
+    v.add (NJ_S("OSC 4 FX 16 Mix"));
+    v.add (NJ_S("OSC 4 FX 16 P1"));
+    v.add (NJ_S("OSC 4 FX 16 P2"));
+    v.add (NJ_S("OSC 4 FX 16 P3"));
+    v.add (NJ_S("OSC 4 FX 16 P4"));
+    v.add (NJ_S("OSC 4 FX 16 P5"));
+    v.add (NJ_S("OSC 4 FX 16 P6"));
+    v.add (NJ_S("OSC 4 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 4 FX 16 Env Release"));
+    v.add (NJ_S("OSC 5 FX 1 Mix"));
+    v.add (NJ_S("OSC 5 FX 1 P1"));
+    v.add (NJ_S("OSC 5 FX 1 P2"));
+    v.add (NJ_S("OSC 5 FX 1 P3"));
+    v.add (NJ_S("OSC 5 FX 1 P4"));
+    v.add (NJ_S("OSC 5 FX 1 P5"));
+    v.add (NJ_S("OSC 5 FX 1 P6"));
+    v.add (NJ_S("OSC 5 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 1 Env Release"));
+    v.add (NJ_S("OSC 5 FX 2 Mix"));
+    v.add (NJ_S("OSC 5 FX 2 P1"));
+    v.add (NJ_S("OSC 5 FX 2 P2"));
+    v.add (NJ_S("OSC 5 FX 2 P3"));
+    v.add (NJ_S("OSC 5 FX 2 P4"));
+    v.add (NJ_S("OSC 5 FX 2 P5"));
+    v.add (NJ_S("OSC 5 FX 2 P6"));
+    v.add (NJ_S("OSC 5 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 2 Env Release"));
+    v.add (NJ_S("OSC 5 FX 3 Mix"));
+    v.add (NJ_S("OSC 5 FX 3 P1"));
+    v.add (NJ_S("OSC 5 FX 3 P2"));
+    v.add (NJ_S("OSC 5 FX 3 P3"));
+    v.add (NJ_S("OSC 5 FX 3 P4"));
+    v.add (NJ_S("OSC 5 FX 3 P5"));
+    v.add (NJ_S("OSC 5 FX 3 P6"));
+    v.add (NJ_S("OSC 5 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 3 Env Release"));
+    v.add (NJ_S("OSC 5 FX 4 Mix"));
+    v.add (NJ_S("OSC 5 FX 4 P1"));
+    v.add (NJ_S("OSC 5 FX 4 P2"));
+    v.add (NJ_S("OSC 5 FX 4 P3"));
+    v.add (NJ_S("OSC 5 FX 4 P4"));
+    v.add (NJ_S("OSC 5 FX 4 P5"));
+    v.add (NJ_S("OSC 5 FX 4 P6"));
+    v.add (NJ_S("OSC 5 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 4 Env Release"));
+    v.add (NJ_S("OSC 5 FX 5 Mix"));
+}
+static void modDst_37 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 FX 5 P1"));
+    v.add (NJ_S("OSC 5 FX 5 P2"));
+    v.add (NJ_S("OSC 5 FX 5 P3"));
+    v.add (NJ_S("OSC 5 FX 5 P4"));
+    v.add (NJ_S("OSC 5 FX 5 P5"));
+    v.add (NJ_S("OSC 5 FX 5 P6"));
+    v.add (NJ_S("OSC 5 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 5 Env Release"));
+    v.add (NJ_S("OSC 5 FX 6 Mix"));
+    v.add (NJ_S("OSC 5 FX 6 P1"));
+    v.add (NJ_S("OSC 5 FX 6 P2"));
+    v.add (NJ_S("OSC 5 FX 6 P3"));
+    v.add (NJ_S("OSC 5 FX 6 P4"));
+    v.add (NJ_S("OSC 5 FX 6 P5"));
+    v.add (NJ_S("OSC 5 FX 6 P6"));
+    v.add (NJ_S("OSC 5 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 6 Env Release"));
+    v.add (NJ_S("OSC 5 FX 7 Mix"));
+    v.add (NJ_S("OSC 5 FX 7 P1"));
+    v.add (NJ_S("OSC 5 FX 7 P2"));
+    v.add (NJ_S("OSC 5 FX 7 P3"));
+    v.add (NJ_S("OSC 5 FX 7 P4"));
+    v.add (NJ_S("OSC 5 FX 7 P5"));
+    v.add (NJ_S("OSC 5 FX 7 P6"));
+    v.add (NJ_S("OSC 5 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 7 Env Release"));
+    v.add (NJ_S("OSC 5 FX 8 Mix"));
+    v.add (NJ_S("OSC 5 FX 8 P1"));
+    v.add (NJ_S("OSC 5 FX 8 P2"));
+    v.add (NJ_S("OSC 5 FX 8 P3"));
+    v.add (NJ_S("OSC 5 FX 8 P4"));
+    v.add (NJ_S("OSC 5 FX 8 P5"));
+    v.add (NJ_S("OSC 5 FX 8 P6"));
+    v.add (NJ_S("OSC 5 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 8 Env Release"));
+    v.add (NJ_S("OSC 5 FX 9 Mix"));
+    v.add (NJ_S("OSC 5 FX 9 P1"));
+    v.add (NJ_S("OSC 5 FX 9 P2"));
+    v.add (NJ_S("OSC 5 FX 9 P3"));
+    v.add (NJ_S("OSC 5 FX 9 P4"));
+    v.add (NJ_S("OSC 5 FX 9 P5"));
+    v.add (NJ_S("OSC 5 FX 9 P6"));
+    v.add (NJ_S("OSC 5 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 9 Env Release"));
+    v.add (NJ_S("OSC 5 FX 10 Mix"));
+    v.add (NJ_S("OSC 5 FX 10 P1"));
+    v.add (NJ_S("OSC 5 FX 10 P2"));
+    v.add (NJ_S("OSC 5 FX 10 P3"));
+    v.add (NJ_S("OSC 5 FX 10 P4"));
+    v.add (NJ_S("OSC 5 FX 10 P5"));
+    v.add (NJ_S("OSC 5 FX 10 P6"));
+    v.add (NJ_S("OSC 5 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 10 Env Release"));
+    v.add (NJ_S("OSC 5 FX 11 Mix"));
+    v.add (NJ_S("OSC 5 FX 11 P1"));
+    v.add (NJ_S("OSC 5 FX 11 P2"));
+    v.add (NJ_S("OSC 5 FX 11 P3"));
+    v.add (NJ_S("OSC 5 FX 11 P4"));
+    v.add (NJ_S("OSC 5 FX 11 P5"));
+    v.add (NJ_S("OSC 5 FX 11 P6"));
+    v.add (NJ_S("OSC 5 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 11 Env Release"));
+    v.add (NJ_S("OSC 5 FX 12 Mix"));
+    v.add (NJ_S("OSC 5 FX 12 P1"));
+    v.add (NJ_S("OSC 5 FX 12 P2"));
+    v.add (NJ_S("OSC 5 FX 12 P3"));
+    v.add (NJ_S("OSC 5 FX 12 P4"));
+    v.add (NJ_S("OSC 5 FX 12 P5"));
+    v.add (NJ_S("OSC 5 FX 12 P6"));
+    v.add (NJ_S("OSC 5 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 12 Env Release"));
+    v.add (NJ_S("OSC 5 FX 13 Mix"));
+    v.add (NJ_S("OSC 5 FX 13 P1"));
+    v.add (NJ_S("OSC 5 FX 13 P2"));
+    v.add (NJ_S("OSC 5 FX 13 P3"));
+    v.add (NJ_S("OSC 5 FX 13 P4"));
+    v.add (NJ_S("OSC 5 FX 13 P5"));
+    v.add (NJ_S("OSC 5 FX 13 P6"));
+    v.add (NJ_S("OSC 5 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 13 Env Release"));
+    v.add (NJ_S("OSC 5 FX 14 Mix"));
+    v.add (NJ_S("OSC 5 FX 14 P1"));
+    v.add (NJ_S("OSC 5 FX 14 P2"));
+    v.add (NJ_S("OSC 5 FX 14 P3"));
+    v.add (NJ_S("OSC 5 FX 14 P4"));
+    v.add (NJ_S("OSC 5 FX 14 P5"));
+    v.add (NJ_S("OSC 5 FX 14 P6"));
+    v.add (NJ_S("OSC 5 FX 14 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 14 Env Release"));
+    v.add (NJ_S("OSC 5 FX 15 Mix"));
+    v.add (NJ_S("OSC 5 FX 15 P1"));
+    v.add (NJ_S("OSC 5 FX 15 P2"));
+    v.add (NJ_S("OSC 5 FX 15 P3"));
+    v.add (NJ_S("OSC 5 FX 15 P4"));
+    v.add (NJ_S("OSC 5 FX 15 P5"));
+    v.add (NJ_S("OSC 5 FX 15 P6"));
+    v.add (NJ_S("OSC 5 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 15 Env Release"));
+    v.add (NJ_S("OSC 5 FX 16 Mix"));
+    v.add (NJ_S("OSC 5 FX 16 P1"));
+}
+static void modDst_38 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 FX 16 P2"));
+    v.add (NJ_S("OSC 5 FX 16 P3"));
+    v.add (NJ_S("OSC 5 FX 16 P4"));
+    v.add (NJ_S("OSC 5 FX 16 P5"));
+    v.add (NJ_S("OSC 5 FX 16 P6"));
+    v.add (NJ_S("OSC 5 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 5 FX 16 Env Release"));
+    v.add (NJ_S("OSC 6 FX 1 Mix"));
+    v.add (NJ_S("OSC 6 FX 1 P1"));
+    v.add (NJ_S("OSC 6 FX 1 P2"));
+    v.add (NJ_S("OSC 6 FX 1 P3"));
+    v.add (NJ_S("OSC 6 FX 1 P4"));
+    v.add (NJ_S("OSC 6 FX 1 P5"));
+    v.add (NJ_S("OSC 6 FX 1 P6"));
+    v.add (NJ_S("OSC 6 FX 1 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 1 Env Release"));
+    v.add (NJ_S("OSC 6 FX 2 Mix"));
+    v.add (NJ_S("OSC 6 FX 2 P1"));
+    v.add (NJ_S("OSC 6 FX 2 P2"));
+    v.add (NJ_S("OSC 6 FX 2 P3"));
+    v.add (NJ_S("OSC 6 FX 2 P4"));
+    v.add (NJ_S("OSC 6 FX 2 P5"));
+    v.add (NJ_S("OSC 6 FX 2 P6"));
+    v.add (NJ_S("OSC 6 FX 2 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 2 Env Release"));
+    v.add (NJ_S("OSC 6 FX 3 Mix"));
+    v.add (NJ_S("OSC 6 FX 3 P1"));
+    v.add (NJ_S("OSC 6 FX 3 P2"));
+    v.add (NJ_S("OSC 6 FX 3 P3"));
+    v.add (NJ_S("OSC 6 FX 3 P4"));
+    v.add (NJ_S("OSC 6 FX 3 P5"));
+    v.add (NJ_S("OSC 6 FX 3 P6"));
+    v.add (NJ_S("OSC 6 FX 3 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 3 Env Release"));
+    v.add (NJ_S("OSC 6 FX 4 Mix"));
+    v.add (NJ_S("OSC 6 FX 4 P1"));
+    v.add (NJ_S("OSC 6 FX 4 P2"));
+    v.add (NJ_S("OSC 6 FX 4 P3"));
+    v.add (NJ_S("OSC 6 FX 4 P4"));
+    v.add (NJ_S("OSC 6 FX 4 P5"));
+    v.add (NJ_S("OSC 6 FX 4 P6"));
+    v.add (NJ_S("OSC 6 FX 4 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 4 Env Release"));
+    v.add (NJ_S("OSC 6 FX 5 Mix"));
+    v.add (NJ_S("OSC 6 FX 5 P1"));
+    v.add (NJ_S("OSC 6 FX 5 P2"));
+    v.add (NJ_S("OSC 6 FX 5 P3"));
+    v.add (NJ_S("OSC 6 FX 5 P4"));
+    v.add (NJ_S("OSC 6 FX 5 P5"));
+    v.add (NJ_S("OSC 6 FX 5 P6"));
+    v.add (NJ_S("OSC 6 FX 5 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 5 Env Release"));
+    v.add (NJ_S("OSC 6 FX 6 Mix"));
+    v.add (NJ_S("OSC 6 FX 6 P1"));
+    v.add (NJ_S("OSC 6 FX 6 P2"));
+    v.add (NJ_S("OSC 6 FX 6 P3"));
+    v.add (NJ_S("OSC 6 FX 6 P4"));
+    v.add (NJ_S("OSC 6 FX 6 P5"));
+    v.add (NJ_S("OSC 6 FX 6 P6"));
+    v.add (NJ_S("OSC 6 FX 6 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 6 Env Release"));
+    v.add (NJ_S("OSC 6 FX 7 Mix"));
+    v.add (NJ_S("OSC 6 FX 7 P1"));
+    v.add (NJ_S("OSC 6 FX 7 P2"));
+    v.add (NJ_S("OSC 6 FX 7 P3"));
+    v.add (NJ_S("OSC 6 FX 7 P4"));
+    v.add (NJ_S("OSC 6 FX 7 P5"));
+    v.add (NJ_S("OSC 6 FX 7 P6"));
+    v.add (NJ_S("OSC 6 FX 7 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 7 Env Release"));
+    v.add (NJ_S("OSC 6 FX 8 Mix"));
+    v.add (NJ_S("OSC 6 FX 8 P1"));
+    v.add (NJ_S("OSC 6 FX 8 P2"));
+    v.add (NJ_S("OSC 6 FX 8 P3"));
+    v.add (NJ_S("OSC 6 FX 8 P4"));
+    v.add (NJ_S("OSC 6 FX 8 P5"));
+    v.add (NJ_S("OSC 6 FX 8 P6"));
+    v.add (NJ_S("OSC 6 FX 8 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 8 Env Release"));
+    v.add (NJ_S("OSC 6 FX 9 Mix"));
+    v.add (NJ_S("OSC 6 FX 9 P1"));
+    v.add (NJ_S("OSC 6 FX 9 P2"));
+    v.add (NJ_S("OSC 6 FX 9 P3"));
+    v.add (NJ_S("OSC 6 FX 9 P4"));
+    v.add (NJ_S("OSC 6 FX 9 P5"));
+    v.add (NJ_S("OSC 6 FX 9 P6"));
+    v.add (NJ_S("OSC 6 FX 9 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 9 Env Release"));
+    v.add (NJ_S("OSC 6 FX 10 Mix"));
+    v.add (NJ_S("OSC 6 FX 10 P1"));
+    v.add (NJ_S("OSC 6 FX 10 P2"));
+    v.add (NJ_S("OSC 6 FX 10 P3"));
+    v.add (NJ_S("OSC 6 FX 10 P4"));
+    v.add (NJ_S("OSC 6 FX 10 P5"));
+    v.add (NJ_S("OSC 6 FX 10 P6"));
+    v.add (NJ_S("OSC 6 FX 10 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 10 Env Release"));
+    v.add (NJ_S("OSC 6 FX 11 Mix"));
+    v.add (NJ_S("OSC 6 FX 11 P1"));
+    v.add (NJ_S("OSC 6 FX 11 P2"));
+}
+static void modDst_39 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 6 FX 11 P3"));
+    v.add (NJ_S("OSC 6 FX 11 P4"));
+    v.add (NJ_S("OSC 6 FX 11 P5"));
+    v.add (NJ_S("OSC 6 FX 11 P6"));
+    v.add (NJ_S("OSC 6 FX 11 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 11 Env Release"));
+    v.add (NJ_S("OSC 6 FX 12 Mix"));
+    v.add (NJ_S("OSC 6 FX 12 P1"));
+    v.add (NJ_S("OSC 6 FX 12 P2"));
+    v.add (NJ_S("OSC 6 FX 12 P3"));
+    v.add (NJ_S("OSC 6 FX 12 P4"));
+    v.add (NJ_S("OSC 6 FX 12 P5"));
+    v.add (NJ_S("OSC 6 FX 12 P6"));
+    v.add (NJ_S("OSC 6 FX 12 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 12 Env Release"));
+    v.add (NJ_S("OSC 6 FX 13 Mix"));
+    v.add (NJ_S("OSC 6 FX 13 P1"));
+    v.add (NJ_S("OSC 6 FX 13 P2"));
+    v.add (NJ_S("OSC 6 FX 13 P3"));
+    v.add (NJ_S("OSC 6 FX 13 P4"));
+    v.add (NJ_S("OSC 6 FX 13 P5"));
+    v.add (NJ_S("OSC 6 FX 13 P6"));
+    v.add (NJ_S("OSC 6 FX 13 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 13 Env Release"));
+    v.add (NJ_S("OSC 6 FX 14 Mix"));
+    v.add (NJ_S("OSC 6 FX 14 P1"));
+    v.add (NJ_S("OSC 6 FX 14 P2"));
+    v.add (NJ_S("OSC 6 FX 14 P3"));
+    v.add (NJ_S("OSC 6 FX 14 P4"));
+    v.add (NJ_S("OSC 6 FX 14 P5"));
+    v.add (NJ_S("OSC 6 FX 14 P6"));
+    v.add (NJ_S("OSC 6 FX 14 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 14 Env Release"));
+    v.add (NJ_S("OSC 6 FX 15 Mix"));
+    v.add (NJ_S("OSC 6 FX 15 P1"));
+    v.add (NJ_S("OSC 6 FX 15 P2"));
+    v.add (NJ_S("OSC 6 FX 15 P3"));
+    v.add (NJ_S("OSC 6 FX 15 P4"));
+    v.add (NJ_S("OSC 6 FX 15 P5"));
+    v.add (NJ_S("OSC 6 FX 15 P6"));
+    v.add (NJ_S("OSC 6 FX 15 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 15 Env Release"));
+    v.add (NJ_S("OSC 6 FX 16 Mix"));
+    v.add (NJ_S("OSC 6 FX 16 P1"));
+    v.add (NJ_S("OSC 6 FX 16 P2"));
+    v.add (NJ_S("OSC 6 FX 16 P3"));
+    v.add (NJ_S("OSC 6 FX 16 P4"));
+    v.add (NJ_S("OSC 6 FX 16 P5"));
+    v.add (NJ_S("OSC 6 FX 16 P6"));
+    v.add (NJ_S("OSC 6 FX 16 Env Sustain"));
+    v.add (NJ_S("OSC 6 FX 16 Env Release"));
+    v.add (NJ_S("Patch M1 Cable 1 Gain"));
+    v.add (NJ_S("Patch M1 Cable 2 Gain"));
+    v.add (NJ_S("Patch M1 Cable 3 Gain"));
+    v.add (NJ_S("Patch M1 Cable 4 Gain"));
+    v.add (NJ_S("Patch M2 Cable 1 Gain"));
+    v.add (NJ_S("Patch M2 Cable 2 Gain"));
+    v.add (NJ_S("Patch M2 Cable 3 Gain"));
+    v.add (NJ_S("Patch M2 Cable 4 Gain"));
+    v.add (NJ_S("Patch M3 Cable 1 Gain"));
+    v.add (NJ_S("Patch M3 Cable 2 Gain"));
+    v.add (NJ_S("Patch M3 Cable 3 Gain"));
+    v.add (NJ_S("Patch M3 Cable 4 Gain"));
+    v.add (NJ_S("Patch M4 Cable 1 Gain"));
+    v.add (NJ_S("Patch M4 Cable 2 Gain"));
+    v.add (NJ_S("Patch M4 Cable 3 Gain"));
+    v.add (NJ_S("Patch M4 Cable 4 Gain"));
+    v.add (NJ_S("Patch M5 Cable 1 Gain"));
+    v.add (NJ_S("Patch M5 Cable 2 Gain"));
+    v.add (NJ_S("Patch M5 Cable 3 Gain"));
+    v.add (NJ_S("Patch M5 Cable 4 Gain"));
+    v.add (NJ_S("Patch M6 Cable 1 Gain"));
+    v.add (NJ_S("Patch M6 Cable 2 Gain"));
+    v.add (NJ_S("Patch M6 Cable 3 Gain"));
+    v.add (NJ_S("Patch M6 Cable 4 Gain"));
+    v.add (NJ_S("Patch M7 Cable 1 Gain"));
+    v.add (NJ_S("Patch M7 Cable 2 Gain"));
+    v.add (NJ_S("Patch M7 Cable 3 Gain"));
+    v.add (NJ_S("Patch M7 Cable 4 Gain"));
+    v.add (NJ_S("Patch M8 Cable 1 Gain"));
+    v.add (NJ_S("Patch M8 Cable 2 Gain"));
+    v.add (NJ_S("Patch M8 Cable 3 Gain"));
+    v.add (NJ_S("Patch M8 Cable 4 Gain"));
+    v.add (NJ_S("Patch M9 Cable 1 Gain"));
+    v.add (NJ_S("Patch M9 Cable 2 Gain"));
+    v.add (NJ_S("Patch M9 Cable 3 Gain"));
+    v.add (NJ_S("Patch M9 Cable 4 Gain"));
+    v.add (NJ_S("Patch M10 Cable 1 Gain"));
+    v.add (NJ_S("Patch M10 Cable 2 Gain"));
+    v.add (NJ_S("Patch M10 Cable 3 Gain"));
+    v.add (NJ_S("Patch M10 Cable 4 Gain"));
+    v.add (NJ_S("Patch M11 Cable 1 Gain"));
+    v.add (NJ_S("Patch M11 Cable 2 Gain"));
+    v.add (NJ_S("Patch M11 Cable 3 Gain"));
+    v.add (NJ_S("Patch M11 Cable 4 Gain"));
+    v.add (NJ_S("Patch M12 Cable 1 Gain"));
+    v.add (NJ_S("Patch M12 Cable 2 Gain"));
+    v.add (NJ_S("Patch M12 Cable 3 Gain"));
+    v.add (NJ_S("Patch M12 Cable 4 Gain"));
+    v.add (NJ_S("Patch M13 Cable 1 Gain"));
+}
+static void modDst_40 (juce::StringArray& v)
+{
+    v.add (NJ_S("Patch M13 Cable 2 Gain"));
+    v.add (NJ_S("Patch M13 Cable 3 Gain"));
+    v.add (NJ_S("Patch M13 Cable 4 Gain"));
+    v.add (NJ_S("Patch M14 Cable 1 Gain"));
+    v.add (NJ_S("Patch M14 Cable 2 Gain"));
+    v.add (NJ_S("Patch M14 Cable 3 Gain"));
+    v.add (NJ_S("Patch M14 Cable 4 Gain"));
+    v.add (NJ_S("Patch M15 Cable 1 Gain"));
+    v.add (NJ_S("Patch M15 Cable 2 Gain"));
+    v.add (NJ_S("Patch M15 Cable 3 Gain"));
+    v.add (NJ_S("Patch M15 Cable 4 Gain"));
+    v.add (NJ_S("Patch M16 Cable 1 Gain"));
+    v.add (NJ_S("Patch M16 Cable 2 Gain"));
+    v.add (NJ_S("Patch M16 Cable 3 Gain"));
+    v.add (NJ_S("Patch M16 Cable 4 Gain"));
+    v.add (NJ_S("Patch Out Cable 1 Gain"));
+    v.add (NJ_S("Patch Out Cable 2 Gain"));
+    v.add (NJ_S("Patch Out Cable 3 Gain"));
+    v.add (NJ_S("Patch Out Cable 4 Gain"));
+    v.add (NJ_S("Euro M1 Knob 1"));
+    v.add (NJ_S("Euro M1 Knob 2"));
+    v.add (NJ_S("Euro M1 Knob 3"));
+    v.add (NJ_S("Euro M1 Knob 4"));
+    v.add (NJ_S("Euro M1 Knob 5"));
+    v.add (NJ_S("Euro M1 Knob 6"));
+    v.add (NJ_S("Euro M1 Knob 7"));
+    v.add (NJ_S("Euro M1 Knob 8"));
+    v.add (NJ_S("Euro M1 In 1 Gain"));
+    v.add (NJ_S("Euro M1 In 2 Gain"));
+    v.add (NJ_S("Euro M1 In 3 Gain"));
+    v.add (NJ_S("Euro M1 In 4 Gain"));
+    v.add (NJ_S("Euro M2 Knob 1"));
+    v.add (NJ_S("Euro M2 Knob 2"));
+    v.add (NJ_S("Euro M2 Knob 3"));
+    v.add (NJ_S("Euro M2 Knob 4"));
+    v.add (NJ_S("Euro M2 Knob 5"));
+    v.add (NJ_S("Euro M2 Knob 6"));
+    v.add (NJ_S("Euro M2 Knob 7"));
+    v.add (NJ_S("Euro M2 Knob 8"));
+    v.add (NJ_S("Euro M2 In 1 Gain"));
+    v.add (NJ_S("Euro M2 In 2 Gain"));
+    v.add (NJ_S("Euro M2 In 3 Gain"));
+    v.add (NJ_S("Euro M2 In 4 Gain"));
+    v.add (NJ_S("Euro M3 Knob 1"));
+    v.add (NJ_S("Euro M3 Knob 2"));
+    v.add (NJ_S("Euro M3 Knob 3"));
+    v.add (NJ_S("Euro M3 Knob 4"));
+    v.add (NJ_S("Euro M3 Knob 5"));
+    v.add (NJ_S("Euro M3 Knob 6"));
+    v.add (NJ_S("Euro M3 Knob 7"));
+    v.add (NJ_S("Euro M3 Knob 8"));
+    v.add (NJ_S("Euro M3 In 1 Gain"));
+    v.add (NJ_S("Euro M3 In 2 Gain"));
+    v.add (NJ_S("Euro M3 In 3 Gain"));
+    v.add (NJ_S("Euro M3 In 4 Gain"));
+    v.add (NJ_S("Euro M4 Knob 1"));
+    v.add (NJ_S("Euro M4 Knob 2"));
+    v.add (NJ_S("Euro M4 Knob 3"));
+    v.add (NJ_S("Euro M4 Knob 4"));
+    v.add (NJ_S("Euro M4 Knob 5"));
+    v.add (NJ_S("Euro M4 Knob 6"));
+    v.add (NJ_S("Euro M4 Knob 7"));
+    v.add (NJ_S("Euro M4 Knob 8"));
+    v.add (NJ_S("Euro M4 In 1 Gain"));
+    v.add (NJ_S("Euro M4 In 2 Gain"));
+    v.add (NJ_S("Euro M4 In 3 Gain"));
+    v.add (NJ_S("Euro M4 In 4 Gain"));
+    v.add (NJ_S("Euro M5 Knob 1"));
+    v.add (NJ_S("Euro M5 Knob 2"));
+    v.add (NJ_S("Euro M5 Knob 3"));
+    v.add (NJ_S("Euro M5 Knob 4"));
+    v.add (NJ_S("Euro M5 Knob 5"));
+    v.add (NJ_S("Euro M5 Knob 6"));
+    v.add (NJ_S("Euro M5 Knob 7"));
+    v.add (NJ_S("Euro M5 Knob 8"));
+    v.add (NJ_S("Euro M5 In 1 Gain"));
+    v.add (NJ_S("Euro M5 In 2 Gain"));
+    v.add (NJ_S("Euro M5 In 3 Gain"));
+    v.add (NJ_S("Euro M5 In 4 Gain"));
+    v.add (NJ_S("Euro M6 Knob 1"));
+    v.add (NJ_S("Euro M6 Knob 2"));
+    v.add (NJ_S("Euro M6 Knob 3"));
+    v.add (NJ_S("Euro M6 Knob 4"));
+    v.add (NJ_S("Euro M6 Knob 5"));
+    v.add (NJ_S("Euro M6 Knob 6"));
+    v.add (NJ_S("Euro M6 Knob 7"));
+    v.add (NJ_S("Euro M6 Knob 8"));
+    v.add (NJ_S("Euro M6 In 1 Gain"));
+    v.add (NJ_S("Euro M6 In 2 Gain"));
+    v.add (NJ_S("Euro M6 In 3 Gain"));
+    v.add (NJ_S("Euro M6 In 4 Gain"));
+    v.add (NJ_S("Euro M7 Knob 1"));
+    v.add (NJ_S("Euro M7 Knob 2"));
+    v.add (NJ_S("Euro M7 Knob 3"));
+    v.add (NJ_S("Euro M7 Knob 4"));
+    v.add (NJ_S("Euro M7 Knob 5"));
+    v.add (NJ_S("Euro M7 Knob 6"));
+    v.add (NJ_S("Euro M7 Knob 7"));
+    v.add (NJ_S("Euro M7 Knob 8"));
+    v.add (NJ_S("Euro M7 In 1 Gain"));
+}
+static void modDst_41 (juce::StringArray& v)
+{
+    v.add (NJ_S("Euro M7 In 2 Gain"));
+    v.add (NJ_S("Euro M7 In 3 Gain"));
+    v.add (NJ_S("Euro M7 In 4 Gain"));
+    v.add (NJ_S("Euro M8 Knob 1"));
+    v.add (NJ_S("Euro M8 Knob 2"));
+    v.add (NJ_S("Euro M8 Knob 3"));
+    v.add (NJ_S("Euro M8 Knob 4"));
+    v.add (NJ_S("Euro M8 Knob 5"));
+    v.add (NJ_S("Euro M8 Knob 6"));
+    v.add (NJ_S("Euro M8 Knob 7"));
+    v.add (NJ_S("Euro M8 Knob 8"));
+    v.add (NJ_S("Euro M8 In 1 Gain"));
+    v.add (NJ_S("Euro M8 In 2 Gain"));
+    v.add (NJ_S("Euro M8 In 3 Gain"));
+    v.add (NJ_S("Euro M8 In 4 Gain"));
+    v.add (NJ_S("Euro M9 Knob 1"));
+    v.add (NJ_S("Euro M9 Knob 2"));
+    v.add (NJ_S("Euro M9 Knob 3"));
+    v.add (NJ_S("Euro M9 Knob 4"));
+    v.add (NJ_S("Euro M9 Knob 5"));
+    v.add (NJ_S("Euro M9 Knob 6"));
+    v.add (NJ_S("Euro M9 Knob 7"));
+    v.add (NJ_S("Euro M9 Knob 8"));
+    v.add (NJ_S("Euro M9 In 1 Gain"));
+    v.add (NJ_S("Euro M9 In 2 Gain"));
+    v.add (NJ_S("Euro M9 In 3 Gain"));
+    v.add (NJ_S("Euro M9 In 4 Gain"));
+    v.add (NJ_S("Euro M10 Knob 1"));
+    v.add (NJ_S("Euro M10 Knob 2"));
+    v.add (NJ_S("Euro M10 Knob 3"));
+    v.add (NJ_S("Euro M10 Knob 4"));
+    v.add (NJ_S("Euro M10 Knob 5"));
+    v.add (NJ_S("Euro M10 Knob 6"));
+    v.add (NJ_S("Euro M10 Knob 7"));
+    v.add (NJ_S("Euro M10 Knob 8"));
+    v.add (NJ_S("Euro M10 In 1 Gain"));
+    v.add (NJ_S("Euro M10 In 2 Gain"));
+    v.add (NJ_S("Euro M10 In 3 Gain"));
+    v.add (NJ_S("Euro M10 In 4 Gain"));
+    v.add (NJ_S("Euro M11 Knob 1"));
+    v.add (NJ_S("Euro M11 Knob 2"));
+    v.add (NJ_S("Euro M11 Knob 3"));
+    v.add (NJ_S("Euro M11 Knob 4"));
+    v.add (NJ_S("Euro M11 Knob 5"));
+    v.add (NJ_S("Euro M11 Knob 6"));
+    v.add (NJ_S("Euro M11 Knob 7"));
+    v.add (NJ_S("Euro M11 Knob 8"));
+    v.add (NJ_S("Euro M11 In 1 Gain"));
+    v.add (NJ_S("Euro M11 In 2 Gain"));
+    v.add (NJ_S("Euro M11 In 3 Gain"));
+    v.add (NJ_S("Euro M11 In 4 Gain"));
+    v.add (NJ_S("Euro M12 Knob 1"));
+    v.add (NJ_S("Euro M12 Knob 2"));
+    v.add (NJ_S("Euro M12 Knob 3"));
+    v.add (NJ_S("Euro M12 Knob 4"));
+    v.add (NJ_S("Euro M12 Knob 5"));
+    v.add (NJ_S("Euro M12 Knob 6"));
+    v.add (NJ_S("Euro M12 Knob 7"));
+    v.add (NJ_S("Euro M12 Knob 8"));
+    v.add (NJ_S("Euro M12 In 1 Gain"));
+    v.add (NJ_S("Euro M12 In 2 Gain"));
+    v.add (NJ_S("Euro M12 In 3 Gain"));
+    v.add (NJ_S("Euro M12 In 4 Gain"));
+    v.add (NJ_S("Euro M13 Knob 1"));
+    v.add (NJ_S("Euro M13 Knob 2"));
+    v.add (NJ_S("Euro M13 Knob 3"));
+    v.add (NJ_S("Euro M13 Knob 4"));
+    v.add (NJ_S("Euro M13 Knob 5"));
+    v.add (NJ_S("Euro M13 Knob 6"));
+    v.add (NJ_S("Euro M13 Knob 7"));
+    v.add (NJ_S("Euro M13 Knob 8"));
+    v.add (NJ_S("Euro M13 In 1 Gain"));
+    v.add (NJ_S("Euro M13 In 2 Gain"));
+    v.add (NJ_S("Euro M13 In 3 Gain"));
+    v.add (NJ_S("Euro M13 In 4 Gain"));
+    v.add (NJ_S("Euro M14 Knob 1"));
+    v.add (NJ_S("Euro M14 Knob 2"));
+    v.add (NJ_S("Euro M14 Knob 3"));
+    v.add (NJ_S("Euro M14 Knob 4"));
+    v.add (NJ_S("Euro M14 Knob 5"));
+    v.add (NJ_S("Euro M14 Knob 6"));
+    v.add (NJ_S("Euro M14 Knob 7"));
+    v.add (NJ_S("Euro M14 Knob 8"));
+    v.add (NJ_S("Euro M14 In 1 Gain"));
+    v.add (NJ_S("Euro M14 In 2 Gain"));
+    v.add (NJ_S("Euro M14 In 3 Gain"));
+    v.add (NJ_S("Euro M14 In 4 Gain"));
+    v.add (NJ_S("Euro M15 Knob 1"));
+    v.add (NJ_S("Euro M15 Knob 2"));
+    v.add (NJ_S("Euro M15 Knob 3"));
+    v.add (NJ_S("Euro M15 Knob 4"));
+    v.add (NJ_S("Euro M15 Knob 5"));
+    v.add (NJ_S("Euro M15 Knob 6"));
+    v.add (NJ_S("Euro M15 Knob 7"));
+    v.add (NJ_S("Euro M15 Knob 8"));
+    v.add (NJ_S("Euro M15 In 1 Gain"));
+    v.add (NJ_S("Euro M15 In 2 Gain"));
+    v.add (NJ_S("Euro M15 In 3 Gain"));
+    v.add (NJ_S("Euro M15 In 4 Gain"));
+    v.add (NJ_S("Euro M16 Knob 1"));
+}
+static void modDst_42 (juce::StringArray& v)
+{
+    v.add (NJ_S("Euro M16 Knob 2"));
+    v.add (NJ_S("Euro M16 Knob 3"));
+    v.add (NJ_S("Euro M16 Knob 4"));
+    v.add (NJ_S("Euro M16 Knob 5"));
+    v.add (NJ_S("Euro M16 Knob 6"));
+    v.add (NJ_S("Euro M16 Knob 7"));
+    v.add (NJ_S("Euro M16 Knob 8"));
+    v.add (NJ_S("Euro M16 In 1 Gain"));
+    v.add (NJ_S("Euro M16 In 2 Gain"));
+    v.add (NJ_S("Euro M16 In 3 Gain"));
+    v.add (NJ_S("Euro M16 In 4 Gain"));
+    v.add (NJ_S("Euro M17 Knob 1"));
+    v.add (NJ_S("Euro M17 Knob 2"));
+    v.add (NJ_S("Euro M17 Knob 3"));
+    v.add (NJ_S("Euro M17 Knob 4"));
+    v.add (NJ_S("Euro M17 Knob 5"));
+    v.add (NJ_S("Euro M17 Knob 6"));
+    v.add (NJ_S("Euro M17 Knob 7"));
+    v.add (NJ_S("Euro M17 Knob 8"));
+    v.add (NJ_S("Euro M17 In 1 Gain"));
+    v.add (NJ_S("Euro M17 In 2 Gain"));
+    v.add (NJ_S("Euro M17 In 3 Gain"));
+    v.add (NJ_S("Euro M17 In 4 Gain"));
+    v.add (NJ_S("Euro M18 Knob 1"));
+    v.add (NJ_S("Euro M18 Knob 2"));
+    v.add (NJ_S("Euro M18 Knob 3"));
+    v.add (NJ_S("Euro M18 Knob 4"));
+    v.add (NJ_S("Euro M18 Knob 5"));
+    v.add (NJ_S("Euro M18 Knob 6"));
+    v.add (NJ_S("Euro M18 Knob 7"));
+    v.add (NJ_S("Euro M18 Knob 8"));
+    v.add (NJ_S("Euro M18 In 1 Gain"));
+    v.add (NJ_S("Euro M18 In 2 Gain"));
+    v.add (NJ_S("Euro M18 In 3 Gain"));
+    v.add (NJ_S("Euro M18 In 4 Gain"));
+    v.add (NJ_S("Euro M19 Knob 1"));
+    v.add (NJ_S("Euro M19 Knob 2"));
+    v.add (NJ_S("Euro M19 Knob 3"));
+    v.add (NJ_S("Euro M19 Knob 4"));
+    v.add (NJ_S("Euro M19 Knob 5"));
+    v.add (NJ_S("Euro M19 Knob 6"));
+    v.add (NJ_S("Euro M19 Knob 7"));
+    v.add (NJ_S("Euro M19 Knob 8"));
+    v.add (NJ_S("Euro M19 In 1 Gain"));
+    v.add (NJ_S("Euro M19 In 2 Gain"));
+    v.add (NJ_S("Euro M19 In 3 Gain"));
+    v.add (NJ_S("Euro M19 In 4 Gain"));
+    v.add (NJ_S("Euro M20 Knob 1"));
+    v.add (NJ_S("Euro M20 Knob 2"));
+    v.add (NJ_S("Euro M20 Knob 3"));
+    v.add (NJ_S("Euro M20 Knob 4"));
+    v.add (NJ_S("Euro M20 Knob 5"));
+    v.add (NJ_S("Euro M20 Knob 6"));
+    v.add (NJ_S("Euro M20 Knob 7"));
+    v.add (NJ_S("Euro M20 Knob 8"));
+    v.add (NJ_S("Euro M20 In 1 Gain"));
+    v.add (NJ_S("Euro M20 In 2 Gain"));
+    v.add (NJ_S("Euro M20 In 3 Gain"));
+    v.add (NJ_S("Euro M20 In 4 Gain"));
+    v.add (NJ_S("Main FX 1 Low Cut"));
+    v.add (NJ_S("Main FX 1 High Cut"));
+    v.add (NJ_S("Main FX 1 Width"));
+    v.add (NJ_S("Main FX 1 Sat"));
+    v.add (NJ_S("Main FX 2 Low Cut"));
+    v.add (NJ_S("Main FX 2 High Cut"));
+    v.add (NJ_S("Main FX 2 Width"));
+    v.add (NJ_S("Main FX 2 Sat"));
+    v.add (NJ_S("Main FX 3 Low Cut"));
+    v.add (NJ_S("Main FX 3 High Cut"));
+    v.add (NJ_S("Main FX 3 Width"));
+    v.add (NJ_S("Main FX 3 Sat"));
+    v.add (NJ_S("Main FX 4 Low Cut"));
+    v.add (NJ_S("Main FX 4 High Cut"));
+    v.add (NJ_S("Main FX 4 Width"));
+    v.add (NJ_S("Main FX 4 Sat"));
+    v.add (NJ_S("Main FX 5 Low Cut"));
+    v.add (NJ_S("Main FX 5 High Cut"));
+    v.add (NJ_S("Main FX 5 Width"));
+    v.add (NJ_S("Main FX 5 Sat"));
+    v.add (NJ_S("Main FX 6 Low Cut"));
+    v.add (NJ_S("Main FX 6 High Cut"));
+    v.add (NJ_S("Main FX 6 Width"));
+    v.add (NJ_S("Main FX 6 Sat"));
+    v.add (NJ_S("Main FX 7 Low Cut"));
+    v.add (NJ_S("Main FX 7 High Cut"));
+    v.add (NJ_S("Main FX 7 Width"));
+    v.add (NJ_S("Main FX 7 Sat"));
+    v.add (NJ_S("Main FX 8 Low Cut"));
+    v.add (NJ_S("Main FX 8 High Cut"));
+    v.add (NJ_S("Main FX 8 Width"));
+    v.add (NJ_S("Main FX 8 Sat"));
+    v.add (NJ_S("Main FX 9 Low Cut"));
+    v.add (NJ_S("Main FX 9 High Cut"));
+    v.add (NJ_S("Main FX 9 Width"));
+    v.add (NJ_S("Main FX 9 Sat"));
+    v.add (NJ_S("Main FX 10 Low Cut"));
+    v.add (NJ_S("Main FX 10 High Cut"));
+    v.add (NJ_S("Main FX 10 Width"));
+    v.add (NJ_S("Main FX 10 Sat"));
+    v.add (NJ_S("Bus 1 FX 1 Low Cut"));
+}
+static void modDst_43 (juce::StringArray& v)
+{
+    v.add (NJ_S("Bus 1 FX 1 High Cut"));
+    v.add (NJ_S("Bus 1 FX 1 Width"));
+    v.add (NJ_S("Bus 1 FX 1 Sat"));
+    v.add (NJ_S("Bus 1 FX 2 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 2 High Cut"));
+    v.add (NJ_S("Bus 1 FX 2 Width"));
+    v.add (NJ_S("Bus 1 FX 2 Sat"));
+    v.add (NJ_S("Bus 1 FX 3 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 3 High Cut"));
+    v.add (NJ_S("Bus 1 FX 3 Width"));
+    v.add (NJ_S("Bus 1 FX 3 Sat"));
+    v.add (NJ_S("Bus 1 FX 4 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 4 High Cut"));
+    v.add (NJ_S("Bus 1 FX 4 Width"));
+    v.add (NJ_S("Bus 1 FX 4 Sat"));
+    v.add (NJ_S("Bus 1 FX 5 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 5 High Cut"));
+    v.add (NJ_S("Bus 1 FX 5 Width"));
+    v.add (NJ_S("Bus 1 FX 5 Sat"));
+    v.add (NJ_S("Bus 1 FX 6 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 6 High Cut"));
+    v.add (NJ_S("Bus 1 FX 6 Width"));
+    v.add (NJ_S("Bus 1 FX 6 Sat"));
+    v.add (NJ_S("Bus 1 FX 7 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 7 High Cut"));
+    v.add (NJ_S("Bus 1 FX 7 Width"));
+    v.add (NJ_S("Bus 1 FX 7 Sat"));
+    v.add (NJ_S("Bus 1 FX 8 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 8 High Cut"));
+    v.add (NJ_S("Bus 1 FX 8 Width"));
+    v.add (NJ_S("Bus 1 FX 8 Sat"));
+    v.add (NJ_S("Bus 1 FX 9 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 9 High Cut"));
+    v.add (NJ_S("Bus 1 FX 9 Width"));
+    v.add (NJ_S("Bus 1 FX 9 Sat"));
+    v.add (NJ_S("Bus 1 FX 10 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 10 High Cut"));
+    v.add (NJ_S("Bus 1 FX 10 Width"));
+    v.add (NJ_S("Bus 1 FX 10 Sat"));
+    v.add (NJ_S("Bus 2 FX 1 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 1 High Cut"));
+    v.add (NJ_S("Bus 2 FX 1 Width"));
+    v.add (NJ_S("Bus 2 FX 1 Sat"));
+    v.add (NJ_S("Bus 2 FX 2 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 2 High Cut"));
+    v.add (NJ_S("Bus 2 FX 2 Width"));
+    v.add (NJ_S("Bus 2 FX 2 Sat"));
+    v.add (NJ_S("Bus 2 FX 3 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 3 High Cut"));
+    v.add (NJ_S("Bus 2 FX 3 Width"));
+    v.add (NJ_S("Bus 2 FX 3 Sat"));
+    v.add (NJ_S("Bus 2 FX 4 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 4 High Cut"));
+    v.add (NJ_S("Bus 2 FX 4 Width"));
+    v.add (NJ_S("Bus 2 FX 4 Sat"));
+    v.add (NJ_S("Bus 2 FX 5 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 5 High Cut"));
+    v.add (NJ_S("Bus 2 FX 5 Width"));
+    v.add (NJ_S("Bus 2 FX 5 Sat"));
+    v.add (NJ_S("Bus 2 FX 6 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 6 High Cut"));
+    v.add (NJ_S("Bus 2 FX 6 Width"));
+    v.add (NJ_S("Bus 2 FX 6 Sat"));
+    v.add (NJ_S("Bus 2 FX 7 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 7 High Cut"));
+    v.add (NJ_S("Bus 2 FX 7 Width"));
+    v.add (NJ_S("Bus 2 FX 7 Sat"));
+    v.add (NJ_S("Bus 2 FX 8 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 8 High Cut"));
+    v.add (NJ_S("Bus 2 FX 8 Width"));
+    v.add (NJ_S("Bus 2 FX 8 Sat"));
+    v.add (NJ_S("Bus 2 FX 9 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 9 High Cut"));
+    v.add (NJ_S("Bus 2 FX 9 Width"));
+    v.add (NJ_S("Bus 2 FX 9 Sat"));
+    v.add (NJ_S("Bus 2 FX 10 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 10 High Cut"));
+    v.add (NJ_S("Bus 2 FX 10 Width"));
+    v.add (NJ_S("Bus 2 FX 10 Sat"));
+    v.add (NJ_S("Main FX 11 Low Cut"));
+    v.add (NJ_S("Main FX 11 High Cut"));
+    v.add (NJ_S("Main FX 11 Width"));
+    v.add (NJ_S("Main FX 11 Sat"));
+    v.add (NJ_S("Main FX 12 Low Cut"));
+    v.add (NJ_S("Main FX 12 High Cut"));
+    v.add (NJ_S("Main FX 12 Width"));
+    v.add (NJ_S("Main FX 12 Sat"));
+    v.add (NJ_S("Main FX 13 Low Cut"));
+    v.add (NJ_S("Main FX 13 High Cut"));
+    v.add (NJ_S("Main FX 13 Width"));
+    v.add (NJ_S("Main FX 13 Sat"));
+    v.add (NJ_S("Main FX 14 Low Cut"));
+    v.add (NJ_S("Main FX 14 High Cut"));
+    v.add (NJ_S("Main FX 14 Width"));
+    v.add (NJ_S("Main FX 14 Sat"));
+    v.add (NJ_S("Main FX 15 Low Cut"));
+    v.add (NJ_S("Main FX 15 High Cut"));
+    v.add (NJ_S("Main FX 15 Width"));
+    v.add (NJ_S("Main FX 15 Sat"));
+    v.add (NJ_S("Main FX 16 Low Cut"));
+}
+static void modDst_44 (juce::StringArray& v)
+{
+    v.add (NJ_S("Main FX 16 High Cut"));
+    v.add (NJ_S("Main FX 16 Width"));
+    v.add (NJ_S("Main FX 16 Sat"));
+    v.add (NJ_S("Bus 1 FX 11 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 11 High Cut"));
+    v.add (NJ_S("Bus 1 FX 11 Width"));
+    v.add (NJ_S("Bus 1 FX 11 Sat"));
+    v.add (NJ_S("Bus 1 FX 12 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 12 High Cut"));
+    v.add (NJ_S("Bus 1 FX 12 Width"));
+    v.add (NJ_S("Bus 1 FX 12 Sat"));
+    v.add (NJ_S("Bus 1 FX 13 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 13 High Cut"));
+    v.add (NJ_S("Bus 1 FX 13 Width"));
+    v.add (NJ_S("Bus 1 FX 13 Sat"));
+    v.add (NJ_S("Bus 1 FX 14 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 14 High Cut"));
+    v.add (NJ_S("Bus 1 FX 14 Width"));
+    v.add (NJ_S("Bus 1 FX 14 Sat"));
+    v.add (NJ_S("Bus 1 FX 15 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 15 High Cut"));
+    v.add (NJ_S("Bus 1 FX 15 Width"));
+    v.add (NJ_S("Bus 1 FX 15 Sat"));
+    v.add (NJ_S("Bus 1 FX 16 Low Cut"));
+    v.add (NJ_S("Bus 1 FX 16 High Cut"));
+    v.add (NJ_S("Bus 1 FX 16 Width"));
+    v.add (NJ_S("Bus 1 FX 16 Sat"));
+    v.add (NJ_S("Bus 2 FX 11 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 11 High Cut"));
+    v.add (NJ_S("Bus 2 FX 11 Width"));
+    v.add (NJ_S("Bus 2 FX 11 Sat"));
+    v.add (NJ_S("Bus 2 FX 12 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 12 High Cut"));
+    v.add (NJ_S("Bus 2 FX 12 Width"));
+    v.add (NJ_S("Bus 2 FX 12 Sat"));
+    v.add (NJ_S("Bus 2 FX 13 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 13 High Cut"));
+    v.add (NJ_S("Bus 2 FX 13 Width"));
+    v.add (NJ_S("Bus 2 FX 13 Sat"));
+    v.add (NJ_S("Bus 2 FX 14 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 14 High Cut"));
+    v.add (NJ_S("Bus 2 FX 14 Width"));
+    v.add (NJ_S("Bus 2 FX 14 Sat"));
+    v.add (NJ_S("Bus 2 FX 15 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 15 High Cut"));
+    v.add (NJ_S("Bus 2 FX 15 Width"));
+    v.add (NJ_S("Bus 2 FX 15 Sat"));
+    v.add (NJ_S("Bus 2 FX 16 Low Cut"));
+    v.add (NJ_S("Bus 2 FX 16 High Cut"));
+    v.add (NJ_S("Bus 2 FX 16 Width"));
+    v.add (NJ_S("Bus 2 FX 16 Sat"));
+    v.add (NJ_S("OSC 1 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 1 High Cut"));
+    v.add (NJ_S("OSC 1 FX 1 Width"));
+    v.add (NJ_S("OSC 1 FX 1 Sat"));
+    v.add (NJ_S("OSC 1 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 2 High Cut"));
+    v.add (NJ_S("OSC 1 FX 2 Width"));
+    v.add (NJ_S("OSC 1 FX 2 Sat"));
+    v.add (NJ_S("OSC 1 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 3 High Cut"));
+    v.add (NJ_S("OSC 1 FX 3 Width"));
+    v.add (NJ_S("OSC 1 FX 3 Sat"));
+    v.add (NJ_S("OSC 1 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 4 High Cut"));
+    v.add (NJ_S("OSC 1 FX 4 Width"));
+    v.add (NJ_S("OSC 1 FX 4 Sat"));
+    v.add (NJ_S("OSC 1 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 5 High Cut"));
+    v.add (NJ_S("OSC 1 FX 5 Width"));
+    v.add (NJ_S("OSC 1 FX 5 Sat"));
+    v.add (NJ_S("OSC 1 FX 6 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 6 High Cut"));
+    v.add (NJ_S("OSC 1 FX 6 Width"));
+    v.add (NJ_S("OSC 1 FX 6 Sat"));
+    v.add (NJ_S("OSC 1 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 7 High Cut"));
+    v.add (NJ_S("OSC 1 FX 7 Width"));
+    v.add (NJ_S("OSC 1 FX 7 Sat"));
+    v.add (NJ_S("OSC 1 FX 8 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 8 High Cut"));
+    v.add (NJ_S("OSC 1 FX 8 Width"));
+    v.add (NJ_S("OSC 1 FX 8 Sat"));
+    v.add (NJ_S("OSC 1 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 9 High Cut"));
+    v.add (NJ_S("OSC 1 FX 9 Width"));
+    v.add (NJ_S("OSC 1 FX 9 Sat"));
+    v.add (NJ_S("OSC 1 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 10 High Cut"));
+    v.add (NJ_S("OSC 1 FX 10 Width"));
+    v.add (NJ_S("OSC 1 FX 10 Sat"));
+    v.add (NJ_S("OSC 1 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 11 High Cut"));
+    v.add (NJ_S("OSC 1 FX 11 Width"));
+    v.add (NJ_S("OSC 1 FX 11 Sat"));
+    v.add (NJ_S("OSC 1 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 12 High Cut"));
+    v.add (NJ_S("OSC 1 FX 12 Width"));
+    v.add (NJ_S("OSC 1 FX 12 Sat"));
+    v.add (NJ_S("OSC 1 FX 13 Low Cut"));
+}
+static void modDst_45 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 1 FX 13 High Cut"));
+    v.add (NJ_S("OSC 1 FX 13 Width"));
+    v.add (NJ_S("OSC 1 FX 13 Sat"));
+    v.add (NJ_S("OSC 1 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 14 High Cut"));
+    v.add (NJ_S("OSC 1 FX 14 Width"));
+    v.add (NJ_S("OSC 1 FX 14 Sat"));
+    v.add (NJ_S("OSC 1 FX 15 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 15 High Cut"));
+    v.add (NJ_S("OSC 1 FX 15 Width"));
+    v.add (NJ_S("OSC 1 FX 15 Sat"));
+    v.add (NJ_S("OSC 1 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 1 FX 16 High Cut"));
+    v.add (NJ_S("OSC 1 FX 16 Width"));
+    v.add (NJ_S("OSC 1 FX 16 Sat"));
+    v.add (NJ_S("OSC 2 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 1 High Cut"));
+    v.add (NJ_S("OSC 2 FX 1 Width"));
+    v.add (NJ_S("OSC 2 FX 1 Sat"));
+    v.add (NJ_S("OSC 2 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 2 High Cut"));
+    v.add (NJ_S("OSC 2 FX 2 Width"));
+    v.add (NJ_S("OSC 2 FX 2 Sat"));
+    v.add (NJ_S("OSC 2 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 3 High Cut"));
+    v.add (NJ_S("OSC 2 FX 3 Width"));
+    v.add (NJ_S("OSC 2 FX 3 Sat"));
+    v.add (NJ_S("OSC 2 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 4 High Cut"));
+    v.add (NJ_S("OSC 2 FX 4 Width"));
+    v.add (NJ_S("OSC 2 FX 4 Sat"));
+    v.add (NJ_S("OSC 2 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 5 High Cut"));
+    v.add (NJ_S("OSC 2 FX 5 Width"));
+    v.add (NJ_S("OSC 2 FX 5 Sat"));
+    v.add (NJ_S("OSC 2 FX 6 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 6 High Cut"));
+    v.add (NJ_S("OSC 2 FX 6 Width"));
+    v.add (NJ_S("OSC 2 FX 6 Sat"));
+    v.add (NJ_S("OSC 2 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 7 High Cut"));
+    v.add (NJ_S("OSC 2 FX 7 Width"));
+    v.add (NJ_S("OSC 2 FX 7 Sat"));
+    v.add (NJ_S("OSC 2 FX 8 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 8 High Cut"));
+    v.add (NJ_S("OSC 2 FX 8 Width"));
+    v.add (NJ_S("OSC 2 FX 8 Sat"));
+    v.add (NJ_S("OSC 2 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 9 High Cut"));
+    v.add (NJ_S("OSC 2 FX 9 Width"));
+    v.add (NJ_S("OSC 2 FX 9 Sat"));
+    v.add (NJ_S("OSC 2 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 10 High Cut"));
+    v.add (NJ_S("OSC 2 FX 10 Width"));
+    v.add (NJ_S("OSC 2 FX 10 Sat"));
+    v.add (NJ_S("OSC 2 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 11 High Cut"));
+    v.add (NJ_S("OSC 2 FX 11 Width"));
+    v.add (NJ_S("OSC 2 FX 11 Sat"));
+    v.add (NJ_S("OSC 2 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 12 High Cut"));
+    v.add (NJ_S("OSC 2 FX 12 Width"));
+    v.add (NJ_S("OSC 2 FX 12 Sat"));
+    v.add (NJ_S("OSC 2 FX 13 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 13 High Cut"));
+    v.add (NJ_S("OSC 2 FX 13 Width"));
+    v.add (NJ_S("OSC 2 FX 13 Sat"));
+    v.add (NJ_S("OSC 2 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 14 High Cut"));
+    v.add (NJ_S("OSC 2 FX 14 Width"));
+    v.add (NJ_S("OSC 2 FX 14 Sat"));
+    v.add (NJ_S("OSC 2 FX 15 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 15 High Cut"));
+    v.add (NJ_S("OSC 2 FX 15 Width"));
+    v.add (NJ_S("OSC 2 FX 15 Sat"));
+    v.add (NJ_S("OSC 2 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 2 FX 16 High Cut"));
+    v.add (NJ_S("OSC 2 FX 16 Width"));
+    v.add (NJ_S("OSC 2 FX 16 Sat"));
+    v.add (NJ_S("OSC 3 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 1 High Cut"));
+    v.add (NJ_S("OSC 3 FX 1 Width"));
+    v.add (NJ_S("OSC 3 FX 1 Sat"));
+    v.add (NJ_S("OSC 3 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 2 High Cut"));
+    v.add (NJ_S("OSC 3 FX 2 Width"));
+    v.add (NJ_S("OSC 3 FX 2 Sat"));
+    v.add (NJ_S("OSC 3 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 3 High Cut"));
+    v.add (NJ_S("OSC 3 FX 3 Width"));
+    v.add (NJ_S("OSC 3 FX 3 Sat"));
+    v.add (NJ_S("OSC 3 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 4 High Cut"));
+    v.add (NJ_S("OSC 3 FX 4 Width"));
+    v.add (NJ_S("OSC 3 FX 4 Sat"));
+    v.add (NJ_S("OSC 3 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 5 High Cut"));
+    v.add (NJ_S("OSC 3 FX 5 Width"));
+    v.add (NJ_S("OSC 3 FX 5 Sat"));
+    v.add (NJ_S("OSC 3 FX 6 Low Cut"));
+}
+static void modDst_46 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 FX 6 High Cut"));
+    v.add (NJ_S("OSC 3 FX 6 Width"));
+    v.add (NJ_S("OSC 3 FX 6 Sat"));
+    v.add (NJ_S("OSC 3 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 7 High Cut"));
+    v.add (NJ_S("OSC 3 FX 7 Width"));
+    v.add (NJ_S("OSC 3 FX 7 Sat"));
+    v.add (NJ_S("OSC 3 FX 8 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 8 High Cut"));
+    v.add (NJ_S("OSC 3 FX 8 Width"));
+    v.add (NJ_S("OSC 3 FX 8 Sat"));
+    v.add (NJ_S("OSC 3 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 9 High Cut"));
+    v.add (NJ_S("OSC 3 FX 9 Width"));
+    v.add (NJ_S("OSC 3 FX 9 Sat"));
+    v.add (NJ_S("OSC 3 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 10 High Cut"));
+    v.add (NJ_S("OSC 3 FX 10 Width"));
+    v.add (NJ_S("OSC 3 FX 10 Sat"));
+    v.add (NJ_S("OSC 3 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 11 High Cut"));
+    v.add (NJ_S("OSC 3 FX 11 Width"));
+    v.add (NJ_S("OSC 3 FX 11 Sat"));
+    v.add (NJ_S("OSC 3 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 12 High Cut"));
+    v.add (NJ_S("OSC 3 FX 12 Width"));
+    v.add (NJ_S("OSC 3 FX 12 Sat"));
+    v.add (NJ_S("OSC 3 FX 13 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 13 High Cut"));
+    v.add (NJ_S("OSC 3 FX 13 Width"));
+    v.add (NJ_S("OSC 3 FX 13 Sat"));
+    v.add (NJ_S("OSC 3 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 14 High Cut"));
+    v.add (NJ_S("OSC 3 FX 14 Width"));
+    v.add (NJ_S("OSC 3 FX 14 Sat"));
+    v.add (NJ_S("OSC 3 FX 15 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 15 High Cut"));
+    v.add (NJ_S("OSC 3 FX 15 Width"));
+    v.add (NJ_S("OSC 3 FX 15 Sat"));
+    v.add (NJ_S("OSC 3 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 3 FX 16 High Cut"));
+    v.add (NJ_S("OSC 3 FX 16 Width"));
+    v.add (NJ_S("OSC 3 FX 16 Sat"));
+    v.add (NJ_S("OSC 4 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 1 High Cut"));
+    v.add (NJ_S("OSC 4 FX 1 Width"));
+    v.add (NJ_S("OSC 4 FX 1 Sat"));
+    v.add (NJ_S("OSC 4 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 2 High Cut"));
+    v.add (NJ_S("OSC 4 FX 2 Width"));
+    v.add (NJ_S("OSC 4 FX 2 Sat"));
+    v.add (NJ_S("OSC 4 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 3 High Cut"));
+    v.add (NJ_S("OSC 4 FX 3 Width"));
+    v.add (NJ_S("OSC 4 FX 3 Sat"));
+    v.add (NJ_S("OSC 4 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 4 High Cut"));
+    v.add (NJ_S("OSC 4 FX 4 Width"));
+    v.add (NJ_S("OSC 4 FX 4 Sat"));
+    v.add (NJ_S("OSC 4 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 5 High Cut"));
+    v.add (NJ_S("OSC 4 FX 5 Width"));
+    v.add (NJ_S("OSC 4 FX 5 Sat"));
+    v.add (NJ_S("OSC 4 FX 6 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 6 High Cut"));
+    v.add (NJ_S("OSC 4 FX 6 Width"));
+    v.add (NJ_S("OSC 4 FX 6 Sat"));
+    v.add (NJ_S("OSC 4 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 7 High Cut"));
+    v.add (NJ_S("OSC 4 FX 7 Width"));
+    v.add (NJ_S("OSC 4 FX 7 Sat"));
+    v.add (NJ_S("OSC 4 FX 8 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 8 High Cut"));
+    v.add (NJ_S("OSC 4 FX 8 Width"));
+    v.add (NJ_S("OSC 4 FX 8 Sat"));
+    v.add (NJ_S("OSC 4 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 9 High Cut"));
+    v.add (NJ_S("OSC 4 FX 9 Width"));
+    v.add (NJ_S("OSC 4 FX 9 Sat"));
+    v.add (NJ_S("OSC 4 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 10 High Cut"));
+    v.add (NJ_S("OSC 4 FX 10 Width"));
+    v.add (NJ_S("OSC 4 FX 10 Sat"));
+    v.add (NJ_S("OSC 4 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 11 High Cut"));
+    v.add (NJ_S("OSC 4 FX 11 Width"));
+    v.add (NJ_S("OSC 4 FX 11 Sat"));
+    v.add (NJ_S("OSC 4 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 12 High Cut"));
+    v.add (NJ_S("OSC 4 FX 12 Width"));
+    v.add (NJ_S("OSC 4 FX 12 Sat"));
+    v.add (NJ_S("OSC 4 FX 13 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 13 High Cut"));
+    v.add (NJ_S("OSC 4 FX 13 Width"));
+    v.add (NJ_S("OSC 4 FX 13 Sat"));
+    v.add (NJ_S("OSC 4 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 14 High Cut"));
+    v.add (NJ_S("OSC 4 FX 14 Width"));
+    v.add (NJ_S("OSC 4 FX 14 Sat"));
+    v.add (NJ_S("OSC 4 FX 15 Low Cut"));
+}
+static void modDst_47 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 4 FX 15 High Cut"));
+    v.add (NJ_S("OSC 4 FX 15 Width"));
+    v.add (NJ_S("OSC 4 FX 15 Sat"));
+    v.add (NJ_S("OSC 4 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 4 FX 16 High Cut"));
+    v.add (NJ_S("OSC 4 FX 16 Width"));
+    v.add (NJ_S("OSC 4 FX 16 Sat"));
+    v.add (NJ_S("OSC 5 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 1 High Cut"));
+    v.add (NJ_S("OSC 5 FX 1 Width"));
+    v.add (NJ_S("OSC 5 FX 1 Sat"));
+    v.add (NJ_S("OSC 5 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 2 High Cut"));
+    v.add (NJ_S("OSC 5 FX 2 Width"));
+    v.add (NJ_S("OSC 5 FX 2 Sat"));
+    v.add (NJ_S("OSC 5 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 3 High Cut"));
+    v.add (NJ_S("OSC 5 FX 3 Width"));
+    v.add (NJ_S("OSC 5 FX 3 Sat"));
+    v.add (NJ_S("OSC 5 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 4 High Cut"));
+    v.add (NJ_S("OSC 5 FX 4 Width"));
+    v.add (NJ_S("OSC 5 FX 4 Sat"));
+    v.add (NJ_S("OSC 5 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 5 High Cut"));
+    v.add (NJ_S("OSC 5 FX 5 Width"));
+    v.add (NJ_S("OSC 5 FX 5 Sat"));
+    v.add (NJ_S("OSC 5 FX 6 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 6 High Cut"));
+    v.add (NJ_S("OSC 5 FX 6 Width"));
+    v.add (NJ_S("OSC 5 FX 6 Sat"));
+    v.add (NJ_S("OSC 5 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 7 High Cut"));
+    v.add (NJ_S("OSC 5 FX 7 Width"));
+    v.add (NJ_S("OSC 5 FX 7 Sat"));
+    v.add (NJ_S("OSC 5 FX 8 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 8 High Cut"));
+    v.add (NJ_S("OSC 5 FX 8 Width"));
+    v.add (NJ_S("OSC 5 FX 8 Sat"));
+    v.add (NJ_S("OSC 5 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 9 High Cut"));
+    v.add (NJ_S("OSC 5 FX 9 Width"));
+    v.add (NJ_S("OSC 5 FX 9 Sat"));
+    v.add (NJ_S("OSC 5 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 10 High Cut"));
+    v.add (NJ_S("OSC 5 FX 10 Width"));
+    v.add (NJ_S("OSC 5 FX 10 Sat"));
+    v.add (NJ_S("OSC 5 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 11 High Cut"));
+    v.add (NJ_S("OSC 5 FX 11 Width"));
+    v.add (NJ_S("OSC 5 FX 11 Sat"));
+    v.add (NJ_S("OSC 5 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 12 High Cut"));
+    v.add (NJ_S("OSC 5 FX 12 Width"));
+    v.add (NJ_S("OSC 5 FX 12 Sat"));
+    v.add (NJ_S("OSC 5 FX 13 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 13 High Cut"));
+    v.add (NJ_S("OSC 5 FX 13 Width"));
+    v.add (NJ_S("OSC 5 FX 13 Sat"));
+    v.add (NJ_S("OSC 5 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 14 High Cut"));
+    v.add (NJ_S("OSC 5 FX 14 Width"));
+    v.add (NJ_S("OSC 5 FX 14 Sat"));
+    v.add (NJ_S("OSC 5 FX 15 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 15 High Cut"));
+    v.add (NJ_S("OSC 5 FX 15 Width"));
+    v.add (NJ_S("OSC 5 FX 15 Sat"));
+    v.add (NJ_S("OSC 5 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 5 FX 16 High Cut"));
+    v.add (NJ_S("OSC 5 FX 16 Width"));
+    v.add (NJ_S("OSC 5 FX 16 Sat"));
+    v.add (NJ_S("OSC 6 FX 1 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 1 High Cut"));
+    v.add (NJ_S("OSC 6 FX 1 Width"));
+    v.add (NJ_S("OSC 6 FX 1 Sat"));
+    v.add (NJ_S("OSC 6 FX 2 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 2 High Cut"));
+    v.add (NJ_S("OSC 6 FX 2 Width"));
+    v.add (NJ_S("OSC 6 FX 2 Sat"));
+    v.add (NJ_S("OSC 6 FX 3 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 3 High Cut"));
+    v.add (NJ_S("OSC 6 FX 3 Width"));
+    v.add (NJ_S("OSC 6 FX 3 Sat"));
+    v.add (NJ_S("OSC 6 FX 4 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 4 High Cut"));
+    v.add (NJ_S("OSC 6 FX 4 Width"));
+    v.add (NJ_S("OSC 6 FX 4 Sat"));
+    v.add (NJ_S("OSC 6 FX 5 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 5 High Cut"));
+    v.add (NJ_S("OSC 6 FX 5 Width"));
+    v.add (NJ_S("OSC 6 FX 5 Sat"));
+    v.add (NJ_S("OSC 6 FX 6 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 6 High Cut"));
+    v.add (NJ_S("OSC 6 FX 6 Width"));
+    v.add (NJ_S("OSC 6 FX 6 Sat"));
+    v.add (NJ_S("OSC 6 FX 7 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 7 High Cut"));
+    v.add (NJ_S("OSC 6 FX 7 Width"));
+    v.add (NJ_S("OSC 6 FX 7 Sat"));
+    v.add (NJ_S("OSC 6 FX 8 Low Cut"));
+}
+static void modDst_48 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 6 FX 8 High Cut"));
+    v.add (NJ_S("OSC 6 FX 8 Width"));
+    v.add (NJ_S("OSC 6 FX 8 Sat"));
+    v.add (NJ_S("OSC 6 FX 9 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 9 High Cut"));
+    v.add (NJ_S("OSC 6 FX 9 Width"));
+    v.add (NJ_S("OSC 6 FX 9 Sat"));
+    v.add (NJ_S("OSC 6 FX 10 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 10 High Cut"));
+    v.add (NJ_S("OSC 6 FX 10 Width"));
+    v.add (NJ_S("OSC 6 FX 10 Sat"));
+    v.add (NJ_S("OSC 6 FX 11 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 11 High Cut"));
+    v.add (NJ_S("OSC 6 FX 11 Width"));
+    v.add (NJ_S("OSC 6 FX 11 Sat"));
+    v.add (NJ_S("OSC 6 FX 12 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 12 High Cut"));
+    v.add (NJ_S("OSC 6 FX 12 Width"));
+    v.add (NJ_S("OSC 6 FX 12 Sat"));
+    v.add (NJ_S("OSC 6 FX 13 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 13 High Cut"));
+    v.add (NJ_S("OSC 6 FX 13 Width"));
+    v.add (NJ_S("OSC 6 FX 13 Sat"));
+    v.add (NJ_S("OSC 6 FX 14 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 14 High Cut"));
+    v.add (NJ_S("OSC 6 FX 14 Width"));
+    v.add (NJ_S("OSC 6 FX 14 Sat"));
+    v.add (NJ_S("OSC 6 FX 15 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 15 High Cut"));
+    v.add (NJ_S("OSC 6 FX 15 Width"));
+    v.add (NJ_S("OSC 6 FX 15 Sat"));
+    v.add (NJ_S("OSC 6 FX 16 Low Cut"));
+    v.add (NJ_S("OSC 6 FX 16 High Cut"));
+    v.add (NJ_S("OSC 6 FX 16 Width"));
+    v.add (NJ_S("OSC 6 FX 16 Sat"));
+    v.add (NJ_S("Out Ceiling"));
+    v.add (NJ_S("Main FX 1 Ext 1"));
+    v.add (NJ_S("Main FX 1 Ext 2"));
+    v.add (NJ_S("Main FX 1 Ext 3"));
+    v.add (NJ_S("Main FX 1 Ext 4"));
+    v.add (NJ_S("Main FX 2 Ext 1"));
+    v.add (NJ_S("Main FX 2 Ext 2"));
+    v.add (NJ_S("Main FX 2 Ext 3"));
+    v.add (NJ_S("Main FX 2 Ext 4"));
+    v.add (NJ_S("Main FX 3 Ext 1"));
+    v.add (NJ_S("Main FX 3 Ext 2"));
+    v.add (NJ_S("Main FX 3 Ext 3"));
+    v.add (NJ_S("Main FX 3 Ext 4"));
+    v.add (NJ_S("Main FX 4 Ext 1"));
+    v.add (NJ_S("Main FX 4 Ext 2"));
+    v.add (NJ_S("Main FX 4 Ext 3"));
+    v.add (NJ_S("Main FX 4 Ext 4"));
+    v.add (NJ_S("Main FX 5 Ext 1"));
+    v.add (NJ_S("Main FX 5 Ext 2"));
+    v.add (NJ_S("Main FX 5 Ext 3"));
+    v.add (NJ_S("Main FX 5 Ext 4"));
+    v.add (NJ_S("Main FX 6 Ext 1"));
+    v.add (NJ_S("Main FX 6 Ext 2"));
+    v.add (NJ_S("Main FX 6 Ext 3"));
+    v.add (NJ_S("Main FX 6 Ext 4"));
+    v.add (NJ_S("Main FX 7 Ext 1"));
+    v.add (NJ_S("Main FX 7 Ext 2"));
+    v.add (NJ_S("Main FX 7 Ext 3"));
+    v.add (NJ_S("Main FX 7 Ext 4"));
+    v.add (NJ_S("Main FX 8 Ext 1"));
+    v.add (NJ_S("Main FX 8 Ext 2"));
+    v.add (NJ_S("Main FX 8 Ext 3"));
+    v.add (NJ_S("Main FX 8 Ext 4"));
+    v.add (NJ_S("Main FX 9 Ext 1"));
+    v.add (NJ_S("Main FX 9 Ext 2"));
+    v.add (NJ_S("Main FX 9 Ext 3"));
+    v.add (NJ_S("Main FX 9 Ext 4"));
+    v.add (NJ_S("Main FX 10 Ext 1"));
+    v.add (NJ_S("Main FX 10 Ext 2"));
+    v.add (NJ_S("Main FX 10 Ext 3"));
+    v.add (NJ_S("Main FX 10 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 1 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 1 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 1 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 1 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 2 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 2 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 2 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 2 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 3 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 3 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 3 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 3 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 4 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 4 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 4 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 4 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 5 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 5 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 5 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 5 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 6 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 6 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 6 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 6 Ext 4"));
+}
+static void modDst_49 (juce::StringArray& v)
+{
+    v.add (NJ_S("Bus 1 FX 7 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 7 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 7 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 7 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 8 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 8 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 8 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 8 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 9 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 9 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 9 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 9 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 10 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 10 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 10 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 10 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 1 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 1 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 1 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 1 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 2 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 2 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 2 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 2 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 3 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 3 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 3 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 3 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 4 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 4 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 4 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 4 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 5 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 5 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 5 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 5 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 6 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 6 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 6 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 6 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 7 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 7 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 7 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 7 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 8 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 8 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 8 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 8 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 9 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 9 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 9 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 9 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 10 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 10 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 10 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 10 Ext 4"));
+    v.add (NJ_S("Main FX 11 Ext 1"));
+    v.add (NJ_S("Main FX 11 Ext 2"));
+    v.add (NJ_S("Main FX 11 Ext 3"));
+    v.add (NJ_S("Main FX 11 Ext 4"));
+    v.add (NJ_S("Main FX 12 Ext 1"));
+    v.add (NJ_S("Main FX 12 Ext 2"));
+    v.add (NJ_S("Main FX 12 Ext 3"));
+    v.add (NJ_S("Main FX 12 Ext 4"));
+    v.add (NJ_S("Main FX 13 Ext 1"));
+    v.add (NJ_S("Main FX 13 Ext 2"));
+    v.add (NJ_S("Main FX 13 Ext 3"));
+    v.add (NJ_S("Main FX 13 Ext 4"));
+    v.add (NJ_S("Main FX 14 Ext 1"));
+    v.add (NJ_S("Main FX 14 Ext 2"));
+    v.add (NJ_S("Main FX 14 Ext 3"));
+    v.add (NJ_S("Main FX 14 Ext 4"));
+    v.add (NJ_S("Main FX 15 Ext 1"));
+    v.add (NJ_S("Main FX 15 Ext 2"));
+    v.add (NJ_S("Main FX 15 Ext 3"));
+    v.add (NJ_S("Main FX 15 Ext 4"));
+    v.add (NJ_S("Main FX 16 Ext 1"));
+    v.add (NJ_S("Main FX 16 Ext 2"));
+    v.add (NJ_S("Main FX 16 Ext 3"));
+    v.add (NJ_S("Main FX 16 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 11 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 11 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 11 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 11 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 12 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 12 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 12 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 12 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 13 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 13 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 13 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 13 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 14 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 14 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 14 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 14 Ext 4"));
+    v.add (NJ_S("Bus 1 FX 15 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 15 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 15 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 15 Ext 4"));
+}
+static void modDst_50 (juce::StringArray& v)
+{
+    v.add (NJ_S("Bus 1 FX 16 Ext 1"));
+    v.add (NJ_S("Bus 1 FX 16 Ext 2"));
+    v.add (NJ_S("Bus 1 FX 16 Ext 3"));
+    v.add (NJ_S("Bus 1 FX 16 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 11 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 11 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 11 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 11 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 12 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 12 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 12 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 12 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 13 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 13 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 13 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 13 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 14 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 14 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 14 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 14 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 15 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 15 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 15 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 15 Ext 4"));
+    v.add (NJ_S("Bus 2 FX 16 Ext 1"));
+    v.add (NJ_S("Bus 2 FX 16 Ext 2"));
+    v.add (NJ_S("Bus 2 FX 16 Ext 3"));
+    v.add (NJ_S("Bus 2 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 2 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 4 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 11 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 13 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 1 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 1 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 1 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 1 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 2 Ext 4"));
+}
+static void modDst_51 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 2 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 4 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 11 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 13 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 2 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 2 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 2 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 2 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 2 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 4 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 11 Ext 4"));
+}
+static void modDst_52 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 3 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 13 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 3 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 3 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 3 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 3 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 2 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 4 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 11 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 13 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 4 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 4 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 4 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 4 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 2 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 4 Ext 4"));
+}
+static void modDst_53 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 5 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 11 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 13 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 5 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 5 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 5 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 5 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 1 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 1 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 1 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 1 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 2 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 2 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 2 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 2 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 3 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 3 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 3 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 3 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 4 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 4 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 4 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 4 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 5 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 5 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 5 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 5 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 6 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 6 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 6 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 6 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 7 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 7 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 7 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 7 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 8 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 8 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 8 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 8 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 9 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 9 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 9 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 9 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 10 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 10 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 10 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 10 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 11 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 11 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 11 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 11 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 12 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 12 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 12 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 12 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 13 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 13 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 13 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 13 Ext 4"));
+}
+static void modDst_54 (juce::StringArray& v)
+{
+    v.add (NJ_S("OSC 6 FX 14 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 14 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 14 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 14 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 15 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 15 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 15 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 15 Ext 4"));
+    v.add (NJ_S("OSC 6 FX 16 Ext 1"));
+    v.add (NJ_S("OSC 6 FX 16 Ext 2"));
+    v.add (NJ_S("OSC 6 FX 16 Ext 3"));
+    v.add (NJ_S("OSC 6 FX 16 Ext 4"));
+    v.add (NJ_S("OSC 1 Sample End"));
+    v.add (NJ_S("OSC 1 Sample Loop Start"));
+    v.add (NJ_S("OSC 1 Sample Loop End"));
+    v.add (NJ_S("OSC 1 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 1 Sample Gain"));
+    v.add (NJ_S("OSC 1 Sample Vel Start"));
+    v.add (NJ_S("OSC 1 Sample Width"));
+    v.add (NJ_S("OSC 2 Sample End"));
+    v.add (NJ_S("OSC 2 Sample Loop Start"));
+    v.add (NJ_S("OSC 2 Sample Loop End"));
+    v.add (NJ_S("OSC 2 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 2 Sample Gain"));
+    v.add (NJ_S("OSC 2 Sample Vel Start"));
+    v.add (NJ_S("OSC 2 Sample Width"));
+    v.add (NJ_S("OSC 3 Sample End"));
+    v.add (NJ_S("OSC 3 Sample Loop Start"));
+    v.add (NJ_S("OSC 3 Sample Loop End"));
+    v.add (NJ_S("OSC 3 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 3 Sample Gain"));
+    v.add (NJ_S("OSC 3 Sample Vel Start"));
+    v.add (NJ_S("OSC 3 Sample Width"));
+    v.add (NJ_S("OSC 4 Sample End"));
+    v.add (NJ_S("OSC 4 Sample Loop Start"));
+    v.add (NJ_S("OSC 4 Sample Loop End"));
+    v.add (NJ_S("OSC 4 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 4 Sample Gain"));
+    v.add (NJ_S("OSC 4 Sample Vel Start"));
+    v.add (NJ_S("OSC 4 Sample Width"));
+    v.add (NJ_S("OSC 5 Sample End"));
+    v.add (NJ_S("OSC 5 Sample Loop Start"));
+    v.add (NJ_S("OSC 5 Sample Loop End"));
+    v.add (NJ_S("OSC 5 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 5 Sample Gain"));
+    v.add (NJ_S("OSC 5 Sample Vel Start"));
+    v.add (NJ_S("OSC 5 Sample Width"));
+    v.add (NJ_S("OSC 6 Sample End"));
+    v.add (NJ_S("OSC 6 Sample Loop Start"));
+    v.add (NJ_S("OSC 6 Sample Loop End"));
+    v.add (NJ_S("OSC 6 Sample Loop Crossfade"));
+    v.add (NJ_S("OSC 6 Sample Gain"));
+    v.add (NJ_S("OSC 6 Sample Vel Start"));
+    v.add (NJ_S("OSC 6 Sample Width"));
+    v.add (NJ_S("OSC 1 Warp 3 Amount"));
+    v.add (NJ_S("OSC 1 WT Tone"));
+    v.add (NJ_S("OSC 2 Warp 3 Amount"));
+    v.add (NJ_S("OSC 2 WT Tone"));
+    v.add (NJ_S("OSC 3 Warp 3 Amount"));
+    v.add (NJ_S("OSC 3 WT Tone"));
+    v.add (NJ_S("OSC 4 Warp 3 Amount"));
+    v.add (NJ_S("OSC 4 WT Tone"));
+    v.add (NJ_S("OSC 5 Warp 3 Amount"));
+    v.add (NJ_S("OSC 5 WT Tone"));
+    v.add (NJ_S("OSC 6 Warp 3 Amount"));
+    v.add (NJ_S("OSC 6 WT Tone"));
+    v.add (NJ_S("LFO 1 Key Fine"));
+    v.add (NJ_S("LFO 1 Skew"));
+    v.add (NJ_S("LFO 1 Jitter"));
+    v.add (NJ_S("LFO 1 Voice Spread"));
+    v.add (NJ_S("LFO 1 Depth"));
+    v.add (NJ_S("LFO 1 Table Pos"));
+    v.add (NJ_S("LFO 2 Key Fine"));
+    v.add (NJ_S("LFO 2 Skew"));
+    v.add (NJ_S("LFO 2 Jitter"));
+    v.add (NJ_S("LFO 2 Voice Spread"));
+    v.add (NJ_S("LFO 2 Depth"));
+    v.add (NJ_S("LFO 2 Table Pos"));
+    v.add (NJ_S("LFO 3 Key Fine"));
+    v.add (NJ_S("LFO 3 Skew"));
+    v.add (NJ_S("LFO 3 Jitter"));
+    v.add (NJ_S("LFO 3 Voice Spread"));
+    v.add (NJ_S("LFO 3 Depth"));
+    v.add (NJ_S("LFO 3 Table Pos"));
+    v.add (NJ_S("LFO 4 Key Fine"));
+    v.add (NJ_S("LFO 4 Skew"));
+    v.add (NJ_S("LFO 4 Jitter"));
+    v.add (NJ_S("LFO 4 Voice Spread"));
+    v.add (NJ_S("LFO 4 Depth"));
+    v.add (NJ_S("LFO 4 Table Pos"));
+    v.add (NJ_S("LFO 5 Key Fine"));
+    v.add (NJ_S("LFO 5 Skew"));
+    v.add (NJ_S("LFO 5 Jitter"));
+    v.add (NJ_S("LFO 5 Voice Spread"));
+    v.add (NJ_S("LFO 5 Depth"));
+    v.add (NJ_S("LFO 5 Table Pos"));
+    v.add (NJ_S("LFO 6 Key Fine"));
+    v.add (NJ_S("LFO 6 Skew"));
+    v.add (NJ_S("LFO 6 Jitter"));
+    v.add (NJ_S("LFO 6 Voice Spread"));
+}
+static void modDst_55 (juce::StringArray& v)
+{
+    v.add (NJ_S("LFO 6 Depth"));
+    v.add (NJ_S("LFO 6 Table Pos"));
+    v.add (NJ_S("LFO 7 Key Fine"));
+    v.add (NJ_S("LFO 7 Skew"));
+    v.add (NJ_S("LFO 7 Jitter"));
+    v.add (NJ_S("LFO 7 Voice Spread"));
+    v.add (NJ_S("LFO 7 Depth"));
+    v.add (NJ_S("LFO 7 Table Pos"));
+    v.add (NJ_S("LFO 8 Key Fine"));
+    v.add (NJ_S("LFO 8 Skew"));
+    v.add (NJ_S("LFO 8 Jitter"));
+    v.add (NJ_S("LFO 8 Voice Spread"));
+    v.add (NJ_S("LFO 8 Depth"));
+    v.add (NJ_S("LFO 8 Table Pos"));
+    v.add (NJ_S("LFO 9 Key Fine"));
+    v.add (NJ_S("LFO 9 Skew"));
+    v.add (NJ_S("LFO 9 Jitter"));
+    v.add (NJ_S("LFO 9 Voice Spread"));
+    v.add (NJ_S("LFO 9 Depth"));
+    v.add (NJ_S("LFO 9 Table Pos"));
+    v.add (NJ_S("LFO 10 Key Fine"));
+    v.add (NJ_S("LFO 10 Skew"));
+    v.add (NJ_S("LFO 10 Jitter"));
+    v.add (NJ_S("LFO 10 Voice Spread"));
+    v.add (NJ_S("LFO 10 Depth"));
+    v.add (NJ_S("LFO 10 Table Pos"));
+    v.add (NJ_S("Mod Env 1 Delay"));
+    v.add (NJ_S("Mod Env 1 Hold"));
+    v.add (NJ_S("Mod Env 1 Attack Curve"));
+    v.add (NJ_S("Mod Env 1 Decay Curve"));
+    v.add (NJ_S("Mod Env 1 Release Curve"));
+    v.add (NJ_S("Mod Env 1 Velocity"));
+    v.add (NJ_S("Mod Env 1 Key Track"));
+    v.add (NJ_S("Mod Env 1 Level"));
+    v.add (NJ_S("Mod Env 2 Delay"));
+    v.add (NJ_S("Mod Env 2 Hold"));
+    v.add (NJ_S("Mod Env 2 Attack Curve"));
+    v.add (NJ_S("Mod Env 2 Decay Curve"));
+    v.add (NJ_S("Mod Env 2 Release Curve"));
+    v.add (NJ_S("Mod Env 2 Velocity"));
+    v.add (NJ_S("Mod Env 2 Key Track"));
+    v.add (NJ_S("Mod Env 2 Level"));
+    v.add (NJ_S("Mod Env 3 Delay"));
+    v.add (NJ_S("Mod Env 3 Hold"));
+    v.add (NJ_S("Mod Env 3 Attack Curve"));
+    v.add (NJ_S("Mod Env 3 Decay Curve"));
+    v.add (NJ_S("Mod Env 3 Release Curve"));
+    v.add (NJ_S("Mod Env 3 Velocity"));
+    v.add (NJ_S("Mod Env 3 Key Track"));
+    v.add (NJ_S("Mod Env 3 Level"));
+    v.add (NJ_S("Mod Env 4 Delay"));
+    v.add (NJ_S("Mod Env 4 Hold"));
+    v.add (NJ_S("Mod Env 4 Attack Curve"));
+    v.add (NJ_S("Mod Env 4 Decay Curve"));
+    v.add (NJ_S("Mod Env 4 Release Curve"));
+    v.add (NJ_S("Mod Env 4 Velocity"));
+    v.add (NJ_S("Mod Env 4 Key Track"));
+    v.add (NJ_S("Mod Env 4 Level"));
+    v.add (NJ_S("Mod Env 5 Delay"));
+    v.add (NJ_S("Mod Env 5 Hold"));
+    v.add (NJ_S("Mod Env 5 Attack Curve"));
+    v.add (NJ_S("Mod Env 5 Decay Curve"));
+    v.add (NJ_S("Mod Env 5 Release Curve"));
+    v.add (NJ_S("Mod Env 5 Velocity"));
+    v.add (NJ_S("Mod Env 5 Key Track"));
+    v.add (NJ_S("Mod Env 5 Level"));
+    v.add (NJ_S("Mod Env 6 Delay"));
+    v.add (NJ_S("Mod Env 6 Hold"));
+    v.add (NJ_S("Mod Env 6 Attack Curve"));
+    v.add (NJ_S("Mod Env 6 Decay Curve"));
+    v.add (NJ_S("Mod Env 6 Release Curve"));
+    v.add (NJ_S("Mod Env 6 Velocity"));
+    v.add (NJ_S("Mod Env 6 Key Track"));
+    v.add (NJ_S("Mod Env 6 Level"));
+    v.add (NJ_S("Mod Env 7 Delay"));
+    v.add (NJ_S("Mod Env 7 Hold"));
+    v.add (NJ_S("Mod Env 7 Attack Curve"));
+    v.add (NJ_S("Mod Env 7 Decay Curve"));
+    v.add (NJ_S("Mod Env 7 Release Curve"));
+    v.add (NJ_S("Mod Env 7 Velocity"));
+    v.add (NJ_S("Mod Env 7 Key Track"));
+    v.add (NJ_S("Mod Env 7 Level"));
+    v.add (NJ_S("Mod Env 8 Delay"));
+    v.add (NJ_S("Mod Env 8 Hold"));
+    v.add (NJ_S("Mod Env 8 Attack Curve"));
+    v.add (NJ_S("Mod Env 8 Decay Curve"));
+    v.add (NJ_S("Mod Env 8 Release Curve"));
+    v.add (NJ_S("Mod Env 8 Velocity"));
+    v.add (NJ_S("Mod Env 8 Key Track"));
+    v.add (NJ_S("Mod Env 8 Level"));
+    v.add (NJ_S("Mod Env 9 Delay"));
+    v.add (NJ_S("Mod Env 9 Hold"));
+    v.add (NJ_S("Mod Env 9 Attack Curve"));
+    v.add (NJ_S("Mod Env 9 Decay Curve"));
+    v.add (NJ_S("Mod Env 9 Release Curve"));
+    v.add (NJ_S("Mod Env 9 Velocity"));
+    v.add (NJ_S("Mod Env 9 Key Track"));
+    v.add (NJ_S("Mod Env 9 Level"));
+    v.add (NJ_S("Mod Env 10 Delay"));
+    v.add (NJ_S("Mod Env 10 Hold"));
+}
+static void modDst_56 (juce::StringArray& v)
+{
+    v.add (NJ_S("Mod Env 10 Attack Curve"));
+    v.add (NJ_S("Mod Env 10 Decay Curve"));
+    v.add (NJ_S("Mod Env 10 Release Curve"));
+    v.add (NJ_S("Mod Env 10 Velocity"));
+    v.add (NJ_S("Mod Env 10 Key Track"));
+    v.add (NJ_S("Mod Env 10 Level"));
+    v.add (NJ_S("Amp Env Delay"));
+    v.add (NJ_S("Amp Env Hold"));
+    v.add (NJ_S("Amp Env Attack Curve"));
+    v.add (NJ_S("Amp Env Decay Curve"));
+    v.add (NJ_S("Amp Env Release Curve"));
+    v.add (NJ_S("Amp Env Velocity"));
+    v.add (NJ_S("Amp Env Key Track"));
+    v.add (NJ_S("Amp Env Level"));
+    v.add (NJ_S("OSC 1 Filter Env Delay"));
+    v.add (NJ_S("OSC 1 Filter Env Hold"));
+    v.add (NJ_S("OSC 1 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 1 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 1 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 1 Filter Env Velocity"));
+    v.add (NJ_S("OSC 1 Filter Env Key Track"));
+    v.add (NJ_S("OSC 1 Filter Env Level"));
+    v.add (NJ_S("OSC 2 Filter Env Delay"));
+    v.add (NJ_S("OSC 2 Filter Env Hold"));
+    v.add (NJ_S("OSC 2 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 2 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 2 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 2 Filter Env Velocity"));
+    v.add (NJ_S("OSC 2 Filter Env Key Track"));
+    v.add (NJ_S("OSC 2 Filter Env Level"));
+    v.add (NJ_S("OSC 3 Filter Env Delay"));
+    v.add (NJ_S("OSC 3 Filter Env Hold"));
+    v.add (NJ_S("OSC 3 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 3 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 3 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 3 Filter Env Velocity"));
+    v.add (NJ_S("OSC 3 Filter Env Key Track"));
+    v.add (NJ_S("OSC 3 Filter Env Level"));
+    v.add (NJ_S("OSC 4 Filter Env Delay"));
+    v.add (NJ_S("OSC 4 Filter Env Hold"));
+    v.add (NJ_S("OSC 4 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 4 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 4 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 4 Filter Env Velocity"));
+    v.add (NJ_S("OSC 4 Filter Env Key Track"));
+    v.add (NJ_S("OSC 4 Filter Env Level"));
+    v.add (NJ_S("OSC 5 Filter Env Delay"));
+    v.add (NJ_S("OSC 5 Filter Env Hold"));
+    v.add (NJ_S("OSC 5 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 5 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 5 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 5 Filter Env Velocity"));
+    v.add (NJ_S("OSC 5 Filter Env Key Track"));
+    v.add (NJ_S("OSC 5 Filter Env Level"));
+    v.add (NJ_S("OSC 6 Filter Env Delay"));
+    v.add (NJ_S("OSC 6 Filter Env Hold"));
+    v.add (NJ_S("OSC 6 Filter Env Attack Curve"));
+    v.add (NJ_S("OSC 6 Filter Env Decay Curve"));
+    v.add (NJ_S("OSC 6 Filter Env Release Curve"));
+    v.add (NJ_S("OSC 6 Filter Env Velocity"));
+    v.add (NJ_S("OSC 6 Filter Env Key Track"));
+    v.add (NJ_S("OSC 6 Filter Env Level"));
 }
 const juce::StringArray& modDst()
 {
-    static const juce::StringArray v = [] { juce::StringArray r; modDst_0 (r); modDst_1 (r); modDst_2 (r); modDst_3 (r); modDst_4 (r); modDst_5 (r); modDst_6 (r); modDst_7 (r); modDst_8 (r); modDst_9 (r); modDst_10 (r); modDst_11 (r); modDst_12 (r); modDst_13 (r); modDst_14 (r); modDst_15 (r); return r; }();
+    static const juce::StringArray v = [] { juce::StringArray r; modDst_0 (r); modDst_1 (r); modDst_2 (r); modDst_3 (r); modDst_4 (r); modDst_5 (r); modDst_6 (r); modDst_7 (r); modDst_8 (r); modDst_9 (r); modDst_10 (r); modDst_11 (r); modDst_12 (r); modDst_13 (r); modDst_14 (r); modDst_15 (r); modDst_16 (r); modDst_17 (r); modDst_18 (r); modDst_19 (r); modDst_20 (r); modDst_21 (r); modDst_22 (r); modDst_23 (r); modDst_24 (r); modDst_25 (r); modDst_26 (r); modDst_27 (r); modDst_28 (r); modDst_29 (r); modDst_30 (r); modDst_31 (r); modDst_32 (r); modDst_33 (r); modDst_34 (r); modDst_35 (r); modDst_36 (r); modDst_37 (r); modDst_38 (r); modDst_39 (r); modDst_40 (r); modDst_41 (r); modDst_42 (r); modDst_43 (r); modDst_44 (r); modDst_45 (r); modDst_46 (r); modDst_47 (r); modDst_48 (r); modDst_49 (r); modDst_50 (r); modDst_51 (r); modDst_52 (r); modDst_53 (r); modDst_54 (r); modDst_55 (r); modDst_56 (r); return r; }();
     return v;
 }
 static void distTypes_0 (juce::StringArray& v)
@@ -11555,117 +15756,357 @@ const std::vector<std::pair<int, juce::String>>& modSrcGroups()
 }
 const std::vector<std::pair<int, juce::String>>& modDstGroups()
 {
-    static const std::vector<std::pair<int, juce::String>> v = { { 0, NJ_S("") }, { 1, NJ_S("Global") }, { 6, NJ_S("OSC 1") }, { 15, NJ_S("OSC 2") }, { 24, NJ_S("OSC 3") }, { 33, NJ_S("OSC 4") }, { 42, NJ_S("OSC 5") }, { 51, NJ_S("OSC 6") }, { 60, NJ_S("FM matrix (amount)") }, { 96, NJ_S("PM matrix (amount)") }, { 132, NJ_S("PD matrix (amount)") }, { 168, NJ_S("Tables") }, { 180, NJ_S("Frequency") }, { 186, NJ_S("RM matrix (amount)") }, { 222, NJ_S("AM matrix (amount)") }, { 258, NJ_S("OSC 1 Physical / Alpha Juno") }, { 289, NJ_S("OSC 2 Physical / Alpha Juno") }, { 320, NJ_S("OSC 3 Physical / Alpha Juno") }, { 351, NJ_S("OSC 4 Physical / Alpha Juno") }, { 382, NJ_S("OSC 5 Physical / Alpha Juno") }, { 413, NJ_S("OSC 6 Physical / Alpha Juno") }, { 444, NJ_S("OSC 1 Kick") }, { 460, NJ_S("OSC 2 Kick") }, { 476, NJ_S("OSC 3 Kick") }, { 492, NJ_S("OSC 4 Kick") }, { 508, NJ_S("OSC 5 Kick") }, { 524, NJ_S("OSC 6 Kick") }, { 540, NJ_S("OSC 1 Wave Terrain") }, { 556, NJ_S("OSC 2 Wave Terrain") }, { 572, NJ_S("OSC 3 Wave Terrain") }, { 588, NJ_S("OSC 4 Wave Terrain") }, { 604, NJ_S("OSC 5 Wave Terrain") }, { 620, NJ_S("OSC 6 Wave Terrain") }, { 636, NJ_S("OSC 1 Waveguide") }, { 652, NJ_S("OSC 2 Waveguide") }, { 668, NJ_S("OSC 3 Waveguide") }, { 684, NJ_S("OSC 4 Waveguide") }, { 700, NJ_S("OSC 5 Waveguide") }, { 716, NJ_S("OSC 6 Waveguide") }, { 732, NJ_S("OSC 1 JP-8080") }, { 748, NJ_S("OSC 2 JP-8080") }, { 764, NJ_S("OSC 3 JP-8080") }, { 780, NJ_S("OSC 4 JP-8080") }, { 796, NJ_S("OSC 5 JP-8080") }, { 812, NJ_S("OSC 6 JP-8080") }, { 828, NJ_S("OSC 1 Granular") }, { 844, NJ_S("OSC 2 Granular") }, { 860, NJ_S("OSC 3 Granular") }, { 876, NJ_S("OSC 4 Granular") }, { 892, NJ_S("OSC 5 Granular") }, { 908, NJ_S("OSC 6 Granular") }, { 924, NJ_S("OSC 1 Additive") }, { 940, NJ_S("OSC 2 Additive") }, { 956, NJ_S("OSC 3 Additive") }, { 972, NJ_S("OSC 4 Additive") }, { 988, NJ_S("OSC 5 Additive") }, { 1004, NJ_S("OSC 6 Additive") }, { 1020, NJ_S("OSC 1 Modal Drum") }, { 1036, NJ_S("OSC 2 Modal Drum") }, { 1052, NJ_S("OSC 3 Modal Drum") }, { 1068, NJ_S("OSC 4 Modal Drum") }, { 1084, NJ_S("OSC 5 Modal Drum") }, { 1100, NJ_S("OSC 6 Modal Drum") }, { 1116, NJ_S("OSC 1 Spectral") }, { 1132, NJ_S("OSC 2 Spectral") }, { 1148, NJ_S("OSC 3 Spectral") }, { 1164, NJ_S("OSC 4 Spectral") }, { 1180, NJ_S("OSC 5 Spectral") }, { 1196, NJ_S("OSC 6 Spectral") }, { 1212, NJ_S("OSC 1 SoundFont") }, { 1228, NJ_S("OSC 2 SoundFont") }, { 1244, NJ_S("OSC 3 SoundFont") }, { 1260, NJ_S("OSC 4 SoundFont") }, { 1276, NJ_S("OSC 5 SoundFont") }, { 1292, NJ_S("OSC 6 SoundFont") }, { 1308, NJ_S("TZFM matrix (amount)") }, { 1344, NJ_S("XF matrix (amount)") }, { 1380, NJ_S("FD matrix (amount)") }, { 1416, NJ_S("XR matrix (amount)") }, { 1452, NJ_S("CP matrix (amount)") }, { 1488, NJ_S("OSC 1 Bagpipe") }, { 1504, NJ_S("OSC 2 Bagpipe") }, { 1520, NJ_S("OSC 3 Bagpipe") }, { 1536, NJ_S("OSC 4 Bagpipe") }, { 1552, NJ_S("OSC 5 Bagpipe") }, { 1568, NJ_S("OSC 6 Bagpipe") } };
+    static const std::vector<std::pair<int, juce::String>> v = { { 0, NJ_S("") }, { 1, NJ_S("Global") }, { 6, NJ_S("OSC 1") }, { 15, NJ_S("OSC 2") }, { 24, NJ_S("OSC 3") }, { 33, NJ_S("OSC 4") }, { 42, NJ_S("OSC 5") }, { 51, NJ_S("OSC 6") }, { 60, NJ_S("FM matrix (amount)") }, { 96, NJ_S("PM matrix (amount)") }, { 132, NJ_S("PD matrix (amount)") }, { 168, NJ_S("Tables") }, { 180, NJ_S("Frequency") }, { 186, NJ_S("RM matrix (amount)") }, { 222, NJ_S("AM matrix (amount)") }, { 258, NJ_S("OSC 1 Physical / Alpha Juno") }, { 289, NJ_S("OSC 2 Physical / Alpha Juno") }, { 320, NJ_S("OSC 3 Physical / Alpha Juno") }, { 351, NJ_S("OSC 4 Physical / Alpha Juno") }, { 382, NJ_S("OSC 5 Physical / Alpha Juno") }, { 413, NJ_S("OSC 6 Physical / Alpha Juno") }, { 444, NJ_S("OSC 1 Kick") }, { 460, NJ_S("OSC 2 Kick") }, { 476, NJ_S("OSC 3 Kick") }, { 492, NJ_S("OSC 4 Kick") }, { 508, NJ_S("OSC 5 Kick") }, { 524, NJ_S("OSC 6 Kick") }, { 540, NJ_S("OSC 1 Wave Terrain") }, { 556, NJ_S("OSC 2 Wave Terrain") }, { 572, NJ_S("OSC 3 Wave Terrain") }, { 588, NJ_S("OSC 4 Wave Terrain") }, { 604, NJ_S("OSC 5 Wave Terrain") }, { 620, NJ_S("OSC 6 Wave Terrain") }, { 636, NJ_S("OSC 1 Waveguide") }, { 652, NJ_S("OSC 2 Waveguide") }, { 668, NJ_S("OSC 3 Waveguide") }, { 684, NJ_S("OSC 4 Waveguide") }, { 700, NJ_S("OSC 5 Waveguide") }, { 716, NJ_S("OSC 6 Waveguide") }, { 732, NJ_S("OSC 1 JP-8080") }, { 748, NJ_S("OSC 2 JP-8080") }, { 764, NJ_S("OSC 3 JP-8080") }, { 780, NJ_S("OSC 4 JP-8080") }, { 796, NJ_S("OSC 5 JP-8080") }, { 812, NJ_S("OSC 6 JP-8080") }, { 828, NJ_S("OSC 1 Granular") }, { 844, NJ_S("OSC 2 Granular") }, { 860, NJ_S("OSC 3 Granular") }, { 876, NJ_S("OSC 4 Granular") }, { 892, NJ_S("OSC 5 Granular") }, { 908, NJ_S("OSC 6 Granular") }, { 924, NJ_S("OSC 1 Additive") }, { 940, NJ_S("OSC 2 Additive") }, { 956, NJ_S("OSC 3 Additive") }, { 972, NJ_S("OSC 4 Additive") }, { 988, NJ_S("OSC 5 Additive") }, { 1004, NJ_S("OSC 6 Additive") }, { 1020, NJ_S("OSC 1 Modal Drum") }, { 1036, NJ_S("OSC 2 Modal Drum") }, { 1052, NJ_S("OSC 3 Modal Drum") }, { 1068, NJ_S("OSC 4 Modal Drum") }, { 1084, NJ_S("OSC 5 Modal Drum") }, { 1100, NJ_S("OSC 6 Modal Drum") }, { 1116, NJ_S("OSC 1 Spectral") }, { 1132, NJ_S("OSC 2 Spectral") }, { 1148, NJ_S("OSC 3 Spectral") }, { 1164, NJ_S("OSC 4 Spectral") }, { 1180, NJ_S("OSC 5 Spectral") }, { 1196, NJ_S("OSC 6 Spectral") }, { 1212, NJ_S("OSC 1 SoundFont") }, { 1228, NJ_S("OSC 2 SoundFont") }, { 1244, NJ_S("OSC 3 SoundFont") }, { 1260, NJ_S("OSC 4 SoundFont") }, { 1276, NJ_S("OSC 5 SoundFont") }, { 1292, NJ_S("OSC 6 SoundFont") }, { 1308, NJ_S("TZFM matrix (amount)") }, { 1344, NJ_S("XF matrix (amount)") }, { 1380, NJ_S("FD matrix (amount)") }, { 1416, NJ_S("XR matrix (amount)") }, { 1452, NJ_S("CP matrix (amount)") }, { 1488, NJ_S("OSC 1 Bagpipe") }, { 1504, NJ_S("OSC 2 Bagpipe") }, { 1520, NJ_S("OSC 3 Bagpipe") }, { 1536, NJ_S("OSC 4 Bagpipe") }, { 1552, NJ_S("OSC 5 Bagpipe") }, { 1568, NJ_S("OSC 6 Bagpipe") }, { 1584, NJ_S("Param Attack") }, { 1585, NJ_S("Param Decay") }, { 1586, NJ_S("Param Sustain") }, { 1587, NJ_S("Param Release") }, { 1588, NJ_S("Param Velocity") }, { 1589, NJ_S("Param Synth") }, { 1590, NJ_S("Param Master") }, { 1591, NJ_S("Param Pitch") }, { 1592, NJ_S("Param P.EG") }, { 1593, NJ_S("Param Master") }, { 1594, NJ_S("Param Stereo") }, { 1595, NJ_S("Param Tone") }, { 1596, NJ_S("Param Out") }, { 1597, NJ_S("Param DC") }, { 1598, NJ_S("Param LFO 1") }, { 1599, NJ_S("Param LFO 2") }, { 1600, NJ_S("Param LFO 3") }, { 1601, NJ_S("Param LFO 4") }, { 1602, NJ_S("Param LFO 5") }, { 1603, NJ_S("Param LFO 6") }, { 1604, NJ_S("Param LFO 7") }, { 1605, NJ_S("Param LFO 8") }, { 1606, NJ_S("Param LFO 9") }, { 1607, NJ_S("Param LFO 10") }, { 1608, NJ_S("Param Env 1") }, { 1612, NJ_S("Param Env 2") }, { 1616, NJ_S("Param Env 3") }, { 1620, NJ_S("Param Env 4") }, { 1624, NJ_S("Param Env 5") }, { 1628, NJ_S("Param Env 6") }, { 1632, NJ_S("Param Env 7") }, { 1636, NJ_S("Param Env 8") }, { 1640, NJ_S("Param Env 9") }, { 1644, NJ_S("Param Env 10") }, { 1648, NJ_S("Param Sync") }, { 1649, NJ_S("Param OSC 1 Level") }, { 1650, NJ_S("Param OSC 1 Pan") }, { 1651, NJ_S("Param OSC 1 Fine") }, { 1652, NJ_S("Param OSC 1 Start") }, { 1653, NJ_S("Param OSC 1 WT") }, { 1654, NJ_S("Param OSC 1 Unison") }, { 1657, NJ_S("Param OSC 1 Warp") }, { 1659, NJ_S("Param OSC 1 Sample") }, { 1660, NJ_S("Param OSC 1 Terrain") }, { 1663, NJ_S("Param OSC 1 Unison") }, { 1665, NJ_S("Param OSC 1 Filter") }, { 1675, NJ_S("Param OSC 1 Distortion") }, { 1677, NJ_S("Param OSC 1 Wavefilter") }, { 1678, NJ_S("Param OSC 1 Wavedistortion") }, { 1679, NJ_S("Param OSC 1 Frequency") }, { 1680, NJ_S("Param OSC 1 Wavefilter") }, { 1686, NJ_S("Param OSC 1 Resonator") }, { 1692, NJ_S("Param OSC 2 Level") }, { 1693, NJ_S("Param OSC 2 Pan") }, { 1694, NJ_S("Param OSC 2 Fine") }, { 1695, NJ_S("Param OSC 2 Start") }, { 1696, NJ_S("Param OSC 2 WT") }, { 1697, NJ_S("Param OSC 2 Unison") }, { 1700, NJ_S("Param OSC 2 Warp") }, { 1702, NJ_S("Param OSC 2 Sample") }, { 1703, NJ_S("Param OSC 2 Terrain") }, { 1706, NJ_S("Param OSC 2 Unison") }, { 1708, NJ_S("Param OSC 2 Filter") }, { 1718, NJ_S("Param OSC 2 Distortion") }, { 1720, NJ_S("Param OSC 2 Wavefilter") }, { 1721, NJ_S("Param OSC 2 Wavedistortion") }, { 1722, NJ_S("Param OSC 2 Frequency") }, { 1723, NJ_S("Param OSC 2 Wavefilter") }, { 1729, NJ_S("Param OSC 2 Resonator") }, { 1735, NJ_S("Param OSC 3 Level") }, { 1736, NJ_S("Param OSC 3 Pan") }, { 1737, NJ_S("Param OSC 3 Fine") }, { 1738, NJ_S("Param OSC 3 Start") }, { 1739, NJ_S("Param OSC 3 WT") }, { 1740, NJ_S("Param OSC 3 Unison") }, { 1743, NJ_S("Param OSC 3 Warp") }, { 1745, NJ_S("Param OSC 3 Sample") }, { 1746, NJ_S("Param OSC 3 Terrain") }, { 1749, NJ_S("Param OSC 3 Unison") }, { 1751, NJ_S("Param OSC 3 Filter") }, { 1761, NJ_S("Param OSC 3 Distortion") }, { 1763, NJ_S("Param OSC 3 Wavefilter") }, { 1764, NJ_S("Param OSC 3 Wavedistortion") }, { 1765, NJ_S("Param OSC 3 Frequency") }, { 1766, NJ_S("Param OSC 3 Wavefilter") }, { 1772, NJ_S("Param OSC 3 Resonator") }, { 1778, NJ_S("Param OSC 4 Level") }, { 1779, NJ_S("Param OSC 4 Pan") }, { 1780, NJ_S("Param OSC 4 Fine") }, { 1781, NJ_S("Param OSC 4 Start") }, { 1782, NJ_S("Param OSC 4 WT") }, { 1783, NJ_S("Param OSC 4 Unison") }, { 1786, NJ_S("Param OSC 4 Warp") }, { 1788, NJ_S("Param OSC 4 Sample") }, { 1789, NJ_S("Param OSC 4 Terrain") }, { 1792, NJ_S("Param OSC 4 Unison") }, { 1794, NJ_S("Param OSC 4 Filter") }, { 1804, NJ_S("Param OSC 4 Distortion") }, { 1806, NJ_S("Param OSC 4 Wavefilter") }, { 1807, NJ_S("Param OSC 4 Wavedistortion") }, { 1808, NJ_S("Param OSC 4 Frequency") }, { 1809, NJ_S("Param OSC 4 Wavefilter") }, { 1815, NJ_S("Param OSC 4 Resonator") }, { 1821, NJ_S("Param OSC 5 Level") }, { 1822, NJ_S("Param OSC 5 Pan") }, { 1823, NJ_S("Param OSC 5 Fine") }, { 1824, NJ_S("Param OSC 5 Start") }, { 1825, NJ_S("Param OSC 5 WT") }, { 1826, NJ_S("Param OSC 5 Unison") }, { 1829, NJ_S("Param OSC 5 Warp") }, { 1831, NJ_S("Param OSC 5 Sample") }, { 1832, NJ_S("Param OSC 5 Terrain") }, { 1835, NJ_S("Param OSC 5 Unison") }, { 1837, NJ_S("Param OSC 5 Filter") }, { 1847, NJ_S("Param OSC 5 Distortion") }, { 1849, NJ_S("Param OSC 5 Wavefilter") }, { 1850, NJ_S("Param OSC 5 Wavedistortion") }, { 1851, NJ_S("Param OSC 5 Frequency") }, { 1852, NJ_S("Param OSC 5 Wavefilter") }, { 1858, NJ_S("Param OSC 5 Resonator") }, { 1864, NJ_S("Param OSC 6 Level") }, { 1865, NJ_S("Param OSC 6 Pan") }, { 1866, NJ_S("Param OSC 6 Fine") }, { 1867, NJ_S("Param OSC 6 Start") }, { 1868, NJ_S("Param OSC 6 WT") }, { 1869, NJ_S("Param OSC 6 Unison") }, { 1872, NJ_S("Param OSC 6 Warp") }, { 1874, NJ_S("Param OSC 6 Sample") }, { 1875, NJ_S("Param OSC 6 Terrain") }, { 1878, NJ_S("Param OSC 6 Unison") }, { 1880, NJ_S("Param OSC 6 Filter") }, { 1890, NJ_S("Param OSC 6 Distortion") }, { 1892, NJ_S("Param OSC 6 Wavefilter") }, { 1893, NJ_S("Param OSC 6 Wavedistortion") }, { 1894, NJ_S("Param OSC 6 Frequency") }, { 1895, NJ_S("Param OSC 6 Wavefilter") }, { 1901, NJ_S("Param OSC 6 Resonator") }, { 1907, NJ_S("Param Freq 1") }, { 1909, NJ_S("Param Freq 2") }, { 1911, NJ_S("Param Freq 3") }, { 1913, NJ_S("Param Freq 4") }, { 1915, NJ_S("Param Freq 5") }, { 1917, NJ_S("Param Freq 6") }, { 1919, NJ_S("Param Freq 7") }, { 1921, NJ_S("Param Freq 8") }, { 1923, NJ_S("Param Freq 9") }, { 1925, NJ_S("Param Freq 10") }, { 1927, NJ_S("Param OSC 1 Physical") }, { 1940, NJ_S("Param OSC 1 Juno") }, { 1950, NJ_S("Param OSC 2 Physical") }, { 1963, NJ_S("Param OSC 2 Juno") }, { 1973, NJ_S("Param OSC 3 Physical") }, { 1986, NJ_S("Param OSC 3 Juno") }, { 1996, NJ_S("Param OSC 4 Physical") }, { 2009, NJ_S("Param OSC 4 Juno") }, { 2019, NJ_S("Param OSC 5 Physical") }, { 2032, NJ_S("Param OSC 5 Juno") }, { 2042, NJ_S("Param OSC 6 Physical") }, { 2055, NJ_S("Param OSC 6 Juno") }, { 2065, NJ_S("Param OSC 1 Kick") }, { 2079, NJ_S("Param OSC 2 Kick") }, { 2093, NJ_S("Param OSC 3 Kick") }, { 2107, NJ_S("Param OSC 4 Kick") }, { 2121, NJ_S("Param OSC 5 Kick") }, { 2135, NJ_S("Param OSC 6 Kick") }, { 2149, NJ_S("Param OSC 1 Terrain") }, { 2164, NJ_S("Param OSC 2 Terrain") }, { 2179, NJ_S("Param OSC 3 Terrain") }, { 2194, NJ_S("Param OSC 4 Terrain") }, { 2209, NJ_S("Param OSC 5 Terrain") }, { 2224, NJ_S("Param OSC 6 Terrain") }, { 2239, NJ_S("Param OSC 1 Waveguide") }, { 2254, NJ_S("Param OSC 2 Waveguide") }, { 2269, NJ_S("Param OSC 3 Waveguide") }, { 2284, NJ_S("Param OSC 4 Waveguide") }, { 2299, NJ_S("Param OSC 5 Waveguide") }, { 2314, NJ_S("Param OSC 6 Waveguide") }, { 2329, NJ_S("Param OSC 1 JP") }, { 2344, NJ_S("Param OSC 2 JP") }, { 2359, NJ_S("Param OSC 3 JP") }, { 2374, NJ_S("Param OSC 4 JP") }, { 2389, NJ_S("Param OSC 5 JP") }, { 2404, NJ_S("Param OSC 6 JP") }, { 2419, NJ_S("Param OSC 1 Granular") }, { 2431, NJ_S("Param OSC 2 Granular") }, { 2443, NJ_S("Param OSC 3 Granular") }, { 2455, NJ_S("Param OSC 4 Granular") }, { 2467, NJ_S("Param OSC 5 Granular") }, { 2479, NJ_S("Param OSC 6 Granular") }, { 2491, NJ_S("Param OSC 1 Additive") }, { 2504, NJ_S("Param OSC 2 Additive") }, { 2517, NJ_S("Param OSC 3 Additive") }, { 2530, NJ_S("Param OSC 4 Additive") }, { 2543, NJ_S("Param OSC 5 Additive") }, { 2556, NJ_S("Param OSC 6 Additive") }, { 2569, NJ_S("Param OSC 1 Drum") }, { 2585, NJ_S("Param OSC 2 Drum") }, { 2601, NJ_S("Param OSC 3 Drum") }, { 2617, NJ_S("Param OSC 4 Drum") }, { 2633, NJ_S("Param OSC 5 Drum") }, { 2649, NJ_S("Param OSC 6 Drum") }, { 2665, NJ_S("Param OSC 1 Spectral") }, { 2680, NJ_S("Param OSC 2 Spectral") }, { 2695, NJ_S("Param OSC 3 Spectral") }, { 2710, NJ_S("Param OSC 4 Spectral") }, { 2725, NJ_S("Param OSC 5 Spectral") }, { 2740, NJ_S("Param OSC 6 Spectral") }, { 2755, NJ_S("Param OSC 1 SoundFont") }, { 2764, NJ_S("Param OSC 2 SoundFont") }, { 2773, NJ_S("Param OSC 3 SoundFont") }, { 2782, NJ_S("Param OSC 4 SoundFont") }, { 2791, NJ_S("Param OSC 5 SoundFont") }, { 2800, NJ_S("Param OSC 6 SoundFont") }, { 2809, NJ_S("Param Main FX 1") }, { 2810, NJ_S("Param Main FX 2") }, { 2811, NJ_S("Param Main FX 3") }, { 2812, NJ_S("Param Main FX 4") }, { 2813, NJ_S("Param Main FX 5") }, { 2814, NJ_S("Param Main FX 6") }, { 2815, NJ_S("Param Main FX 7") }, { 2816, NJ_S("Param Main FX 8") }, { 2817, NJ_S("Param Main FX 9") }, { 2818, NJ_S("Param Main FX 10") }, { 2819, NJ_S("Param Bus 1") }, { 2829, NJ_S("Param Bus 2") }, { 2839, NJ_S("Param Main FX 1") }, { 2840, NJ_S("Param Main FX 2") }, { 2841, NJ_S("Param Main FX 3") }, { 2842, NJ_S("Param Main FX 4") }, { 2843, NJ_S("Param Main FX 5") }, { 2844, NJ_S("Param Main FX 6") }, { 2845, NJ_S("Param Main FX 7") }, { 2846, NJ_S("Param Main FX 8") }, { 2847, NJ_S("Param Main FX 9") }, { 2848, NJ_S("Param Main FX 10") }, { 2849, NJ_S("Param Bus 1") }, { 2859, NJ_S("Param Bus 2") }, { 2869, NJ_S("Param Main FX 11") }, { 2876, NJ_S("Param Main FX 12") }, { 2883, NJ_S("Param Main FX 13") }, { 2890, NJ_S("Param Main FX 14") }, { 2897, NJ_S("Param Main FX 15") }, { 2904, NJ_S("Param Main FX 16") }, { 2911, NJ_S("Param Bus 1") }, { 2953, NJ_S("Param Bus 2") }, { 2995, NJ_S("Param OSC 1 Bagpipe") }, { 3007, NJ_S("Param OSC 2 Bagpipe") }, { 3019, NJ_S("Param OSC 3 Bagpipe") }, { 3031, NJ_S("Param OSC 4 Bagpipe") }, { 3043, NJ_S("Param OSC 5 Bagpipe") }, { 3055, NJ_S("Param OSC 6 Bagpipe") }, { 3067, NJ_S("Param Seq 1") }, { 3069, NJ_S("Param Seq 2") }, { 3071, NJ_S("Param Seq 3") }, { 3073, NJ_S("Param Seq 4") }, { 3075, NJ_S("Param Seq 5") }, { 3077, NJ_S("Param Seq 6") }, { 3079, NJ_S("Param Seq 7") }, { 3081, NJ_S("Param Seq 8") }, { 3083, NJ_S("Param Seq 9") }, { 3085, NJ_S("Param Seq 10") }, { 3087, NJ_S("Param OSC 1 FX 1") }, { 3096, NJ_S("Param OSC 1 FX 2") }, { 3105, NJ_S("Param OSC 1 FX 3") }, { 3114, NJ_S("Param OSC 1 FX 4") }, { 3123, NJ_S("Param OSC 1 FX 5") }, { 3132, NJ_S("Param OSC 1 FX 6") }, { 3141, NJ_S("Param OSC 1 FX 7") }, { 3150, NJ_S("Param OSC 1 FX 8") }, { 3159, NJ_S("Param OSC 1 FX 9") }, { 3168, NJ_S("Param OSC 1 FX 10") }, { 3177, NJ_S("Param OSC 1 FX 11") }, { 3186, NJ_S("Param OSC 1 FX 12") }, { 3195, NJ_S("Param OSC 1 FX 13") }, { 3204, NJ_S("Param OSC 1 FX 14") }, { 3213, NJ_S("Param OSC 1 FX 15") }, { 3222, NJ_S("Param OSC 1 FX 16") }, { 3231, NJ_S("Param OSC 2 FX 1") }, { 3240, NJ_S("Param OSC 2 FX 2") }, { 3249, NJ_S("Param OSC 2 FX 3") }, { 3258, NJ_S("Param OSC 2 FX 4") }, { 3267, NJ_S("Param OSC 2 FX 5") }, { 3276, NJ_S("Param OSC 2 FX 6") }, { 3285, NJ_S("Param OSC 2 FX 7") }, { 3294, NJ_S("Param OSC 2 FX 8") }, { 3303, NJ_S("Param OSC 2 FX 9") }, { 3312, NJ_S("Param OSC 2 FX 10") }, { 3321, NJ_S("Param OSC 2 FX 11") }, { 3330, NJ_S("Param OSC 2 FX 12") }, { 3339, NJ_S("Param OSC 2 FX 13") }, { 3348, NJ_S("Param OSC 2 FX 14") }, { 3357, NJ_S("Param OSC 2 FX 15") }, { 3366, NJ_S("Param OSC 2 FX 16") }, { 3375, NJ_S("Param OSC 3 FX 1") }, { 3384, NJ_S("Param OSC 3 FX 2") }, { 3393, NJ_S("Param OSC 3 FX 3") }, { 3402, NJ_S("Param OSC 3 FX 4") }, { 3411, NJ_S("Param OSC 3 FX 5") }, { 3420, NJ_S("Param OSC 3 FX 6") }, { 3429, NJ_S("Param OSC 3 FX 7") }, { 3438, NJ_S("Param OSC 3 FX 8") }, { 3447, NJ_S("Param OSC 3 FX 9") }, { 3456, NJ_S("Param OSC 3 FX 10") }, { 3465, NJ_S("Param OSC 3 FX 11") }, { 3474, NJ_S("Param OSC 3 FX 12") }, { 3483, NJ_S("Param OSC 3 FX 13") }, { 3492, NJ_S("Param OSC 3 FX 14") }, { 3501, NJ_S("Param OSC 3 FX 15") }, { 3510, NJ_S("Param OSC 3 FX 16") }, { 3519, NJ_S("Param OSC 4 FX 1") }, { 3528, NJ_S("Param OSC 4 FX 2") }, { 3537, NJ_S("Param OSC 4 FX 3") }, { 3546, NJ_S("Param OSC 4 FX 4") }, { 3555, NJ_S("Param OSC 4 FX 5") }, { 3564, NJ_S("Param OSC 4 FX 6") }, { 3573, NJ_S("Param OSC 4 FX 7") }, { 3582, NJ_S("Param OSC 4 FX 8") }, { 3591, NJ_S("Param OSC 4 FX 9") }, { 3600, NJ_S("Param OSC 4 FX 10") }, { 3609, NJ_S("Param OSC 4 FX 11") }, { 3618, NJ_S("Param OSC 4 FX 12") }, { 3627, NJ_S("Param OSC 4 FX 13") }, { 3636, NJ_S("Param OSC 4 FX 14") }, { 3645, NJ_S("Param OSC 4 FX 15") }, { 3654, NJ_S("Param OSC 4 FX 16") }, { 3663, NJ_S("Param OSC 5 FX 1") }, { 3672, NJ_S("Param OSC 5 FX 2") }, { 3681, NJ_S("Param OSC 5 FX 3") }, { 3690, NJ_S("Param OSC 5 FX 4") }, { 3699, NJ_S("Param OSC 5 FX 5") }, { 3708, NJ_S("Param OSC 5 FX 6") }, { 3717, NJ_S("Param OSC 5 FX 7") }, { 3726, NJ_S("Param OSC 5 FX 8") }, { 3735, NJ_S("Param OSC 5 FX 9") }, { 3744, NJ_S("Param OSC 5 FX 10") }, { 3753, NJ_S("Param OSC 5 FX 11") }, { 3762, NJ_S("Param OSC 5 FX 12") }, { 3771, NJ_S("Param OSC 5 FX 13") }, { 3780, NJ_S("Param OSC 5 FX 14") }, { 3789, NJ_S("Param OSC 5 FX 15") }, { 3798, NJ_S("Param OSC 5 FX 16") }, { 3807, NJ_S("Param OSC 6 FX 1") }, { 3816, NJ_S("Param OSC 6 FX 2") }, { 3825, NJ_S("Param OSC 6 FX 3") }, { 3834, NJ_S("Param OSC 6 FX 4") }, { 3843, NJ_S("Param OSC 6 FX 5") }, { 3852, NJ_S("Param OSC 6 FX 6") }, { 3861, NJ_S("Param OSC 6 FX 7") }, { 3870, NJ_S("Param OSC 6 FX 8") }, { 3879, NJ_S("Param OSC 6 FX 9") }, { 3888, NJ_S("Param OSC 6 FX 10") }, { 3897, NJ_S("Param OSC 6 FX 11") }, { 3906, NJ_S("Param OSC 6 FX 12") }, { 3915, NJ_S("Param OSC 6 FX 13") }, { 3924, NJ_S("Param OSC 6 FX 14") }, { 3933, NJ_S("Param OSC 6 FX 15") }, { 3942, NJ_S("Param OSC 6 FX 16") }, { 3951, NJ_S("Param Patch") }, { 4019, NJ_S("Param Euro") }, { 4259, NJ_S("Param Main FX 1") }, { 4263, NJ_S("Param Main FX 2") }, { 4267, NJ_S("Param Main FX 3") }, { 4271, NJ_S("Param Main FX 4") }, { 4275, NJ_S("Param Main FX 5") }, { 4279, NJ_S("Param Main FX 6") }, { 4283, NJ_S("Param Main FX 7") }, { 4287, NJ_S("Param Main FX 8") }, { 4291, NJ_S("Param Main FX 9") }, { 4295, NJ_S("Param Main FX 10") }, { 4299, NJ_S("Param Bus 1") }, { 4339, NJ_S("Param Bus 2") }, { 4379, NJ_S("Param Main FX 11") }, { 4383, NJ_S("Param Main FX 12") }, { 4387, NJ_S("Param Main FX 13") }, { 4391, NJ_S("Param Main FX 14") }, { 4395, NJ_S("Param Main FX 15") }, { 4399, NJ_S("Param Main FX 16") }, { 4403, NJ_S("Param Bus 1") }, { 4427, NJ_S("Param Bus 2") }, { 4451, NJ_S("Param OSC 1 FX 1") }, { 4455, NJ_S("Param OSC 1 FX 2") }, { 4459, NJ_S("Param OSC 1 FX 3") }, { 4463, NJ_S("Param OSC 1 FX 4") }, { 4467, NJ_S("Param OSC 1 FX 5") }, { 4471, NJ_S("Param OSC 1 FX 6") }, { 4475, NJ_S("Param OSC 1 FX 7") }, { 4479, NJ_S("Param OSC 1 FX 8") }, { 4483, NJ_S("Param OSC 1 FX 9") }, { 4487, NJ_S("Param OSC 1 FX 10") }, { 4491, NJ_S("Param OSC 1 FX 11") }, { 4495, NJ_S("Param OSC 1 FX 12") }, { 4499, NJ_S("Param OSC 1 FX 13") }, { 4503, NJ_S("Param OSC 1 FX 14") }, { 4507, NJ_S("Param OSC 1 FX 15") }, { 4511, NJ_S("Param OSC 1 FX 16") }, { 4515, NJ_S("Param OSC 2 FX 1") }, { 4519, NJ_S("Param OSC 2 FX 2") }, { 4523, NJ_S("Param OSC 2 FX 3") }, { 4527, NJ_S("Param OSC 2 FX 4") }, { 4531, NJ_S("Param OSC 2 FX 5") }, { 4535, NJ_S("Param OSC 2 FX 6") }, { 4539, NJ_S("Param OSC 2 FX 7") }, { 4543, NJ_S("Param OSC 2 FX 8") }, { 4547, NJ_S("Param OSC 2 FX 9") }, { 4551, NJ_S("Param OSC 2 FX 10") }, { 4555, NJ_S("Param OSC 2 FX 11") }, { 4559, NJ_S("Param OSC 2 FX 12") }, { 4563, NJ_S("Param OSC 2 FX 13") }, { 4567, NJ_S("Param OSC 2 FX 14") }, { 4571, NJ_S("Param OSC 2 FX 15") }, { 4575, NJ_S("Param OSC 2 FX 16") }, { 4579, NJ_S("Param OSC 3 FX 1") }, { 4583, NJ_S("Param OSC 3 FX 2") }, { 4587, NJ_S("Param OSC 3 FX 3") }, { 4591, NJ_S("Param OSC 3 FX 4") }, { 4595, NJ_S("Param OSC 3 FX 5") }, { 4599, NJ_S("Param OSC 3 FX 6") }, { 4603, NJ_S("Param OSC 3 FX 7") }, { 4607, NJ_S("Param OSC 3 FX 8") }, { 4611, NJ_S("Param OSC 3 FX 9") }, { 4615, NJ_S("Param OSC 3 FX 10") }, { 4619, NJ_S("Param OSC 3 FX 11") }, { 4623, NJ_S("Param OSC 3 FX 12") }, { 4627, NJ_S("Param OSC 3 FX 13") }, { 4631, NJ_S("Param OSC 3 FX 14") }, { 4635, NJ_S("Param OSC 3 FX 15") }, { 4639, NJ_S("Param OSC 3 FX 16") }, { 4643, NJ_S("Param OSC 4 FX 1") }, { 4647, NJ_S("Param OSC 4 FX 2") }, { 4651, NJ_S("Param OSC 4 FX 3") }, { 4655, NJ_S("Param OSC 4 FX 4") }, { 4659, NJ_S("Param OSC 4 FX 5") }, { 4663, NJ_S("Param OSC 4 FX 6") }, { 4667, NJ_S("Param OSC 4 FX 7") }, { 4671, NJ_S("Param OSC 4 FX 8") }, { 4675, NJ_S("Param OSC 4 FX 9") }, { 4679, NJ_S("Param OSC 4 FX 10") }, { 4683, NJ_S("Param OSC 4 FX 11") }, { 4687, NJ_S("Param OSC 4 FX 12") }, { 4691, NJ_S("Param OSC 4 FX 13") }, { 4695, NJ_S("Param OSC 4 FX 14") }, { 4699, NJ_S("Param OSC 4 FX 15") }, { 4703, NJ_S("Param OSC 4 FX 16") }, { 4707, NJ_S("Param OSC 5 FX 1") }, { 4711, NJ_S("Param OSC 5 FX 2") }, { 4715, NJ_S("Param OSC 5 FX 3") }, { 4719, NJ_S("Param OSC 5 FX 4") }, { 4723, NJ_S("Param OSC 5 FX 5") }, { 4727, NJ_S("Param OSC 5 FX 6") }, { 4731, NJ_S("Param OSC 5 FX 7") }, { 4735, NJ_S("Param OSC 5 FX 8") }, { 4739, NJ_S("Param OSC 5 FX 9") }, { 4743, NJ_S("Param OSC 5 FX 10") }, { 4747, NJ_S("Param OSC 5 FX 11") }, { 4751, NJ_S("Param OSC 5 FX 12") }, { 4755, NJ_S("Param OSC 5 FX 13") }, { 4759, NJ_S("Param OSC 5 FX 14") }, { 4763, NJ_S("Param OSC 5 FX 15") }, { 4767, NJ_S("Param OSC 5 FX 16") }, { 4771, NJ_S("Param OSC 6 FX 1") }, { 4775, NJ_S("Param OSC 6 FX 2") }, { 4779, NJ_S("Param OSC 6 FX 3") }, { 4783, NJ_S("Param OSC 6 FX 4") }, { 4787, NJ_S("Param OSC 6 FX 5") }, { 4791, NJ_S("Param OSC 6 FX 6") }, { 4795, NJ_S("Param OSC 6 FX 7") }, { 4799, NJ_S("Param OSC 6 FX 8") }, { 4803, NJ_S("Param OSC 6 FX 9") }, { 4807, NJ_S("Param OSC 6 FX 10") }, { 4811, NJ_S("Param OSC 6 FX 11") }, { 4815, NJ_S("Param OSC 6 FX 12") }, { 4819, NJ_S("Param OSC 6 FX 13") }, { 4823, NJ_S("Param OSC 6 FX 14") }, { 4827, NJ_S("Param OSC 6 FX 15") }, { 4831, NJ_S("Param OSC 6 FX 16") }, { 4835, NJ_S("Param Out") }, { 4836, NJ_S("Param Main FX 1") }, { 4840, NJ_S("Param Main FX 2") }, { 4844, NJ_S("Param Main FX 3") }, { 4848, NJ_S("Param Main FX 4") }, { 4852, NJ_S("Param Main FX 5") }, { 4856, NJ_S("Param Main FX 6") }, { 4860, NJ_S("Param Main FX 7") }, { 4864, NJ_S("Param Main FX 8") }, { 4868, NJ_S("Param Main FX 9") }, { 4872, NJ_S("Param Main FX 10") }, { 4876, NJ_S("Param Bus 1") }, { 4916, NJ_S("Param Bus 2") }, { 4956, NJ_S("Param Main FX 11") }, { 4960, NJ_S("Param Main FX 12") }, { 4964, NJ_S("Param Main FX 13") }, { 4968, NJ_S("Param Main FX 14") }, { 4972, NJ_S("Param Main FX 15") }, { 4976, NJ_S("Param Main FX 16") }, { 4980, NJ_S("Param Bus 1") }, { 5004, NJ_S("Param Bus 2") }, { 5028, NJ_S("Param OSC 1 FX 1") }, { 5032, NJ_S("Param OSC 1 FX 2") }, { 5036, NJ_S("Param OSC 1 FX 3") }, { 5040, NJ_S("Param OSC 1 FX 4") }, { 5044, NJ_S("Param OSC 1 FX 5") }, { 5048, NJ_S("Param OSC 1 FX 6") }, { 5052, NJ_S("Param OSC 1 FX 7") }, { 5056, NJ_S("Param OSC 1 FX 8") }, { 5060, NJ_S("Param OSC 1 FX 9") }, { 5064, NJ_S("Param OSC 1 FX 10") }, { 5068, NJ_S("Param OSC 1 FX 11") }, { 5072, NJ_S("Param OSC 1 FX 12") }, { 5076, NJ_S("Param OSC 1 FX 13") }, { 5080, NJ_S("Param OSC 1 FX 14") }, { 5084, NJ_S("Param OSC 1 FX 15") }, { 5088, NJ_S("Param OSC 1 FX 16") }, { 5092, NJ_S("Param OSC 2 FX 1") }, { 5096, NJ_S("Param OSC 2 FX 2") }, { 5100, NJ_S("Param OSC 2 FX 3") }, { 5104, NJ_S("Param OSC 2 FX 4") }, { 5108, NJ_S("Param OSC 2 FX 5") }, { 5112, NJ_S("Param OSC 2 FX 6") }, { 5116, NJ_S("Param OSC 2 FX 7") }, { 5120, NJ_S("Param OSC 2 FX 8") }, { 5124, NJ_S("Param OSC 2 FX 9") }, { 5128, NJ_S("Param OSC 2 FX 10") }, { 5132, NJ_S("Param OSC 2 FX 11") }, { 5136, NJ_S("Param OSC 2 FX 12") }, { 5140, NJ_S("Param OSC 2 FX 13") }, { 5144, NJ_S("Param OSC 2 FX 14") }, { 5148, NJ_S("Param OSC 2 FX 15") }, { 5152, NJ_S("Param OSC 2 FX 16") }, { 5156, NJ_S("Param OSC 3 FX 1") }, { 5160, NJ_S("Param OSC 3 FX 2") }, { 5164, NJ_S("Param OSC 3 FX 3") }, { 5168, NJ_S("Param OSC 3 FX 4") }, { 5172, NJ_S("Param OSC 3 FX 5") }, { 5176, NJ_S("Param OSC 3 FX 6") }, { 5180, NJ_S("Param OSC 3 FX 7") }, { 5184, NJ_S("Param OSC 3 FX 8") }, { 5188, NJ_S("Param OSC 3 FX 9") }, { 5192, NJ_S("Param OSC 3 FX 10") }, { 5196, NJ_S("Param OSC 3 FX 11") }, { 5200, NJ_S("Param OSC 3 FX 12") }, { 5204, NJ_S("Param OSC 3 FX 13") }, { 5208, NJ_S("Param OSC 3 FX 14") }, { 5212, NJ_S("Param OSC 3 FX 15") }, { 5216, NJ_S("Param OSC 3 FX 16") }, { 5220, NJ_S("Param OSC 4 FX 1") }, { 5224, NJ_S("Param OSC 4 FX 2") }, { 5228, NJ_S("Param OSC 4 FX 3") }, { 5232, NJ_S("Param OSC 4 FX 4") }, { 5236, NJ_S("Param OSC 4 FX 5") }, { 5240, NJ_S("Param OSC 4 FX 6") }, { 5244, NJ_S("Param OSC 4 FX 7") }, { 5248, NJ_S("Param OSC 4 FX 8") }, { 5252, NJ_S("Param OSC 4 FX 9") }, { 5256, NJ_S("Param OSC 4 FX 10") }, { 5260, NJ_S("Param OSC 4 FX 11") }, { 5264, NJ_S("Param OSC 4 FX 12") }, { 5268, NJ_S("Param OSC 4 FX 13") }, { 5272, NJ_S("Param OSC 4 FX 14") }, { 5276, NJ_S("Param OSC 4 FX 15") }, { 5280, NJ_S("Param OSC 4 FX 16") }, { 5284, NJ_S("Param OSC 5 FX 1") }, { 5288, NJ_S("Param OSC 5 FX 2") }, { 5292, NJ_S("Param OSC 5 FX 3") }, { 5296, NJ_S("Param OSC 5 FX 4") }, { 5300, NJ_S("Param OSC 5 FX 5") }, { 5304, NJ_S("Param OSC 5 FX 6") }, { 5308, NJ_S("Param OSC 5 FX 7") }, { 5312, NJ_S("Param OSC 5 FX 8") }, { 5316, NJ_S("Param OSC 5 FX 9") }, { 5320, NJ_S("Param OSC 5 FX 10") }, { 5324, NJ_S("Param OSC 5 FX 11") }, { 5328, NJ_S("Param OSC 5 FX 12") }, { 5332, NJ_S("Param OSC 5 FX 13") }, { 5336, NJ_S("Param OSC 5 FX 14") }, { 5340, NJ_S("Param OSC 5 FX 15") }, { 5344, NJ_S("Param OSC 5 FX 16") }, { 5348, NJ_S("Param OSC 6 FX 1") }, { 5352, NJ_S("Param OSC 6 FX 2") }, { 5356, NJ_S("Param OSC 6 FX 3") }, { 5360, NJ_S("Param OSC 6 FX 4") }, { 5364, NJ_S("Param OSC 6 FX 5") }, { 5368, NJ_S("Param OSC 6 FX 6") }, { 5372, NJ_S("Param OSC 6 FX 7") }, { 5376, NJ_S("Param OSC 6 FX 8") }, { 5380, NJ_S("Param OSC 6 FX 9") }, { 5384, NJ_S("Param OSC 6 FX 10") }, { 5388, NJ_S("Param OSC 6 FX 11") }, { 5392, NJ_S("Param OSC 6 FX 12") }, { 5396, NJ_S("Param OSC 6 FX 13") }, { 5400, NJ_S("Param OSC 6 FX 14") }, { 5404, NJ_S("Param OSC 6 FX 15") }, { 5408, NJ_S("Param OSC 6 FX 16") }, { 5412, NJ_S("Param OSC 1 Sample") }, { 5419, NJ_S("Param OSC 2 Sample") }, { 5426, NJ_S("Param OSC 3 Sample") }, { 5433, NJ_S("Param OSC 4 Sample") }, { 5440, NJ_S("Param OSC 5 Sample") }, { 5447, NJ_S("Param OSC 6 Sample") }, { 5454, NJ_S("Param OSC 1 Warp") }, { 5455, NJ_S("Param OSC 1 WT") }, { 5456, NJ_S("Param OSC 2 Warp") }, { 5457, NJ_S("Param OSC 2 WT") }, { 5458, NJ_S("Param OSC 3 Warp") }, { 5459, NJ_S("Param OSC 3 WT") }, { 5460, NJ_S("Param OSC 4 Warp") }, { 5461, NJ_S("Param OSC 4 WT") }, { 5462, NJ_S("Param OSC 5 Warp") }, { 5463, NJ_S("Param OSC 5 WT") }, { 5464, NJ_S("Param OSC 6 Warp") }, { 5465, NJ_S("Param OSC 6 WT") }, { 5466, NJ_S("Param LFO 1") }, { 5472, NJ_S("Param LFO 2") }, { 5478, NJ_S("Param LFO 3") }, { 5484, NJ_S("Param LFO 4") }, { 5490, NJ_S("Param LFO 5") }, { 5496, NJ_S("Param LFO 6") }, { 5502, NJ_S("Param LFO 7") }, { 5508, NJ_S("Param LFO 8") }, { 5514, NJ_S("Param LFO 9") }, { 5520, NJ_S("Param LFO 10") }, { 5526, NJ_S("Param Mod") }, { 5606, NJ_S("Param Amp") }, { 5614, NJ_S("Param OSC 1 Filter") }, { 5622, NJ_S("Param OSC 2 Filter") }, { 5630, NJ_S("Param OSC 3 Filter") }, { 5638, NJ_S("Param OSC 4 Filter") }, { 5646, NJ_S("Param OSC 5 Filter") }, { 5654, NJ_S("Param OSC 6 Filter") } };
     return v;
 }
 static void modTarget_0 (std::map<int, std::pair<int, float>>& v)
 {
     v.insert ( {
+        { 18, { 1584, 0.5f } },
+        { 19, { 1585, 0.5f } },
+        { 20, { 1586, 0.5f } },
+        { 21, { 1587, 0.5f } },
+        { 22, { 1588, 0.5f } },
         { 28, { 4, 0.5f } },
         { 29, { 3, 0.5f } },
+        { 36, { 1590, 0.5f } },
+        { 45, { 1591, 0.5f } },
+        { 46, { 1592, 0.5f } },
         { 63, { 1, 0.5f } },
+        { 175, { 1594, 0.5f } },
+        { 189, { 1595, 0.5f } },
         { 190, { 5, 0.5f } },
+        { 222, { 1597, 0.5f } },
+        { 248, { 1598, 0.5f } },
+        { 250, { 1599, 0.5f } },
+        { 252, { 1600, 0.5f } },
+        { 254, { 1601, 0.5f } },
+        { 256, { 1602, 0.5f } },
+        { 258, { 1603, 0.5f } },
+        { 260, { 1604, 0.5f } },
+        { 262, { 1605, 0.5f } },
+        { 264, { 1606, 0.5f } },
+        { 266, { 1607, 0.5f } },
+        { 267, { 1608, 0.5f } },
+        { 268, { 1609, 0.5f } },
+        { 269, { 1610, 0.5f } },
+        { 270, { 1611, 0.5f } },
+        { 271, { 1612, 0.5f } },
+        { 272, { 1613, 0.5f } },
+        { 273, { 1614, 0.5f } },
+        { 274, { 1615, 0.5f } },
+        { 275, { 1616, 0.5f } },
+        { 276, { 1617, 0.5f } },
+        { 277, { 1618, 0.5f } },
+        { 278, { 1619, 0.5f } },
+        { 279, { 1620, 0.5f } },
+        { 280, { 1621, 0.5f } },
+        { 281, { 1622, 0.5f } },
+        { 282, { 1623, 0.5f } },
+        { 283, { 1624, 0.5f } },
+        { 284, { 1625, 0.5f } },
+        { 285, { 1626, 0.5f } },
+        { 286, { 1627, 0.5f } },
+        { 287, { 1628, 0.5f } },
+        { 288, { 1629, 0.5f } },
+        { 289, { 1630, 0.5f } },
+        { 290, { 1631, 0.5f } },
+        { 291, { 1632, 0.5f } },
+        { 292, { 1633, 0.5f } },
+        { 293, { 1634, 0.5f } },
+        { 294, { 1635, 0.5f } },
+        { 295, { 1636, 0.5f } },
+        { 296, { 1637, 0.5f } },
+        { 297, { 1638, 0.5f } },
+        { 298, { 1639, 0.5f } },
+        { 299, { 1640, 0.5f } },
+        { 300, { 1641, 0.5f } },
+        { 301, { 1642, 0.5f } },
+        { 302, { 1643, 0.5f } },
+        { 303, { 1644, 0.5f } },
+        { 304, { 1645, 0.5f } },
+        { 305, { 1646, 0.5f } },
+        { 306, { 1647, 0.5f } },
+        { 522, { 1648, 0.5f } },
         { 1001, { 7, 1.0f } },
         { 1002, { 8, 0.5f } },
         { 1006, { 6, 0.5f } },
+        { 1008, { 1652, 0.5f } },
         { 1010, { 9, 0.5f } },
+        { 1014, { 1654, 0.5f } },
+        { 1015, { 1655, 0.5f } },
+        { 1016, { 1656, 0.5f } },
         { 1019, { 10, 0.5f } },
         { 1021, { 11, 0.5f } },
+        { 1022, { 1659, 0.5f } },
         { 1025, { 9, 0.5f } },
         { 1026, { 10, 0.5f } },
         { 1027, { 11, 0.5f } },
+        { 1028, { 1663, 0.5f } },
+        { 1029, { 1664, 0.5f } },
         { 1032, { 12, 0.41f } },
         { 1033, { 13, 0.5f } },
+        { 1034, { 1667, 0.5f } },
+        { 1035, { 1668, 0.5f } },
+        { 1036, { 1669, 0.5f } },
+        { 1037, { 1670, 0.5f } },
+        { 1038, { 1671, 0.5f } },
+        { 1039, { 1672, 0.5f } },
+        { 1040, { 1673, 0.5f } },
+        { 1041, { 1674, 0.5f } },
         { 1043, { 14, 0.5f } },
+        { 1044, { 1676, 0.5f } },
         { 1046, { 168, 0.5f } },
         { 1047, { 169, 0.5f } },
         { 1048, { 180, 1.0f } },
+        { 1049, { 1680, 0.5f } },
+        { 1050, { 1681, 0.5f } },
+        { 1051, { 1682, 0.5f } },
+    });
+}
+static void modTarget_1 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 1052, { 1683, 0.5f } },
+        { 1053, { 1684, 0.5f } },
+        { 1054, { 1685, 0.5f } },
+        { 1058, { 1686, 0.5f } },
+        { 1059, { 1687, 0.5f } },
+        { 1060, { 1688, 0.5f } },
+        { 1061, { 1689, 0.5f } },
+        { 1062, { 1690, 0.5f } },
+        { 1063, { 1691, 0.5f } },
         { 1065, { 16, 1.0f } },
         { 1066, { 17, 0.5f } },
         { 1070, { 15, 0.5f } },
+        { 1072, { 1695, 0.5f } },
         { 1074, { 18, 0.5f } },
+        { 1078, { 1697, 0.5f } },
+        { 1079, { 1698, 0.5f } },
+        { 1080, { 1699, 0.5f } },
         { 1083, { 19, 0.5f } },
         { 1085, { 20, 0.5f } },
+        { 1086, { 1702, 0.5f } },
         { 1089, { 18, 0.5f } },
         { 1090, { 19, 0.5f } },
         { 1091, { 20, 0.5f } },
+        { 1092, { 1706, 0.5f } },
+        { 1093, { 1707, 0.5f } },
         { 1096, { 21, 0.41f } },
         { 1097, { 22, 0.5f } },
+        { 1098, { 1710, 0.5f } },
+        { 1099, { 1711, 0.5f } },
+        { 1100, { 1712, 0.5f } },
+        { 1101, { 1713, 0.5f } },
+        { 1102, { 1714, 0.5f } },
+        { 1103, { 1715, 0.5f } },
+        { 1104, { 1716, 0.5f } },
+        { 1105, { 1717, 0.5f } },
         { 1107, { 23, 0.5f } },
+        { 1108, { 1719, 0.5f } },
         { 1110, { 170, 0.5f } },
         { 1111, { 171, 0.5f } },
         { 1112, { 181, 1.0f } },
+        { 1113, { 1723, 0.5f } },
+        { 1114, { 1724, 0.5f } },
+        { 1115, { 1725, 0.5f } },
+        { 1116, { 1726, 0.5f } },
+        { 1117, { 1727, 0.5f } },
+        { 1118, { 1728, 0.5f } },
+        { 1122, { 1729, 0.5f } },
+        { 1123, { 1730, 0.5f } },
+        { 1124, { 1731, 0.5f } },
+        { 1125, { 1732, 0.5f } },
+        { 1126, { 1733, 0.5f } },
+        { 1127, { 1734, 0.5f } },
         { 1129, { 25, 1.0f } },
         { 1130, { 26, 0.5f } },
         { 1134, { 24, 0.5f } },
+        { 1136, { 1738, 0.5f } },
         { 1138, { 27, 0.5f } },
+        { 1142, { 1740, 0.5f } },
+        { 1143, { 1741, 0.5f } },
+        { 1144, { 1742, 0.5f } },
         { 1147, { 28, 0.5f } },
         { 1149, { 29, 0.5f } },
+        { 1150, { 1745, 0.5f } },
         { 1153, { 27, 0.5f } },
         { 1154, { 28, 0.5f } },
         { 1155, { 29, 0.5f } },
+        { 1156, { 1749, 0.5f } },
+        { 1157, { 1750, 0.5f } },
         { 1160, { 30, 0.41f } },
         { 1161, { 31, 0.5f } },
+        { 1162, { 1753, 0.5f } },
+        { 1163, { 1754, 0.5f } },
+        { 1164, { 1755, 0.5f } },
+        { 1165, { 1756, 0.5f } },
+        { 1166, { 1757, 0.5f } },
+        { 1167, { 1758, 0.5f } },
+        { 1168, { 1759, 0.5f } },
+        { 1169, { 1760, 0.5f } },
         { 1171, { 32, 0.5f } },
+        { 1172, { 1762, 0.5f } },
         { 1174, { 172, 0.5f } },
         { 1175, { 173, 0.5f } },
         { 1176, { 182, 1.0f } },
+        { 1177, { 1766, 0.5f } },
+        { 1178, { 1767, 0.5f } },
+        { 1179, { 1768, 0.5f } },
+        { 1180, { 1769, 0.5f } },
+        { 1181, { 1770, 0.5f } },
+        { 1182, { 1771, 0.5f } },
+        { 1186, { 1772, 0.5f } },
+        { 1187, { 1773, 0.5f } },
+        { 1188, { 1774, 0.5f } },
+        { 1189, { 1775, 0.5f } },
+        { 1190, { 1776, 0.5f } },
+        { 1191, { 1777, 0.5f } },
         { 1193, { 34, 1.0f } },
         { 1194, { 35, 0.5f } },
         { 1198, { 33, 0.5f } },
+        { 1200, { 1781, 0.5f } },
         { 1202, { 36, 0.5f } },
+    });
+}
+static void modTarget_2 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 1206, { 1783, 0.5f } },
+        { 1207, { 1784, 0.5f } },
+        { 1208, { 1785, 0.5f } },
         { 1211, { 37, 0.5f } },
         { 1213, { 38, 0.5f } },
+        { 1214, { 1788, 0.5f } },
         { 1217, { 36, 0.5f } },
         { 1218, { 37, 0.5f } },
         { 1219, { 38, 0.5f } },
+        { 1220, { 1792, 0.5f } },
+        { 1221, { 1793, 0.5f } },
         { 1224, { 39, 0.41f } },
         { 1225, { 40, 0.5f } },
+        { 1226, { 1796, 0.5f } },
+        { 1227, { 1797, 0.5f } },
+        { 1228, { 1798, 0.5f } },
+        { 1229, { 1799, 0.5f } },
+        { 1230, { 1800, 0.5f } },
+        { 1231, { 1801, 0.5f } },
+        { 1232, { 1802, 0.5f } },
+        { 1233, { 1803, 0.5f } },
         { 1235, { 41, 0.5f } },
+        { 1236, { 1805, 0.5f } },
         { 1238, { 174, 0.5f } },
         { 1239, { 175, 0.5f } },
         { 1240, { 183, 1.0f } },
+        { 1241, { 1809, 0.5f } },
+        { 1242, { 1810, 0.5f } },
+        { 1243, { 1811, 0.5f } },
+        { 1244, { 1812, 0.5f } },
+        { 1245, { 1813, 0.5f } },
+        { 1246, { 1814, 0.5f } },
+        { 1250, { 1815, 0.5f } },
+        { 1251, { 1816, 0.5f } },
+        { 1252, { 1817, 0.5f } },
+        { 1253, { 1818, 0.5f } },
+        { 1254, { 1819, 0.5f } },
+        { 1255, { 1820, 0.5f } },
         { 1257, { 43, 1.0f } },
         { 1258, { 44, 0.5f } },
         { 1262, { 42, 0.5f } },
+        { 1264, { 1824, 0.5f } },
         { 1266, { 45, 0.5f } },
+        { 1270, { 1826, 0.5f } },
+        { 1271, { 1827, 0.5f } },
+        { 1272, { 1828, 0.5f } },
         { 1275, { 46, 0.5f } },
         { 1277, { 47, 0.5f } },
+        { 1278, { 1831, 0.5f } },
         { 1281, { 45, 0.5f } },
         { 1282, { 46, 0.5f } },
         { 1283, { 47, 0.5f } },
+        { 1284, { 1835, 0.5f } },
+        { 1285, { 1836, 0.5f } },
         { 1288, { 48, 0.41f } },
         { 1289, { 49, 0.5f } },
+        { 1290, { 1839, 0.5f } },
+        { 1291, { 1840, 0.5f } },
+        { 1292, { 1841, 0.5f } },
+        { 1293, { 1842, 0.5f } },
+        { 1294, { 1843, 0.5f } },
+        { 1295, { 1844, 0.5f } },
+        { 1296, { 1845, 0.5f } },
+        { 1297, { 1846, 0.5f } },
         { 1299, { 50, 0.5f } },
+        { 1300, { 1848, 0.5f } },
         { 1302, { 176, 0.5f } },
         { 1303, { 177, 0.5f } },
         { 1304, { 184, 1.0f } },
+        { 1305, { 1852, 0.5f } },
+        { 1306, { 1853, 0.5f } },
+        { 1307, { 1854, 0.5f } },
+        { 1308, { 1855, 0.5f } },
+        { 1309, { 1856, 0.5f } },
+        { 1310, { 1857, 0.5f } },
+        { 1314, { 1858, 0.5f } },
+        { 1315, { 1859, 0.5f } },
+        { 1316, { 1860, 0.5f } },
+        { 1317, { 1861, 0.5f } },
+        { 1318, { 1862, 0.5f } },
+        { 1319, { 1863, 0.5f } },
         { 1321, { 52, 1.0f } },
         { 1322, { 53, 0.5f } },
         { 1326, { 51, 0.5f } },
+        { 1328, { 1867, 0.5f } },
         { 1330, { 54, 0.5f } },
+        { 1334, { 1869, 0.5f } },
+        { 1335, { 1870, 0.5f } },
+        { 1336, { 1871, 0.5f } },
         { 1339, { 55, 0.5f } },
         { 1341, { 56, 0.5f } },
+        { 1342, { 1874, 0.5f } },
         { 1345, { 54, 0.5f } },
         { 1346, { 55, 0.5f } },
         { 1347, { 56, 0.5f } },
+        { 1348, { 1878, 0.5f } },
+        { 1349, { 1879, 0.5f } },
         { 1352, { 57, 0.41f } },
         { 1353, { 58, 0.5f } },
+        { 1354, { 1882, 0.5f } },
+    });
+}
+static void modTarget_3 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 1355, { 1883, 0.5f } },
+        { 1356, { 1884, 0.5f } },
+        { 1357, { 1885, 0.5f } },
+        { 1358, { 1886, 0.5f } },
+        { 1359, { 1887, 0.5f } },
+        { 1360, { 1888, 0.5f } },
+        { 1361, { 1889, 0.5f } },
         { 1363, { 59, 0.5f } },
+        { 1364, { 1891, 0.5f } },
         { 1366, { 178, 0.5f } },
         { 1367, { 179, 0.5f } },
         { 1368, { 185, 1.0f } },
+        { 1369, { 1895, 0.5f } },
+        { 1370, { 1896, 0.5f } },
+        { 1371, { 1897, 0.5f } },
+        { 1372, { 1898, 0.5f } },
+        { 1373, { 1899, 0.5f } },
+        { 1374, { 1900, 0.5f } },
+        { 1378, { 1901, 0.5f } },
+        { 1379, { 1902, 0.5f } },
+        { 1380, { 1903, 0.5f } },
+        { 1381, { 1904, 0.5f } },
+        { 1382, { 1905, 0.5f } },
+        { 1383, { 1906, 0.5f } },
         { 1400, { 60, 0.125f } },
         { 1401, { 61, 0.125f } },
         { 1402, { 62, 0.125f } },
         { 1403, { 63, 0.125f } },
         { 1404, { 64, 0.125f } },
         { 1405, { 65, 0.125f } },
-    });
-}
-static void modTarget_1 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 1406, { 66, 0.125f } },
         { 1407, { 67, 0.125f } },
         { 1408, { 68, 0.125f } },
@@ -11736,6 +16177,11 @@ static void modTarget_1 (std::map<int, std::pair<int, float>>& v)
         { 1481, { 133, 0.5f } },
         { 1482, { 134, 0.5f } },
         { 1483, { 135, 0.5f } },
+    });
+}
+static void modTarget_4 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1484, { 136, 0.5f } },
         { 1485, { 137, 0.5f } },
         { 1486, { 138, 0.5f } },
@@ -11766,11 +16212,6 @@ static void modTarget_1 (std::map<int, std::pair<int, float>>& v)
         { 1511, { 163, 0.5f } },
         { 1512, { 164, 0.5f } },
         { 1513, { 165, 0.5f } },
-    });
-}
-static void modTarget_2 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 1514, { 166, 0.5f } },
         { 1515, { 167, 0.5f } },
         { 1520, { 186, 0.5f } },
@@ -11841,10 +16282,35 @@ static void modTarget_2 (std::map<int, std::pair<int, float>>& v)
         { 1589, { 251, 0.5f } },
         { 1590, { 252, 0.5f } },
         { 1591, { 253, 0.5f } },
+    });
+}
+static void modTarget_5 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1592, { 254, 0.5f } },
         { 1593, { 255, 0.5f } },
         { 1594, { 256, 0.5f } },
         { 1595, { 257, 0.5f } },
+        { 1600, { 1907, 0.5f } },
+        { 1601, { 1908, 0.5f } },
+        { 1604, { 1909, 0.5f } },
+        { 1605, { 1910, 0.5f } },
+        { 1608, { 1911, 0.5f } },
+        { 1609, { 1912, 0.5f } },
+        { 1612, { 1913, 0.5f } },
+        { 1613, { 1914, 0.5f } },
+        { 1616, { 1915, 0.5f } },
+        { 1617, { 1916, 0.5f } },
+        { 1620, { 1917, 0.5f } },
+        { 1621, { 1918, 0.5f } },
+        { 1624, { 1919, 0.5f } },
+        { 1625, { 1920, 0.5f } },
+        { 1628, { 1921, 0.5f } },
+        { 1629, { 1922, 0.5f } },
+        { 1632, { 1923, 0.5f } },
+        { 1633, { 1924, 0.5f } },
+        { 1636, { 1925, 0.5f } },
+        { 1637, { 1926, 0.5f } },
         { 1700, { 258, 0.5f } },
         { 1701, { 259, 0.5f } },
         { 1702, { 260, 0.5f } },
@@ -11871,11 +16337,6 @@ static void modTarget_2 (std::map<int, std::pair<int, float>>& v)
         { 1732, { 289, 0.5f } },
         { 1733, { 290, 0.5f } },
         { 1734, { 291, 0.5f } },
-    });
-}
-static void modTarget_3 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 1736, { 293, 0.5f } },
         { 1737, { 294, 0.5f } },
         { 1738, { 295, 0.5f } },
@@ -11926,6 +16387,11 @@ static void modTarget_3 (std::map<int, std::pair<int, float>>& v)
         { 1801, { 356, 0.5f } },
         { 1802, { 357, 0.5f } },
         { 1803, { 358, 0.5f } },
+    });
+}
+static void modTarget_6 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1805, { 360, 0.5f } },
         { 1806, { 361, 0.5f } },
         { 1807, { 362, 0.5f } },
@@ -11976,11 +16442,6 @@ static void modTarget_3 (std::map<int, std::pair<int, float>>& v)
         { 1870, { 423, 0.5f } },
         { 1871, { 424, 0.5f } },
         { 1872, { 425, 0.5f } },
-    });
-}
-static void modTarget_4 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 1873, { 426, 0.5f } },
         { 1874, { 427, 0.5f } },
         { 1876, { 429, 0.5f } },
@@ -12031,6 +16492,11 @@ static void modTarget_4 (std::map<int, std::pair<int, float>>& v)
         { 1940, { 484, 0.5f } },
         { 1941, { 485, 0.5f } },
         { 1943, { 487, 0.5f } },
+    });
+}
+static void modTarget_7 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 1944, { 488, 0.5f } },
         { 1945, { 489, 0.5f } },
         { 1946, { 490, 0.5f } },
@@ -12081,11 +16547,6 @@ static void modTarget_4 (std::map<int, std::pair<int, float>>& v)
         { 2101, { 541, 0.5f } },
         { 2102, { 542, 0.5f } },
         { 2103, { 543, 0.5f } },
-    });
-}
-static void modTarget_5 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2104, { 544, 0.5f } },
         { 2105, { 545, 0.5f } },
         { 2106, { 546, 0.5f } },
@@ -12136,6 +16597,11 @@ static void modTarget_5 (std::map<int, std::pair<int, float>>& v)
         { 2154, { 594, 0.5f } },
         { 2155, { 595, 0.5f } },
         { 2156, { 596, 0.5f } },
+    });
+}
+static void modTarget_8 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2157, { 597, 0.5f } },
         { 2159, { 599, 0.5f } },
         { 2160, { 600, 0.5f } },
@@ -12186,11 +16652,6 @@ static void modTarget_5 (std::map<int, std::pair<int, float>>& v)
         { 2212, { 648, 0.5f } },
         { 2213, { 649, 0.5f } },
         { 2214, { 650, 0.5f } },
-    });
-}
-static void modTarget_6 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2215, { 651, 0.5f } },
         { 2217, { 653, 0.5f } },
         { 2218, { 654, 0.5f } },
@@ -12241,6 +16702,11 @@ static void modTarget_6 (std::map<int, std::pair<int, float>>& v)
         { 2266, { 702, 0.5f } },
         { 2267, { 703, 0.5f } },
         { 2268, { 704, 0.5f } },
+    });
+}
+static void modTarget_9 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2269, { 705, 0.5f } },
         { 2270, { 706, 0.5f } },
         { 2271, { 707, 0.5f } },
@@ -12291,11 +16757,6 @@ static void modTarget_6 (std::map<int, std::pair<int, float>>& v)
         { 2323, { 755, 0.5f } },
         { 2324, { 756, 0.5f } },
         { 2325, { 757, 0.5f } },
-    });
-}
-static void modTarget_7 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2326, { 758, 0.5f } },
         { 2327, { 759, 0.5f } },
         { 2328, { 760, 0.5f } },
@@ -12346,6 +16807,11 @@ static void modTarget_7 (std::map<int, std::pair<int, float>>& v)
         { 2376, { 808, 0.5f } },
         { 2377, { 809, 0.5f } },
         { 2378, { 810, 0.5f } },
+    });
+}
+static void modTarget_10 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2379, { 811, 0.5f } },
         { 2381, { 813, 0.5f } },
         { 2382, { 814, 0.5f } },
@@ -12396,11 +16862,6 @@ static void modTarget_7 (std::map<int, std::pair<int, float>>& v)
         { 2439, { 867, 0.5f } },
         { 2440, { 868, 0.5f } },
         { 2441, { 869, 0.5f } },
-    });
-}
-static void modTarget_8 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2442, { 870, 0.5f } },
         { 2443, { 871, 0.5f } },
         { 2448, { 876, 0.5f } },
@@ -12451,6 +16912,11 @@ static void modTarget_8 (std::map<int, std::pair<int, float>>& v)
         { 2511, { 935, 0.5f } },
         { 2512, { 936, 0.5f } },
         { 2513, { 937, 0.5f } },
+    });
+}
+static void modTarget_11 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2514, { 938, 0.5f } },
         { 2518, { 942, 0.5f } },
         { 2519, { 943, 0.5f } },
@@ -12501,11 +16967,6 @@ static void modTarget_8 (std::map<int, std::pair<int, float>>& v)
         { 2573, { 997, 0.5f } },
         { 2574, { 998, 0.5f } },
         { 2575, { 999, 0.5f } },
-    });
-}
-static void modTarget_9 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2576, { 1000, 0.5f } },
         { 2577, { 1001, 0.5f } },
         { 2578, { 1002, 0.5f } },
@@ -12556,6 +17017,11 @@ static void modTarget_9 (std::map<int, std::pair<int, float>>& v)
         { 2631, { 1051, 0.5f } },
         { 2632, { 1052, 0.5f } },
         { 2633, { 1053, 0.5f } },
+    });
+}
+static void modTarget_12 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2634, { 1054, 0.5f } },
         { 2635, { 1055, 0.5f } },
         { 2636, { 1056, 0.5f } },
@@ -12606,11 +17072,6 @@ static void modTarget_9 (std::map<int, std::pair<int, float>>& v)
         { 2681, { 1101, 0.5f } },
         { 2682, { 1102, 0.5f } },
         { 2683, { 1103, 0.5f } },
-    });
-}
-static void modTarget_10 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2684, { 1104, 0.5f } },
         { 2685, { 1105, 0.5f } },
         { 2686, { 1106, 0.5f } },
@@ -12661,6 +17122,11 @@ static void modTarget_10 (std::map<int, std::pair<int, float>>& v)
         { 2738, { 1154, 0.5f } },
         { 2739, { 1155, 0.5f } },
         { 2740, { 1156, 0.5f } },
+    });
+}
+static void modTarget_13 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2741, { 1157, 0.5f } },
         { 2742, { 1158, 0.5f } },
         { 2743, { 1159, 0.5f } },
@@ -12711,11 +17177,6 @@ static void modTarget_10 (std::map<int, std::pair<int, float>>& v)
         { 2791, { 1207, 0.5f } },
         { 2792, { 1208, 0.5f } },
         { 2793, { 1209, 0.5f } },
-    });
-}
-static void modTarget_11 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 2794, { 1210, 0.5f } },
         { 2795, { 1211, 0.5f } },
         { 2800, { 1212, 0.5f } },
@@ -12766,6 +17227,11 @@ static void modTarget_11 (std::map<int, std::pair<int, float>>& v)
         { 2880, { 1292, 0.5f } },
         { 2881, { 1293, 0.5f } },
         { 2882, { 1294, 0.5f } },
+    });
+}
+static void modTarget_14 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 2883, { 1295, 0.5f } },
         { 2884, { 1296, 0.5f } },
         { 2885, { 1297, 0.5f } },
@@ -12808,6 +17274,202 @@ static void modTarget_11 (std::map<int, std::pair<int, float>>& v)
         { 2933, { 1341, 0.125f } },
         { 2934, { 1342, 0.125f } },
         { 2935, { 1343, 0.125f } },
+        { 3000, { 2809, 0.5f } },
+        { 3001, { 2810, 0.5f } },
+        { 3002, { 2811, 0.5f } },
+        { 3003, { 2812, 0.5f } },
+        { 3004, { 2813, 0.5f } },
+        { 3005, { 2814, 0.5f } },
+        { 3006, { 2815, 0.5f } },
+        { 3007, { 2816, 0.5f } },
+        { 3008, { 2817, 0.5f } },
+        { 3009, { 2818, 0.5f } },
+        { 3010, { 2819, 0.5f } },
+        { 3011, { 2820, 0.5f } },
+        { 3012, { 2821, 0.5f } },
+        { 3013, { 2822, 0.5f } },
+        { 3014, { 2823, 0.5f } },
+        { 3015, { 2824, 0.5f } },
+        { 3016, { 2825, 0.5f } },
+        { 3017, { 2826, 0.5f } },
+        { 3018, { 2827, 0.5f } },
+        { 3019, { 2828, 0.5f } },
+        { 3020, { 2829, 0.5f } },
+        { 3021, { 2830, 0.5f } },
+        { 3022, { 2831, 0.5f } },
+        { 3023, { 2832, 0.5f } },
+        { 3024, { 2833, 0.5f } },
+        { 3025, { 2834, 0.5f } },
+        { 3026, { 2835, 0.5f } },
+        { 3027, { 2836, 0.5f } },
+        { 3028, { 2837, 0.5f } },
+        { 3029, { 2838, 0.5f } },
+        { 3030, { 2839, 0.5f } },
+        { 3031, { 2840, 0.5f } },
+        { 3032, { 2841, 0.5f } },
+        { 3033, { 2842, 0.5f } },
+        { 3034, { 2843, 0.5f } },
+        { 3035, { 2844, 0.5f } },
+        { 3036, { 2845, 0.5f } },
+        { 3037, { 2846, 0.5f } },
+        { 3038, { 2847, 0.5f } },
+        { 3039, { 2848, 0.5f } },
+        { 3040, { 2849, 0.5f } },
+        { 3041, { 2850, 0.5f } },
+        { 3042, { 2851, 0.5f } },
+        { 3043, { 2852, 0.5f } },
+        { 3044, { 2853, 0.5f } },
+        { 3045, { 2854, 0.5f } },
+        { 3046, { 2855, 0.5f } },
+        { 3047, { 2856, 0.5f } },
+        { 3048, { 2857, 0.5f } },
+        { 3049, { 2858, 0.5f } },
+        { 3050, { 2859, 0.5f } },
+        { 3051, { 2860, 0.5f } },
+        { 3052, { 2861, 0.5f } },
+        { 3053, { 2862, 0.5f } },
+        { 3054, { 2863, 0.5f } },
+        { 3055, { 2864, 0.5f } },
+        { 3056, { 2865, 0.5f } },
+        { 3057, { 2866, 0.5f } },
+    });
+}
+static void modTarget_15 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 3058, { 2867, 0.5f } },
+        { 3059, { 2868, 0.5f } },
+        { 3202, { 2869, 0.5f } },
+        { 3204, { 2870, 0.5f } },
+        { 3205, { 2871, 0.5f } },
+        { 3206, { 2872, 0.5f } },
+        { 3207, { 2873, 0.5f } },
+        { 3208, { 2874, 0.5f } },
+        { 3209, { 2875, 0.5f } },
+        { 3212, { 2876, 0.5f } },
+        { 3214, { 2877, 0.5f } },
+        { 3215, { 2878, 0.5f } },
+        { 3216, { 2879, 0.5f } },
+        { 3217, { 2880, 0.5f } },
+        { 3218, { 2881, 0.5f } },
+        { 3219, { 2882, 0.5f } },
+        { 3222, { 2883, 0.5f } },
+        { 3224, { 2884, 0.5f } },
+        { 3225, { 2885, 0.5f } },
+        { 3226, { 2886, 0.5f } },
+        { 3227, { 2887, 0.5f } },
+        { 3228, { 2888, 0.5f } },
+        { 3229, { 2889, 0.5f } },
+        { 3232, { 2890, 0.5f } },
+        { 3234, { 2891, 0.5f } },
+        { 3235, { 2892, 0.5f } },
+        { 3236, { 2893, 0.5f } },
+        { 3237, { 2894, 0.5f } },
+        { 3238, { 2895, 0.5f } },
+        { 3239, { 2896, 0.5f } },
+        { 3242, { 2897, 0.5f } },
+        { 3244, { 2898, 0.5f } },
+        { 3245, { 2899, 0.5f } },
+        { 3246, { 2900, 0.5f } },
+        { 3247, { 2901, 0.5f } },
+        { 3248, { 2902, 0.5f } },
+        { 3249, { 2903, 0.5f } },
+        { 3252, { 2904, 0.5f } },
+        { 3254, { 2905, 0.5f } },
+        { 3255, { 2906, 0.5f } },
+        { 3256, { 2907, 0.5f } },
+        { 3257, { 2908, 0.5f } },
+        { 3258, { 2909, 0.5f } },
+        { 3259, { 2910, 0.5f } },
+        { 3262, { 2911, 0.5f } },
+        { 3264, { 2912, 0.5f } },
+        { 3265, { 2913, 0.5f } },
+        { 3266, { 2914, 0.5f } },
+        { 3267, { 2915, 0.5f } },
+        { 3268, { 2916, 0.5f } },
+        { 3269, { 2917, 0.5f } },
+        { 3272, { 2918, 0.5f } },
+        { 3274, { 2919, 0.5f } },
+        { 3275, { 2920, 0.5f } },
+        { 3276, { 2921, 0.5f } },
+        { 3277, { 2922, 0.5f } },
+        { 3278, { 2923, 0.5f } },
+        { 3279, { 2924, 0.5f } },
+        { 3282, { 2925, 0.5f } },
+        { 3284, { 2926, 0.5f } },
+        { 3285, { 2927, 0.5f } },
+        { 3286, { 2928, 0.5f } },
+        { 3287, { 2929, 0.5f } },
+        { 3288, { 2930, 0.5f } },
+        { 3289, { 2931, 0.5f } },
+        { 3292, { 2932, 0.5f } },
+        { 3294, { 2933, 0.5f } },
+        { 3295, { 2934, 0.5f } },
+        { 3296, { 2935, 0.5f } },
+        { 3297, { 2936, 0.5f } },
+        { 3298, { 2937, 0.5f } },
+        { 3299, { 2938, 0.5f } },
+        { 3302, { 2939, 0.5f } },
+        { 3304, { 2940, 0.5f } },
+        { 3305, { 2941, 0.5f } },
+        { 3306, { 2942, 0.5f } },
+        { 3307, { 2943, 0.5f } },
+        { 3308, { 2944, 0.5f } },
+        { 3309, { 2945, 0.5f } },
+        { 3312, { 2946, 0.5f } },
+        { 3314, { 2947, 0.5f } },
+        { 3315, { 2948, 0.5f } },
+        { 3316, { 2949, 0.5f } },
+        { 3317, { 2950, 0.5f } },
+        { 3318, { 2951, 0.5f } },
+        { 3319, { 2952, 0.5f } },
+        { 3322, { 2953, 0.5f } },
+        { 3324, { 2954, 0.5f } },
+        { 3325, { 2955, 0.5f } },
+        { 3326, { 2956, 0.5f } },
+        { 3327, { 2957, 0.5f } },
+        { 3328, { 2958, 0.5f } },
+        { 3329, { 2959, 0.5f } },
+        { 3332, { 2960, 0.5f } },
+        { 3334, { 2961, 0.5f } },
+        { 3335, { 2962, 0.5f } },
+        { 3336, { 2963, 0.5f } },
+        { 3337, { 2964, 0.5f } },
+        { 3338, { 2965, 0.5f } },
+        { 3339, { 2966, 0.5f } },
+    });
+}
+static void modTarget_16 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 3342, { 2967, 0.5f } },
+        { 3344, { 2968, 0.5f } },
+        { 3345, { 2969, 0.5f } },
+        { 3346, { 2970, 0.5f } },
+        { 3347, { 2971, 0.5f } },
+        { 3348, { 2972, 0.5f } },
+        { 3349, { 2973, 0.5f } },
+        { 3352, { 2974, 0.5f } },
+        { 3354, { 2975, 0.5f } },
+        { 3355, { 2976, 0.5f } },
+        { 3356, { 2977, 0.5f } },
+        { 3357, { 2978, 0.5f } },
+        { 3358, { 2979, 0.5f } },
+        { 3359, { 2980, 0.5f } },
+        { 3362, { 2981, 0.5f } },
+        { 3364, { 2982, 0.5f } },
+        { 3365, { 2983, 0.5f } },
+        { 3366, { 2984, 0.5f } },
+        { 3367, { 2985, 0.5f } },
+        { 3368, { 2986, 0.5f } },
+        { 3369, { 2987, 0.5f } },
+        { 3372, { 2988, 0.5f } },
+        { 3374, { 2989, 0.5f } },
+        { 3375, { 2990, 0.5f } },
+        { 3376, { 2991, 0.5f } },
+        { 3377, { 2992, 0.5f } },
+        { 3378, { 2993, 0.5f } },
+        { 3379, { 2994, 0.5f } },
         { 3502, { 1490, 0.5f } },
         { 3503, { 1491, 0.5f } },
         { 3504, { 1492, 0.5f } },
@@ -12816,11 +17478,6 @@ static void modTarget_11 (std::map<int, std::pair<int, float>>& v)
         { 3507, { 1495, 0.5f } },
         { 3508, { 1496, 0.5f } },
         { 3509, { 1497, 0.5f } },
-    });
-}
-static void modTarget_12 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 3510, { 1498, 0.5f } },
         { 3513, { 1501, 0.5f } },
         { 3514, { 1502, 0.5f } },
@@ -12885,6 +17542,31 @@ static void modTarget_12 (std::map<int, std::pair<int, float>>& v)
         { 3593, { 1581, 0.5f } },
         { 3594, { 1582, 0.5f } },
         { 3595, { 1583, 0.5f } },
+    });
+}
+static void modTarget_17 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 3617, { 3067, 0.5f } },
+        { 3620, { 3068, 0.5f } },
+        { 3649, { 3069, 0.5f } },
+        { 3652, { 3070, 0.5f } },
+        { 3681, { 3071, 0.5f } },
+        { 3684, { 3072, 0.5f } },
+        { 3713, { 3073, 0.5f } },
+        { 3716, { 3074, 0.5f } },
+        { 3745, { 3075, 0.5f } },
+        { 3748, { 3076, 0.5f } },
+        { 3777, { 3077, 0.5f } },
+        { 3780, { 3078, 0.5f } },
+        { 3809, { 3079, 0.5f } },
+        { 3812, { 3080, 0.5f } },
+        { 3841, { 3081, 0.5f } },
+        { 3844, { 3082, 0.5f } },
+        { 3873, { 3083, 0.5f } },
+        { 3876, { 3084, 0.5f } },
+        { 3905, { 3085, 0.5f } },
+        { 3908, { 3086, 0.5f } },
         { 5300, { 1344, 0.5f } },
         { 5301, { 1345, 0.5f } },
         { 5302, { 1346, 0.5f } },
@@ -12921,11 +17603,6 @@ static void modTarget_12 (std::map<int, std::pair<int, float>>& v)
         { 5333, { 1377, 0.5f } },
         { 5334, { 1378, 0.5f } },
         { 5335, { 1379, 0.5f } },
-    });
-}
-static void modTarget_13 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 5336, { 1380, 0.5f } },
         { 5337, { 1381, 0.5f } },
         { 5338, { 1382, 0.5f } },
@@ -12970,6 +17647,11 @@ static void modTarget_13 (std::map<int, std::pair<int, float>>& v)
         { 5377, { 1421, 0.5f } },
         { 5378, { 1422, 0.5f } },
         { 5379, { 1423, 0.5f } },
+    });
+}
+static void modTarget_18 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
         { 5380, { 1424, 0.5f } },
         { 5381, { 1425, 0.5f } },
         { 5382, { 1426, 0.5f } },
@@ -13026,11 +17708,6 @@ static void modTarget_13 (std::map<int, std::pair<int, float>>& v)
         { 5433, { 1477, 0.5f } },
         { 5434, { 1478, 0.5f } },
         { 5435, { 1479, 0.5f } },
-    });
-}
-static void modTarget_14 (std::map<int, std::pair<int, float>>& v)
-{
-    v.insert ( {
         { 5436, { 1480, 0.5f } },
         { 5437, { 1481, 0.5f } },
         { 5438, { 1482, 0.5f } },
@@ -13039,11 +17716,2716 @@ static void modTarget_14 (std::map<int, std::pair<int, float>>& v)
         { 5441, { 1485, 0.5f } },
         { 5442, { 1486, 0.5f } },
         { 5443, { 1487, 0.5f } },
+        { 8002, { 3087, 0.5f } },
+        { 8004, { 3088, 0.5f } },
+        { 8005, { 3089, 0.5f } },
+        { 8006, { 3090, 0.5f } },
+        { 8007, { 3091, 0.5f } },
+        { 8008, { 3092, 0.5f } },
+        { 8009, { 3093, 0.5f } },
+        { 8011, { 3094, 0.5f } },
+        { 8012, { 3095, 0.5f } },
+        { 8018, { 3096, 0.5f } },
+        { 8020, { 3097, 0.5f } },
+        { 8021, { 3098, 0.5f } },
+        { 8022, { 3099, 0.5f } },
+        { 8023, { 3100, 0.5f } },
+        { 8024, { 3101, 0.5f } },
+        { 8025, { 3102, 0.5f } },
+        { 8027, { 3103, 0.5f } },
+        { 8028, { 3104, 0.5f } },
+        { 8034, { 3105, 0.5f } },
+        { 8036, { 3106, 0.5f } },
+        { 8037, { 3107, 0.5f } },
+        { 8038, { 3108, 0.5f } },
+        { 8039, { 3109, 0.5f } },
+        { 8040, { 3110, 0.5f } },
+        { 8041, { 3111, 0.5f } },
+        { 8043, { 3112, 0.5f } },
+        { 8044, { 3113, 0.5f } },
+        { 8050, { 3114, 0.5f } },
+        { 8052, { 3115, 0.5f } },
+        { 8053, { 3116, 0.5f } },
+        { 8054, { 3117, 0.5f } },
+        { 8055, { 3118, 0.5f } },
+        { 8056, { 3119, 0.5f } },
+        { 8057, { 3120, 0.5f } },
+        { 8059, { 3121, 0.5f } },
+        { 8060, { 3122, 0.5f } },
+    });
+}
+static void modTarget_19 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 8066, { 3123, 0.5f } },
+        { 8068, { 3124, 0.5f } },
+        { 8069, { 3125, 0.5f } },
+        { 8070, { 3126, 0.5f } },
+        { 8071, { 3127, 0.5f } },
+        { 8072, { 3128, 0.5f } },
+        { 8073, { 3129, 0.5f } },
+        { 8075, { 3130, 0.5f } },
+        { 8076, { 3131, 0.5f } },
+        { 8082, { 3132, 0.5f } },
+        { 8084, { 3133, 0.5f } },
+        { 8085, { 3134, 0.5f } },
+        { 8086, { 3135, 0.5f } },
+        { 8087, { 3136, 0.5f } },
+        { 8088, { 3137, 0.5f } },
+        { 8089, { 3138, 0.5f } },
+        { 8091, { 3139, 0.5f } },
+        { 8092, { 3140, 0.5f } },
+        { 8098, { 3141, 0.5f } },
+        { 8100, { 3142, 0.5f } },
+        { 8101, { 3143, 0.5f } },
+        { 8102, { 3144, 0.5f } },
+        { 8103, { 3145, 0.5f } },
+        { 8104, { 3146, 0.5f } },
+        { 8105, { 3147, 0.5f } },
+        { 8107, { 3148, 0.5f } },
+        { 8108, { 3149, 0.5f } },
+        { 8114, { 3150, 0.5f } },
+        { 8116, { 3151, 0.5f } },
+        { 8117, { 3152, 0.5f } },
+        { 8118, { 3153, 0.5f } },
+        { 8119, { 3154, 0.5f } },
+        { 8120, { 3155, 0.5f } },
+        { 8121, { 3156, 0.5f } },
+        { 8123, { 3157, 0.5f } },
+        { 8124, { 3158, 0.5f } },
+        { 8130, { 3159, 0.5f } },
+        { 8132, { 3160, 0.5f } },
+        { 8133, { 3161, 0.5f } },
+        { 8134, { 3162, 0.5f } },
+        { 8135, { 3163, 0.5f } },
+        { 8136, { 3164, 0.5f } },
+        { 8137, { 3165, 0.5f } },
+        { 8139, { 3166, 0.5f } },
+        { 8140, { 3167, 0.5f } },
+        { 8146, { 3168, 0.5f } },
+        { 8148, { 3169, 0.5f } },
+        { 8149, { 3170, 0.5f } },
+        { 8150, { 3171, 0.5f } },
+        { 8151, { 3172, 0.5f } },
+        { 8152, { 3173, 0.5f } },
+        { 8153, { 3174, 0.5f } },
+        { 8155, { 3175, 0.5f } },
+        { 8156, { 3176, 0.5f } },
+        { 8162, { 3177, 0.5f } },
+        { 8164, { 3178, 0.5f } },
+        { 8165, { 3179, 0.5f } },
+        { 8166, { 3180, 0.5f } },
+        { 8167, { 3181, 0.5f } },
+        { 8168, { 3182, 0.5f } },
+        { 8169, { 3183, 0.5f } },
+        { 8171, { 3184, 0.5f } },
+        { 8172, { 3185, 0.5f } },
+        { 8178, { 3186, 0.5f } },
+        { 8180, { 3187, 0.5f } },
+        { 8181, { 3188, 0.5f } },
+        { 8182, { 3189, 0.5f } },
+        { 8183, { 3190, 0.5f } },
+        { 8184, { 3191, 0.5f } },
+        { 8185, { 3192, 0.5f } },
+        { 8187, { 3193, 0.5f } },
+        { 8188, { 3194, 0.5f } },
+        { 8194, { 3195, 0.5f } },
+        { 8196, { 3196, 0.5f } },
+        { 8197, { 3197, 0.5f } },
+        { 8198, { 3198, 0.5f } },
+        { 8199, { 3199, 0.5f } },
+        { 8200, { 3200, 0.5f } },
+        { 8201, { 3201, 0.5f } },
+        { 8203, { 3202, 0.5f } },
+        { 8204, { 3203, 0.5f } },
+        { 8210, { 3204, 0.5f } },
+        { 8212, { 3205, 0.5f } },
+        { 8213, { 3206, 0.5f } },
+        { 8214, { 3207, 0.5f } },
+        { 8215, { 3208, 0.5f } },
+        { 8216, { 3209, 0.5f } },
+        { 8217, { 3210, 0.5f } },
+        { 8219, { 3211, 0.5f } },
+        { 8220, { 3212, 0.5f } },
+        { 8226, { 3213, 0.5f } },
+        { 8228, { 3214, 0.5f } },
+        { 8229, { 3215, 0.5f } },
+        { 8230, { 3216, 0.5f } },
+        { 8231, { 3217, 0.5f } },
+        { 8232, { 3218, 0.5f } },
+        { 8233, { 3219, 0.5f } },
+        { 8235, { 3220, 0.5f } },
+        { 8236, { 3221, 0.5f } },
+        { 8242, { 3222, 0.5f } },
+    });
+}
+static void modTarget_20 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 8244, { 3223, 0.5f } },
+        { 8245, { 3224, 0.5f } },
+        { 8246, { 3225, 0.5f } },
+        { 8247, { 3226, 0.5f } },
+        { 8248, { 3227, 0.5f } },
+        { 8249, { 3228, 0.5f } },
+        { 8251, { 3229, 0.5f } },
+        { 8252, { 3230, 0.5f } },
+        { 8274, { 3231, 0.5f } },
+        { 8276, { 3232, 0.5f } },
+        { 8277, { 3233, 0.5f } },
+        { 8278, { 3234, 0.5f } },
+        { 8279, { 3235, 0.5f } },
+        { 8280, { 3236, 0.5f } },
+        { 8281, { 3237, 0.5f } },
+        { 8283, { 3238, 0.5f } },
+        { 8284, { 3239, 0.5f } },
+        { 8290, { 3240, 0.5f } },
+        { 8292, { 3241, 0.5f } },
+        { 8293, { 3242, 0.5f } },
+        { 8294, { 3243, 0.5f } },
+        { 8295, { 3244, 0.5f } },
+        { 8296, { 3245, 0.5f } },
+        { 8297, { 3246, 0.5f } },
+        { 8299, { 3247, 0.5f } },
+        { 8300, { 3248, 0.5f } },
+        { 8306, { 3249, 0.5f } },
+        { 8308, { 3250, 0.5f } },
+        { 8309, { 3251, 0.5f } },
+        { 8310, { 3252, 0.5f } },
+        { 8311, { 3253, 0.5f } },
+        { 8312, { 3254, 0.5f } },
+        { 8313, { 3255, 0.5f } },
+        { 8315, { 3256, 0.5f } },
+        { 8316, { 3257, 0.5f } },
+        { 8322, { 3258, 0.5f } },
+        { 8324, { 3259, 0.5f } },
+        { 8325, { 3260, 0.5f } },
+        { 8326, { 3261, 0.5f } },
+        { 8327, { 3262, 0.5f } },
+        { 8328, { 3263, 0.5f } },
+        { 8329, { 3264, 0.5f } },
+        { 8331, { 3265, 0.5f } },
+        { 8332, { 3266, 0.5f } },
+        { 8338, { 3267, 0.5f } },
+        { 8340, { 3268, 0.5f } },
+        { 8341, { 3269, 0.5f } },
+        { 8342, { 3270, 0.5f } },
+        { 8343, { 3271, 0.5f } },
+        { 8344, { 3272, 0.5f } },
+        { 8345, { 3273, 0.5f } },
+        { 8347, { 3274, 0.5f } },
+        { 8348, { 3275, 0.5f } },
+        { 8354, { 3276, 0.5f } },
+        { 8356, { 3277, 0.5f } },
+        { 8357, { 3278, 0.5f } },
+        { 8358, { 3279, 0.5f } },
+        { 8359, { 3280, 0.5f } },
+        { 8360, { 3281, 0.5f } },
+        { 8361, { 3282, 0.5f } },
+        { 8363, { 3283, 0.5f } },
+        { 8364, { 3284, 0.5f } },
+        { 8370, { 3285, 0.5f } },
+        { 8372, { 3286, 0.5f } },
+        { 8373, { 3287, 0.5f } },
+        { 8374, { 3288, 0.5f } },
+        { 8375, { 3289, 0.5f } },
+        { 8376, { 3290, 0.5f } },
+        { 8377, { 3291, 0.5f } },
+        { 8379, { 3292, 0.5f } },
+        { 8380, { 3293, 0.5f } },
+        { 8386, { 3294, 0.5f } },
+        { 8388, { 3295, 0.5f } },
+        { 8389, { 3296, 0.5f } },
+        { 8390, { 3297, 0.5f } },
+        { 8391, { 3298, 0.5f } },
+        { 8392, { 3299, 0.5f } },
+        { 8393, { 3300, 0.5f } },
+        { 8395, { 3301, 0.5f } },
+        { 8396, { 3302, 0.5f } },
+        { 8402, { 3303, 0.5f } },
+        { 8404, { 3304, 0.5f } },
+        { 8405, { 3305, 0.5f } },
+        { 8406, { 3306, 0.5f } },
+        { 8407, { 3307, 0.5f } },
+        { 8408, { 3308, 0.5f } },
+        { 8409, { 3309, 0.5f } },
+        { 8411, { 3310, 0.5f } },
+        { 8412, { 3311, 0.5f } },
+        { 8418, { 3312, 0.5f } },
+        { 8420, { 3313, 0.5f } },
+        { 8421, { 3314, 0.5f } },
+        { 8422, { 3315, 0.5f } },
+        { 8423, { 3316, 0.5f } },
+        { 8424, { 3317, 0.5f } },
+        { 8425, { 3318, 0.5f } },
+        { 8427, { 3319, 0.5f } },
+        { 8428, { 3320, 0.5f } },
+        { 8434, { 3321, 0.5f } },
+        { 8436, { 3322, 0.5f } },
+    });
+}
+static void modTarget_21 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 8437, { 3323, 0.5f } },
+        { 8438, { 3324, 0.5f } },
+        { 8439, { 3325, 0.5f } },
+        { 8440, { 3326, 0.5f } },
+        { 8441, { 3327, 0.5f } },
+        { 8443, { 3328, 0.5f } },
+        { 8444, { 3329, 0.5f } },
+        { 8450, { 3330, 0.5f } },
+        { 8452, { 3331, 0.5f } },
+        { 8453, { 3332, 0.5f } },
+        { 8454, { 3333, 0.5f } },
+        { 8455, { 3334, 0.5f } },
+        { 8456, { 3335, 0.5f } },
+        { 8457, { 3336, 0.5f } },
+        { 8459, { 3337, 0.5f } },
+        { 8460, { 3338, 0.5f } },
+        { 8466, { 3339, 0.5f } },
+        { 8468, { 3340, 0.5f } },
+        { 8469, { 3341, 0.5f } },
+        { 8470, { 3342, 0.5f } },
+        { 8471, { 3343, 0.5f } },
+        { 8472, { 3344, 0.5f } },
+        { 8473, { 3345, 0.5f } },
+        { 8475, { 3346, 0.5f } },
+        { 8476, { 3347, 0.5f } },
+        { 8482, { 3348, 0.5f } },
+        { 8484, { 3349, 0.5f } },
+        { 8485, { 3350, 0.5f } },
+        { 8486, { 3351, 0.5f } },
+        { 8487, { 3352, 0.5f } },
+        { 8488, { 3353, 0.5f } },
+        { 8489, { 3354, 0.5f } },
+        { 8491, { 3355, 0.5f } },
+        { 8492, { 3356, 0.5f } },
+        { 8498, { 3357, 0.5f } },
+        { 8500, { 3358, 0.5f } },
+        { 8501, { 3359, 0.5f } },
+        { 8502, { 3360, 0.5f } },
+        { 8503, { 3361, 0.5f } },
+        { 8504, { 3362, 0.5f } },
+        { 8505, { 3363, 0.5f } },
+        { 8507, { 3364, 0.5f } },
+        { 8508, { 3365, 0.5f } },
+        { 8514, { 3366, 0.5f } },
+        { 8516, { 3367, 0.5f } },
+        { 8517, { 3368, 0.5f } },
+        { 8518, { 3369, 0.5f } },
+        { 8519, { 3370, 0.5f } },
+        { 8520, { 3371, 0.5f } },
+        { 8521, { 3372, 0.5f } },
+        { 8523, { 3373, 0.5f } },
+        { 8524, { 3374, 0.5f } },
+        { 8546, { 3375, 0.5f } },
+        { 8548, { 3376, 0.5f } },
+        { 8549, { 3377, 0.5f } },
+        { 8550, { 3378, 0.5f } },
+        { 8551, { 3379, 0.5f } },
+        { 8552, { 3380, 0.5f } },
+        { 8553, { 3381, 0.5f } },
+        { 8555, { 3382, 0.5f } },
+        { 8556, { 3383, 0.5f } },
+        { 8562, { 3384, 0.5f } },
+        { 8564, { 3385, 0.5f } },
+        { 8565, { 3386, 0.5f } },
+        { 8566, { 3387, 0.5f } },
+        { 8567, { 3388, 0.5f } },
+        { 8568, { 3389, 0.5f } },
+        { 8569, { 3390, 0.5f } },
+        { 8571, { 3391, 0.5f } },
+        { 8572, { 3392, 0.5f } },
+        { 8578, { 3393, 0.5f } },
+        { 8580, { 3394, 0.5f } },
+        { 8581, { 3395, 0.5f } },
+        { 8582, { 3396, 0.5f } },
+        { 8583, { 3397, 0.5f } },
+        { 8584, { 3398, 0.5f } },
+        { 8585, { 3399, 0.5f } },
+        { 8587, { 3400, 0.5f } },
+        { 8588, { 3401, 0.5f } },
+        { 8594, { 3402, 0.5f } },
+        { 8596, { 3403, 0.5f } },
+        { 8597, { 3404, 0.5f } },
+        { 8598, { 3405, 0.5f } },
+        { 8599, { 3406, 0.5f } },
+        { 8600, { 3407, 0.5f } },
+        { 8601, { 3408, 0.5f } },
+        { 8603, { 3409, 0.5f } },
+        { 8604, { 3410, 0.5f } },
+        { 8610, { 3411, 0.5f } },
+        { 8612, { 3412, 0.5f } },
+        { 8613, { 3413, 0.5f } },
+        { 8614, { 3414, 0.5f } },
+        { 8615, { 3415, 0.5f } },
+        { 8616, { 3416, 0.5f } },
+        { 8617, { 3417, 0.5f } },
+        { 8619, { 3418, 0.5f } },
+        { 8620, { 3419, 0.5f } },
+        { 8626, { 3420, 0.5f } },
+        { 8628, { 3421, 0.5f } },
+        { 8629, { 3422, 0.5f } },
+    });
+}
+static void modTarget_22 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 8630, { 3423, 0.5f } },
+        { 8631, { 3424, 0.5f } },
+        { 8632, { 3425, 0.5f } },
+        { 8633, { 3426, 0.5f } },
+        { 8635, { 3427, 0.5f } },
+        { 8636, { 3428, 0.5f } },
+        { 8642, { 3429, 0.5f } },
+        { 8644, { 3430, 0.5f } },
+        { 8645, { 3431, 0.5f } },
+        { 8646, { 3432, 0.5f } },
+        { 8647, { 3433, 0.5f } },
+        { 8648, { 3434, 0.5f } },
+        { 8649, { 3435, 0.5f } },
+        { 8651, { 3436, 0.5f } },
+        { 8652, { 3437, 0.5f } },
+        { 8658, { 3438, 0.5f } },
+        { 8660, { 3439, 0.5f } },
+        { 8661, { 3440, 0.5f } },
+        { 8662, { 3441, 0.5f } },
+        { 8663, { 3442, 0.5f } },
+        { 8664, { 3443, 0.5f } },
+        { 8665, { 3444, 0.5f } },
+        { 8667, { 3445, 0.5f } },
+        { 8668, { 3446, 0.5f } },
+        { 8674, { 3447, 0.5f } },
+        { 8676, { 3448, 0.5f } },
+        { 8677, { 3449, 0.5f } },
+        { 8678, { 3450, 0.5f } },
+        { 8679, { 3451, 0.5f } },
+        { 8680, { 3452, 0.5f } },
+        { 8681, { 3453, 0.5f } },
+        { 8683, { 3454, 0.5f } },
+        { 8684, { 3455, 0.5f } },
+        { 8690, { 3456, 0.5f } },
+        { 8692, { 3457, 0.5f } },
+        { 8693, { 3458, 0.5f } },
+        { 8694, { 3459, 0.5f } },
+        { 8695, { 3460, 0.5f } },
+        { 8696, { 3461, 0.5f } },
+        { 8697, { 3462, 0.5f } },
+        { 8699, { 3463, 0.5f } },
+        { 8700, { 3464, 0.5f } },
+        { 8706, { 3465, 0.5f } },
+        { 8708, { 3466, 0.5f } },
+        { 8709, { 3467, 0.5f } },
+        { 8710, { 3468, 0.5f } },
+        { 8711, { 3469, 0.5f } },
+        { 8712, { 3470, 0.5f } },
+        { 8713, { 3471, 0.5f } },
+        { 8715, { 3472, 0.5f } },
+        { 8716, { 3473, 0.5f } },
+        { 8722, { 3474, 0.5f } },
+        { 8724, { 3475, 0.5f } },
+        { 8725, { 3476, 0.5f } },
+        { 8726, { 3477, 0.5f } },
+        { 8727, { 3478, 0.5f } },
+        { 8728, { 3479, 0.5f } },
+        { 8729, { 3480, 0.5f } },
+        { 8731, { 3481, 0.5f } },
+        { 8732, { 3482, 0.5f } },
+        { 8738, { 3483, 0.5f } },
+        { 8740, { 3484, 0.5f } },
+        { 8741, { 3485, 0.5f } },
+        { 8742, { 3486, 0.5f } },
+        { 8743, { 3487, 0.5f } },
+        { 8744, { 3488, 0.5f } },
+        { 8745, { 3489, 0.5f } },
+        { 8747, { 3490, 0.5f } },
+        { 8748, { 3491, 0.5f } },
+        { 8754, { 3492, 0.5f } },
+        { 8756, { 3493, 0.5f } },
+        { 8757, { 3494, 0.5f } },
+        { 8758, { 3495, 0.5f } },
+        { 8759, { 3496, 0.5f } },
+        { 8760, { 3497, 0.5f } },
+        { 8761, { 3498, 0.5f } },
+        { 8763, { 3499, 0.5f } },
+        { 8764, { 3500, 0.5f } },
+        { 8770, { 3501, 0.5f } },
+        { 8772, { 3502, 0.5f } },
+        { 8773, { 3503, 0.5f } },
+        { 8774, { 3504, 0.5f } },
+        { 8775, { 3505, 0.5f } },
+        { 8776, { 3506, 0.5f } },
+        { 8777, { 3507, 0.5f } },
+        { 8779, { 3508, 0.5f } },
+        { 8780, { 3509, 0.5f } },
+        { 8786, { 3510, 0.5f } },
+        { 8788, { 3511, 0.5f } },
+        { 8789, { 3512, 0.5f } },
+        { 8790, { 3513, 0.5f } },
+        { 8791, { 3514, 0.5f } },
+        { 8792, { 3515, 0.5f } },
+        { 8793, { 3516, 0.5f } },
+        { 8795, { 3517, 0.5f } },
+        { 8796, { 3518, 0.5f } },
+        { 8818, { 3519, 0.5f } },
+        { 8820, { 3520, 0.5f } },
+        { 8821, { 3521, 0.5f } },
+        { 8822, { 3522, 0.5f } },
+    });
+}
+static void modTarget_23 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 8823, { 3523, 0.5f } },
+        { 8824, { 3524, 0.5f } },
+        { 8825, { 3525, 0.5f } },
+        { 8827, { 3526, 0.5f } },
+        { 8828, { 3527, 0.5f } },
+        { 8834, { 3528, 0.5f } },
+        { 8836, { 3529, 0.5f } },
+        { 8837, { 3530, 0.5f } },
+        { 8838, { 3531, 0.5f } },
+        { 8839, { 3532, 0.5f } },
+        { 8840, { 3533, 0.5f } },
+        { 8841, { 3534, 0.5f } },
+        { 8843, { 3535, 0.5f } },
+        { 8844, { 3536, 0.5f } },
+        { 8850, { 3537, 0.5f } },
+        { 8852, { 3538, 0.5f } },
+        { 8853, { 3539, 0.5f } },
+        { 8854, { 3540, 0.5f } },
+        { 8855, { 3541, 0.5f } },
+        { 8856, { 3542, 0.5f } },
+        { 8857, { 3543, 0.5f } },
+        { 8859, { 3544, 0.5f } },
+        { 8860, { 3545, 0.5f } },
+        { 8866, { 3546, 0.5f } },
+        { 8868, { 3547, 0.5f } },
+        { 8869, { 3548, 0.5f } },
+        { 8870, { 3549, 0.5f } },
+        { 8871, { 3550, 0.5f } },
+        { 8872, { 3551, 0.5f } },
+        { 8873, { 3552, 0.5f } },
+        { 8875, { 3553, 0.5f } },
+        { 8876, { 3554, 0.5f } },
+        { 8882, { 3555, 0.5f } },
+        { 8884, { 3556, 0.5f } },
+        { 8885, { 3557, 0.5f } },
+        { 8886, { 3558, 0.5f } },
+        { 8887, { 3559, 0.5f } },
+        { 8888, { 3560, 0.5f } },
+        { 8889, { 3561, 0.5f } },
+        { 8891, { 3562, 0.5f } },
+        { 8892, { 3563, 0.5f } },
+        { 8898, { 3564, 0.5f } },
+        { 8900, { 3565, 0.5f } },
+        { 8901, { 3566, 0.5f } },
+        { 8902, { 3567, 0.5f } },
+        { 8903, { 3568, 0.5f } },
+        { 8904, { 3569, 0.5f } },
+        { 8905, { 3570, 0.5f } },
+        { 8907, { 3571, 0.5f } },
+        { 8908, { 3572, 0.5f } },
+        { 8914, { 3573, 0.5f } },
+        { 8916, { 3574, 0.5f } },
+        { 8917, { 3575, 0.5f } },
+        { 8918, { 3576, 0.5f } },
+        { 8919, { 3577, 0.5f } },
+        { 8920, { 3578, 0.5f } },
+        { 8921, { 3579, 0.5f } },
+        { 8923, { 3580, 0.5f } },
+        { 8924, { 3581, 0.5f } },
+        { 8930, { 3582, 0.5f } },
+        { 8932, { 3583, 0.5f } },
+        { 8933, { 3584, 0.5f } },
+        { 8934, { 3585, 0.5f } },
+        { 8935, { 3586, 0.5f } },
+        { 8936, { 3587, 0.5f } },
+        { 8937, { 3588, 0.5f } },
+        { 8939, { 3589, 0.5f } },
+        { 8940, { 3590, 0.5f } },
+        { 8946, { 3591, 0.5f } },
+        { 8948, { 3592, 0.5f } },
+        { 8949, { 3593, 0.5f } },
+        { 8950, { 3594, 0.5f } },
+        { 8951, { 3595, 0.5f } },
+        { 8952, { 3596, 0.5f } },
+        { 8953, { 3597, 0.5f } },
+        { 8955, { 3598, 0.5f } },
+        { 8956, { 3599, 0.5f } },
+        { 8962, { 3600, 0.5f } },
+        { 8964, { 3601, 0.5f } },
+        { 8965, { 3602, 0.5f } },
+        { 8966, { 3603, 0.5f } },
+        { 8967, { 3604, 0.5f } },
+        { 8968, { 3605, 0.5f } },
+        { 8969, { 3606, 0.5f } },
+        { 8971, { 3607, 0.5f } },
+        { 8972, { 3608, 0.5f } },
+        { 8978, { 3609, 0.5f } },
+        { 8980, { 3610, 0.5f } },
+        { 8981, { 3611, 0.5f } },
+        { 8982, { 3612, 0.5f } },
+        { 8983, { 3613, 0.5f } },
+        { 8984, { 3614, 0.5f } },
+        { 8985, { 3615, 0.5f } },
+        { 8987, { 3616, 0.5f } },
+        { 8988, { 3617, 0.5f } },
+        { 8994, { 3618, 0.5f } },
+        { 8996, { 3619, 0.5f } },
+        { 8997, { 3620, 0.5f } },
+        { 8998, { 3621, 0.5f } },
+        { 8999, { 3622, 0.5f } },
+    });
+}
+static void modTarget_24 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 9000, { 3623, 0.5f } },
+        { 9001, { 3624, 0.5f } },
+        { 9003, { 3625, 0.5f } },
+        { 9004, { 3626, 0.5f } },
+        { 9010, { 3627, 0.5f } },
+        { 9012, { 3628, 0.5f } },
+        { 9013, { 3629, 0.5f } },
+        { 9014, { 3630, 0.5f } },
+        { 9015, { 3631, 0.5f } },
+        { 9016, { 3632, 0.5f } },
+        { 9017, { 3633, 0.5f } },
+        { 9019, { 3634, 0.5f } },
+        { 9020, { 3635, 0.5f } },
+        { 9026, { 3636, 0.5f } },
+        { 9028, { 3637, 0.5f } },
+        { 9029, { 3638, 0.5f } },
+        { 9030, { 3639, 0.5f } },
+        { 9031, { 3640, 0.5f } },
+        { 9032, { 3641, 0.5f } },
+        { 9033, { 3642, 0.5f } },
+        { 9035, { 3643, 0.5f } },
+        { 9036, { 3644, 0.5f } },
+        { 9042, { 3645, 0.5f } },
+        { 9044, { 3646, 0.5f } },
+        { 9045, { 3647, 0.5f } },
+        { 9046, { 3648, 0.5f } },
+        { 9047, { 3649, 0.5f } },
+        { 9048, { 3650, 0.5f } },
+        { 9049, { 3651, 0.5f } },
+        { 9051, { 3652, 0.5f } },
+        { 9052, { 3653, 0.5f } },
+        { 9058, { 3654, 0.5f } },
+        { 9060, { 3655, 0.5f } },
+        { 9061, { 3656, 0.5f } },
+        { 9062, { 3657, 0.5f } },
+        { 9063, { 3658, 0.5f } },
+        { 9064, { 3659, 0.5f } },
+        { 9065, { 3660, 0.5f } },
+        { 9067, { 3661, 0.5f } },
+        { 9068, { 3662, 0.5f } },
+        { 9090, { 3663, 0.5f } },
+        { 9092, { 3664, 0.5f } },
+        { 9093, { 3665, 0.5f } },
+        { 9094, { 3666, 0.5f } },
+        { 9095, { 3667, 0.5f } },
+        { 9096, { 3668, 0.5f } },
+        { 9097, { 3669, 0.5f } },
+        { 9099, { 3670, 0.5f } },
+        { 9100, { 3671, 0.5f } },
+        { 9106, { 3672, 0.5f } },
+        { 9108, { 3673, 0.5f } },
+        { 9109, { 3674, 0.5f } },
+        { 9110, { 3675, 0.5f } },
+        { 9111, { 3676, 0.5f } },
+        { 9112, { 3677, 0.5f } },
+        { 9113, { 3678, 0.5f } },
+        { 9115, { 3679, 0.5f } },
+        { 9116, { 3680, 0.5f } },
+        { 9122, { 3681, 0.5f } },
+        { 9124, { 3682, 0.5f } },
+        { 9125, { 3683, 0.5f } },
+        { 9126, { 3684, 0.5f } },
+        { 9127, { 3685, 0.5f } },
+        { 9128, { 3686, 0.5f } },
+        { 9129, { 3687, 0.5f } },
+        { 9131, { 3688, 0.5f } },
+        { 9132, { 3689, 0.5f } },
+        { 9138, { 3690, 0.5f } },
+        { 9140, { 3691, 0.5f } },
+        { 9141, { 3692, 0.5f } },
+        { 9142, { 3693, 0.5f } },
+        { 9143, { 3694, 0.5f } },
+        { 9144, { 3695, 0.5f } },
+        { 9145, { 3696, 0.5f } },
+        { 9147, { 3697, 0.5f } },
+        { 9148, { 3698, 0.5f } },
+        { 9154, { 3699, 0.5f } },
+        { 9156, { 3700, 0.5f } },
+        { 9157, { 3701, 0.5f } },
+        { 9158, { 3702, 0.5f } },
+        { 9159, { 3703, 0.5f } },
+        { 9160, { 3704, 0.5f } },
+        { 9161, { 3705, 0.5f } },
+        { 9163, { 3706, 0.5f } },
+        { 9164, { 3707, 0.5f } },
+        { 9170, { 3708, 0.5f } },
+        { 9172, { 3709, 0.5f } },
+        { 9173, { 3710, 0.5f } },
+        { 9174, { 3711, 0.5f } },
+        { 9175, { 3712, 0.5f } },
+        { 9176, { 3713, 0.5f } },
+        { 9177, { 3714, 0.5f } },
+        { 9179, { 3715, 0.5f } },
+        { 9180, { 3716, 0.5f } },
+        { 9186, { 3717, 0.5f } },
+        { 9188, { 3718, 0.5f } },
+        { 9189, { 3719, 0.5f } },
+        { 9190, { 3720, 0.5f } },
+        { 9191, { 3721, 0.5f } },
+        { 9192, { 3722, 0.5f } },
+    });
+}
+static void modTarget_25 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 9193, { 3723, 0.5f } },
+        { 9195, { 3724, 0.5f } },
+        { 9196, { 3725, 0.5f } },
+        { 9202, { 3726, 0.5f } },
+        { 9204, { 3727, 0.5f } },
+        { 9205, { 3728, 0.5f } },
+        { 9206, { 3729, 0.5f } },
+        { 9207, { 3730, 0.5f } },
+        { 9208, { 3731, 0.5f } },
+        { 9209, { 3732, 0.5f } },
+        { 9211, { 3733, 0.5f } },
+        { 9212, { 3734, 0.5f } },
+        { 9218, { 3735, 0.5f } },
+        { 9220, { 3736, 0.5f } },
+        { 9221, { 3737, 0.5f } },
+        { 9222, { 3738, 0.5f } },
+        { 9223, { 3739, 0.5f } },
+        { 9224, { 3740, 0.5f } },
+        { 9225, { 3741, 0.5f } },
+        { 9227, { 3742, 0.5f } },
+        { 9228, { 3743, 0.5f } },
+        { 9234, { 3744, 0.5f } },
+        { 9236, { 3745, 0.5f } },
+        { 9237, { 3746, 0.5f } },
+        { 9238, { 3747, 0.5f } },
+        { 9239, { 3748, 0.5f } },
+        { 9240, { 3749, 0.5f } },
+        { 9241, { 3750, 0.5f } },
+        { 9243, { 3751, 0.5f } },
+        { 9244, { 3752, 0.5f } },
+        { 9250, { 3753, 0.5f } },
+        { 9252, { 3754, 0.5f } },
+        { 9253, { 3755, 0.5f } },
+        { 9254, { 3756, 0.5f } },
+        { 9255, { 3757, 0.5f } },
+        { 9256, { 3758, 0.5f } },
+        { 9257, { 3759, 0.5f } },
+        { 9259, { 3760, 0.5f } },
+        { 9260, { 3761, 0.5f } },
+        { 9266, { 3762, 0.5f } },
+        { 9268, { 3763, 0.5f } },
+        { 9269, { 3764, 0.5f } },
+        { 9270, { 3765, 0.5f } },
+        { 9271, { 3766, 0.5f } },
+        { 9272, { 3767, 0.5f } },
+        { 9273, { 3768, 0.5f } },
+        { 9275, { 3769, 0.5f } },
+        { 9276, { 3770, 0.5f } },
+        { 9282, { 3771, 0.5f } },
+        { 9284, { 3772, 0.5f } },
+        { 9285, { 3773, 0.5f } },
+        { 9286, { 3774, 0.5f } },
+        { 9287, { 3775, 0.5f } },
+        { 9288, { 3776, 0.5f } },
+        { 9289, { 3777, 0.5f } },
+        { 9291, { 3778, 0.5f } },
+        { 9292, { 3779, 0.5f } },
+        { 9298, { 3780, 0.5f } },
+        { 9300, { 3781, 0.5f } },
+        { 9301, { 3782, 0.5f } },
+        { 9302, { 3783, 0.5f } },
+        { 9303, { 3784, 0.5f } },
+        { 9304, { 3785, 0.5f } },
+        { 9305, { 3786, 0.5f } },
+        { 9307, { 3787, 0.5f } },
+        { 9308, { 3788, 0.5f } },
+        { 9314, { 3789, 0.5f } },
+        { 9316, { 3790, 0.5f } },
+        { 9317, { 3791, 0.5f } },
+        { 9318, { 3792, 0.5f } },
+        { 9319, { 3793, 0.5f } },
+        { 9320, { 3794, 0.5f } },
+        { 9321, { 3795, 0.5f } },
+        { 9323, { 3796, 0.5f } },
+        { 9324, { 3797, 0.5f } },
+        { 9330, { 3798, 0.5f } },
+        { 9332, { 3799, 0.5f } },
+        { 9333, { 3800, 0.5f } },
+        { 9334, { 3801, 0.5f } },
+        { 9335, { 3802, 0.5f } },
+        { 9336, { 3803, 0.5f } },
+        { 9337, { 3804, 0.5f } },
+        { 9339, { 3805, 0.5f } },
+        { 9340, { 3806, 0.5f } },
+        { 9362, { 3807, 0.5f } },
+        { 9364, { 3808, 0.5f } },
+        { 9365, { 3809, 0.5f } },
+        { 9366, { 3810, 0.5f } },
+        { 9367, { 3811, 0.5f } },
+        { 9368, { 3812, 0.5f } },
+        { 9369, { 3813, 0.5f } },
+        { 9371, { 3814, 0.5f } },
+        { 9372, { 3815, 0.5f } },
+        { 9378, { 3816, 0.5f } },
+        { 9380, { 3817, 0.5f } },
+        { 9381, { 3818, 0.5f } },
+        { 9382, { 3819, 0.5f } },
+        { 9383, { 3820, 0.5f } },
+        { 9384, { 3821, 0.5f } },
+        { 9385, { 3822, 0.5f } },
+    });
+}
+static void modTarget_26 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 9387, { 3823, 0.5f } },
+        { 9388, { 3824, 0.5f } },
+        { 9394, { 3825, 0.5f } },
+        { 9396, { 3826, 0.5f } },
+        { 9397, { 3827, 0.5f } },
+        { 9398, { 3828, 0.5f } },
+        { 9399, { 3829, 0.5f } },
+        { 9400, { 3830, 0.5f } },
+        { 9401, { 3831, 0.5f } },
+        { 9403, { 3832, 0.5f } },
+        { 9404, { 3833, 0.5f } },
+        { 9410, { 3834, 0.5f } },
+        { 9412, { 3835, 0.5f } },
+        { 9413, { 3836, 0.5f } },
+        { 9414, { 3837, 0.5f } },
+        { 9415, { 3838, 0.5f } },
+        { 9416, { 3839, 0.5f } },
+        { 9417, { 3840, 0.5f } },
+        { 9419, { 3841, 0.5f } },
+        { 9420, { 3842, 0.5f } },
+        { 9426, { 3843, 0.5f } },
+        { 9428, { 3844, 0.5f } },
+        { 9429, { 3845, 0.5f } },
+        { 9430, { 3846, 0.5f } },
+        { 9431, { 3847, 0.5f } },
+        { 9432, { 3848, 0.5f } },
+        { 9433, { 3849, 0.5f } },
+        { 9435, { 3850, 0.5f } },
+        { 9436, { 3851, 0.5f } },
+        { 9442, { 3852, 0.5f } },
+        { 9444, { 3853, 0.5f } },
+        { 9445, { 3854, 0.5f } },
+        { 9446, { 3855, 0.5f } },
+        { 9447, { 3856, 0.5f } },
+        { 9448, { 3857, 0.5f } },
+        { 9449, { 3858, 0.5f } },
+        { 9451, { 3859, 0.5f } },
+        { 9452, { 3860, 0.5f } },
+        { 9458, { 3861, 0.5f } },
+        { 9460, { 3862, 0.5f } },
+        { 9461, { 3863, 0.5f } },
+        { 9462, { 3864, 0.5f } },
+        { 9463, { 3865, 0.5f } },
+        { 9464, { 3866, 0.5f } },
+        { 9465, { 3867, 0.5f } },
+        { 9467, { 3868, 0.5f } },
+        { 9468, { 3869, 0.5f } },
+        { 9474, { 3870, 0.5f } },
+        { 9476, { 3871, 0.5f } },
+        { 9477, { 3872, 0.5f } },
+        { 9478, { 3873, 0.5f } },
+        { 9479, { 3874, 0.5f } },
+        { 9480, { 3875, 0.5f } },
+        { 9481, { 3876, 0.5f } },
+        { 9483, { 3877, 0.5f } },
+        { 9484, { 3878, 0.5f } },
+        { 9490, { 3879, 0.5f } },
+        { 9492, { 3880, 0.5f } },
+        { 9493, { 3881, 0.5f } },
+        { 9494, { 3882, 0.5f } },
+        { 9495, { 3883, 0.5f } },
+        { 9496, { 3884, 0.5f } },
+        { 9497, { 3885, 0.5f } },
+        { 9499, { 3886, 0.5f } },
+        { 9500, { 3887, 0.5f } },
+        { 9506, { 3888, 0.5f } },
+        { 9508, { 3889, 0.5f } },
+        { 9509, { 3890, 0.5f } },
+        { 9510, { 3891, 0.5f } },
+        { 9511, { 3892, 0.5f } },
+        { 9512, { 3893, 0.5f } },
+        { 9513, { 3894, 0.5f } },
+        { 9515, { 3895, 0.5f } },
+        { 9516, { 3896, 0.5f } },
+        { 9522, { 3897, 0.5f } },
+        { 9524, { 3898, 0.5f } },
+        { 9525, { 3899, 0.5f } },
+        { 9526, { 3900, 0.5f } },
+        { 9527, { 3901, 0.5f } },
+        { 9528, { 3902, 0.5f } },
+        { 9529, { 3903, 0.5f } },
+        { 9531, { 3904, 0.5f } },
+        { 9532, { 3905, 0.5f } },
+        { 9538, { 3906, 0.5f } },
+        { 9540, { 3907, 0.5f } },
+        { 9541, { 3908, 0.5f } },
+        { 9542, { 3909, 0.5f } },
+        { 9543, { 3910, 0.5f } },
+        { 9544, { 3911, 0.5f } },
+        { 9545, { 3912, 0.5f } },
+        { 9547, { 3913, 0.5f } },
+        { 9548, { 3914, 0.5f } },
+        { 9554, { 3915, 0.5f } },
+        { 9556, { 3916, 0.5f } },
+        { 9557, { 3917, 0.5f } },
+        { 9558, { 3918, 0.5f } },
+        { 9559, { 3919, 0.5f } },
+        { 9560, { 3920, 0.5f } },
+        { 9561, { 3921, 0.5f } },
+        { 9563, { 3922, 0.5f } },
+    });
+}
+static void modTarget_27 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 9564, { 3923, 0.5f } },
+        { 9570, { 3924, 0.5f } },
+        { 9572, { 3925, 0.5f } },
+        { 9573, { 3926, 0.5f } },
+        { 9574, { 3927, 0.5f } },
+        { 9575, { 3928, 0.5f } },
+        { 9576, { 3929, 0.5f } },
+        { 9577, { 3930, 0.5f } },
+        { 9579, { 3931, 0.5f } },
+        { 9580, { 3932, 0.5f } },
+        { 9586, { 3933, 0.5f } },
+        { 9588, { 3934, 0.5f } },
+        { 9589, { 3935, 0.5f } },
+        { 9590, { 3936, 0.5f } },
+        { 9591, { 3937, 0.5f } },
+        { 9592, { 3938, 0.5f } },
+        { 9593, { 3939, 0.5f } },
+        { 9595, { 3940, 0.5f } },
+        { 9596, { 3941, 0.5f } },
+        { 9602, { 3942, 0.5f } },
+        { 9604, { 3943, 0.5f } },
+        { 9605, { 3944, 0.5f } },
+        { 9606, { 3945, 0.5f } },
+        { 9607, { 3946, 0.5f } },
+        { 9608, { 3947, 0.5f } },
+        { 9609, { 3948, 0.5f } },
+        { 9611, { 3949, 0.5f } },
+        { 9612, { 3950, 0.5f } },
+        { 9701, { 3951, 0.5f } },
+        { 9703, { 3952, 0.5f } },
+        { 9705, { 3953, 0.5f } },
+        { 9707, { 3954, 0.5f } },
+        { 9709, { 3955, 0.5f } },
+        { 9711, { 3956, 0.5f } },
+        { 9713, { 3957, 0.5f } },
+        { 9715, { 3958, 0.5f } },
+        { 9717, { 3959, 0.5f } },
+        { 9719, { 3960, 0.5f } },
+        { 9721, { 3961, 0.5f } },
+        { 9723, { 3962, 0.5f } },
+        { 9725, { 3963, 0.5f } },
+        { 9727, { 3964, 0.5f } },
+        { 9729, { 3965, 0.5f } },
+        { 9731, { 3966, 0.5f } },
+        { 9733, { 3967, 0.5f } },
+        { 9735, { 3968, 0.5f } },
+        { 9737, { 3969, 0.5f } },
+        { 9739, { 3970, 0.5f } },
+        { 9741, { 3971, 0.5f } },
+        { 9743, { 3972, 0.5f } },
+        { 9745, { 3973, 0.5f } },
+        { 9747, { 3974, 0.5f } },
+        { 9749, { 3975, 0.5f } },
+        { 9751, { 3976, 0.5f } },
+        { 9753, { 3977, 0.5f } },
+        { 9755, { 3978, 0.5f } },
+        { 9757, { 3979, 0.5f } },
+        { 9759, { 3980, 0.5f } },
+        { 9761, { 3981, 0.5f } },
+        { 9763, { 3982, 0.5f } },
+        { 9765, { 3983, 0.5f } },
+        { 9767, { 3984, 0.5f } },
+        { 9769, { 3985, 0.5f } },
+        { 9771, { 3986, 0.5f } },
+        { 9773, { 3987, 0.5f } },
+        { 9775, { 3988, 0.5f } },
+        { 9777, { 3989, 0.5f } },
+        { 9779, { 3990, 0.5f } },
+        { 9781, { 3991, 0.5f } },
+        { 9783, { 3992, 0.5f } },
+        { 9785, { 3993, 0.5f } },
+        { 9787, { 3994, 0.5f } },
+        { 9789, { 3995, 0.5f } },
+        { 9791, { 3996, 0.5f } },
+        { 9793, { 3997, 0.5f } },
+        { 9795, { 3998, 0.5f } },
+        { 9797, { 3999, 0.5f } },
+        { 9799, { 4000, 0.5f } },
+        { 9801, { 4001, 0.5f } },
+        { 9803, { 4002, 0.5f } },
+        { 9805, { 4003, 0.5f } },
+        { 9807, { 4004, 0.5f } },
+        { 9809, { 4005, 0.5f } },
+        { 9811, { 4006, 0.5f } },
+        { 9813, { 4007, 0.5f } },
+        { 9815, { 4008, 0.5f } },
+        { 9817, { 4009, 0.5f } },
+        { 9819, { 4010, 0.5f } },
+        { 9821, { 4011, 0.5f } },
+        { 9823, { 4012, 0.5f } },
+        { 9825, { 4013, 0.5f } },
+        { 9827, { 4014, 0.5f } },
+        { 9829, { 4015, 0.5f } },
+        { 9831, { 4016, 0.5f } },
+        { 9833, { 4017, 0.5f } },
+        { 9835, { 4018, 0.5f } },
+        { 10001, { 4019, 0.5f } },
+        { 10002, { 4020, 0.5f } },
+        { 10003, { 4021, 0.5f } },
+        { 10004, { 4022, 0.5f } },
+    });
+}
+static void modTarget_28 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 10005, { 4023, 0.5f } },
+        { 10006, { 4024, 0.5f } },
+        { 10007, { 4025, 0.5f } },
+        { 10008, { 4026, 0.5f } },
+        { 10014, { 4027, 0.5f } },
+        { 10015, { 4028, 0.5f } },
+        { 10016, { 4029, 0.5f } },
+        { 10017, { 4030, 0.5f } },
+        { 10033, { 4031, 0.5f } },
+        { 10034, { 4032, 0.5f } },
+        { 10035, { 4033, 0.5f } },
+        { 10036, { 4034, 0.5f } },
+        { 10037, { 4035, 0.5f } },
+        { 10038, { 4036, 0.5f } },
+        { 10039, { 4037, 0.5f } },
+        { 10040, { 4038, 0.5f } },
+        { 10046, { 4039, 0.5f } },
+        { 10047, { 4040, 0.5f } },
+        { 10048, { 4041, 0.5f } },
+        { 10049, { 4042, 0.5f } },
+        { 10065, { 4043, 0.5f } },
+        { 10066, { 4044, 0.5f } },
+        { 10067, { 4045, 0.5f } },
+        { 10068, { 4046, 0.5f } },
+        { 10069, { 4047, 0.5f } },
+        { 10070, { 4048, 0.5f } },
+        { 10071, { 4049, 0.5f } },
+        { 10072, { 4050, 0.5f } },
+        { 10078, { 4051, 0.5f } },
+        { 10079, { 4052, 0.5f } },
+        { 10080, { 4053, 0.5f } },
+        { 10081, { 4054, 0.5f } },
+        { 10097, { 4055, 0.5f } },
+        { 10098, { 4056, 0.5f } },
+        { 10099, { 4057, 0.5f } },
+        { 10100, { 4058, 0.5f } },
+        { 10101, { 4059, 0.5f } },
+        { 10102, { 4060, 0.5f } },
+        { 10103, { 4061, 0.5f } },
+        { 10104, { 4062, 0.5f } },
+        { 10110, { 4063, 0.5f } },
+        { 10111, { 4064, 0.5f } },
+        { 10112, { 4065, 0.5f } },
+        { 10113, { 4066, 0.5f } },
+        { 10129, { 4067, 0.5f } },
+        { 10130, { 4068, 0.5f } },
+        { 10131, { 4069, 0.5f } },
+        { 10132, { 4070, 0.5f } },
+        { 10133, { 4071, 0.5f } },
+        { 10134, { 4072, 0.5f } },
+        { 10135, { 4073, 0.5f } },
+        { 10136, { 4074, 0.5f } },
+        { 10142, { 4075, 0.5f } },
+        { 10143, { 4076, 0.5f } },
+        { 10144, { 4077, 0.5f } },
+        { 10145, { 4078, 0.5f } },
+        { 10161, { 4079, 0.5f } },
+        { 10162, { 4080, 0.5f } },
+        { 10163, { 4081, 0.5f } },
+        { 10164, { 4082, 0.5f } },
+        { 10165, { 4083, 0.5f } },
+        { 10166, { 4084, 0.5f } },
+        { 10167, { 4085, 0.5f } },
+        { 10168, { 4086, 0.5f } },
+        { 10174, { 4087, 0.5f } },
+        { 10175, { 4088, 0.5f } },
+        { 10176, { 4089, 0.5f } },
+        { 10177, { 4090, 0.5f } },
+        { 10193, { 4091, 0.5f } },
+        { 10194, { 4092, 0.5f } },
+        { 10195, { 4093, 0.5f } },
+        { 10196, { 4094, 0.5f } },
+        { 10197, { 4095, 0.5f } },
+        { 10198, { 4096, 0.5f } },
+        { 10199, { 4097, 0.5f } },
+        { 10200, { 4098, 0.5f } },
+        { 10206, { 4099, 0.5f } },
+        { 10207, { 4100, 0.5f } },
+        { 10208, { 4101, 0.5f } },
+        { 10209, { 4102, 0.5f } },
+        { 10225, { 4103, 0.5f } },
+        { 10226, { 4104, 0.5f } },
+        { 10227, { 4105, 0.5f } },
+        { 10228, { 4106, 0.5f } },
+        { 10229, { 4107, 0.5f } },
+        { 10230, { 4108, 0.5f } },
+        { 10231, { 4109, 0.5f } },
+        { 10232, { 4110, 0.5f } },
+        { 10238, { 4111, 0.5f } },
+        { 10239, { 4112, 0.5f } },
+        { 10240, { 4113, 0.5f } },
+        { 10241, { 4114, 0.5f } },
+        { 10257, { 4115, 0.5f } },
+        { 10258, { 4116, 0.5f } },
+        { 10259, { 4117, 0.5f } },
+        { 10260, { 4118, 0.5f } },
+        { 10261, { 4119, 0.5f } },
+        { 10262, { 4120, 0.5f } },
+        { 10263, { 4121, 0.5f } },
+        { 10264, { 4122, 0.5f } },
+    });
+}
+static void modTarget_29 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 10270, { 4123, 0.5f } },
+        { 10271, { 4124, 0.5f } },
+        { 10272, { 4125, 0.5f } },
+        { 10273, { 4126, 0.5f } },
+        { 10289, { 4127, 0.5f } },
+        { 10290, { 4128, 0.5f } },
+        { 10291, { 4129, 0.5f } },
+        { 10292, { 4130, 0.5f } },
+        { 10293, { 4131, 0.5f } },
+        { 10294, { 4132, 0.5f } },
+        { 10295, { 4133, 0.5f } },
+        { 10296, { 4134, 0.5f } },
+        { 10302, { 4135, 0.5f } },
+        { 10303, { 4136, 0.5f } },
+        { 10304, { 4137, 0.5f } },
+        { 10305, { 4138, 0.5f } },
+        { 10321, { 4139, 0.5f } },
+        { 10322, { 4140, 0.5f } },
+        { 10323, { 4141, 0.5f } },
+        { 10324, { 4142, 0.5f } },
+        { 10325, { 4143, 0.5f } },
+        { 10326, { 4144, 0.5f } },
+        { 10327, { 4145, 0.5f } },
+        { 10328, { 4146, 0.5f } },
+        { 10334, { 4147, 0.5f } },
+        { 10335, { 4148, 0.5f } },
+        { 10336, { 4149, 0.5f } },
+        { 10337, { 4150, 0.5f } },
+        { 10353, { 4151, 0.5f } },
+        { 10354, { 4152, 0.5f } },
+        { 10355, { 4153, 0.5f } },
+        { 10356, { 4154, 0.5f } },
+        { 10357, { 4155, 0.5f } },
+        { 10358, { 4156, 0.5f } },
+        { 10359, { 4157, 0.5f } },
+        { 10360, { 4158, 0.5f } },
+        { 10366, { 4159, 0.5f } },
+        { 10367, { 4160, 0.5f } },
+        { 10368, { 4161, 0.5f } },
+        { 10369, { 4162, 0.5f } },
+        { 10385, { 4163, 0.5f } },
+        { 10386, { 4164, 0.5f } },
+        { 10387, { 4165, 0.5f } },
+        { 10388, { 4166, 0.5f } },
+        { 10389, { 4167, 0.5f } },
+        { 10390, { 4168, 0.5f } },
+        { 10391, { 4169, 0.5f } },
+        { 10392, { 4170, 0.5f } },
+        { 10398, { 4171, 0.5f } },
+        { 10399, { 4172, 0.5f } },
+        { 10400, { 4173, 0.5f } },
+        { 10401, { 4174, 0.5f } },
+        { 10417, { 4175, 0.5f } },
+        { 10418, { 4176, 0.5f } },
+        { 10419, { 4177, 0.5f } },
+        { 10420, { 4178, 0.5f } },
+        { 10421, { 4179, 0.5f } },
+        { 10422, { 4180, 0.5f } },
+        { 10423, { 4181, 0.5f } },
+        { 10424, { 4182, 0.5f } },
+        { 10430, { 4183, 0.5f } },
+        { 10431, { 4184, 0.5f } },
+        { 10432, { 4185, 0.5f } },
+        { 10433, { 4186, 0.5f } },
+        { 10449, { 4187, 0.5f } },
+        { 10450, { 4188, 0.5f } },
+        { 10451, { 4189, 0.5f } },
+        { 10452, { 4190, 0.5f } },
+        { 10453, { 4191, 0.5f } },
+        { 10454, { 4192, 0.5f } },
+        { 10455, { 4193, 0.5f } },
+        { 10456, { 4194, 0.5f } },
+        { 10462, { 4195, 0.5f } },
+        { 10463, { 4196, 0.5f } },
+        { 10464, { 4197, 0.5f } },
+        { 10465, { 4198, 0.5f } },
+        { 10481, { 4199, 0.5f } },
+        { 10482, { 4200, 0.5f } },
+        { 10483, { 4201, 0.5f } },
+        { 10484, { 4202, 0.5f } },
+        { 10485, { 4203, 0.5f } },
+        { 10486, { 4204, 0.5f } },
+        { 10487, { 4205, 0.5f } },
+        { 10488, { 4206, 0.5f } },
+        { 10494, { 4207, 0.5f } },
+        { 10495, { 4208, 0.5f } },
+        { 10496, { 4209, 0.5f } },
+        { 10497, { 4210, 0.5f } },
+        { 10513, { 4211, 0.5f } },
+        { 10514, { 4212, 0.5f } },
+        { 10515, { 4213, 0.5f } },
+        { 10516, { 4214, 0.5f } },
+        { 10517, { 4215, 0.5f } },
+        { 10518, { 4216, 0.5f } },
+        { 10519, { 4217, 0.5f } },
+        { 10520, { 4218, 0.5f } },
+        { 10526, { 4219, 0.5f } },
+        { 10527, { 4220, 0.5f } },
+        { 10528, { 4221, 0.5f } },
+        { 10529, { 4222, 0.5f } },
+    });
+}
+static void modTarget_30 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 10545, { 4223, 0.5f } },
+        { 10546, { 4224, 0.5f } },
+        { 10547, { 4225, 0.5f } },
+        { 10548, { 4226, 0.5f } },
+        { 10549, { 4227, 0.5f } },
+        { 10550, { 4228, 0.5f } },
+        { 10551, { 4229, 0.5f } },
+        { 10552, { 4230, 0.5f } },
+        { 10558, { 4231, 0.5f } },
+        { 10559, { 4232, 0.5f } },
+        { 10560, { 4233, 0.5f } },
+        { 10561, { 4234, 0.5f } },
+        { 10577, { 4235, 0.5f } },
+        { 10578, { 4236, 0.5f } },
+        { 10579, { 4237, 0.5f } },
+        { 10580, { 4238, 0.5f } },
+        { 10581, { 4239, 0.5f } },
+        { 10582, { 4240, 0.5f } },
+        { 10583, { 4241, 0.5f } },
+        { 10584, { 4242, 0.5f } },
+        { 10590, { 4243, 0.5f } },
+        { 10591, { 4244, 0.5f } },
+        { 10592, { 4245, 0.5f } },
+        { 10593, { 4246, 0.5f } },
+        { 10609, { 4247, 0.5f } },
+        { 10610, { 4248, 0.5f } },
+        { 10611, { 4249, 0.5f } },
+        { 10612, { 4250, 0.5f } },
+        { 10613, { 4251, 0.5f } },
+        { 10614, { 4252, 0.5f } },
+        { 10615, { 4253, 0.5f } },
+        { 10616, { 4254, 0.5f } },
+        { 10622, { 4255, 0.5f } },
+        { 10623, { 4256, 0.5f } },
+        { 10624, { 4257, 0.5f } },
+        { 10625, { 4258, 0.5f } },
+        { 11000, { 4259, 0.5f } },
+        { 11001, { 4260, 0.5f } },
+        { 11002, { 4261, 0.5f } },
+        { 11003, { 4262, 0.5f } },
+        { 11004, { 4263, 0.5f } },
+        { 11005, { 4264, 0.5f } },
+        { 11006, { 4265, 0.5f } },
+        { 11007, { 4266, 0.5f } },
+        { 11008, { 4267, 0.5f } },
+        { 11009, { 4268, 0.5f } },
+        { 11010, { 4269, 0.5f } },
+        { 11011, { 4270, 0.5f } },
+        { 11012, { 4271, 0.5f } },
+        { 11013, { 4272, 0.5f } },
+        { 11014, { 4273, 0.5f } },
+        { 11015, { 4274, 0.5f } },
+        { 11016, { 4275, 0.5f } },
+        { 11017, { 4276, 0.5f } },
+        { 11018, { 4277, 0.5f } },
+        { 11019, { 4278, 0.5f } },
+        { 11020, { 4279, 0.5f } },
+        { 11021, { 4280, 0.5f } },
+        { 11022, { 4281, 0.5f } },
+        { 11023, { 4282, 0.5f } },
+        { 11024, { 4283, 0.5f } },
+        { 11025, { 4284, 0.5f } },
+        { 11026, { 4285, 0.5f } },
+        { 11027, { 4286, 0.5f } },
+        { 11028, { 4287, 0.5f } },
+        { 11029, { 4288, 0.5f } },
+        { 11030, { 4289, 0.5f } },
+        { 11031, { 4290, 0.5f } },
+        { 11032, { 4291, 0.5f } },
+        { 11033, { 4292, 0.5f } },
+        { 11034, { 4293, 0.5f } },
+        { 11035, { 4294, 0.5f } },
+        { 11036, { 4295, 0.5f } },
+        { 11037, { 4296, 0.5f } },
+        { 11038, { 4297, 0.5f } },
+        { 11039, { 4298, 0.5f } },
+        { 11040, { 4299, 0.5f } },
+        { 11041, { 4300, 0.5f } },
+        { 11042, { 4301, 0.5f } },
+        { 11043, { 4302, 0.5f } },
+        { 11044, { 4303, 0.5f } },
+        { 11045, { 4304, 0.5f } },
+        { 11046, { 4305, 0.5f } },
+        { 11047, { 4306, 0.5f } },
+        { 11048, { 4307, 0.5f } },
+        { 11049, { 4308, 0.5f } },
+        { 11050, { 4309, 0.5f } },
+        { 11051, { 4310, 0.5f } },
+        { 11052, { 4311, 0.5f } },
+        { 11053, { 4312, 0.5f } },
+        { 11054, { 4313, 0.5f } },
+        { 11055, { 4314, 0.5f } },
+        { 11056, { 4315, 0.5f } },
+        { 11057, { 4316, 0.5f } },
+        { 11058, { 4317, 0.5f } },
+        { 11059, { 4318, 0.5f } },
+        { 11060, { 4319, 0.5f } },
+        { 11061, { 4320, 0.5f } },
+        { 11062, { 4321, 0.5f } },
+        { 11063, { 4322, 0.5f } },
+    });
+}
+static void modTarget_31 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11064, { 4323, 0.5f } },
+        { 11065, { 4324, 0.5f } },
+        { 11066, { 4325, 0.5f } },
+        { 11067, { 4326, 0.5f } },
+        { 11068, { 4327, 0.5f } },
+        { 11069, { 4328, 0.5f } },
+        { 11070, { 4329, 0.5f } },
+        { 11071, { 4330, 0.5f } },
+        { 11072, { 4331, 0.5f } },
+        { 11073, { 4332, 0.5f } },
+        { 11074, { 4333, 0.5f } },
+        { 11075, { 4334, 0.5f } },
+        { 11076, { 4335, 0.5f } },
+        { 11077, { 4336, 0.5f } },
+        { 11078, { 4337, 0.5f } },
+        { 11079, { 4338, 0.5f } },
+        { 11080, { 4339, 0.5f } },
+        { 11081, { 4340, 0.5f } },
+        { 11082, { 4341, 0.5f } },
+        { 11083, { 4342, 0.5f } },
+        { 11084, { 4343, 0.5f } },
+        { 11085, { 4344, 0.5f } },
+        { 11086, { 4345, 0.5f } },
+        { 11087, { 4346, 0.5f } },
+        { 11088, { 4347, 0.5f } },
+        { 11089, { 4348, 0.5f } },
+        { 11090, { 4349, 0.5f } },
+        { 11091, { 4350, 0.5f } },
+        { 11092, { 4351, 0.5f } },
+        { 11093, { 4352, 0.5f } },
+        { 11094, { 4353, 0.5f } },
+        { 11095, { 4354, 0.5f } },
+        { 11096, { 4355, 0.5f } },
+        { 11097, { 4356, 0.5f } },
+        { 11098, { 4357, 0.5f } },
+        { 11099, { 4358, 0.5f } },
+        { 11100, { 4359, 0.5f } },
+        { 11101, { 4360, 0.5f } },
+        { 11102, { 4361, 0.5f } },
+        { 11103, { 4362, 0.5f } },
+        { 11104, { 4363, 0.5f } },
+        { 11105, { 4364, 0.5f } },
+        { 11106, { 4365, 0.5f } },
+        { 11107, { 4366, 0.5f } },
+        { 11108, { 4367, 0.5f } },
+        { 11109, { 4368, 0.5f } },
+        { 11110, { 4369, 0.5f } },
+        { 11111, { 4370, 0.5f } },
+        { 11112, { 4371, 0.5f } },
+        { 11113, { 4372, 0.5f } },
+        { 11114, { 4373, 0.5f } },
+        { 11115, { 4374, 0.5f } },
+        { 11116, { 4375, 0.5f } },
+        { 11117, { 4376, 0.5f } },
+        { 11118, { 4377, 0.5f } },
+        { 11119, { 4378, 0.5f } },
+        { 11120, { 4379, 0.5f } },
+        { 11121, { 4380, 0.5f } },
+        { 11122, { 4381, 0.5f } },
+        { 11123, { 4382, 0.5f } },
+        { 11124, { 4383, 0.5f } },
+        { 11125, { 4384, 0.5f } },
+        { 11126, { 4385, 0.5f } },
+        { 11127, { 4386, 0.5f } },
+        { 11128, { 4387, 0.5f } },
+        { 11129, { 4388, 0.5f } },
+        { 11130, { 4389, 0.5f } },
+        { 11131, { 4390, 0.5f } },
+        { 11132, { 4391, 0.5f } },
+        { 11133, { 4392, 0.5f } },
+        { 11134, { 4393, 0.5f } },
+        { 11135, { 4394, 0.5f } },
+        { 11136, { 4395, 0.5f } },
+        { 11137, { 4396, 0.5f } },
+        { 11138, { 4397, 0.5f } },
+        { 11139, { 4398, 0.5f } },
+        { 11140, { 4399, 0.5f } },
+        { 11141, { 4400, 0.5f } },
+        { 11142, { 4401, 0.5f } },
+        { 11143, { 4402, 0.5f } },
+        { 11144, { 4403, 0.5f } },
+        { 11145, { 4404, 0.5f } },
+        { 11146, { 4405, 0.5f } },
+        { 11147, { 4406, 0.5f } },
+        { 11148, { 4407, 0.5f } },
+        { 11149, { 4408, 0.5f } },
+        { 11150, { 4409, 0.5f } },
+        { 11151, { 4410, 0.5f } },
+        { 11152, { 4411, 0.5f } },
+        { 11153, { 4412, 0.5f } },
+        { 11154, { 4413, 0.5f } },
+        { 11155, { 4414, 0.5f } },
+        { 11156, { 4415, 0.5f } },
+        { 11157, { 4416, 0.5f } },
+        { 11158, { 4417, 0.5f } },
+        { 11159, { 4418, 0.5f } },
+        { 11160, { 4419, 0.5f } },
+        { 11161, { 4420, 0.5f } },
+        { 11162, { 4421, 0.5f } },
+        { 11163, { 4422, 0.5f } },
+    });
+}
+static void modTarget_32 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11164, { 4423, 0.5f } },
+        { 11165, { 4424, 0.5f } },
+        { 11166, { 4425, 0.5f } },
+        { 11167, { 4426, 0.5f } },
+        { 11168, { 4427, 0.5f } },
+        { 11169, { 4428, 0.5f } },
+        { 11170, { 4429, 0.5f } },
+        { 11171, { 4430, 0.5f } },
+        { 11172, { 4431, 0.5f } },
+        { 11173, { 4432, 0.5f } },
+        { 11174, { 4433, 0.5f } },
+        { 11175, { 4434, 0.5f } },
+        { 11176, { 4435, 0.5f } },
+        { 11177, { 4436, 0.5f } },
+        { 11178, { 4437, 0.5f } },
+        { 11179, { 4438, 0.5f } },
+        { 11180, { 4439, 0.5f } },
+        { 11181, { 4440, 0.5f } },
+        { 11182, { 4441, 0.5f } },
+        { 11183, { 4442, 0.5f } },
+        { 11184, { 4443, 0.5f } },
+        { 11185, { 4444, 0.5f } },
+        { 11186, { 4445, 0.5f } },
+        { 11187, { 4446, 0.5f } },
+        { 11188, { 4447, 0.5f } },
+        { 11189, { 4448, 0.5f } },
+        { 11190, { 4449, 0.5f } },
+        { 11191, { 4450, 0.5f } },
+        { 11192, { 4451, 0.5f } },
+        { 11193, { 4452, 0.5f } },
+        { 11194, { 4453, 0.5f } },
+        { 11195, { 4454, 0.5f } },
+        { 11196, { 4455, 0.5f } },
+        { 11197, { 4456, 0.5f } },
+        { 11198, { 4457, 0.5f } },
+        { 11199, { 4458, 0.5f } },
+        { 11200, { 4459, 0.5f } },
+        { 11201, { 4460, 0.5f } },
+        { 11202, { 4461, 0.5f } },
+        { 11203, { 4462, 0.5f } },
+        { 11204, { 4463, 0.5f } },
+        { 11205, { 4464, 0.5f } },
+        { 11206, { 4465, 0.5f } },
+        { 11207, { 4466, 0.5f } },
+        { 11208, { 4467, 0.5f } },
+        { 11209, { 4468, 0.5f } },
+        { 11210, { 4469, 0.5f } },
+        { 11211, { 4470, 0.5f } },
+        { 11212, { 4471, 0.5f } },
+        { 11213, { 4472, 0.5f } },
+        { 11214, { 4473, 0.5f } },
+        { 11215, { 4474, 0.5f } },
+        { 11216, { 4475, 0.5f } },
+        { 11217, { 4476, 0.5f } },
+        { 11218, { 4477, 0.5f } },
+        { 11219, { 4478, 0.5f } },
+        { 11220, { 4479, 0.5f } },
+        { 11221, { 4480, 0.5f } },
+        { 11222, { 4481, 0.5f } },
+        { 11223, { 4482, 0.5f } },
+        { 11224, { 4483, 0.5f } },
+        { 11225, { 4484, 0.5f } },
+        { 11226, { 4485, 0.5f } },
+        { 11227, { 4486, 0.5f } },
+        { 11228, { 4487, 0.5f } },
+        { 11229, { 4488, 0.5f } },
+        { 11230, { 4489, 0.5f } },
+        { 11231, { 4490, 0.5f } },
+        { 11232, { 4491, 0.5f } },
+        { 11233, { 4492, 0.5f } },
+        { 11234, { 4493, 0.5f } },
+        { 11235, { 4494, 0.5f } },
+        { 11236, { 4495, 0.5f } },
+        { 11237, { 4496, 0.5f } },
+        { 11238, { 4497, 0.5f } },
+        { 11239, { 4498, 0.5f } },
+        { 11240, { 4499, 0.5f } },
+        { 11241, { 4500, 0.5f } },
+        { 11242, { 4501, 0.5f } },
+        { 11243, { 4502, 0.5f } },
+        { 11244, { 4503, 0.5f } },
+        { 11245, { 4504, 0.5f } },
+        { 11246, { 4505, 0.5f } },
+        { 11247, { 4506, 0.5f } },
+        { 11248, { 4507, 0.5f } },
+        { 11249, { 4508, 0.5f } },
+        { 11250, { 4509, 0.5f } },
+        { 11251, { 4510, 0.5f } },
+        { 11252, { 4511, 0.5f } },
+        { 11253, { 4512, 0.5f } },
+        { 11254, { 4513, 0.5f } },
+        { 11255, { 4514, 0.5f } },
+        { 11256, { 4515, 0.5f } },
+        { 11257, { 4516, 0.5f } },
+        { 11258, { 4517, 0.5f } },
+        { 11259, { 4518, 0.5f } },
+        { 11260, { 4519, 0.5f } },
+        { 11261, { 4520, 0.5f } },
+        { 11262, { 4521, 0.5f } },
+        { 11263, { 4522, 0.5f } },
+    });
+}
+static void modTarget_33 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11264, { 4523, 0.5f } },
+        { 11265, { 4524, 0.5f } },
+        { 11266, { 4525, 0.5f } },
+        { 11267, { 4526, 0.5f } },
+        { 11268, { 4527, 0.5f } },
+        { 11269, { 4528, 0.5f } },
+        { 11270, { 4529, 0.5f } },
+        { 11271, { 4530, 0.5f } },
+        { 11272, { 4531, 0.5f } },
+        { 11273, { 4532, 0.5f } },
+        { 11274, { 4533, 0.5f } },
+        { 11275, { 4534, 0.5f } },
+        { 11276, { 4535, 0.5f } },
+        { 11277, { 4536, 0.5f } },
+        { 11278, { 4537, 0.5f } },
+        { 11279, { 4538, 0.5f } },
+        { 11280, { 4539, 0.5f } },
+        { 11281, { 4540, 0.5f } },
+        { 11282, { 4541, 0.5f } },
+        { 11283, { 4542, 0.5f } },
+        { 11284, { 4543, 0.5f } },
+        { 11285, { 4544, 0.5f } },
+        { 11286, { 4545, 0.5f } },
+        { 11287, { 4546, 0.5f } },
+        { 11288, { 4547, 0.5f } },
+        { 11289, { 4548, 0.5f } },
+        { 11290, { 4549, 0.5f } },
+        { 11291, { 4550, 0.5f } },
+        { 11292, { 4551, 0.5f } },
+        { 11293, { 4552, 0.5f } },
+        { 11294, { 4553, 0.5f } },
+        { 11295, { 4554, 0.5f } },
+        { 11296, { 4555, 0.5f } },
+        { 11297, { 4556, 0.5f } },
+        { 11298, { 4557, 0.5f } },
+        { 11299, { 4558, 0.5f } },
+        { 11300, { 4559, 0.5f } },
+        { 11301, { 4560, 0.5f } },
+        { 11302, { 4561, 0.5f } },
+        { 11303, { 4562, 0.5f } },
+        { 11304, { 4563, 0.5f } },
+        { 11305, { 4564, 0.5f } },
+        { 11306, { 4565, 0.5f } },
+        { 11307, { 4566, 0.5f } },
+        { 11308, { 4567, 0.5f } },
+        { 11309, { 4568, 0.5f } },
+        { 11310, { 4569, 0.5f } },
+        { 11311, { 4570, 0.5f } },
+        { 11312, { 4571, 0.5f } },
+        { 11313, { 4572, 0.5f } },
+        { 11314, { 4573, 0.5f } },
+        { 11315, { 4574, 0.5f } },
+        { 11316, { 4575, 0.5f } },
+        { 11317, { 4576, 0.5f } },
+        { 11318, { 4577, 0.5f } },
+        { 11319, { 4578, 0.5f } },
+        { 11320, { 4579, 0.5f } },
+        { 11321, { 4580, 0.5f } },
+        { 11322, { 4581, 0.5f } },
+        { 11323, { 4582, 0.5f } },
+        { 11324, { 4583, 0.5f } },
+        { 11325, { 4584, 0.5f } },
+        { 11326, { 4585, 0.5f } },
+        { 11327, { 4586, 0.5f } },
+        { 11328, { 4587, 0.5f } },
+        { 11329, { 4588, 0.5f } },
+        { 11330, { 4589, 0.5f } },
+        { 11331, { 4590, 0.5f } },
+        { 11332, { 4591, 0.5f } },
+        { 11333, { 4592, 0.5f } },
+        { 11334, { 4593, 0.5f } },
+        { 11335, { 4594, 0.5f } },
+        { 11336, { 4595, 0.5f } },
+        { 11337, { 4596, 0.5f } },
+        { 11338, { 4597, 0.5f } },
+        { 11339, { 4598, 0.5f } },
+        { 11340, { 4599, 0.5f } },
+        { 11341, { 4600, 0.5f } },
+        { 11342, { 4601, 0.5f } },
+        { 11343, { 4602, 0.5f } },
+        { 11344, { 4603, 0.5f } },
+        { 11345, { 4604, 0.5f } },
+        { 11346, { 4605, 0.5f } },
+        { 11347, { 4606, 0.5f } },
+        { 11348, { 4607, 0.5f } },
+        { 11349, { 4608, 0.5f } },
+        { 11350, { 4609, 0.5f } },
+        { 11351, { 4610, 0.5f } },
+        { 11352, { 4611, 0.5f } },
+        { 11353, { 4612, 0.5f } },
+        { 11354, { 4613, 0.5f } },
+        { 11355, { 4614, 0.5f } },
+        { 11356, { 4615, 0.5f } },
+        { 11357, { 4616, 0.5f } },
+        { 11358, { 4617, 0.5f } },
+        { 11359, { 4618, 0.5f } },
+        { 11360, { 4619, 0.5f } },
+        { 11361, { 4620, 0.5f } },
+        { 11362, { 4621, 0.5f } },
+        { 11363, { 4622, 0.5f } },
+    });
+}
+static void modTarget_34 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11364, { 4623, 0.5f } },
+        { 11365, { 4624, 0.5f } },
+        { 11366, { 4625, 0.5f } },
+        { 11367, { 4626, 0.5f } },
+        { 11368, { 4627, 0.5f } },
+        { 11369, { 4628, 0.5f } },
+        { 11370, { 4629, 0.5f } },
+        { 11371, { 4630, 0.5f } },
+        { 11372, { 4631, 0.5f } },
+        { 11373, { 4632, 0.5f } },
+        { 11374, { 4633, 0.5f } },
+        { 11375, { 4634, 0.5f } },
+        { 11376, { 4635, 0.5f } },
+        { 11377, { 4636, 0.5f } },
+        { 11378, { 4637, 0.5f } },
+        { 11379, { 4638, 0.5f } },
+        { 11380, { 4639, 0.5f } },
+        { 11381, { 4640, 0.5f } },
+        { 11382, { 4641, 0.5f } },
+        { 11383, { 4642, 0.5f } },
+        { 11384, { 4643, 0.5f } },
+        { 11385, { 4644, 0.5f } },
+        { 11386, { 4645, 0.5f } },
+        { 11387, { 4646, 0.5f } },
+        { 11388, { 4647, 0.5f } },
+        { 11389, { 4648, 0.5f } },
+        { 11390, { 4649, 0.5f } },
+        { 11391, { 4650, 0.5f } },
+        { 11392, { 4651, 0.5f } },
+        { 11393, { 4652, 0.5f } },
+        { 11394, { 4653, 0.5f } },
+        { 11395, { 4654, 0.5f } },
+        { 11396, { 4655, 0.5f } },
+        { 11397, { 4656, 0.5f } },
+        { 11398, { 4657, 0.5f } },
+        { 11399, { 4658, 0.5f } },
+        { 11400, { 4659, 0.5f } },
+        { 11401, { 4660, 0.5f } },
+        { 11402, { 4661, 0.5f } },
+        { 11403, { 4662, 0.5f } },
+        { 11404, { 4663, 0.5f } },
+        { 11405, { 4664, 0.5f } },
+        { 11406, { 4665, 0.5f } },
+        { 11407, { 4666, 0.5f } },
+        { 11408, { 4667, 0.5f } },
+        { 11409, { 4668, 0.5f } },
+        { 11410, { 4669, 0.5f } },
+        { 11411, { 4670, 0.5f } },
+        { 11412, { 4671, 0.5f } },
+        { 11413, { 4672, 0.5f } },
+        { 11414, { 4673, 0.5f } },
+        { 11415, { 4674, 0.5f } },
+        { 11416, { 4675, 0.5f } },
+        { 11417, { 4676, 0.5f } },
+        { 11418, { 4677, 0.5f } },
+        { 11419, { 4678, 0.5f } },
+        { 11420, { 4679, 0.5f } },
+        { 11421, { 4680, 0.5f } },
+        { 11422, { 4681, 0.5f } },
+        { 11423, { 4682, 0.5f } },
+        { 11424, { 4683, 0.5f } },
+        { 11425, { 4684, 0.5f } },
+        { 11426, { 4685, 0.5f } },
+        { 11427, { 4686, 0.5f } },
+        { 11428, { 4687, 0.5f } },
+        { 11429, { 4688, 0.5f } },
+        { 11430, { 4689, 0.5f } },
+        { 11431, { 4690, 0.5f } },
+        { 11432, { 4691, 0.5f } },
+        { 11433, { 4692, 0.5f } },
+        { 11434, { 4693, 0.5f } },
+        { 11435, { 4694, 0.5f } },
+        { 11436, { 4695, 0.5f } },
+        { 11437, { 4696, 0.5f } },
+        { 11438, { 4697, 0.5f } },
+        { 11439, { 4698, 0.5f } },
+        { 11440, { 4699, 0.5f } },
+        { 11441, { 4700, 0.5f } },
+        { 11442, { 4701, 0.5f } },
+        { 11443, { 4702, 0.5f } },
+        { 11444, { 4703, 0.5f } },
+        { 11445, { 4704, 0.5f } },
+        { 11446, { 4705, 0.5f } },
+        { 11447, { 4706, 0.5f } },
+        { 11448, { 4707, 0.5f } },
+        { 11449, { 4708, 0.5f } },
+        { 11450, { 4709, 0.5f } },
+        { 11451, { 4710, 0.5f } },
+        { 11452, { 4711, 0.5f } },
+        { 11453, { 4712, 0.5f } },
+        { 11454, { 4713, 0.5f } },
+        { 11455, { 4714, 0.5f } },
+        { 11456, { 4715, 0.5f } },
+        { 11457, { 4716, 0.5f } },
+        { 11458, { 4717, 0.5f } },
+        { 11459, { 4718, 0.5f } },
+        { 11460, { 4719, 0.5f } },
+        { 11461, { 4720, 0.5f } },
+        { 11462, { 4721, 0.5f } },
+        { 11463, { 4722, 0.5f } },
+    });
+}
+static void modTarget_35 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11464, { 4723, 0.5f } },
+        { 11465, { 4724, 0.5f } },
+        { 11466, { 4725, 0.5f } },
+        { 11467, { 4726, 0.5f } },
+        { 11468, { 4727, 0.5f } },
+        { 11469, { 4728, 0.5f } },
+        { 11470, { 4729, 0.5f } },
+        { 11471, { 4730, 0.5f } },
+        { 11472, { 4731, 0.5f } },
+        { 11473, { 4732, 0.5f } },
+        { 11474, { 4733, 0.5f } },
+        { 11475, { 4734, 0.5f } },
+        { 11476, { 4735, 0.5f } },
+        { 11477, { 4736, 0.5f } },
+        { 11478, { 4737, 0.5f } },
+        { 11479, { 4738, 0.5f } },
+        { 11480, { 4739, 0.5f } },
+        { 11481, { 4740, 0.5f } },
+        { 11482, { 4741, 0.5f } },
+        { 11483, { 4742, 0.5f } },
+        { 11484, { 4743, 0.5f } },
+        { 11485, { 4744, 0.5f } },
+        { 11486, { 4745, 0.5f } },
+        { 11487, { 4746, 0.5f } },
+        { 11488, { 4747, 0.5f } },
+        { 11489, { 4748, 0.5f } },
+        { 11490, { 4749, 0.5f } },
+        { 11491, { 4750, 0.5f } },
+        { 11492, { 4751, 0.5f } },
+        { 11493, { 4752, 0.5f } },
+        { 11494, { 4753, 0.5f } },
+        { 11495, { 4754, 0.5f } },
+        { 11496, { 4755, 0.5f } },
+        { 11497, { 4756, 0.5f } },
+        { 11498, { 4757, 0.5f } },
+        { 11499, { 4758, 0.5f } },
+        { 11500, { 4759, 0.5f } },
+        { 11501, { 4760, 0.5f } },
+        { 11502, { 4761, 0.5f } },
+        { 11503, { 4762, 0.5f } },
+        { 11504, { 4763, 0.5f } },
+        { 11505, { 4764, 0.5f } },
+        { 11506, { 4765, 0.5f } },
+        { 11507, { 4766, 0.5f } },
+        { 11508, { 4767, 0.5f } },
+        { 11509, { 4768, 0.5f } },
+        { 11510, { 4769, 0.5f } },
+        { 11511, { 4770, 0.5f } },
+        { 11512, { 4771, 0.5f } },
+        { 11513, { 4772, 0.5f } },
+        { 11514, { 4773, 0.5f } },
+        { 11515, { 4774, 0.5f } },
+        { 11516, { 4775, 0.5f } },
+        { 11517, { 4776, 0.5f } },
+        { 11518, { 4777, 0.5f } },
+        { 11519, { 4778, 0.5f } },
+        { 11520, { 4779, 0.5f } },
+        { 11521, { 4780, 0.5f } },
+        { 11522, { 4781, 0.5f } },
+        { 11523, { 4782, 0.5f } },
+        { 11524, { 4783, 0.5f } },
+        { 11525, { 4784, 0.5f } },
+        { 11526, { 4785, 0.5f } },
+        { 11527, { 4786, 0.5f } },
+        { 11528, { 4787, 0.5f } },
+        { 11529, { 4788, 0.5f } },
+        { 11530, { 4789, 0.5f } },
+        { 11531, { 4790, 0.5f } },
+        { 11532, { 4791, 0.5f } },
+        { 11533, { 4792, 0.5f } },
+        { 11534, { 4793, 0.5f } },
+        { 11535, { 4794, 0.5f } },
+        { 11536, { 4795, 0.5f } },
+        { 11537, { 4796, 0.5f } },
+        { 11538, { 4797, 0.5f } },
+        { 11539, { 4798, 0.5f } },
+        { 11540, { 4799, 0.5f } },
+        { 11541, { 4800, 0.5f } },
+        { 11542, { 4801, 0.5f } },
+        { 11543, { 4802, 0.5f } },
+        { 11544, { 4803, 0.5f } },
+        { 11545, { 4804, 0.5f } },
+        { 11546, { 4805, 0.5f } },
+        { 11547, { 4806, 0.5f } },
+        { 11548, { 4807, 0.5f } },
+        { 11549, { 4808, 0.5f } },
+        { 11550, { 4809, 0.5f } },
+        { 11551, { 4810, 0.5f } },
+        { 11552, { 4811, 0.5f } },
+        { 11553, { 4812, 0.5f } },
+        { 11554, { 4813, 0.5f } },
+        { 11555, { 4814, 0.5f } },
+        { 11556, { 4815, 0.5f } },
+        { 11557, { 4816, 0.5f } },
+        { 11558, { 4817, 0.5f } },
+        { 11559, { 4818, 0.5f } },
+        { 11560, { 4819, 0.5f } },
+        { 11561, { 4820, 0.5f } },
+        { 11562, { 4821, 0.5f } },
+        { 11563, { 4822, 0.5f } },
+    });
+}
+static void modTarget_36 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11564, { 4823, 0.5f } },
+        { 11565, { 4824, 0.5f } },
+        { 11566, { 4825, 0.5f } },
+        { 11567, { 4826, 0.5f } },
+        { 11568, { 4827, 0.5f } },
+        { 11569, { 4828, 0.5f } },
+        { 11570, { 4829, 0.5f } },
+        { 11571, { 4830, 0.5f } },
+        { 11572, { 4831, 0.5f } },
+        { 11573, { 4832, 0.5f } },
+        { 11574, { 4833, 0.5f } },
+        { 11575, { 4834, 0.5f } },
+        { 11601, { 4835, 0.5f } },
+        { 11700, { 4836, 0.5f } },
+        { 11701, { 4837, 0.5f } },
+        { 11702, { 4838, 0.5f } },
+        { 11703, { 4839, 0.5f } },
+        { 11704, { 4840, 0.5f } },
+        { 11705, { 4841, 0.5f } },
+        { 11706, { 4842, 0.5f } },
+        { 11707, { 4843, 0.5f } },
+        { 11708, { 4844, 0.5f } },
+        { 11709, { 4845, 0.5f } },
+        { 11710, { 4846, 0.5f } },
+        { 11711, { 4847, 0.5f } },
+        { 11712, { 4848, 0.5f } },
+        { 11713, { 4849, 0.5f } },
+        { 11714, { 4850, 0.5f } },
+        { 11715, { 4851, 0.5f } },
+        { 11716, { 4852, 0.5f } },
+        { 11717, { 4853, 0.5f } },
+        { 11718, { 4854, 0.5f } },
+        { 11719, { 4855, 0.5f } },
+        { 11720, { 4856, 0.5f } },
+        { 11721, { 4857, 0.5f } },
+        { 11722, { 4858, 0.5f } },
+        { 11723, { 4859, 0.5f } },
+        { 11724, { 4860, 0.5f } },
+        { 11725, { 4861, 0.5f } },
+        { 11726, { 4862, 0.5f } },
+        { 11727, { 4863, 0.5f } },
+        { 11728, { 4864, 0.5f } },
+        { 11729, { 4865, 0.5f } },
+        { 11730, { 4866, 0.5f } },
+        { 11731, { 4867, 0.5f } },
+        { 11732, { 4868, 0.5f } },
+        { 11733, { 4869, 0.5f } },
+        { 11734, { 4870, 0.5f } },
+        { 11735, { 4871, 0.5f } },
+        { 11736, { 4872, 0.5f } },
+        { 11737, { 4873, 0.5f } },
+        { 11738, { 4874, 0.5f } },
+        { 11739, { 4875, 0.5f } },
+        { 11740, { 4876, 0.5f } },
+        { 11741, { 4877, 0.5f } },
+        { 11742, { 4878, 0.5f } },
+        { 11743, { 4879, 0.5f } },
+        { 11744, { 4880, 0.5f } },
+        { 11745, { 4881, 0.5f } },
+        { 11746, { 4882, 0.5f } },
+        { 11747, { 4883, 0.5f } },
+        { 11748, { 4884, 0.5f } },
+        { 11749, { 4885, 0.5f } },
+        { 11750, { 4886, 0.5f } },
+        { 11751, { 4887, 0.5f } },
+        { 11752, { 4888, 0.5f } },
+        { 11753, { 4889, 0.5f } },
+        { 11754, { 4890, 0.5f } },
+        { 11755, { 4891, 0.5f } },
+        { 11756, { 4892, 0.5f } },
+        { 11757, { 4893, 0.5f } },
+        { 11758, { 4894, 0.5f } },
+        { 11759, { 4895, 0.5f } },
+        { 11760, { 4896, 0.5f } },
+        { 11761, { 4897, 0.5f } },
+        { 11762, { 4898, 0.5f } },
+        { 11763, { 4899, 0.5f } },
+        { 11764, { 4900, 0.5f } },
+        { 11765, { 4901, 0.5f } },
+        { 11766, { 4902, 0.5f } },
+        { 11767, { 4903, 0.5f } },
+        { 11768, { 4904, 0.5f } },
+        { 11769, { 4905, 0.5f } },
+        { 11770, { 4906, 0.5f } },
+        { 11771, { 4907, 0.5f } },
+        { 11772, { 4908, 0.5f } },
+        { 11773, { 4909, 0.5f } },
+        { 11774, { 4910, 0.5f } },
+        { 11775, { 4911, 0.5f } },
+        { 11776, { 4912, 0.5f } },
+        { 11777, { 4913, 0.5f } },
+        { 11778, { 4914, 0.5f } },
+        { 11779, { 4915, 0.5f } },
+        { 11780, { 4916, 0.5f } },
+        { 11781, { 4917, 0.5f } },
+        { 11782, { 4918, 0.5f } },
+        { 11783, { 4919, 0.5f } },
+        { 11784, { 4920, 0.5f } },
+        { 11785, { 4921, 0.5f } },
+        { 11786, { 4922, 0.5f } },
+    });
+}
+static void modTarget_37 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11787, { 4923, 0.5f } },
+        { 11788, { 4924, 0.5f } },
+        { 11789, { 4925, 0.5f } },
+        { 11790, { 4926, 0.5f } },
+        { 11791, { 4927, 0.5f } },
+        { 11792, { 4928, 0.5f } },
+        { 11793, { 4929, 0.5f } },
+        { 11794, { 4930, 0.5f } },
+        { 11795, { 4931, 0.5f } },
+        { 11796, { 4932, 0.5f } },
+        { 11797, { 4933, 0.5f } },
+        { 11798, { 4934, 0.5f } },
+        { 11799, { 4935, 0.5f } },
+        { 11800, { 4936, 0.5f } },
+        { 11801, { 4937, 0.5f } },
+        { 11802, { 4938, 0.5f } },
+        { 11803, { 4939, 0.5f } },
+        { 11804, { 4940, 0.5f } },
+        { 11805, { 4941, 0.5f } },
+        { 11806, { 4942, 0.5f } },
+        { 11807, { 4943, 0.5f } },
+        { 11808, { 4944, 0.5f } },
+        { 11809, { 4945, 0.5f } },
+        { 11810, { 4946, 0.5f } },
+        { 11811, { 4947, 0.5f } },
+        { 11812, { 4948, 0.5f } },
+        { 11813, { 4949, 0.5f } },
+        { 11814, { 4950, 0.5f } },
+        { 11815, { 4951, 0.5f } },
+        { 11816, { 4952, 0.5f } },
+        { 11817, { 4953, 0.5f } },
+        { 11818, { 4954, 0.5f } },
+        { 11819, { 4955, 0.5f } },
+        { 11820, { 4956, 0.5f } },
+        { 11821, { 4957, 0.5f } },
+        { 11822, { 4958, 0.5f } },
+        { 11823, { 4959, 0.5f } },
+        { 11824, { 4960, 0.5f } },
+        { 11825, { 4961, 0.5f } },
+        { 11826, { 4962, 0.5f } },
+        { 11827, { 4963, 0.5f } },
+        { 11828, { 4964, 0.5f } },
+        { 11829, { 4965, 0.5f } },
+        { 11830, { 4966, 0.5f } },
+        { 11831, { 4967, 0.5f } },
+        { 11832, { 4968, 0.5f } },
+        { 11833, { 4969, 0.5f } },
+        { 11834, { 4970, 0.5f } },
+        { 11835, { 4971, 0.5f } },
+        { 11836, { 4972, 0.5f } },
+        { 11837, { 4973, 0.5f } },
+        { 11838, { 4974, 0.5f } },
+        { 11839, { 4975, 0.5f } },
+        { 11840, { 4976, 0.5f } },
+        { 11841, { 4977, 0.5f } },
+        { 11842, { 4978, 0.5f } },
+        { 11843, { 4979, 0.5f } },
+        { 11844, { 4980, 0.5f } },
+        { 11845, { 4981, 0.5f } },
+        { 11846, { 4982, 0.5f } },
+        { 11847, { 4983, 0.5f } },
+        { 11848, { 4984, 0.5f } },
+        { 11849, { 4985, 0.5f } },
+        { 11850, { 4986, 0.5f } },
+        { 11851, { 4987, 0.5f } },
+        { 11852, { 4988, 0.5f } },
+        { 11853, { 4989, 0.5f } },
+        { 11854, { 4990, 0.5f } },
+        { 11855, { 4991, 0.5f } },
+        { 11856, { 4992, 0.5f } },
+        { 11857, { 4993, 0.5f } },
+        { 11858, { 4994, 0.5f } },
+        { 11859, { 4995, 0.5f } },
+        { 11860, { 4996, 0.5f } },
+        { 11861, { 4997, 0.5f } },
+        { 11862, { 4998, 0.5f } },
+        { 11863, { 4999, 0.5f } },
+        { 11864, { 5000, 0.5f } },
+        { 11865, { 5001, 0.5f } },
+        { 11866, { 5002, 0.5f } },
+        { 11867, { 5003, 0.5f } },
+        { 11868, { 5004, 0.5f } },
+        { 11869, { 5005, 0.5f } },
+        { 11870, { 5006, 0.5f } },
+        { 11871, { 5007, 0.5f } },
+        { 11872, { 5008, 0.5f } },
+        { 11873, { 5009, 0.5f } },
+        { 11874, { 5010, 0.5f } },
+        { 11875, { 5011, 0.5f } },
+        { 11876, { 5012, 0.5f } },
+        { 11877, { 5013, 0.5f } },
+        { 11878, { 5014, 0.5f } },
+        { 11879, { 5015, 0.5f } },
+        { 11880, { 5016, 0.5f } },
+        { 11881, { 5017, 0.5f } },
+        { 11882, { 5018, 0.5f } },
+        { 11883, { 5019, 0.5f } },
+        { 11884, { 5020, 0.5f } },
+        { 11885, { 5021, 0.5f } },
+        { 11886, { 5022, 0.5f } },
+    });
+}
+static void modTarget_38 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11887, { 5023, 0.5f } },
+        { 11888, { 5024, 0.5f } },
+        { 11889, { 5025, 0.5f } },
+        { 11890, { 5026, 0.5f } },
+        { 11891, { 5027, 0.5f } },
+        { 11892, { 5028, 0.5f } },
+        { 11893, { 5029, 0.5f } },
+        { 11894, { 5030, 0.5f } },
+        { 11895, { 5031, 0.5f } },
+        { 11896, { 5032, 0.5f } },
+        { 11897, { 5033, 0.5f } },
+        { 11898, { 5034, 0.5f } },
+        { 11899, { 5035, 0.5f } },
+        { 11900, { 5036, 0.5f } },
+        { 11901, { 5037, 0.5f } },
+        { 11902, { 5038, 0.5f } },
+        { 11903, { 5039, 0.5f } },
+        { 11904, { 5040, 0.5f } },
+        { 11905, { 5041, 0.5f } },
+        { 11906, { 5042, 0.5f } },
+        { 11907, { 5043, 0.5f } },
+        { 11908, { 5044, 0.5f } },
+        { 11909, { 5045, 0.5f } },
+        { 11910, { 5046, 0.5f } },
+        { 11911, { 5047, 0.5f } },
+        { 11912, { 5048, 0.5f } },
+        { 11913, { 5049, 0.5f } },
+        { 11914, { 5050, 0.5f } },
+        { 11915, { 5051, 0.5f } },
+        { 11916, { 5052, 0.5f } },
+        { 11917, { 5053, 0.5f } },
+        { 11918, { 5054, 0.5f } },
+        { 11919, { 5055, 0.5f } },
+        { 11920, { 5056, 0.5f } },
+        { 11921, { 5057, 0.5f } },
+        { 11922, { 5058, 0.5f } },
+        { 11923, { 5059, 0.5f } },
+        { 11924, { 5060, 0.5f } },
+        { 11925, { 5061, 0.5f } },
+        { 11926, { 5062, 0.5f } },
+        { 11927, { 5063, 0.5f } },
+        { 11928, { 5064, 0.5f } },
+        { 11929, { 5065, 0.5f } },
+        { 11930, { 5066, 0.5f } },
+        { 11931, { 5067, 0.5f } },
+        { 11932, { 5068, 0.5f } },
+        { 11933, { 5069, 0.5f } },
+        { 11934, { 5070, 0.5f } },
+        { 11935, { 5071, 0.5f } },
+        { 11936, { 5072, 0.5f } },
+        { 11937, { 5073, 0.5f } },
+        { 11938, { 5074, 0.5f } },
+        { 11939, { 5075, 0.5f } },
+        { 11940, { 5076, 0.5f } },
+        { 11941, { 5077, 0.5f } },
+        { 11942, { 5078, 0.5f } },
+        { 11943, { 5079, 0.5f } },
+        { 11944, { 5080, 0.5f } },
+        { 11945, { 5081, 0.5f } },
+        { 11946, { 5082, 0.5f } },
+        { 11947, { 5083, 0.5f } },
+        { 11948, { 5084, 0.5f } },
+        { 11949, { 5085, 0.5f } },
+        { 11950, { 5086, 0.5f } },
+        { 11951, { 5087, 0.5f } },
+        { 11952, { 5088, 0.5f } },
+        { 11953, { 5089, 0.5f } },
+        { 11954, { 5090, 0.5f } },
+        { 11955, { 5091, 0.5f } },
+        { 11956, { 5092, 0.5f } },
+        { 11957, { 5093, 0.5f } },
+        { 11958, { 5094, 0.5f } },
+        { 11959, { 5095, 0.5f } },
+        { 11960, { 5096, 0.5f } },
+        { 11961, { 5097, 0.5f } },
+        { 11962, { 5098, 0.5f } },
+        { 11963, { 5099, 0.5f } },
+        { 11964, { 5100, 0.5f } },
+        { 11965, { 5101, 0.5f } },
+        { 11966, { 5102, 0.5f } },
+        { 11967, { 5103, 0.5f } },
+        { 11968, { 5104, 0.5f } },
+        { 11969, { 5105, 0.5f } },
+        { 11970, { 5106, 0.5f } },
+        { 11971, { 5107, 0.5f } },
+        { 11972, { 5108, 0.5f } },
+        { 11973, { 5109, 0.5f } },
+        { 11974, { 5110, 0.5f } },
+        { 11975, { 5111, 0.5f } },
+        { 11976, { 5112, 0.5f } },
+        { 11977, { 5113, 0.5f } },
+        { 11978, { 5114, 0.5f } },
+        { 11979, { 5115, 0.5f } },
+        { 11980, { 5116, 0.5f } },
+        { 11981, { 5117, 0.5f } },
+        { 11982, { 5118, 0.5f } },
+        { 11983, { 5119, 0.5f } },
+        { 11984, { 5120, 0.5f } },
+        { 11985, { 5121, 0.5f } },
+        { 11986, { 5122, 0.5f } },
+    });
+}
+static void modTarget_39 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 11987, { 5123, 0.5f } },
+        { 11988, { 5124, 0.5f } },
+        { 11989, { 5125, 0.5f } },
+        { 11990, { 5126, 0.5f } },
+        { 11991, { 5127, 0.5f } },
+        { 11992, { 5128, 0.5f } },
+        { 11993, { 5129, 0.5f } },
+        { 11994, { 5130, 0.5f } },
+        { 11995, { 5131, 0.5f } },
+        { 11996, { 5132, 0.5f } },
+        { 11997, { 5133, 0.5f } },
+        { 11998, { 5134, 0.5f } },
+        { 11999, { 5135, 0.5f } },
+        { 12000, { 5136, 0.5f } },
+        { 12001, { 5137, 0.5f } },
+        { 12002, { 5138, 0.5f } },
+        { 12003, { 5139, 0.5f } },
+        { 12004, { 5140, 0.5f } },
+        { 12005, { 5141, 0.5f } },
+        { 12006, { 5142, 0.5f } },
+        { 12007, { 5143, 0.5f } },
+        { 12008, { 5144, 0.5f } },
+        { 12009, { 5145, 0.5f } },
+        { 12010, { 5146, 0.5f } },
+        { 12011, { 5147, 0.5f } },
+        { 12012, { 5148, 0.5f } },
+        { 12013, { 5149, 0.5f } },
+        { 12014, { 5150, 0.5f } },
+        { 12015, { 5151, 0.5f } },
+        { 12016, { 5152, 0.5f } },
+        { 12017, { 5153, 0.5f } },
+        { 12018, { 5154, 0.5f } },
+        { 12019, { 5155, 0.5f } },
+        { 12020, { 5156, 0.5f } },
+        { 12021, { 5157, 0.5f } },
+        { 12022, { 5158, 0.5f } },
+        { 12023, { 5159, 0.5f } },
+        { 12024, { 5160, 0.5f } },
+        { 12025, { 5161, 0.5f } },
+        { 12026, { 5162, 0.5f } },
+        { 12027, { 5163, 0.5f } },
+        { 12028, { 5164, 0.5f } },
+        { 12029, { 5165, 0.5f } },
+        { 12030, { 5166, 0.5f } },
+        { 12031, { 5167, 0.5f } },
+        { 12032, { 5168, 0.5f } },
+        { 12033, { 5169, 0.5f } },
+        { 12034, { 5170, 0.5f } },
+        { 12035, { 5171, 0.5f } },
+        { 12036, { 5172, 0.5f } },
+        { 12037, { 5173, 0.5f } },
+        { 12038, { 5174, 0.5f } },
+        { 12039, { 5175, 0.5f } },
+        { 12040, { 5176, 0.5f } },
+        { 12041, { 5177, 0.5f } },
+        { 12042, { 5178, 0.5f } },
+        { 12043, { 5179, 0.5f } },
+        { 12044, { 5180, 0.5f } },
+        { 12045, { 5181, 0.5f } },
+        { 12046, { 5182, 0.5f } },
+        { 12047, { 5183, 0.5f } },
+        { 12048, { 5184, 0.5f } },
+        { 12049, { 5185, 0.5f } },
+        { 12050, { 5186, 0.5f } },
+        { 12051, { 5187, 0.5f } },
+        { 12052, { 5188, 0.5f } },
+        { 12053, { 5189, 0.5f } },
+        { 12054, { 5190, 0.5f } },
+        { 12055, { 5191, 0.5f } },
+        { 12056, { 5192, 0.5f } },
+        { 12057, { 5193, 0.5f } },
+        { 12058, { 5194, 0.5f } },
+        { 12059, { 5195, 0.5f } },
+        { 12060, { 5196, 0.5f } },
+        { 12061, { 5197, 0.5f } },
+        { 12062, { 5198, 0.5f } },
+        { 12063, { 5199, 0.5f } },
+        { 12064, { 5200, 0.5f } },
+        { 12065, { 5201, 0.5f } },
+        { 12066, { 5202, 0.5f } },
+        { 12067, { 5203, 0.5f } },
+        { 12068, { 5204, 0.5f } },
+        { 12069, { 5205, 0.5f } },
+        { 12070, { 5206, 0.5f } },
+        { 12071, { 5207, 0.5f } },
+        { 12072, { 5208, 0.5f } },
+        { 12073, { 5209, 0.5f } },
+        { 12074, { 5210, 0.5f } },
+        { 12075, { 5211, 0.5f } },
+        { 12076, { 5212, 0.5f } },
+        { 12077, { 5213, 0.5f } },
+        { 12078, { 5214, 0.5f } },
+        { 12079, { 5215, 0.5f } },
+        { 12080, { 5216, 0.5f } },
+        { 12081, { 5217, 0.5f } },
+        { 12082, { 5218, 0.5f } },
+        { 12083, { 5219, 0.5f } },
+        { 12084, { 5220, 0.5f } },
+        { 12085, { 5221, 0.5f } },
+        { 12086, { 5222, 0.5f } },
+    });
+}
+static void modTarget_40 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 12087, { 5223, 0.5f } },
+        { 12088, { 5224, 0.5f } },
+        { 12089, { 5225, 0.5f } },
+        { 12090, { 5226, 0.5f } },
+        { 12091, { 5227, 0.5f } },
+        { 12092, { 5228, 0.5f } },
+        { 12093, { 5229, 0.5f } },
+        { 12094, { 5230, 0.5f } },
+        { 12095, { 5231, 0.5f } },
+        { 12096, { 5232, 0.5f } },
+        { 12097, { 5233, 0.5f } },
+        { 12098, { 5234, 0.5f } },
+        { 12099, { 5235, 0.5f } },
+        { 12100, { 5236, 0.5f } },
+        { 12101, { 5237, 0.5f } },
+        { 12102, { 5238, 0.5f } },
+        { 12103, { 5239, 0.5f } },
+        { 12104, { 5240, 0.5f } },
+        { 12105, { 5241, 0.5f } },
+        { 12106, { 5242, 0.5f } },
+        { 12107, { 5243, 0.5f } },
+        { 12108, { 5244, 0.5f } },
+        { 12109, { 5245, 0.5f } },
+        { 12110, { 5246, 0.5f } },
+        { 12111, { 5247, 0.5f } },
+        { 12112, { 5248, 0.5f } },
+        { 12113, { 5249, 0.5f } },
+        { 12114, { 5250, 0.5f } },
+        { 12115, { 5251, 0.5f } },
+        { 12116, { 5252, 0.5f } },
+        { 12117, { 5253, 0.5f } },
+        { 12118, { 5254, 0.5f } },
+        { 12119, { 5255, 0.5f } },
+        { 12120, { 5256, 0.5f } },
+        { 12121, { 5257, 0.5f } },
+        { 12122, { 5258, 0.5f } },
+        { 12123, { 5259, 0.5f } },
+        { 12124, { 5260, 0.5f } },
+        { 12125, { 5261, 0.5f } },
+        { 12126, { 5262, 0.5f } },
+        { 12127, { 5263, 0.5f } },
+        { 12128, { 5264, 0.5f } },
+        { 12129, { 5265, 0.5f } },
+        { 12130, { 5266, 0.5f } },
+        { 12131, { 5267, 0.5f } },
+        { 12132, { 5268, 0.5f } },
+        { 12133, { 5269, 0.5f } },
+        { 12134, { 5270, 0.5f } },
+        { 12135, { 5271, 0.5f } },
+        { 12136, { 5272, 0.5f } },
+        { 12137, { 5273, 0.5f } },
+        { 12138, { 5274, 0.5f } },
+        { 12139, { 5275, 0.5f } },
+        { 12140, { 5276, 0.5f } },
+        { 12141, { 5277, 0.5f } },
+        { 12142, { 5278, 0.5f } },
+        { 12143, { 5279, 0.5f } },
+        { 12144, { 5280, 0.5f } },
+        { 12145, { 5281, 0.5f } },
+        { 12146, { 5282, 0.5f } },
+        { 12147, { 5283, 0.5f } },
+        { 12148, { 5284, 0.5f } },
+        { 12149, { 5285, 0.5f } },
+        { 12150, { 5286, 0.5f } },
+        { 12151, { 5287, 0.5f } },
+        { 12152, { 5288, 0.5f } },
+        { 12153, { 5289, 0.5f } },
+        { 12154, { 5290, 0.5f } },
+        { 12155, { 5291, 0.5f } },
+        { 12156, { 5292, 0.5f } },
+        { 12157, { 5293, 0.5f } },
+        { 12158, { 5294, 0.5f } },
+        { 12159, { 5295, 0.5f } },
+        { 12160, { 5296, 0.5f } },
+        { 12161, { 5297, 0.5f } },
+        { 12162, { 5298, 0.5f } },
+        { 12163, { 5299, 0.5f } },
+        { 12164, { 5300, 0.5f } },
+        { 12165, { 5301, 0.5f } },
+        { 12166, { 5302, 0.5f } },
+        { 12167, { 5303, 0.5f } },
+        { 12168, { 5304, 0.5f } },
+        { 12169, { 5305, 0.5f } },
+        { 12170, { 5306, 0.5f } },
+        { 12171, { 5307, 0.5f } },
+        { 12172, { 5308, 0.5f } },
+        { 12173, { 5309, 0.5f } },
+        { 12174, { 5310, 0.5f } },
+        { 12175, { 5311, 0.5f } },
+        { 12176, { 5312, 0.5f } },
+        { 12177, { 5313, 0.5f } },
+        { 12178, { 5314, 0.5f } },
+        { 12179, { 5315, 0.5f } },
+        { 12180, { 5316, 0.5f } },
+        { 12181, { 5317, 0.5f } },
+        { 12182, { 5318, 0.5f } },
+        { 12183, { 5319, 0.5f } },
+        { 12184, { 5320, 0.5f } },
+        { 12185, { 5321, 0.5f } },
+        { 12186, { 5322, 0.5f } },
+    });
+}
+static void modTarget_41 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 12187, { 5323, 0.5f } },
+        { 12188, { 5324, 0.5f } },
+        { 12189, { 5325, 0.5f } },
+        { 12190, { 5326, 0.5f } },
+        { 12191, { 5327, 0.5f } },
+        { 12192, { 5328, 0.5f } },
+        { 12193, { 5329, 0.5f } },
+        { 12194, { 5330, 0.5f } },
+        { 12195, { 5331, 0.5f } },
+        { 12196, { 5332, 0.5f } },
+        { 12197, { 5333, 0.5f } },
+        { 12198, { 5334, 0.5f } },
+        { 12199, { 5335, 0.5f } },
+        { 12200, { 5336, 0.5f } },
+        { 12201, { 5337, 0.5f } },
+        { 12202, { 5338, 0.5f } },
+        { 12203, { 5339, 0.5f } },
+        { 12204, { 5340, 0.5f } },
+        { 12205, { 5341, 0.5f } },
+        { 12206, { 5342, 0.5f } },
+        { 12207, { 5343, 0.5f } },
+        { 12208, { 5344, 0.5f } },
+        { 12209, { 5345, 0.5f } },
+        { 12210, { 5346, 0.5f } },
+        { 12211, { 5347, 0.5f } },
+        { 12212, { 5348, 0.5f } },
+        { 12213, { 5349, 0.5f } },
+        { 12214, { 5350, 0.5f } },
+        { 12215, { 5351, 0.5f } },
+        { 12216, { 5352, 0.5f } },
+        { 12217, { 5353, 0.5f } },
+        { 12218, { 5354, 0.5f } },
+        { 12219, { 5355, 0.5f } },
+        { 12220, { 5356, 0.5f } },
+        { 12221, { 5357, 0.5f } },
+        { 12222, { 5358, 0.5f } },
+        { 12223, { 5359, 0.5f } },
+        { 12224, { 5360, 0.5f } },
+        { 12225, { 5361, 0.5f } },
+        { 12226, { 5362, 0.5f } },
+        { 12227, { 5363, 0.5f } },
+        { 12228, { 5364, 0.5f } },
+        { 12229, { 5365, 0.5f } },
+        { 12230, { 5366, 0.5f } },
+        { 12231, { 5367, 0.5f } },
+        { 12232, { 5368, 0.5f } },
+        { 12233, { 5369, 0.5f } },
+        { 12234, { 5370, 0.5f } },
+        { 12235, { 5371, 0.5f } },
+        { 12236, { 5372, 0.5f } },
+        { 12237, { 5373, 0.5f } },
+        { 12238, { 5374, 0.5f } },
+        { 12239, { 5375, 0.5f } },
+        { 12240, { 5376, 0.5f } },
+        { 12241, { 5377, 0.5f } },
+        { 12242, { 5378, 0.5f } },
+        { 12243, { 5379, 0.5f } },
+        { 12244, { 5380, 0.5f } },
+        { 12245, { 5381, 0.5f } },
+        { 12246, { 5382, 0.5f } },
+        { 12247, { 5383, 0.5f } },
+        { 12248, { 5384, 0.5f } },
+        { 12249, { 5385, 0.5f } },
+        { 12250, { 5386, 0.5f } },
+        { 12251, { 5387, 0.5f } },
+        { 12252, { 5388, 0.5f } },
+        { 12253, { 5389, 0.5f } },
+        { 12254, { 5390, 0.5f } },
+        { 12255, { 5391, 0.5f } },
+        { 12256, { 5392, 0.5f } },
+        { 12257, { 5393, 0.5f } },
+        { 12258, { 5394, 0.5f } },
+        { 12259, { 5395, 0.5f } },
+        { 12260, { 5396, 0.5f } },
+        { 12261, { 5397, 0.5f } },
+        { 12262, { 5398, 0.5f } },
+        { 12263, { 5399, 0.5f } },
+        { 12264, { 5400, 0.5f } },
+        { 12265, { 5401, 0.5f } },
+        { 12266, { 5402, 0.5f } },
+        { 12267, { 5403, 0.5f } },
+        { 12268, { 5404, 0.5f } },
+        { 12269, { 5405, 0.5f } },
+        { 12270, { 5406, 0.5f } },
+        { 12271, { 5407, 0.5f } },
+        { 12272, { 5408, 0.5f } },
+        { 12273, { 5409, 0.5f } },
+        { 12274, { 5410, 0.5f } },
+        { 12275, { 5411, 0.5f } },
+        { 12300, { 5412, 0.5f } },
+        { 12301, { 5413, 0.5f } },
+        { 12302, { 5414, 0.5f } },
+        { 12304, { 5415, 0.5f } },
+        { 12307, { 5416, 0.5f } },
+        { 12308, { 5417, 0.5f } },
+        { 12310, { 5418, 0.5f } },
+        { 12316, { 5419, 0.5f } },
+        { 12317, { 5420, 0.5f } },
+        { 12318, { 5421, 0.5f } },
+        { 12320, { 5422, 0.5f } },
+    });
+}
+static void modTarget_42 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 12323, { 5423, 0.5f } },
+        { 12324, { 5424, 0.5f } },
+        { 12326, { 5425, 0.5f } },
+        { 12332, { 5426, 0.5f } },
+        { 12333, { 5427, 0.5f } },
+        { 12334, { 5428, 0.5f } },
+        { 12336, { 5429, 0.5f } },
+        { 12339, { 5430, 0.5f } },
+        { 12340, { 5431, 0.5f } },
+        { 12342, { 5432, 0.5f } },
+        { 12348, { 5433, 0.5f } },
+        { 12349, { 5434, 0.5f } },
+        { 12350, { 5435, 0.5f } },
+        { 12352, { 5436, 0.5f } },
+        { 12355, { 5437, 0.5f } },
+        { 12356, { 5438, 0.5f } },
+        { 12358, { 5439, 0.5f } },
+        { 12364, { 5440, 0.5f } },
+        { 12365, { 5441, 0.5f } },
+        { 12366, { 5442, 0.5f } },
+        { 12368, { 5443, 0.5f } },
+        { 12371, { 5444, 0.5f } },
+        { 12372, { 5445, 0.5f } },
+        { 12374, { 5446, 0.5f } },
+        { 12380, { 5447, 0.5f } },
+        { 12381, { 5448, 0.5f } },
+        { 12382, { 5449, 0.5f } },
+        { 12384, { 5450, 0.5f } },
+        { 12387, { 5451, 0.5f } },
+        { 12388, { 5452, 0.5f } },
+        { 12390, { 5453, 0.5f } },
+        { 12501, { 5454, 0.5f } },
+        { 12503, { 5455, 0.5f } },
+        { 12517, { 5456, 0.5f } },
+        { 12519, { 5457, 0.5f } },
+        { 12533, { 5458, 0.5f } },
+        { 12535, { 5459, 0.5f } },
+        { 12549, { 5460, 0.5f } },
+        { 12551, { 5461, 0.5f } },
+        { 12565, { 5462, 0.5f } },
+        { 12567, { 5463, 0.5f } },
+        { 12581, { 5464, 0.5f } },
+        { 12583, { 5465, 0.5f } },
+        { 13002, { 5466, 0.5f } },
+        { 13003, { 5467, 0.5f } },
+        { 13005, { 5468, 0.5f } },
+        { 13006, { 5469, 0.5f } },
+        { 13007, { 5470, 0.5f } },
+        { 13008, { 5471, 0.5f } },
+        { 13018, { 5472, 0.5f } },
+        { 13019, { 5473, 0.5f } },
+        { 13021, { 5474, 0.5f } },
+        { 13022, { 5475, 0.5f } },
+        { 13023, { 5476, 0.5f } },
+        { 13024, { 5477, 0.5f } },
+        { 13034, { 5478, 0.5f } },
+        { 13035, { 5479, 0.5f } },
+        { 13037, { 5480, 0.5f } },
+        { 13038, { 5481, 0.5f } },
+        { 13039, { 5482, 0.5f } },
+        { 13040, { 5483, 0.5f } },
+        { 13050, { 5484, 0.5f } },
+        { 13051, { 5485, 0.5f } },
+        { 13053, { 5486, 0.5f } },
+        { 13054, { 5487, 0.5f } },
+        { 13055, { 5488, 0.5f } },
+        { 13056, { 5489, 0.5f } },
+        { 13066, { 5490, 0.5f } },
+        { 13067, { 5491, 0.5f } },
+        { 13069, { 5492, 0.5f } },
+        { 13070, { 5493, 0.5f } },
+        { 13071, { 5494, 0.5f } },
+        { 13072, { 5495, 0.5f } },
+        { 13082, { 5496, 0.5f } },
+        { 13083, { 5497, 0.5f } },
+        { 13085, { 5498, 0.5f } },
+        { 13086, { 5499, 0.5f } },
+        { 13087, { 5500, 0.5f } },
+        { 13088, { 5501, 0.5f } },
+        { 13098, { 5502, 0.5f } },
+        { 13099, { 5503, 0.5f } },
+        { 13101, { 5504, 0.5f } },
+        { 13102, { 5505, 0.5f } },
+        { 13103, { 5506, 0.5f } },
+        { 13104, { 5507, 0.5f } },
+        { 13114, { 5508, 0.5f } },
+        { 13115, { 5509, 0.5f } },
+        { 13117, { 5510, 0.5f } },
+        { 13118, { 5511, 0.5f } },
+        { 13119, { 5512, 0.5f } },
+        { 13120, { 5513, 0.5f } },
+        { 13130, { 5514, 0.5f } },
+        { 13131, { 5515, 0.5f } },
+        { 13133, { 5516, 0.5f } },
+        { 13134, { 5517, 0.5f } },
+        { 13135, { 5518, 0.5f } },
+        { 13136, { 5519, 0.5f } },
+        { 13146, { 5520, 0.5f } },
+        { 13147, { 5521, 0.5f } },
+        { 13149, { 5522, 0.5f } },
+    });
+}
+static void modTarget_43 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 13150, { 5523, 0.5f } },
+        { 13151, { 5524, 0.5f } },
+        { 13152, { 5525, 0.5f } },
+        { 13300, { 5526, 0.5f } },
+        { 13301, { 5527, 0.5f } },
+        { 13302, { 5528, 0.5f } },
+        { 13303, { 5529, 0.5f } },
+        { 13304, { 5530, 0.5f } },
+        { 13305, { 5531, 0.5f } },
+        { 13306, { 5532, 0.5f } },
+        { 13308, { 5533, 0.5f } },
+        { 13316, { 5534, 0.5f } },
+        { 13317, { 5535, 0.5f } },
+        { 13318, { 5536, 0.5f } },
+        { 13319, { 5537, 0.5f } },
+        { 13320, { 5538, 0.5f } },
+        { 13321, { 5539, 0.5f } },
+        { 13322, { 5540, 0.5f } },
+        { 13324, { 5541, 0.5f } },
+        { 13332, { 5542, 0.5f } },
+        { 13333, { 5543, 0.5f } },
+        { 13334, { 5544, 0.5f } },
+        { 13335, { 5545, 0.5f } },
+        { 13336, { 5546, 0.5f } },
+        { 13337, { 5547, 0.5f } },
+        { 13338, { 5548, 0.5f } },
+        { 13340, { 5549, 0.5f } },
+        { 13348, { 5550, 0.5f } },
+        { 13349, { 5551, 0.5f } },
+        { 13350, { 5552, 0.5f } },
+        { 13351, { 5553, 0.5f } },
+        { 13352, { 5554, 0.5f } },
+        { 13353, { 5555, 0.5f } },
+        { 13354, { 5556, 0.5f } },
+        { 13356, { 5557, 0.5f } },
+        { 13364, { 5558, 0.5f } },
+        { 13365, { 5559, 0.5f } },
+        { 13366, { 5560, 0.5f } },
+        { 13367, { 5561, 0.5f } },
+        { 13368, { 5562, 0.5f } },
+        { 13369, { 5563, 0.5f } },
+        { 13370, { 5564, 0.5f } },
+        { 13372, { 5565, 0.5f } },
+        { 13380, { 5566, 0.5f } },
+        { 13381, { 5567, 0.5f } },
+        { 13382, { 5568, 0.5f } },
+        { 13383, { 5569, 0.5f } },
+        { 13384, { 5570, 0.5f } },
+        { 13385, { 5571, 0.5f } },
+        { 13386, { 5572, 0.5f } },
+        { 13388, { 5573, 0.5f } },
+        { 13396, { 5574, 0.5f } },
+        { 13397, { 5575, 0.5f } },
+        { 13398, { 5576, 0.5f } },
+        { 13399, { 5577, 0.5f } },
+        { 13400, { 5578, 0.5f } },
+        { 13401, { 5579, 0.5f } },
+        { 13402, { 5580, 0.5f } },
+        { 13404, { 5581, 0.5f } },
+        { 13412, { 5582, 0.5f } },
+        { 13413, { 5583, 0.5f } },
+        { 13414, { 5584, 0.5f } },
+        { 13415, { 5585, 0.5f } },
+        { 13416, { 5586, 0.5f } },
+        { 13417, { 5587, 0.5f } },
+        { 13418, { 5588, 0.5f } },
+        { 13420, { 5589, 0.5f } },
+        { 13428, { 5590, 0.5f } },
+        { 13429, { 5591, 0.5f } },
+        { 13430, { 5592, 0.5f } },
+        { 13431, { 5593, 0.5f } },
+        { 13432, { 5594, 0.5f } },
+        { 13433, { 5595, 0.5f } },
+        { 13434, { 5596, 0.5f } },
+        { 13436, { 5597, 0.5f } },
+        { 13444, { 5598, 0.5f } },
+        { 13445, { 5599, 0.5f } },
+        { 13446, { 5600, 0.5f } },
+        { 13447, { 5601, 0.5f } },
+        { 13448, { 5602, 0.5f } },
+        { 13449, { 5603, 0.5f } },
+        { 13450, { 5604, 0.5f } },
+        { 13452, { 5605, 0.5f } },
+        { 13460, { 5606, 0.5f } },
+        { 13461, { 5607, 0.5f } },
+        { 13462, { 5608, 0.5f } },
+        { 13463, { 5609, 0.5f } },
+        { 13464, { 5610, 0.5f } },
+        { 13465, { 5611, 0.5f } },
+        { 13466, { 5612, 0.5f } },
+        { 13468, { 5613, 0.5f } },
+        { 13476, { 5614, 0.5f } },
+        { 13477, { 5615, 0.5f } },
+        { 13478, { 5616, 0.5f } },
+        { 13479, { 5617, 0.5f } },
+        { 13480, { 5618, 0.5f } },
+        { 13481, { 5619, 0.5f } },
+        { 13482, { 5620, 0.5f } },
+        { 13484, { 5621, 0.5f } },
+        { 13492, { 5622, 0.5f } },
+    });
+}
+static void modTarget_44 (std::map<int, std::pair<int, float>>& v)
+{
+    v.insert ( {
+        { 13493, { 5623, 0.5f } },
+        { 13494, { 5624, 0.5f } },
+        { 13495, { 5625, 0.5f } },
+        { 13496, { 5626, 0.5f } },
+        { 13497, { 5627, 0.5f } },
+        { 13498, { 5628, 0.5f } },
+        { 13500, { 5629, 0.5f } },
+        { 13508, { 5630, 0.5f } },
+        { 13509, { 5631, 0.5f } },
+        { 13510, { 5632, 0.5f } },
+        { 13511, { 5633, 0.5f } },
+        { 13512, { 5634, 0.5f } },
+        { 13513, { 5635, 0.5f } },
+        { 13514, { 5636, 0.5f } },
+        { 13516, { 5637, 0.5f } },
+        { 13524, { 5638, 0.5f } },
+        { 13525, { 5639, 0.5f } },
+        { 13526, { 5640, 0.5f } },
+        { 13527, { 5641, 0.5f } },
+        { 13528, { 5642, 0.5f } },
+        { 13529, { 5643, 0.5f } },
+        { 13530, { 5644, 0.5f } },
+        { 13532, { 5645, 0.5f } },
+        { 13540, { 5646, 0.5f } },
+        { 13541, { 5647, 0.5f } },
+        { 13542, { 5648, 0.5f } },
+        { 13543, { 5649, 0.5f } },
+        { 13544, { 5650, 0.5f } },
+        { 13545, { 5651, 0.5f } },
+        { 13546, { 5652, 0.5f } },
+        { 13548, { 5653, 0.5f } },
+        { 13556, { 5654, 0.5f } },
+        { 13557, { 5655, 0.5f } },
+        { 13558, { 5656, 0.5f } },
+        { 13559, { 5657, 0.5f } },
+        { 13560, { 5658, 0.5f } },
+        { 13561, { 5659, 0.5f } },
+        { 13562, { 5660, 0.5f } },
+        { 13564, { 5661, 0.5f } },
     });
 }
 const std::map<int, std::pair<int, float>>& modTarget()
 {
-    static const std::map<int, std::pair<int, float>> v = [] { std::map<int, std::pair<int, float>> r; modTarget_0 (r); modTarget_1 (r); modTarget_2 (r); modTarget_3 (r); modTarget_4 (r); modTarget_5 (r); modTarget_6 (r); modTarget_7 (r); modTarget_8 (r); modTarget_9 (r); modTarget_10 (r); modTarget_11 (r); modTarget_12 (r); modTarget_13 (r); modTarget_14 (r); return r; }();
+    static const std::map<int, std::pair<int, float>> v = [] { std::map<int, std::pair<int, float>> r; modTarget_0 (r); modTarget_1 (r); modTarget_2 (r); modTarget_3 (r); modTarget_4 (r); modTarget_5 (r); modTarget_6 (r); modTarget_7 (r); modTarget_8 (r); modTarget_9 (r); modTarget_10 (r); modTarget_11 (r); modTarget_12 (r); modTarget_13 (r); modTarget_14 (r); modTarget_15 (r); modTarget_16 (r); modTarget_17 (r); modTarget_18 (r); modTarget_19 (r); modTarget_20 (r); modTarget_21 (r); modTarget_22 (r); modTarget_23 (r); modTarget_24 (r); modTarget_25 (r); modTarget_26 (r); modTarget_27 (r); modTarget_28 (r); modTarget_29 (r); modTarget_30 (r); modTarget_31 (r); modTarget_32 (r); modTarget_33 (r); modTarget_34 (r); modTarget_35 (r); modTarget_36 (r); modTarget_37 (r); modTarget_38 (r); modTarget_39 (r); modTarget_40 (r); modTarget_41 (r); modTarget_42 (r); modTarget_43 (r); modTarget_44 (r); return r; }();
     return v;
 }
 static void fxTypes_0 (std::vector<FxType>& v)
