@@ -86,13 +86,21 @@ namespace njo
     };
 
     // envelope + LFO editors with the drag handles for the modulation sources (bottom strip, and part of the modulation page)
-    class ModEditors : public juce::Component
+    class ModEditors : public juce::Component, public juce::FileDragAndDropTarget
     {
     public:
         explicit ModEditors (Ctx&);
         ~ModEditors() override;
         void paint (juce::Graphics&) override;
         void resized() override;
+        void paintOverChildren (juce::Graphics&) override;
+        void setView (int v);   // 0 = envelopes and LFOs (modulation page), 1 = envelopes only, 2 = LFO only over the full width (synth page tabs ENV / LFO)
+        // a .wav dropped on the LFO display becomes the wavetable of the selected LFO
+        bool isInterestedInFileDrag (const juce::StringArray&) override;
+        void fileDragEnter (const juce::StringArray&, int, int) override;
+        void fileDragMove (const juce::StringArray&, int, int) override;
+        void fileDragExit (const juce::StringArray&) override;
+        void filesDropped (const juce::StringArray&, int, int) override;
         struct Impl; std::unique_ptr<Impl> impl;
     };
 

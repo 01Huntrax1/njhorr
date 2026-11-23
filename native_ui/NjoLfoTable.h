@@ -20,6 +20,7 @@ namespace njo
         void reset (int lfo);                                        // back to the default table of the DSP
         void commitFrame (int lfo, int f, bool final);               // sends one frame (throttled while dragging), final: also stores
         void commitAll (int lfo);                                    // sends every frame (after add / delete / tools) and stores
+        bool importFile (int lfo, const juce::File&, juce::String& message);   // a .wav / .aif / .flac becomes the table (frames of 2048 / 1024 / 512 / 256 samples, or one cycle)
         void sendAll();
         juce::var toVar() const;
         void fromVar (const juce::var&);

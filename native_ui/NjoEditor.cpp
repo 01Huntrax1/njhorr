@@ -52,7 +52,7 @@ namespace njo
     struct EditorContent::Impl
     {
         juce::OwnedArray<NavButton> rail, tabs;
-        std::unique_ptr<NavButton> patchBtn, rackBtn, euroBtn, stripToggle, sizeButton, stripModBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn, modRndBtn;
+        std::unique_ptr<NavButton> patchBtn, rackBtn, euroBtn, stripToggle, sizeButton, stripModBtn, stripLfoBtn, stripFrqBtn, stripSeqBtn, modEnvBtn, modFrqBtn, modSeqBtn, modRndBtn;
         juce::Rectangle<int> topBar, lcdRect, stripRect, mainRect, stageRect, subRect, mgrRect;
         juce::Component* shownPage = nullptr;
     };
@@ -130,7 +130,8 @@ namespace njo
         mk (impl->patchBtn, "PATCH", [this] { fxTab = 0; layoutAll(); });
         mk (impl->rackBtn, "RACK", [this] { fxTab = 1; layoutAll(); });
         mk (impl->euroBtn, "EURORACK", [this] { fxTab = 2; layoutAll(); });
-        mk (impl->stripModBtn, "MOD", [this] { stripTab = 0; stripOpen = true; layoutAll(); });
+        mk (impl->stripModBtn, "ENV", [this] { stripTab = 0; stripOpen = true; layoutAll(); });
+        mk (impl->stripLfoBtn, "LFO", [this] { stripTab = 3; stripOpen = true; layoutAll(); });
         mk (impl->stripFrqBtn, "FREQ", [this] { stripTab = 1; stripOpen = true; layoutAll(); });
         mk (impl->stripSeqBtn, "SEQ", [this] { stripTab = 2; stripOpen = true; layoutAll(); });
         mk (impl->modSeqBtn, "SEQ", [this] { modTab = 2; layoutAll(); });
@@ -216,7 +217,7 @@ namespace njo
         for (auto* p : fxPages) p->setVisible (false);
         fm.setVisible (false); fmRm.setVisible (false); glob.setVisible (false); fx.setVisible (false); patch.setVisible (false); euro.setVisible (false); impl->patchBtn->setVisible (false); impl->rackBtn->setVisible (false); impl->euroBtn->setVisible (false); editorsFull.setVisible (false); matrix.setVisible (false); seqArp.setVisible (false);
         editors.setVisible (false); freq.setVisible (false); freqFull.setVisible (false); seq.setVisible (false); seqFull.setVisible (false); rndFull.setVisible (false);
-        for (auto* b : { impl->stripModBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get(), impl->modRndBtn.get() }) b->setVisible (false);
+        for (auto* b : { impl->stripModBtn.get(), impl->stripLfoBtn.get(), impl->stripFrqBtn.get(), impl->stripSeqBtn.get(), impl->modEnvBtn.get(), impl->modFrqBtn.get(), impl->modSeqBtn.get(), impl->modRndBtn.get() }) b->setVisible (false);
         if (synth)
         {
             if (currentSynthPage < 6) { osc[currentSynthPage]->setBounds (impl->stageRect); osc[currentSynthPage]->setVisible (true); }
@@ -264,16 +265,18 @@ namespace njo
             impl->stripToggle->text = stripOpen ? juce::String (juce::CharPointer_UTF8 ("\xe2\x96\xbe")) : juce::String (juce::CharPointer_UTF8 ("\xe2\x96\xb4"));
             impl->stripToggle->setVisible (true);
             editors.setBounds (s.withTrimmedTop (26)); freq.setBounds (s.withTrimmedTop (26)); seq.setBounds (s.withTrimmedTop (26));
-            editors.setVisible (stripOpen && stripTab == 0); freq.setVisible (stripOpen && stripTab == 1); seq.setVisible (stripOpen && stripTab == 2);
-            impl->stripModBtn->setBounds (s.getX() + 8, s.getY() + 4, 46, 18); impl->stripFrqBtn->setBounds (s.getX() + 8 + 49, s.getY() + 4, 46, 18); impl->stripSeqBtn->setBounds (s.getX() + 8 + 98, s.getY() + 4, 46, 18);
-            impl->stripModBtn->setOn (stripTab == 0); impl->stripFrqBtn->setOn (stripTab == 1); impl->stripSeqBtn->setOn (stripTab == 2);
-            impl->stripModBtn->setVisible (true); impl->stripFrqBtn->setVisible (true); impl->stripSeqBtn->setVisible (true);
+            editors.setView (stripTab == 3 ? 2 : 1);   // ENV tab: envelopes only, LFO tab: the LFO (curve, wavetable, controls) over the full width
+            editors.setVisible (stripOpen && (stripTab == 0 || stripTab == 3)); freq.setVisible (stripOpen && stripTab == 1); seq.setVisible (stripOpen && stripTab == 2);
+            impl->stripModBtn->setBounds (s.getX() + 8, s.getY() + 4, 46, 18); impl->stripLfoBtn->setBounds (s.getX() + 8 + 49, s.getY() + 4, 46, 18);
+            impl->stripFrqBtn->setBounds (s.getX() + 8 + 98, s.getY() + 4, 46, 18); impl->stripSeqBtn->setBounds (s.getX() + 8 + 147, s.getY() + 4, 46, 18);
+            impl->stripModBtn->setOn (stripTab == 0); impl->stripLfoBtn->setOn (stripTab == 3); impl->stripFrqBtn->setOn (stripTab == 1); impl->stripSeqBtn->setOn (stripTab == 2);
+            impl->stripModBtn->setVisible (true); impl->stripLfoBtn->setVisible (true); impl->stripFrqBtn->setVisible (true); impl->stripSeqBtn->setVisible (true);
         }
         else impl->stripToggle->setVisible (false);
         if (NJOHRR_FX_ONLY)   // no modulation strip in the effects plugin
         {
             impl->stripToggle->setVisible (false); editors.setVisible (false); freq.setVisible (false); seq.setVisible (false);
-            impl->stripModBtn->setVisible (false); impl->stripFrqBtn->setVisible (false); impl->stripSeqBtn->setVisible (false);
+            impl->stripModBtn->setVisible (false); impl->stripLfoBtn->setVisible (false); impl->stripFrqBtn->setVisible (false); impl->stripSeqBtn->setVisible (false);
         }
         impl->sizeButton->setBounds (impl->topBar.getRight() - 346, impl->topBar.getY() + 12, 44, 20);
         impl->lcdRect = { impl->topBar.getRight() - 250, impl->topBar.getY() + 6, 214, 32 };
@@ -351,9 +354,9 @@ namespace njo
             g.setGradientFill (vertical (juce::Colour (0xff252729), juce::Colour (0xff1a1b1d), s));
             paintCard (g, s);
             auto h = s.removeFromTop (26).reduced (8, 4);
-            h.removeFromLeft (46 + 3 + 46 + 3 + 46);
+            h.removeFromLeft (46 + 3 + 46 + 3 + 46 + 3 + 46);
             g.setColour (dim); g.setFont (font (8.5f));
-            g.drawText (stripTab == 0 ? "drag an LFO / ENV handle onto a knob  -  click a knob's dot to set the amount"
+            g.drawText (stripTab == 0 || stripTab == 3 ? (stripTab == 0 ? "drag an ENV handle onto a knob  -  click a knob's dot to set the amount" : "drag an LFO handle onto a knob  -  drop a .wav on the LFO display to make it a wavetable  -  click a knob's dot to set the amount")
                                       : stripTab == 1 ? "drag a FREQ handle onto a cutoff or Frequency knob  -  click the knob's dot to set the amount"
                                       : "drag a SEQ handle onto any knob  -  click the knob's dot to set the amount",
                         h.withTrimmedRight (30).toNearestInt(), juce::Justification::centredRight, true);

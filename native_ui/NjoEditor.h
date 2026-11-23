@@ -17,7 +17,7 @@ namespace njo
 
         enum Group { Synth = 0, Effects = 1, Modulation = 2, Sequencer = 3 };
         void setGroup (Group);
-        void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = MOD, 1 = FREQ, 2 = SEQ
+        void setStripTab (int t) { stripTab = t; layoutAll(); }   // bottom strip: 0 = ENV, 1 = FREQ, 2 = SEQ, 3 = LFO
         void setMatrixPage (int p) { matrix.setPage (p); }
         void setModTab (int t) { modTab = t; layoutAll(); }       // modulation page: 0 = ENV / LFO, 1 = FREQ, 2 = SEQ
         void setSynthPage (int page);       // 0-5 = OSC 1-6, 6 = FM / PM / PD, 7 = RM / AM, 8 = Global, 9-14 = filter page of OSC 1-6, 15-20 = distortion page of OSC 1-6

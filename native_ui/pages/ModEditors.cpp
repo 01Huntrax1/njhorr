@@ -387,7 +387,7 @@ namespace njo
             else
             {
                 g.setColour (juce::Colours::white.withAlpha (0.35f)); g.setFont (font (11.0f));
-                g.drawText ("built-in shape - click to draw your own", 14, (int) H - 24, (int) W - 20, 16, juce::Justification::centredLeft);
+                g.drawText (w == LFO_TABLE ? "wavetable - Pos picks the frame - EDIT TABLE to draw it, or drop a .wav here" : "built-in shape - click to draw your own", 14, (int) H - 24, (int) W - 20, 16, juce::Justification::centredLeft);
             }
         }
 
@@ -466,6 +466,9 @@ namespace njo
         juce::OwnedArray<ParamWidget> envKnobs, lfoKnobs, modeBtn, syncBtn, envPol, lfoPol;   // lfoPol: Unipolar / Bipolar of the LFOs (ids 3111 + i)
         std::unique_ptr<ParamWidget> velPol;     // Unipolar / Bipolar switches of the envelopes (ids 3100 + i) and of Velocity (3110)
         juce::Rectangle<int> envPolLbl, velPolLbl, lfoPolLbl;
+        int view = 0;                       // see ModEditors::setView
+        bool fileHover = false;             // a file is dragged over the LFO display
+        juce::Rectangle<int> lfoColRect;
         juce::OwnedArray<MiniSelect> divSel;
         juce::OwnedArray<ParamWidget> envX, envLoop;   // envelope extras: 8 knobs (Delay, Hold, A / D / R Curve, Vel, Key, Level) and Loop of every mod envelope
         juce::OwnedArray<ParamWidget> lfoX, keyBtn, intBtn;   // LFO extras: 8 knobs (Skew, Steps, Jitter, Spread, Depth, Pos, Ratio, Fine), Key follow, Interp
@@ -689,6 +692,20 @@ namespace njo
     ModEditors::ModEditors (Ctx& c) : impl (new Impl (c, *this)) {}
     ModEditors::~ModEditors() = default;
 
+    void ModEditors::paintOverChildren (juce::Graphics& g)
+    {
+        if (! impl->fileHover) return;
+        // a file is dragged over the LFO display: dashed frame and hint
+        auto r = impl->lfoColRect.toFloat().reduced (1.0f);
+        g.setColour (juce::Colours::black.withAlpha (0.45f)); g.fillRoundedRectangle (r, 3.0f);
+        juce::Path p; p.addRoundedRectangle (r.reduced (3.0f), 3.0f);
+        juce::Path d; const float dash[2] = { 6.0f, 4.0f };
+        juce::PathStrokeType (2.0f).createDashedStroke (d, p, dash, 2);
+        g.setColour (red); g.fillPath (d);
+        g.setFont (impact (13.0f));
+        g.drawText ("DROP A .WAV: WAVETABLE OF LFO " + juce::String (impl->ctx.selectedLfo + 1), r.toNearestInt(), juce::Justification::centred);
+    }
+
     void ModEditors::paint (juce::Graphics& g)
     {
         if (impl->full)
@@ -706,6 +723,41 @@ namespace njo
         g.drawText ("LFO " + juce::String (impl->ctx.selectedLfo + 1), impl->lfoPolLbl, juce::Justification::centredLeft);
     }
 
+    void ModEditors::setView (int v)
+    {
+        if (impl->view == v) return;
+        impl->view = v; resized(); repaint();
+    }
+
+    bool ModEditors::isInterestedInFileDrag (const juce::StringArray& f)
+    {
+        if (impl->view == 1) return false;
+        for (auto& n : f) if (n.endsWithIgnoreCase (".wav") || n.endsWithIgnoreCase (".aif") || n.endsWithIgnoreCase (".aiff") || n.endsWithIgnoreCase (".flac")) return true;
+        return false;
+    }
+
+    void ModEditors::fileDragEnter (const juce::StringArray&, int x, int y) { impl->fileHover = impl->lfoColRect.contains (x, y); repaint(); }
+    void ModEditors::fileDragMove (const juce::StringArray&, int x, int y)
+    {
+        bool h = impl->lfoColRect.contains (x, y);
+        if (h != impl->fileHover) { impl->fileHover = h; repaint(); }
+    }
+    void ModEditors::fileDragExit (const juce::StringArray&) { impl->fileHover = false; repaint(); }
+
+    void ModEditors::filesDropped (const juce::StringArray& files, int x, int y)
+    {
+        auto& I = *impl;
+        I.fileHover = false; repaint();
+        if (! I.lfoColRect.contains (x, y) || files.isEmpty()) return;
+        int li = I.ctx.selectedLfo;
+        if (! I.ctx.lfoTables) I.ctx.lfoTables = std::make_shared<LfoTables> (I.ctx);
+        juce::String msg;
+        bool ok = I.ctx.lfoTables->importFile (li, juce::File (files[0]), msg);
+        if (ok) I.ctx.set (lfoWaveParam (li), (float) LFO_TABLE);
+        I.ctx.status ("LFO " + juce::String (li + 1) + ": " + msg);
+        I.refreshAll();
+    }
+
     void ModEditors::resized()
     {
         auto& I = *impl;
@@ -714,9 +766,21 @@ namespace njo
         if (I.full) b.removeFromTop (16);
         int W = b.getWidth(), gap = 10;
         int envW = (int) (W * 0.353f), ctlW = (int) (W * 0.235f), lfoW = W - envW - ctlW - 2 * gap;
-        auto envCol = b.removeFromLeft (envW); b.removeFromLeft (gap);
-        auto lfoCol = b.removeFromLeft (lfoW); b.removeFromLeft (gap);
-        auto ctlCol = b;
+        juce::Rectangle<int> envCol, lfoCol, ctlCol;
+        if (I.view == 1)   // synth page, ENV tab: the envelopes get the whole width
+            envCol = b;
+        else if (I.view == 2)   // synth page, LFO tab: the display gets the room of the envelope column
+        {
+            lfoCol = b.removeFromLeft (W - ctlW - gap); b.removeFromLeft (gap);
+            ctlCol = b;
+        }
+        else
+        {
+            envCol = b.removeFromLeft (envW); b.removeFromLeft (gap);
+            lfoCol = b.removeFromLeft (lfoW); b.removeFromLeft (gap);
+            ctlCol = b;
+        }
+        I.lfoColRect = lfoCol;
 
         // envelope column: chips (2 rows), canvas, knobs
         {

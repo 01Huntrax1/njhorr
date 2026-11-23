@@ -1,5 +1,6 @@
 #include "NjoLfoTable.h"
 #include <cmath>
+#include <juce_audio_formats/juce_audio_formats.h>
 
 namespace njo
 {
@@ -31,6 +32,62 @@ namespace njo
         impl->ctx = &c;
         for (auto& f : impl->fr) defaults (f);
         fromVar (c.be.getStored ("njo.lfowt"));
+    }
+
+    // averages / interpolates one cycle of n samples down (or up) to 256 points
+    static void resampleCycle (const float* x, int n, float* out)
+    {
+        const int P = LfoTables::points;
+        for (int i = 0; i < P; ++i)
+        {
+            if (n >= P)
+            {
+                // box filter centred on point i (cyclic), so the cycle is not shifted by half a point
+                double a = ((double) i - 0.5) * n / P, b = ((double) i + 0.5) * n / P, s = 0;
+                for (int k = (int) std::floor (a); k < (int) std::ceil (b); ++k)
+                    s += (double) x[((k % n) + n) % n] * (juce::jmin (b, (double) k + 1) - juce::jmax (a, (double) k));   // weight = overlap of sample k with [a, b)
+                out[i] = (float) (s / (b - a));
+            }
+            else
+            {
+                double pos = (double) i * n / P; int k = (int) pos; double f = pos - k;
+                out[i] = (float) (x[k % n] * (1.0 - f) + x[(k + 1) % n] * f);
+            }
+        }
+    }
+
+    bool LfoTables::importFile (int l, const juce::File& file, juce::String& msg)
+    {
+        juce::AudioFormatManager fm; fm.registerBasicFormats();
+        std::unique_ptr<juce::AudioFormatReader> r (fm.createReaderFor (file));
+        if (r == nullptr || r->lengthInSamples < 8) { msg = "CANNOT READ " + file.getFileName().toUpperCase(); return false; }
+        const int len = (int) juce::jmin<juce::int64> (r->lengthInSamples, 4 * 1024 * 1024);
+        juce::AudioBuffer<float> buf (1, len);
+        if (! r->read (&buf, 0, len, 0, true, false)) { msg = "CANNOT READ " + file.getFileName().toUpperCase(); return false; }
+        const float* x = buf.getReadPointer (0);
+
+        int size = len, frames = 1;   // wavetable files: frames of 2048 / 1024 / 512 / 256 samples; anything else is one cycle
+        for (int s : { 2048, 1024, 512, 256 }) if (len >= s && len % s == 0) { size = s; frames = len / s; break; }
+
+        const int use = juce::jmin (frames, maxFrames);
+        std::vector<std::vector<float>> out ((size_t) use, std::vector<float> ((size_t) points));
+        float peak = 0.0f;
+        for (int k = 0; k < use; ++k)
+        {
+            int src = use == 1 ? 0 : (int) std::lround ((double) k * (frames - 1) / (use - 1));
+            resampleCycle (x + (size_t) src * size, size, out[(size_t) k].data());
+            for (float v : out[(size_t) k]) peak = juce::jmax (peak, std::abs (v));
+        }
+        const float g = peak > 1.0e-4f ? 1.0f / peak : 1.0f;
+        setCount (l, use);
+        for (int k = 0; k < use; ++k)
+        {
+            auto& fr = frame (l, k);
+            for (int i = 0; i < points; ++i) fr[(size_t) i] = juce::jlimit (-1.0f, 1.0f, out[(size_t) k][(size_t) i] * g);
+        }
+        commitAll (l);
+        msg = "IMPORTED " + file.getFileName().toUpperCase() + " (" + juce::String (use) + (use == 1 ? " FRAME)" : " FRAMES)");
+        return true;
     }
 
     int LfoTables::count (int l) const { return (int) impl->fr[lim (l)].size(); }
