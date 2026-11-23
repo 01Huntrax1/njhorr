@@ -9081,6 +9081,7 @@ processor Eisenpuls_Synth
     int[256]    gmodDirty;  // padded to a power of two (cheap index wrap)
     float[512]  gmod;  // padded to a power of two (cheap index wrap)
     bool        vmodMat;    // some mod slot targets an FM / PM / PD matrix cell (dest 60..167)
+    int         vmodSrc;    // MATFAST: bit o = oscillator o is the source of a modulated matrix cell
     float       lastVelV  = 0.0f;   // matrix source values of the most recent note (global destinations)
     float       lastKeyV  = 0.0f;
     float       lastRandV = 0.0f;
@@ -58111,6 +58112,13 @@ processor Eisenpuls_Synth
     }
 
     // MODX-DSP-END
+    // MATFAST: the source oscillator of a modulated matrix cell (FM / PM / PD 60.., RM / AM 186.., TZFM / XF / FD / XR / CP 1308..: 36 cells each, source * 6 + destination)
+    int matSrcBit (int dd)
+    {
+        int n = dd < 168 ? dd - 60 : (dd < 258 ? dd - 186 : dd - 1308);
+        return 1 << ((n % 36) / 6);
+    }
+
     // Sums the matrix for one voice into vmod[dest]
     void computeVoiceMod (int vi)
     {
@@ -58119,6 +58127,7 @@ processor Eisenpuls_Synth
             vmod.at (vmodDirty.at (s)) = 0.0f;
 
         bool mat = false;
+        int  srcMask = 0;
 
         for (int s = 0; s < mmHi; ++s)
         {
@@ -58132,12 +58141,17 @@ processor Eisenpuls_Synth
             {
                 vmodDirty.at (s) = dd;
                 vmod.at (dd) += srcValueVoice (ss, vi) * mmAmt.at (s);
-                if ((dd >= 60 && dd < 168) || (dd >= 186 && dd < 258) || dd >= 1308) mat = true;   // MXDST-DSP
+                if ((dd >= 60 && dd < 168) || (dd >= 186 && dd < 258) || (dd >= 1308 && dd < 1488))   // MXDST-DSP, MATFAST
+                {
+                    mat = true;
+                    srcMask |= matSrcBit (dd);
+                }
             }
         }
 
         vmodHi = mmHi;
         vmodMat = mat;
+        vmodSrc = srcMask;
     }
 
     // Sums the matrix for the global (post-voice) destinations into gmod[dest]
@@ -67949,15 +67963,21 @@ processor Eisenpuls_Synth
                     float acz = 0.0f;
                     for (int fs = 0; fs < 6; ++fs)
                     {
+                        if (! fmUsed.at (fs) && (vmodSrc & (1 << fs)) == 0)   // MATFAST2
+                            continue;
+
                         int   mi = fs * 6 + fd;
                         float am = fmAmt.at (mi);
                         float ap = pmAmt.at (mi);
                         float ad = pdAmt.at (mi);
                         if (vmodMat)   // mod matrix destinations 60.. : FM 60 + n, PM 96 + n, PD 132 + n (+-50% of the range at full amount)
                         {
-                            am = clamp (am + vmod.at (60 + mi) * 0.5f, 0.0f, 4.0f);   // MXRANGE-DSP: FM / PM / TZFM go to 400 %
-                            ap = clamp (ap + vmod.at (96 + mi) * 0.5f, 0.0f, 4.0f);
-                            ad = clamp (ad + vmod.at (132 + mi) * 0.5f, 0.0f, 1.0f);
+                            if (vmod.at (60 + mi) != 0.0f)
+                                am = clamp (am + vmod.at (60 + mi) * 0.5f, 0.0f, 4.0f);   // MXRANGE-DSP: FM / PM / TZFM go to 400 %
+                            if (vmod.at (96 + mi) != 0.0f)
+                                ap = clamp (ap + vmod.at (96 + mi) * 0.5f, 0.0f, 4.0f);
+                            if (vmod.at (132 + mi) != 0.0f)
+                                ad = clamp (ad + vmod.at (132 + mi) * 0.5f, 0.0f, 1.0f);
                         }
                         if (am != 0.0f)
                             acc += am * voices.at (i).fmPrev.at (fs);
@@ -67967,7 +67987,8 @@ processor Eisenpuls_Synth
                             acd += ad * voices.at (i).fmPrev.at (fs);
                         float az = tzAmt.at (mi);
                         if (vmodMat)   // MXDST-DSP: TZFM 1308 + n
-                            az = clamp (az + vmod.at (1308 + mi) * 0.5f, 0.0f, 4.0f);
+                            if (vmod.at (1308 + mi) != 0.0f)
+                                az = clamp (az + vmod.at (1308 + mi) * 0.5f, 0.0f, 4.0f);
                         if (az != 0.0f)
                             acz += az * voices.at (i).fmPrev.at (fs);
                     }
@@ -67992,7 +68013,7 @@ processor Eisenpuls_Synth
                     int   dB  = 6 + 9 * o;
                     float lvl = clamp (op.at (ob + 1) + vmod.at (dB + 1), 0.0f, 1.0f);
 
-                    if (lvl <= 0.0005f && ! fmUsed.at (o) && ! vmodMat)
+                    if (lvl <= 0.0005f && ! fmUsed.at (o) && (vmodSrc & (1 << o)) == 0)   // MATFAST
                     {
                         voices.at (i).fmPrev.at (o) = 0.0f;
                         continue;
@@ -68286,13 +68307,18 @@ processor Eisenpuls_Synth
                     // ----- ring modulation (carrier x modulator) and amplitude modulation (carrier x unipolar modulator) -----
                     for (int rs = 0; rs < (fmAny || vmodMat ? 6 : 0); ++rs)
                     {
+                        if (! fmUsed.at (rs) && (vmodSrc & (1 << rs)) == 0)   // MATFAST2
+                            continue;
+
                         int   ri = rs * 6 + o;
                         float ar = rmAmt.at (ri);
                         float aa = amAmt.at (ri);
                         if (vmodMat)   // mod matrix destinations 186.. : RM 186 + n, AM 222 + n (+-50% of the range at full amount)
                         {
-                            ar = clamp (ar + vmod.at (186 + ri) * 0.5f, 0.0f, 1.0f);
-                            aa = clamp (aa + vmod.at (222 + ri) * 0.5f, 0.0f, 1.0f);
+                            if (vmod.at (186 + ri) != 0.0f)
+                                ar = clamp (ar + vmod.at (186 + ri) * 0.5f, 0.0f, 1.0f);
+                            if (vmod.at (222 + ri) != 0.0f)
+                                aa = clamp (aa + vmod.at (222 + ri) * 0.5f, 0.0f, 1.0f);
                         }
                         if (ar != 0.0f || aa != 0.0f)
                         {
@@ -68310,6 +68336,9 @@ processor Eisenpuls_Synth
                     {
                         for (int xs = 0; xs < 6; ++xs)
                         {
+                            if (! fmUsed.at (xs) && (vmodSrc & (1 << xs)) == 0)   // MATFAST2
+                                continue;
+
                             int   xi = xs * 6 + o;
                             float axf = mxAmt.at (xi);
                             float afd = mxAmt.at (64 + xi);
@@ -68318,10 +68347,14 @@ processor Eisenpuls_Synth
 
                             if (vmodMat)   // MXDST-DSP: XF 1344 + n, FD 1380 + n, XR 1416 + n, CP 1452 + n
                             {
-                                axf = clamp (axf + vmod.at (1344 + xi) * 0.5f, 0.0f, 1.0f);
-                                afd = clamp (afd + vmod.at (1380 + xi) * 0.5f, 0.0f, 1.0f);
-                                axr = clamp (axr + vmod.at (1416 + xi) * 0.5f, 0.0f, 1.0f);
-                                acp = clamp (acp + vmod.at (1452 + xi) * 0.5f, 0.0f, 1.0f);
+                                if (vmod.at (1344 + xi) != 0.0f)
+                                    axf = clamp (axf + vmod.at (1344 + xi) * 0.5f, 0.0f, 1.0f);
+                                if (vmod.at (1380 + xi) != 0.0f)
+                                    afd = clamp (afd + vmod.at (1380 + xi) * 0.5f, 0.0f, 1.0f);
+                                if (vmod.at (1416 + xi) != 0.0f)
+                                    axr = clamp (axr + vmod.at (1416 + xi) * 0.5f, 0.0f, 1.0f);
+                                if (vmod.at (1452 + xi) != 0.0f)
+                                    acp = clamp (acp + vmod.at (1452 + xi) * 0.5f, 0.0f, 1.0f);
                             }
 
                             if (axf == 0.0f && afd == 0.0f && axr == 0.0f && acp == 0.0f)

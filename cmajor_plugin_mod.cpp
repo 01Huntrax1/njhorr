@@ -89340,6 +89340,7 @@ namespace performer
             Array<int32_t, 256> gmodDirty;
             Array<float, 512> gmod;
             bool vmodMat = {};
+            int32_t vmodSrc = {};
             float lastVelV = {};
             float lastKeyV = {};
             float lastRandV = {};
@@ -324090,41 +324091,60 @@ namespace performer
                                         fs_1 = int32_t {0};
                                         for (;;)
                                         {
-                                            if  (! (fs_1 < int32_t {6}))
                                             {
-                                                break;
+                                                if  (! (fs_1 < int32_t {6}))
+                                                {
+                                                    break;
+                                                }
+                                                if ((! _state.fmUsed[std__intrinsics___wrap_8 (fs_1)]) ? ((_state.vmodSrc & intrinsics::leftShift (int32_t {1}, fs_1)) == int32_t {0}) : false)
+                                                {
+                                                    goto _break_1;
+                                                }
+                                                mi = intrinsics::add (intrinsics::multiply (fs_1, int32_t {6}), fd);
+                                                am = _state.fmAmt[std__intrinsics___wrap_64 (mi)];
+                                                ap = _state.pmAmt[std__intrinsics___wrap_64 (mi)];
+                                                ad = _state.pdAmt[std__intrinsics___wrap_64 (mi)];
+                                                if (_state.vmodMat)
+                                                {
+                                                    if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {60}, mi))] != 0.0f)
+                                                    {
+                                                        am = intrinsics::clamp (am + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {60}, mi))] * 0.5f), 0.0f, 4.0f);
+                                                    }
+                                                    if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {96}, mi))] != 0.0f)
+                                                    {
+                                                        ap = intrinsics::clamp (ap + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {96}, mi))] * 0.5f), 0.0f, 4.0f);
+                                                    }
+                                                    if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {132}, mi))] != 0.0f)
+                                                    {
+                                                        ad = intrinsics::clamp (ad + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {132}, mi))] * 0.5f), 0.0f, 1.0f);
+                                                    }
+                                                }
+                                                if (am != 0.0f)
+                                                {
+                                                    acc = (acc + (am * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
+                                                }
+                                                if (ap != 0.0f)
+                                                {
+                                                    acp = (acp + (ap * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
+                                                }
+                                                if (ad != 0.0f)
+                                                {
+                                                    acd = (acd + (ad * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
+                                                }
+                                                az = _state.tzAmt[std__intrinsics___wrap_64 (mi)];
+                                                if (_state.vmodMat)
+                                                {
+                                                    if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1308}, mi))] != 0.0f)
+                                                    {
+                                                        az = intrinsics::clamp (az + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1308}, mi))] * 0.5f), 0.0f, 4.0f);
+                                                    }
+                                                }
+                                                if (az != 0.0f)
+                                                {
+                                                    acz = (acz + (az * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
+                                                }
                                             }
-                                            mi = intrinsics::add (intrinsics::multiply (fs_1, int32_t {6}), fd);
-                                            am = _state.fmAmt[std__intrinsics___wrap_64 (mi)];
-                                            ap = _state.pmAmt[std__intrinsics___wrap_64 (mi)];
-                                            ad = _state.pdAmt[std__intrinsics___wrap_64 (mi)];
-                                            if (_state.vmodMat)
-                                            {
-                                                am = intrinsics::clamp (am + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {60}, mi))] * 0.5f), 0.0f, 4.0f);
-                                                ap = intrinsics::clamp (ap + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {96}, mi))] * 0.5f), 0.0f, 4.0f);
-                                                ad = intrinsics::clamp (ad + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {132}, mi))] * 0.5f), 0.0f, 1.0f);
-                                            }
-                                            if (am != 0.0f)
-                                            {
-                                                acc = (acc + (am * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
-                                            }
-                                            if (ap != 0.0f)
-                                            {
-                                                acp = (acp + (ap * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
-                                            }
-                                            if (ad != 0.0f)
-                                            {
-                                                acd = (acd + (ad * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
-                                            }
-                                            az = _state.tzAmt[std__intrinsics___wrap_64 (mi)];
-                                            if (_state.vmodMat)
-                                            {
-                                                az = intrinsics::clamp (az + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1308}, mi))] * 0.5f), 0.0f, 4.0f);
-                                            }
-                                            if (az != 0.0f)
-                                            {
-                                                acz = (acz + (az * _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (fs_1)]));
-                                            }
+                                            _break_1: {}
                                             {
                                                 intrinsics::addTo (fs_1, 1);
                                             }
@@ -324169,10 +324189,10 @@ namespace performer
                                         ty = static_cast<int32_t> (_state.op[std__intrinsics___wrap_512 (ob)] + 0.5f);
                                         dB = intrinsics::add (int32_t {6}, intrinsics::multiply (int32_t {9}, o));
                                         lvl = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {1}))] + _state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (dB, int32_t {1}))], 0.0f, 1.0f);
-                                        if (((lvl <= 0.0005f) ? (! _state.fmUsed[std__intrinsics___wrap_8 (o)]) : false) ? (! _state.vmodMat) : false)
+                                        if (((lvl <= 0.0005f) ? (! _state.fmUsed[std__intrinsics___wrap_8 (o)]) : false) ? ((_state.vmodSrc & intrinsics::leftShift (int32_t {1}, o)) == int32_t {0}) : false)
                                         {
                                             _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (o)] = 0.0f;
-                                            goto _break_1;
+                                            goto _break_2;
                                         }
                                         sSemi = ((_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {4}))] * 12.0f) + _state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {5}))]) + (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {6}))] * 0.01f);
                                         sExp = (((sSemi + pe) + tuneSt) / 12.0f) + _state.vmod[std__intrinsics___wrap_2048 (dB)];
@@ -324508,27 +324528,40 @@ namespace performer
                                             rs = int32_t {0};
                                             for (;;)
                                             {
-                                                if  (! (rs < ((_state.fmAny ? true : _state.vmodMat) ? int32_t {6} : int32_t {0})))
                                                 {
-                                                    break;
+                                                    if  (! (rs < ((_state.fmAny ? true : _state.vmodMat) ? int32_t {6} : int32_t {0})))
+                                                    {
+                                                        break;
+                                                    }
+                                                    if ((! _state.fmUsed[std__intrinsics___wrap_8 (rs)]) ? ((_state.vmodSrc & intrinsics::leftShift (int32_t {1}, rs)) == int32_t {0}) : false)
+                                                    {
+                                                        goto _break_3;
+                                                    }
+                                                    ri = intrinsics::add (intrinsics::multiply (rs, int32_t {6}), o);
+                                                    ar = _state.rmAmt[std__intrinsics___wrap_64 (ri)];
+                                                    aa = _state.amAmt[std__intrinsics___wrap_64 (ri)];
+                                                    if (_state.vmodMat)
+                                                    {
+                                                        if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {186}, ri))] != 0.0f)
+                                                        {
+                                                            ar = intrinsics::clamp (ar + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {186}, ri))] * 0.5f), 0.0f, 1.0f);
+                                                        }
+                                                        if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {222}, ri))] != 0.0f)
+                                                        {
+                                                            aa = intrinsics::clamp (aa + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {222}, ri))] * 0.5f), 0.0f, 1.0f);
+                                                        }
+                                                    }
+                                                    if ((ar != 0.0f) ? true : (aa != 0.0f))
+                                                    {
+                                                        rmod = intrinsics::clamp (rmPrev[std__intrinsics___wrap_6 (rs)], -1.0f, 1.0f);
+                                                        rg = (1.0f - ar) + (ar * rmod);
+                                                        ag = (1.0f - aa) + (aa * (0.5f + (0.5f * rmod)));
+                                                        tg = rg * ag;
+                                                        sL = (sL * tg);
+                                                        sR = (sR * tg);
+                                                    }
                                                 }
-                                                ri = intrinsics::add (intrinsics::multiply (rs, int32_t {6}), o);
-                                                ar = _state.rmAmt[std__intrinsics___wrap_64 (ri)];
-                                                aa = _state.amAmt[std__intrinsics___wrap_64 (ri)];
-                                                if (_state.vmodMat)
-                                                {
-                                                    ar = intrinsics::clamp (ar + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {186}, ri))] * 0.5f), 0.0f, 1.0f);
-                                                    aa = intrinsics::clamp (aa + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {222}, ri))] * 0.5f), 0.0f, 1.0f);
-                                                }
-                                                if ((ar != 0.0f) ? true : (aa != 0.0f))
-                                                {
-                                                    rmod = intrinsics::clamp (rmPrev[std__intrinsics___wrap_6 (rs)], -1.0f, 1.0f);
-                                                    rg = (1.0f - ar) + (ar * rmod);
-                                                    ag = (1.0f - aa) + (aa * (0.5f + (0.5f * rmod)));
-                                                    tg = rg * ag;
-                                                    sL = (sL * tg);
-                                                    sR = (sR * tg);
-                                                }
+                                                _break_3: {}
                                                 {
                                                     intrinsics::addTo (rs, 1);
                                                 }
@@ -324545,6 +324578,10 @@ namespace performer
                                                         {
                                                             break;
                                                         }
+                                                        if ((! _state.fmUsed[std__intrinsics___wrap_8 (xs)]) ? ((_state.vmodSrc & intrinsics::leftShift (int32_t {1}, xs)) == int32_t {0}) : false)
+                                                        {
+                                                            goto _break_4;
+                                                        }
                                                         xi = intrinsics::add (intrinsics::multiply (xs, int32_t {6}), o);
                                                         axf = _state.mxAmt[std__intrinsics___wrap_256 (xi)];
                                                         afd = _state.mxAmt[std__intrinsics___wrap_256 (intrinsics::add (int32_t {64}, xi))];
@@ -324552,14 +324589,26 @@ namespace performer
                                                         acp_0 = _state.mxAmt[std__intrinsics___wrap_256 (intrinsics::add (int32_t {192}, xi))];
                                                         if (_state.vmodMat)
                                                         {
-                                                            axf = intrinsics::clamp (axf + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1344}, xi))] * 0.5f), 0.0f, 1.0f);
-                                                            afd = intrinsics::clamp (afd + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1380}, xi))] * 0.5f), 0.0f, 1.0f);
-                                                            axr = intrinsics::clamp (axr + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1416}, xi))] * 0.5f), 0.0f, 1.0f);
-                                                            acp_0 = intrinsics::clamp (acp_0 + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1452}, xi))] * 0.5f), 0.0f, 1.0f);
+                                                            if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1344}, xi))] != 0.0f)
+                                                            {
+                                                                axf = intrinsics::clamp (axf + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1344}, xi))] * 0.5f), 0.0f, 1.0f);
+                                                            }
+                                                            if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1380}, xi))] != 0.0f)
+                                                            {
+                                                                afd = intrinsics::clamp (afd + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1380}, xi))] * 0.5f), 0.0f, 1.0f);
+                                                            }
+                                                            if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1416}, xi))] != 0.0f)
+                                                            {
+                                                                axr = intrinsics::clamp (axr + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1416}, xi))] * 0.5f), 0.0f, 1.0f);
+                                                            }
+                                                            if (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1452}, xi))] != 0.0f)
+                                                            {
+                                                                acp_0 = intrinsics::clamp (acp_0 + (_state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (int32_t {1452}, xi))] * 0.5f), 0.0f, 1.0f);
+                                                            }
                                                         }
                                                         if ((((axf == 0.0f) ? (afd == 0.0f) : false) ? (axr == 0.0f) : false) ? (acp_0 == 0.0f) : false)
                                                         {
-                                                            goto _break_2;
+                                                            goto _break_5;
                                                         }
                                                         xm = intrinsics::clamp (rmPrev[std__intrinsics___wrap_6 (xs)], -1.0f, 1.0f);
                                                         {
@@ -324606,7 +324655,8 @@ namespace performer
                                                             }
                                                         }
                                                     }
-                                                    _break_2: {}
+                                                    _break_4: {}
+                                                    _break_5: {}
                                                     {
                                                         intrinsics::addTo (xs, 1);
                                                     }
@@ -324616,7 +324666,7 @@ namespace performer
                                         _state.voices[std__intrinsics___wrap_8 (i)].fmPrev[std__intrinsics___wrap_8 (o)] = (stereo ? ((sL + sR) * 0.5f) : sL);
                                         if (lvl <= 0.0005f)
                                         {
-                                            goto _break_3;
+                                            goto _break_6;
                                         }
                                         pn = intrinsics::clamp (_state.op[std__intrinsics___wrap_512 (intrinsics::add (ob, int32_t {2}))] + _state.vmod[std__intrinsics___wrap_2048 (intrinsics::add (dB, int32_t {2}))], -1.0f, 1.0f);
                                         pa = ((pn + 1.0f) * 0.25f) * 3.1415927f;
@@ -324632,8 +324682,8 @@ namespace performer
                                             bInR[t_4] = (bInR[t_4] + (sR * gR));
                                         }
                                     }
-                                    _break_1: {}
-                                    _break_3: {}
+                                    _break_2: {}
+                                    _break_6: {}
                                     {
                                         intrinsics::addTo (o, 1);
                                     }
@@ -361852,6 +361902,7 @@ namespace performer
         {
             int32_t  s;
             bool  mat;
+            int32_t  srcMask;
             int32_t  s_0;
             int32_t  dd;
             int32_t  ss;
@@ -361874,6 +361925,7 @@ namespace performer
                 }
             }
             mat = false;
+            srcMask = int32_t {0};
             {
                 s_0 = int32_t {0};
                 for (;;)
@@ -361899,9 +361951,10 @@ namespace performer
                                 _temp_0 = _Eisenpuls_Synth__srcValueVoice (_state, ss, vi);
                                 _state.vmod[t] = (_temp + (_temp_0 * _state.mmAmt[std__intrinsics___wrap_256 (s_0)]));
                             }
-                            if ((((dd >= int32_t {60}) ? (dd < int32_t {168}) : false) ? true : ((dd >= int32_t {186}) ? (dd < int32_t {258}) : false)) ? true : (dd >= int32_t {1308}))
+                            if ((((dd >= int32_t {60}) ? (dd < int32_t {168}) : false) ? true : ((dd >= int32_t {186}) ? (dd < int32_t {258}) : false)) ? true : ((dd >= int32_t {1308}) ? (dd < int32_t {1488}) : false))
                             {
                                 mat = true;
+                                srcMask = (srcMask | _Eisenpuls_Synth__matSrcBit (dd));
                             }
                         }
                     }
@@ -361913,6 +361966,7 @@ namespace performer
             }
             _state.vmodHi = _state.mmHi;
             _state.vmodMat = mat;
+            _state.vmodSrc = srcMask;
         }
 
         float _Eisenpuls_Synth__srcValueVoice (_Eisenpuls_Synth_State& _state, int32_t src, int32_t vi) noexcept
@@ -361954,6 +362008,14 @@ namespace performer
                 return _Eisenpuls_Synth__seqPolar (_state, intrinsics::subtract (src, int32_t {34}), (_state.seqRetrig[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {34}))] > 0.5f) ? _state.voices[std__intrinsics___wrap_8 (vi)].seqS[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {34}))].v : _state.seqG[std__intrinsics___wrap_16 (intrinsics::subtract (src, int32_t {34}))].v);
             }
             return 0.0f;
+        }
+
+        int32_t _Eisenpuls_Synth__matSrcBit (int32_t dd) noexcept
+        {
+            int32_t  n;
+
+            n = (dd < int32_t {168}) ? intrinsics::subtract (dd, int32_t {60}) : ((dd < int32_t {258}) ? intrinsics::subtract (dd, int32_t {186}) : intrinsics::subtract (dd, int32_t {1308}));
+            return intrinsics::leftShift (int32_t {1}, intrinsics::modulo (n, int32_t {36}) / int32_t {6});
         }
 
         int32_t std__intrinsics___wrap_6 (int32_t n) noexcept
