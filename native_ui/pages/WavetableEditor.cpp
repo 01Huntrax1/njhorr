@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <random>
+#include <juce_audio_formats/juce_audio_formats.h>
 
 namespace njo
 {
@@ -38,18 +39,20 @@ namespace njo
             bool  pol = false;           // constant polarity: every segment keeps the polarity of its level
             bool  all = false;           // apply to all frames
             std::array<float, 8> lvl, ph, dc, semi; std::array<int, 8> shp;
+            std::vector<float> user;     // a dropped single cycle wave: shape 5 (USER)
             Razor() { reset(); }
-            void reset() { n = 1; size = 1.0f; duty = 0.5f; mix = 1.0f; pol = false; lvl.fill (1.0f); ph.fill (0.0f); dc.fill (0.0f); semi.fill (0.0f); shp.fill (0); }
+            void reset() { n = 1; size = 1.0f; duty = 0.5f; mix = 1.0f; pol = false; lvl.fill (1.0f); ph.fill (0.0f); dc.fill (0.0f); semi.fill (0.0f); shp.fill (0); user.clear(); }
         };
-        constexpr const char* razorShapes[] = { "SRC", "SINE", "SAW", "SQR", "TRI" };
+        constexpr const char* razorShapes[] = { "SRC", "SINE", "SAW", "SQR", "TRI", "USER" };
         inline float razorRead (const Frame& q, float p)
         {
             p -= std::floor (p); const float x = p * (float) N; const int i = (int) x; const float f = x - (float) i;
             return q[(size_t) (i % N)] * (1.0f - f) + q[(size_t) ((i + 1) % N)] * f;
         }
-        inline float razorShape (const Frame& q, int s, float p)
+        inline float razorShape (const Frame& q, const Frame& user, int s, float p)
         {
             if (s == 0) return razorRead (q, p);
+            if (s == 5) { if (user.size() < 2) return razorRead (q, p); p -= std::floor (p); const float x = p * (float) user.size(); const size_t i = (size_t) x, u = user.size(); const float f = x - (float) i; return user[i % u] * (1.0f - f) + user[(i + 1) % u] * f; }
             p -= std::floor (p);
             if (s == 1) return std::sin (6.2831853f * p);
             if (s == 2) return 2.0f * p - 1.0f;
@@ -75,7 +78,7 @@ namespace njo
                 const float p = (float) i / (float) N;
                 while (k < n - 1 && p >= st[k + 1]) ++k;
                 const float t = (p - st[k]) / juce::jmax (1.0e-6f, w[k]);
-                float v = razorShape (src, r.shp[(size_t) k], r.ph[(size_t) k] + t * r.size * std::pow (2.0f, r.semi[(size_t) k] / 12.0f));
+                float v = razorShape (src, r.user, r.shp[(size_t) k], r.ph[(size_t) k] + t * r.size * std::pow (2.0f, r.semi[(size_t) k] / 12.0f));
                 if (r.pol) v = std::abs (v) * (r.lvl[(size_t) k] < 0.0f ? -1.0f : 1.0f) * std::abs (r.lvl[(size_t) k]);
                 else v *= r.lvl[(size_t) k];
                 v += r.dc[(size_t) k];
@@ -86,7 +89,7 @@ namespace njo
         }
 
         // the controls of the razor: drag a field horizontally to set it, double-click resets it
-        struct RazorPanel : public juce::Component
+        struct RazorPanel : public juce::Component, public juce::FileDragAndDropTarget
         {
             Razor r; std::function<void()> onChange, onApply;
             struct Field { juce::Rectangle<int> rc; int kind = 0, idx = 0; };   // kinds: 0 steps, 1 size, 2 duty, 3 mix, 4 lvl, 5 phase, 6 dc, 7 tune, 8 shape, 9 pol, 10 all, 11 apply, 12 reset
@@ -156,7 +159,7 @@ namespace njo
                     case 5: return juce::String (r.ph[(size_t) f.idx], 2);
                     case 6: return juce::String (r.dc[(size_t) f.idx], 2);
                     case 7: return juce::String (r.semi[(size_t) f.idx], 1);
-                    case 8: return razorShapes[juce::jlimit (0, 4, r.shp[(size_t) f.idx])];
+                    case 8: return razorShapes[juce::jlimit (0, 5, r.shp[(size_t) f.idx])];
                     case 9: return r.pol ? "CONST POL: ON" : "CONST POL: OFF";
                     case 10: return r.all ? "ALL FRAMES" : "THIS FRAME";
                     case 11: return "APPLY";
@@ -167,6 +170,7 @@ namespace njo
             void paint (juce::Graphics& g) override
             {
                 g.fillAll (deep); g.setFont (font (8.0f, true));
+                if (over) { g.setColour (juce::Colour (0xffff3e30).withAlpha (0.25f)); g.fillAll(); }
                 for (auto& f : fields)
                     if (f.idx == 0 && f.kind >= 4 && f.kind <= 8)
                     {
@@ -198,7 +202,7 @@ namespace njo
                 else if (f.kind == 10) { r.all = ! r.all; drag = -1; }
                 else if (f.kind == 11) { drag = -1; if (onApply) onApply(); return; }
                 else if (f.kind == 12) { r.reset(); drag = -1; }
-                else if (f.kind == 8) { r.shp[(size_t) f.idx] = (r.shp[(size_t) f.idx] + 1) % 5; drag = -1; }
+                else if (f.kind == 8) { r.shp[(size_t) f.idx] = (r.shp[(size_t) f.idx] + 1) % (r.user.size() > 1 ? 6 : 5); drag = -1; }
                 else if (e.getNumberOfClicks() > 1) { resetField (f); drag = -1; }
                 else set (f, (float) (e.x - f.rc.getX()) / (float) f.rc.getWidth());
                 repaint(); if (onChange) onChange();
@@ -209,6 +213,37 @@ namespace njo
                 set (f, (float) (e.x - f.rc.getX()) / (float) f.rc.getWidth()); repaint(); if (onChange) onChange();
             }
             void mouseUp (const juce::MouseEvent&) override { drag = -1; }
+
+            // a single cycle wave dropped on a SHAPE cell becomes that segment's shape, anywhere else the shape of all segments
+            bool over = false;
+            bool isInterestedInFileDrag (const juce::StringArray& f) override { for (auto& n : f) if (juce::File (n).hasFileExtension ("wav;aif;aiff;flac;ogg;mp3")) return true; return false; }
+            void fileDragEnter (const juce::StringArray&, int, int) override { over = true; repaint(); }
+            void fileDragExit (const juce::StringArray&) override { over = false; repaint(); }
+            void filesDropped (const juce::StringArray& f, int x, int y) override
+            {
+                over = false;
+                if (f.isEmpty() || ! loadCycle (juce::File (f[0]), r.user)) { repaint(); return; }
+                const int h = hit ({ x, y });
+                if (h >= 0 && fields[(size_t) h].kind == 8) r.shp[(size_t) fields[(size_t) h].idx] = 5;
+                else r.shp.fill (5);
+                repaint(); if (onChange) onChange();
+            }
+            static bool loadCycle (const juce::File& file, std::vector<float>& out)
+            {
+                juce::AudioFormatManager fm; fm.registerBasicFormats();
+                std::unique_ptr<juce::AudioFormatReader> rd (fm.createReaderFor (file));
+                if (rd == nullptr || rd->lengthInSamples < 2) return false;
+                const int len = (int) juce::jmin ((juce::int64) 8192, rd->lengthInSamples), nch = (int) juce::jmin ((unsigned) 8, rd->numChannels);
+                juce::AudioBuffer<float> buf (nch, len);
+                if (! rd->read (&buf, 0, len, 0, true, nch > 1)) return false;
+                std::vector<float> m ((size_t) len, 0.0f); float pk = 0.0f;
+                for (int c = 0; c < nch; ++c) for (int i = 0; i < len; ++i) m[(size_t) i] += buf.getSample (c, i) / (float) nch;
+                for (float v : m) pk = std::max (pk, std::abs (v));
+                if (pk < 1.0e-5f) return false;
+                const int n = (int) rd->lengthInSamples > 8192 ? 2048 : len;   // longer files: their first 2048 samples
+                m.resize ((size_t) n); for (auto& v : m) v /= pk;
+                out = std::move (m); return true;
+            }
         };
     }
 
@@ -366,7 +401,7 @@ namespace njo
             g.setFont (font (9.0f, true)); g.setColour (dim);
             g.drawText ("WATERFALL  -  " + juce::String ((int) fr.size()) + " FRAMES  -  CLICK TO SELECT", water.getX(), water.getY() - 13, water.getWidth(), 11, juce::Justification::left);
             g.drawText ("FRAME " + juce::String (sel + 1) + "  -  DRAW WITH THE MOUSE", draw.getX(), draw.getY() - 13, draw.getWidth(), 11, juce::Justification::left);
-            g.drawText (razor.isVisible() ? juce::String ("RAZOR  -  CUTS THE CYCLE INTO SEGMENTS  -  DRAG A FIELD, DOUBLE-CLICK RESETS, APPLY BAKES IT") : "HARMONICS 1.." + juce::String (NH) + "  -  DRAG TO SET", harm.getX(), harm.getY() - 13, harm.getWidth(), 11, juce::Justification::left);
+            g.drawText (razor.isVisible() ? juce::String ("RAZOR  -  DOUBLE-CLICK RESETS  -  DROP A SINGLE CYCLE WAVE ON A SHAPE CELL") : "HARMONICS 1.." + juce::String (NH) + "  -  DRAG TO SET", harm.getX(), harm.getY() - 13, harm.getWidth(), 11, juce::Justification::left);
             // waterfall: back frame first, shifted up-right per frame; the selected frame in red
             const int nf = (int) fr.size();
             const float dx = juce::jmin (3.0f, 90.0f / (float) nf), dy = juce::jmin (6.0f, (float) water.getHeight() * 0.5f / (float) nf);
