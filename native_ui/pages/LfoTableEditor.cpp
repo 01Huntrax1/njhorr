@@ -81,12 +81,19 @@ namespace njo
         auto& I = *impl; auto b = getLocalBounds().reduced (12, 10);
         b.removeFromTop (20);
         I.chipRow = b.removeFromTop (22); b.removeFromTop (6);
-        auto side = b.removeFromRight (150); b.removeFromRight (10);
-        I.water = b.removeFromBottom (juce::jmin (90, b.getHeight() / 3)); b.removeFromBottom (6);
+        // the buttons fill columns of whatever height is left (the editor also opens in the low bottom strip of the synth page)
+        const int bw = 72, bh = 22, nB = (int) I.btns.size();
+        const int rows = juce::jmax (1, (b.getHeight() + 4) / (bh + 4));
+        const int cols = juce::jmax (2, (nB + rows - 1) / rows);
+        auto side = b.removeFromRight (cols * (bw + 4) - 4); b.removeFromRight (10);
+        const bool lowH = b.getHeight() < 190;
+        I.water = lowH ? juce::Rectangle<int>() : b.removeFromBottom (juce::jmin (90, b.getHeight() / 3));
+        if (! lowH) b.removeFromBottom (6);
         I.canvas = b;
-        int bw = 72, bh = 22, cols = 2; int x0 = side.getX(), y0 = side.getY();
+        int x0 = side.getX(), y0 = side.getY();
         for (size_t k = 0; k < I.btns.size(); ++k)
-            I.btns[k].r = { x0 + (int) (k % cols) * (bw + 4), y0 + (int) (k / cols) * (bh + 4), bw, bh };
+            I.btns[k].r = cols == 2 ? juce::Rectangle<int> (x0 + (int) (k % 2) * (bw + 4), y0 + (int) (k / 2) * (bh + 4), bw, bh)
+                                    : juce::Rectangle<int> (x0 + (int) ((int) k / rows) * (bw + 4), y0 + (int) ((int) k % rows) * (bh + 4), bw, bh);
     }
 
     void LfoTableEditor::paint (juce::Graphics& g)
@@ -125,8 +132,8 @@ namespace njo
         g.setColour (juce::Colours::white.withAlpha (0.4f)); g.setFont (font (9.0f));
         g.drawText ("draw with the mouse - frame " + juce::String (I.sel + 1) + " of " + juce::String (N) + " - the LFO position knob scans the frames", I.canvas.getX() + 8, I.canvas.getBottom() - 18, I.canvas.getWidth() - 16, 14, juce::Justification::centredLeft);
         // waterfall: every frame behind the next, the scan position in green
-        g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (I.water.toFloat(), 2.0f);
-        for (int f = N - 1; f >= 0; --f)
+        if (! I.water.isEmpty()) { g.setColour (juce::Colour (0xff0b0404)); g.fillRoundedRectangle (I.water.toFloat(), 2.0f); }
+        for (int f = I.water.isEmpty() ? -1 : N - 1; f >= 0; --f)
         {
             float t = N > 1 ? (float) f / (float) (N - 1) : 0.0f;
             auto r = I.water.toFloat().reduced (8, 6).translated (t * 36.0f, -t * 14.0f).withTrimmedRight (40).withTrimmedTop (14);
