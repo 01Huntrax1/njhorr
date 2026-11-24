@@ -397,7 +397,7 @@ namespace njo
         void persist (Kind k, int o)
         {
             auto& sl = slots[k][o];
-            be.setStored (keyFor (k, o), sl ? encodeMem (*sl, k == ModeEdit ? kModeScale : 1.0f, k == SoundFont) : juce::var());
+            be.setStored (keyFor (k, o), sl ? encodeMem (*sl, k == ModeEdit ? kModeScale : 1.0f, k == SoundFont || k == EqBands) : juce::var());
         }
     };
 

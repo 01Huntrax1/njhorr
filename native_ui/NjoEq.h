@@ -7,13 +7,13 @@
 
 namespace njo::eq
 {
-    constexpr int MAXB = 24, FIELDS = 10, NTYPES = 15;
+    constexpr int MAXB = 24, FIELDS = 10, NTYPES = 25;
     inline const char* typeName (int t)
     {
-        static const char* const n[NTYPES] = { "Bell", "Low Shelf", "High Shelf", "Low Cut 12", "Low Cut 24", "High Cut 12", "High Cut 24", "Band Pass", "Notch", "Tilt", "All-Pass", "Comb (feed-forward)", "Comb (feedback)", "Low Cut 48", "High Cut 48" };
+        static const char* const n[NTYPES] = { "Bell", "Low Shelf", "High Shelf", "Low Cut 12", "Low Cut 24", "High Cut 12", "High Cut 24", "Band Pass", "Notch", "Tilt", "All-Pass", "Comb (feed-forward)", "Comb (feedback)", "Low Cut 48", "High Cut 48", "Low Cut 6", "High Cut 6", "Low Shelf 6", "High Shelf 6", "Low Shelf 24", "High Shelf 24", "Notch 24", "Band Pass 24", "Band Pass Flat", "Formant" };
         return n[t < 0 ? 0 : (t >= NTYPES ? NTYPES - 1 : t)];
     }
-    inline bool hasGain (int t) { return t == 0 || t == 1 || t == 2 || t == 7 || t == 9 || t == 11 || t == 12; }      // types whose gain is meaningful
+    inline bool hasGain (int t) { return t == 0 || t == 1 || t == 2 || t == 7 || t == 9 || t == 11 || t == 12 || t == 17 || t == 18 || t == 19 || t == 20 || t == 22 || t == 24; }      // types whose gain is meaningful
     inline bool hasHarmonics (int t) { return t == 0 || t == 7 || t == 8; }
     inline bool isComb (int t) { return t == 11 || t == 12; }
 
@@ -53,7 +53,7 @@ namespace njo::eq
         return b;
     }
 
-    struct Sec { int kind; double f, g, q; };   // kind: 0 peak, 1 low shelf, 2 high shelf, 3 high pass, 4 low pass, 5 band pass, 6 notch, 7 all-pass
+    struct Sec { int kind; double f, g, q; };   // kind: 0 peak, 1 low shelf, 2 high shelf, 3 high pass, 4 low pass, 5 band pass, 6 notch, 7 all-pass, 8 low pass 6 dB, 9 high pass 6 dB, 10 low shelf 6 dB, 11 high shelf 6 dB
     struct Scale { double gain = 1.0, shift = 1.0, q = 1.0; };   // slot parameters P2 / P3 / P4 as factors
 
     // the biquad sections of a band, exactly as the DSP builds them (combs give no sections)
@@ -77,6 +77,16 @@ namespace njo::eq
             case 10: s.push_back ({ 7, f, 0, q }); break;
             case 13: for (double k : { 0.5098, 0.6013, 0.9, 2.5629 }) s.push_back ({ 3, f, 0, qq * k }); break;
             case 14: for (double k : { 0.5098, 0.6013, 0.9, 2.5629 }) s.push_back ({ 4, f, 0, qq * k }); break;
+            case 15: s.push_back ({ 9, f, 0, q }); break;
+            case 16: s.push_back ({ 8, f, 0, q }); break;
+            case 17: s.push_back ({ 10, f, g, q }); break;
+            case 18: s.push_back ({ 11, f, g, q }); break;
+            case 19: s.push_back ({ 1, f, g * 0.5, q }); s.push_back ({ 1, f, g * 0.5, q }); break;
+            case 20: s.push_back ({ 2, f, g * 0.5, q }); s.push_back ({ 2, f, g * 0.5, q }); break;
+            case 21: s.push_back ({ 6, f, 0, q }); s.push_back ({ 6, f, 0, q }); break;
+            case 22: s.push_back ({ 5, f, g * 0.5, q }); s.push_back ({ 5, f, g * 0.5, q }); break;
+            case 23: { const double r = juce::jlimit (1.01, 8.0, std::pow (2.0, 0.5 / q)); s.push_back ({ 3, juce::jmax (10.0, f / r), 0, 0.7071 }); s.push_back ({ 4, juce::jmin (sr * 0.45, f * r), 0, 0.7071 }); break; }
+            case 24: { double hg = g; for (double k : { 1.0, 2.5, 3.6 }) { if (f * k <= sr * 0.45) s.push_back ({ 0, f * k, hg, q }); hg *= 0.8; } break; }
             default: break;
         }
         if (hasHarmonics (b.type) && b.harm > 0)
@@ -108,6 +118,13 @@ namespace njo::eq
             case 4: b0 = (1 - cw) / 2; b1 = 1 - cw; b2 = b0; a0 = 1 + al; a1 = -2 * cw; a2 = 1 - al; break;
             case 5: { const double gl = std::pow (10.0, s.g / 20.0); b0 = al * gl; b2 = -al * gl; a0 = 1 + al; a1 = -2 * cw; a2 = 1 - al; break; }
             case 6: b0 = 1; b1 = -2 * cw; b2 = 1; a0 = 1 + al; a1 = -2 * cw; a2 = 1 - al; break;
+            case 8: case 9: case 10: case 11:
+            {   // first order (bilinear), kinds 10 / 11 are the shelves with gain V
+                const double K = std::tan (w0 * 0.5), V = std::pow (10.0, s.g / 20.0); a0 = 1 + K; a1 = K - 1;
+                if (s.kind == 8) { b0 = K; b1 = K; } else if (s.kind == 9) { b0 = 1; b1 = -1; }
+                else if (s.kind == 10) { b0 = 1 + V * K; b1 = V * K - 1; } else { b0 = V + K; b1 = K - V; }
+                break;
+            }
             default: b0 = 1 - al; b1 = -2 * cw; b2 = 1 + al; a0 = 1 + al; a1 = -2 * cw; a2 = 1 - al; break;
         }
         const double w = 2 * pi * fr / sr, c1 = std::cos (w), s1 = std::sin (w), c2 = std::cos (2 * w), s2 = std::sin (2 * w);

@@ -24,6 +24,7 @@ namespace njo
         struct Impl; std::unique_ptr<Impl> impl;
     private:
         void timerCallback() override;
+        void visibilityChanged() override;
         void paramChanged (int num, float v) override;
         void changeListenerCallback (juce::ChangeBroadcaster*) override;
     };

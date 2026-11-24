@@ -89738,8 +89738,8 @@ namespace performer
         using std_intrinsics_T_22 = float;
         using std_intrinsics_internal_T = float;
         using std_intrinsics_T_23 = float;
-        using std_intrinsics_T_24 = double;
-        using std_intrinsics_T_25 = float;
+        using std_intrinsics_T_24 = float;
+        using std_intrinsics_T_25 = double;
         using std_intrinsics_T_26 = double;
         using std_intrinsics_T_27 = double;
         using std_intrinsics_T_28 = double;
@@ -209640,7 +209640,7 @@ namespace performer
                         pos = intrinsics::add (c.offset, i_0);
                         if ((pos >= int32_t {0}) ? (pos < int32_t {240}) : false)
                         {
-                            _state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (intrinsics::multiply (b, int32_t {240}), pos))] = intrinsics::clamp (c.data[std__intrinsics___wrap_256 (i_0)], -1.0f, 1.0f);
+                            _state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (intrinsics::multiply (b, int32_t {240}), pos))] = intrinsics::clamp (c.data[std__intrinsics___wrap_256 (i_0)], -2.0f, 2.0f);
                         }
                         {
                             intrinsics::addTo (i_0, 1);
@@ -370124,6 +370124,8 @@ namespace performer
             float  qq_0;
             float  qq_1;
             float  qq_2;
+            float  r;
+            float  fg;
             int32_t  ek_0;
             float  amt;
             float  hg;
@@ -370168,7 +370170,7 @@ namespace performer
                         {
                             goto _break_0;
                         }
-                        ty = intrinsics::clamp (static_cast<int32_t> ((_state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (bi, int32_t {1}))] * 16.0f) + 0.5f), int32_t {0}, int32_t {14});
+                        ty = intrinsics::clamp (static_cast<int32_t> ((_state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (bi, int32_t {1}))] * 16.0f) + 0.5f), int32_t {0}, int32_t {24});
                         f = intrinsics::clamp ((20.0f * intrinsics::pow (1000.0f, intrinsics::clamp (_state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (bi, int32_t {2}))], 0.0f, 1.0f))) * fShift, 10.0f, sr * 0.45f);
                         g = intrinsics::clamp ((_state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (bi, int32_t {3}))] * 24.0f) * gScale, -36.0f, 36.0f);
                         q = intrinsics::clamp ((0.1f * intrinsics::pow (300.0f, intrinsics::clamp (_state.peqB[std__intrinsics___wrap_195840 (intrinsics::add (bi, int32_t {4}))], 0.0f, 1.0f))) * qScale, 0.05f, 40.0f);
@@ -370267,12 +370269,97 @@ namespace performer
                                                                         }
                                                                         else
                                                                         {
-                                                                            ek_0 = intrinsics::multiply (intrinsics::add (intrinsics::multiply (s, int32_t {24}), b_0), int32_t {4});
-                                                                            amt = 1.0f - intrinsics::pow (10.0f, (- intrinsics::abs (g)) / 20.0f);
-                                                                            _state.peqK[std__intrinsics___wrap_78336 (ek_0)] = (((g < 0.0f) ? (- amt) : amt) * ((ty == int32_t {12}) ? 0.97f : 1.0f));
-                                                                            _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {1}))] = intrinsics::clamp (sr / f, 2.0f, 4000.0f);
-                                                                            _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {2}))] = ((ty == int32_t {12}) ? 1.0f : 0.0f);
-                                                                            _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {3}))] = static_cast<float> (ch);
+                                                                            if (ty == int32_t {15})
+                                                                            {
+                                                                                n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {9}, f, 0.0f, q, ch);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                if (ty == int32_t {16})
+                                                                                {
+                                                                                    n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {8}, f, 0.0f, q, ch);
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    if (ty == int32_t {17})
+                                                                                    {
+                                                                                        n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {10}, f, g, q, ch);
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        if (ty == int32_t {18})
+                                                                                        {
+                                                                                            n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {11}, f, g, q, ch);
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            if (ty == int32_t {19})
+                                                                                            {
+                                                                                                n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {1}, f, g * 0.5f, q, ch);
+                                                                                                n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {1}, f, g * 0.5f, q, ch);
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                if (ty == int32_t {20})
+                                                                                                {
+                                                                                                    n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {2}, f, g * 0.5f, q, ch);
+                                                                                                    n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {2}, f, g * 0.5f, q, ch);
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    if (ty == int32_t {21})
+                                                                                                    {
+                                                                                                        n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {6}, f, 0.0f, q, ch);
+                                                                                                        n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {6}, f, 0.0f, q, ch);
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        if (ty == int32_t {22})
+                                                                                                        {
+                                                                                                            n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {5}, f, g * 0.5f, q, ch);
+                                                                                                            n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {5}, f, g * 0.5f, q, ch);
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            if (ty == int32_t {23})
+                                                                                                            {
+                                                                                                                r = intrinsics::clamp (intrinsics::pow (2.0f, 0.5f / q), 1.01f, 8.0f);
+                                                                                                                n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {3}, intrinsics::max (f / r, 10.0f), 0.0f, 0.7071f, ch);
+                                                                                                                n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {4}, intrinsics::min (f * r, sr * 0.45f), 0.0f, 0.7071f, ch);
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                if (ty == int32_t {24})
+                                                                                                                {
+                                                                                                                    fg = g;
+                                                                                                                    n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {0}, f, fg, q, ch);
+                                                                                                                    if ((f * 2.5f) < (sr * 0.45f))
+                                                                                                                    {
+                                                                                                                        n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {0}, f * 2.5f, fg * 0.8f, q, ch);
+                                                                                                                    }
+                                                                                                                    if ((f * 3.6f) < (sr * 0.45f))
+                                                                                                                    {
+                                                                                                                        n = _Eisenpuls_Synth__peqAddSec (_state, s, n, int32_t {0}, f * 3.6f, fg * 0.64f, q, ch);
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    ek_0 = intrinsics::multiply (intrinsics::add (intrinsics::multiply (s, int32_t {24}), b_0), int32_t {4});
+                                                                                                                    amt = 1.0f - intrinsics::pow (10.0f, (- intrinsics::abs (g)) / 20.0f);
+                                                                                                                    _state.peqK[std__intrinsics___wrap_78336 (ek_0)] = (((g < 0.0f) ? (- amt) : amt) * ((ty == int32_t {12}) ? 0.97f : 1.0f));
+                                                                                                                    _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {1}))] = intrinsics::clamp (sr / f, 2.0f, 4000.0f);
+                                                                                                                    _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {2}))] = ((ty == int32_t {12}) ? 1.0f : 0.0f);
+                                                                                                                    _state.peqK[std__intrinsics___wrap_78336 (intrinsics::add (ek_0, int32_t {3}))] = static_cast<float> (ch);
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -370362,6 +370449,8 @@ namespace performer
             float  t;
             float  t_0;
             float  gl;
+            float  K;
+            float  V;
             int32_t  ci;
             float  ia;
 
@@ -370462,12 +370551,48 @@ namespace performer
                                     }
                                     else
                                     {
-                                        b0 = (1.0f - al);
-                                        b1 = (-2.0f * cw);
-                                        b2 = (1.0f + al);
-                                        a0 = (1.0f + al);
-                                        a1 = (-2.0f * cw);
-                                        a2 = (1.0f - al);
+                                        if ((kind >= int32_t {8}) ? (kind <= int32_t {11}) : false)
+                                        {
+                                            K = intrinsics::tan (w0 * 0.5f);
+                                            V = intrinsics::pow (10.0f, gDb / 20.0f);
+                                            a0 = (1.0f + K);
+                                            a1 = (K - 1.0f);
+                                            if (kind == int32_t {8})
+                                            {
+                                                b0 = K;
+                                                b1 = K;
+                                            }
+                                            else
+                                            {
+                                                if (kind == int32_t {9})
+                                                {
+                                                    b0 = 1.0f;
+                                                    b1 = -1.0f;
+                                                }
+                                                else
+                                                {
+                                                    if (kind == int32_t {10})
+                                                    {
+                                                        b0 = (1.0f + (V * K));
+                                                        b1 = ((V * K) - 1.0f);
+                                                    }
+                                                    else
+                                                    {
+                                                        b0 = (V + K);
+                                                        b1 = (K - V);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            b0 = (1.0f - al);
+                                            b1 = (-2.0f * cw);
+                                            b2 = (1.0f + al);
+                                            a0 = (1.0f + al);
+                                            a1 = (-2.0f * cw);
+                                            a2 = (1.0f - al);
+                                        }
                                     }
                                 }
                             }
@@ -370484,6 +370609,13 @@ namespace performer
             _state.peqC[std__intrinsics___wrap_261120 (intrinsics::add (ci, int32_t {4}))] = (a2 * ia);
             _state.peqCh[std__intrinsics___wrap_52224 (intrinsics::add (intrinsics::multiply (s, int32_t {64}), n))] = ch;
             return intrinsics::add (n, int32_t {1});
+        }
+
+        float std__intrinsics__tan_0 (float n) noexcept
+        {
+            {
+                return intrinsics::sin (n) / intrinsics::cos (n);
+            }
         }
 
         int32_t std__intrinsics___wrap_261120 (int32_t n) noexcept
@@ -370917,13 +371049,6 @@ namespace performer
         {
             {
                 return 0.0;
-            }
-        }
-
-        float std__intrinsics__tan_0 (float n) noexcept
-        {
-            {
-                return intrinsics::sin (n) / intrinsics::cos (n);
             }
         }
 

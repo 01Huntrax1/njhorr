@@ -10,7 +10,7 @@ namespace njo
     {
         constexpr double kSr = 48000.0, kFLo = 20.0, kFHi = 20000.0, kDbRange = 24.0;
 
-        juce::Colour typeColour (int t) { return juce::Colour::fromHSV ((float) t / 15.0f * 0.85f, 0.62f, 0.98f, 1.0f); }
+        juce::Colour typeColour (int t) { return juce::Colour::fromHSV ((float) t / (float) eq::NTYPES * 0.9f, 0.62f, 0.98f, 1.0f); }
 
         // a small framed value box: drag sideways (shift = fine), mouse wheel, double-click resets
         struct Field : public juce::Component
@@ -84,6 +84,8 @@ namespace njo
             addBtn (delBtn, "DELETE", [this] { removeBand (sel); });
             addBtn (addBand, "+ BAND", [this] { addAt (1000.0, 0.0, 0); });
             addBtn (presetBtn, "PRESETS", [this] { presetMenu(); });
+            addBtn (anaBtn, "", [this] { anaMode = (anaMode + 1) % 4; syncAna(); if (analyzerWanted() && ! owner.isTimerRunning()) owner.startTimer (33); owner.repaint(); });
+            syncAna();
 
             auto bandField = [this] (Field& f, const juce::String& name, double lo, double hi, double def, bool lg, int steps, std::function<double()> get, std::function<void (double)> set, std::function<juce::String (double)> fmt)
             {
@@ -128,7 +130,54 @@ namespace njo
             if (! valid()) { sel = -1; for (int i = 0; i < eq::MAXB; ++i) if (bands[(size_t) i].used) { sel = i; break; } }
             lastData = eq::encode (bands);
         }
-        void changed() { dirty = true; owner.repaint(); if (! owner.isTimerRunning()) owner.startTimer (100); }
+        void changed() { dirty = true; lastChange = juce::Time::getMillisecondCounter(); owner.repaint(); if (! owner.isTimerRunning()) owner.startTimer (33); }
+
+        void syncAna() { static const char* n[] = { "ANALYZER OFF", "ANALYZER POST", "ANALYZER PRE", "ANALYZER PRE+POST" }; anaBtn.text = n[anaMode]; anaBtn.on = anaMode > 0; anaBtn.repaint(); }
+        // ---- analyzer: the DSP measures the slot of the open editor in 24 log spaced bands (40 Hz .. 16 kHz, before and after the EQ; output event fxViz) ----
+        static inline int anaMode = 1;                       // 0 off, 1 post, 2 pre, 3 both (kept for the session)
+        float anaIn[24] = {}, anaOut[24] = {}, anaHold[24] = {}; juce::uint32 anaStamp = 0, anaAssert = 0, lastChange = 0;
+        bool analyzerWanted() const { return anaMode > 0 && owner.isVisible(); }
+        void tickAnalyzer()
+        {
+            if (! analyzerWanted()) return;
+            const auto now = juce::Time::getMillisecondCounter(); auto& v = ctx.be.fxViz;
+            const bool live = v.slot == slot && now - v.stamp < 400;
+            if (live && v.stamp != anaStamp)
+            {
+                anaStamp = v.stamp;
+                for (int b = 0; b < 24; ++b)
+                {
+                    anaIn[b] += (v.inB[b] - anaIn[b]) * 0.6f; anaOut[b] += (v.outB[b] - anaOut[b]) * 0.6f;
+                    anaHold[b] = juce::jmax (anaOut[b], anaHold[b] - 0.012f);
+                }
+            }
+            else if (! live)
+            {
+                if (now - anaAssert > 500) { anaAssert = now; ctx.be.setParam (9890, (float) (slot + 1)); }   // the effect display is hidden behind the editor: ask for the measurement ourselves
+                for (int b = 0; b < 24; ++b) { anaIn[b] *= 0.85f; anaOut[b] *= 0.85f; anaHold[b] = juce::jmax (anaOut[b], anaHold[b] - 0.012f); }
+            }
+            owner.repaint();
+        }
+        // a smooth curve through the 24 band values (x = band centre, 40 Hz * 400^(b / 23)), spanning the whole plot width
+        juce::Path anaPath (const float* v, bool closed) const
+        {
+            auto p = plot(); juce::Path path; const int N = 160;
+            auto at = [&] (float pos)   // pos in bands, cubic through four neighbours
+            {
+                const int i = juce::jlimit (0, 22, (int) std::floor (pos)); const float t = juce::jlimit (0.0f, 1.0f, pos - (float) i);
+                const float y0 = v[juce::jmax (0, i - 1)], y1 = v[i], y2 = v[i + 1], y3 = v[juce::jmin (23, i + 2)];
+                return y1 + 0.5f * t * (y2 - y0 + t * (2.0f * y0 - 5.0f * y1 + 4.0f * y2 - y3 + t * (3.0f * (y1 - y2) + y3 - y0)));
+            };
+            for (int i = 0; i <= N; ++i)
+            {
+                const double f = kFLo * std::pow (kFHi / kFLo, (double) i / N);
+                const float pos = (float) (std::log (juce::jlimit (40.0, 16000.0, f) / 40.0) / std::log (400.0) * 23.0);
+                const float val = juce::jlimit (0.0f, 1.0f, at (pos)), x = p.getX() + p.getWidth() * (float) i / N, y = p.getBottom() - val * p.getHeight() * 0.92f;
+                if (i == 0) path.startNewSubPath (x, y); else path.lineTo (x, y);
+            }
+            if (closed) { path.lineTo (p.getRight(), p.getBottom()); path.lineTo (p.getX(), p.getBottom()); path.closeSubPath(); }
+            return path;
+        }
         void commit()
         {
             dirty = false;
@@ -211,6 +260,7 @@ namespace njo
             for (auto* f : { &fOut, &fScale, &fShift, &fQs, &fMix }) { f->setBounds (x, slotRow.getY(), sw, slotRow.getHeight()); x += sw + 6; }
             presetBtn.setBounds (chipRow.getRight() - 76, chipRow.getY(), 76, chipRow.getHeight());
             addBand.setBounds (chipRow.getRight() - 76 - 6 - 70, chipRow.getY(), 70, chipRow.getHeight());
+            anaBtn.setBounds (addBand.getX() - 6 - 120, chipRow.getY(), 120, chipRow.getHeight());
         }
         juce::Rectangle<float> plot() const { return curve.toFloat().reduced (34.0f, 10.0f).withTrimmedBottom (8.0f); }
         float xOf (double f) const { auto p = plot(); return p.getX() + (float) (std::log (juce::jlimit (kFLo, kFHi, f) / kFLo) / std::log (kFHi / kFLo)) * p.getWidth(); }
@@ -251,6 +301,17 @@ namespace njo
             {
                 g.setColour (juce::Colours::white.withAlpha (d == 0 ? 0.25f : 0.06f)); g.drawHorizontalLine ((int) yOf (d), p.getX(), p.getRight());
                 g.setColour (dim); g.drawText ((d > 0 ? "+" : "") + juce::String (d), juce::Rectangle<float> (curve.getX() + 2.0f, yOf (d) - 5, 28, 10), juce::Justification::centredRight);
+            }
+            // analyzer (behind the curves)
+            if (analyzerWanted())
+            {
+                if (anaMode == 2 || anaMode == 3) { g.setColour (juce::Colours::white.withAlpha (anaMode == 3 ? 0.30f : 0.38f)); g.strokePath (anaPath (anaIn, false), juce::PathStrokeType (1.1f)); }
+                if (anaMode == 1 || anaMode == 3)
+                {
+                    g.setColour (juce::Colour (0xff7fd0ff).withAlpha (0.16f)); g.fillPath (anaPath (anaOut, true));
+                    g.setColour (juce::Colour (0xff7fd0ff).withAlpha (0.55f)); g.strokePath (anaPath (anaOut, false), juce::PathStrokeType (1.0f));
+                    g.setColour (juce::Colour (0xff7fd0ff).withAlpha (0.28f)); g.strokePath (anaPath (anaHold, false), juce::PathStrokeType (0.8f));
+                }
             }
             // selected band curve
             const int N = 360;
@@ -323,7 +384,7 @@ namespace njo
         EqEditor& owner; Ctx& ctx; SoundMemory& mem;
         int slot = 0, base = 0, sel = -1, hot = -1; bool dirty = false, dragging = false;
         eq::Bands bands {}; std::vector<float> lastData; int chipX[eq::MAXB] = {};
-        Btn typeBtn, hsetBtn, chBtn, onBtn, delBtn, addBand, presetBtn;
+        Btn typeBtn, hsetBtn, chBtn, onBtn, delBtn, addBand, presetBtn, anaBtn;
         Field fFreq, fGain, fQ, fHarm, fFall, fOut, fScale, fShift, fQs, fMix;
     };
 
@@ -332,7 +393,13 @@ namespace njo
     void EqEditor::setSlot (int g, int base) { if (impl->dirty) impl->commit(); impl->slot = g; impl->base = base; impl->load(); impl->syncUi(); resized(); repaint(); }
     void EqEditor::paint (juce::Graphics& g) { impl->syncUi(); impl->paintAll (g); }
     void EqEditor::resized() { impl->layout(); }
-    void EqEditor::timerCallback() { if (impl->dirty) impl->commit(); stopTimer(); }
+    void EqEditor::timerCallback()
+    {
+        if (impl->dirty && juce::Time::getMillisecondCounter() - impl->lastChange >= 100) impl->commit();
+        impl->tickAnalyzer();
+        if (! impl->dirty && ! impl->analyzerWanted()) stopTimer();
+    }
+    void EqEditor::visibilityChanged() { if (isVisible() && impl->analyzerWanted() && ! isTimerRunning()) startTimer (33); }
     void EqEditor::paramChanged (int num, float) { if (isVisible() && num >= impl->base && num < impl->base + 10) repaint(); }
     void EqEditor::changeListenerCallback (juce::ChangeBroadcaster*)
     {
