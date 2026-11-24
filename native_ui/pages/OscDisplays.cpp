@@ -120,9 +120,13 @@ namespace njo
             if (mode == 10) return ph + amt * 0.05f * std::sin (31.415927f * ph);
             if (mode == 11) { float x = ph * 4.0f, i = std::floor (x), f = x - i, sm = f * f * (3.0f - 2.0f * f); return (i + f + (sm - f) * amt) * 0.25f; }
             if (mode == 12) { float x = ph * (1.0f + 3.0f * amt) * 0.5f, t = (x - std::floor (x)) * 2.0f; return t < 1.0f ? t : 2.0f - t; }
+            if (mode == 18) { float x = ph * 2.0f - 1.0f, v = std::pow (std::abs (x), 1.0f + 3.0f * amt); return 0.5f + 0.5f * (x < 0.0f ? -v : v); }
+            if (mode == 19) { float x = ph * 2.0f - 1.0f, v = std::pow (std::abs (x), 1.0f / (1.0f + 3.0f * amt)); return 0.5f + 0.5f * (x < 0.0f ? -v : v); }
+            if (mode == 20) return juce::jlimit (0.0f, 1.0f, ph / (1.0f - 0.9f * amt));
+            if (mode == 21) { float x = ph * 2.0f; return ph + (x - std::floor (x) - ph) * amt; }
             return ph;
         }
-        bool warpIsPhase (int m) { return (m >= 1 && m <= 6) || (m >= 9 && m <= 12); }
+        bool warpIsPhase (int m) { return (m >= 1 && m <= 6) || (m >= 9 && m <= 12) || (m >= 18 && m <= 21); }
         bool warpIsAmp (int m) { return m == 7 || m == 8 || m >= 13; }
 
         float warpAmp (int mode, float amt, float y)
@@ -134,6 +138,11 @@ namespace njo
             if (mode == 15) { float z = y * (1.0f + 3.0f * amt); return z - 2.0f * std::floor ((z + 1.0f) * 0.5f); }
             if (mode == 16) return y > 0.0f ? y : y * (1.0f - 0.9f * amt);
             if (mode == 17) { float d = 1.0f + 6.0f * amt; return std::tanh (y * d) / std::tanh (d); }
+            if (mode == 22) return y + (4.0f * y * y * y - 3.0f * y - y) * amt;
+            if (mode == 23) { float y2 = y * y; return y + (y * (16.0f * y2 * y2 - 20.0f * y2 + 5.0f) - y) * amt; }
+            if (mode == 24) { float d = amt * 0.5f, v = std::max (std::abs (y) - d, 0.0f) / (1.0f - d); return y < 0.0f ? -v : v; }
+            if (mode == 25) { float v = std::pow (std::abs (y), 1.0f + 2.0f * amt); return y < 0.0f ? -v : v; }
+            if (mode == 26) { float v = std::pow (std::abs (y), 1.0f / (1.0f + 2.0f * amt)); return y < 0.0f ? -v : v; }
             return y;
         }
 
