@@ -220,6 +220,7 @@ namespace njo
         if (num >= wg::WG_BASE + wg::WG_STRIDE * o && num < wg::WG_BASE + wg::WG_STRIDE * (o + 1)) { repaint(); return; }
         if (num >= jp::JP_BASE + jp::JP_STRIDE * o && num < jp::JP_BASE + jp::JP_STRIDE * (o + 1)) { repaint(); return; }
         if ((num >= gr::GR_BASE + gr::GR_STRIDE * o && num < gr::GR_BASE + gr::GR_STRIDE * (o + 1)) || (num >= ad::AD_BASE + ad::AD_STRIDE * o && num < ad::AD_BASE + ad::AD_STRIDE * (o + 1)) || (num >= dk::DK_BASE + dk::DK_STRIDE * o && num < dk::DK_BASE + dk::DK_STRIDE * (o + 1)) || (num >= sp::SP_BASE + sp::SP_STRIDE * o && num < sp::SP_BASE + sp::SP_STRIDE * (o + 1)) || (num >= sf::SF_BASE + sf::SF_STRIDE * o && num < sf::SF_BASE + sf::SF_STRIDE * (o + 1))) { repaint(); return; }
+        if (num >= wt::wtId (o, 0) && num < wt::wtId (o, 0) + wt::WT_STRIDE) { repaint(); return; }   // Warp 3 (mode, amount) lives in the wavetable parameter block
         int k = num - oscId (o, 0);
         if (k < 0 || k >= OSC_STRIDE) return;
         for (const char* n : { "type", "tterr", "tscale", "twarp", "tfold", "wpos", "wsize", "w1m", "w1a", "w2m", "w2a", "sstart", "sloop", "root" })
