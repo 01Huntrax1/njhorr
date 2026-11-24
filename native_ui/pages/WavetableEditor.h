@@ -11,6 +11,8 @@ namespace njo
         WavetableEditor (Ctx&, SoundMemory&, int osc);
         ~WavetableEditor() override;
         void open();
+        void showRazor (bool on);   // the wave slicing panel in place of the harmonic bars
+        void setRazor (int steps, float duty, int seg, float semi, float level, float phase, int shape);   // test hook
         std::function<void()> onClose;
         void paint (juce::Graphics&) override;
         void resized() override;
