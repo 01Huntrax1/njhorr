@@ -5,7 +5,7 @@
 
 namespace njo
 {
-    class WavetableEditor : public juce::Component, private juce::ChangeListener
+    class WavetableEditor : public juce::Component, public juce::FileDragAndDropTarget, private juce::ChangeListener
     {
     public:
         WavetableEditor (Ctx&, SoundMemory&, int osc);
@@ -19,6 +19,10 @@ namespace njo
         void mouseDown (const juce::MouseEvent&) override;
         void mouseDrag (const juce::MouseEvent&) override;
         void mouseUp (const juce::MouseEvent&) override;
+        bool isInterestedInFileDrag (const juce::StringArray&) override;   // a dropped wavetable or single cycle wave replaces the table
+        void fileDragEnter (const juce::StringArray&, int, int) override;
+        void fileDragExit (const juce::StringArray&) override;
+        void filesDropped (const juce::StringArray&, int, int) override;
         struct Impl; std::unique_ptr<Impl> impl;
     private:
         void changeListenerCallback (juce::ChangeBroadcaster*) override;

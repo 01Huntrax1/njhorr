@@ -168,6 +168,21 @@ namespace njo
         struct Decoded { std::vector<float> mono, right; bool ok = false; juce::String name; };   // samples: mono = left channel (or the mono sum), right = right channel of a stereo file (else empty)
 
         // more than 128 frames: thinned out evenly (first and last frame are kept)
+        // a short file whose length is no multiple of a frame size (256 .. 4096) is a single cycle: resampled to one 2048 sample frame (cyclic cubic)
+        std::vector<float> singleCycle (std::vector<float> x)
+        {
+            const int n = (int) x.size();
+            if (n < 2 || n > 8192 || (n >= 256 && n % 256 == 0)) return x;
+            std::vector<float> out (2048);
+            for (int i = 0; i < 2048; ++i)
+            {
+                const double p = (double) i * (double) n / 2048.0; const int i1 = (int) p; const float t = (float) (p - (double) i1);
+                const float y0 = x[(size_t) ((i1 - 1 + n) % n)], y1 = x[(size_t) (i1 % n)], y2 = x[(size_t) ((i1 + 1) % n)], y3 = x[(size_t) ((i1 + 2) % n)];
+                out[(size_t) i] = y1 + 0.5f * t * (y2 - y0 + t * (2.0f * y0 - 5.0f * y1 + 4.0f * y2 - y3 + t * (3.0f * (y1 - y2) + y3 - y0)));
+            }
+            return out;
+        }
+
         std::vector<float> trimWavetable (std::vector<float> x)
         {
             const int n = (int) x.size();
@@ -299,6 +314,7 @@ namespace njo
                     v->swap (out);
                 }
             }
+            if (wavetable) mono = singleCycle (std::move (mono));   // one cycle of any length becomes a one-frame table
             if (wavetable) mono = trimWavetable (std::move (mono));
             const int cap = wavetable ? MAX_WT : MAX_SMP;
             if ((int) mono.size() > cap) mono.resize ((size_t) cap);

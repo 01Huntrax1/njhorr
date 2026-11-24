@@ -361,6 +361,7 @@ namespace njo
         float frameX (int x0, int w, int i) const { return (float) x0 + (float) w * (float) i / (float) N; }
         void paintAll (juce::Graphics& g)
         {
+            struct DropFrame { juce::Graphics& g; WavetableEditor& o; bool on; ~DropFrame() { if (on) { g.setColour (juce::Colour (0xffff3e30)); g.drawRect (o.getLocalBounds(), 2); g.setFont (font (11.0f, true)); g.drawText ("DROP A WAVETABLE OR SINGLE CYCLE WAVE", o.getLocalBounds(), juce::Justification::centred); } } } dropFrame { g, owner, dropOver };
             g.fillAll (panel); g.setColour (deep); g.fillRect (water); g.fillRect (draw); g.fillRect (harm);
             g.setFont (font (9.0f, true)); g.setColour (dim);
             g.drawText ("WATERFALL  -  " + juce::String ((int) fr.size()) + " FRAMES  -  CLICK TO SELECT", water.getX(), water.getY() - 13, water.getWidth(), 11, juce::Justification::left);
@@ -439,6 +440,7 @@ namespace njo
                 sel = f; harmDirty = true; owner.repaint();
             }
         }
+        bool dropOver = false;
         RazorPanel razor; Btn* razorBtn = nullptr; std::vector<Frame> undoFr;
         WavetableEditor& owner; Ctx& ctx; SoundMemory& mem; int os;
         juce::OwnedArray<Btn> buttons; Btn* closeBtn = nullptr;
@@ -457,6 +459,19 @@ namespace njo
     void WavetableEditor::paint (juce::Graphics& g) { impl->paintAll (g); }
     void WavetableEditor::resized() { impl->layout(); }
     void WavetableEditor::changeListenerCallback (juce::ChangeBroadcaster*) { if (isVisible() && ! impl->selfWrite) { impl->load(); impl->harmDirty = true; repaint(); } }
+    bool WavetableEditor::isInterestedInFileDrag (const juce::StringArray& f)
+    {
+        for (auto& n : f) if (juce::File (n).hasFileExtension ("wav;aif;aiff;flac;ogg;mp3;vitaltable")) return true;
+        return false;
+    }
+    void WavetableEditor::fileDragEnter (const juce::StringArray&, int, int) { impl->dropOver = true; repaint(); }
+    void WavetableEditor::fileDragExit (const juce::StringArray&) { impl->dropOver = false; repaint(); }
+    void WavetableEditor::filesDropped (const juce::StringArray& f, int, int)
+    {
+        impl->dropOver = false;
+        if (f.size() > 0) { impl->undoFr = impl->fr; impl->mem.load (SoundMemory::Wavetable, impl->os, juce::File (f[0]), nullptr); }   // the change listener reloads the frames
+        repaint();
+    }
     void WavetableEditor::mouseDown (const juce::MouseEvent& e) { impl->pointer (e.getPosition(), true); }
     void WavetableEditor::mouseDrag (const juce::MouseEvent& e) { impl->pointer (e.getPosition(), false); }
     void WavetableEditor::mouseUp (const juce::MouseEvent&) { if (impl->dirty) { impl->dirty = false; impl->commit(); } impl->mode = 0; }
