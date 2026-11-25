@@ -33,8 +33,8 @@ static int fxFilterShape (int mode)
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58 };
-            return juce::Colour (c[juce::jlimit (0, 33, type)]);
+            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58, 0xff90c8a0, 0xffd0a878, 0xffb88860, 0xff98a0d8, 0xff78d0c0 };
+            return juce::Colour (c[juce::jlimit (0, 38, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -1266,9 +1266,9 @@ static int fxFilterShape (int mode)
                 head.removeFromLeft (8);
                 irRect = head;
             }
-            if (ty == 13)
+            if (ty == 13 || ty == 38)
             {
-                eqEd->setBounds (c); eqEd->setSlot (g, slotBase (g)); eqEd->setVisible (true);
+                eqEd->setBounds (c); eqEd->setSlot (g, slotBase (g), ty == 38); eqEd->setVisible (true);
                 return;
             }
             auto knobs2 = c.removeFromBottom (84);   // FX-EX: second row: the four effect specific knobs and the four wet knobs

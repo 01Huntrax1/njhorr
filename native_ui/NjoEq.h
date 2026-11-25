@@ -4,6 +4,7 @@
 #include <array>
 #include <cmath>
 #include <vector>
+#include <complex>
 
 namespace njo::eq
 {
@@ -13,6 +14,9 @@ namespace njo::eq
         static const char* const n[NTYPES] = { "Bell", "Low Shelf", "High Shelf", "Low Cut 12", "Low Cut 24", "High Cut 12", "High Cut 24", "Band Pass", "Notch", "Tilt", "All-Pass", "Comb (feed-forward)", "Comb (feedback)", "Low Cut 48", "High Cut 48", "Low Cut 6", "High Cut 6", "Low Shelf 6", "High Shelf 6", "Low Shelf 24", "High Shelf 24", "Notch 24", "Band Pass 24", "Band Pass Flat", "Formant" };
         return n[t < 0 ? 0 : (t >= NTYPES ? NTYPES - 1 : t)];
     }
+    // Phase EQ (FX type 38): the same band table, phase-only band types
+    constexpr int NPHASE = 4;
+    inline const char* phaseTypeName (int t) { static const char* const n[NPHASE] = { "All-Pass 2", "All-Pass 1", "Dispersion", "Polarity" }; return n[t < 0 ? 0 : (t >= NPHASE ? NPHASE - 1 : t)]; }
     inline bool hasGain (int t) { return t == 0 || t == 1 || t == 2 || t == 7 || t == 9 || t == 11 || t == 12 || t == 17 || t == 18 || t == 19 || t == 20 || t == 22 || t == 24; }      // types whose gain is meaningful
     inline bool hasHarmonics (int t) { return t == 0 || t == 7 || t == 8; }
     inline bool isComb (int t) { return t == 11 || t == 12; }
@@ -102,11 +106,11 @@ namespace njo::eq
         return s;
     }
 
-    // magnitude (linear) of one RBJ section at frequency fr
-    inline double secMag (const Sec& s, double fr, double sr)
+    // coefficients (not normalised) of one section
+    inline void secCoefs (const Sec& s, double sr, double& b0, double& b1, double& b2, double& a0, double& a1, double& a2)
     {
         const double pi = juce::MathConstants<double>::pi, w0 = 2 * pi * s.f / sr, cw = std::cos (w0), sw = std::sin (w0), al = sw / (2 * s.q), A = std::pow (10.0, s.g / 40.0);
-        double b0 = 1, b1 = 0, b2 = 0, a0 = 1, a1 = 0, a2 = 0;
+        b0 = 1; b1 = 0; b2 = 0; a0 = 1; a1 = 0; a2 = 0;
         switch (s.kind)
         {
             case 0: b0 = 1 + al * A; b1 = -2 * cw; b2 = 1 - al * A; a0 = 1 + al / A; a1 = -2 * cw; a2 = 1 - al / A; break;
@@ -125,11 +129,52 @@ namespace njo::eq
                 else if (s.kind == 10) { b0 = 1 + V * K; b1 = V * K - 1; } else { b0 = V + K; b1 = K - V; }
                 break;
             }
+            case 12: { const double K = std::tan (w0 * 0.5); b0 = 1 - K; b1 = -(1 + K); a0 = 1 + K; a1 = K - 1; break; }
+            case 13: b0 = -1; break;
             default: b0 = 1 - al; b1 = -2 * cw; b2 = 1 + al; a0 = 1 + al; a1 = -2 * cw; a2 = 1 - al; break;
         }
+    }
+
+    // magnitude (linear) of one section at frequency fr
+    inline double secMag (const Sec& s, double fr, double sr)
+    {
+        double b0, b1, b2, a0, a1, a2; secCoefs (s, sr, b0, b1, b2, a0, a1, a2);
+        const double pi = juce::MathConstants<double>::pi;
         const double w = 2 * pi * fr / sr, c1 = std::cos (w), s1 = std::sin (w), c2 = std::cos (2 * w), s2 = std::sin (2 * w);
         const double nr = b0 + b1 * c1 + b2 * c2, ni = -(b1 * s1 + b2 * s2), dr = a0 + a1 * c1 + a2 * c2, di = -(a1 * s1 + a2 * s2);
         return std::sqrt ((nr * nr + ni * ni) / juce::jmax (1.0e-18, dr * dr + di * di));
+    }
+
+
+    // complex response of one section
+    inline std::complex<double> secResp (const Sec& s, double fr, double sr)
+    {
+        double b0, b1, b2, a0, a1, a2; secCoefs (s, sr, b0, b1, b2, a0, a1, a2);
+        const double w = 2 * juce::MathConstants<double>::pi * fr / sr; const std::complex<double> z1 (std::cos (w), -std::sin (w)), z2 = z1 * z1;
+        return (b0 + b1 * z1 + b2 * z2) / (a0 + a1 * z1 + a2 * z2);
+    }
+
+    // the sections of a band of the Phase EQ exactly as the DSP builds them (scale.gain is the slot's spread scale)
+    inline std::vector<Sec> phaseSections (const Band& b, const Scale& sc, double sr)
+    {
+        std::vector<Sec> s;
+        const double f = juce::jlimit (10.0, sr * 0.45, (double) b.hz * sc.shift), q = juce::jlimit (0.05, 40.0, (double) b.q * sc.q);
+        if (b.type == 0) for (int i = 0; i <= b.harm; ++i) s.push_back ({ 7, f, 0, q });
+        else if (b.type == 1) for (int i = 0; i <= b.harm; ++i) s.push_back ({ 12, f, 0, q });
+        else if (b.type == 2)
+        {
+            const int cnt = b.harm + 2; const double spr = juce::jlimit (0.0, 2.0, (double) b.fall * sc.gain) * 4.0;
+            for (int i = 0; i < cnt; ++i) s.push_back ({ 7, juce::jlimit (10.0, sr * 0.45, f * std::pow (2.0, ((double) i / (cnt - 1) - 0.5) * spr)), 0, q });
+        }
+        else s.push_back ({ 13, f, 0, 1.0 });
+        if (s.size() > 64) s.resize (64);
+        return s;
+    }
+    inline std::complex<double> phaseBandResp (const Band& b, double fr, const Scale& sc, double sr = 48000.0)
+    {
+        std::complex<double> h (1.0, 0.0);
+        for (auto& s : phaseSections (b, sc, sr)) h *= secResp (s, fr, sr);
+        return h;
     }
 
     // response of one band in dB (sections and comb)

@@ -11,7 +11,7 @@ namespace njo
     public:
         EqEditor (Ctx&, SoundMemory&);
         ~EqEditor() override;
-        void setSlot (int globalSlot, int paramBase);     // the slot to edit and the id of its Type parameter
+        void setSlot (int globalSlot, int paramBase, bool phase = false);     // the slot to edit and the id of its Type parameter (phase: Phase EQ, FX type 38)
         void paint (juce::Graphics&) override;
         void resized() override;
         void mouseMove (const juce::MouseEvent&) override;

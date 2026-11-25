@@ -123,6 +123,42 @@ namespace njo
         {
             eq::Scale s; s.gain = ctx.get (base + 5) * 2.0; s.shift = std::pow (2.0, (ctx.get (base + 6) - 0.5) * 2.0); s.q = 0.25 * std::pow (16.0, (double) ctx.get (base + 7)); return s;
         }
+        // ---- phase mode (Phase EQ, FX type 38): same bands, phase-only types, the curve is the phase response in degrees ----
+        bool phase = false; double phR = 360.0;
+        int nTypes() const { return phase ? eq::NPHASE : eq::NTYPES; }
+        juce::String tname (int t) const { return phase ? eq::phaseTypeName (t) : eq::typeName (t); }
+        bool hasGainP (int t) const { return ! phase && eq::hasGain (t); }
+        bool hasHarmP (int t) const { return phase ? t <= 2 : eq::hasHarmonics (t); }
+        double yDeg (double d) const { auto p = plot(); return (double) p.getY() + (0.5 - 0.5 * juce::jlimit (-phR, phR, d) / phR) * (double) p.getHeight(); }
+        float yv (double v) const { return phase ? (float) yDeg (v) : yOf (v); }
+        // unwrapped phase (degrees) of the product of the given bands along a log sweep from 5 Hz to fmax (the value at fmax)
+        template <typename Pick> double sweepPhase (double fmax, int steps, Pick pick) const
+        {
+            auto sc = scale(); double prev = 0, acc = 0; bool first = true;
+            for (int i = 0; i <= steps; ++i)
+            {
+                const double f = 5.0 * std::pow (fmax / 5.0, (double) i / steps); std::complex<double> h (1.0, 0.0);
+                for (int k = 0; k < eq::MAXB; ++k) if (pick (k)) h *= eq::phaseBandResp (bands[(size_t) k], f, sc, kSr);
+                const double a = std::arg (h);
+                if (first) { acc = a; first = false; } else { double d = a - prev; while (d > juce::MathConstants<double>::pi) d -= 2 * juce::MathConstants<double>::pi; while (d < -juce::MathConstants<double>::pi) d += 2 * juce::MathConstants<double>::pi; acc += d; }
+                prev = a;
+            }
+            return acc * 180.0 / juce::MathConstants<double>::pi;
+        }
+        void updatePhaseRange()
+        {
+            if (! phase) return;
+            auto sc = scale(); double mx = 0, prev = 0, acc = 0; const int N = 900;
+            for (int i = 0; i <= N; ++i)
+            {
+                const double f = 5.0 * std::pow (kFHi / 5.0, (double) i / N); std::complex<double> h (1.0, 0.0);
+                for (auto& x : bands) if (x.used && x.on) h *= eq::phaseBandResp (x, f, sc, kSr);
+                const double a = std::arg (h);
+                if (i == 0) acc = a; else { double d = a - prev; while (d > juce::MathConstants<double>::pi) d -= 2 * juce::MathConstants<double>::pi; while (d < -juce::MathConstants<double>::pi) d += 2 * juce::MathConstants<double>::pi; acc += d; }
+                prev = a; mx = juce::jmax (mx, std::abs (acc) * 180.0 / juce::MathConstants<double>::pi);
+            }
+            phR = juce::jlimit (360.0, 5760.0, std::ceil (mx / 360.0) * 360.0);
+        }
         void load()
         {
             bands = {};
@@ -189,7 +225,7 @@ namespace njo
         void addAt (double hz, double db, int type)
         {
             const int i = freeIndex(); if (i < 0) return;
-            eq::Band nb; nb.used = true; nb.on = true; nb.type = type; nb.hz = (float) juce::jlimit (20.0, 20000.0, hz); nb.db = (float) juce::jlimit (-24.0, 24.0, db); nb.q = (type == 3 || type == 5 || type == 4 || type == 6) ? 0.7071f : 1.0f;
+            eq::Band nb; nb.used = true; nb.on = true; nb.type = type; nb.hz = (float) juce::jlimit (20.0, 20000.0, hz); nb.db = phase ? 0.0f : (float) juce::jlimit (-24.0, 24.0, db); nb.q = (type == 3 || type == 5 || type == 4 || type == 6) ? 0.7071f : 1.0f;
             if (type == 11 || type == 12) { nb.db = 6.0f; nb.hz = 220.0f; }
             bands[(size_t) i] = nb; sel = i; changed();
         }
@@ -200,7 +236,7 @@ namespace njo
         {
             if (! valid()) return;
             juce::PopupMenu m;
-            for (int t = 0; t < eq::NTYPES; ++t) m.addItem (t + 1, eq::typeName (t), true, b().type == t);
+            for (int t = 0; t < nTypes(); ++t) m.addItem (t + 1, tname (t), true, b().type == t);
             m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&typeBtn), [this] (int r) { if (r > 0 && valid()) { b().type = r - 1; if (eq::isComb (b().type) && b().db == 0) b().db = 6; changed(); } });
         }
         void hsetMenu()
@@ -219,8 +255,30 @@ namespace njo
         }
         void setBands (std::vector<eq::Band> v) { bands = {}; for (size_t i = 0; i < v.size() && i < (size_t) eq::MAXB; ++i) { bands[i] = v[i]; bands[i].used = true; bands[i].on = true; } sel = v.empty() ? -1 : 0; changed(); }
         static eq::Band mk (int type, float hz, float db, float q, int harm = 0, float fall = 0.5f, int hset = 0, int ch = 0) { eq::Band x; x.type = type; x.hz = hz; x.db = db; x.q = q; x.harm = harm; x.fall = fall; x.hset = hset; x.ch = ch; return x; }
+        void phasePresetMenu()
+        {
+            juce::PopupMenu m;
+            m.addItem (1, "Clear all bands"); m.addSeparator();
+            m.addItem (2, "Phase rotate (1 kHz, 2 stages)"); m.addItem (3, "Disperser (kick / snap smear)"); m.addItem (4, "Stereo decorrelate (L / R all-pass offset)");
+            m.addItem (5, "Mid / side phase offset"); m.addItem (6, "Bass phase align (low all-pass)"); m.addItem (7, "Flip right channel polarity");
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this] (int r)
+            {
+                switch (r)
+                {
+                    case 1: setBands ({}); break;
+                    case 2: setBands ({ mk (0, 1000, 0, 0.7071f, 1) }); break;
+                    case 3: setBands ({ mk (2, 1200, 0, 0.7071f, 8, 0.6f) }); break;
+                    case 4: setBands ({ mk (0, 400, 0, 0.8f, 1, 0.5f, 0, 1), mk (0, 2500, 0, 0.8f, 1, 0.5f, 0, 2), mk (1, 150, 0, 0.7f, 2, 0.5f, 0, 1) }); break;
+                    case 5: setBands ({ mk (0, 800, 0, 0.6f, 2, 0.5f, 0, 4) }); break;
+                    case 6: setBands ({ mk (0, 90, 0, 0.7071f, 1), mk (1, 180, 0, 0.7f, 1) }); break;
+                    case 7: setBands ({ mk (3, 1000, 0, 1.0f, 0, 0.5f, 0, 2) }); break;
+                    default: break;
+                }
+            });
+        }
         void presetMenu()
         {
+            if (phase) { phasePresetMenu(); return; }
             juce::PopupMenu m;
             m.addItem (1, "Clear all bands"); m.addSeparator();
             m.addItem (2, "Vocal clean-up"); m.addItem (3, "Smile curve"); m.addItem (4, "Telephone"); m.addItem (5, "Warm harmonic bass (harmonics)"); m.addItem (6, "Comb flange (comb filter)");
@@ -271,6 +329,7 @@ namespace njo
         juce::Point<float> nodeOf (const eq::Band& x) const
         {
             auto sc = scale();
+            if (phase) { eq::Band one = x; return { xOf (x.hz * sc.shift), yDeg (sweepPhase (juce::jlimit (10.0, kSr * 0.45, (double) x.hz * sc.shift), 80, [&] (int k) { return &bands[(size_t) k] == &x; })) }; }
             return { xOf (x.hz * sc.shift), yOf (eq::hasGain (x.type) ? x.db * sc.gain : 0.0) };
         }
         int nodeAt (juce::Point<float> p) const
@@ -283,6 +342,7 @@ namespace njo
 
         void paintAll (juce::Graphics& g)
         {
+            updatePhaseRange();
             auto p = plot();
             paintInset (g, curve.toFloat(), 4.0f);
             auto sc = scale();
@@ -297,6 +357,17 @@ namespace njo
             {
                 g.setColour (dim); g.drawText (f >= 1000 ? juce::String (f / 1000.0, f >= 10000 ? 0 : 0) + "k" : juce::String ((int) f), juce::Rectangle<float> (xOf (f) - 16, p.getBottom() - 11, 32, 10), juce::Justification::centred);
             }
+            if (phase)
+            {
+                const double step = phR / 4.0;
+                for (int k = -4; k <= 4; ++k)
+                {
+                    const double d = k * step; const float y = yv (d);
+                    g.setColour (juce::Colours::white.withAlpha (k == 0 ? 0.25f : 0.06f)); g.drawHorizontalLine ((int) y, p.getX(), p.getRight());
+                    g.setColour (dim); g.drawText ((d > 0 ? "+" : "") + juce::String (juce::roundToInt (d)) + juce::String (juce::CharPointer_UTF8 ("\xc2\xb0")), juce::Rectangle<float> (curve.getX() + 2.0f, y - 5, 32, 10), juce::Justification::centredRight);
+                }
+            }
+            else
             for (int d = -24; d <= 24; d += 6)
             {
                 g.setColour (juce::Colours::white.withAlpha (d == 0 ? 0.25f : 0.06f)); g.drawHorizontalLine ((int) yOf (d), p.getX(), p.getRight());
@@ -321,19 +392,46 @@ namespace njo
                 for (int i = 0; i <= N; ++i) { const double f = kFLo * std::pow (kFHi / kFLo, (double) i / N); const float x = p.getX() + p.getWidth() * (float) i / N, y = yOf (dbAt (f)); if (i == 0) path.startNewSubPath (x, y); else path.lineTo (x, y); }
                 return path;
             };
+            if (phase)
+            {
+                auto phPath = [&] (const std::function<bool (int)>& pick)
+                {
+                    juce::Path path; const int M = 1200; double prev = 0, acc = 0; bool started = false;
+                    for (int i = 0; i <= M; ++i)
+                    {
+                        const double f = 5.0 * std::pow (kFHi / 5.0, (double) i / M); std::complex<double> h (1.0, 0.0);
+                        for (int k = 0; k < eq::MAXB; ++k) if (bands[(size_t) k].used && pick (k)) h *= eq::phaseBandResp (bands[(size_t) k], f, sc, kSr);
+                        const double a = std::arg (h);
+                        if (i == 0) acc = a; else { double d = a - prev; while (d > juce::MathConstants<double>::pi) d -= 2 * juce::MathConstants<double>::pi; while (d < -juce::MathConstants<double>::pi) d += 2 * juce::MathConstants<double>::pi; acc += d; }
+                        prev = a;
+                        if (f < kFLo) continue;
+                        const float x = xOf (f), y = yv (acc * 180.0 / juce::MathConstants<double>::pi);
+                        if (! started) { path.startNewSubPath (x, y); started = true; } else path.lineTo (x, y);
+                    }
+                    return path;
+                };
+                if (valid() && b().on) { g.setColour (typeColour (b().type).withAlpha (0.55f)); g.strokePath (phPath ([&] (int k) { return k == sel; }), juce::PathStrokeType (1.2f)); }
+                auto total = phPath ([&] (int k) { return bands[(size_t) k].on; });
+                g.setColour (red.withAlpha (0.28f)); g.strokePath (total, juce::PathStrokeType (5.0f));
+                g.setColour (juce::Colour (0xffff6f65)); g.strokePath (total, juce::PathStrokeType (1.8f));
+            }
+            else
             if (valid() && b().on)
             {
                 auto bp = pathOf ([&] (double f) { return eq::bandDb (b(), f, sc, kSr); });
                 g.setColour (typeColour (b().type).withAlpha (0.55f)); g.strokePath (bp, juce::PathStrokeType (1.2f));
             }
             // total response
+            if (! phase)
+            {
             auto total = pathOf ([&] (double f) { double s = 0; for (auto& x : bands) if (x.used && x.on) s += eq::bandDb (x, f, sc, kSr); return s; });
             juce::Path fill (total); fill.lineTo (p.getRight(), yOf (0)); fill.lineTo (p.getX(), yOf (0)); fill.closeSubPath();
             g.setColour (red.withAlpha (0.13f)); g.fillPath (fill);
             g.setColour (red.withAlpha (0.28f)); g.strokePath (total, juce::PathStrokeType (5.0f));
             g.setColour (juce::Colour (0xffff6f65)); g.strokePath (total, juce::PathStrokeType (1.8f));
+            }
             // harmonic markers of the selected band
-            if (valid() && eq::hasHarmonics (b().type) && b().harm > 0 && b().on)
+            if (! phase && valid() && eq::hasHarmonics (b().type) && b().harm > 0 && b().on)
             {
                 for (auto& s : eq::sections (b(), sc, kSr)) { g.setColour (typeColour (b().type).withAlpha (0.5f)); g.drawLine (xOf (s.f), p.getBottom() - 14, xOf (s.f), yOf (s.g), 1.0f); }
             }
@@ -350,7 +448,8 @@ namespace njo
                 g.drawText (juce::String (i + 1), juce::Rectangle<float> (n.x - 8, n.y - 6, 16, 12), juce::Justification::centred);
             }
             g.setColour (dim); g.setFont (font (8.0f, false));
-            g.drawText ("double-click: add band  -  drag a node: frequency and gain (Q for cuts)  -  wheel: Q  -  shift + wheel: harmonics  -  double-click a node: delete  -  right-click: menu",
+            g.drawText (phase ? juce::String ("PHASE RESPONSE (degrees)  -  double-click: add band  -  drag a node: frequency and Q  -  wheel: Q  -  shift + wheel: extra stages  -  double-click a node: delete  -  right-click: menu")
+                              : juce::String ("double-click: add band  -  drag a node: frequency and gain (Q for cuts)  -  wheel: Q  -  shift + wheel: harmonics  -  double-click a node: delete  -  right-click: menu"),
                         curve.withTrimmedLeft (36).withHeight (14).translated (0, 1), juce::Justification::centredLeft, true);
             // band chips
             int cx = chipRow.getX();
@@ -369,14 +468,14 @@ namespace njo
         void syncUi()
         {
             const bool v = valid();
-            typeBtn.text = v ? eq::typeName (b().type) : "-";
+            typeBtn.text = v ? tname (b().type) : "-";
             static const char* const hsetNames[] = { "ALL", "ODD", "EVEN" };
             static const char* const chNames[] = { "STEREO", "LEFT", "RIGHT", "MID", "SIDE" };
             hsetBtn.text = v ? hsetNames[juce::jlimit (0, 2, b().hset)] : "-";
             chBtn.text = v ? chNames[juce::jlimit (0, 4, b().ch)] : "-";
             onBtn.on = v && b().on;
-            const bool gain = v && eq::hasGain (b().type), harm = v && eq::hasHarmonics (b().type);
-            fGain.setAlpha (gain ? 1.0f : 0.35f); fHarm.setAlpha (harm ? 1.0f : 0.35f); fFall.setAlpha (harm ? 1.0f : 0.35f); hsetBtn.setAlpha (harm ? 1.0f : 0.35f);
+            const bool gain = v && hasGainP (b().type), harm = v && hasHarmP (b().type), spread = phase ? (v && b().type == 2) : harm;
+            fGain.setAlpha (gain ? 1.0f : 0.35f); fHarm.setAlpha (harm ? 1.0f : 0.35f); fFall.setAlpha (spread ? 1.0f : 0.35f); hsetBtn.setAlpha (harm && ! phase ? 1.0f : 0.35f);
             for (auto* c : std::initializer_list<juce::Component*> { &typeBtn, &fFreq, &fGain, &fQ, &fHarm, &fFall, &hsetBtn, &chBtn, &onBtn, &delBtn }) c->setEnabled (v);
             fQ.setAlpha (v && ! eq::isComb (b().type) ? 1.0f : 0.35f);
         }
@@ -390,7 +489,12 @@ namespace njo
 
     EqEditor::EqEditor (Ctx& c, SoundMemory& m) : impl (new Impl (*this, c, m)) { c.addListener (this); m.addChangeListener (this); setName ("eqEditor"); }
     EqEditor::~EqEditor() { impl->mem.removeChangeListener (this); impl->ctx.removeListener (this); stopTimer(); if (impl->dirty) impl->commit(); }
-    void EqEditor::setSlot (int g, int base) { if (impl->dirty) impl->commit(); impl->slot = g; impl->base = base; impl->load(); impl->syncUi(); resized(); repaint(); }
+    void EqEditor::setSlot (int g, int base, bool phase)
+    {
+        if (impl->dirty) impl->commit();
+        impl->slot = g; impl->base = base; impl->phase = phase;
+        impl->fHarm.label = phase ? "EXTRA STAGES" : "HARMONICS"; impl->fFall.label = phase ? "SPREAD" : "FALLOFF"; impl->fScale.label = phase ? "SPREAD SCALE" : "GAIN SCALE";
+        impl->load(); impl->syncUi(); resized(); repaint(); }
     void EqEditor::paint (juce::Graphics& g) { impl->syncUi(); impl->paintAll (g); }
     void EqEditor::resized() { impl->layout(); }
     void EqEditor::timerCallback()
@@ -438,7 +542,7 @@ namespace njo
             else
             {
                 const double hz = I.fOfX (e.position.x), db = I.dbOfY (e.position.y);
-                juce::PopupMenu m; for (int t = 0; t < eq::NTYPES; ++t) m.addItem (t + 1, juce::String ("Add ") + eq::typeName (t));
+                juce::PopupMenu m; for (int t = 0; t < I.nTypes(); ++t) m.addItem (t + 1, juce::String ("Add ") + I.tname (t));
                 m.showMenuAsync (juce::PopupMenu::Options(), [this, hz, db] (int r) { if (r > 0) impl->addAt (hz / impl->scale().shift, db, r - 1); });
             }
             return;
@@ -452,7 +556,7 @@ namespace njo
         auto sc = I.scale();
         auto& b = I.b();
         b.hz = (float) juce::jlimit (20.0, 20000.0, I.fOfX (e.position.x) / sc.shift);
-        if (eq::hasGain (b.type))
+        if (I.hasGainP (b.type))
         {
             double gs = std::abs (sc.gain) < 0.05 ? 1.0 : sc.gain;
             double v = juce::jlimit (-24.0, 24.0, I.dbOfY (e.position.y) / gs);
@@ -480,7 +584,7 @@ namespace njo
         int n = I.nodeAt (e.position); if (n < 0) n = I.sel;
         if (n < 0 || ! I.bands[(size_t) n].used) return;
         I.sel = n; auto& b = I.b();
-        if (e.mods.isShiftDown() && eq::hasHarmonics (b.type)) b.harm = juce::jlimit (0, 16, b.harm + (w.deltaY > 0 ? 1 : -1));
+        if (e.mods.isShiftDown() && I.hasHarmP (b.type)) b.harm = juce::jlimit (0, 16, b.harm + (w.deltaY > 0 ? 1 : -1));
         else b.q = (float) juce::jlimit (0.1, 30.0, b.q * (w.deltaY > 0 ? 1.12 : 1.0 / 1.12));
         I.changed();
     }
