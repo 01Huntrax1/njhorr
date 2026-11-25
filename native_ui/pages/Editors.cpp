@@ -1,6 +1,7 @@
 #include "Editors.h"
 #include "OscDisplays.h"
 #include "../NjoPhys.h"
+#include "../NjoTableOps.h"
 #include <algorithm>
 #include <cmath>
 
@@ -34,31 +35,38 @@ namespace njo
     }
 
     // ====================================================================================================================== TableEditor
+    // Wavefilter / Wavedistortion table: frames of 512 points.  Draw, Chebyshev harmonics, frame strip, undo, copy / paste, symmetry tools, generators, file drop.
     struct TableEditor::Impl
     {
         Impl (TableEditor& o, Ctx& c, SoundMemory& m, int osc, bool f) : owner (o), ctx (c), mem (m), os (osc), filter (f)
         {
-            auto add = [this] (const juce::String& t, std::function<void()> fn, bool accent = false)
+            auto add = [this] (int row, const juce::String& t, std::function<void()> fn, bool accent = false)
             {
-                auto* b = buttons.add (new Btn()); b->text = t; b->click = std::move (fn); b->accent = accent; owner.addAndMakeVisible (b); return b;
+                auto* b = buttons.add (new Btn()); b->text = t; b->click = std::move (fn); b->accent = accent; rowOf.push_back (row); owner.addAndMakeVisible (b); return b;
             };
-            closeBtn = add ("CLOSE", [this] { flush(); owner.setVisible (false); if (owner.onClose) owner.onClose(); }, true);
-            add ("PREV", [this] { select (cur - 1); });
-            add ("NEXT", [this] { select (cur + 1); });
-            add ("ADD FRAME", [this] { addFrame(); });
-            add ("DELETE", [this] { delFrame(); });
-            add ("MORPH ALL", [this] { morphAll(); });
-            add ("SMOOTH", [this] { edit ([this] (float* v) { smooth (v); }); });
-            add ("INVERT", [this] { edit ([] (float* v) { for (int i = 0; i < 512; ++i) v[i] = -v[i]; }); });
-            add ("FLIP", [this] { edit ([] (float* v) { std::reverse (v, v + 512); }); });
-            add ("NORMALIZE", [this] { edit ([] (float* v) { float p = 0; for (int i = 0; i < 512; ++i) p = juce::jmax (p, std::abs (v[i])); if (p > 1.0e-4f) for (int i = 0; i < 512; ++i) v[i] /= p; }); });
-            add ("RANDOM", [this] { edit ([this] (float* v) { randomise (v); }); });
-            if (filter)
-                for (auto* n : { "LOW PASS", "HIGH PASS", "BAND PASS", "NOTCH", "COMB", "FORMANT" })
-                    add (n, [this, s = juce::String (n)] { preset (s); });
-            else
-                for (auto* n : { "LINEAR", "SOFT", "HARD", "FOLD", "ASYM", "STAIRS" })
-                    add (n, [this, s = juce::String (n)] { preset (s); });
+            closeBtn = add (-1, "CLOSE", [this] { flush(); owner.setVisible (false); if (owner.onClose) owner.onClose(); }, true);
+            add (0, "PREV", [this] { select (cur - 1); });
+            add (0, "NEXT", [this] { select (cur + 1); });
+            add (0, "ADD FRAME", [this] { addFrame(); });
+            add (0, "DELETE", [this] { delFrame(); });
+            add (0, "COPY", [this] { clip.assign (frame(), frame() + 512); });
+            add (0, "PASTE", [this] { if (clip.size() == 512) edit ([this] (float* v) { std::copy (clip.begin(), clip.end(), v); }); });
+            add (0, "MORPH ALL", [this] { morphAll(); });
+            add (0, "UNDO", [this] { undo(); });
+            add (0, "SMOOTH", [this] { edit ([this] (float* v) { smooth (v); }); });
+            add (0, "INVERT", [this] { edit ([] (float* v) { for (int i = 0; i < 512; ++i) v[i] = -v[i]; }); });
+            add (0, "FLIP", [this] { edit ([] (float* v) { std::reverse (v, v + 512); }); });
+            add (0, "NORMALIZE", [this] { edit ([] (float* v) { float p = 0; for (int i = 0; i < 512; ++i) p = juce::jmax (p, std::abs (v[i])); if (p > 1.0e-4f) for (int i = 0; i < 512; ++i) v[i] /= p; }); });
+            add (1, "RANDOM", [this] { edit ([this] (float* v) { randomise (v); }); });
+            add (1, "ODD SYMM.", [this] { edit ([] (float* v) { tblops::oddSymmetry (v); }); });
+            add (1, "EVEN SYMM.", [this] { edit ([] (float* v) { tblops::evenSymmetry (v); }); });
+            add (1, "RECTIFY", [this] { edit ([] (float* v) { tblops::rectify (v); }); });
+            add (1, "QUANTISE", [this] { edit ([] (float* v) { tblops::quantise (v, 8); }); });
+            add (1, "ALL FRAMES", [this] { allFrames = ! allFrames; buttons[(size_t) allBtn]->accent = allFrames; owner.repaint(); });
+            allBtn = buttons.size() - 1;
+            add (1, "LOAD FILE", [this] { chooseFile(); });
+            add (1, "DEFAULT", [this] { pushUndo(); fromBuiltIn = true; d.assign (16 * 512, 0.0f); for (int f2 = 0; f2 < 16; ++f2) for (int i = 0; i < 512; ++i) d[(size_t) (f2 * 512 + i)] = oscmodel::tblDefault (filter, f2, i); cur = juce::jlimit (0, 15, cur); name = "EDITED"; setPos(); touch(); commit(); });
+            for (auto* n : tblops::names (filter)) add (2, n, [this, s = juce::String (n)] { preset (s); });
         }
 
         int frames() const { return (int) d.size() / 512; }
@@ -76,15 +84,31 @@ namespace njo
             }
             const float pos = ctx.get (posId());
             cur = juce::jlimit (0, frames() - 1, juce::roundToInt (pos * (float) (frames() - 1)));
+            harmDirty = true;
         }
         int posId() const { return oscId (os, oscKey (filter ? "wfpos" : "wdpos")); }
         void setPos() { ctx.begin (posId()); ctx.set (posId(), frames() <= 1 ? 0.0f : (float) cur / (float) (frames() - 1)); ctx.end (posId()); }
-        void select (int f) { cur = juce::jlimit (0, frames() - 1, f); setPos(); owner.repaint(); }
+        void select (int f) { cur = juce::jlimit (0, frames() - 1, f); setPos(); harmDirty = true; owner.repaint(); }
         float* frame() { return d.data() + (size_t) cur * 512; }
-        void commit() { dirty = false; mem.set (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os, name, {}, d); }
+        void commit() { dirty = false; selfWrite = true; mem.set (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os, name, {}, d); selfWrite = false; }
         void flush() { if (dirty) commit(); owner.stopTimer(); }
-        void touch() { dirty = true; owner.repaint(); if (! owner.isTimerRunning()) owner.startTimer (250); }
-        void edit (const std::function<void (float*)>& fn) { fn (frame()); for (int i = 0; i < 512; ++i) frame()[i] = juce::jlimit (-1.0f, 1.0f, frame()[i]); touch(); commit(); }
+        void touch() { dirty = true; harmDirty = true; owner.repaint(); if (! owner.isTimerRunning()) owner.startTimer (250); }
+        void pushUndo() { undoStack.push_back (d); if (undoStack.size() > 30) undoStack.erase (undoStack.begin()); }
+        void undo()
+        {
+            if (undoStack.empty()) return;
+            d = undoStack.back(); undoStack.pop_back(); cur = juce::jlimit (0, frames() - 1, cur); setPos(); touch(); commit();
+        }
+        void edit (const std::function<void (float*)>& fn)
+        {
+            pushUndo();
+            for (int f = allFrames ? 0 : cur, e = allFrames ? frames() : cur + 1; f < e; ++f)
+            {
+                float* v = d.data() + (size_t) f * 512; fn (v);
+                for (int i = 0; i < 512; ++i) v[i] = juce::jlimit (-1.0f, 1.0f, v[i]);
+            }
+            fromBuiltIn = false; touch(); commit();
+        }
         static void smooth (float* v)
         {
             float t[512];
@@ -105,42 +129,11 @@ namespace njo
                 v[i] = k[a] + (k[juce::jmin (8, a + 1)] - k[a]) * w;
             }
         }
-        void preset (const juce::String& n)
-        {
-            edit ([this, &n] (float* v)
-            {
-                const float pi = juce::MathConstants<float>::pi;
-                for (int i = 0; i < 512; ++i)
-                {
-                    const float x = (float) i / 511.0f, s = x * 2.0f - 1.0f;
-                    float y = 0.0f;
-                    if (filter)
-                    {
-                        auto bump = [&] (float c, float w) { return std::exp (-(x - c) * (x - c) / (2.0f * w * w)); };
-                        if (n == "LOW PASS")       y = 1.0f - 2.0f / (1.0f + std::exp (-(0.5f - x) * 24.0f)) + 1.0f - 1.0f;
-                        else if (n == "HIGH PASS") y = 2.0f / (1.0f + std::exp (-(x - 0.5f) * 24.0f)) - 1.0f;
-                        else if (n == "BAND PASS") y = bump (0.5f, 0.06f) * 2.0f - 1.0f;
-                        else if (n == "NOTCH")     y = 1.0f - bump (0.5f, 0.05f) * 2.0f;
-                        else if (n == "COMB")      y = std::cos (2.0f * pi * 8.0f * x);
-                        else                       y = juce::jmax (bump (0.30f, 0.025f), juce::jmax (bump (0.52f, 0.03f), bump (0.72f, 0.025f))) * 2.0f - 1.0f;
-                        if (n == "LOW PASS") y = 1.0f / (1.0f + std::exp ((x - 0.5f) * 24.0f)) * 2.0f - 1.0f;
-                    }
-                    else
-                    {
-                        if (n == "LINEAR")      y = s;
-                        else if (n == "SOFT")   y = std::tanh (3.0f * s) / std::tanh (3.0f);
-                        else if (n == "HARD")   y = juce::jlimit (-1.0f, 1.0f, 2.5f * s);
-                        else if (n == "FOLD")   y = std::sin (2.5f * pi * s);
-                        else if (n == "ASYM")   y = s > 0 ? std::tanh (4.0f * s) : 0.55f * s;
-                        else                    y = std::round (s * 6.0f) / 6.0f;
-                    }
-                    v[i] = y;
-                }
-            });
-        }
+        void preset (const juce::String& n) { edit ([this, n] (float* v) { tblops::generate (filter, n, v); }); }
         void addFrame()
         {
             if (frames() >= 64) return;
+            pushUndo();
             std::vector<float> copy (frame(), frame() + 512);
             d.insert (d.begin() + (cur + 1) * 512, copy.begin(), copy.end());
             ++cur; setPos(); touch(); commit();
@@ -148,6 +141,7 @@ namespace njo
         void delFrame()
         {
             if (frames() <= 1) return;
+            pushUndo();
             d.erase (d.begin() + cur * 512, d.begin() + (cur + 1) * 512);
             cur = juce::jmin (cur, frames() - 1); setPos(); touch(); commit();
         }
@@ -155,13 +149,28 @@ namespace njo
         void morphAll()
         {
             const int n = frames(); if (n < 3) return;
+            pushUndo();
             for (int f = 1; f < n - 1; ++f)
                 for (int i = 0; i < 512; ++i)
                     d[(size_t) (f * 512 + i)] = d[(size_t) i] + (d[(size_t) ((n - 1) * 512 + i)] - d[(size_t) i]) * (float) f / (float) (n - 1);
             touch(); commit();
         }
+        void chooseFile()
+        {
+            chooser = std::make_unique<juce::FileChooser> ("Load a table or wave file", juce::File(), SoundMemory::fileWildcard());
+            chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [this] (const juce::FileChooser& fc)
+            {
+                auto f = fc.getResult(); if (f.existsAsFile()) loadFile (f);
+            });
+        }
+        void loadFile (const juce::File& f) { pushUndo(); mem.load (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os, f, {}); }   // the change listener reloads the frames
+        void harmonics()
+        {
+            if (! harmDirty) return;
+            tblops::chebAnalyse (frame(), hv.data()); harmDirty = false;
+        }
 
-        juce::Rectangle<int> canvas;
+        juce::Rectangle<int> canvas, harm, strip;
         void paintAll (juce::Graphics& g)
         {
             auto all = owner.getLocalBounds();
@@ -207,69 +216,134 @@ namespace njo
                 g.drawText ("INPUT -1", canvas.reduced (12, 24), juce::Justification::bottomLeft);
                 g.drawText ("INPUT +1", canvas.reduced (12, 24), juce::Justification::bottomRight);
             }
-            g.drawText ("FRAME " + juce::String (cur + 1) + " / " + juce::String (frames()) + (fromBuiltIn ? "   (built-in table: editing creates your own)" : "") + "   draw with the mouse, wheel = frame",
+            g.drawText ("FRAME " + juce::String (cur + 1) + " / " + juce::String (frames()) + (fromBuiltIn ? "  (built-in: editing creates your own)" : "") + (allFrames ? "  - tools act on ALL frames" : "") + "   wheel = frame",
                         canvas.reduced (12, 10), juce::Justification::topRight);
+
+            // Chebyshev terms: bar n sets the n-th harmonic that a sine at the input gets from this curve
+            paintInset (g, harm.toFloat(), 4.0f);
+            harmonics();
+            auto hr = harm.toFloat().reduced (6.0f, 16.0f);
+            const float bw = hr.getWidth() / (float) tblops::NH, mid = hr.getCentreY();
+            g.setColour (juce::Colours::white.withAlpha (0.2f)); g.drawHorizontalLine ((int) mid, hr.getX(), hr.getRight());
+            g.setColour (dim); g.setFont (mono (8.0f, false));
+            g.drawText (filter ? "COSINE TERMS 1..16  -  DRAG TO SET" : "CHEBYSHEV 1..16 = HARMONICS OF A SINE INPUT  -  DRAG TO SET", harm.getX() + 6, harm.getY() + 2, harm.getWidth() - 12, 12, juce::Justification::left);
+            for (int k = 0; k < tblops::NH; ++k)
+            {
+                const float v = juce::jlimit (-1.0f, 1.0f, hv[(size_t) k]), h = v * hr.getHeight() * 0.5f;
+                g.setColour (juce::Colour (0xff7fd0ff).withAlpha (0.85f));
+                g.fillRect (juce::Rectangle<float> (hr.getX() + bw * (float) k + 1.0f, h >= 0 ? mid - h : mid, juce::jmax (1.0f, bw - 2.0f), juce::jmax (1.0f, std::abs (h))));
+                g.setColour (dim); g.drawText (juce::String (k + 1), (int) (hr.getX() + bw * (float) k), harm.getBottom() - 13, (int) bw, 11, juce::Justification::centred);
+            }
+            // frame strip
+            paintInset (g, strip.toFloat(), 3.0f);
+            const int n = frames(); const float sw = (float) strip.getWidth() / (float) n;
+            for (int f = 0; f < n; ++f)
+            {
+                auto cell = juce::Rectangle<float> ((float) strip.getX() + sw * (float) f, (float) strip.getY(), sw, (float) strip.getHeight()).reduced (1.0f, 2.0f);
+                if (f == cur) { g.setColour (juce::Colour (0xffff3e30).withAlpha (0.22f)); g.fillRect (cell); }
+                juce::Path q; const int step = sw < 24.0f ? 32 : 8;
+                for (int i = 0; i < 512; i += step)
+                {
+                    float x = cell.getX() + 1.0f + (float) i / 511.0f * (cell.getWidth() - 2.0f), y = cell.getCentreY() - d[(size_t) (f * 512 + i)] * (cell.getHeight() * 0.5f - 2.0f);
+                    if (i == 0) q.startNewSubPath (x, y); else q.lineTo (x, y);
+                }
+                g.setColour (f == cur ? juce::Colour (0xffff6f65) : juce::Colour (0xff8a909a)); g.strokePath (q, juce::PathStrokeType (1.0f));
+            }
+            if (dropOver) { g.setColour (juce::Colour (0xffff3e30)); g.drawRect (all, 2); g.setFont (font (11.0f, true)); g.drawText ("DROP A TABLE OR WAVE FILE", canvas, juce::Justification::centred); }
         }
         void layout()
         {
             auto b = owner.getLocalBounds().reduced (12, 8);
             auto head = b.removeFromTop (28);
             closeBtn->setBounds (head.removeFromRight (80).reduced (0, 2));
-            const int toolsH = 64;
+            const int toolsH = 92;
             auto tools = b.removeFromBottom (toolsH);
-            b.removeFromBottom (8);
-            canvas = b;
-            // two rows of buttons: frame / edit tools, presets
-            int n1 = 10, x = tools.getX(); const int bw = 92, gap = 6;
+            b.removeFromBottom (6);
+            strip = b.removeFromBottom (juce::jmin (46, b.getHeight() / 5)); b.removeFromBottom (6);
+            auto bb = b; harm = bb.removeFromRight (juce::jmax (200, b.getWidth() * 36 / 100)); bb.removeFromRight (8);
+            canvas = bb;
+            const int perRow = 13, gap = 5; const int bw = juce::jmin (96, (tools.getWidth() - (perRow - 1) * gap) / perRow);
+            int col[3] = { 0, 0, 0 };
             for (int i = 1; i < buttons.size(); ++i)
             {
-                int row = i <= n1 ? 0 : 1, col = i <= n1 ? i - 1 : i - n1 - 1;
-                buttons[i]->setBounds (tools.getX() + col * (bw + gap), tools.getY() + row * 32, bw, 26);
+                int row = rowOf[(size_t) i]; int c = col[row]++;
+                buttons[i]->setBounds (tools.getX() + c * (bw + gap), tools.getY() + row * 31, bw, 26);
             }
-            (void) x;
         }
         TableEditor& owner; Ctx& ctx; SoundMemory& mem; int os; bool filter;
-        std::vector<float> d; juce::String name; int cur = 0; bool dirty = false, fromBuiltIn = false;
-        juce::OwnedArray<Btn> buttons; Btn* closeBtn = nullptr; int lastIdx = -1; float lastV = 0.0f;
+        std::vector<float> d; juce::String name; int cur = 0; bool dirty = false, fromBuiltIn = false, allFrames = false, harmDirty = true, selfWrite = false, dropOver = false;
+        juce::OwnedArray<Btn> buttons; std::vector<int> rowOf; Btn* closeBtn = nullptr; int allBtn = 0; int lastIdx = -1; float lastV = 0.0f;
+        std::vector<std::vector<float>> undoStack; std::vector<float> clip; std::array<float, tblops::NH> hv {}; int mode = 0;   // mode: 1 draw, 2 harmonics, 3 strip
+        std::unique_ptr<juce::FileChooser> chooser;
     };
 
-    TableEditor::TableEditor (Ctx& c, SoundMemory& m, int osc, bool f) : impl (new Impl (*this, c, m, osc, f)) { c.addListener (this); setVisible (false); setName ("tableEditor"); }
-    TableEditor::~TableEditor() { impl->ctx.removeListener (this); }
-    void TableEditor::open() { impl->fromBuiltIn = false; impl->load(); setVisible (true); toFront (false); resized(); repaint(); }
+    TableEditor::TableEditor (Ctx& c, SoundMemory& m, int osc, bool f) : impl (new Impl (*this, c, m, osc, f)) { c.addListener (this); m.addChangeListener (this); setVisible (false); setName ("tableEditor"); }
+    TableEditor::~TableEditor() { impl->mem.removeChangeListener (this); impl->ctx.removeListener (this); }
+    void TableEditor::open() { impl->fromBuiltIn = false; impl->undoStack.clear(); impl->load(); setVisible (true); toFront (false); resized(); repaint(); }
+    void TableEditor::testApply (const juce::String& n, int f, int k, float v)
+    {
+        impl->select (f); impl->preset (n);
+        if (k > 0) { impl->pushUndo(); tblops::chebSet (impl->frame(), k, v); impl->touch(); impl->commit(); }
+        repaint();
+    }
     void TableEditor::paint (juce::Graphics& g) { impl->paintAll (g); }
     void TableEditor::resized() { impl->layout(); }
     void TableEditor::timerCallback() { if (impl->dirty) impl->commit(); else stopTimer(); }
+    void TableEditor::changeListenerCallback (juce::ChangeBroadcaster*)
+    {
+        if (! isVisible() || impl->dirty || impl->selfWrite || impl->mode != 0) return;
+        auto* sl = impl->mem.get (impl->filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, impl->os);
+        if (sl != nullptr && sl->data.size() >= 512 && sl->data != impl->d) { impl->fromBuiltIn = false; impl->load(); repaint(); }
+    }
     void TableEditor::paramChanged (int num, float v)
     {
         if (isVisible() && num == impl->posId() && impl->frames() > 0)
         {
             int f = juce::jlimit (0, impl->frames() - 1, juce::roundToInt (v * (float) (impl->frames() - 1)));
-            if (f != impl->cur) { impl->cur = f; repaint(); }
+            if (f != impl->cur) { impl->cur = f; impl->harmDirty = true; repaint(); }
         }
     }
+    bool TableEditor::isInterestedInFileDrag (const juce::StringArray& f) { for (auto& n : f) if (juce::File (n).hasFileExtension ("wav;aif;aiff;flac;ogg;mp3;vitaltable")) return true; return false; }
+    void TableEditor::fileDragEnter (const juce::StringArray&, int, int) { impl->dropOver = true; repaint(); }
+    void TableEditor::fileDragExit (const juce::StringArray&) { impl->dropOver = false; repaint(); }
+    void TableEditor::filesDropped (const juce::StringArray& f, int, int) { impl->dropOver = false; if (f.size() > 0) impl->loadFile (juce::File (f[0])); repaint(); }
     void TableEditor::mouseDown (const juce::MouseEvent& e)
     {
-        if (! impl->canvas.contains (e.getPosition())) return;
-        impl->lastIdx = -1; mouseDrag (e);
+        auto pt = e.getPosition(); auto& I = *impl;
+        if (I.strip.contains (pt)) { I.mode = 3; mouseDrag (e); return; }
+        if (I.harm.contains (pt)) { I.pushUndo(); I.mode = 2; mouseDrag (e); return; }
+        if (! I.canvas.contains (pt)) { I.mode = 0; return; }
+        I.pushUndo(); I.mode = 1; I.lastIdx = -1; mouseDrag (e);
     }
     void TableEditor::mouseDrag (const juce::MouseEvent& e)
     {
-        auto r = impl->canvas.toFloat().reduced (10.0f, 8.0f);
-        if (! impl->canvas.contains (e.getMouseDownPosition())) return;
+        auto& I = *impl;
+        if (I.mode == 3) { I.select ((e.getPosition().x - I.strip.getX()) * I.frames() / juce::jmax (1, I.strip.getWidth())); return; }
+        if (I.mode == 2)
+        {
+            auto hr = I.harm.toFloat().reduced (6.0f, 16.0f);
+            const int k = juce::jlimit (0, tblops::NH - 1, (int) ((e.position.x - hr.getX()) / (hr.getWidth() / (float) tblops::NH)));
+            float v = juce::jlimit (-1.0f, 1.0f, (hr.getCentreY() - e.position.y) / (hr.getHeight() * 0.5f));
+            if (std::abs (v) < 0.03f) v = 0.0f;
+            I.harmonics(); tblops::chebSet (I.frame(), k + 1, v); I.hv[(size_t) k] = v; I.fromBuiltIn = false; I.dirty = true; repaint (); if (! isTimerRunning()) startTimer (250);
+            return;
+        }
+        if (I.mode != 1) return;
+        auto r = I.canvas.toFloat().reduced (10.0f, 8.0f);
         float t = juce::jlimit (0.0f, 1.0f, (e.position.x - r.getX()) / r.getWidth());
         float v = juce::jlimit (-1.0f, 1.0f, 1.0f - 2.0f * (e.position.y - r.getY()) / r.getHeight());
         int idx = juce::roundToInt (t * 511.0f);
-        float* f = impl->frame();
-        if (impl->lastIdx < 0) { f[idx] = v; impl->lastV = v; }
+        float* f = I.frame();
+        if (I.lastIdx < 0) { f[idx] = v; I.lastV = v; }
         else
         {
-            int a = impl->lastIdx, b = idx; float va = impl->lastV, vb = v;
+            int a = I.lastIdx, b = idx; float va = I.lastV, vb = v;
             if (a > b) { std::swap (a, b); std::swap (va, vb); }
             for (int i = a; i <= b; ++i) f[i] = b == a ? vb : va + (vb - va) * (float) (i - a) / (float) (b - a);
         }
-        impl->lastIdx = idx; impl->lastV = v; impl->fromBuiltIn = false; impl->touch();
+        I.lastIdx = idx; I.lastV = v; I.fromBuiltIn = false; I.touch();
     }
-    void TableEditor::mouseUp (const juce::MouseEvent&) { impl->lastIdx = -1; if (impl->dirty) impl->commit(); }
+    void TableEditor::mouseUp (const juce::MouseEvent&) { impl->lastIdx = -1; impl->mode = 0; impl->harmDirty = true; if (impl->dirty) impl->commit(); repaint(); }
     void TableEditor::mouseWheelMove (const juce::MouseEvent&, const juce::MouseWheelDetails& w) { impl->select (impl->cur + (w.deltaY > 0 ? -1 : 1)); }
 
     // ====================================================================================================================== ModeEditor
