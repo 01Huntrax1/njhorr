@@ -329,8 +329,8 @@ namespace njo
         juce::Point<float> nodeOf (const eq::Band& x) const
         {
             auto sc = scale();
-            if (phase) { eq::Band one = x; return { xOf (x.hz * sc.shift), yDeg (sweepPhase (juce::jlimit (10.0, kSr * 0.45, (double) x.hz * sc.shift), 80, [&] (int k) { return &bands[(size_t) k] == &x; })) }; }
-            return { xOf (x.hz * sc.shift), yOf (eq::hasGain (x.type) ? x.db * sc.gain : 0.0) };
+            if (phase) { return { (float) xOf (x.hz * sc.shift), (float) yDeg (sweepPhase (juce::jlimit (10.0, kSr * 0.45, (double) x.hz * sc.shift), 80, [&] (int k) { return &bands[(size_t) k] == &x; })) }; }
+            return { (float) xOf (x.hz * sc.shift), (float) yOf (eq::hasGain (x.type) ? x.db * sc.gain : 0.0) };
         }
         int nodeAt (juce::Point<float> p) const
         {
