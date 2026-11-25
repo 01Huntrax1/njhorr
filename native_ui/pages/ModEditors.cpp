@@ -8,6 +8,7 @@
 #include "../NjoLfo.h"
 #include "../NjoFreq.h"
 #include "../NjoA3Bank.h"
+#include "../NjoSeqPresets.h"
 #include "InspPanel.h"
 
 namespace njo
@@ -1375,6 +1376,27 @@ namespace njo
         // per sequencer: [0..2] buttons (Sync, Retrig, Polarity), [3..4] selects (Direction, Division), [5..7] knobs (Rate, Glide, Length)
         juce::OwnedArray<ParamWidget> w;
         std::unique_ptr<ParamWidget> keyStart;   // global: sequencers run only while a note sounds
+        juce::TextButton presetBtn { "PRESETS" };
+        void applyPreset (const njo::seqpre::Preset& p)
+        {
+            const int m = ctx.selectedSeq;
+            auto put = [this] (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); };
+            for (int k = 0; k < 16; ++k) { put (seqParam (m, k), p.v[(size_t) k]); put (seqShapeParam (m, k), (float) p.shape[(size_t) k]); }
+            put (seqParam (m, 16), (float) p.len);
+            if (p.dir >= 0) put (seqParam (m, 21), (float) p.dir);
+            if (p.bipolar >= 0) put (seqParam (m, 23), (float) p.bipolar);
+            if (p.glide >= 0) put (seqParam (m, 20), (float) p.glide);
+        }
+        void showPresets()
+        {
+            static const auto L = njo::seqpre::all();
+            juce::PopupMenu m; std::vector<juce::PopupMenu> subs; juce::StringArray gs;
+            for (auto& p : L) if (! gs.contains (p.group)) gs.add (p.group);
+            subs.resize ((size_t) gs.size());
+            for (int i = 0; i < L.size(); ++i) subs[(size_t) gs.indexOf (L[(size_t) i].group)].addItem (i + 1, L[(size_t) i].name);
+            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this] (int r) { if (r > 0) applyPreset (L[(size_t) r - 1]); });
+        }
         bool full = false; juce::Rectangle<int> helpRect;
 
         Impl (Ctx& c, SeqEditor& o) : ctx (c), owner (o), cv (c)
@@ -1394,6 +1416,7 @@ namespace njo
                 }
             }
             keyStart = makeWidget (ctx, 3929, false); owner.addAndMakeVisible (*keyStart);
+            presetBtn.onClick = [this] { showPresets(); }; owner.addAndMakeVisible (presetBtn);
             owner.addAndMakeVisible (cv);
             for (int& h : lastHead) h = -2;
             startTimerHz (30);   // playhead
@@ -1451,7 +1474,8 @@ namespace njo
         auto row = b.removeFromTop (ch); b.removeFromTop (4);
         int cw = juce::jmin (60, (juce::jmin (row.getWidth(), 640) - 9 * cg) / 10);
         for (int i = 0; i < 10; ++i) I.chips[i]->setBounds (row.getX() + i * (cw + cg), row.getY(), cw, ch);
-        { int x0 = row.getX() + 10 * (cw + cg) + 8; int kw0 = juce::jmin (130, row.getRight() - x0); I.keyStart->setVisible (kw0 >= 60); I.keyStart->setBounds (x0, row.getY(), juce::jmax (kw0, 1), ch); }
+        { int x0 = row.getX() + 10 * (cw + cg) + 8; int kw0 = juce::jmin (130, row.getRight() - x0 - 72); I.keyStart->setVisible (kw0 >= 60); I.keyStart->setBounds (x0, row.getY(), juce::jmax (kw0, 1), ch);
+          I.presetBtn.setBounds (juce::jmin (x0 + juce::jmax (kw0, 0) + 4, getWidth() - 76), row.getY(), 68, ch); }
         auto right = b.removeFromRight (290); b.removeFromRight (10);
         I.helpRect = b.removeFromBottom (12);
         I.cv.setBounds (b.withTrimmedBottom (2));

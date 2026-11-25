@@ -22,13 +22,17 @@ int main()
     auto root = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njo_a3_test_" + juce::String (juce::Random::getSystemRandom().nextInt()));
     installFactory (root);
     auto n = names (root);
-    CHECK (n.size() == 3 && n.contains ("Acid Classic") && n.contains ("Slide Line 32"));
+    CHECK (n.size() == 3 + (int) factoryList().size() && n.contains ("Acid Classic") && n.contains ("Slide Line 32") && n.contains ("Acid House Classic"));
+    const int base = n.size();
+    Pattern t1 = fromTokens ("0 . 0a 12s 7as"); CHECK (t1.len == 5 && t1.gate[1] == 0 && t1.acc[2] == 1 && t1.note[3] == 12 && t1.slide[3] == 1 && t1.acc[4] == 1 && t1.slide[4] == 1 && t1.note[5] == 0);
+    for (auto& e : factoryList()) { Pattern z; CHECK (load (root, e.name, z)); CHECK (z.len >= 5 && z.len <= 64); }
+    Pattern e5; CHECK (load (root, "Euclid 5 of 16 Bossa", e5) && e5.len == 16 && e5.gate[0] == 1 && e5.gate[1] == 0);
     Pattern a; CHECK (load (root, "Acid Classic", a)); CHECK (a.len == 16 && a.note[2] == 12 && a.acc[2] == 1 && a.slide[3] == 1 && a.gate[5] == 0 && a.note[18] == 12);   // steps 17.. repeat
     Pattern s; CHECK (load (root, "Slide Line 32", s)); CHECK (s.len == 32 && s.note[31] == -12);
     CHECK (save (root, "My: pattern?", p)); CHECK (names (root).contains ("My_ pattern_"));
     Pattern r; CHECK (load (root, "My: pattern?", r) && r.len == 37 && r.note[10] == p.note[10]);
-    installFactory (root); CHECK (names (root).size() == 4);   // a second call leaves the folder alone
-    CHECK (remove (root, "My: pattern?") && names (root).size() == 3);
+    installFactory (root); CHECK (names (root).size() == base + 1);   // a second call leaves the folder alone
+    CHECK (remove (root, "My: pattern?") && names (root).size() == base);
     CHECK (! save (root, "  ...", p));
     root.deleteRecursively();
     std::printf (fails ? "FAILED\n" : "ALL OK\n");
