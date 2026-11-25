@@ -3339,6 +3339,9 @@ const FX_TYPES = [
     // PHASEQ: phase-only EQ (FX type 38), the band editor shows the phase response
     { n: "Phase EQ", mix: 1, modes: [],
       p: [["Output", fxDb(-18, 18), 0.5], ["Spread Scale", fxPctOf(2), 0.5], ["Freq Shift", fxLin(-1, 1, 2, "oct"), 0.5], ["Q Scale", n => "x" + (0.25 * Math.pow(16, n)).toFixed(2), 0.5]] },
+    // FX-WFILT: the Wavefilter of the oscillators as an effect (FX type 39), table = filter table of an oscillator
+    { n: "Wavefilter", mix: 1, modes: ["Linear", "Bipolar", "dB"],
+      p: [["Cutoff", fxHz(20, 20000), 0.5], ["Reso", fxPct, 0.2], ["Pos", fxPct, 0], ["Table", fxLin(1, 6, 0, ""), 0], ["Range", fxLin(2, 14, 1, "oct"), 0.5], ["Contrast", fxLin(-100, 100, 0, "%"), 0.5]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

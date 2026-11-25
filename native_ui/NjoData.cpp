@@ -116,7 +116,7 @@ namespace njo
         {
             case 1: case 2: case 14: case 15: case 19: case 20: case 21: case 22: case 28: case 34: return 0;
             case 17: case 23: case 24: case 25: case 26: return 1;
-            case 9: case 10: case 13: case 18: case 27: return 2;
+            case 9: case 10: case 13: case 18: case 27: case 39: return 2;
             case 11: return 3;
             case 4: case 5: case 6: case 7: case 16: return 4;
             case 3: case 8: case 12: case 31: return 5;
@@ -125,7 +125,7 @@ namespace njo
     }
     bool fxVoiceType (int t)
     {
-        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30 || t == 32;
+        return (t >= 1 && t <= 2) || (t >= 4 && t <= 7) || (t >= 9 && t <= 11) || (t >= 14 && t <= 15) || (t >= 17 && t <= 28) || t == 30 || t == 32 || t == 39;
     }
 
     juce::String formatValue (const Spec& s, double v, const int* fxSlotTypes)

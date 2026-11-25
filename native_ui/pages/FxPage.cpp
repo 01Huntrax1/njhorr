@@ -7,6 +7,7 @@
 #include "../NjoFxEx.h"
 #include "EqEditor.h"
 #include "ShaperEditor.h"
+#include "Editors.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -33,8 +34,8 @@ static int fxFilterShape (int mode)
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58, 0xff90c8a0, 0xffd0a878, 0xffb88860, 0xff98a0d8, 0xff78d0c0 };
-            return juce::Colour (c[juce::jlimit (0, 38, type)]);
+            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58, 0xff90c8a0, 0xffd0a878, 0xffb88860, 0xff98a0d8, 0xff78d0c0 , 0xff7fd0a8};
+            return juce::Colour (c[juce::jlimit (0, 39, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -434,6 +435,25 @@ static int fxFilterShape (int mode)
                     g.setColour (juce::Colours::white.withAlpha (0.15f)); g.drawHorizontalLine ((int) Y (0.5), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5), r.getY(), r.getBottom());
                     g.setColour (juce::Colours::white.withAlpha (0.12f)); g.drawLine (X (0), Y (0), X (1), Y (1)); 
                     stroke (p); label ("INPUT -> OUTPUT");
+                }
+                else if (ty == 39)   // Wavefilter: gain along the frequency axis = frame of the filter table of the chosen oscillator (FX-WFILT)
+                {
+                    const int osc = juce::jlimit (0, 5, juce::roundToInt (P (3) * 5.0));
+                    float tbl[512];
+                    auto* sl = im.mem.get (SoundMemory::FilterTable, osc);
+                    oscmodel::tblFrame (sl ? &sl->data : nullptr, true, (float) P (2), tbl);
+                    const double lfc = std::log2 (20.0 * std::pow (1000.0, P (0))), width = 2.0 + 12.0 * P (4), cont = P (5) * 2.0 - 1.0, ex = std::pow (2.0, cont * 1.5);
+                    auto p = curve ([&] (double t)
+                    {
+                        const double f = 20.0 * std::pow (1000.0, t), tt = juce::jlimit (-1.0, 1.0, (std::log2 (f) - lfc) * 2.0 / width), x = (0.5 + 0.5 * tt) * 511.0;
+                        const int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511); const double v = tbl[i0] + (tbl[i1] - tbl[i0]) * (x - i0);
+                        double gain = mode == 0 ? v * 0.5 + 0.5 : mode == 2 ? std::pow (10.0, (v - 1.0) * 1.5) : v;
+                        gain = std::pow (std::abs (gain), ex) * 0.64 * 24.0 * 0.28;
+                        return (juce::jlimit (-48.0, 12.0, 20.0 * std::log10 (juce::jmax (1.0e-5, gain))) + 48.0) / 60.0;
+                    });
+                    fill (p, 0.0); stroke (p);
+                    g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (20.0 * std::pow (1000.0, P (0)) / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
+                    freqAxis(); label ("TABLE OSC " + juce::String (osc + 1) + "   (approximate response)");
                 }
                 else if (ty == 34)   // Shaper Table: transfer curve = frame of the shaper table of the chosen oscillator (FX-SHTAB)
                 {
@@ -1062,7 +1082,8 @@ static int fxFilterShape (int mode)
             shEd = std::make_unique<ShaperEditor> (ctx, mem); owner.addChildComponent (*shEd);
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); refreshList(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
-            owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn);
+            tblBtn.text = "EDIT TABLE"; tblBtn.click = [this] { openTable(); };
+            owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn); owner.addChildComponent (tblBtn);
             for (int rk = 0; rk < kFxRacks; ++rk) { sel[rk] = -1; }
             loadIr.text = "LOAD IR"; clearIr.text = "CLEAR";
             loadIr.click = [this]
@@ -1235,7 +1256,7 @@ static int fxFilterShape (int mode)
             }
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[fxG (current, sl)] > 0;
-            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage);
+            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage); tblBtn.setVisible (false);
             loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
@@ -1265,6 +1286,11 @@ static int fxFilterShape (int mode)
                 clearIr.setBounds (head.removeFromLeft (64).reduced (0, 4)); clearIr.setVisible (true);
                 head.removeFromLeft (8);
                 irRect = head;
+            }
+            if (ty == 34 || ty == 39)
+            {
+                head.removeFromLeft (8);
+                tblBtn.setBounds (head.removeFromLeft (96).reduced (0, 4)); tblBtn.setVisible (true);
             }
             if (ty == 13 || ty == 38)
             {
@@ -1306,10 +1332,21 @@ static int fxFilterShape (int mode)
             }
         }
 
+        // the table editor (Wavedistortion table for the Shaper Table, Wavefilter table for the Wavefilter) of the oscillator chosen in the Table knob
+        void openTable()
+        {
+            const int sl = sel[current]; if (sl < 0) return;
+            const int g = fxG (current, sl), ty = ctx.fxSlotTypes()[g];
+            if (ty != 34 && ty != 39) return;
+            const int osc = juce::jlimit (0, 5, juce::roundToInt (ctx.get (slotBase (g) + 4 + (ty == 39 ? 3 : 2)) * 5.0f));
+            auto& e = tblEd[(ty == 39 ? 6 : 0) + osc];
+            if (! e) { e = std::make_unique<TableEditor> (ctx, mem, osc, ty == 39); owner.addChildComponent (*e); e->onClose = [this] { layoutCentre(); owner.repaint(); }; }
+            e->setBounds (owner.getLocalBounds()); e->open();
+        }
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
         std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
         FxButton loadIr, clearIr; juce::Rectangle<int> irRect; std::shared_ptr<juce::FileChooser> chooser2;
-        juce::Viewport listVp; ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn;
+        juce::Viewport listVp; ListComp list; Chooser chooser; Display display; FxButton addBtn, removeBtn, tblBtn; std::unique_ptr<TableEditor> tblEd[12];
         std::unique_ptr<OnToggle> onT[kFxTotal]; std::unique_ptr<ParamWidget> mixK[kFxTotal], modeS[kFxTotal], syncS[kFxTotal], envS[kFxTotal], envR[kFxTotal], pK[kFxTotal][6], wK[kFxTotal][4], exK[kFxTotal][4]; juce::Rectangle<int> syncRect;
         juce::OwnedArray<DotTab> tabs; juce::OwnedArray<ParamWidget> outs;
         juce::Rectangle<int> mainCard, outCard, listRect, addRect, centre, titleRect;
