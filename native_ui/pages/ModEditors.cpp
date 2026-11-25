@@ -9,6 +9,7 @@
 #include "../NjoFreq.h"
 #include "../NjoA3Bank.h"
 #include "../NjoSeqPresets.h"
+#include "../NjoMelodicPresets.h"
 #include "InspPanel.h"
 
 namespace njo
@@ -1769,8 +1770,35 @@ namespace njo
         struct LaneInfo { const char* name; int lo, hi, dflt; };
         static constexpr LaneInfo lanes[6] = { { "NOTE", -24, 24, 0 }, { "VELOCITY", 1, 127, 100 }, { "LENGTH", 10, 400, 80 }, { "CHORD", 0, 8, 0 }, { "PROB", 0, 100, 100 }, { "RATCHET", 1, 4, 1 } };
         Ctx& ctx; int pageNo = 0, lane = 0, lastStep = -1, dragRow = -1, setTo = 0;
-        explicit MelodicEditor (Ctx& c) : ctx (c) { ctx.addListener (this); }
+        juce::TextButton presetBtn { "PRESETS" };
+        explicit MelodicEditor (Ctx& c) : ctx (c)
+        {
+            ctx.addListener (this); presetBtn.onClick = [this] { showPresets(); }; addAndMakeVisible (presetBtn);
+        }
         ~MelodicEditor() override { ctx.removeListener (this); }
+        void resized() override { auto r = chipRect (5); presetBtn.setBounds (juce::roundToInt (r.getRight ()) + 12, juce::roundToInt (r.getY()), 72, 14); }
+        void apply (const njo::melpre::Preset& p)
+        {
+            auto put = [this] (int id, int v) { ctx.begin (id); ctx.set (id, (float) v); ctx.end (id); };
+            put (ML_LEN, p.len);
+            for (int k = 0; k < 64; ++k)
+            {
+                auto u = (size_t) k;
+                const int vals[7] = { p.note[u], p.vel[u], p.length[u], p.chord[u], p.prob[u], p.ratchet[u], p.gate[u] };
+                for (int r = 0; r < 7; ++r) put (idOf (r, k), vals[r]);
+            }
+            repaint();
+        }
+        void showPresets()
+        {
+            static const auto L = njo::melpre::all();
+            juce::PopupMenu m; std::vector<juce::PopupMenu> subs; juce::StringArray gs;
+            for (auto& p : L) if (! gs.contains (p.group)) gs.add (p.group);
+            subs.resize ((size_t) gs.size());
+            for (size_t i = 0; i < L.size(); ++i) subs[(size_t) gs.indexOf (L[i].group)].addItem ((int) i + 1, L[i].name);
+            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this] (int r) { if (r > 0) apply (L[(size_t) r - 1]); });
+        }
         void paramChanged (int n, float) override { if (n == ML_LEN || (n >= ML_BASE && n < ML_BASE + 448)) repaint(); }
         static int idOf (int row, int k) { return ML_BASE + 64 * row + k; }
         static constexpr float labW = 44.0f, rowH = 17.0f, tabH = 14.0f;
