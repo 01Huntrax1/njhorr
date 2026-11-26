@@ -37,8 +37,21 @@ namespace njo
         // values from 2000000 on are Plinko balls (tools/mod/build_plinko.py): 2000000 + bin + 16 * rows + 256 * path (bit r: row r went right)
         struct PlinkoBall { int bin = 0, rows = 0, path = 0; juce::uint32 ms = 0; };
         std::vector<PlinkoBall> plinkoBalls;
+        struct BoardBall { float x = 0, y = 0; juce::uint32 ms = 0; };
+        BoardBall boardBalls[8];            // Plinko board (Arp Mode 12): the balls the DSP reports every 33 ms
+        juce::uint32 boardHitMs[48] = {};   // ... and the time of the last hit of every obstacle
         void setSeqPos (int v)
         {
+            if (v >= 4000000)   // Plinko board: a ball position, (ball << 21 | x << 11 | y) with x, y in 0..1023
+            {
+                const int c = v - 4000000, id = (c >> 21) & 7; boardBalls[id].x = (float) ((c >> 11) & 1023) / 1023.0f; boardBalls[id].y = (float) (c & 1023) / 1023.0f; boardBalls[id].ms = juce::Time::getMillisecondCounter();
+                return;
+            }
+            if (v >= 3000000)   // Plinko board: a hit of obstacle (v - 3000000)
+            {
+                const int e = v - 3000000; if (e < 48) boardHitMs[e] = juce::Time::getMillisecondCounter();
+                return;
+            }
             if (v >= 2000000)
             {
                 const int c = v - 2000000; PlinkoBall b; b.bin = c & 15; b.rows = (c >> 4) & 15; b.path = c >> 8; b.ms = juce::Time::getMillisecondCounter();

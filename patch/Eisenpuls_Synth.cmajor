@@ -7663,7 +7663,7 @@ processor Eisenpuls_Synth
     input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
-    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
@@ -7672,6 +7672,309 @@ processor Eisenpuls_Synth
     input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3928 [[ name: "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", min: 0.0, max: 10.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ3
     input event float param3929 [[ name: "Seq Key Start (1 = the sequencers only run while a note sounds)", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ4
+    input event float param6360 [[ name: "Plinko Balls", min: 1.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6361 [[ name: "Plinko Speed", min: 25.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6362 [[ name: "Plinko Bounce", min: 20.0, max: 110.0, init: 75.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6363 [[ name: "Plinko Sway", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6364 [[ name: "Plinko Gravity", min: 20.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6365 [[ name: "Plinko Scale", min: 0.0, max: 11.0, init: 9.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6366 [[ name: "Plinko Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6367 [[ name: "Plinko Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6368 [[ name: "Plinko Gate", min: 10.0, max: 400.0, init: 60.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6369 [[ name: "Plinko Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6370 [[ name: "Plinko Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6371 [[ name: "Plinko Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6372 [[ name: "Plinko Drop X", min: 0.0, max: 100.0, init: 50.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6373 [[ name: "Plinko Spread", min: 0.0, max: 100.0, init: 20.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6374 [[ name: "Plinko Size", min: 5.0, max: 30.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6400 [[ name: "Plinko Obstacle 1 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6401 [[ name: "Plinko Obstacle 1 X1", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6402 [[ name: "Plinko Obstacle 1 Y1", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6403 [[ name: "Plinko Obstacle 1 X2", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6404 [[ name: "Plinko Obstacle 1 Y2", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6405 [[ name: "Plinko Obstacle 1 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6406 [[ name: "Plinko Obstacle 2 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6407 [[ name: "Plinko Obstacle 2 X1", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6408 [[ name: "Plinko Obstacle 2 Y1", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6409 [[ name: "Plinko Obstacle 2 X2", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6410 [[ name: "Plinko Obstacle 2 Y2", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6411 [[ name: "Plinko Obstacle 2 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6412 [[ name: "Plinko Obstacle 3 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6413 [[ name: "Plinko Obstacle 3 X1", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6414 [[ name: "Plinko Obstacle 3 Y1", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6415 [[ name: "Plinko Obstacle 3 X2", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6416 [[ name: "Plinko Obstacle 3 Y2", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-PLKP
+    input event float param6417 [[ name: "Plinko Obstacle 3 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6418 [[ name: "Plinko Obstacle 4 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6419 [[ name: "Plinko Obstacle 4 X1", min: 0.0, max: 1.0, init: 0.29, automatable: false ]];   // MOD-PLKP
+    input event float param6420 [[ name: "Plinko Obstacle 4 Y1", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6421 [[ name: "Plinko Obstacle 4 X2", min: 0.0, max: 1.0, init: 0.29, automatable: false ]];   // MOD-PLKP
+    input event float param6422 [[ name: "Plinko Obstacle 4 Y2", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6423 [[ name: "Plinko Obstacle 4 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6424 [[ name: "Plinko Obstacle 5 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6425 [[ name: "Plinko Obstacle 5 X1", min: 0.0, max: 1.0, init: 0.43, automatable: false ]];   // MOD-PLKP
+    input event float param6426 [[ name: "Plinko Obstacle 5 Y1", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6427 [[ name: "Plinko Obstacle 5 X2", min: 0.0, max: 1.0, init: 0.43, automatable: false ]];   // MOD-PLKP
+    input event float param6428 [[ name: "Plinko Obstacle 5 Y2", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6429 [[ name: "Plinko Obstacle 5 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6430 [[ name: "Plinko Obstacle 6 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6431 [[ name: "Plinko Obstacle 6 X1", min: 0.0, max: 1.0, init: 0.5700000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6432 [[ name: "Plinko Obstacle 6 Y1", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6433 [[ name: "Plinko Obstacle 6 X2", min: 0.0, max: 1.0, init: 0.5700000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6434 [[ name: "Plinko Obstacle 6 Y2", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6435 [[ name: "Plinko Obstacle 6 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6436 [[ name: "Plinko Obstacle 7 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6437 [[ name: "Plinko Obstacle 7 X1", min: 0.0, max: 1.0, init: 0.71, automatable: false ]];   // MOD-PLKP
+    input event float param6438 [[ name: "Plinko Obstacle 7 Y1", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6439 [[ name: "Plinko Obstacle 7 X2", min: 0.0, max: 1.0, init: 0.71, automatable: false ]];   // MOD-PLKP
+    input event float param6440 [[ name: "Plinko Obstacle 7 Y2", min: 0.0, max: 1.0, init: 0.33999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6441 [[ name: "Plinko Obstacle 7 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6442 [[ name: "Plinko Obstacle 8 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6443 [[ name: "Plinko Obstacle 8 X1", min: 0.0, max: 1.0, init: 0.21999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6444 [[ name: "Plinko Obstacle 8 Y1", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6445 [[ name: "Plinko Obstacle 8 X2", min: 0.0, max: 1.0, init: 0.21999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6446 [[ name: "Plinko Obstacle 8 Y2", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6447 [[ name: "Plinko Obstacle 8 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6448 [[ name: "Plinko Obstacle 9 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6449 [[ name: "Plinko Obstacle 9 X1", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6450 [[ name: "Plinko Obstacle 9 Y1", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6451 [[ name: "Plinko Obstacle 9 X2", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6452 [[ name: "Plinko Obstacle 9 Y2", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6453 [[ name: "Plinko Obstacle 9 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6454 [[ name: "Plinko Obstacle 10 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6455 [[ name: "Plinko Obstacle 10 X1", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6456 [[ name: "Plinko Obstacle 10 Y1", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6457 [[ name: "Plinko Obstacle 10 X2", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6458 [[ name: "Plinko Obstacle 10 Y2", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6459 [[ name: "Plinko Obstacle 10 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6460 [[ name: "Plinko Obstacle 11 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6461 [[ name: "Plinko Obstacle 11 X1", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6462 [[ name: "Plinko Obstacle 11 Y1", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6463 [[ name: "Plinko Obstacle 11 X2", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6464 [[ name: "Plinko Obstacle 11 Y2", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6465 [[ name: "Plinko Obstacle 11 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6466 [[ name: "Plinko Obstacle 12 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6467 [[ name: "Plinko Obstacle 12 X1", min: 0.0, max: 1.0, init: 0.78, automatable: false ]];   // MOD-PLKP
+    input event float param6468 [[ name: "Plinko Obstacle 12 Y1", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6469 [[ name: "Plinko Obstacle 12 X2", min: 0.0, max: 1.0, init: 0.78, automatable: false ]];   // MOD-PLKP
+    input event float param6470 [[ name: "Plinko Obstacle 12 Y2", min: 0.0, max: 1.0, init: 0.45999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6471 [[ name: "Plinko Obstacle 12 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6472 [[ name: "Plinko Obstacle 13 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6473 [[ name: "Plinko Obstacle 13 X1", min: 0.0, max: 1.0, init: 0.14999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6474 [[ name: "Plinko Obstacle 13 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6475 [[ name: "Plinko Obstacle 13 X2", min: 0.0, max: 1.0, init: 0.14999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6476 [[ name: "Plinko Obstacle 13 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6477 [[ name: "Plinko Obstacle 13 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6478 [[ name: "Plinko Obstacle 14 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6479 [[ name: "Plinko Obstacle 14 X1", min: 0.0, max: 1.0, init: 0.29, automatable: false ]];   // MOD-PLKP
+    input event float param6480 [[ name: "Plinko Obstacle 14 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6481 [[ name: "Plinko Obstacle 14 X2", min: 0.0, max: 1.0, init: 0.29, automatable: false ]];   // MOD-PLKP
+    input event float param6482 [[ name: "Plinko Obstacle 14 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6483 [[ name: "Plinko Obstacle 14 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6484 [[ name: "Plinko Obstacle 15 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6485 [[ name: "Plinko Obstacle 15 X1", min: 0.0, max: 1.0, init: 0.43, automatable: false ]];   // MOD-PLKP
+    input event float param6486 [[ name: "Plinko Obstacle 15 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6487 [[ name: "Plinko Obstacle 15 X2", min: 0.0, max: 1.0, init: 0.43, automatable: false ]];   // MOD-PLKP
+    input event float param6488 [[ name: "Plinko Obstacle 15 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6489 [[ name: "Plinko Obstacle 15 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6490 [[ name: "Plinko Obstacle 16 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6491 [[ name: "Plinko Obstacle 16 X1", min: 0.0, max: 1.0, init: 0.5700000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6492 [[ name: "Plinko Obstacle 16 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6493 [[ name: "Plinko Obstacle 16 X2", min: 0.0, max: 1.0, init: 0.5700000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6494 [[ name: "Plinko Obstacle 16 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6495 [[ name: "Plinko Obstacle 16 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6496 [[ name: "Plinko Obstacle 17 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6497 [[ name: "Plinko Obstacle 17 X1", min: 0.0, max: 1.0, init: 0.71, automatable: false ]];   // MOD-PLKP
+    input event float param6498 [[ name: "Plinko Obstacle 17 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6499 [[ name: "Plinko Obstacle 17 X2", min: 0.0, max: 1.0, init: 0.71, automatable: false ]];   // MOD-PLKP
+    input event float param6500 [[ name: "Plinko Obstacle 17 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6501 [[ name: "Plinko Obstacle 17 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6502 [[ name: "Plinko Obstacle 18 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6503 [[ name: "Plinko Obstacle 18 X1", min: 0.0, max: 1.0, init: 0.8500000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6504 [[ name: "Plinko Obstacle 18 Y1", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6505 [[ name: "Plinko Obstacle 18 X2", min: 0.0, max: 1.0, init: 0.8500000000000001, automatable: false ]];   // MOD-PLKP
+    input event float param6506 [[ name: "Plinko Obstacle 18 Y2", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-PLKP
+    input event float param6507 [[ name: "Plinko Obstacle 18 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6508 [[ name: "Plinko Obstacle 19 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6509 [[ name: "Plinko Obstacle 19 X1", min: 0.0, max: 1.0, init: 0.07999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6510 [[ name: "Plinko Obstacle 19 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6511 [[ name: "Plinko Obstacle 19 X2", min: 0.0, max: 1.0, init: 0.07999999999999996, automatable: false ]];   // MOD-PLKP
+    input event float param6512 [[ name: "Plinko Obstacle 19 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6513 [[ name: "Plinko Obstacle 19 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6514 [[ name: "Plinko Obstacle 20 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6515 [[ name: "Plinko Obstacle 20 X1", min: 0.0, max: 1.0, init: 0.21999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6516 [[ name: "Plinko Obstacle 20 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6517 [[ name: "Plinko Obstacle 20 X2", min: 0.0, max: 1.0, init: 0.21999999999999997, automatable: false ]];   // MOD-PLKP
+    input event float param6518 [[ name: "Plinko Obstacle 20 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6519 [[ name: "Plinko Obstacle 20 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6520 [[ name: "Plinko Obstacle 21 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6521 [[ name: "Plinko Obstacle 21 X1", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6522 [[ name: "Plinko Obstacle 21 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6523 [[ name: "Plinko Obstacle 21 X2", min: 0.0, max: 1.0, init: 0.36, automatable: false ]];   // MOD-PLKP
+    input event float param6524 [[ name: "Plinko Obstacle 21 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6525 [[ name: "Plinko Obstacle 21 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6526 [[ name: "Plinko Obstacle 22 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6527 [[ name: "Plinko Obstacle 22 X1", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6528 [[ name: "Plinko Obstacle 22 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6529 [[ name: "Plinko Obstacle 22 X2", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-PLKP
+    input event float param6530 [[ name: "Plinko Obstacle 22 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6531 [[ name: "Plinko Obstacle 22 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6532 [[ name: "Plinko Obstacle 23 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6533 [[ name: "Plinko Obstacle 23 X1", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6534 [[ name: "Plinko Obstacle 23 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6535 [[ name: "Plinko Obstacle 23 X2", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-PLKP
+    input event float param6536 [[ name: "Plinko Obstacle 23 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6537 [[ name: "Plinko Obstacle 23 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6538 [[ name: "Plinko Obstacle 24 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6539 [[ name: "Plinko Obstacle 24 X1", min: 0.0, max: 1.0, init: 0.78, automatable: false ]];   // MOD-PLKP
+    input event float param6540 [[ name: "Plinko Obstacle 24 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6541 [[ name: "Plinko Obstacle 24 X2", min: 0.0, max: 1.0, init: 0.78, automatable: false ]];   // MOD-PLKP
+    input event float param6542 [[ name: "Plinko Obstacle 24 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6543 [[ name: "Plinko Obstacle 24 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6544 [[ name: "Plinko Obstacle 25 Type", min: 0.0, max: 2.0, init: 1.0, automatable: false ]];   // MOD-PLKP
+    input event float param6545 [[ name: "Plinko Obstacle 25 X1", min: 0.0, max: 1.0, init: 0.92, automatable: false ]];   // MOD-PLKP
+    input event float param6546 [[ name: "Plinko Obstacle 25 Y1", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6547 [[ name: "Plinko Obstacle 25 X2", min: 0.0, max: 1.0, init: 0.92, automatable: false ]];   // MOD-PLKP
+    input event float param6548 [[ name: "Plinko Obstacle 25 Y2", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-PLKP
+    input event float param6549 [[ name: "Plinko Obstacle 25 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6550 [[ name: "Plinko Obstacle 26 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6551 [[ name: "Plinko Obstacle 26 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6552 [[ name: "Plinko Obstacle 26 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6553 [[ name: "Plinko Obstacle 26 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6554 [[ name: "Plinko Obstacle 26 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6555 [[ name: "Plinko Obstacle 26 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6556 [[ name: "Plinko Obstacle 27 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6557 [[ name: "Plinko Obstacle 27 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6558 [[ name: "Plinko Obstacle 27 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6559 [[ name: "Plinko Obstacle 27 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6560 [[ name: "Plinko Obstacle 27 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6561 [[ name: "Plinko Obstacle 27 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6562 [[ name: "Plinko Obstacle 28 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6563 [[ name: "Plinko Obstacle 28 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6564 [[ name: "Plinko Obstacle 28 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6565 [[ name: "Plinko Obstacle 28 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6566 [[ name: "Plinko Obstacle 28 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6567 [[ name: "Plinko Obstacle 28 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6568 [[ name: "Plinko Obstacle 29 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6569 [[ name: "Plinko Obstacle 29 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6570 [[ name: "Plinko Obstacle 29 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6571 [[ name: "Plinko Obstacle 29 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6572 [[ name: "Plinko Obstacle 29 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6573 [[ name: "Plinko Obstacle 29 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6574 [[ name: "Plinko Obstacle 30 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6575 [[ name: "Plinko Obstacle 30 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6576 [[ name: "Plinko Obstacle 30 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6577 [[ name: "Plinko Obstacle 30 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6578 [[ name: "Plinko Obstacle 30 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6579 [[ name: "Plinko Obstacle 30 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6580 [[ name: "Plinko Obstacle 31 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6581 [[ name: "Plinko Obstacle 31 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6582 [[ name: "Plinko Obstacle 31 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6583 [[ name: "Plinko Obstacle 31 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6584 [[ name: "Plinko Obstacle 31 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6585 [[ name: "Plinko Obstacle 31 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6586 [[ name: "Plinko Obstacle 32 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6587 [[ name: "Plinko Obstacle 32 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6588 [[ name: "Plinko Obstacle 32 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6589 [[ name: "Plinko Obstacle 32 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6590 [[ name: "Plinko Obstacle 32 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6591 [[ name: "Plinko Obstacle 32 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6592 [[ name: "Plinko Obstacle 33 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6593 [[ name: "Plinko Obstacle 33 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6594 [[ name: "Plinko Obstacle 33 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6595 [[ name: "Plinko Obstacle 33 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6596 [[ name: "Plinko Obstacle 33 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6597 [[ name: "Plinko Obstacle 33 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6598 [[ name: "Plinko Obstacle 34 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6599 [[ name: "Plinko Obstacle 34 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6600 [[ name: "Plinko Obstacle 34 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6601 [[ name: "Plinko Obstacle 34 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6602 [[ name: "Plinko Obstacle 34 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6603 [[ name: "Plinko Obstacle 34 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6604 [[ name: "Plinko Obstacle 35 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6605 [[ name: "Plinko Obstacle 35 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6606 [[ name: "Plinko Obstacle 35 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6607 [[ name: "Plinko Obstacle 35 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6608 [[ name: "Plinko Obstacle 35 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6609 [[ name: "Plinko Obstacle 35 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6610 [[ name: "Plinko Obstacle 36 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6611 [[ name: "Plinko Obstacle 36 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6612 [[ name: "Plinko Obstacle 36 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6613 [[ name: "Plinko Obstacle 36 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6614 [[ name: "Plinko Obstacle 36 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6615 [[ name: "Plinko Obstacle 36 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6616 [[ name: "Plinko Obstacle 37 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6617 [[ name: "Plinko Obstacle 37 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6618 [[ name: "Plinko Obstacle 37 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6619 [[ name: "Plinko Obstacle 37 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6620 [[ name: "Plinko Obstacle 37 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6621 [[ name: "Plinko Obstacle 37 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6622 [[ name: "Plinko Obstacle 38 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6623 [[ name: "Plinko Obstacle 38 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6624 [[ name: "Plinko Obstacle 38 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6625 [[ name: "Plinko Obstacle 38 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6626 [[ name: "Plinko Obstacle 38 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6627 [[ name: "Plinko Obstacle 38 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6628 [[ name: "Plinko Obstacle 39 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6629 [[ name: "Plinko Obstacle 39 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6630 [[ name: "Plinko Obstacle 39 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6631 [[ name: "Plinko Obstacle 39 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6632 [[ name: "Plinko Obstacle 39 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6633 [[ name: "Plinko Obstacle 39 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6634 [[ name: "Plinko Obstacle 40 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6635 [[ name: "Plinko Obstacle 40 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6636 [[ name: "Plinko Obstacle 40 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6637 [[ name: "Plinko Obstacle 40 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6638 [[ name: "Plinko Obstacle 40 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6639 [[ name: "Plinko Obstacle 40 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6640 [[ name: "Plinko Obstacle 41 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6641 [[ name: "Plinko Obstacle 41 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6642 [[ name: "Plinko Obstacle 41 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6643 [[ name: "Plinko Obstacle 41 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6644 [[ name: "Plinko Obstacle 41 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6645 [[ name: "Plinko Obstacle 41 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6646 [[ name: "Plinko Obstacle 42 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6647 [[ name: "Plinko Obstacle 42 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6648 [[ name: "Plinko Obstacle 42 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6649 [[ name: "Plinko Obstacle 42 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6650 [[ name: "Plinko Obstacle 42 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6651 [[ name: "Plinko Obstacle 42 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6652 [[ name: "Plinko Obstacle 43 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6653 [[ name: "Plinko Obstacle 43 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6654 [[ name: "Plinko Obstacle 43 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6655 [[ name: "Plinko Obstacle 43 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6656 [[ name: "Plinko Obstacle 43 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6657 [[ name: "Plinko Obstacle 43 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6658 [[ name: "Plinko Obstacle 44 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6659 [[ name: "Plinko Obstacle 44 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6660 [[ name: "Plinko Obstacle 44 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6661 [[ name: "Plinko Obstacle 44 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6662 [[ name: "Plinko Obstacle 44 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6663 [[ name: "Plinko Obstacle 44 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6664 [[ name: "Plinko Obstacle 45 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6665 [[ name: "Plinko Obstacle 45 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6666 [[ name: "Plinko Obstacle 45 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6667 [[ name: "Plinko Obstacle 45 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6668 [[ name: "Plinko Obstacle 45 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6669 [[ name: "Plinko Obstacle 45 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6670 [[ name: "Plinko Obstacle 46 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6671 [[ name: "Plinko Obstacle 46 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6672 [[ name: "Plinko Obstacle 46 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6673 [[ name: "Plinko Obstacle 46 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6674 [[ name: "Plinko Obstacle 46 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6675 [[ name: "Plinko Obstacle 46 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6676 [[ name: "Plinko Obstacle 47 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6677 [[ name: "Plinko Obstacle 47 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6678 [[ name: "Plinko Obstacle 47 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6679 [[ name: "Plinko Obstacle 47 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6680 [[ name: "Plinko Obstacle 47 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6681 [[ name: "Plinko Obstacle 47 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6682 [[ name: "Plinko Obstacle 48 Type", min: 0.0, max: 2.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6683 [[ name: "Plinko Obstacle 48 X1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6684 [[ name: "Plinko Obstacle 48 Y1", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6685 [[ name: "Plinko Obstacle 48 X2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6686 [[ name: "Plinko Obstacle 48 Y2", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-PLKP
+    input event float param6687 [[ name: "Plinko Obstacle 48 Kind", min: 0.0, max: 4.0, init: 0.0, automatable: false ]];   // MOD-PLKP
     input event float param6300 [[ name: "Plinko Rows", min: 2.0, max: 12.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
     input event float param6301 [[ name: "Plinko Scale", min: 0.0, max: 11.0, init: 9.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
     input event float param6302 [[ name: "Plinko Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
@@ -9096,6 +9399,18 @@ processor Eisenpuls_Synth
     int         bnNext = 0;           // step at which the next bounce cycle starts
     int         celS = 0;             // cellular automaton: living cells as bits
     int         celGen = 0;           // generations since the start
+    // ---------------- MOD-PLKP: Plinko physics board ----------------
+    float[16]   plg;                  // global parameters (6360 + k)
+    float[288]  plkB;                 // the board: 48 obstacles x (type, x1, y1, x2, y2, kind)
+    float[8]    pbX;                  // balls: position, speed, cooldown of the next trigger, alive flag
+    float[8]    pbY;
+    float[8]    pbVX;
+    float[8]    pbVY;
+    float[8]    pbCd;
+    int[8]      pbOn;
+    float       plkAcc = 0.0f;        // time not yet simulated (s)
+    float       plkTime = 0.0f;       // simulated time (s), for the sway
+    float       plkViz = 0.0f;        // time since the last position report
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
@@ -15796,6 +16111,309 @@ processor Eisenpuls_Synth
     event param6349 (float v) { cel.at (9) = v; }   // MOD-PLINKO
     event param6350 (float v) { cel.at (10) = v; }   // MOD-PLINKO
     event param6351 (float v) { cel.at (11) = v; }   // MOD-PLINKO
+    event param6360 (float v) { plg.at (0) = v; }   // MOD-PLKP
+    event param6361 (float v) { plg.at (1) = v; }   // MOD-PLKP
+    event param6362 (float v) { plg.at (2) = v; }   // MOD-PLKP
+    event param6363 (float v) { plg.at (3) = v; }   // MOD-PLKP
+    event param6364 (float v) { plg.at (4) = v; }   // MOD-PLKP
+    event param6365 (float v) { plg.at (5) = v; }   // MOD-PLKP
+    event param6366 (float v) { plg.at (6) = v; }   // MOD-PLKP
+    event param6367 (float v) { plg.at (7) = v; }   // MOD-PLKP
+    event param6368 (float v) { plg.at (8) = v; }   // MOD-PLKP
+    event param6369 (float v) { plg.at (9) = v; }   // MOD-PLKP
+    event param6370 (float v) { plg.at (10) = v; }   // MOD-PLKP
+    event param6371 (float v) { plg.at (11) = v; }   // MOD-PLKP
+    event param6372 (float v) { plg.at (12) = v; }   // MOD-PLKP
+    event param6373 (float v) { plg.at (13) = v; }   // MOD-PLKP
+    event param6374 (float v) { plg.at (14) = v; }   // MOD-PLKP
+    event param6400 (float v) { plkB.at (0) = v; }
+    event param6401 (float v) { plkB.at (1) = v; }
+    event param6402 (float v) { plkB.at (2) = v; }
+    event param6403 (float v) { plkB.at (3) = v; }
+    event param6404 (float v) { plkB.at (4) = v; }
+    event param6405 (float v) { plkB.at (5) = v; }
+    event param6406 (float v) { plkB.at (6) = v; }
+    event param6407 (float v) { plkB.at (7) = v; }
+    event param6408 (float v) { plkB.at (8) = v; }
+    event param6409 (float v) { plkB.at (9) = v; }
+    event param6410 (float v) { plkB.at (10) = v; }
+    event param6411 (float v) { plkB.at (11) = v; }
+    event param6412 (float v) { plkB.at (12) = v; }
+    event param6413 (float v) { plkB.at (13) = v; }
+    event param6414 (float v) { plkB.at (14) = v; }
+    event param6415 (float v) { plkB.at (15) = v; }
+    event param6416 (float v) { plkB.at (16) = v; }
+    event param6417 (float v) { plkB.at (17) = v; }
+    event param6418 (float v) { plkB.at (18) = v; }
+    event param6419 (float v) { plkB.at (19) = v; }
+    event param6420 (float v) { plkB.at (20) = v; }
+    event param6421 (float v) { plkB.at (21) = v; }
+    event param6422 (float v) { plkB.at (22) = v; }
+    event param6423 (float v) { plkB.at (23) = v; }
+    event param6424 (float v) { plkB.at (24) = v; }
+    event param6425 (float v) { plkB.at (25) = v; }
+    event param6426 (float v) { plkB.at (26) = v; }
+    event param6427 (float v) { plkB.at (27) = v; }
+    event param6428 (float v) { plkB.at (28) = v; }
+    event param6429 (float v) { plkB.at (29) = v; }
+    event param6430 (float v) { plkB.at (30) = v; }
+    event param6431 (float v) { plkB.at (31) = v; }
+    event param6432 (float v) { plkB.at (32) = v; }
+    event param6433 (float v) { plkB.at (33) = v; }
+    event param6434 (float v) { plkB.at (34) = v; }
+    event param6435 (float v) { plkB.at (35) = v; }
+    event param6436 (float v) { plkB.at (36) = v; }
+    event param6437 (float v) { plkB.at (37) = v; }
+    event param6438 (float v) { plkB.at (38) = v; }
+    event param6439 (float v) { plkB.at (39) = v; }
+    event param6440 (float v) { plkB.at (40) = v; }
+    event param6441 (float v) { plkB.at (41) = v; }
+    event param6442 (float v) { plkB.at (42) = v; }
+    event param6443 (float v) { plkB.at (43) = v; }
+    event param6444 (float v) { plkB.at (44) = v; }
+    event param6445 (float v) { plkB.at (45) = v; }
+    event param6446 (float v) { plkB.at (46) = v; }
+    event param6447 (float v) { plkB.at (47) = v; }
+    event param6448 (float v) { plkB.at (48) = v; }
+    event param6449 (float v) { plkB.at (49) = v; }
+    event param6450 (float v) { plkB.at (50) = v; }
+    event param6451 (float v) { plkB.at (51) = v; }
+    event param6452 (float v) { plkB.at (52) = v; }
+    event param6453 (float v) { plkB.at (53) = v; }
+    event param6454 (float v) { plkB.at (54) = v; }
+    event param6455 (float v) { plkB.at (55) = v; }
+    event param6456 (float v) { plkB.at (56) = v; }
+    event param6457 (float v) { plkB.at (57) = v; }
+    event param6458 (float v) { plkB.at (58) = v; }
+    event param6459 (float v) { plkB.at (59) = v; }
+    event param6460 (float v) { plkB.at (60) = v; }
+    event param6461 (float v) { plkB.at (61) = v; }
+    event param6462 (float v) { plkB.at (62) = v; }
+    event param6463 (float v) { plkB.at (63) = v; }
+    event param6464 (float v) { plkB.at (64) = v; }
+    event param6465 (float v) { plkB.at (65) = v; }
+    event param6466 (float v) { plkB.at (66) = v; }
+    event param6467 (float v) { plkB.at (67) = v; }
+    event param6468 (float v) { plkB.at (68) = v; }
+    event param6469 (float v) { plkB.at (69) = v; }
+    event param6470 (float v) { plkB.at (70) = v; }
+    event param6471 (float v) { plkB.at (71) = v; }
+    event param6472 (float v) { plkB.at (72) = v; }
+    event param6473 (float v) { plkB.at (73) = v; }
+    event param6474 (float v) { plkB.at (74) = v; }
+    event param6475 (float v) { plkB.at (75) = v; }
+    event param6476 (float v) { plkB.at (76) = v; }
+    event param6477 (float v) { plkB.at (77) = v; }
+    event param6478 (float v) { plkB.at (78) = v; }
+    event param6479 (float v) { plkB.at (79) = v; }
+    event param6480 (float v) { plkB.at (80) = v; }
+    event param6481 (float v) { plkB.at (81) = v; }
+    event param6482 (float v) { plkB.at (82) = v; }
+    event param6483 (float v) { plkB.at (83) = v; }
+    event param6484 (float v) { plkB.at (84) = v; }
+    event param6485 (float v) { plkB.at (85) = v; }
+    event param6486 (float v) { plkB.at (86) = v; }
+    event param6487 (float v) { plkB.at (87) = v; }
+    event param6488 (float v) { plkB.at (88) = v; }
+    event param6489 (float v) { plkB.at (89) = v; }
+    event param6490 (float v) { plkB.at (90) = v; }
+    event param6491 (float v) { plkB.at (91) = v; }
+    event param6492 (float v) { plkB.at (92) = v; }
+    event param6493 (float v) { plkB.at (93) = v; }
+    event param6494 (float v) { plkB.at (94) = v; }
+    event param6495 (float v) { plkB.at (95) = v; }
+    event param6496 (float v) { plkB.at (96) = v; }
+    event param6497 (float v) { plkB.at (97) = v; }
+    event param6498 (float v) { plkB.at (98) = v; }
+    event param6499 (float v) { plkB.at (99) = v; }
+    event param6500 (float v) { plkB.at (100) = v; }
+    event param6501 (float v) { plkB.at (101) = v; }
+    event param6502 (float v) { plkB.at (102) = v; }
+    event param6503 (float v) { plkB.at (103) = v; }
+    event param6504 (float v) { plkB.at (104) = v; }
+    event param6505 (float v) { plkB.at (105) = v; }
+    event param6506 (float v) { plkB.at (106) = v; }
+    event param6507 (float v) { plkB.at (107) = v; }
+    event param6508 (float v) { plkB.at (108) = v; }
+    event param6509 (float v) { plkB.at (109) = v; }
+    event param6510 (float v) { plkB.at (110) = v; }
+    event param6511 (float v) { plkB.at (111) = v; }
+    event param6512 (float v) { plkB.at (112) = v; }
+    event param6513 (float v) { plkB.at (113) = v; }
+    event param6514 (float v) { plkB.at (114) = v; }
+    event param6515 (float v) { plkB.at (115) = v; }
+    event param6516 (float v) { plkB.at (116) = v; }
+    event param6517 (float v) { plkB.at (117) = v; }
+    event param6518 (float v) { plkB.at (118) = v; }
+    event param6519 (float v) { plkB.at (119) = v; }
+    event param6520 (float v) { plkB.at (120) = v; }
+    event param6521 (float v) { plkB.at (121) = v; }
+    event param6522 (float v) { plkB.at (122) = v; }
+    event param6523 (float v) { plkB.at (123) = v; }
+    event param6524 (float v) { plkB.at (124) = v; }
+    event param6525 (float v) { plkB.at (125) = v; }
+    event param6526 (float v) { plkB.at (126) = v; }
+    event param6527 (float v) { plkB.at (127) = v; }
+    event param6528 (float v) { plkB.at (128) = v; }
+    event param6529 (float v) { plkB.at (129) = v; }
+    event param6530 (float v) { plkB.at (130) = v; }
+    event param6531 (float v) { plkB.at (131) = v; }
+    event param6532 (float v) { plkB.at (132) = v; }
+    event param6533 (float v) { plkB.at (133) = v; }
+    event param6534 (float v) { plkB.at (134) = v; }
+    event param6535 (float v) { plkB.at (135) = v; }
+    event param6536 (float v) { plkB.at (136) = v; }
+    event param6537 (float v) { plkB.at (137) = v; }
+    event param6538 (float v) { plkB.at (138) = v; }
+    event param6539 (float v) { plkB.at (139) = v; }
+    event param6540 (float v) { plkB.at (140) = v; }
+    event param6541 (float v) { plkB.at (141) = v; }
+    event param6542 (float v) { plkB.at (142) = v; }
+    event param6543 (float v) { plkB.at (143) = v; }
+    event param6544 (float v) { plkB.at (144) = v; }
+    event param6545 (float v) { plkB.at (145) = v; }
+    event param6546 (float v) { plkB.at (146) = v; }
+    event param6547 (float v) { plkB.at (147) = v; }
+    event param6548 (float v) { plkB.at (148) = v; }
+    event param6549 (float v) { plkB.at (149) = v; }
+    event param6550 (float v) { plkB.at (150) = v; }
+    event param6551 (float v) { plkB.at (151) = v; }
+    event param6552 (float v) { plkB.at (152) = v; }
+    event param6553 (float v) { plkB.at (153) = v; }
+    event param6554 (float v) { plkB.at (154) = v; }
+    event param6555 (float v) { plkB.at (155) = v; }
+    event param6556 (float v) { plkB.at (156) = v; }
+    event param6557 (float v) { plkB.at (157) = v; }
+    event param6558 (float v) { plkB.at (158) = v; }
+    event param6559 (float v) { plkB.at (159) = v; }
+    event param6560 (float v) { plkB.at (160) = v; }
+    event param6561 (float v) { plkB.at (161) = v; }
+    event param6562 (float v) { plkB.at (162) = v; }
+    event param6563 (float v) { plkB.at (163) = v; }
+    event param6564 (float v) { plkB.at (164) = v; }
+    event param6565 (float v) { plkB.at (165) = v; }
+    event param6566 (float v) { plkB.at (166) = v; }
+    event param6567 (float v) { plkB.at (167) = v; }
+    event param6568 (float v) { plkB.at (168) = v; }
+    event param6569 (float v) { plkB.at (169) = v; }
+    event param6570 (float v) { plkB.at (170) = v; }
+    event param6571 (float v) { plkB.at (171) = v; }
+    event param6572 (float v) { plkB.at (172) = v; }
+    event param6573 (float v) { plkB.at (173) = v; }
+    event param6574 (float v) { plkB.at (174) = v; }
+    event param6575 (float v) { plkB.at (175) = v; }
+    event param6576 (float v) { plkB.at (176) = v; }
+    event param6577 (float v) { plkB.at (177) = v; }
+    event param6578 (float v) { plkB.at (178) = v; }
+    event param6579 (float v) { plkB.at (179) = v; }
+    event param6580 (float v) { plkB.at (180) = v; }
+    event param6581 (float v) { plkB.at (181) = v; }
+    event param6582 (float v) { plkB.at (182) = v; }
+    event param6583 (float v) { plkB.at (183) = v; }
+    event param6584 (float v) { plkB.at (184) = v; }
+    event param6585 (float v) { plkB.at (185) = v; }
+    event param6586 (float v) { plkB.at (186) = v; }
+    event param6587 (float v) { plkB.at (187) = v; }
+    event param6588 (float v) { plkB.at (188) = v; }
+    event param6589 (float v) { plkB.at (189) = v; }
+    event param6590 (float v) { plkB.at (190) = v; }
+    event param6591 (float v) { plkB.at (191) = v; }
+    event param6592 (float v) { plkB.at (192) = v; }
+    event param6593 (float v) { plkB.at (193) = v; }
+    event param6594 (float v) { plkB.at (194) = v; }
+    event param6595 (float v) { plkB.at (195) = v; }
+    event param6596 (float v) { plkB.at (196) = v; }
+    event param6597 (float v) { plkB.at (197) = v; }
+    event param6598 (float v) { plkB.at (198) = v; }
+    event param6599 (float v) { plkB.at (199) = v; }
+    event param6600 (float v) { plkB.at (200) = v; }
+    event param6601 (float v) { plkB.at (201) = v; }
+    event param6602 (float v) { plkB.at (202) = v; }
+    event param6603 (float v) { plkB.at (203) = v; }
+    event param6604 (float v) { plkB.at (204) = v; }
+    event param6605 (float v) { plkB.at (205) = v; }
+    event param6606 (float v) { plkB.at (206) = v; }
+    event param6607 (float v) { plkB.at (207) = v; }
+    event param6608 (float v) { plkB.at (208) = v; }
+    event param6609 (float v) { plkB.at (209) = v; }
+    event param6610 (float v) { plkB.at (210) = v; }
+    event param6611 (float v) { plkB.at (211) = v; }
+    event param6612 (float v) { plkB.at (212) = v; }
+    event param6613 (float v) { plkB.at (213) = v; }
+    event param6614 (float v) { plkB.at (214) = v; }
+    event param6615 (float v) { plkB.at (215) = v; }
+    event param6616 (float v) { plkB.at (216) = v; }
+    event param6617 (float v) { plkB.at (217) = v; }
+    event param6618 (float v) { plkB.at (218) = v; }
+    event param6619 (float v) { plkB.at (219) = v; }
+    event param6620 (float v) { plkB.at (220) = v; }
+    event param6621 (float v) { plkB.at (221) = v; }
+    event param6622 (float v) { plkB.at (222) = v; }
+    event param6623 (float v) { plkB.at (223) = v; }
+    event param6624 (float v) { plkB.at (224) = v; }
+    event param6625 (float v) { plkB.at (225) = v; }
+    event param6626 (float v) { plkB.at (226) = v; }
+    event param6627 (float v) { plkB.at (227) = v; }
+    event param6628 (float v) { plkB.at (228) = v; }
+    event param6629 (float v) { plkB.at (229) = v; }
+    event param6630 (float v) { plkB.at (230) = v; }
+    event param6631 (float v) { plkB.at (231) = v; }
+    event param6632 (float v) { plkB.at (232) = v; }
+    event param6633 (float v) { plkB.at (233) = v; }
+    event param6634 (float v) { plkB.at (234) = v; }
+    event param6635 (float v) { plkB.at (235) = v; }
+    event param6636 (float v) { plkB.at (236) = v; }
+    event param6637 (float v) { plkB.at (237) = v; }
+    event param6638 (float v) { plkB.at (238) = v; }
+    event param6639 (float v) { plkB.at (239) = v; }
+    event param6640 (float v) { plkB.at (240) = v; }
+    event param6641 (float v) { plkB.at (241) = v; }
+    event param6642 (float v) { plkB.at (242) = v; }
+    event param6643 (float v) { plkB.at (243) = v; }
+    event param6644 (float v) { plkB.at (244) = v; }
+    event param6645 (float v) { plkB.at (245) = v; }
+    event param6646 (float v) { plkB.at (246) = v; }
+    event param6647 (float v) { plkB.at (247) = v; }
+    event param6648 (float v) { plkB.at (248) = v; }
+    event param6649 (float v) { plkB.at (249) = v; }
+    event param6650 (float v) { plkB.at (250) = v; }
+    event param6651 (float v) { plkB.at (251) = v; }
+    event param6652 (float v) { plkB.at (252) = v; }
+    event param6653 (float v) { plkB.at (253) = v; }
+    event param6654 (float v) { plkB.at (254) = v; }
+    event param6655 (float v) { plkB.at (255) = v; }
+    event param6656 (float v) { plkB.at (256) = v; }
+    event param6657 (float v) { plkB.at (257) = v; }
+    event param6658 (float v) { plkB.at (258) = v; }
+    event param6659 (float v) { plkB.at (259) = v; }
+    event param6660 (float v) { plkB.at (260) = v; }
+    event param6661 (float v) { plkB.at (261) = v; }
+    event param6662 (float v) { plkB.at (262) = v; }
+    event param6663 (float v) { plkB.at (263) = v; }
+    event param6664 (float v) { plkB.at (264) = v; }
+    event param6665 (float v) { plkB.at (265) = v; }
+    event param6666 (float v) { plkB.at (266) = v; }
+    event param6667 (float v) { plkB.at (267) = v; }
+    event param6668 (float v) { plkB.at (268) = v; }
+    event param6669 (float v) { plkB.at (269) = v; }
+    event param6670 (float v) { plkB.at (270) = v; }
+    event param6671 (float v) { plkB.at (271) = v; }
+    event param6672 (float v) { plkB.at (272) = v; }
+    event param6673 (float v) { plkB.at (273) = v; }
+    event param6674 (float v) { plkB.at (274) = v; }
+    event param6675 (float v) { plkB.at (275) = v; }
+    event param6676 (float v) { plkB.at (276) = v; }
+    event param6677 (float v) { plkB.at (277) = v; }
+    event param6678 (float v) { plkB.at (278) = v; }
+    event param6679 (float v) { plkB.at (279) = v; }
+    event param6680 (float v) { plkB.at (280) = v; }
+    event param6681 (float v) { plkB.at (281) = v; }
+    event param6682 (float v) { plkB.at (282) = v; }
+    event param6683 (float v) { plkB.at (283) = v; }
+    event param6684 (float v) { plkB.at (284) = v; }
+    event param6685 (float v) { plkB.at (285) = v; }
+    event param6686 (float v) { plkB.at (286) = v; }
+    event param6687 (float v) { plkB.at (287) = v; }
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -17624,13 +18242,153 @@ processor Eisenpuls_Synth
         a3Gate.at (62) = 1.0f;
 
         // MOD-SQM defaults
-        plk.at (0) = 8.0;
-        plk.at (1) = 9.0;
-        plk.at (2) = 24.0;
-        plk.at (7) = 1.0;
-        plk.at (8) = 80.0;
-        plk.at (11) = 100.0;
-        plk.at (14) = 20.0;
+        plg.at (0) = 3.0f;
+        plg.at (1) = 100.0f;
+        plg.at (2) = 75.0f;
+        plg.at (3) = 0.0f;
+        plg.at (4) = 100.0f;
+        plg.at (5) = 9.0f;
+        plg.at (6) = 24.0f;
+        plg.at (7) = 0.0f;
+        plg.at (8) = 60.0f;
+        plg.at (9) = 100.0f;
+        plg.at (10) = 0.0f;
+        plg.at (11) = 0.0f;
+        plg.at (12) = 50.0f;
+        plg.at (13) = 20.0f;
+        plg.at (14) = 12.0f;
+        plkB.at (0) = 1.0f;
+        plkB.at (1) = 0.36f;
+        plkB.at (2) = 0.22f;
+        plkB.at (3) = 0.36f;
+        plkB.at (4) = 0.22f;
+        plkB.at (6) = 1.0f;
+        plkB.at (7) = 0.5f;
+        plkB.at (8) = 0.22f;
+        plkB.at (9) = 0.5f;
+        plkB.at (10) = 0.22f;
+        plkB.at (12) = 1.0f;
+        plkB.at (13) = 0.64f;
+        plkB.at (14) = 0.22f;
+        plkB.at (15) = 0.64f;
+        plkB.at (16) = 0.22f;
+        plkB.at (18) = 1.0f;
+        plkB.at (19) = 0.29f;
+        plkB.at (20) = 0.33999999999999997f;
+        plkB.at (21) = 0.29f;
+        plkB.at (22) = 0.33999999999999997f;
+        plkB.at (24) = 1.0f;
+        plkB.at (25) = 0.43f;
+        plkB.at (26) = 0.33999999999999997f;
+        plkB.at (27) = 0.43f;
+        plkB.at (28) = 0.33999999999999997f;
+        plkB.at (30) = 1.0f;
+        plkB.at (31) = 0.5700000000000001f;
+        plkB.at (32) = 0.33999999999999997f;
+        plkB.at (33) = 0.5700000000000001f;
+        plkB.at (34) = 0.33999999999999997f;
+        plkB.at (36) = 1.0f;
+        plkB.at (37) = 0.71f;
+        plkB.at (38) = 0.33999999999999997f;
+        plkB.at (39) = 0.71f;
+        plkB.at (40) = 0.33999999999999997f;
+        plkB.at (42) = 1.0f;
+        plkB.at (43) = 0.21999999999999997f;
+        plkB.at (44) = 0.45999999999999996f;
+        plkB.at (45) = 0.21999999999999997f;
+        plkB.at (46) = 0.45999999999999996f;
+        plkB.at (48) = 1.0f;
+        plkB.at (49) = 0.36f;
+        plkB.at (50) = 0.45999999999999996f;
+        plkB.at (51) = 0.36f;
+        plkB.at (52) = 0.45999999999999996f;
+        plkB.at (54) = 1.0f;
+        plkB.at (55) = 0.5f;
+        plkB.at (56) = 0.45999999999999996f;
+        plkB.at (57) = 0.5f;
+        plkB.at (58) = 0.45999999999999996f;
+        plkB.at (60) = 1.0f;
+        plkB.at (61) = 0.64f;
+        plkB.at (62) = 0.45999999999999996f;
+        plkB.at (63) = 0.64f;
+        plkB.at (64) = 0.45999999999999996f;
+        plkB.at (66) = 1.0f;
+        plkB.at (67) = 0.78f;
+        plkB.at (68) = 0.45999999999999996f;
+        plkB.at (69) = 0.78f;
+        plkB.at (70) = 0.45999999999999996f;
+        plkB.at (72) = 1.0f;
+        plkB.at (73) = 0.14999999999999997f;
+        plkB.at (74) = 0.58f;
+        plkB.at (75) = 0.14999999999999997f;
+        plkB.at (76) = 0.58f;
+        plkB.at (78) = 1.0f;
+        plkB.at (79) = 0.29f;
+        plkB.at (80) = 0.58f;
+        plkB.at (81) = 0.29f;
+        plkB.at (82) = 0.58f;
+        plkB.at (84) = 1.0f;
+        plkB.at (85) = 0.43f;
+        plkB.at (86) = 0.58f;
+        plkB.at (87) = 0.43f;
+        plkB.at (88) = 0.58f;
+        plkB.at (90) = 1.0f;
+        plkB.at (91) = 0.5700000000000001f;
+        plkB.at (92) = 0.58f;
+        plkB.at (93) = 0.5700000000000001f;
+        plkB.at (94) = 0.58f;
+        plkB.at (96) = 1.0f;
+        plkB.at (97) = 0.71f;
+        plkB.at (98) = 0.58f;
+        plkB.at (99) = 0.71f;
+        plkB.at (100) = 0.58f;
+        plkB.at (102) = 1.0f;
+        plkB.at (103) = 0.8500000000000001f;
+        plkB.at (104) = 0.58f;
+        plkB.at (105) = 0.8500000000000001f;
+        plkB.at (106) = 0.58f;
+        plkB.at (108) = 1.0f;
+        plkB.at (109) = 0.07999999999999996f;
+        plkB.at (110) = 0.7f;
+        plkB.at (111) = 0.07999999999999996f;
+        plkB.at (112) = 0.7f;
+        plkB.at (114) = 1.0f;
+        plkB.at (115) = 0.21999999999999997f;
+        plkB.at (116) = 0.7f;
+        plkB.at (117) = 0.21999999999999997f;
+        plkB.at (118) = 0.7f;
+        plkB.at (120) = 1.0f;
+        plkB.at (121) = 0.36f;
+        plkB.at (122) = 0.7f;
+        plkB.at (123) = 0.36f;
+        plkB.at (124) = 0.7f;
+        plkB.at (126) = 1.0f;
+        plkB.at (127) = 0.5f;
+        plkB.at (128) = 0.7f;
+        plkB.at (129) = 0.5f;
+        plkB.at (130) = 0.7f;
+        plkB.at (132) = 1.0f;
+        plkB.at (133) = 0.64f;
+        plkB.at (134) = 0.7f;
+        plkB.at (135) = 0.64f;
+        plkB.at (136) = 0.7f;
+        plkB.at (138) = 1.0f;
+        plkB.at (139) = 0.78f;
+        plkB.at (140) = 0.7f;
+        plkB.at (141) = 0.78f;
+        plkB.at (142) = 0.7f;
+        plkB.at (144) = 1.0f;
+        plkB.at (145) = 0.92f;
+        plkB.at (146) = 0.7f;
+        plkB.at (147) = 0.92f;
+        plkB.at (148) = 0.7f;
+        plk.at (0) = 8.0f;
+        plk.at (1) = 9.0f;
+        plk.at (2) = 24.0f;
+        plk.at (7) = 1.0f;
+        plk.at (8) = 80.0f;
+        plk.at (11) = 100.0f;
+        plk.at (14) = 20.0f;
         bnc.at (0) = 100.0;
         bnc.at (1) = 80.0;
         bnc.at (2) = 8.0;
@@ -64394,6 +65152,171 @@ processor Eisenpuls_Synth
         celGen++;
     }
 
+    // ---- MOD-PLKP ----
+    void plkClear()
+    {
+        for (int i = 0; i < 8; ++i)
+            pbOn.at (i) = 0;
+
+        plkAcc = 0.0f;
+    }
+
+    void plkSpawn()
+    {
+        int maxB = clamp (int (plg.at (0) + 0.5f), 1, 8);
+        int alive = 0;
+        int free = -1;
+
+        for (int i = 0; i < 8; ++i)
+        {
+            if (pbOn.at (i) != 0)
+                alive++;
+            else if (free < 0)
+                free = i;
+        }
+
+        if (free < 0 || alive >= maxB)
+            return;
+
+        pbX.at (free)  = clamp (plg.at (12) / 100.0f + (sqRand01() - 0.5f) * plg.at (13) / 100.0f, 0.03f, 0.97f);
+        pbY.at (free)  = 0.02f;
+        pbVX.at (free) = (sqRand01() - 0.5f) * 0.04f;
+        pbVY.at (free) = 0.0f;
+        pbCd.at (free) = 0.0f;
+        pbOn.at (free) = 1;
+    }
+
+    void plkHit (int e, int b, float cx, float speed, float64 now)
+    {
+        if (sqRand01() * 100.0f < plg.at (11))
+            return;
+
+        int   root  = arpHN.at (max (arpN - 1, 0));
+        int   mask  = sqScaleMask (int (plg.at (5) + 0.5f));
+        int   range = clamp (int (plg.at (6) + 0.5f), 12, 48);
+        int   n     = sqScaleCount (mask, range);
+        int   kind  = int (plkB.at (6 * e + 5) + 0.5f);
+        int   idx   = clamp (int (clamp (cx, 0.0f, 1.0f) * float (n - 1) + 0.5f), 0, n - 1);
+        int   nn    = root + int (plg.at (7)) + sqScaleNote (mask, range, idx);
+        float vel   = clamp (plg.at (9) / 127.0f * (0.35f + 0.9f * min (speed, 1.2f)), 0.05f, 1.0f);
+        float len   = kind == 4 ? 0.25f : plg.at (8) / 100.0f;
+
+        plkAddChord (nn, vel, now, len, int (plg.at (10) + 0.5f));
+
+        if (kind == 2)
+            evAdd (nn + 12, vel * 0.8f, now, len);
+        else if (kind == 3)
+        {
+            evAdd (nn + 7, vel * 0.7f, now, len);
+            evAdd (nn, vel * 0.5f, now + 0.12, len);
+        }
+
+        seqPos <- 3000000 + e;
+    }
+
+    void plkStep (float h, float64 now)
+    {
+        float grav = 0.9f * plg.at (4) / 100.0f;
+        float e0   = clamp (plg.at (2) / 100.0f, 0.1f, 1.1f);
+        float r    = clamp (plg.at (14) / 1000.0f, 0.004f, 0.03f);
+        float sway = plg.at (3) / 100.0f;
+
+        plkTime += h;
+
+        for (int b = 0; b < 8; ++b)
+            if (pbOn.at (b) != 0)
+            {
+                float x  = pbX.at (b);
+                float y  = pbY.at (b);
+                float vx = pbVX.at (b) + sway * 0.6f * sin (plkTime * 4.4f + float (b) * 1.7f) * h;
+                float vy = pbVY.at (b) + grav * h;
+                float cd = pbCd.at (b) - h;
+
+                x += vx * h;
+                y += vy * h;
+
+                if (x < r)      { x = r;       vx = abs (vx) * e0; }
+                if (x > 1.0f - r) { x = 1.0f - r; vx = -abs (vx) * e0; }
+                if (y < r)      { y = r;       vy = abs (vy) * e0; }
+
+                for (int e = 0; e < 48; ++e)
+                {
+                    int ty = int (plkB.at (6 * e) + 0.5f);
+
+                    if (ty == 0)
+                        continue;
+
+                    float x1 = plkB.at (6 * e + 1);
+                    float y1 = plkB.at (6 * e + 2);
+                    float ex = ty == 1 ? 0.0f : plkB.at (6 * e + 3) - x1;
+                    float ey = ty == 1 ? 0.0f : plkB.at (6 * e + 4) - y1;
+                    float l2 = ex * ex + ey * ey;
+                    float t  = l2 > 0.000001f ? clamp (((x - x1) * ex + (y - y1) * ey) / l2, 0.0f, 1.0f) : 0.0f;
+                    float px = x1 + t * ex;
+                    float py = y1 + t * ey;
+                    float dx = x - px;
+                    float dy = y - py;
+                    float re = r + (ty == 1 ? 0.008f : 0.004f);
+                    float d2 = dx * dx + dy * dy;
+
+                    if (d2 < re * re)
+                    {
+                        float d  = sqrt (d2);
+                        float nx = d > 0.00001f ? dx / d : 0.0f;
+                        float ny = d > 0.00001f ? dy / d : -1.0f;
+                        x += nx * (re - d);
+                        y += ny * (re - d);
+                        float vn = vx * nx + vy * ny;
+
+                        if (vn < 0.0f)
+                        {
+                            int   kind = int (plkB.at (6 * e + 5) + 0.5f);
+                            float eb   = kind == 1 ? min (e0 * 1.4f + 0.15f, 1.25f) : e0;
+                            vx -= (1.0f + eb) * vn * nx;
+                            vy -= (1.0f + eb) * vn * ny;
+
+                            if (-vn > 0.1f && cd <= 0.0f)
+                            {
+                                plkHit (e, b, px, -vn, now);
+                                cd = 0.06f;
+                            }
+                        }
+                    }
+                }
+
+                pbX.at (b)  = x;
+                pbY.at (b)  = y;
+                pbVX.at (b) = clamp (vx, -3.0f, 3.0f);
+                pbVY.at (b) = clamp (vy, -3.0f, 3.0f);
+                pbCd.at (b) = cd;
+
+                if (y > 1.05f)
+                    pbOn.at (b) = 0;
+            }
+    }
+
+    void plkPhys (float dt, float64 now)
+    {
+        plkAcc += dt * plg.at (1) / 100.0f;
+
+        while (plkAcc >= 0.0025f)   // 400 Hz
+        {
+            plkAcc -= 0.0025f;
+            plkStep (0.0025f, now);
+        }
+
+        plkViz += dt;
+
+        if (plkViz >= 0.033f)
+        {
+            plkViz = 0.0f;
+
+            for (int b = 0; b < 8; ++b)
+                if (pbOn.at (b) != 0)
+                    seqPos <- 4000000 + ((b << 21) | (clamp (int (pbX.at (b) * 1023.0f), 0, 1023) << 11) | clamp (int (pbY.at (b) * 1023.0f), 0, 1023));
+        }
+    }
+
     void arpTick (float dt)
     {
         int amd = int (arpMode + 0.5f);   // MOD-SQM
@@ -64423,6 +65346,7 @@ processor Eisenpuls_Synth
             a3Prev  = false;   // MOD-ARP303
             gnReg   = 0;       // MOD-SQM
             bnNext  = 0;       // MOD-PLINKO
+            plkClear();        // MOD-PLKP
             celS    = 0;
             celGen  = 0;
             gnDeg   = -1;
@@ -64458,9 +65382,14 @@ processor Eisenpuls_Synth
                     plinkoStep (sn);
                 else if (amd == 10)
                     bounceStep (sn);
-                else
+                else if (amd == 11)
                     cellularStep (sn);
+                else
+                    plkSpawn();
             }
+
+            if (amd == 12)   // MOD-PLKP
+                plkPhys (dt, float64 (arpStep - 1) + float64 (arpPh));
 
             sqTick (float64 (arpStep - 1) + float64 (arpPh));
             return;

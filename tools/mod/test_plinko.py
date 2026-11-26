@@ -106,4 +106,36 @@ h = hits(a, 16, DUR)
 check("Cellular: rule 90 keeps playing (a Sierpinski pattern, never silent)", sum(h) >= 14 and np.isfinite(a).all(), str(h))
 a = render(BASE + AR(11) + CB, [48], hold=0.6, tail=1.5, tag="ce6")
 check("Cellular: stops after the keys are released", rms(a[int(1.8 * RATE):]) < 0.01)
+
+# ---- Plinko physics board (mode 12): a single horizontal line across the board (obstacle 1), all default pegs removed
+PG = lambda k: 6360 + k
+OB = lambda e, j: 6400 + 6 * e + j
+clear = [(OB(e, 0), 0) for e in range(48)]
+line = [(OB(0, 0), 2), (OB(0, 1), 0.0), (OB(0, 2), 0.5), (OB(0, 3), 1.0), (OB(0, 4), 0.5), (OB(0, 5), 0)]
+B0 = clear + line + [(PG(0), 1), (PG(13), 0), (PG(5), 9), (PG(6), 24)]   # 1 ball, no spread, pentatonic minor over 24 st
+a = render(BASE + AR(12, ) + B0 + [(PG(12), 50)], [48], hold=3.0, tail=0.3, tag="pp1")
+check("Plinko board: silent while the ball falls (0.1 .. 0.8 s)", rms(a[int(0.1 * RATE):int(0.8 * RATE)]) < 0.01, "%.4f" % rms(a[int(0.1 * RATE):int(0.8 * RATE)]))
+check("Plinko board: the ball hits the line at about 1.0 s and a note sounds", rms(a[int(1.0 * RATE):int(1.5 * RATE)]) > 0.02, "%.4f" % rms(a[int(1.0 * RATE):int(1.5 * RATE)]))
+n = midi_of(a[int(1.06 * RATE):int(1.26 * RATE)])
+check("Plinko board: a hit in the middle of the board plays a middle scale degree (root + 10 .. 15, the ball drifts a little)", n is not None and 58 <= n <= 63, str(n))
+lo = midi_of(render(BASE + AR(12) + B0 + [(PG(12), 0)], [48], hold=2.0, tail=0.2, tag="pp2")[int(1.06 * RATE):int(1.26 * RATE)])
+hi = midi_of(render(BASE + AR(12) + B0 + [(PG(12), 100)], [48], hold=2.0, tail=0.2, tag="pp3")[int(1.06 * RATE):int(1.26 * RATE)])
+check("Plinko board: the pitch follows the x position (left low, right high)", lo is not None and hi is not None and lo <= 50 and hi >= 68, "%s / %s" % (lo, hi))
+a = render(BASE + AR(12) + clear + [(PG(0), 3)], [48], hold=2.5, tail=0.3, tag="pp4")
+check("Plinko board: an empty board is silent", rms(a[int(0.1 * RATE):int(2.5 * RATE)]) < 0.01)
+a = render(BASE + AR(12) + B0 + [(PG(12), 50), (PG(11), 100)], [48], hold=2.5, tail=0.3, tag="pp5")
+check("Plinko board: Rest 100 % is silent", rms(a[int(0.1 * RATE):int(2.5 * RATE)]) < 0.01)
+fast = render(BASE + AR(12) + B0 + [(PG(12), 50), (PG(1), 300)], [48], hold=1.6, tail=0.2, tag="pp6")
+check("Plinko board: Speed 300 % makes the ball arrive after about 0.35 s", rms(fast[int(0.1 * RATE):int(0.3 * RATE)]) < 0.01 and rms(fast[int(0.45 * RATE):int(0.8 * RATE)]) > 0.02)
+# the editor gets hits (3000000 + obstacle) and ball positions (4000000 + (ball << 21 | x << 11 | y))
+script = os.path.join(TMP, "ev2.txt"); out = os.path.join(TMP, "ev2.f32")
+with open(script, "w") as f:
+    for c in BASE + AR(12) + B0 + [(PG(12), 50)]: f.write((c if isinstance(c, str) else "p %d %s" % c) + "\n")
+    f.write("run 0.05\non 48 100\nrun 1.6\noff 48\nrun 0.2\n")
+r = subprocess.run([args.host, script, out], capture_output=True, text=True)
+evs = [int(l.split("seq=")[1].split()[0]) * 16 + int(l.split("step=")[1]) for l in r.stderr.splitlines() if l.startswith("seqPos") and "seq=" in l]
+hits_ = [v for v in evs if 3000000 <= v < 4000000]; pos = [v - 4000000 for v in evs if v >= 4000000]
+check("Plinko board: obstacle 0 reports its hit", len(hits_) >= 1 and hits_[0] == 3000000, str(hits_[:4]))
+xs = [(v >> 11) & 1023 for v in pos]; ys = [v & 1023 for v in pos]
+check("Plinko board: ball positions fall from the top at x = 0.5", len(pos) > 10 and ys[0] < 200 and abs(xs[0] - 512) < 30 and max(ys) > 480, "%d positions, y %s" % (len(pos), ys[:3]))
 print("FAILED" if failures else "ALL OK"); sys.exit(1 if failures else 0)

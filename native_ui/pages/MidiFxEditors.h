@@ -3,6 +3,7 @@
 // the generations of the cellular automaton.
 #pragma once
 #include "ModUi.h"
+#include <array>
 #include <cmath>
 #include <vector>
 
@@ -178,6 +179,133 @@ namespace njo
                     for (int i = 0; i < 3; ++i) { g.setColour (((q >> (2 - i)) & 1) ? juce::Colours::white.withAlpha (0.8f) : juce::Colours::white.withAlpha (0.12f)); g.fillRect (x0 + (float) i * 8.0f, strip.getY(), 7.0f, 7.0f); }
                     g.setColour (((rule >> q) & 1) ? red : juce::Colours::white.withAlpha (0.12f)); g.fillRect (x0 + 8.0f, strip.getY() + 10.0f, 7.0f, 7.0f);
                 }
+            }
+        };
+
+        // ---- Plinko board (Arp Mode 12): draw pegs and lines, balls fall through them and every hit plays a note (DSP: build_plinko2.py, obstacles 6400 + 6 * e + j) ----
+        struct Board : Base
+        {
+            Backend& be; int tool = 1; juce::OwnedArray<juce::Component> chips; juce::StringArray chipNames;
+            juce::Rectangle<float> sq; juce::Point<float> a, b; bool drawing = false;
+            struct Chip : juce::Component
+            {
+                juce::String text; bool on = false; std::function<void()> click;
+                void paint (juce::Graphics& g) override { auto r = getLocalBounds().toFloat().reduced (0.5f); paintButton (g, r, on, false, false, 3.0f); g.setColour (on ? juce::Colours::white : ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds(), juce::Justification::centred); }
+                void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
+            };
+            static constexpr int NE = 48;
+            // tools: 0 erase, 1 peg, 2 line, 3 spring, 4 shimmer, 5 chorus, 6 gate
+            explicit Board (Ctx& c) : Base (c, 6360, 15, { 5, 10 }), be (c.be)
+            {
+                static const char* tn[7] = { "ERASE", "PEG", "LINE", "SPRING", "SHIMMER", "CHORUS", "GATE" };
+                for (int i = 0; i < 7; ++i) { auto* ch = new Chip(); ch->text = tn[i]; ch->click = [this, i] { tool = i; refreshChips(); }; chips.add (ch); addAndMakeVisible (ch); }
+                auto* cl = new Chip(); cl->text = "CLEAR"; cl->click = [this] { setBoard ({}); }; chips.add (cl); addAndMakeVisible (cl);
+                auto* pr = new Chip(); pr->text = "PRESETS"; pr->click = [this] { presets(); }; chips.add (pr); addAndMakeVisible (pr);
+                refreshChips();
+            }
+            void refreshChips() { for (int i = 0; i < 7; ++i) static_cast<Chip*> (chips[i])->on = (i == tool); for (auto* c : chips) c->repaint(); }
+            int type (int e) const { return juce::roundToInt (ctx.get (6400 + 6 * e)); }
+            float val (int e, int j) const { return ctx.get (6400 + 6 * e + j); }
+            void put (int e, int ty, float x1, float y1, float x2, float y2, int kind)
+            {
+                const float v[6] = { (float) ty, x1, y1, x2, y2, (float) kind };
+                for (int j = 0; j < 6; ++j) { const int id = 6400 + 6 * e + j; ctx.begin (id); ctx.set (id, v[j]); ctx.end (id); }
+            }
+            // an obstacle: { type, x1, y1, x2, y2, kind }
+            using Ob = std::array<float, 6>;
+            void setBoard (const std::vector<Ob>& o) { for (int e = 0; e < NE; ++e) { if (e < (int) o.size()) put (e, (int) o[(size_t) e][0], o[(size_t) e][1], o[(size_t) e][2], o[(size_t) e][3], o[(size_t) e][4], (int) o[(size_t) e][5]); else if (type (e) != 0) put (e, 0, 0, 0, 0, 0, 0); } repaint(); }
+            void presets()
+            {
+                juce::PopupMenu m; const char* n[] = { "Pyramid of pegs", "Comb", "Zigzag ramps", "Funnel and pegs", "Staircase", "Random pegs", "Spring bumpers", "Wind chimes" };
+                for (int i = 0; i < 8; ++i) m.addItem (i + 1, n[i]);
+                juce::Component::SafePointer<juce::Component> sp (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (chips.getLast()), [this, sp] (int r) { if (sp != nullptr && r > 0) setBoard (preset (r - 1)); });
+            }
+            static std::vector<Ob> preset (int i)
+            {
+                std::vector<Ob> o; auto peg = [&] (float x, float y, int k = 0) { o.push_back ({ 1, x, y, x, y, (float) k }); }; auto line = [&] (float x1, float y1, float x2, float y2, int k = 0) { o.push_back ({ 2, x1, y1, x2, y2, (float) k }); };
+                if (i == 0) { for (int r = 0; r < 8; ++r) for (int c = 0; c <= r && o.size() < 44; ++c) peg (0.5f + ((float) c - (float) r * 0.5f) * 0.11f, 0.15f + (float) r * 0.09f); }
+                else if (i == 1) { for (int c = 0; c < 12; ++c) line (0.08f + (float) c * 0.075f, 0.45f, 0.08f + (float) c * 0.075f, 0.62f + 0.02f * (float) (c % 3)); line (0.0f, 0.3f, 1.0f, 0.36f); }
+                else if (i == 2) { for (int r = 0; r < 5; ++r) { const bool l = r % 2 == 0; line (l ? 0.0f : 1.0f, 0.15f + (float) r * 0.17f, l ? 0.78f : 0.22f, 0.22f + (float) r * 0.17f); } }
+                else if (i == 3) { line (0.0f, 0.2f, 0.42f, 0.42f); line (1.0f, 0.2f, 0.58f, 0.42f); for (int r = 0; r < 4; ++r) for (int c = 0; c < 5; ++c) peg (0.2f + (float) c * 0.15f + (r % 2) * 0.075f, 0.55f + (float) r * 0.1f); }
+                else if (i == 4) { for (int k = 0; k < 8; ++k) line (0.05f + (float) k * 0.1f, 0.2f + (float) k * 0.09f, 0.17f + (float) k * 0.1f, 0.24f + (float) k * 0.09f); }
+                else if (i == 5) { juce::Random rn (7); for (int k = 0; k < 36; ++k) peg (0.05f + rn.nextFloat() * 0.9f, 0.1f + rn.nextFloat() * 0.8f); }
+                else if (i == 6) { for (int r = 0; r < 4; ++r) for (int c = 0; c < 4; ++c) peg (0.15f + (float) c * 0.23f + (r % 2) * 0.1f, 0.2f + (float) r * 0.17f, 1); }
+                else { for (int k = 0; k < 10; ++k) line (0.08f + (float) k * 0.093f, 0.3f + 0.1f * (float) (k % 2), 0.08f + (float) k * 0.093f, 0.5f + 0.15f * (float) (k % 3), k % 3 == 0 ? 2 : k % 3 == 1 ? 3 : 0); }
+                return o;
+            }
+            bool needsRepaint() override
+            {
+                const auto now = juce::Time::getMillisecondCounter();
+                for (auto& b : be.boardBalls) if (now - b.ms < 400) return true;
+                for (auto t : be.boardHitMs) if (t != 0 && now - t < 400) return true;
+                return false;
+            }
+            void resized() override
+            {
+                Base::resized();
+                auto r = pic.toNearestInt().reduced (2); auto tb = r.removeFromTop (22); r.removeFromTop (4);
+                const int n = chips.size(), cw = tb.getWidth() / n; for (auto* c : chips) c->setBounds (tb.removeFromLeft (cw).reduced (1, 0));
+                const float side = (float) juce::jmin (r.getWidth(), r.getHeight() - 16); sq = juce::Rectangle<float> (side, side).withCentre ({ (float) r.getCentreX(), (float) r.getY() + side * 0.5f });
+            }
+            juce::Point<float> toBoard (juce::Point<float> p) const { return { juce::jlimit (0.0f, 1.0f, (p.x - sq.getX()) / sq.getWidth()), juce::jlimit (0.0f, 1.0f, (p.y - sq.getY()) / sq.getHeight()) }; }
+            int freeSlot() const { for (int e = 0; e < NE; ++e) if (type (e) == 0) return e; return -1; }
+            void eraseAt (juce::Point<float> q)
+            {
+                int best = -1; float bd = 0.04f;
+                for (int e = 0; e < NE; ++e)
+                {
+                    const int ty = type (e); if (ty == 0) continue;
+                    const float x1 = val (e, 1), y1 = val (e, 2), x2 = ty == 1 ? x1 : val (e, 3), y2 = ty == 1 ? y1 : val (e, 4), ex = x2 - x1, ey = y2 - y1, l2 = ex * ex + ey * ey;
+                    const float t = l2 > 1.0e-6f ? juce::jlimit (0.0f, 1.0f, ((q.x - x1) * ex + (q.y - y1) * ey) / l2) : 0.0f, d = std::hypot (q.x - (x1 + t * ex), q.y - (y1 + t * ey));
+                    if (d < bd) { bd = d; best = e; }
+                }
+                if (best >= 0) put (best, 0, 0, 0, 0, 0, 0);
+            }
+            void mouseDown (const juce::MouseEvent& e) override
+            {
+                if (! sq.contains (e.position)) return;
+                const auto q = toBoard (e.position);
+                if (e.mods.isRightButtonDown() || tool == 0) { eraseAt (q); repaint(); return; }
+                a = b = q; drawing = true; repaint();
+            }
+            void mouseDrag (const juce::MouseEvent& e) override
+            {
+                if (tool == 0 || e.mods.isRightButtonDown()) { if (sq.contains (e.position)) { eraseAt (toBoard (e.position)); repaint(); } return; }
+                if (drawing) { b = toBoard (e.position); repaint(); }
+            }
+            void mouseUp (const juce::MouseEvent&) override
+            {
+                if (! drawing) return; drawing = false;
+                const int slot = freeSlot(); if (slot < 0) { repaint(); return; }
+                const int kind = tool >= 3 ? tool - 2 : 0;   // spring 1, shimmer 2, chorus 3, gate 4
+                const bool asPeg = tool == 1 || std::hypot (b.x - a.x, b.y - a.y) < 0.03f;
+                if (asPeg) put (slot, 1, a.x, a.y, a.x, a.y, kind); else put (slot, 2, a.x, a.y, b.x, b.y, kind);
+                repaint();
+            }
+            static juce::Colour kindColour (int k) { static const juce::uint32 c[5] = { 0xffd8dce2, 0xff6fe08a, 0xff6fd0ff, 0xffe070ff, 0xffffa040 }; return juce::Colour (c[juce::jlimit (0, 4, k)]); }
+            void paint (juce::Graphics& g) override
+            {
+                paintBack (g, "Plinko: draw pegs and lines (tool row above), balls fall through the board and every hit plays a note: the x position is the scale degree. Right mouse button erases.");
+                g.setColour (juce::Colour (0xff15171a)); g.fillRect (sq); g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawRect (sq, 1.0f);
+                for (int i = 1; i < 8; ++i) { g.drawVerticalLine ((int) (sq.getX() + sq.getWidth() * (float) i / 8.0f), sq.getY(), sq.getBottom()); g.drawHorizontalLine ((int) (sq.getY() + sq.getHeight() * (float) i / 8.0f), sq.getX(), sq.getRight()); }
+                auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x * sq.getWidth(), sq.getY() + y * sq.getHeight()); };
+                const auto now = juce::Time::getMillisecondCounter();
+                // drop point and spread
+                const float dx = p (12) / 100.0f, sp = p (13) / 100.0f * 0.5f; g.setColour (red.withAlpha (0.25f)); g.fillRect (P (juce::jmax (0.0f, dx - sp * 0.5f), 0.0f).x, sq.getY(), sq.getWidth() * juce::jmin (1.0f, sp), 6.0f);
+                g.setColour (red); g.fillRect (P (dx, 0.0f).x - 1.0f, sq.getY(), 2.0f, 10.0f);
+                for (int e = 0; e < NE; ++e)
+                {
+                    const int ty = type (e); if (ty == 0) continue;
+                    const int kind = juce::roundToInt (val (e, 5)); const float flash = be.boardHitMs[e] != 0 ? juce::jlimit (0.0f, 1.0f, 1.0f - (float) (now - be.boardHitMs[e]) / 300.0f) : 0.0f;
+                    auto col = kindColour (kind).interpolatedWith (juce::Colours::white, flash);
+                    const auto p1 = P (val (e, 1), val (e, 2));
+                    if (ty == 1) { g.setColour (col.withAlpha (0.35f * flash)); g.fillEllipse (p1.x - 12.0f, p1.y - 12.0f, 24.0f, 24.0f); g.setColour (col); g.fillEllipse (p1.x - 4.5f, p1.y - 4.5f, 9.0f, 9.0f); }
+                    else { const auto p2 = P (val (e, 3), val (e, 4)); g.setColour (col.withAlpha (0.3f * flash)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 8.0f); g.setColour (col); g.drawLine (p1.x, p1.y, p2.x, p2.y, 2.5f); }
+                }
+                if (drawing) { g.setColour (kindColour (tool >= 3 ? tool - 2 : 0).withAlpha (0.6f)); const auto p1 = P (a.x, a.y), p2 = P (b.x, b.y); if (tool == 1) g.fillEllipse (p1.x - 4.5f, p1.y - 4.5f, 9.0f, 9.0f); else g.drawLine (p1.x, p1.y, p2.x, p2.y, 2.0f); }
+                const float rr = p (14) / 1000.0f * sq.getWidth();
+                for (auto& bl : be.boardBalls) { if (now - bl.ms > 150) continue; const auto c = P (bl.x, bl.y); g.setColour (juce::Colour (0xffffd24a)); g.fillEllipse (c.x - rr, c.y - rr, rr * 2.0f, rr * 2.0f); }
             }
         };
     }
