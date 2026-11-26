@@ -45,36 +45,65 @@ namespace njo
                 auto* b = buttons.add (new Btn()); b->text = t; b->click = std::move (fn); b->accent = accent; rowOf.push_back (row); owner.addAndMakeVisible (b); return b;
             };
             closeBtn = add (-1, "CLOSE", [this] { flush(); owner.setVisible (false); if (owner.onClose) owner.onClose(); }, true);
-            add (0, "PREV", [this] { select (cur - 1); });
-            add (0, "NEXT", [this] { select (cur + 1); });
-            add (0, "ADD FRAME", [this] { addFrame(); });
-            add (0, "DELETE", [this] { delFrame(); });
-            add (0, "COPY", [this] { clip.assign (frame(), frame() + 512); });
-            add (0, "PASTE", [this] { if (clip.size() == 512) edit ([this] (float* v) { std::copy (clip.begin(), clip.end(), v); }); });
-            add (0, "MORPH ALL", [this] { morphAll(); });
+            // every tool group is a menu: FRAME, EDIT, GENERATE, RASTER, RAZOR, PRESETS, FILE; UNDO and ALL FRAMES stay buttons
+            auto menuBtn = [this, add] (const juce::String& t, std::function<void (juce::PopupMenu&)> fill, std::function<void (int)> pick) -> Btn*
+            {
+                Btn* bt = add (0, t + "  v", {}, false);
+                bt->click = [this, bt, fill, pick] { juce::PopupMenu m; fill (m); juce::Component::SafePointer<juce::Component> sp (&owner); m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (bt), [sp, pick] (int r) { if (sp != nullptr && r > 0) pick (r); }); };
+                return bt;
+            };
+            menuBtn ("FRAME", [this] (juce::PopupMenu& m)
+            {
+                m.addItem (1, "Previous frame"); m.addItem (2, "Next frame"); m.addSeparator(); m.addItem (3, "Add frame"); m.addItem (4, "Delete frame", frames() > 1);
+                m.addSeparator(); m.addItem (5, "Copy frame"); m.addItem (6, "Paste frame", clip.size() == 512); m.addSeparator(); m.addItem (7, "Morph all frames (first to last)");
+            }, [this] (int r)
+            {
+                if (r == 1) select (cur - 1); else if (r == 2) select (cur + 1); else if (r == 3) addFrame(); else if (r == 4) delFrame();
+                else if (r == 5) clip.assign (frame(), frame() + 512);
+                else if (r == 6) { if (clip.size() == 512) edit ([this] (float* v) { std::copy (clip.begin(), clip.end(), v); }); }
+                else if (r == 7) morphAll();
+            });
+            menuBtn ("EDIT", [] (juce::PopupMenu& m)
+            {
+                m.addItem (1, "Smooth"); m.addItem (2, "Invert"); m.addItem (3, "Flip (reverse)"); m.addItem (4, "Normalize"); m.addItem (5, "Random"); m.addSeparator();
+                m.addItem (6, "Odd symmetry"); m.addItem (7, "Even symmetry"); m.addItem (8, "Rectify"); m.addItem (9, "Quantise (8 levels)");
+            }, [this] (int r)
+            {
+                if (r == 1) edit ([this] (float* v) { smooth (v); });
+                else if (r == 2) edit ([] (float* v) { for (int i = 0; i < 512; ++i) v[i] = -v[i]; });
+                else if (r == 3) edit ([] (float* v) { std::reverse (v, v + 512); });
+                else if (r == 4) edit ([] (float* v) { float p = 0; for (int i = 0; i < 512; ++i) p = juce::jmax (p, std::abs (v[i])); if (p > 1.0e-4f) for (int i = 0; i < 512; ++i) v[i] /= p; });
+                else if (r == 5) edit ([this] (float* v) { randomise (v); });
+                else if (r == 6) edit ([] (float* v) { tblops::oddSymmetry (v); });
+                else if (r == 7) edit ([] (float* v) { tblops::evenSymmetry (v); });
+                else if (r == 8) edit ([] (float* v) { tblops::rectify (v); });
+                else if (r == 9) edit ([] (float* v) { tblops::quantise (v, 8); });
+            });
+            menuBtn ("GENERATE", [this] (juce::PopupMenu& m) { const auto& nm = tblops::names (filter); for (size_t i = 0; i < nm.size(); ++i) m.addItem ((int) i + 1, nm[i]); },
+                     [this] (int r) { const auto& nm = tblops::names (filter); if (r >= 1 && r <= (int) nm.size()) preset (nm[(size_t) r - 1]); });
             add (0, "UNDO", [this] { undo(); });
-            add (0, "SMOOTH", [this] { edit ([this] (float* v) { smooth (v); }); });
-            add (0, "INVERT", [this] { edit ([] (float* v) { for (int i = 0; i < 512; ++i) v[i] = -v[i]; }); });
-            add (0, "FLIP", [this] { edit ([] (float* v) { std::reverse (v, v + 512); }); });
-            add (0, "NORMALIZE", [this] { edit ([] (float* v) { float p = 0; for (int i = 0; i < 512; ++i) p = juce::jmax (p, std::abs (v[i])); if (p > 1.0e-4f) for (int i = 0; i < 512; ++i) v[i] /= p; }); });
-            add (1, "RANDOM", [this] { edit ([this] (float* v) { randomise (v); }); });
-            add (1, "ODD SYMM.", [this] { edit ([] (float* v) { tblops::oddSymmetry (v); }); });
-            add (1, "EVEN SYMM.", [this] { edit ([] (float* v) { tblops::evenSymmetry (v); }); });
-            add (1, "RECTIFY", [this] { edit ([] (float* v) { tblops::rectify (v); }); });
-            add (1, "QUANTISE", [this] { edit ([] (float* v) { tblops::quantise (v, 8); }); });
-            add (1, "ALL FRAMES", [this] { allFrames = ! allFrames; buttons[(size_t) allBtn]->accent = allFrames; owner.repaint(); });
+            add (0, "ALL FRAMES", [this] { allFrames = ! allFrames; buttons[(size_t) allBtn]->accent = allFrames; owner.repaint(); });
             allBtn = buttons.size() - 1;
-            add (1, "PRESETS", [this] { presetMenu(); });
+            add (0, "PRESETS  v", [this] { presetMenu(); });
             presBtn = buttons.getLast();
-            add (1, "RAZOR", [this] { razorMenu(); });
+            add (0, "RAZOR  v", [this] { razorMenu(); });
             razBtn = buttons.getLast();
-            add (1, "RASTER: OFF", [this] { static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = (rast + 1) % 5; rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF") : "RASTER: " + juce::String (rv[rast]); rastBtn->repaint(); owner.repaint(); });
-            rastBtn = buttons.getLast();
-            add (1, "LOAD FILE", [this] { chooseFile(); });
-            add (1, "DEFAULT", [this] { pushUndo(); fromBuiltIn = true; d.assign (16 * 512, 0.0f); for (int f2 = 0; f2 < 16; ++f2) for (int i = 0; i < 512; ++i) d[(size_t) (f2 * 512 + i)] = oscmodel::tblDefault (filter, f2, i); cur = juce::jlimit (0, 15, cur); name = "EDITED"; setPos(); touch(); commit(); });
-            for (auto* n : tblops::names (filter)) add (2, n, [this, s = juce::String (n)] { preset (s); });
+            rastBtn = menuBtn ("RASTER: OFF", [this] (juce::PopupMenu& m)
+            {
+                static const int rv[5] = { 0, 8, 16, 32, 64 }; for (int i = 0; i < 5; ++i) m.addItem (i + 1, i == 0 ? juce::String ("Off") : juce::String (rv[i]) + " columns", true, rast == i);
+            }, [this] (int r)
+            {
+                static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = juce::jlimit (0, 4, r - 1); rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF  v") : "RASTER: " + juce::String (rv[rast]) + "  v"; rastBtn->repaint(); owner.repaint();
+            });
+            menuBtn ("FILE", [] (juce::PopupMenu& m) { m.addItem (1, "Load a table / wave file..."); m.addItem (2, "Back to the default table"); },
+                     [this] (int r)
+                     {
+                         if (r == 1) chooseFile();
+                         else if (r == 2) defaultTable();
+                     });
         }
 
+        void defaultTable() { pushUndo(); fromBuiltIn = true; d.assign (16 * 512, 0.0f); for (int f2 = 0; f2 < 16; ++f2) for (int i = 0; i < 512; ++i) d[(size_t) (f2 * 512 + i)] = oscmodel::tblDefault (filter, f2, i); cur = juce::jlimit (0, 15, cur); name = "EDITED"; setPos(); touch(); commit(); }
         int frames() const { return (int) d.size() / 512; }
         void razorApply()
         {
@@ -343,19 +372,14 @@ namespace njo
             auto b = owner.getLocalBounds().reduced (12, 8);
             auto head = b.removeFromTop (28);
             closeBtn->setBounds (head.removeFromRight (80).reduced (0, 2));
-            const int toolsH = 92;
+            const int toolsH = 34;
             auto tools = b.removeFromBottom (toolsH);
             b.removeFromBottom (6);
             strip = b.removeFromBottom (juce::jmin (46, b.getHeight() / 5)); b.removeFromBottom (6);
             auto bb = b; harm = bb.removeFromRight (juce::jmax (200, b.getWidth() * 36 / 100)); bb.removeFromRight (8);
             canvas = bb;
-            const int perRow = 13, gap = 5; const int bw = juce::jmin (96, (tools.getWidth() - (perRow - 1) * gap) / perRow);
-            int col[3] = { 0, 0, 0 };
-            for (int i = 1; i < buttons.size(); ++i)
-            {
-                int row = rowOf[(size_t) i]; int c = col[row]++;
-                buttons[i]->setBounds (tools.getX() + c * (bw + gap), tools.getY() + row * 31, bw, 26);
-            }
+            const int nb = buttons.size() - 1, gap = 6; const int bw = juce::jmin (118, (tools.getWidth() - (nb - 1) * gap) / juce::jmax (1, nb));
+            for (int i = 1; i < buttons.size(); ++i) buttons[i]->setBounds (tools.getX() + (i - 1) * (bw + gap), tools.getY() + 4, bw, 26);
         }
         TableEditor& owner; Ctx& ctx; SoundMemory& mem; int os; bool filter;
         std::vector<float> d; juce::String name; int cur = 0; bool dirty = false, fromBuiltIn = false, allFrames = false, harmDirty = true, selfWrite = false, dropOver = false;
