@@ -1082,6 +1082,7 @@ static int fxFilterShape (int mode)
             shEd = std::make_unique<ShaperEditor> (ctx, mem); owner.addChildComponent (*shEd);
             addBtn.text = "+ ADD FX"; addBtn.click = [this] { adding = true; layoutCentre(); owner.repaint(); refreshList(); };
             removeBtn.text = "REMOVE"; removeBtn.click = [this] { removeSelected(); };
+            tblPick.click = [this] { pickTable(); }; owner.addChildComponent (tblPick);
             tblBtn.text = "EDIT TABLE"; tblBtn.click = [this] { openTable(); };
             owner.addAndMakeVisible (addBtn); owner.addChildComponent (removeBtn); owner.addChildComponent (tblBtn);
             for (int rk = 0; rk < kFxRacks; ++rk) { sel[rk] = -1; }
@@ -1256,7 +1257,7 @@ static int fxFilterShape (int mode)
             }
             int sl = sel[current];
             bool effectPage = ! adding && sl >= 0 && ctx.fxSlotTypes()[fxG (current, sl)] > 0;
-            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage); tblBtn.setVisible (false);
+            chooser.setVisible (! effectPage); display.setVisible (false); eqEd->setVisible (false); shEd->setVisible (false); removeBtn.setVisible (effectPage); tblBtn.setVisible (false); tblPick.setVisible (false);
             loadIr.setVisible (false); clearIr.setVisible (false); irRect = {};
             chooser.setBounds (centre);
             addBtn.setBounds (addRect);
@@ -1307,7 +1308,17 @@ static int fxFilterShape (int mode)
             int x0 = knobs.getX() + (knobs.getWidth() - colW * n) / 2;
             auto put = [&] (ParamWidget& w, int i) { w.setBounds (x0 + i * colW + (colW - 70) / 2, knobs.getY() + 12, 70, 62); w.setVisible (true); };
             put (*mixK[g], 0);
-            for (int k = 0; k < (int) t.params.size(); ++k) put (*pK[g][k], k + 1);
+            for (int k = 0; k < (int) t.params.size(); ++k)
+            {
+                if ((ty == 39 && k == 3) || (ty == 34 && k == 2))   // the Table knob is a menu: which oscillator's table the effect reads
+                {
+                    tblG = g; tblK = k; const int o = juce::jlimit (0, 5, juce::roundToInt (ctx.get (slotBase (g) + 4 + k) * 5.0f));
+                    tblPick.text = "TABLE: OSC " + juce::String (o + 1) + "  v";
+                    tblPick.setBounds (x0 + (k + 1) * colW + (colW - 104) / 2, knobs.getY() + 26, 104, 28); tblPick.setVisible (true);
+                    continue;
+                }
+                put (*pK[g][k], k + 1);
+            }
             {
                 const int n2 = 9, c2 = juce::jmin (120, knobs2.getWidth() / n2), x2 = knobs2.getX() + (knobs2.getWidth() - c2 * n2) / 2;
                 auto put2 = [&] (ParamWidget& w, int i) { w.setBounds (x2 + i * c2 + (c2 - 70) / 2, knobs2.getY() + 12, 70, 62); w.setVisible (true); };
@@ -1344,6 +1355,18 @@ static int fxFilterShape (int mode)
             auto& e = tblEd[(ty == 39 ? 6 : 0) + osc];
             if (! e) { e = std::make_unique<TableEditor> (ctx, mem, osc, ty == 39); owner.addChildComponent (*e); e->onClose = [this] { layoutCentre(); owner.repaint(); }; }
             e->setBounds (owner.getLocalBounds()); e->open();
+        }
+        FxButton tblPick; int tblG = -1, tblK = 0;
+        void pickTable()
+        {
+            if (tblG < 0) return; juce::PopupMenu m; const int cur = juce::jlimit (0, 5, juce::roundToInt (ctx.get (slotBase (tblG) + 4 + tblK) * 5.0f));
+            for (int i = 0; i < 6; ++i) m.addItem (i + 1, "Table of oscillator " + juce::String (i + 1), true, cur == i);
+            const int g = tblG, k = tblK; juce::Component::SafePointer<juce::Component> sp (&owner);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&tblPick), [this, sp, g, k] (int r)
+            {
+                if (sp == nullptr || r <= 0) return; const int id = slotBase (g) + 4 + k;
+                ctx.begin (id); ctx.set (id, (float) (r - 1) / 5.0f); ctx.end (id); layoutCentre(); owner.repaint();
+            });
         }
         FxPage& owner; Ctx& ctx; SoundMemory& mem;
         std::unique_ptr<EqEditor> eqEd; std::unique_ptr<ShaperEditor> shEd;
