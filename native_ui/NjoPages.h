@@ -73,7 +73,7 @@ namespace njo
     };
 
     // the three FX racks (Bus 1, Bus 2, Main) with 10 slots each and the output section
-    class FxPage : public juce::Component
+    class FxPage : public juce::Component, public juce::FileDragAndDropTarget
     {
     public:
         FxPage (Ctx&, SoundMemory&, int osc = -1);   // osc >= 0: the FX rack of that oscillator (16 slots, memory-light effects)
@@ -82,6 +82,9 @@ namespace njo
         void resized() override;
         std::function<void (ParamWidget&)> onModDropped;
         std::function<void (int)> onSelectOsc;   // oscillator chips A-F of the rack pages
+        // a table / wave file dropped on the page loads into the table of the selected Wavefilter / Shaper Table slot
+        bool isInterestedInFileDrag (const juce::StringArray&) override;
+        void filesDropped (const juce::StringArray&, int, int) override;
         struct Impl; std::unique_ptr<Impl> impl;
     };
 

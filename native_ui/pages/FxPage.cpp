@@ -1333,6 +1333,8 @@ static int fxFilterShape (int mode)
         }
 
         // the table editor (Wavedistortion table for the Shaper Table, Wavefilter table for the Wavefilter) of the oscillator chosen in the Table knob
+        bool tableSlotSelected() const { const int sl = sel[current]; if (sl < 0) return false; const int ty = ctx.fxSlotTypes()[fxG (current, sl)]; return ty == 34 || ty == 39; }
+        void dropOnTable (const juce::StringArray& f) { if (! tableSlotSelected()) return; openTable(); for (auto& e : tblEd) if (e && e->isVisible()) { e->filesDropped (f, 0, 0); break; } }
         void openTable()
         {
             const int sl = sel[current]; if (sl < 0) return;
@@ -1367,6 +1369,8 @@ static int fxFilterShape (int mode)
             }
     }
     FxPage::~FxPage() = default;
+    bool FxPage::isInterestedInFileDrag (const juce::StringArray& f) { if (! impl->tableSlotSelected()) return false; for (auto& n : f) if (juce::File (n).hasFileExtension ("wav;aif;aiff;flac;ogg;mp3;vitaltable")) return true; return false; }
+    void FxPage::filesDropped (const juce::StringArray& f, int, int) { impl->dropOnTable (f); }
 
     void FxPage::resized()
     {

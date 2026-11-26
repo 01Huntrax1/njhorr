@@ -89,4 +89,41 @@ namespace njo::tblops
             v[i] = juce::jlimit (-1.0f, 1.0f, y);
         }
     }
+
+    // ---- Razor (wave slicing, as in the wavetable editor): the frame is cut into up to 8 segments, each plays the source (or a basic shape) with its own level, phase, DC and tuning ----
+    struct Razor
+    {
+        int n = 1; float size = 1.0f, duty = 0.5f, mix = 1.0f; bool pol = false;
+        float lvl[8], ph[8], dc[8], semi[8]; int shp[8];   // shp: 0 source, 1 sine, 2 saw, 3 square, 4 triangle
+        Razor() { reset(); }
+        void reset() { n = 1; size = 1.0f; duty = 0.5f; mix = 1.0f; pol = false; for (int k = 0; k < 8; ++k) { lvl[k] = 1.0f; ph[k] = dc[k] = semi[k] = 0.0f; shp[k] = 0; } }
+        bool active() const { return n > 1 || size != 1.0f || mix != 1.0f; }
+    };
+    inline float razorShape (const float* q, int s, float p)
+    {
+        p -= std::floor (p);
+        if (s == 0) { const float x = p * (float) FL; const int i = (int) x; const float f = x - (float) i; return q[i % FL] * (1.0f - f) + q[(i + 1) % FL] * f; }
+        if (s == 1) return std::sin (6.2831853f * p);
+        if (s == 2) return 2.0f * p - 1.0f;
+        if (s == 3) return p < 0.5f ? 1.0f : -1.0f;
+        return p < 0.5f ? 4.0f * p - 1.0f : 3.0f - 4.0f * p;
+    }
+    inline void razorRender (const float* src, const Razor& r, float* out)   // src and out: FL points, may not alias
+    {
+        const int n = juce::jlimit (1, 8, r.n); float w[8], st[8], sum = 0.0f;
+        for (int k = 0; k < n; ++k) { const bool paired = (k | 1) < n; w[k] = n == 1 ? 1.0f : paired ? 2.0f / (float) n * ((k & 1) ? 1.0f - r.duty : r.duty) : 1.0f / (float) n; sum += w[k]; }
+        float acc = 0.0f; for (int k = 0; k < n; ++k) { w[k] /= sum; st[k] = acc; acc += w[k]; }
+        float peak = 0.0f; int k = 0;
+        for (int i = 0; i < FL; ++i)
+        {
+            const float p = (float) i / (float) FL;
+            while (k < n - 1 && p >= st[k + 1]) ++k;
+            const float t = (p - st[k]) / std::max (1.0e-6f, w[k]);
+            float v = razorShape (src, r.shp[k], r.ph[k] + t * r.size * std::pow (2.0f, r.semi[k] / 12.0f));
+            v = r.pol ? std::abs (v) * (r.lvl[k] < 0.0f ? -1.0f : 1.0f) * std::abs (r.lvl[k]) : v * r.lvl[k];
+            v += r.dc[k]; v = src[i] * (1.0f - r.mix) + v * r.mix;
+            out[i] = v; peak = std::max (peak, std::abs (v));
+        }
+        if (peak > 1.0f) for (int j = 0; j < FL; ++j) out[j] /= peak;
+    }
 }

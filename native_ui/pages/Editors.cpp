@@ -64,12 +64,57 @@ namespace njo
             add (1, "QUANTISE", [this] { edit ([] (float* v) { tblops::quantise (v, 8); }); });
             add (1, "ALL FRAMES", [this] { allFrames = ! allFrames; buttons[(size_t) allBtn]->accent = allFrames; owner.repaint(); });
             allBtn = buttons.size() - 1;
+            add (1, "RAZOR", [this] { razorMenu(); });
+            razBtn = buttons.getLast();
+            add (1, "RASTER: OFF", [this] { static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = (rast + 1) % 5; rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF") : "RASTER: " + juce::String (rv[rast]); rastBtn->repaint(); owner.repaint(); });
+            rastBtn = buttons.getLast();
             add (1, "LOAD FILE", [this] { chooseFile(); });
             add (1, "DEFAULT", [this] { pushUndo(); fromBuiltIn = true; d.assign (16 * 512, 0.0f); for (int f2 = 0; f2 < 16; ++f2) for (int i = 0; i < 512; ++i) d[(size_t) (f2 * 512 + i)] = oscmodel::tblDefault (filter, f2, i); cur = juce::jlimit (0, 15, cur); name = "EDITED"; setPos(); touch(); commit(); });
             for (auto* n : tblops::names (filter)) add (2, n, [this, s = juce::String (n)] { preset (s); });
         }
 
         int frames() const { return (int) d.size() / 512; }
+        void razorApply()
+        {
+            if (! rz.active()) return;
+            pushUndo(); std::vector<float> o (512);
+            for (int f = rzAll ? 0 : cur, e = rzAll ? frames() : cur + 1; f < e; ++f)
+            { float* v = d.data() + (size_t) f * 512; tblops::razorRender (v, rz, o.data()); for (int i = 0; i < 512; ++i) v[i] = juce::jlimit (-1.0f, 1.0f, o[(size_t) i]); }
+            rz.reset(); razBtn->accent = false; fromBuiltIn = false; touch(); commit();
+        }
+        // the razor of the wavetable editor: the live preview is drawn over the frame, APPLY bakes it into this frame (or all frames)
+        void razorMenu()
+        {
+            juce::PopupMenu m, sg, sh, lv, tu, du, mx, ph;
+            for (int n = 1; n <= 8; ++n) sg.addItem (100 + n, n == 1 ? "1 (off)" : juce::String (n) + " segments", true, rz.n == n);
+            static const char* sn[5] = { "Source (the frame)", "Sine", "Saw", "Square", "Triangle" }; for (int i = 0; i < 5; ++i) sh.addItem (200 + i, sn[i], true, rz.shp[0] == i);
+            lv.addItem (300, "All +1"); lv.addItem (301, "Alternate +1 / -1"); lv.addItem (302, "Rising"); lv.addItem (303, "Falling"); lv.addItem (304, "Alternate +1 / 0.5");
+            tu.addItem (400, "None"); tu.addItem (401, "Alternate 0 / +12 st"); tu.addItem (402, "Rising +2 st per segment"); tu.addItem (403, "Alternate 0 / -12 st"); tu.addItem (404, "Alternate 0 / +7 st");
+            static const float dv[5] = { 0.2f, 0.35f, 0.5f, 0.65f, 0.8f }; for (int i = 0; i < 5; ++i) du.addItem (500 + i, juce::String ((int) (dv[i] * 100)) + " %", true, std::abs (rz.duty - dv[i]) < 0.01f);
+            static const float mv[4] = { 0.25f, 0.5f, 0.75f, 1.0f }; for (int i = 0; i < 4; ++i) mx.addItem (600 + i, juce::String ((int) (mv[i] * 100)) + " %", true, std::abs (rz.mix - mv[i]) < 0.01f);
+            for (int i = 0; i < 4; ++i) ph.addItem (700 + i, juce::String (i * 25) + " % phase", true, std::abs (rz.ph[0] - 0.25f * (float) i) < 0.01f);
+            m.addSubMenu ("Segments", sg); m.addSubMenu ("Shape of all segments", sh); m.addSubMenu ("Level pattern", lv); m.addSubMenu ("Tune pattern", tu);
+            m.addSubMenu ("Duty (alternating lengths)", du); m.addSubMenu ("Mix", mx); m.addSubMenu ("Start phase", ph);
+            m.addSeparator(); m.addItem (800, "Constant polarity", true, rz.pol); m.addItem (801, "Apply to all frames", true, rzAll);
+            m.addSeparator(); m.addItem (900, "APPLY", rz.active()); m.addItem (901, "Reset razor");
+            juce::Component::SafePointer<juce::Component> sp (&owner);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (razBtn), [this, sp] (int r)
+            {
+                if (sp == nullptr || r <= 0) return;
+                if (r > 100 && r <= 108) rz.n = r - 100;
+                else if (r >= 200 && r < 205) for (auto& x : rz.shp) x = r - 200;
+                else if (r >= 300 && r < 305) for (int k = 0; k < 8; ++k) rz.lvl[k] = r == 300 ? 1.0f : r == 301 ? ((k & 1) ? -1.0f : 1.0f) : r == 302 ? (float) (k + 1) / (float) juce::jmax (1, rz.n) : r == 303 ? 1.0f - (float) k / (float) juce::jmax (1, rz.n) : ((k & 1) ? 0.5f : 1.0f);
+                else if (r >= 400 && r < 405) for (int k = 0; k < 8; ++k) rz.semi[k] = r == 400 ? 0.0f : r == 401 ? ((k & 1) ? 12.0f : 0.0f) : r == 402 ? 2.0f * (float) k : r == 403 ? ((k & 1) ? -12.0f : 0.0f) : ((k & 1) ? 7.0f : 0.0f);
+                else if (r >= 500 && r < 505) { static const float dv2[5] = { 0.2f, 0.35f, 0.5f, 0.65f, 0.8f }; rz.duty = dv2[r - 500]; }
+                else if (r >= 600 && r < 604) { static const float mv2[4] = { 0.25f, 0.5f, 0.75f, 1.0f }; rz.mix = mv2[r - 600]; }
+                else if (r >= 700 && r < 704) for (auto& x : rz.ph) x = 0.25f * (float) (r - 700);
+                else if (r == 800) rz.pol = ! rz.pol;
+                else if (r == 801) rzAll = ! rzAll;
+                else if (r == 900) { razorApply(); owner.repaint(); return; }
+                else if (r == 901) rz.reset();
+                razBtn->accent = rz.active(); razBtn->repaint(); owner.repaint();
+            });
+        }
         void load()
         {
             if (auto* sl = mem.get (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os); sl && sl->data.size() >= 512)
@@ -183,6 +228,13 @@ namespace njo
             g.setColour (juce::Colours::white.withAlpha (0.07f));
             for (int i = 1; i < 8; ++i) g.drawVerticalLine ((int) X ((float) i / 8.0f), r.getY(), r.getBottom());
             for (int i = 1; i < 4; ++i) g.drawHorizontalLine ((int) Y (-1.0f + (float) i * 0.5f), r.getX(), r.getRight());
+            if (rast > 0)
+            {
+                static const int rv[5] = { 0, 8, 16, 32, 64 }; const int nc = rv[rast];
+                g.setColour (juce::Colour (0xffff3e30).withAlpha (0.16f));
+                for (int i = 1; i < nc; ++i) g.drawVerticalLine ((int) X ((float) i / (float) nc), r.getY(), r.getBottom());
+                for (int i = 1; i < 16; ++i) g.drawHorizontalLine ((int) Y (-1.0f + (float) i * 0.125f), r.getX(), r.getRight());
+            }
             g.setColour (juce::Colours::white.withAlpha (0.20f)); g.drawHorizontalLine ((int) Y (0.0f), r.getX(), r.getRight()); g.drawVerticalLine ((int) X (0.5f), r.getY(), r.getBottom());
             if (! filter) { g.setColour (juce::Colours::white.withAlpha (0.14f)); g.drawLine (X (0), Y (-1), X (1), Y (1)); }
             auto path = [&] (int f)
@@ -197,6 +249,12 @@ namespace njo
             };
             if (cur > 0) { g.setColour (juce::Colour (0xff8a909a).withAlpha (0.28f)); g.strokePath (path (cur - 1), juce::PathStrokeType (1.0f)); }
             if (cur < frames() - 1) { g.setColour (juce::Colour (0xff8a909a).withAlpha (0.28f)); g.strokePath (path (cur + 1), juce::PathStrokeType (1.0f)); }
+            if (rz.active())   // razor preview
+            {
+                std::vector<float> o (512); tblops::razorRender (frame(), rz, o.data()); juce::Path pp;
+                for (int i = 0; i < 512; ++i) { float x = X ((float) i / 511.0f), y = Y (juce::jlimit (-1.0f, 1.0f, o[(size_t) i])); if (i == 0) pp.startNewSubPath (x, y); else pp.lineTo (x, y); }
+                g.setColour (juce::Colour (0xff6fd0ff)); g.strokePath (pp, juce::PathStrokeType (1.6f));
+            }
             auto p = path (cur);
             g.setColour (juce::Colour (0xffff3e30).withAlpha (0.25f)); g.strokePath (p, juce::PathStrokeType (6.0f));
             g.setColour (juce::Colour (0xffff6f65)); g.strokePath (p, juce::PathStrokeType (2.0f));
@@ -272,7 +330,7 @@ namespace njo
         }
         TableEditor& owner; Ctx& ctx; SoundMemory& mem; int os; bool filter;
         std::vector<float> d; juce::String name; int cur = 0; bool dirty = false, fromBuiltIn = false, allFrames = false, harmDirty = true, selfWrite = false, dropOver = false;
-        juce::OwnedArray<Btn> buttons; std::vector<int> rowOf; Btn* closeBtn = nullptr; int allBtn = 0; int lastIdx = -1; float lastV = 0.0f;
+        juce::OwnedArray<Btn> buttons; std::vector<int> rowOf; Btn* closeBtn = nullptr; Btn* rastBtn = nullptr; Btn* razBtn = nullptr; tblops::Razor rz; bool rzAll = false; int rast = 0; int allBtn = 0; int lastIdx = -1; float lastV = 0.0f;
         std::vector<std::vector<float>> undoStack; std::vector<float> clip; std::array<float, tblops::NH> hv {}; int mode = 0;   // mode: 1 draw, 2 harmonics, 3 strip
         std::unique_ptr<juce::FileChooser> chooser;
     };
@@ -334,6 +392,15 @@ namespace njo
         float v = juce::jlimit (-1.0f, 1.0f, 1.0f - 2.0f * (e.position.y - r.getY()) / r.getHeight());
         int idx = juce::roundToInt (t * 511.0f);
         float* f = I.frame();
+        if (I.rast > 0)    // raster: the value snaps to 1/16 of the range and holds over a whole grid cell
+        {
+            static const int rv[5] = { 0, 8, 16, 32, 64 }; const int nc = rv[I.rast];
+            v = juce::jlimit (-1.0f, 1.0f, std::round (v * 8.0f) / 8.0f);
+            const int c = juce::jmin (nc - 1, (int) (t * (float) nc));
+            const int a = c * 512 / nc, b = (c + 1) * 512 / nc - 1;
+            for (int i = a; i <= b; ++i) f[i] = v;
+            I.lastIdx = idx; I.lastV = v; I.fromBuiltIn = false; I.touch(); return;
+        }
         if (I.lastIdx < 0) { f[idx] = v; I.lastV = v; }
         else
         {

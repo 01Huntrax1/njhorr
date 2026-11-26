@@ -21,5 +21,8 @@ int main()
     generate (false, "LINEAR", f); quantise (f, 4); CHECK (std::abs (f[FL - 1] - 1.0f) < 1e-5f && std::abs (f[FL / 2 + 100] * 4 - std::round (f[FL / 2 + 100] * 4)) < 1e-5f);
     for (bool flt : { false, true }) for (auto n : names (flt)) { generate (flt, n, f); bool ok = true, var = false; for (int i = 0; i < FL; ++i) { ok = ok && std::isfinite (f[i]) && std::abs (f[i]) <= 1.0f; var = var || std::abs (f[i] - f[0]) > 0.05f; } CHECK (ok); CHECK (var); }
     generate (false, "LINEAR", f); CHECK (std::abs (f[0] + 1) < 1e-5f && std::abs (f[FL - 1] - 1) < 1e-5f);
+    { Razor r; float a[FL], b[FL]; generate (false, "LINEAR", a); razorRender (a, r, b); bool same = true; for (int i = 0; i < FL; ++i) same = same && std::abs (a[i] - b[i]) < 1e-3f; CHECK (same);
+      r.n = 4; r.lvl[1] = -1.0f; razorRender (a, r, b); CHECK (std::abs (b[FL / 4 + 10] + a[40]) < 0.05f);   // segment 2 plays the whole source inverted
+      r.reset(); r.n = 2; for (int k = 0; k < 2; ++k) r.shp[k] = 3; razorRender (a, r, b); CHECK (b[10] > 0.99f && b[FL / 2 + 10] > 0.99f); }
     std::printf (fails ? "FAILED\n" : "ALL OK\n"); return fails ? 1 : 0;
 }
