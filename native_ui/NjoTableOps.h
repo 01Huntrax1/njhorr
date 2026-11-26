@@ -4,6 +4,7 @@
 #include <juce_core/juce_core.h>
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <vector>
 
 namespace njo::tblops
@@ -126,4 +127,48 @@ namespace njo::tblops
         }
         if (peak > 1.0f) for (int j = 0; j < FL; ++j) out[j] /= peak;
     }
+
+    // ---- preset manager: factory sets (a morph through generators, one frame per step) and user files <root>/TablePresets/<Filter|Shaper>/<name>.njotbl (header "NJOT", frame count, floats) ----
+    struct FactorySet { const char* name; std::vector<const char*> keys; };
+    inline const std::vector<FactorySet>& factorySets (bool filter)
+    {
+        static const std::vector<FactorySet> fl = { { "Sweep: Low > Band > High", { "LOW PASS", "BAND PASS", "HIGH PASS" } }, { "Formant Vowels", { "VOWEL", "FORMANT", "DUAL PEAK" } },
+            { "Comb Sweep", { "COMB", "SAW COMB", "NOTCH" } }, { "Reso Rise", { "LOW PASS", "RESO LP", "BAND PASS" } }, { "Shelves", { "LOW SHELF", "LOW PASS", "HIGH SHELF" } }, { "Notch to Peak", { "NOTCH", "LOW PASS", "DUAL PEAK" } } };
+        static const std::vector<FactorySet> sh = { { "Soft to Hard", { "LINEAR", "SOFT", "HARD" } }, { "Fold Rise", { "LINEAR", "SOFT", "FOLD" } }, { "Chebyshev Climb", { "LINEAR", "CHEBY 2", "CHEBY 3", "CHEBY 5" } },
+            { "Analog Warmth", { "LINEAR", "TUBE", "DIODE", "ASYM" } }, { "Digital Crunch", { "LINEAR", "STAIRS", "CRUSH" } }, { "Asym Fold", { "ASYM", "FOLD", "CHEBY 3" } } };
+        return filter ? fl : sh;
+    }
+    inline std::vector<float> buildFactory (bool filter, const FactorySet& fs, int frames = 16)
+    {
+        std::vector<float> out ((size_t) frames * FL), a (FL), b (FL); const int n = (int) fs.keys.size();
+        for (int f = 0; f < frames; ++f)
+        {
+            const float pos = n == 1 ? 0.0f : (float) f / (float) (frames - 1) * (float) (n - 1); const int k = std::min (n - 2 < 0 ? 0 : n - 2, (int) pos); const float t = n == 1 ? 0.0f : pos - (float) k;
+            generate (filter, fs.keys[(size_t) k], a.data()); generate (filter, fs.keys[(size_t) std::min (n - 1, k + 1)], b.data());
+            for (int i = 0; i < FL; ++i) out[(size_t) f * FL + i] = a[(size_t) i] + (b[(size_t) i] - a[(size_t) i]) * t;
+        }
+        return out;
+    }
+    inline juce::File presetDir (const juce::File& root, bool filter) { return root.getChildFile ("TablePresets").getChildFile (filter ? "Filter" : "Shaper"); }
+    inline juce::StringArray userNames (const juce::File& root, bool filter)
+    {
+        juce::StringArray r; for (auto& f : presetDir (root, filter).findChildFiles (juce::File::findFiles, false, "*.njotbl")) r.add (f.getFileNameWithoutExtension());
+        r.sort (true); return r;
+    }
+    inline bool saveUser (const juce::File& root, bool filter, const juce::String& name, const std::vector<float>& d)
+    {
+        auto n = juce::File::createLegalFileName (name.trim()); if (n.isEmpty() || d.size() < (size_t) FL) return false;
+        auto dir = presetDir (root, filter); dir.createDirectory(); juce::MemoryBlock mb; const int fr = (int) (d.size() / FL);
+        mb.append ("NJOT", 4); mb.append (&fr, 4); mb.append (d.data(), (size_t) fr * FL * sizeof (float));
+        return dir.getChildFile (n + ".njotbl").replaceWithData (mb.getData(), mb.getSize());
+    }
+    inline bool loadUser (const juce::File& root, bool filter, const juce::String& name, std::vector<float>& d)
+    {
+        juce::MemoryBlock mb; if (! presetDir (root, filter).getChildFile (name + ".njotbl").loadFileAsData (mb) || mb.getSize() < 8 || std::memcmp (mb.getData(), "NJOT", 4) != 0) return false;
+        int fr = 0; std::memcpy (&fr, (const char*) mb.getData() + 4, 4); if (fr < 1 || fr > 256 || mb.getSize() < 8 + (size_t) fr * FL * sizeof (float)) return false;
+        d.resize ((size_t) fr * FL); std::memcpy (d.data(), (const char*) mb.getData() + 8, d.size() * sizeof (float));
+        for (auto& v : d) v = juce::jlimit (-1.0f, 1.0f, v);
+        return true;
+    }
+    inline void removeUser (const juce::File& root, bool filter, const juce::String& name) { presetDir (root, filter).getChildFile (name + ".njotbl").deleteFile(); }
 }

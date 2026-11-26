@@ -64,6 +64,8 @@ namespace njo
             add (1, "QUANTISE", [this] { edit ([] (float* v) { tblops::quantise (v, 8); }); });
             add (1, "ALL FRAMES", [this] { allFrames = ! allFrames; buttons[(size_t) allBtn]->accent = allFrames; owner.repaint(); });
             allBtn = buttons.size() - 1;
+            add (1, "PRESETS", [this] { presetMenu(); });
+            presBtn = buttons.getLast();
             add (1, "RAZOR", [this] { razorMenu(); });
             razBtn = buttons.getLast();
             add (1, "RASTER: OFF", [this] { static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = (rast + 1) % 5; rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF") : "RASTER: " + juce::String (rv[rast]); rastBtn->repaint(); owner.repaint(); });
@@ -83,6 +85,33 @@ namespace njo
             rz.reset(); razBtn->accent = false; fromBuiltIn = false; touch(); commit();
         }
         // the razor of the wavetable editor: the live preview is drawn over the frame, APPLY bakes it into this frame (or all frames)
+        // preset manager: factory sets (a morph through generators), user presets as files (all frames of the table)
+        void presetMenu()
+        {
+            juce::PopupMenu m, fm, um, dm; const auto& fs = tblops::factorySets (filter); auto root = ctx.be.rootFolder();
+            for (size_t i = 0; i < fs.size(); ++i) fm.addItem ((int) i + 1, fs[i].name);
+            auto users = tblops::userNames (root, filter);
+            for (int k = 0; k < users.size(); ++k) { um.addItem (2000 + k, users[k]); dm.addItem (3000 + k, users[k]); }
+            m.addSubMenu ("Factory sets", fm); if (! users.isEmpty()) { m.addSubMenu ("User presets", um); m.addSubMenu ("Delete user preset", dm); }
+            m.addSeparator(); m.addItem (1000, "Save the table as..."); m.addItem (1001, "Open preset folder");
+            juce::Component::SafePointer<juce::Component> sp (&owner);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (presBtn), [this, sp, users, root] (int r)
+            {
+                if (sp == nullptr || r <= 0) return;
+                const auto& fs2 = tblops::factorySets (filter); std::vector<float> nd;
+                auto put = [this] (std::vector<float> v) { pushUndo(); d = std::move (v); cur = juce::jlimit (0, frames() - 1, cur); fromBuiltIn = false; setPos(); touch(); commit(); };
+                if (r <= (int) fs2.size()) put (tblops::buildFactory (filter, fs2[(size_t) r - 1]));
+                else if (r == 1000)
+                {
+                    flush(); auto* w = new juce::AlertWindow (filter ? "Save Wavefilter table" : "Save Shaper table", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
+                    w->addTextEditor ("n", name.isEmpty() || name == "EDITED" ? "My table" : name, {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+                    w->enterModalState (true, juce::ModalCallbackFunction::create ([this, sp, w, root] (int rr) { if (rr == 1 && sp != nullptr) tblops::saveUser (root, filter, w->getTextEditorContents ("n"), d); }), true);
+                }
+                else if (r == 1001) { tblops::presetDir (root, filter).createDirectory(); tblops::presetDir (root, filter).revealToUser(); }
+                else if (r >= 3000 && r - 3000 < users.size()) tblops::removeUser (root, filter, users[r - 3000]);
+                else if (r >= 2000 && r - 2000 < users.size()) { if (tblops::loadUser (root, filter, users[r - 2000], nd)) put (std::move (nd)); }
+            });
+        }
         void razorMenu()
         {
             juce::PopupMenu m, sg, sh, lv, tu, du, mx, ph;
@@ -330,7 +359,7 @@ namespace njo
         }
         TableEditor& owner; Ctx& ctx; SoundMemory& mem; int os; bool filter;
         std::vector<float> d; juce::String name; int cur = 0; bool dirty = false, fromBuiltIn = false, allFrames = false, harmDirty = true, selfWrite = false, dropOver = false;
-        juce::OwnedArray<Btn> buttons; std::vector<int> rowOf; Btn* closeBtn = nullptr; Btn* rastBtn = nullptr; Btn* razBtn = nullptr; tblops::Razor rz; bool rzAll = false; int rast = 0; int allBtn = 0; int lastIdx = -1; float lastV = 0.0f;
+        juce::OwnedArray<Btn> buttons; std::vector<int> rowOf; Btn* closeBtn = nullptr; Btn* rastBtn = nullptr; Btn* razBtn = nullptr; Btn* presBtn = nullptr; tblops::Razor rz; bool rzAll = false; int rast = 0; int allBtn = 0; int lastIdx = -1; float lastV = 0.0f;
         std::vector<std::vector<float>> undoStack; std::vector<float> clip; std::array<float, tblops::NH> hv {}; int mode = 0;   // mode: 1 draw, 2 harmonics, 3 strip
         std::unique_ptr<juce::FileChooser> chooser;
     };

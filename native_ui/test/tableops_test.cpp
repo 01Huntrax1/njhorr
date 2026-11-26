@@ -24,5 +24,11 @@ int main()
     { Razor r; float a[FL], b[FL]; generate (false, "LINEAR", a); razorRender (a, r, b); bool same = true; for (int i = 0; i < FL; ++i) same = same && std::abs (a[i] - b[i]) < 1e-3f; CHECK (same);
       r.n = 4; r.lvl[1] = -1.0f; razorRender (a, r, b); CHECK (std::abs (b[FL / 4 + 10] + a[40]) < 0.05f);   // segment 2 plays the whole source inverted
       r.reset(); r.n = 2; for (int k = 0; k < 2; ++k) r.shp[k] = 3; razorRender (a, r, b); CHECK (b[10] > 0.99f && b[FL / 2 + 10] > 0.99f); }
+    for (bool flt : { false, true })
+    {
+        for (auto& fs : factorySets (flt)) { auto b = buildFactory (flt, fs); CHECK (b.size() == 16 * FL); bool ok = true; for (float x : b) ok = ok && std::abs (x) <= 1.0f + 1e-5f; CHECK (ok); float a0[FL]; generate (flt, fs.keys[0], a0); CHECK (std::abs (b[100] - a0[100]) < 1e-5f); }
+        auto root = juce::File::getSpecialLocation (juce::File::tempDirectory).getChildFile ("njotbl_test"); std::vector<float> d = buildFactory (flt, factorySets (flt)[0], 5), e;
+        CHECK (saveUser (root, flt, "My Set", d)); CHECK (userNames (root, flt).contains ("My Set")); CHECK (loadUser (root, flt, "My Set", e) && e == d); removeUser (root, flt, "My Set"); CHECK (! userNames (root, flt).contains ("My Set")); root.deleteRecursively();
+    }
     std::printf (fails ? "FAILED\n" : "ALL OK\n"); return fails ? 1 : 0;
 }
