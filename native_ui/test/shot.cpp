@@ -252,6 +252,14 @@ int main (int argc, char** argv)
     for (int i = 0; i < 8; ++i) be.setParam (7012 + i, 0.0f);
     ed.seqArpPage().inspExtras (false); be.setParam (7129, 0.0f); be.setParam (7002, 0.0f);
     ed.seqArpPage().showInspirator (false);
+    {   // MIDI FX modes: Plinko (with some balls), Bounce, Cellular
+        auto now = [&] { return juce::Time::getMillisecondCounter(); }; (void) now;
+        be.setParam (3920, 1.0f); be.setParam (3921, 9.0f); be.setParam (6300, 8.0f); be.setParam (6305, 25.0f); pump();
+        be.setSeqPos (2000000 + 3 + 16 * 8 + 256 * 0x2A); pump(); save (ed, dir.getChildFile ("midifx_plinko.png"), scale);
+        be.setParam (3921, 10.0f); pump(); save (ed, dir.getChildFile ("midifx_bounce.png"), scale);
+        be.setParam (3921, 11.0f); pump(); save (ed, dir.getChildFile ("midifx_cellular.png"), scale);
+        be.setParam (3921, 0.0f); be.setParam (3920, 0.0f); pump();
+    }
     ed.context().set (3100, 1.0f); ed.context().set (3110, 1.0f); pump(); save (ed, dir.getChildFile ("mod_bipolar.png"), scale); ed.context().set (3100, 0.0f); ed.context().set (3110, 0.0f); pump();
     {   // more than 20 slots: Physical / Alpha Juno destinations, second page of the matrix
         auto& cx = ed.context();

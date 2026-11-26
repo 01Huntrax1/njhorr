@@ -67,7 +67,7 @@ namespace njo
         ctx.onLcd = [this] (const juce::String& n, const juce::String& v) { lcdName = n.toUpperCase(); lcdValue = v; repaint (impl->lcdRect); };
         ctx.onStatus = [this] (const juce::String& t) { status = t; statusUntil = juce::Time::getMillisecondCounterHiRes() + 2500; repaint (impl->lcdRect); };
 
-        const char* rn[] = { "SYNTH", "EFFECTS", "MODULATION", "SEQ / ARP" };
+        const char* rn[] = { "SYNTH", "EFFECTS", "MODULATION", "MIDI FX" };
         for (int i = 0; i < 4; ++i)
         {
             auto* b = impl->rail.add (new NavButton (NavButton::Rail, rn[i], juce::String (i + 1)));

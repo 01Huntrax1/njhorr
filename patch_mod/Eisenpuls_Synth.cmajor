@@ -7664,7 +7664,7 @@ processor Eisenpuls_Synth
     input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
-    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 8.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 11.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
@@ -7673,6 +7673,47 @@ processor Eisenpuls_Synth
     input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3928 [[ name: "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", min: 0.0, max: 10.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ3
     input event float param3929 [[ name: "Seq Key Start (1 = the sequencers only run while a note sounds)", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ4
+    input event float param6300 [[ name: "Plinko Rows", min: 2.0, max: 12.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6301 [[ name: "Plinko Scale", min: 0.0, max: 11.0, init: 9.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6302 [[ name: "Plinko Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6303 [[ name: "Plinko Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6304 [[ name: "Plinko Drop X", min: -100.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6305 [[ name: "Plinko Bias", min: -100.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6306 [[ name: "Plinko Momentum", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6307 [[ name: "Plinko Balls", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6308 [[ name: "Plinko Gate", min: 10.0, max: 400.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6309 [[ name: "Plinko Loop", min: 0.0, max: 64.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6310 [[ name: "Plinko Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6311 [[ name: "Plinko Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6312 [[ name: "Plinko Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6313 [[ name: "Plinko Seed", min: 0.0, max: 999.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6314 [[ name: "Plinko Vel Spread", min: 0.0, max: 100.0, init: 20.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6320 [[ name: "Bounce Start Gap", min: 25.0, max: 400.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6321 [[ name: "Bounce Decay", min: 50.0, max: 98.0, init: 80.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6322 [[ name: "Bounce Bounces", min: 2.0, max: 16.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6323 [[ name: "Bounce Pitch Step", min: -4.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6324 [[ name: "Bounce Scale", min: 0.0, max: 11.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6325 [[ name: "Bounce Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6326 [[ name: "Bounce Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6327 [[ name: "Bounce Vel Decay", min: 50.0, max: 100.0, init: 85.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6328 [[ name: "Bounce Pause", min: 0.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6329 [[ name: "Bounce Gate", min: 10.0, max: 100.0, init: 60.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6330 [[ name: "Bounce Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6331 [[ name: "Bounce Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6332 [[ name: "Bounce Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6333 [[ name: "Bounce Direction", min: 0.0, max: 2.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6340 [[ name: "Cellular Rule", min: 0.0, max: 255.0, init: 90.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6341 [[ name: "Cellular Cells", min: 4.0, max: 16.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6342 [[ name: "Cellular Scale", min: 0.0, max: 11.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6343 [[ name: "Cellular Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6344 [[ name: "Cellular Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6345 [[ name: "Cellular Mutation", min: 0.0, max: 100.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6346 [[ name: "Cellular Gate", min: 10.0, max: 400.0, init: 70.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6347 [[ name: "Cellular Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6348 [[ name: "Cellular Max Notes", min: 1.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6349 [[ name: "Cellular Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6350 [[ name: "Cellular Every", min: 1.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
+    input event float param6351 [[ name: "Cellular Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-PLINKO
     input event float param5710 [[ name: "Euclid Lane 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-SQM
     input event float param5711 [[ name: "Euclid Lane 1 Steps", min: 1.0, max: 64.0, init: 16.0, step: 1.0, automatable: false ]];   // MOD-SQM
     input event float param5712 [[ name: "Euclid Lane 1 Pulses", min: 0.0, max: 64.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-SQM
@@ -9058,6 +9099,15 @@ processor Eisenpuls_Synth
     int         evCnt = 0;
     int         gnReg = 0;            // turing machine shift register
     int         gnDeg = -1;           // random walk position (degree index)
+    // ---------------- MOD-PLINKO: Plinko / Bounce / Cellular arpeggiator modes ----------------
+    float[16]   plk;                  // plinko parameters (see tools/mod/build_plinko.py)
+    float[16]   bnc;                  // bounce parameters
+    float[16]   cel;                  // cellular parameters
+    int         plkS = 1;             // plinko random state (Seed > 0: the fall repeats every Loop steps)
+    int         plkDir = 0;           // direction of the last row of the last ball (momentum)
+    int         bnNext = 0;           // step at which the next bounce cycle starts
+    int         celS = 0;             // cellular automaton: living cells as bits
+    int         celGen = 0;           // generations since the start
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
@@ -15717,6 +15767,47 @@ processor Eisenpuls_Synth
     event param6255 (float v) { sqMl.at (445) = v; }
     event param6256 (float v) { sqMl.at (446) = v; }
     event param6257 (float v) { sqMl.at (447) = v; }
+    event param6300 (float v) { plk.at (0) = v; }   // MOD-PLINKO
+    event param6301 (float v) { plk.at (1) = v; }   // MOD-PLINKO
+    event param6302 (float v) { plk.at (2) = v; }   // MOD-PLINKO
+    event param6303 (float v) { plk.at (3) = v; }   // MOD-PLINKO
+    event param6304 (float v) { plk.at (4) = v; }   // MOD-PLINKO
+    event param6305 (float v) { plk.at (5) = v; }   // MOD-PLINKO
+    event param6306 (float v) { plk.at (6) = v; }   // MOD-PLINKO
+    event param6307 (float v) { plk.at (7) = v; }   // MOD-PLINKO
+    event param6308 (float v) { plk.at (8) = v; }   // MOD-PLINKO
+    event param6309 (float v) { plk.at (9) = v; }   // MOD-PLINKO
+    event param6310 (float v) { plk.at (10) = v; }   // MOD-PLINKO
+    event param6311 (float v) { plk.at (11) = v; }   // MOD-PLINKO
+    event param6312 (float v) { plk.at (12) = v; }   // MOD-PLINKO
+    event param6313 (float v) { plk.at (13) = v; }   // MOD-PLINKO
+    event param6314 (float v) { plk.at (14) = v; }   // MOD-PLINKO
+    event param6320 (float v) { bnc.at (0) = v; }   // MOD-PLINKO
+    event param6321 (float v) { bnc.at (1) = v; }   // MOD-PLINKO
+    event param6322 (float v) { bnc.at (2) = v; }   // MOD-PLINKO
+    event param6323 (float v) { bnc.at (3) = v; }   // MOD-PLINKO
+    event param6324 (float v) { bnc.at (4) = v; }   // MOD-PLINKO
+    event param6325 (float v) { bnc.at (5) = v; }   // MOD-PLINKO
+    event param6326 (float v) { bnc.at (6) = v; }   // MOD-PLINKO
+    event param6327 (float v) { bnc.at (7) = v; }   // MOD-PLINKO
+    event param6328 (float v) { bnc.at (8) = v; }   // MOD-PLINKO
+    event param6329 (float v) { bnc.at (9) = v; }   // MOD-PLINKO
+    event param6330 (float v) { bnc.at (10) = v; }   // MOD-PLINKO
+    event param6331 (float v) { bnc.at (11) = v; }   // MOD-PLINKO
+    event param6332 (float v) { bnc.at (12) = v; }   // MOD-PLINKO
+    event param6333 (float v) { bnc.at (13) = v; }   // MOD-PLINKO
+    event param6340 (float v) { cel.at (0) = v; }   // MOD-PLINKO
+    event param6341 (float v) { cel.at (1) = v; }   // MOD-PLINKO
+    event param6342 (float v) { cel.at (2) = v; }   // MOD-PLINKO
+    event param6343 (float v) { cel.at (3) = v; }   // MOD-PLINKO
+    event param6344 (float v) { cel.at (4) = v; }   // MOD-PLINKO
+    event param6345 (float v) { cel.at (5) = v; }   // MOD-PLINKO
+    event param6346 (float v) { cel.at (6) = v; }   // MOD-PLINKO
+    event param6347 (float v) { cel.at (7) = v; }   // MOD-PLINKO
+    event param6348 (float v) { cel.at (8) = v; }   // MOD-PLINKO
+    event param6349 (float v) { cel.at (9) = v; }   // MOD-PLINKO
+    event param6350 (float v) { cel.at (10) = v; }   // MOD-PLINKO
+    event param6351 (float v) { cel.at (11) = v; }   // MOD-PLINKO
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -17545,6 +17636,32 @@ processor Eisenpuls_Synth
         a3Gate.at (62) = 1.0f;
 
         // MOD-SQM defaults
+        plk.at (0) = 8.0;
+        plk.at (1) = 9.0;
+        plk.at (2) = 24.0;
+        plk.at (7) = 1.0;
+        plk.at (8) = 80.0;
+        plk.at (11) = 100.0;
+        plk.at (14) = 20.0;
+        bnc.at (0) = 100.0;
+        bnc.at (1) = 80.0;
+        bnc.at (2) = 8.0;
+        bnc.at (3) = 1.0;
+        bnc.at (4) = 2.0;
+        bnc.at (5) = 24.0;
+        bnc.at (7) = 85.0;
+        bnc.at (8) = 1.0;
+        bnc.at (9) = 60.0;
+        bnc.at (11) = 100.0;
+        cel.at (0) = 90.0;
+        cel.at (1) = 8.0;
+        cel.at (2) = 2.0;
+        cel.at (3) = 24.0;
+        cel.at (5) = 5.0;
+        cel.at (6) = 70.0;
+        cel.at (7) = 100.0;
+        cel.at (8) = 3.0;
+        cel.at (10) = 1.0;
         sqEu.at (0) = 1.0f;
         sqEu.at (1) = 16.0f;
         sqEu.at (2) = 5.0f;
@@ -64113,6 +64230,182 @@ processor Eisenpuls_Synth
             evAdd (nn, accent > 0.5f ? 1.0f : 0.65f, float64 (st) + float64 (r) / float64 (rat), arpGate / float (rat));
     }
 
+    // ---- MOD-PLINKO ----
+    float plkRand()
+    {
+        plkS = plkS * 1103515245 + 12345;
+        return float ((plkS >> 8) & 65535) / 65536.0f;
+    }
+
+    float plkR()   // the seeded generator while Seed > 0, otherwise the noise of the synth
+    {
+        return plk.at (13) > 0.5f ? plkRand() : sqRand01();
+    }
+
+    void plkAddChord (int base, float vel, float64 t, float len, int ct)
+    {
+        int cc = sqChordCount (ct);
+
+        for (int c = 0; c < cc; ++c)
+            evAdd (base + sqChordInt (ct, c), vel, t, len);
+    }
+
+    void plinkoStep (int st)
+    {
+        int root  = arpHN.at (max (arpN - 1, 0));
+        int rows  = clamp (int (plk.at (0) + 0.5f), 2, 12);
+        int mask  = sqScaleMask (int (plk.at (1) + 0.5f));
+        int range = clamp (int (plk.at (2) + 0.5f), 12, 48);
+        int n     = sqScaleCount (mask, range);
+        int lp    = int (plk.at (9) + 0.5f);
+        int balls = clamp (int (plk.at (7) + 0.5f), 1, 4);
+        int ct    = int (plk.at (10) + 0.5f);
+        float pr  = clamp (0.5f + plk.at (5) / 200.0f, 0.02f, 0.98f);
+        float mom = plk.at (6) / 100.0f;
+        int   drop = int (floor (plk.at (4) / 100.0f * float (rows) * 0.5f + 0.5f));
+
+        if (plk.at (13) > 0.5f && (lp > 0 ? (st % lp) == 0 : st == 0))
+            plkS = int (plk.at (13)) * 7919 + 13;
+
+        for (int b = 0; b < balls; ++b)
+        {
+            if (plkR() * 100.0f >= plk.at (12))
+            {
+                int pos = 0;
+                int path = 0;
+
+                for (int r = 0; r < rows; ++r)
+                {
+                    int right = plkR() < pr ? 1 : 0;
+
+                    if (mom > 0.0f && plkR() < mom)
+                        right = plkDir;
+
+                    plkDir = right;
+                    pos += right;
+                    path |= right << r;
+                }
+
+                int bin = pos + drop;
+
+                if (bin < 0)
+                    bin = -bin;
+
+                if (bin > rows)
+                    bin = 2 * rows - bin;
+
+                bin = clamp (bin, 0, rows);
+                int   idx = rows > 0 ? (bin * (n - 1) + rows / 2) / rows : 0;
+                int   nn  = root + int (plk.at (3)) + sqScaleNote (mask, range, idx);
+                float vel = clamp (plk.at (11) / 127.0f * (1.0f - plk.at (14) / 100.0f * 0.6f * plkR()), 0.05f, 1.0f);
+
+                if (bin == 0 || bin == rows)
+                    vel = min (1.0f, vel * 1.25f);
+
+                plkAddChord (nn, vel, float64 (st) + float64 (b) / float64 (balls), plk.at (8) / 100.0f, ct);
+                seqPos <- 2000000 + bin + 16 * rows + 256 * path;
+            }
+        }
+    }
+
+    void bounceStep (int st)
+    {
+        if (st < bnNext)
+            return;
+
+        int   root  = arpHN.at (max (arpN - 1, 0));
+        int   mask  = sqScaleMask (int (bnc.at (4) + 0.5f));
+        int   range = clamp (int (bnc.at (5) + 0.5f), 12, 48);
+        int   n     = sqScaleCount (mask, range);
+        int   ct    = int (bnc.at (10) + 0.5f);
+        int   cc    = sqChordCount (ct);
+        int   nb    = clamp (int (bnc.at (2) + 0.5f), 2, 16);
+        int   dir   = int (bnc.at (13) + 0.5f);
+        int   stp   = int (bnc.at (3) + (bnc.at (3) < 0.0f ? -0.5f : 0.5f));
+        float gap   = bnc.at (0) / 100.0f;
+        float dec   = bnc.at (1) / 100.0f;
+        float vd    = bnc.at (7) / 100.0f;
+        float vel   = bnc.at (11) / 127.0f;
+        float64 t   = float64 (st);
+        int   idx   = dir == 1 ? n - 1 : 0;
+        int   sgn   = dir == 1 ? -1 : 1;
+
+        nb = max (1, min (nb, 32 / cc));
+
+        for (int i = 0; i < nb; ++i)
+        {
+            if (sqRand01() * 100.0f >= bnc.at (12))
+                plkAddChord (root + int (bnc.at (6)) + sqScaleNote (mask, range, idx), vel, t, max (gap * bnc.at (9) / 100.0f, 0.03f), ct);
+
+            t   += float64 (gap);
+            gap *= dec;
+            vel *= vd;
+            idx += stp * sgn;
+
+            if (idx < 0 || idx > n - 1)
+            {
+                if (dir == 2)
+                {
+                    sgn = -sgn;
+                    idx = clamp (idx < 0 ? -idx : 2 * (n - 1) - idx, 0, n - 1);
+                }
+                else
+                    idx = (idx % n + n) % n;
+            }
+        }
+
+        bnNext = st + max (1, int (ceil (t - float64 (st)))) + int (bnc.at (8) + 0.5f);
+    }
+
+    void cellularStep (int st)
+    {
+        int ev  = clamp (int (cel.at (10) + 0.5f), 1, 4);
+        int w   = clamp (int (cel.at (1) + 0.5f), 4, 16);
+        int all = (1 << w) - 1;
+
+        if (st % ev != 0)
+            return;
+
+        int root  = arpHN.at (max (arpN - 1, 0));
+        int mask  = sqScaleMask (int (cel.at (2) + 0.5f));
+        int range = clamp (int (cel.at (3) + 0.5f), 12, 48);
+        int n     = sqScaleCount (mask, range);
+        int ct    = int (cel.at (11) + 0.5f);
+        int rule  = clamp (int (cel.at (0) + 0.5f), 0, 255);
+        int maxN  = clamp (int (cel.at (8) + 0.5f), 1, 8);
+
+        if ((celS & all) == 0 || celGen == 0)
+            celS = 1 << (w / 2);
+
+        int played = 0;
+
+        for (int c = 0; c < w; ++c)
+            if (((celS >> c) & 1) != 0 && played < maxN && sqRand01() * 100.0f >= cel.at (9))
+            {
+                int idx = w > 1 ? (c * (n - 1) + (w - 1) / 2) / (w - 1) : 0;
+                plkAddChord (root + int (cel.at (4)) + sqScaleNote (mask, range, idx), clamp (cel.at (7) / 127.0f, 0.05f, 1.0f), float64 (st), cel.at (6) / 100.0f * float (ev), played == 0 ? ct : 0);
+                played++;
+            }
+
+        int next = 0;
+
+        for (int c = 0; c < w; ++c)
+        {
+            int l = (celS >> ((c + w - 1) % w)) & 1;
+            int m = (celS >> c) & 1;
+            int r = (celS >> ((c + 1) % w)) & 1;
+            int bit = (rule >> (l * 4 + m * 2 + r)) & 1;
+
+            if (cel.at (5) > 0.0f && sqRand01() * 100.0f < cel.at (5))
+                bit = 1 - bit;
+
+            next |= bit << c;
+        }
+
+        celS = next & all;
+        celGen++;
+    }
+
     void arpTick (float dt)
     {
         int amd = int (arpMode + 0.5f);   // MOD-SQM
@@ -64141,6 +64434,9 @@ processor Eisenpuls_Synth
             arpStep = 0;
             a3Prev  = false;   // MOD-ARP303
             gnReg   = 0;       // MOD-SQM
+            bnNext  = 0;       // MOD-PLINKO
+            celS    = 0;
+            celGen  = 0;
             gnDeg   = -1;
 
             if (sqCnt > 0 || evCnt > 0)
@@ -64168,8 +64464,14 @@ processor Eisenpuls_Synth
                     sqEuclid (sn);
                 else if (amd == 7)
                     sqMelodic (sn);
-                else
+                else if (amd == 8)
                     sqGenerative (sn);
+                else if (amd == 9)
+                    plinkoStep (sn);
+                else if (amd == 10)
+                    bounceStep (sn);
+                else
+                    cellularStep (sn);
             }
 
             sqTick (float64 (arpStep - 1) + float64 (arpPh));

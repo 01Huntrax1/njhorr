@@ -34,7 +34,19 @@ namespace njo
 
         // ---- playhead of the step sequencers: the DSP reports "sequencer * 16 + step" (output event seqPos); -1 = unknown ----
         int seqStepPos[10] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-        void setSeqPos (int v) { int m = v / 16; if (v >= 0 && m < 10) seqStepPos[m] = v % 16; }
+        // values from 2000000 on are Plinko balls (tools/mod/build_plinko.py): 2000000 + bin + 16 * rows + 256 * path (bit r: row r went right)
+        struct PlinkoBall { int bin = 0, rows = 0, path = 0; juce::uint32 ms = 0; };
+        std::vector<PlinkoBall> plinkoBalls;
+        void setSeqPos (int v)
+        {
+            if (v >= 2000000)
+            {
+                const int c = v - 2000000; PlinkoBall b; b.bin = c & 15; b.rows = (c >> 4) & 15; b.path = c >> 8; b.ms = juce::Time::getMillisecondCounter();
+                plinkoBalls.push_back (b); if (plinkoBalls.size() > 24) plinkoBalls.erase (plinkoBalls.begin());
+                return;
+            }
+            int m = v / 16; if (v >= 0 && m < 10) seqStepPos[m] = v % 16;
+        }
 
         // ---- Inspirator: the DSP streams its generated pattern (output event insDump, see tools/mod/build_inspirator.py) and the playhead step (insPos) ----
         struct InsPattern
