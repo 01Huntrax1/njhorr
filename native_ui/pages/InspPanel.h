@@ -3,6 +3,7 @@
 #pragma once
 #include "ModUi.h"
 #include <map>
+#include "../NjoInspPresets.h"
 #include <juce_audio_basics/juce_audio_basics.h>
 
 namespace njo
@@ -417,6 +418,69 @@ namespace njo
             }
         };
 
+        // hand edits of the drum pattern: the final hits of every lane per step; a click toggles the hit (the edit is an XOR mask over the generated pattern, parameters 7020-7035 / 7090-7097)
+        struct DrumGrid : juce::Component, Ctx::Listener
+        {
+            Ctx& ctx; int cyc = 0;
+            explicit DrumGrid (Ctx& c) : ctx (c) { ctx.addListener (this); }
+            ~DrumGrid() override { ctx.removeListener (this); }
+            void paramChanged (int n, float) override { if ((n >= 7020 && n <= 7035) || (n >= 7090 && n <= 7097) || (n >= 7115 && n <= 7126)) repaint(); }
+            static int editId (int lane, int cb) { return lane < 8 ? 7020 + lane * 2 + cb : 7090 + (lane - 8) * 2 + cb; }
+            int bars() const { return juce::jmax (1, ctx.be.ins.numBars); }
+            int stepsBar() const { return juce::jlimit (2, 24, ctx.be.ins.stepsBar); }
+            juce::Rectangle<float> tabRect (int i) const { return { 60.0f + 44.0f * (float) i, 2.0f, 40.0f, 14.0f }; }
+            juce::Rectangle<float> clearRect() const { return { (float) getWidth() - 74.0f, 2.0f, 70.0f, 14.0f }; }
+            juce::Rectangle<float> cells() const { auto r = getLocalBounds().toFloat().reduced (2.0f); r.removeFromTop (18); r.removeFromLeft (56); return r; }
+            bool hit (int lane, int cb, int step) const
+            {
+                const auto& p = ctx.be.ins; const int note = juce::roundToInt (ctx.get (7115 + lane));
+                for (int n = 0; n < p.count; ++n)
+                {
+                    if (p.pitch[(size_t) n] != note) continue;
+                    const int abs = p.grid[(size_t) n] / 24, bar = abs / stepsBar();
+                    if ((bars() == 1 ? 0 : bar % 2) == cb && abs % stepsBar() == step) return true;
+                }
+                return false;
+            }
+            void paint (juce::Graphics& g) override
+            {
+                static const char* lanes[12] = { "KICK", "SNARE", "CLAP", "HAT", "O.HAT", "RIM", "M.TOM", "RIDE", "PEDAL", "L.TOM", "H.TOM", "CRASH" };
+                g.setColour (juce::Colour (0xff0d0e10)); g.fillRoundedRectangle (getLocalBounds().toFloat(), 4.0f);
+                const int cb = bars() == 1 ? 0 : cyc;
+                if (bars() > 1) for (int i = 0; i < 2; ++i)
+                {
+                    auto t = tabRect (i); g.setColour (i == cyc ? red.withAlpha (0.85f) : juce::Colour (0xff1a1c1d)); g.fillRoundedRectangle (t, 3.0f);
+                    g.setColour (i == cyc ? juce::Colours::white : dim); g.setFont (font (8.0f, true)); g.drawText (i == 0 ? "BAR A" : "BAR B", t.toNearestInt(), juce::Justification::centred);
+                }
+                g.setColour (dim); g.setFont (font (8.0f)); g.drawText ("click a cell = toggle that hit (white frame = edited; the edit is XORed over the generated pattern)", 160, 2, getWidth() - 240, 14, juce::Justification::left, false);
+                g.setColour (dim.withAlpha (0.7f)); g.drawText ("CLEAR EDITS", clearRect().toNearestInt(), juce::Justification::centred);
+                auto a = cells(); const int steps = stepsBar(); const float cw = a.getWidth() / (float) steps, rh = a.getHeight() / 12.0f;
+                for (int l = 0; l < 12; ++l)
+                {
+                    const int ed = juce::roundToInt (ctx.get (editId (l, cb)));
+                    g.setColour (dim); g.setFont (font (8.0f, true)); g.drawText (lanes[l], 4, (int) (a.getY() + rh * (float) l), 52, (int) rh, juce::Justification::centredLeft);
+                    for (int st = 0; st < steps; ++st)
+                    {
+                        auto c = juce::Rectangle<float> (a.getX() + cw * (float) st, a.getY() + rh * (float) l, cw, rh).reduced (1.5f, 1.0f);
+                        const bool on = hit (l, cb, st), edited = ((ed >> st) & 1) != 0, beat = st % juce::jmax (1, ctx.be.ins.beatSteps) == 0;
+                        g.setColour (beat ? juce::Colour (0xff1c1e20) : juce::Colour (0xff151719)); g.fillRoundedRectangle (c, 2.0f);
+                        if (on) { g.setColour (red.interpolatedWith (orange, 0.35f)); g.fillRoundedRectangle (c.reduced (1.0f), 2.0f); }
+                        if (edited) { g.setColour (juce::Colours::white.withAlpha (0.9f)); g.drawRoundedRectangle (c, 2.0f, 1.3f); }
+                    }
+                }
+            }
+            void mouseDown (const juce::MouseEvent& e) override
+            {
+                auto pt = e.position;
+                if (bars() > 1) for (int i = 0; i < 2; ++i) if (tabRect (i).contains (pt)) { cyc = i; repaint(); return; }
+                if (clearRect().contains (pt)) { for (int i = 0; i < 24; ++i) { const int id = i < 16 ? 7020 + i : 7090 + i - 16; ctx.begin (id); ctx.set (id, 0); ctx.end (id); } repaint(); return; }
+                auto a = cells(); if (! a.contains (pt)) return;
+                const int steps = stepsBar(), st = juce::jlimit (0, steps - 1, (int) ((pt.x - a.getX()) / (a.getWidth() / (float) steps))), l = juce::jlimit (0, 11, (int) ((pt.y - a.getY()) / (a.getHeight() / 12.0f)));
+                const int id = editId (l, bars() == 1 ? 0 : cyc), v = juce::roundToInt (ctx.get (id)) ^ (1 << st);
+                ctx.begin (id); ctx.set (id, (float) v); ctx.end (id); repaint();
+            }
+        };
+
         struct Roll : juce::Component
         {
             Ctx& ctx; std::function<void()> start;
@@ -478,7 +542,8 @@ namespace njo
         std::vector<int> extraIds;
         insp::SeedBox song, part, vari;
         insp::Action lockB, genB, copyB, pasteB; insp::MidiDrag dragB; bool dragging = false;
-        insp::ChordCards cards; insp::Roll roll; juce::TextEditor code;
+        insp::ChordCards cards; insp::Roll roll; insp::DrumGrid drumGrid; juce::TextEditor code;
+        insp::Action presetB, diceB, undoB, stepsB; bool stepEdit = false; std::vector<std::vector<std::pair<int, float>>> history;
         unsigned lastVer = 0; int lastStep = -2;
 
         static std::vector<juce::String> names (std::initializer_list<const char*> l) { std::vector<juce::String> v; for (auto* s : l) v.push_back (s); return v; }
@@ -497,7 +562,7 @@ namespace njo
               inG (c, 7010, 1, names ({ "Transpose", "Hold", "Off" })),
               onG (c, 7000, 2, names ({ "OFF", "ON" })),
               song (c, 7005, 9999, 4, "SONG"), part (c, 7006, 9999, 4, "PART"), vari (c, 7007, 99, 2, "VARIATION", "NONE"),
-              cards (c), roll (c)
+              cards (c), roll (c), drumGrid (c)
         {
             ctx.addListener (this);
             modeG.fs = 11.0f; onG.fs = 9.0f; inG.fs = 9.0f; genG.fs = 11.0f; varG.fs = 11.0f; 
@@ -505,6 +570,12 @@ namespace njo
                              (juce::Component*) &inG, (juce::Component*) &onG, (juce::Component*) &song, (juce::Component*) &part, (juce::Component*) &vari,
                              (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &varG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
+            for (auto* x : { (juce::Component*) &presetB, (juce::Component*) &diceB, (juce::Component*) &undoB }) addAndMakeVisible (x);
+            addChildComponent (stepsB); addChildComponent (drumGrid);
+            presetB.text = "PRESETS"; presetB.click = [this] { showPresets(); };
+            diceB.text = "DICE"; diceB.click = [this] { dice(); };
+            undoB.text = "UNDO"; undoB.click = [this] { undo(); };
+            stepsB.text = "EDIT STEPS"; stepsB.click = [this] { stepEdit = ! stepEdit; stepsB.accent = stepEdit; resized(); refresh(); repaint(); };
             lockB.click = [this]
             {
                 const int cur = juce::roundToInt (ctx.get (7011));
@@ -544,7 +615,7 @@ namespace njo
             };
             dragB.start = startDrag; roll.start = startDrag;
             genB.text = "GENERATE"; genB.sub = "NEW IDEA"; genB.accent = true;
-            genB.click = [this] { const int v = juce::Random::getSystemRandom().nextInt (10000); ctx.begin (7006); ctx.set (7006, (float) v); ctx.end (7006); };
+            genB.click = [this] { pushHistory(); const int v = juce::Random::getSystemRandom().nextInt (10000); ctx.begin (7006); ctx.set (7006, (float) v); ctx.end (7006); };
             copyB.text = "Copy"; pasteB.text = "Paste";
             copyB.click = [this] { juce::SystemClipboard::copyTextToClipboard (makeCode()); };
             pasteB.click = [this] { applyCode (juce::SystemClipboard::getTextFromClipboard()); };
@@ -568,6 +639,53 @@ namespace njo
         }
         ~InspPanel() override { ctx.removeListener (this); }
 
+        // ---- presets, dice and undo ----
+        std::vector<std::pair<int, float>> snapshot() const
+        {
+            std::vector<std::pair<int, float>> v;
+            for (int id = njo::inspre::kFirst; id <= njo::inspre::kLast; ++id) if (njo::inspre::keepsOnSave (id)) v.push_back ({ id, ctx.get (id) });
+            return v;
+        }
+        void pushHistory() { history.push_back (snapshot()); if (history.size() > 40) history.erase (history.begin()); }
+        void applySnapshot (const std::vector<std::pair<int, float>>& v) { for (auto& e : v) { ctx.begin (e.first); ctx.set (e.first, e.second); ctx.end (e.first); } }
+        void undo() { if (history.empty()) return; auto v = history.back(); history.pop_back(); applySnapshot (v); }
+        void dice()
+        {
+            pushHistory(); auto& r = juce::Random::getSystemRandom();
+            static const int scales[] = { 0, 0, 1, 1, 1, 2, 3, 4, 5, 6 }, gens[] = { 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9, 9 };
+            setP (7002, r.nextInt (32)); setP (7003, r.nextInt (12)); setP (7004, scales[r.nextInt (10)]); setP (7005, r.nextInt (10000)); setP (7006, r.nextInt (10000));
+            setP (7139, gens[r.nextInt (12)]); setP (7140, r.nextInt (16));
+        }
+        juce::File presetRoot() const { return ctx.be.rootFolder(); }
+        void showPresets()
+        {
+            juce::PopupMenu m; static const auto fac = njo::inspre::factory();
+            std::vector<juce::PopupMenu> subs; juce::StringArray gs;
+            for (auto& p : fac) if (! gs.contains (p.group)) gs.add (p.group);
+            subs.resize ((size_t) gs.size());
+            for (size_t i = 0; i < fac.size(); ++i) subs[(size_t) gs.indexOf (fac[i].group)].addItem ((int) i + 1, fac[i].name);
+            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
+            m.addSeparator(); m.addItem (1000, "Save current settings as...");
+            auto users = njo::inspre::names (presetRoot()); juce::PopupMenu um, del;
+            for (int k = 0; k < users.size(); ++k) { um.addItem (2000 + k, users[k]); del.addItem (3000 + k, users[k]); }
+            if (! users.isEmpty()) { m.addSubMenu ("User presets", um); m.addSubMenu ("Delete user preset", del); }
+            m.addItem (1001, "Open preset folder");
+            juce::Component::SafePointer<InspPanel> sp (this);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetB), [sp, users] (int r)
+            {
+                if (sp == nullptr || r <= 0) return;
+                if (r < 1000) { sp->pushHistory(); sp->applySnapshot (fac[(size_t) r - 1].v); }
+                else if (r == 1000)
+                {
+                    auto* w = new juce::AlertWindow ("Save Inspirator preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
+                    w->addTextEditor ("n", "My Inspirator preset", {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+                    w->enterModalState (true, juce::ModalCallbackFunction::create ([sp, w] (int rr) { if (rr == 1 && sp != nullptr) njo::inspre::save (sp->presetRoot(), w->getTextEditorContents ("n"), sp->snapshot()); }), true);
+                }
+                else if (r == 1001) { njo::inspre::folder (sp->presetRoot()).createDirectory(); njo::inspre::folder (sp->presetRoot()).revealToUser(); }
+                else if (r >= 3000 && r - 3000 < users.size()) njo::inspre::remove (sp->presetRoot(), users[r - 3000]);
+                else if (r >= 2000 && r - 2000 < users.size()) { std::vector<std::pair<int, float>> v; if (njo::inspre::load (sp->presetRoot(), users[r - 2000], v)) { sp->pushHistory(); sp->applySnapshot (v); } }
+            });
+        }
         int mode() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (7001))); }
         juce::String makeCode() const
         {
@@ -609,6 +727,7 @@ namespace njo
         // new progression: a random degree and chord shape for every bar (the first bar likes the tonic), now and then a borrowed chord; the push flags stay
         void randomizeChords (int algo = 0)
         {
+            pushHistory();
             auto& rnd = juce::Random::getSystemRandom();
             static const int degW[7] = { 30, 10, 8, 20, 20, 24, 3 };
             static const int shapeW[7] = { 40, 14, 14, 6, 8, 8, 10 };
@@ -702,7 +821,7 @@ namespace njo
             for (int id : ids) byId[id]->setVisible (true);
             genG.setVisible (extras); varG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
             cards.setVisible (m != 4);
-            if (m == 4) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
+            if (m == 4 && ! stepEdit) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
             if (m < 4)
             {
                 static const char* lbl[9] = { "complexity", "density", "humanize", "octave", "range", "gate", "vel", "vel rand", "gate rand" };
@@ -745,7 +864,7 @@ namespace njo
                 if (importInfo.isNotEmpty()) { g.setColour (ink); g.drawText (importInfo, importB.getRight() - 120, importB.getY(), 120, 12, juce::Justification::centredRight); }
             }
             if (fileHover) { g.setColour (red.withAlpha (0.18f)); g.fillRect (getLocalBounds()); g.setColour (red); g.drawRect (getLocalBounds(), 2); g.setFont (impact (22.0f)); g.drawText ("DROP MIDI FILE TO IMPORT", getLocalBounds(), juce::Justification::centred); }
-            if (mode() == 4)
+            if (mode() == 4 && ! stepEdit)
             {
                 static const char* lanes[12] = { "KICK", "SNARE", "CLAP", "HAT", "O.HAT", "RIM", "M.TOM", "RIDE", "PEDAL", "L.TOM", "H.TOM", "CRASH" };
                 for (int l = 0; l < 12; ++l) g.drawText (lanes[l], laneRects[l], juce::Justification::centred);
@@ -763,6 +882,9 @@ namespace njo
             extraB.setBounds (head.removeFromRight (110).reduced (0, 1)); head.removeFromRight (6);
             autoB.setBounds (head.removeFromRight (56).reduced (0, 1)); head.removeFromRight (4);
             randB.setBounds (head.removeFromRight (130).reduced (0, 1));
+            { auto hl = head.withTrimmedLeft (250);
+              presetB.setBounds (hl.removeFromLeft (74).reduced (0, 1)); hl.removeFromLeft (4); diceB.setBounds (hl.removeFromLeft (46).reduced (0, 1)); hl.removeFromLeft (4);
+              undoB.setBounds (hl.removeFromLeft (48).reduced (0, 1)); hl.removeFromLeft (4); stepsB.setBounds (hl.removeFromLeft (80).reduced (0, 1)); }
             b.removeFromTop (2);
             auto top = b.removeFromTop (60);
             modeG.setBounds (top.removeFromLeft (400)); top.removeFromLeft (6);
@@ -800,7 +922,7 @@ namespace njo
             // right: chords (or lanes) and the roll
             const int m = mode();
             if (m != 4) { cards.setBounds (b.removeFromTop (74)); b.removeFromTop (6); }
-            else
+            else if (! stepEdit)
             {
                 auto lanes = b.removeFromTop (172); b.removeFromTop (6);
                 const int cw = lanes.getWidth() / 12;
@@ -813,7 +935,8 @@ namespace njo
                 }
             }
             if (m != 4) { lockBars.setBounds (b.removeFromTop (16)); b.removeFromTop (3); }
-            roll.setBounds (b);
+            roll.setBounds (b); drumGrid.setBounds (b);
+            { const bool g = m == 4 && stepEdit; roll.setVisible (! g); drumGrid.setVisible (g); stepsB.setVisible (m == 4); presetB.setVisible (true); }
             // bottom: knobs + MIDI IN
             auto mi = bottom.removeFromRight (176); bottom.removeFromRight (8);
             midiLbl = mi.removeFromTop (12); inG.setBounds (mi);
