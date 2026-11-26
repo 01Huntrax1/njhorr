@@ -4,6 +4,7 @@
 #include "ModUi.h"
 #include <map>
 #include "../NjoInspPresets.h"
+#include "../NjoInspImport.h"
 #include <juce_audio_basics/juce_audio_basics.h>
 
 namespace njo
@@ -301,39 +302,12 @@ namespace njo
         };
 
         // a dropped MIDI file as 96-ticks-per-quarter notes: pairs (grid * 128 + pitch, len * 128 + vel), sorted by time
-        struct ImportedNotes { std::vector<int> grid, len, pitch, vel; int bars = 1; };
+        using ImportedNotes = njo::insimp::Notes;
+        // compatibility wrapper (tests): all tracks, default options
         inline bool readMidiFile (const juce::File& f, int barTicks, ImportedNotes& out)
         {
-            juce::FileInputStream in (f);
-            juce::MidiFile mf;
-            if (! in.openedOk() || ! mf.readFrom (in)) return false;
-            const int tpq = mf.getTimeFormat();
-            if (tpq <= 0) return false;
-            struct N { int g, l, p, v; };
-            std::vector<N> v;
-            for (int t = 0; t < mf.getNumTracks(); ++t)
-            {
-                juce::MidiMessageSequence seq (*mf.getTrack (t));
-                seq.updateMatchedPairs();
-                for (int i = 0; i < seq.getNumEvents(); ++i)
-                {
-                    auto* e = seq.getEventPointer (i);
-                    if (! e->message.isNoteOn() || e->noteOffObject == nullptr) continue;
-                    const int g = (int) std::lround (e->message.getTimeStamp() * 96.0 / tpq / 6.0) * 6;
-                    const int l = juce::jmax (6, (int) std::lround ((e->noteOffObject->message.getTimeStamp() - e->message.getTimeStamp()) * 96.0 / tpq));
-                    v.push_back ({ g, juce::jmin (l, 1000), e->message.getNoteNumber(), juce::jlimit (1, 127, (int) e->message.getVelocity()) });
-                }
-            }
-            if (v.empty()) return false;
-            std::stable_sort (v.begin(), v.end(), [] (const N& a, const N& b) { return a.g < b.g; });
-            int lastOnset = 0;
-            for (auto& n : v) lastOnset = juce::jmax (lastOnset, n.g);
-            const int needBars = lastOnset / juce::jmax (1, barTicks) + 1;
-            out.bars = needBars <= 1 ? 1 : needBars <= 2 ? 2 : needBars <= 4 ? 4 : 8;
-            for (auto& n : v)
-                if (n.g < out.bars * barTicks && (int) out.grid.size() < 512)
-                { out.grid.push_back (n.g); out.len.push_back (n.l); out.pitch.push_back (n.p); out.vel.push_back (n.v); }
-            return ! out.grid.empty();
+            auto raw = njo::insimp::readFile (f); if (! raw.error.isEmpty()) return false;
+            njo::insimp::Options o; o.detectKey = false; out = njo::insimp::process (raw, o, barTicks).notes; return ! out.grid.empty();
         }
 
         inline void sendImport (Backend& be, const ImportedNotes& n)
@@ -543,7 +517,7 @@ namespace njo
         insp::SeedBox song, part, vari;
         insp::Action lockB, genB, copyB, pasteB; insp::MidiDrag dragB; bool dragging = false;
         insp::ChordCards cards; insp::Roll roll; insp::DrumGrid drumGrid; juce::TextEditor code;
-        insp::Action presetB, diceB, undoB, stepsB; bool stepEdit = false; std::vector<std::vector<std::pair<int, float>>> history;
+        insp::Action presetB, diceB, undoB, stepsB, optB; njo::insimp::File rawFile; njo::insimp::Options impOpts; juce::String rawName; bool stepEdit = false; std::vector<std::vector<std::pair<int, float>>> history;
         unsigned lastVer = 0; int lastStep = -2;
 
         static std::vector<juce::String> names (std::initializer_list<const char*> l) { std::vector<juce::String> v; for (auto* s : l) v.push_back (s); return v; }
@@ -571,7 +545,8 @@ namespace njo
                              (juce::Component*) &lockB, (juce::Component*) &genB, (juce::Component*) &genG, (juce::Component*) &varG, (juce::Component*) &lockBars, (juce::Component*) &extraB, (juce::Component*) &importB, (juce::Component*) &randB, (juce::Component*) &autoB, (juce::Component*) &copyB, (juce::Component*) &pasteB, (juce::Component*) &dragB, (juce::Component*) &cards, (juce::Component*) &roll, (juce::Component*) &code })
                 addAndMakeVisible (x);
             for (auto* x : { (juce::Component*) &presetB, (juce::Component*) &diceB, (juce::Component*) &undoB }) addAndMakeVisible (x);
-            addChildComponent (stepsB); addChildComponent (drumGrid);
+            addChildComponent (stepsB); addChildComponent (drumGrid); addChildComponent (optB);
+            optB.text = "IMPORT OPTIONS"; optB.sub = "track, bars, quantise..."; optB.click = [this] { showImportOptions(); };
             presetB.text = "PRESETS"; presetB.click = [this] { showPresets(); };
             diceB.text = "DICE"; diceB.click = [this] { dice(); };
             undoB.text = "UNDO"; undoB.click = [this] { undo(); };
@@ -711,9 +686,61 @@ namespace njo
         }
         void importFile (const juce::File& f)
         {
-            insp::ImportedNotes n;
-            if (! insp::readMidiFile (f, barTicks(), n)) { importInfo = "could not read " + f.getFileName(); repaint(); return; }
-            applyImport (n, f.getFileName());
+            auto raw = njo::insimp::readFile (f);
+            if (! raw.error.isEmpty()) { importInfo = f.getFileName() + ": " + raw.error; repaint(); return; }
+            rawFile = raw; rawName = f.getFileName();
+            impOpts.track = -1; impOpts.startBar = 0;   // the file specific options start fresh, the others stay
+            reimport();
+        }
+        // the options changed (or a new file came in): process the raw notes again and hand them to the DSP
+        void reimport()
+        {
+            if (rawFile.notes.empty()) { importInfo = "import a MIDI file first"; repaint(); return; }
+            auto r = njo::insimp::process (rawFile, impOpts, barTicks());
+            if (r.kept == 0) { importInfo = "no notes with these options"; repaint(); return; }
+            pushHistory(); applyImport (r.notes, rawName);
+            importInfo += "  (" + juce::String (r.inFile) + " in file)";
+            if (r.hasKey)
+            {
+                static const char* kn[12] = { "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B" };
+                setP (7003, r.key.key); setP (7004, r.key.minor ? 1 : 0);
+                importInfo += "  -  key " + juce::String (kn[r.key.key]) + (r.key.minor ? " minor" : " major");
+            }
+            repaint();
+        }
+        void showImportOptions()
+        {
+            if (rawFile.notes.empty()) { importInfo = "import a MIDI file first (IMPORT MIDI or drop it here)"; repaint(); return; }
+            auto& o = impOpts; juce::PopupMenu m, tr, dr, sb, ln, qu, vc, oc, vl;
+            tr.addItem (100, "All tracks", true, o.track < 0);
+            for (int t = 0; t < rawFile.trackNames.size(); ++t) if (rawFile.trackNoteCounts[(size_t) t] > 0) tr.addItem (101 + t, rawFile.trackNames[t] + "  (" + juce::String (rawFile.trackNoteCounts[(size_t) t]) + ")", true, o.track == t);
+            dr.addItem (200, "Include channel 10", true, o.drums == 0); dr.addItem (201, "Exclude channel 10", true, o.drums == 1); dr.addItem (202, "Only channel 10 (drums)", true, o.drums == 2);
+            for (int b = 0; b < 16; ++b) sb.addItem (300 + b, "Bar " + juce::String (b + 1), true, o.startBar == b);
+            ln.addItem (400, "Auto (1 / 2 / 4 / 8 from the notes)", true, o.bars == 0); for (int b : { 1, 2, 4, 8 }) ln.addItem (400 + b, juce::String (b) + (b == 1 ? " bar" : " bars"), true, o.bars == b);
+            static const int qv[5] = { 6, 12, 24, 48, 96 }; static const char* qn[5] = { "Off (1/64)", "1/32", "1/16", "1/8", "1/4" };
+            for (int i = 0; i < 5; ++i) qu.addItem (500 + i, qn[i], true, o.quant == qv[i]);
+            vc.addItem (600, "All notes", true, o.voices == 0); vc.addItem (601, "Highest note per onset (lead)", true, o.voices == 1); vc.addItem (602, "Lowest note per onset (bass)", true, o.voices == 2);
+            for (int k = -2; k <= 2; ++k) oc.addItem (700 + k + 2, (k > 0 ? "+" : "") + juce::String (k) + (k == 0 ? " (as in the file)" : " octave" + juce::String (std::abs (k) > 1 ? "s" : "")), true, o.octave == k);
+            vl.addItem (800, "As played", true, o.velocity == 0); vl.addItem (801, "Flat (100)", true, o.velocity == 1); vl.addItem (802, "Compressed", true, o.velocity == 2);
+            m.addSubMenu ("Track", tr); m.addSubMenu ("Drum channel", dr); m.addSubMenu ("Start at", sb); m.addSubMenu ("Length", ln); m.addSubMenu ("Quantise", qu);
+            m.addSubMenu ("Voices", vc); m.addSubMenu ("Octave", oc); m.addSubMenu ("Velocity", vl);
+            m.addSeparator(); m.addItem (900, "Trim empty bars at the start", true, o.trimLead); m.addItem (901, "Detect key and scale from the notes", true, o.detectKey);
+            juce::Component::SafePointer<InspPanel> sp (this);
+            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&optB), [sp] (int r)
+            {
+                if (sp == nullptr || r <= 0) return; auto& o = sp->impOpts;
+                if (r == 100) o.track = -1; else if (r >= 101 && r < 200) o.track = r - 101;
+                else if (r >= 200 && r < 203) o.drums = r - 200;
+                else if (r >= 300 && r < 316) o.startBar = r - 300;
+                else if (r >= 400 && r < 409) o.bars = r - 400;
+                else if (r >= 500 && r < 505) { static const int qv[5] = { 6, 12, 24, 48, 96 }; o.quant = qv[r - 500]; }
+                else if (r >= 600 && r < 603) o.voices = r - 600;
+                else if (r >= 700 && r < 705) o.octave = r - 702;
+                else if (r >= 800 && r < 803) o.velocity = r - 800;
+                else if (r == 900) o.trimLead = ! o.trimLead;
+                else if (r == 901) o.detectKey = ! o.detectKey;
+                sp->reimport();
+            });
         }
         void restoreImport (const juce::var& a)
         {
@@ -819,7 +846,7 @@ namespace njo
             if (extras) ids = extraIds;
             knobIds = ids;
             for (int id : ids) byId[id]->setVisible (true);
-            genG.setVisible (extras); varG.setVisible (extras); importB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
+            genG.setVisible (extras); varG.setVisible (extras); importB.setVisible (extras); optB.setVisible (extras); lockBars.setVisible (m != 4); randB.setVisible (m != 4); autoB.setVisible (m != 4);
             cards.setVisible (m != 4);
             if (m == 4 && ! stepEdit) for (int l = 0; l < 12; ++l) for (int id : { 7102 + l, (l < 8 ? 7036 + l : 7090 + l), 7115 + l }) byId[id]->setVisible (true);
             if (m < 4)
@@ -897,7 +924,7 @@ namespace njo
             genB.setBounds (top.reduced (0, 2));
             b.removeFromTop (6);
             auto bottom = b.removeFromBottom (112);
-            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); varG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); importB.setBounds (gl.removeFromTop (40).reduced (0, 2)); }
+            if (extras) { auto gl = bottom.removeFromLeft (232); bottom.removeFromLeft (4); gl.removeFromTop (10); genG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); varG.setBounds (gl.removeFromTop (28)); gl.removeFromTop (4); auto ir = gl.removeFromTop (40).reduced (0, 2); importB.setBounds (ir.removeFromLeft (112)); ir.removeFromLeft (4); optB.setBounds (ir); }
             b.removeFromBottom (6);
             // left column
             auto left = b.removeFromLeft (258); b.removeFromLeft (8);
