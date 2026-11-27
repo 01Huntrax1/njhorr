@@ -48,7 +48,7 @@ AR = lambda mode: arp(mode=mode)
 
 # ---- Hanenbow (13): one leaf, flat, in the middle; one frog, no spread, no randomness in x
 off_leaves = [(LF(l, 0), 0) for l in range(8)]
-one = off_leaves + [(LF(0, 0), 1), (LF(0, 1), 0.5), (LF(0, 2), 0.5), (LF(0, 3), 0.5), (LF(0, 4), 0), (HG(0), 1), (HG(13), 0), (HG(5), 0), (HG(6), 24), (HG(12), 50)]
+one = off_leaves + [(LF(0, 0), 1), (LF(0, 1), 0.51), (LF(0, 2), 0.5), (LF(0, 3), 0.5), (LF(0, 4), 0), (HG(0), 1), (HG(13), 0), (HG(5), 0), (HG(6), 24), (HG(12), 65), (HG(17), 0)]
 evs = events(BASE + AR(13) + one, [48], hold=2.5, tag="h1")
 hits_ = [v for v in evs if 3000000 <= v < 4000000]; pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]
 check("Hanenbow: a frog lands on leaf 0", len(hits_) >= 1 and all(h == 3000000 for h in hits_), str(hits_[:5]))
@@ -69,9 +69,16 @@ check("Hanenbow: with Hits 1 the leaf changes colour after every landing (0 -> 1
 a = render(BASE + AR(13) + one + [(HG(8), 100), (HG(14), 1), (HG(15), 3), (HG(0), 1)], [48], hold=3.0, tag="h6")
 check("Hanenbow: Rest 100 % is silent", rms(render(BASE + AR(13) + one + [(HG(11), 100)], [48], hold=2.5, tag="h7")[int(0.1 * RATE):int(2.5 * RATE)]) < 0.01)
 # a tilted leaf throws the frog sideways: with the angle right (1.0) the second landing / the frog leaves, the x position drifts
-evs = events(BASE + AR(13) + one + [(LF(0, 3), 1.0)], [48], hold=2.5, tag="h8")
+evs = events(BASE + AR(13) + one + [(LF(0, 3), 0.2)], [48], hold=2.5, tag="h8")
 pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
 check("Hanenbow: a tilted leaf throws the frog to the side", len(xs) > 10 and abs(xs[-1] - xs[0]) > 60 or max(xs) - min(xs) > 60, "x %s .. %s" % (min(xs), max(xs)))
+# Aim 45 degrees: the tadpole leaves the launch leaf to the right
+evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 10), (HG(17), 45)], [48], hold=2.0, tag="h9")
+pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
+check("Hanenbow: Aim 45 launches the tadpole from Spawn X (10 %) to the right", len(xs) > 10 and abs(xs[0] - 102) < 40 and max(xs) > xs[0] + 150, "x %s .. %s" % (xs[0] if xs else None, max(xs) if xs else None))
+evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 90), (HG(17), -45)], [48], hold=2.0, tag="h10")
+pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
+check("Hanenbow: Aim -45 launches it to the left", len(xs) > 10 and min(xs) < xs[0] - 150, "x %s .. %s" % (xs[0] if xs else None, min(xs) if xs else None))
 # ---- Luminaria (14): all walkers off except 0 on a single arrow; every visit plays
 LM0 = [(CL(c), 0) for c in range(64)] + [(WK(w, 0), 0) for w in range(4)]
 # walker 0 at (0,0) moving right along row 0; an arrow right at (4,0) -> plays every 8 moves (wrap)

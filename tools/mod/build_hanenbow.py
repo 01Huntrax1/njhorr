@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Idempotent (marker MOD-HBLM, after build_plinko2.py): two Elektroplankton-style arpeggiator modes.
-  Arp Mode 13 "Hanenbow": frogs jump out of the water at the bottom of the picture and land on up to 8 leaves that you place and tilt.  A frog that lands on a leaf bounces
+  Arp Mode 13 "Hanenbow": frogs are launched from a leaf at the bottom and land on up to 8 leaves that are fixed to a plant stem and that you turn.  A frog that lands on a leaf bounces
     off it (a tilted leaf throws it sideways) and every landing plays the note of that leaf.  After `Hits` landings the leaf changes colour (4 states) and its pitch moves by
-    `Step` scale degrees.  A frog that comes from below passes through a leaf.  A frog starts at every arpeggiator step (Division / Rate) while fewer than Frogs are alive.
-    Global parameters 6700 + k: Frogs, Speed %, Gravity %, Jump %, Bounce %, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Spawn X, Spread, Hits, Step, Leaf Size.
-    Leaves: 6720 + 5 * l + j for l = 0..7, j = On, X, Y, Angle (0..1, 0.5 = flat), Note (scale degree).
+    `Step` scale degrees.  A frog that comes from below passes through a leaf.  A frog starts at every arpeggiator step (Division / Rate) while fewer than Frogs are alive, from the launch leaf at Spawn X (+- Spread) at the bottom, in the direction Aim (degrees from vertical, positive = to the right).
+    Global parameters 6700 + k: Frogs, Speed %, Gravity %, Jump %, Bounce %, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Spawn X, Spread, Hits, Step, Leaf Size, Aim.
+    Leaves: 6720 + 5 * l + j for l = 0..7, j = On, X (below 0.5 = left of the stem, otherwise right: the leaf is fixed to the stem), Y (its height), Angle (0..1, 0.5 = horizontal, above = up), Note (scale degree).
   Arp Mode 14 "Luminaria": four walkers on an 8 x 8 grid.  Every `Every` arpeggiator steps each walker moves one cell; a cell holds an arrow (up, right, down, left) or nothing.
     When a walker lands on an arrow it turns that way and plays a note (the pitch follows the column, the row or both); with Rotate the arrow turns clockwise after each visit.
     Global parameters 6760 + k: Every, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Rotate, Pitch By, Wrap.
@@ -27,12 +27,13 @@ def rep(old, new):
 
 rep('"Arp Mode", min: 0.0, max: 12.0,', '"Arp Mode", min: 0.0, max: 14.0,')
 HG = [('Frogs', 1, 8, 3), ('Speed', 25, 300, 100), ('Gravity', 20, 300, 100), ('Jump', 40, 200, 100), ('Bounce', 20, 110, 60), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0),
-      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 50), ('Spread', 0, 100, 40), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 30)]
+      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 12), ('Spread', 0, 100, 5), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 30), ('Aim', -80, 80, 25)]
 LG = [('Every', 1, 8, 1), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0), ('Gate', 10, 400, 70), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0),
       ('Rotate', 0, 1, 0), ('Pitch By', 0, 2, 0), ('Wrap', 0, 1, 1)]
 # leaves: on, x, y, angle, note
-LEAVES = [[1, 0.33, 0.74, 0.64, 0], [1, 0.67, 0.70, 0.36, 2], [1, 0.31, 0.58, 0.62, 4], [1, 0.69, 0.54, 0.38, 5], [1, 0.35, 0.44, 0.60, 7], [1, 0.65, 0.40, 0.40, 3],   # a plant: leaves left and right of a stem
-          [0, 0.50, 0.80, 0.50, 9], [0, 0.12, 0.45, 0.50, 6]]
+# a plant: the leaves are fixed to the stem (x 0.49 = left side, 0.51 = right side) at 8 heights and only turn; angle 0.5 = horizontal, above = up
+LEAVES = [[1, 0.49, 0.78, 0.70, 0], [1, 0.51, 0.70, 0.66, 2], [1, 0.49, 0.62, 0.68, 4], [1, 0.51, 0.54, 0.64, 5], [1, 0.49, 0.46, 0.66, 7], [1, 0.51, 0.38, 0.62, 3],
+          [0, 0.49, 0.30, 0.66, 9], [0, 0.51, 0.22, 0.62, 6]]
 LNAMES = ['On', 'X', 'Y', 'Angle', 'Note']; LHI = {0: 1, 1: 1, 2: 1, 3: 1, 4: 24}
 WALK = [[1, 1, 1, 2, 0], [1, 3, 3, 2, 1], [1, 6, 6, 4, 0], [1, 5, 5, 4, -1]]
 WNAMES = ['On', 'X', 'Y', 'Direction', 'Octave']; WLO = {0: 0, 1: 0, 2: 0, 3: 1, 4: -2}; WHI = {0: 1, 1: 7, 2: 7, 3: 4, 4: 2}
@@ -153,8 +154,10 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
         hnbX.at (free)   = clamp (hnbG.at (12) / 100.0f + (sqRand01() - 0.5f) * hnbG.at (13) / 100.0f, 0.03f, 0.97f);
         hnbY.at (free)   = 1.0f;
-        hnbVX.at (free)  = (sqRand01() - 0.5f) * 0.3f;
-        hnbVY.at (free)  = -(1.1f + (sqRand01() - 0.5f) * 0.15f) * jump * sqrt (gr);
+        float aim = hnbG.at (17) * 0.0174533f + (sqRand01() - 0.5f) * 0.05f;
+        float spd = (1.1f + (sqRand01() - 0.5f) * 0.15f) * jump * sqrt (gr);
+        hnbVX.at (free)  = spd * sin (aim);
+        hnbVY.at (free)  = -spd * cos (aim);
         hnbCd.at (free)  = 0.0f;
         hnbAge.at (free) = 0.0f;
         hnbOn.at (free)  = 1;
@@ -196,9 +199,10 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
         for (int l = 0; l < 8; ++l)
         {
-            float an = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;
-            hnbEx.at (l) = cos (an) * hl;
-            hnbEy.at (l) = sin (an) * hl;
+            float el = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;                // elevation of the leaf: 0.5 = horizontal, above 0.5 = up
+            float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem
+            hnbEx.at (l) = sd * cos (el) * hl;
+            hnbEy.at (l) = -sin (el) * hl;
         }
 
         for (int b = 0; b < 8; ++b)
@@ -224,8 +228,8 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbL.at (5 * l + 1) - ex;
-                    float y1 = hnbL.at (5 * l + 2) - ey;
+                    float x1 = hnbL.at (5 * l + 1);   // the leaf is fixed to the stem here and turns around this point
+                    float y1 = hnbL.at (5 * l + 2);
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
                     float l2 = sx * sx + sy * sy;
@@ -391,7 +395,7 @@ open(P, 'w').write(src)
 SC = '["Chromatic", "Major", "Minor", "Dorian", "Phrygian", "Lydian", "Mixolydian", "Harm. Minor", "Pent. Major", "Pent. Minor", "Blues", "Whole Tone"]'
 CH = '["None", "Octave", "Fifth", "Major", "Minor", "Sus4", "Maj7", "Min7", "Dim"]'
 OO = '["Off", "On"]'; PB = '["Column", "Row", "Both"]'
-UN = {'Shift': 'st', 'Range': 'st', 'Gate': '%', 'Speed': '%', 'Gravity': '%', 'Jump': '%', 'Bounce': '%', 'Rest': '%', 'Spawn X': '%', 'Spread': '%', 'Leaf Size': '%'}
+UN = {'Shift': 'st', 'Range': 'st', 'Gate': '%', 'Speed': '%', 'Gravity': '%', 'Jump': '%', 'Bounce': '%', 'Rest': '%', 'Spawn X': '%', 'Spread': '%', 'Leaf Size': '%', 'Aim': 'deg'}
 def kind(n):
     return ('sel', SC) if n == 'Scale' else ('sel', CH) if n == 'Chord' else ('sel', OO) if n in ('Rotate', 'Wrap') else ('sel', PB) if n == 'Pitch By' else ('knb', 'null')
 rows = ''
