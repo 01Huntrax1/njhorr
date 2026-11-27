@@ -5,6 +5,7 @@
 #include <map>
 #include "../NjoInspPresets.h"
 #include "../NjoInspImport.h"
+#include "PresetBrowserUi.h"
 #include <juce_audio_basics/juce_audio_basics.h>
 
 namespace njo
@@ -634,32 +635,24 @@ namespace njo
         juce::File presetRoot() const { return ctx.be.rootFolder(); }
         void showPresets()
         {
-            juce::PopupMenu m; static const auto fac = njo::inspre::factory();
-            std::vector<juce::PopupMenu> subs; juce::StringArray gs;
-            for (auto& p : fac) if (! gs.contains (p.group)) gs.add (p.group);
-            subs.resize ((size_t) gs.size());
-            for (size_t i = 0; i < fac.size(); ++i) subs[(size_t) gs.indexOf (fac[i].group)].addItem ((int) i + 1, fac[i].name);
-            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
-            m.addSeparator(); m.addItem (1000, "Save current settings as...");
-            auto users = njo::inspre::names (presetRoot()); juce::PopupMenu um, del;
-            for (int k = 0; k < users.size(); ++k) { um.addItem (2000 + k, users[k]); del.addItem (3000 + k, users[k]); }
-            if (! users.isEmpty()) { m.addSubMenu ("User presets", um); m.addSubMenu ("Delete user preset", del); }
-            m.addItem (1001, "Open preset folder");
+            static const auto fac = njo::inspre::factory(); const auto root = presetRoot();
+            pushHistory();   // one Undo step for everything tried in the browser
+            njo::pbrowse::Source s; s.key = "insp"; s.title = "Inspirator presets"; s.root = root; s.defaultName = "My Inspirator preset";
+            s.list = [root] { std::vector<njo::pbrowse::Item> L; for (size_t i = 0; i < fac.size(); ++i) L.push_back ({ "f:" + juce::String ((int) i), fac[i].name, fac[i].group, false });
+                              for (auto& n : njo::inspre::names (root)) L.push_back ({ "u:" + n, n, "User", true }); return L; };
             juce::Component::SafePointer<InspPanel> sp (this);
-            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetB), [sp, users] (int r)
+            s.apply = [sp, root] (const njo::pbrowse::Item& it)
             {
-                if (sp == nullptr || r <= 0) return;
-                if (r < 1000) { sp->pushHistory(); sp->applySnapshot (fac[(size_t) r - 1].v); }
-                else if (r == 1000)
-                {
-                    auto* w = new juce::AlertWindow ("Save Inspirator preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
-                    w->addTextEditor ("n", "My Inspirator preset", {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
-                    w->enterModalState (true, juce::ModalCallbackFunction::create ([sp, w] (int rr) { if (rr == 1 && sp != nullptr) njo::inspre::save (sp->presetRoot(), w->getTextEditorContents ("n"), sp->snapshot()); }), true);
-                }
-                else if (r == 1001) { njo::inspre::folder (sp->presetRoot()).createDirectory(); njo::inspre::folder (sp->presetRoot()).revealToUser(); }
-                else if (r >= 3000 && r - 3000 < users.size()) njo::inspre::remove (sp->presetRoot(), users[r - 3000]);
-                else if (r >= 2000 && r - 2000 < users.size()) { std::vector<std::pair<int, float>> v; if (njo::inspre::load (sp->presetRoot(), users[r - 2000], v)) { sp->pushHistory(); sp->applySnapshot (v); } }
-            });
+                if (sp == nullptr) return false; std::vector<std::pair<int, float>> v;
+                if (it.id.startsWith ("f:")) v = fac[(size_t) it.id.substring (2).getIntValue()].v; else if (! njo::inspre::load (root, it.id.substring (2), v)) return false;
+                sp->applySnapshot (v); return true;
+            };
+            s.snapshot = [sp] { auto snap = sp != nullptr ? sp->snapshot() : std::vector<std::pair<int, float>>(); return std::function<void()> ([sp, snap] { if (sp != nullptr) sp->applySnapshot (snap); }); };
+            s.saveAs = [sp, root] (const juce::String& n, const juce::String&) { if (sp != nullptr) njo::inspre::save (root, n, sp->snapshot()); };
+            s.rename = [root] (const njo::pbrowse::Item& it, const juce::String& n) { std::vector<std::pair<int, float>> v; if (! njo::inspre::load (root, it.id.substring (2), v)) return false; njo::inspre::save (root, n, v); if (n != it.name) njo::inspre::remove (root, it.id.substring (2)); return true; };
+            s.remove = [root] (const njo::pbrowse::Item& it) { return njo::inspre::remove (root, it.id.substring (2)); };
+            s.reveal = [root] { njo::inspre::folder (root).createDirectory(); njo::inspre::folder (root).revealToUser(); };
+            njo::pbrowse::open (*this, std::move (s));
         }
         int mode() const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (7001))); }
         juce::String makeCode() const

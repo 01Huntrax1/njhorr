@@ -1,4 +1,5 @@
 #include "Editors.h"
+#include "PresetBrowserUi.h"
 #include "OscDisplays.h"
 #include "../NjoPhys.h"
 #include "../NjoTableOps.h"
@@ -117,29 +118,24 @@ namespace njo
         // preset manager: factory sets (a morph through generators), user presets as files (all frames of the table)
         void presetMenu()
         {
-            juce::PopupMenu m, fm, um, dm; const auto& fs = tblops::factorySets (filter); auto root = ctx.be.rootFolder();
-            for (size_t i = 0; i < fs.size(); ++i) fm.addItem ((int) i + 1, fs[i].name);
-            auto users = tblops::userNames (root, filter);
-            for (int k = 0; k < users.size(); ++k) { um.addItem (2000 + k, users[k]); dm.addItem (3000 + k, users[k]); }
-            m.addSubMenu ("Factory sets", fm); if (! users.isEmpty()) { m.addSubMenu ("User presets", um); m.addSubMenu ("Delete user preset", dm); }
-            m.addSeparator(); m.addItem (1000, "Save the table as..."); m.addItem (1001, "Open preset folder");
+            flush(); const auto root = ctx.be.rootFolder(); const bool flt = filter; const auto fs = tblops::factorySets (flt);
+            auto put = [this] (std::vector<float> v) { pushUndo(); d = std::move (v); cur = juce::jlimit (0, frames() - 1, cur); fromBuiltIn = false; setPos(); touch(); commit(); };
+            njo::pbrowse::Source src; src.key = flt ? "tblf" : "tbls"; src.title = flt ? "Wavefilter tables" : "Shaper tables"; src.root = root; src.defaultName = "My table";
+            src.list = [root, flt, fs] { std::vector<njo::pbrowse::Item> L; for (size_t i = 0; i < fs.size(); ++i) L.push_back ({ "f:" + juce::String ((int) i), fs[i].name, "Factory", false });
+                                         for (auto& n : tblops::userNames (root, flt)) L.push_back ({ "u:" + n, n, "User", true }); return L; };
             juce::Component::SafePointer<juce::Component> sp (&owner);
-            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (presBtn), [this, sp, users, root] (int r)
+            src.apply = [this, sp, root, flt, fs, put] (const njo::pbrowse::Item& it)
             {
-                if (sp == nullptr || r <= 0) return;
-                const auto& fs2 = tblops::factorySets (filter); std::vector<float> nd;
-                auto put = [this] (std::vector<float> v) { pushUndo(); d = std::move (v); cur = juce::jlimit (0, frames() - 1, cur); fromBuiltIn = false; setPos(); touch(); commit(); };
-                if (r <= (int) fs2.size()) put (tblops::buildFactory (filter, fs2[(size_t) r - 1]));
-                else if (r == 1000)
-                {
-                    flush(); auto* w = new juce::AlertWindow (filter ? "Save Wavefilter table" : "Save Shaper table", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
-                    w->addTextEditor ("n", name.isEmpty() || name == "EDITED" ? "My table" : name, {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
-                    w->enterModalState (true, juce::ModalCallbackFunction::create ([this, sp, w, root] (int rr) { if (rr == 1 && sp != nullptr) tblops::saveUser (root, filter, w->getTextEditorContents ("n"), d); }), true);
-                }
-                else if (r == 1001) { tblops::presetDir (root, filter).createDirectory(); tblops::presetDir (root, filter).revealToUser(); }
-                else if (r >= 3000 && r - 3000 < users.size()) tblops::removeUser (root, filter, users[r - 3000]);
-                else if (r >= 2000 && r - 2000 < users.size()) { if (tblops::loadUser (root, filter, users[r - 2000], nd)) put (std::move (nd)); }
-            });
+                if (sp == nullptr) return false; std::vector<float> nd;
+                if (it.id.startsWith ("f:")) { put (tblops::buildFactory (flt, fs[(size_t) it.id.substring (2).getIntValue()])); return true; }
+                if (! tblops::loadUser (root, flt, it.id.substring (2), nd)) return false; put (std::move (nd)); return true;
+            };
+            src.snapshot = [this, sp] { auto keep = d; return std::function<void()> ([this, sp, keep] { if (sp != nullptr) { d = keep; cur = juce::jlimit (0, frames() - 1, cur); setPos(); touch(); commit(); } }); };
+            src.saveAs = [this, root, flt] (const juce::String& n, const juce::String&) { flush(); tblops::saveUser (root, flt, n, d); };
+            src.rename = [root, flt] (const njo::pbrowse::Item& it, const juce::String& n) { std::vector<float> v; if (! tblops::loadUser (root, flt, it.id.substring (2), v)) return false; tblops::saveUser (root, flt, n, v); if (n != it.name) tblops::removeUser (root, flt, it.id.substring (2)); return true; };
+            src.remove = [root, flt] (const njo::pbrowse::Item& it) { tblops::removeUser (root, flt, it.id.substring (2)); return true; };
+            src.reveal = [root, flt] { tblops::presetDir (root, flt).createDirectory(); tblops::presetDir (root, flt).revealToUser(); };
+            njo::pbrowse::open (owner, std::move (src));
         }
         void razorMenu()
         {

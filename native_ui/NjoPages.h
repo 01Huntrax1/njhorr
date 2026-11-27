@@ -150,6 +150,7 @@ namespace njo
         void paint (juce::Graphics&) override;
         void resized() override;
         void paramChanged (int num, float v) override;   // Arp Mode 303 shows the pattern editor
+        void inspShowPresets();                         // test hook: the PRESETS button of the Inspirator
         void inspRandomChords();                         // test hook: the RANDOM CHORDS button
         void inspExtras (bool);                          // test hook: show the EXTRAS row of the Inspirator
         void showInspirator (bool);                      // the INSPIRATOR tab instead of the sequencer / arpeggiator

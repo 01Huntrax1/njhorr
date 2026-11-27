@@ -2,6 +2,7 @@
 // Files: <Backend::rootFolder()>/{Presets,Samples,Wavetables}; the preset file format is shared with the web UI (NjoManagerStore.h).
 #include <set>
 #include "NjoManager.h"
+#include "pages/PresetBrowserUi.h"
 #include "NjoFactory.h"
 #include "NjoManagerStore.h"
 #include "NjoLfo.h"
@@ -197,6 +198,7 @@ struct ManagerBar::Impl : private Ctx::Listener, private juce::ChangeListener
     void askConfirm (const juce::String& title, const juce::String& message, std::function<void()> yes);
     // menus
     void showPresetMenu (juce::Component* anchor);
+    void showPresetBrowser (juce::Component* anchor);   // the popup browser (search, tags, favourites, recent, audition)
     void showVaultMenu (int kind, int osc, juce::Component* anchor);
     void closeAll();
 
@@ -232,7 +234,7 @@ ManagerBar::Impl::Impl (ManagerBar& o, Ctx& c, SoundMemory& mem, juce::Component
     for (auto* b : { &prev, &nameBtn, &next, &save, &vault }) owner.addAndMakeVisible (*b);
     prev.onClick = [this] { presetStep (-1); };
     next.onClick = [this] { presetStep (1); };
-    nameBtn.onClick = [this] { showPresetMenu (&nameBtn); };
+    nameBtn.onClick = [this] { showPresetBrowser (&nameBtn); };
     vault.onClick = [this] { showVaultMenu (-1, -1, &vault); };
     save.onClick = [this] { presetQuickSave(); };
     infoTimer.fn = [this] { infoText = {}; owner.repaint(); };
@@ -1131,7 +1133,38 @@ void ManagerBar::resized()
     impl->infoRect = r.withTrimmedLeft (10);
 }
 
-void ManagerBar::openBank() { impl->showPresetMenu (&impl->nameBtn); }
+
+void ManagerBar::Impl::showPresetBrowser (juce::Component* anchor)
+{
+    presetsRefresh();
+    njo::pbrowse::Source s; s.key = "synth"; s.title = "Presets"; s.root = ctx.be.rootFolder(); s.defaultName = "My preset";
+    auto alivePtr = alive;
+    s.list = [this, alivePtr] { std::vector<njo::pbrowse::Item> L; if (! *alivePtr) return L; presetsRefresh(); L.push_back ({ "", "Init", "", false });
+                                for (auto& p : presets) L.push_back ({ p.id, p.name, p.folder, true }); return L; };
+    s.apply = [this, alivePtr] (const njo::pbrowse::Item& it)
+    {
+        if (! *alivePtr) return false;
+        if (it.id.isEmpty()) { presetInit(); return true; }
+        if (auto* p = findPreset (it.id)) { auto r = *p; presetApply (r); return true; }
+        return false;
+    };
+    s.snapshot = [this, alivePtr] { auto rec = std::make_shared<PresetRec> (collectRec ("snapshot", {})); auto keepCur = cur;
+                                    return std::function<void()> ([this, alivePtr, rec, keepCur] { if (*alivePtr) { presetApply (*rec); cur = keepCur; updateBar(); } }); };
+    s.saveAs = [this, alivePtr] (const juce::String& n, const juce::String& folder) { if (*alivePtr) presetSaveAs (n, {}, folder); };
+    s.rename = [this, alivePtr] (const njo::pbrowse::Item& it, const juce::String& n) { return *alivePtr && presetRename (it.id, n); };
+    s.remove = [this, alivePtr] (const njo::pbrowse::Item& it) { return *alivePtr && presetDeleteId (it.id); };
+    s.move = [this, alivePtr] (const njo::pbrowse::Item& it, const juce::String& folder)
+    {
+        if (! *alivePtr || ! safeRel (folder)) return false;
+        if (folder.isNotEmpty()) store.presetsDir().getChildFile (folder).createDirectory();
+        pmMove (it.id, folder); return true;
+    };
+    s.reveal = [this, alivePtr] { if (*alivePtr) { store.presetsDir().createDirectory(); store.presetsDir().revealToUser(); } };
+    s.moreLabel = "FOLDERS..."; s.more = [this, alivePtr, anchor] { if (*alivePtr) showPresetMenu (anchor); };   // rename / delete / new folders: the classic menu
+    njo::pbrowse::open (*anchor, std::move (s));
+}
+
+void ManagerBar::openBank() { impl->showPresetBrowser (&impl->nameBtn); }
 void ManagerBar::openVault (int kind, int osc) { impl->showVaultMenu (kind, osc, &impl->vault); }
 void ManagerBar::closeOverlays() { impl->closeAll(); }
 bool ManagerBar::overlayOpen() const { return impl->menuOpen; }

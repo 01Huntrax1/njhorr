@@ -12,6 +12,7 @@
 #include "../NjoMelodicPresets.h"
 #include "InspPanel.h"
 #include "MidiFxEditors.h"
+#include "PresetBrowserUi.h"
 
 namespace njo
 {
@@ -554,24 +555,15 @@ namespace njo
         }
         void presetMenu()
         {
-            juce::PopupMenu m, del; auto files = presetDir().findChildFiles (juce::File::findFiles, false, "*.njolfo"); files.sort();
-            m.addItem (1, "Save current LFO as...");
-            if (! files.isEmpty()) m.addSeparator();
-            for (int k = 0; k < files.size(); ++k) { m.addItem (100 + k, files[k].getFileNameWithoutExtension()); del.addItem (500 + k, files[k].getFileNameWithoutExtension()); }
-            if (! files.isEmpty()) m.addSubMenu ("Delete", del);
-            m.addSeparator(); m.addItem (2, "Open preset folder");
-            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this, files] (int r)
-            {
-                if (r == 1)
-                {
-                    auto* w = new juce::AlertWindow ("Save LFO preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon);
-                    w->addTextEditor ("n", "My LFO " + juce::String (ctx.selectedLfo + 1), {}); w->addButton ("Save", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Cancel", 0, juce::KeyPress (juce::KeyPress::escapeKey));
-                    w->enterModalState (true, juce::ModalCallbackFunction::create ([this, w] (int rr) { if (rr == 1) savePreset (w->getTextEditorContents ("n")); }), true);
-                }
-                else if (r == 2) { presetDir().createDirectory(); presetDir().revealToUser(); }
-                else if (r >= 500 && r - 500 < files.size()) files[r - 500].deleteFile();
-                else if (r >= 100 && r - 100 < files.size()) loadPreset (files[r - 100]);
-            });
+            njo::pbrowse::Source src; src.key = "lfo"; src.title = "LFO presets"; src.root = ctx.be.rootFolder(); src.defaultName = "My LFO " + juce::String (ctx.selectedLfo + 1);
+            const auto dir = presetDir();
+            src.list = [dir] { std::vector<njo::pbrowse::Item> L; auto files = dir.findChildFiles (juce::File::findFiles, false, "*.njolfo"); files.sort(); for (auto& f : files) L.push_back ({ f.getFileName(), f.getFileNameWithoutExtension(), "User", true }); return L; };
+            src.apply = [this, dir] (const njo::pbrowse::Item& it) { auto f = dir.getChildFile (it.id); if (! f.existsAsFile()) return false; loadPreset (f); return true; };
+            src.saveAs = [this] (const juce::String& n, const juce::String&) { savePreset (n); };
+            src.rename = [dir] (const njo::pbrowse::Item& it, const juce::String& n) { auto f = dir.getChildFile (it.id); return f.moveFileTo (f.getSiblingFile (juce::File::createLegalFileName (n) + ".njolfo")); };
+            src.remove = [dir] (const njo::pbrowse::Item& it) { return dir.getChildFile (it.id).deleteFile(); };
+            src.reveal = [dir] { dir.createDirectory(); dir.revealToUser(); };
+            njo::pbrowse::open (presetBtn, std::move (src));   // no snapshot: an audition of an LFO preset cannot be taken back, so it is off
         }
         MiniSelect shape;
         struct GridButton : juce::Component
@@ -1393,12 +1385,13 @@ namespace njo
         void showPresets()
         {
             static const auto L = njo::seqpre::all();
-            juce::PopupMenu m; std::vector<juce::PopupMenu> subs; juce::StringArray gs;
-            for (auto& p : L) if (! gs.contains (p.group)) gs.add (p.group);
-            subs.resize ((size_t) gs.size());
-            for (int i = 0; i < L.size(); ++i) subs[(size_t) gs.indexOf (L[(size_t) i].group)].addItem (i + 1, L[(size_t) i].name);
-            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
-            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this] (int r) { if (r > 0) applyPreset (L[(size_t) r - 1]); });
+            const int m = ctx.selectedSeq; njo::pbrowse::ParamSourceSpec sp; sp.key = "seq"; sp.title = "Sequencer presets"; sp.subdir = "SeqPresets"; sp.ext = "nseq"; sp.defaultName = "My sequence"; sp.root = ctx.be.rootFolder();
+            for (size_t i = 0; i < L.size(); ++i) sp.factory.push_back ({ "f:" + juce::String ((int) i), L[i].name, L[i].group, false });
+            sp.applyFactory = [this, m] (int n) { auto keep = ctx.selectedSeq; ctx.selectedSeq = m; applyPreset (L[(size_t) n]); ctx.selectedSeq = keep; };
+            sp.ids = [m] { std::vector<int> v; for (int k = 0; k < 16; ++k) { v.push_back (seqParam (m, k)); v.push_back (seqShapeParam (m, k)); } for (int k : { 16, 20, 21, 23 }) v.push_back (seqParam (m, k)); return v; };
+            sp.get = [this] (int id) { return ctx.get (id); };
+            sp.set = [this] (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); };
+            njo::pbrowse::open (owner, njo::pbrowse::makeParamSource (sp));
         }
         bool full = false; juce::Rectangle<int> helpRect;
 
@@ -1794,12 +1787,13 @@ namespace njo
         void showPresets()
         {
             static const auto L = njo::melpre::all();
-            juce::PopupMenu m; std::vector<juce::PopupMenu> subs; juce::StringArray gs;
-            for (auto& p : L) if (! gs.contains (p.group)) gs.add (p.group);
-            subs.resize ((size_t) gs.size());
-            for (size_t i = 0; i < L.size(); ++i) subs[(size_t) gs.indexOf (L[i].group)].addItem ((int) i + 1, L[i].name);
-            for (int g = 0; g < gs.size(); ++g) m.addSubMenu (gs[g], subs[(size_t) g]);
-            m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (&presetBtn), [this] (int r) { if (r > 0) apply (L[(size_t) r - 1]); });
+            njo::pbrowse::ParamSourceSpec sp; sp.key = "mel"; sp.title = "Melodic presets"; sp.subdir = "MelodicPresets"; sp.ext = "nmel"; sp.defaultName = "My melody"; sp.root = ctx.be.rootFolder();
+            for (size_t i = 0; i < L.size(); ++i) sp.factory.push_back ({ "f:" + juce::String ((int) i), L[i].name, L[i].group, false });
+            sp.applyFactory = [this] (int n) { apply (L[(size_t) n]); };
+            sp.ids = [] { std::vector<int> v { ML_LEN }; for (int r = 0; r < 7; ++r) for (int k = 0; k < 64; ++k) v.push_back (idOf (r, k)); return v; };
+            sp.get = [this] (int id) { return ctx.get (id); };
+            sp.set = [this] (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); };
+            njo::pbrowse::open (*this, njo::pbrowse::makeParamSource (sp));
         }
         void paramChanged (int n, float) override { if (n == ML_LEN || (n >= ML_BASE && n < ML_BASE + 448)) repaint(); }
         static int idOf (int row, int k) { return ML_BASE + 64 * row + k; }
@@ -1999,6 +1993,7 @@ namespace njo
         }
         paramChanged (ARP_BASE + 1, c.get (ARP_BASE + 1));
     }
+    void SeqArpPage::inspShowPresets() { impl->insp.showPresets(); }
     void SeqArpPage::inspRandomChords() { impl->insp.randomizeChords(); }
     void SeqArpPage::inspExtras (bool b) { impl->insp.extras = b; impl->insp.extraB.accent = b; impl->insp.refresh(); }
     void SeqArpPage::showInspirator (bool b) { if (impl->showView) impl->showView (b); }
