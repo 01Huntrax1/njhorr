@@ -3,8 +3,8 @@
   Arp Mode 13 "Hanenbow": frogs are launched from a leaf at the bottom and land on up to 8 leaves that are fixed to a plant stem and that you turn.  A frog that lands on a leaf bounces
     off it (a tilted leaf throws it sideways) and every landing plays the note of that leaf.  After `Hits` landings the leaf changes colour (4 states) and its pitch moves by
     `Step` scale degrees.  A frog that comes from below passes through a leaf.  A frog starts at every arpeggiator step (Division / Rate) while fewer than Frogs are alive, from the launch leaf at Spawn X (+- Spread) at the bottom, in the direction Aim (degrees from vertical, positive = to the right).
-    Global parameters 6700 + k: Frogs, Speed %, Gravity %, Jump %, Bounce %, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Spawn X, Spread, Hits, Step, Leaf Size, Aim.
-    Leaves: 6720 + 5 * l + j for l = 0..7, j = On, X (below 0.5 = left of the stem, otherwise right: the leaf is fixed to the stem), Y (its height), Angle (0..1, 0.5 = horizontal, above = up), Note (scale degree).
+    Global parameters 6700 + k: Frogs, Speed %, Gravity %, Jump %, Bounce %, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Spawn X, Spread, Hits, Step, Leaf Size, Aim, Stem X.
+    Leaves: 6720 + 5 * l + j for l = 0..7, j = On, X (side: below 0.5 = left of the stem, otherwise right; the leaf is fixed to the stem at Stem X), Y (its height), Angle (0..1, 0.5 = horizontal, above = up), Note (scale degree).
   Arp Mode 14 "Luminaria": four walkers on an 8 x 8 grid.  Every `Every` arpeggiator steps each walker moves one cell; a cell holds an arrow (up, right, down, left) or nothing.
     When a walker lands on an arrow it turns that way and plays a note (the pitch follows the column, the row or both); with Rotate the arrow turns clockwise after each visit.
     Global parameters 6760 + k: Every, Scale, Range, Shift, Gate, Velocity, Chord, Rest, Rotate, Pitch By, Wrap.
@@ -26,14 +26,14 @@ def rep(old, new):
     src = src.replace(old, new)
 
 rep('"Arp Mode", min: 0.0, max: 12.0,', '"Arp Mode", min: 0.0, max: 14.0,')
-HG = [('Frogs', 1, 8, 3), ('Speed', 25, 300, 100), ('Gravity', 20, 300, 100), ('Jump', 40, 200, 100), ('Bounce', 20, 110, 60), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0),
-      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 12), ('Spread', 0, 100, 5), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 30), ('Aim', -80, 80, 25)]
+HG = [('Frogs', 1, 8, 3), ('Speed', 25, 300, 100), ('Gravity', 20, 300, 100), ('Jump', 40, 200, 120), ('Bounce', 20, 110, 60), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0),
+      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 7), ('Spread', 0, 100, 5), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 27), ('Aim', -80, 80, 30), ('Stem X', 0, 100, 64)]
 LG = [('Every', 1, 8, 1), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0), ('Gate', 10, 400, 70), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0),
       ('Rotate', 0, 1, 0), ('Pitch By', 0, 2, 0), ('Wrap', 0, 1, 1)]
 # leaves: on, x, y, angle, note
-# a plant: the leaves are fixed to the stem (x 0.49 = left side, 0.51 = right side) at 8 heights and only turn; angle 0.5 = horizontal, above = up
-LEAVES = [[1, 0.49, 0.78, 0.70, 0], [1, 0.51, 0.70, 0.66, 2], [1, 0.49, 0.62, 0.68, 4], [1, 0.51, 0.54, 0.64, 5], [1, 0.49, 0.46, 0.66, 7], [1, 0.51, 0.38, 0.62, 3],
-          [0, 0.49, 0.30, 0.66, 9], [0, 0.51, 0.22, 0.62, 6]]
+# a plant: the leaves are fixed to the stem (X = side, 0 left / 1 right) at their height and only turn; angle 0.5 = horizontal, above = up (three pairs as in the toy, a fourth pair is off)
+LEAVES = [[1, 0.0, 0.69, 0.725, 0], [1, 1.0, 0.69, 0.725, 2], [1, 0.0, 0.50, 0.73, 4], [1, 1.0, 0.50, 0.73, 5], [1, 0.0, 0.33, 0.84, 7], [1, 1.0, 0.33, 0.84, 9],
+          [0, 0.0, 0.20, 0.85, 3], [0, 1.0, 0.20, 0.85, 6]]
 LNAMES = ['On', 'X', 'Y', 'Angle', 'Note']; LHI = {0: 1, 1: 1, 2: 1, 3: 1, 4: 24}
 WALK = [[1, 1, 1, 2, 0], [1, 3, 3, 2, 1], [1, 6, 6, 4, 0], [1, 5, 5, 4, -1]]
 WNAMES = ['On', 'X', 'Y', 'Direction', 'Octave']; WLO = {0: 0, 1: 0, 2: 0, 3: 1, 4: -2}; WHI = {0: 1, 1: 7, 2: 7, 3: 4, 4: 2}
@@ -88,6 +88,7 @@ st = '''    // ---------------- MOD-HBLM: Hanenbow (frogs and leaves) and Lumina
     float[8]    hnbVY;
     float[8]    hnbCd;
     float[8]    hnbAge;
+    float[8]    hnbRest;              // time a frog has hardly moved (stuck on a leaf)
     int[8]      hnbOn;
     int[8]      hnbCnt;               // landings on a leaf since its last colour change
     int[8]      hnbSt;                // colour (0..3) of a leaf
@@ -153,13 +154,14 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         float gr   = max (hnbG.at (2) / 100.0f, 0.2f);
 
         hnbX.at (free)   = clamp (hnbG.at (12) / 100.0f + (sqRand01() - 0.5f) * hnbG.at (13) / 100.0f, 0.03f, 0.97f);
-        hnbY.at (free)   = 1.0f;
+        hnbY.at (free)   = 0.93f;      // under the water, at the launch leaf
         float aim = hnbG.at (17) * 0.0174533f + (sqRand01() - 0.5f) * 0.05f;
         float spd = (1.1f + (sqRand01() - 0.5f) * 0.15f) * jump * sqrt (gr);
         hnbVX.at (free)  = spd * sin (aim);
         hnbVY.at (free)  = -spd * cos (aim);
         hnbCd.at (free)  = 0.0f;
         hnbAge.at (free) = 0.0f;
+        hnbRest.at (free) = 0.0f;
         hnbOn.at (free)  = 1;
     }
 
@@ -200,7 +202,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         for (int l = 0; l < 8; ++l)
         {
             float el = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;                // elevation of the leaf: 0.5 = horizontal, above 0.5 = up
-            float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem
+            float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem (X of the leaf is its side)
             hnbEx.at (l) = sd * cos (el) * hl;
             hnbEy.at (l) = -sin (el) * hl;
         }
@@ -228,7 +230,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbL.at (5 * l + 1);   // the leaf is fixed to the stem here and turns around this point
+                    float x1 = hnbG.at (18) / 100.0f;   // the leaf is fixed to the stem here and turns around this point
                     float y1 = hnbL.at (5 * l + 2);
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
@@ -273,7 +275,21 @@ ENGINE = r'''    // ---- MOD-HBLM ----
                 hnbCd.at (b)  = cd;
                 hnbAge.at (b) = hnbAge.at (b) + h;
 
-                if ((y > 1.0f && vy > 0.0f) || hnbAge.at (b) > 6.0f)
+                // a frog that hardly moves (stuck in the angle between leaf and stem) gets a push now and then
+                if (abs (vx) + abs (vy) < 0.12f && y < 0.8f)
+                    hnbRest.at (b) = hnbRest.at (b) + h;
+                else
+                    hnbRest.at (b) = 0.0f;
+
+                if (hnbRest.at (b) > 1.0f)
+                {
+                    hnbRest.at (b) = 0.0f;
+                    hnbVX.at (b)   = (sqRand01() - 0.5f) * 1.2f;
+                    hnbVY.at (b)   = -0.5f;
+                }
+
+                // a frog only disappears when it has fallen into the water (surface at 0.82)
+                if ((y > 0.86f && vy > 0.0f) || hnbAge.at (b) > 30.0f)
                     hnbOn.at (b) = 0;
             }
     }

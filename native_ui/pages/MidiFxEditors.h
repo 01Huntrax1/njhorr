@@ -330,27 +330,26 @@ namespace njo
             static int lf (int l, int j) { return 6720 + 5 * l + j; }
             float lv (int l, int j) const { return ctx.get (lf (l, j)); }
             void setP (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); }
-            void putLeaf (int l, float on, float x, float y, float a, float n) { const float v[5] = { on, x, y, a, n }; for (int j = 0; j < 5; ++j) setP (lf (l, j), v[(size_t) j]); }
+            void putLeaf (int l, float on, float side, float y, float a, float n) { const float v[5] = { on, side, y, a, n }; for (int j = 0; j < 5; ++j) setP (lf (l, j), v[(size_t) j]); }
             static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff4fd36a, 0xffe3e05a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
-            explicit Hanenbow (Ctx& c) : Base (c, 6700, 18, { 5, 10 }), be (c.be)
+            explicit Hanenbow (Ctx& c) : Base (c, 6700, 19, { 5, 10 }), be (c.be)
             {
                 auto add = [this] (const char* t, std::function<void()> f) { auto* ch = new FxChip(); ch->text = t; ch->click = std::move (f); chips.add (ch); addAndMakeVisible (ch); };
                 add ("CLEAR", [this] { for (int l = 0; l < 8; ++l) setP (lf (l, 0), 0.0f); repaint(); });
                 add ("PLANT", [this] { setDefault(); });
                 add ("RANDOM", [this] { setRandom(); });
             }
-            void setDefault()   // a plant: leaves left and right of the stem, going up; the launch leaf at the bottom left
+            void setDefault()   // a plant as in the toy: three pairs of leaves, a fourth pair off; the launch leaf at the bottom left
             {
-                static const float d[8][5] = { { 1, 0.49f, 0.78f, 0.70f, 0 }, { 1, 0.51f, 0.70f, 0.66f, 2 }, { 1, 0.49f, 0.62f, 0.68f, 4 }, { 1, 0.51f, 0.54f, 0.64f, 5 }, { 1, 0.49f, 0.46f, 0.66f, 7 }, { 1, 0.51f, 0.38f, 0.62f, 3 },
-                                               { 0, 0.49f, 0.30f, 0.66f, 9 }, { 0, 0.51f, 0.22f, 0.62f, 6 } };
-                for (int l = 0; l < 8; ++l) putLeaf (l, d[l][0], d[l][1], d[l][2], d[l][3], d[l][4]);
-                setP (6712, 12.0f); setP (6717, 25.0f); repaint();
+                static const float d[8][5] = { { 0, 0.69f, 0.725f, 0, 0 }, { 1, 0.69f, 0.725f, 0, 2 }, { 0, 0.50f, 0.73f, 0, 4 }, { 1, 0.50f, 0.73f, 0, 5 }, { 0, 0.33f, 0.84f, 0, 7 }, { 1, 0.33f, 0.84f, 0, 9 }, { 0, 0.20f, 0.85f, 0, 3 }, { 1, 0.20f, 0.85f, 0, 6 } };
+                for (int l = 0; l < 8; ++l) putLeaf (l, l < 6 ? 1.0f : 0.0f, (float) (l % 2), d[l][1], d[l][2], d[l][4]);
+                setP (6712, 7.0f); setP (6717, 30.0f); setP (6718, 64.0f); setP (6703, 120.0f); setP (6716, 27.0f); repaint();
             }
             void setRandom()
             {
                 juce::Random rn;
-                for (int l = 0; l < 8; ++l) { putLeaf (l, l < 5 || rn.nextBool() ? 1.0f : 0.0f, l % 2 == 0 ? 0.49f : 0.51f, 0.78f - 0.08f * (float) l, 0.35f + rn.nextFloat() * 0.5f, (float) rn.nextInt (10)); }
-                setP (6712, 6.0f + rn.nextFloat() * 20.0f); setP (6717, 10.0f + rn.nextFloat() * 45.0f); repaint();
+                for (int l = 0; l < 8; ++l) putLeaf (l, l < 4 || rn.nextBool() ? 1.0f : 0.0f, (float) (l % 2), 0.78f - 0.08f * (float) (l / 2) * 1.8f, 0.4f + rn.nextFloat() * 0.5f, (float) rn.nextInt (10));
+                setP (6712, 4.0f + rn.nextFloat() * 20.0f); setP (6717, 15.0f + rn.nextFloat() * 40.0f); setP (6718, 45.0f + rn.nextFloat() * 30.0f); repaint();
             }
             bool active() const { const auto now = juce::Time::getMillisecondCounter(); for (auto& b : be.boardBalls) if (now - b.ms < 1000) return true; return false; }
             bool needsRepaint() override { return isShowing(); }   // the bubbles and the water move all the time
@@ -367,12 +366,12 @@ namespace njo
             void leafSeg (int l, juce::Point<float>& b0, juce::Point<float>& t0) const
             {
                 const float el = elevOf (lv (l, 3)), sd = lv (l, 1) < 0.5f ? -1.0f : 1.0f, hl = halfLen();
-                b0 = { lv (l, 1), lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
+                b0 = { p (18) / 100.0f, lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
             }
             // the launch leaf: its base is the launch point (Spawn X, bottom), it points along Aim
             void launchSeg (juce::Point<float>& b0, juce::Point<float>& t0) const
             {
-                const float a = p (17) * juce::MathConstants<float>::pi / 180.0f; b0 = { p (12) / 100.0f, 0.985f }; t0 = { b0.x + std::sin (a) * 0.24f, b0.y - std::cos (a) * 0.24f };
+                const float a = p (17) * juce::MathConstants<float>::pi / 180.0f; b0 = { p (12) / 100.0f, 0.93f }; t0 = { b0.x + std::sin (a) * 0.27f, b0.y - std::cos (a) * 0.27f };
             }
             static float segDist (juce::Point<float> q, juce::Point<float> a, juce::Point<float> b, float* tOut = nullptr)
             {
@@ -386,9 +385,10 @@ namespace njo
                 for (int l = 0; l < 8; ++l) { if (lv (l, 0) < 0.5f) continue; juce::Point<float> a, b; leafSeg (l, a, b); const float d = segDist (q, a, b); if (d < bd) { bd = d; best = l; } }
                 return best;
             }
+            juce::Point<float> slotPos (int l) const { return { p (18) / 100.0f + (lv (l, 1) < 0.5f ? -0.03f : 0.03f), lv (l, 2) }; }
             int slotAt (juce::Point<float> q) const   // a switched-off leaf: its place on the stem
             {
-                for (int l = 0; l < 8; ++l) if (lv (l, 0) < 0.5f && std::hypot (q.x - lv (l, 1), q.y - lv (l, 2)) < 0.045f) return l;
+                for (int l = 0; l < 8; ++l) if (lv (l, 0) < 0.5f && std::hypot (q.x - slotPos (l).x, q.y - slotPos (l).y) < 0.045f) return l;
                 return -1;
             }
             void mouseDown (const juce::MouseEvent& e) override
@@ -399,7 +399,8 @@ namespace njo
                 const int l = leafAt (q);
                 if (e.mods.isRightButtonDown()) { if (l >= 0) setP (lf (l, 0), 0.0f); repaint(); return; }
                 if (l >= 0) { sel = l; return; }
-                const int k = slotAt (q); if (k >= 0) { setP (lf (k, 0), 1.0f); repaint(); }
+                const int k = slotAt (q); if (k >= 0) { setP (lf (k, 0), 1.0f); repaint(); return; }
+                if (std::abs (q.x - p (18) / 100.0f) < 0.03f && q.y > 0.08f && q.y < 0.9f) launch = 3;   // the stem: move the whole plant
             }
             void mouseDrag (const juce::MouseEvent& e) override
             {
@@ -407,6 +408,7 @@ namespace njo
                 const auto q = toBoard (e.position);
                 if (launch == 1) { juce::Point<float> a, b; launchSeg (a, b); const float dg = std::atan2 (q.x - a.x, a.y - q.y) * 180.0f / juce::MathConstants<float>::pi; setP (6717, (float) juce::jlimit (-80, 80, juce::roundToInt (dg))); repaint(); }
                 else if (launch == 2) { setP (6712, (float) juce::jlimit (0, 100, juce::roundToInt (q.x * 100.0f))); repaint(); }
+                else if (launch == 3) { setP (6718, (float) juce::jlimit (25, 90, juce::roundToInt (q.x * 100.0f))); repaint(); }
                 else if (sel >= 0)   // turn the leaf around its fixed end
                 {
                     const float sd = lv (sel, 1) < 0.5f ? -1.0f : 1.0f, vx = (q.x - lv (sel, 1)) * sd, vy = q.y - lv (sel, 2);
@@ -426,13 +428,13 @@ namespace njo
             }
             void paint (juce::Graphics& g) override
             {
-                paintBack (g, "Drag a leaf = turn it (wheel too, Shift + wheel = note), right click = switch off, click a dot on the stem = switch on. Bottom left: the launch leaf (tip = aim, base = start).");
+                paintBack (g, "Drag a leaf = turn (Shift + wheel = note), right click = off, dot on the stem = on, drag the stem = move. Launch leaf: tip = aim.");
                 const auto now = juce::Time::getMillisecondCounter(); const float tm = (float) (now % 600000) / 1000.0f;
                 juce::Graphics::ScopedSaveState ss (g);
                 juce::Path clip; clip.addRoundedRectangle (sq, 6.0f); g.reduceClipRegion (clip);
                 auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x * sq.getWidth(), sq.getY() + y * sq.getHeight()); };
                 const float W = sq.getWidth();
-                g.setGradientFill (juce::ColourGradient (juce::Colour (0xff3aa845), sq.getX(), sq.getY(), juce::Colour (0xff17642a), sq.getX(), sq.getBottom(), false)); g.fillRect (sq);
+                g.setGradientFill (juce::ColourGradient (juce::Colour (0xff52c400), sq.getX(), sq.getY(), juce::Colour (0xff2c9a12), sq.getX(), sq.getBottom(), false)); g.fillRect (sq);
                 // bubbles
                 for (int i = 0; i < 16; ++i)
                 {
@@ -441,13 +443,15 @@ namespace njo
                     const auto c = P (bx + 0.012f * std::sin (tm * 1.3f + (float) i), by);
                     g.setColour (juce::Colours::white.withAlpha (0.10f)); g.fillEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f); g.setColour (juce::Colours::white.withAlpha (0.38f)); g.drawEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f, 1.0f);
                 }
-                // the stem
-                juce::Path stem; { const auto a = P (0.5f, 1.0f), b = P (0.5f, 0.12f); const float w0 = W * 0.022f, w1 = W * 0.005f; stem.startNewSubPath (a.x - w0, a.y); stem.lineTo (b.x - w1, b.y); stem.lineTo (b.x + w1, b.y); stem.lineTo (a.x + w0, a.y); stem.closeSubPath(); }
-                g.setGradientFill (juce::ColourGradient (juce::Colour (0xff7a2416), sq.getCentreX() - W * 0.02f, 0.0f, juce::Colour (0xffb5412a), sq.getCentreX() + W * 0.02f, 0.0f, false)); g.fillPath (stem);
+                // the stem: thick at the water, narrowing in steps up to a thin tip
+                const float stemX = p (18) / 100.0f;
+                { juce::Path stem; const auto a0 = P (stemX, 1.0f), b0 = P (stemX, 0.085f), m0 = P (stemX, 0.62f), m1 = P (stemX, 0.30f); const float w0 = W * 0.040f, w1 = W * 0.028f, w2 = W * 0.014f, w3 = W * 0.004f;
+                  stem.startNewSubPath (a0.x - w0, a0.y); stem.lineTo (m0.x - w1, m0.y); stem.lineTo (m1.x - w2, m1.y); stem.lineTo (b0.x - w3, b0.y); stem.lineTo (b0.x + w3, b0.y); stem.lineTo (m1.x + w2, m1.y); stem.lineTo (m0.x + w1, m0.y); stem.lineTo (a0.x + w0, a0.y); stem.closeSubPath();
+                  g.setGradientFill (juce::ColourGradient (juce::Colour (0xff8a2e10), a0.x - w0, 0.0f, juce::Colour (0xffb04a1c), a0.x + w0, 0.0f, false)); g.fillPath (stem); }
                 const bool act = active();
                 for (int l = 0; l < 8; ++l)
                 {
-                    if (lv (l, 0) < 0.5f) { const auto d = P (lv (l, 1), lv (l, 2)); g.setColour (juce::Colours::white.withAlpha (0.35f)); g.fillEllipse (d.x - 3.0f, d.y - 3.0f, 6.0f, 6.0f); continue; }
+                    if (lv (l, 0) < 0.5f) { const auto d = P (slotPos (l).x, slotPos (l).y); g.setColour (juce::Colours::white.withAlpha (0.35f)); g.fillEllipse (d.x - 3.0f, d.y - 3.0f, 6.0f, 6.0f); continue; }
                     juce::Point<float> b0, t0; leafSeg (l, b0, t0); const auto p1 = P (b0.x, b0.y), p2 = P (t0.x, t0.y), pc = (p1 + p2) * 0.5f;
                     const float len = std::hypot (p2.x - p1.x, p2.y - p1.y), wd = len * 0.30f; const juce::Point<float> nrm (-(p2.y - p1.y) / len * wd, (p2.x - p1.x) / len * wd);
                     const float t = be.boardHitMs[l] != 0 ? (float) (now - be.boardHitMs[l]) / 500.0f : 1.0f, flash = juce::jlimit (0.0f, 1.0f, 1.0f - t * 1.6f);
@@ -467,7 +471,7 @@ namespace njo
                     juce::Path leaf; leaf.startNewSubPath (p1); leaf.quadraticTo (pc + nrm * 1.45f, p2); leaf.quadraticTo (pc - nrm * 1.45f, p1); leaf.closeSubPath();
                     g.setGradientFill (juce::ColourGradient (juce::Colour (0xaa5fe0c0), pc.x - nrm.x, pc.y - nrm.y, juce::Colour (0xaa1f8f78), pc.x + nrm.x, pc.y + nrm.y, false)); g.fillPath (leaf);
                     g.setColour (juce::Colours::white.withAlpha (0.65f)); g.strokePath (leaf, juce::PathStrokeType (1.4f));
-                    g.setColour (juce::Colours::white.withAlpha (launch == 1 ? 0.9f : 0.5f)); g.fillEllipse (p2.x - 3.0f, p2.y - 3.0f, 6.0f, 6.0f);
+                    g.setColour (juce::Colours::white.withAlpha (launch == 1 ? 0.8f : 0.4f)); g.drawEllipse (p2.x - W * 0.045f, p2.y - W * 0.045f, W * 0.09f, W * 0.09f, 2.0f);
                     g.setColour (juce::Colours::white.withAlpha (0.85f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (p (17))) + juce::String (juce::CharPointer_UTF8 ("\xc2\xb0")), (int) pc.x - 14, (int) pc.y - 6, 28, 11, juce::Justification::centred);
                 }
                 // tadpoles
@@ -480,12 +484,12 @@ namespace njo
                     g.setColour (juce::Colour (0xffff6fa8)); g.drawLine (c.x, c.y, c.x + d.x * 11.0f, c.y + d.y * 11.0f, 2.0f);
                     g.setColour (juce::Colour (0xffffa0c8)); g.fillEllipse (c.x - 4.0f, c.y - 4.0f, 8.0f, 8.0f); g.setColour (juce::Colour (0xff3a1030)); g.fillEllipse (c.x - 1.2f, c.y - 1.8f, 2.4f, 2.4f);
                 }
-                // the water
-                juce::Path water; { const float y0 = 0.935f; water.startNewSubPath (sq.getX(), sq.getBottom()); const int n = 28;
-                    for (int i = 0; i <= n; ++i) { const float x = (float) i / (float) n, spike = (i % 2 == 0 ? 0.0f : -0.028f) * (0.7f + 0.3f * std::sin (tm * 2.0f + (float) i)); const auto q = P (x, y0 + spike + 0.008f * std::sin (tm * 1.6f + (float) i * 0.7f)); water.lineTo (q); }
+                // the water (surface at 0.82, as in the DSP)
+                juce::Path water; { const float y0 = 0.82f; water.startNewSubPath (sq.getX(), sq.getBottom()); const int n = 40;
+                    for (int i = 0; i <= n; ++i) { const float x = (float) i / (float) n, spike = (i % 2 == 0 ? 0.0f : -0.016f) * (0.7f + 0.3f * std::sin (tm * 2.0f + (float) i)); water.lineTo (P (x, y0 + spike + 0.005f * std::sin (tm * 1.6f + (float) i * 0.7f))); }
                     water.lineTo (sq.getRight(), sq.getBottom()); water.closeSubPath(); }
-                g.setGradientFill (juce::ColourGradient (juce::Colour (0xcc2aa6d8), sq.getX(), P (0, 0.9f).y, juce::Colour (0xee1a3f9a), sq.getX(), sq.getBottom(), false)); g.fillPath (water);
-                g.setColour (juce::Colours::white.withAlpha (0.35f)); g.strokePath (water, juce::PathStrokeType (1.2f));
+                g.setGradientFill (juce::ColourGradient (juce::Colour (0xdd20c0b8), sq.getX(), P (0, 0.82f).y, juce::Colour (0xee22349a), sq.getX(), sq.getBottom(), false)); g.fillPath (water);
+                { juce::Graphics::ScopedSaveState ws (g); g.reduceClipRegion (water); g.setColour (juce::Colours::black.withAlpha (0.07f)); for (float yy = P (0, 0.82f).y; yy < sq.getBottom(); yy += 5.0f) g.drawHorizontalLine ((int) yy, sq.getX(), sq.getRight()); }
                 g.setColour (juce::Colours::black.withAlpha (0.35f)); g.drawRect (sq, 1.0f);
             }
         };

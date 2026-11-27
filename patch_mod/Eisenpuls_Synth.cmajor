@@ -7676,7 +7676,7 @@ processor Eisenpuls_Synth
     input event float param6700 [[ name: "Hanenbow Frogs", min: 1.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6701 [[ name: "Hanenbow Speed", min: 25.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6702 [[ name: "Hanenbow Gravity", min: 20.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6703 [[ name: "Hanenbow Jump", min: 40.0, max: 200.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6703 [[ name: "Hanenbow Jump", min: 40.0, max: 200.0, init: 120.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6704 [[ name: "Hanenbow Bounce", min: 20.0, max: 110.0, init: 60.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6705 [[ name: "Hanenbow Scale", min: 0.0, max: 11.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6706 [[ name: "Hanenbow Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-HBLM
@@ -7685,51 +7685,52 @@ processor Eisenpuls_Synth
     input event float param6709 [[ name: "Hanenbow Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6710 [[ name: "Hanenbow Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6711 [[ name: "Hanenbow Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6712 [[ name: "Hanenbow Spawn X", min: 0.0, max: 100.0, init: 12.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6712 [[ name: "Hanenbow Spawn X", min: 0.0, max: 100.0, init: 7.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6713 [[ name: "Hanenbow Spread", min: 0.0, max: 100.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6714 [[ name: "Hanenbow Hits", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6715 [[ name: "Hanenbow Step", min: -4.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6716 [[ name: "Hanenbow Leaf Size", min: 8.0, max: 50.0, init: 30.0, step: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6717 [[ name: "Hanenbow Aim", min: -80.0, max: 80.0, init: 25.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6716 [[ name: "Hanenbow Leaf Size", min: 8.0, max: 50.0, init: 27.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6717 [[ name: "Hanenbow Aim", min: -80.0, max: 80.0, init: 30.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6718 [[ name: "Hanenbow Stem X", min: 0.0, max: 100.0, init: 64.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6720 [[ name: "Hanenbow Leaf 1 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6721 [[ name: "Hanenbow Leaf 1 X", min: 0.0, max: 1.0, init: 0.49, automatable: false ]];   // MOD-HBLM
-    input event float param6722 [[ name: "Hanenbow Leaf 1 Y", min: 0.0, max: 1.0, init: 0.78, automatable: false ]];   // MOD-HBLM
-    input event float param6723 [[ name: "Hanenbow Leaf 1 Angle", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-HBLM
+    input event float param6721 [[ name: "Hanenbow Leaf 1 X", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6722 [[ name: "Hanenbow Leaf 1 Y", min: 0.0, max: 1.0, init: 0.69, automatable: false ]];   // MOD-HBLM
+    input event float param6723 [[ name: "Hanenbow Leaf 1 Angle", min: 0.0, max: 1.0, init: 0.725, automatable: false ]];   // MOD-HBLM
     input event float param6724 [[ name: "Hanenbow Leaf 1 Note", min: 0.0, max: 24.0, init: 0.0, automatable: false ]];   // MOD-HBLM
     input event float param6725 [[ name: "Hanenbow Leaf 2 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6726 [[ name: "Hanenbow Leaf 2 X", min: 0.0, max: 1.0, init: 0.51, automatable: false ]];   // MOD-HBLM
-    input event float param6727 [[ name: "Hanenbow Leaf 2 Y", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-HBLM
-    input event float param6728 [[ name: "Hanenbow Leaf 2 Angle", min: 0.0, max: 1.0, init: 0.66, automatable: false ]];   // MOD-HBLM
+    input event float param6726 [[ name: "Hanenbow Leaf 2 X", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6727 [[ name: "Hanenbow Leaf 2 Y", min: 0.0, max: 1.0, init: 0.69, automatable: false ]];   // MOD-HBLM
+    input event float param6728 [[ name: "Hanenbow Leaf 2 Angle", min: 0.0, max: 1.0, init: 0.725, automatable: false ]];   // MOD-HBLM
     input event float param6729 [[ name: "Hanenbow Leaf 2 Note", min: 0.0, max: 24.0, init: 2.0, automatable: false ]];   // MOD-HBLM
     input event float param6730 [[ name: "Hanenbow Leaf 3 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6731 [[ name: "Hanenbow Leaf 3 X", min: 0.0, max: 1.0, init: 0.49, automatable: false ]];   // MOD-HBLM
-    input event float param6732 [[ name: "Hanenbow Leaf 3 Y", min: 0.0, max: 1.0, init: 0.62, automatable: false ]];   // MOD-HBLM
-    input event float param6733 [[ name: "Hanenbow Leaf 3 Angle", min: 0.0, max: 1.0, init: 0.68, automatable: false ]];   // MOD-HBLM
+    input event float param6731 [[ name: "Hanenbow Leaf 3 X", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6732 [[ name: "Hanenbow Leaf 3 Y", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6733 [[ name: "Hanenbow Leaf 3 Angle", min: 0.0, max: 1.0, init: 0.73, automatable: false ]];   // MOD-HBLM
     input event float param6734 [[ name: "Hanenbow Leaf 3 Note", min: 0.0, max: 24.0, init: 4.0, automatable: false ]];   // MOD-HBLM
     input event float param6735 [[ name: "Hanenbow Leaf 4 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6736 [[ name: "Hanenbow Leaf 4 X", min: 0.0, max: 1.0, init: 0.51, automatable: false ]];   // MOD-HBLM
-    input event float param6737 [[ name: "Hanenbow Leaf 4 Y", min: 0.0, max: 1.0, init: 0.54, automatable: false ]];   // MOD-HBLM
-    input event float param6738 [[ name: "Hanenbow Leaf 4 Angle", min: 0.0, max: 1.0, init: 0.64, automatable: false ]];   // MOD-HBLM
+    input event float param6736 [[ name: "Hanenbow Leaf 4 X", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6737 [[ name: "Hanenbow Leaf 4 Y", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6738 [[ name: "Hanenbow Leaf 4 Angle", min: 0.0, max: 1.0, init: 0.73, automatable: false ]];   // MOD-HBLM
     input event float param6739 [[ name: "Hanenbow Leaf 4 Note", min: 0.0, max: 24.0, init: 5.0, automatable: false ]];   // MOD-HBLM
     input event float param6740 [[ name: "Hanenbow Leaf 5 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6741 [[ name: "Hanenbow Leaf 5 X", min: 0.0, max: 1.0, init: 0.49, automatable: false ]];   // MOD-HBLM
-    input event float param6742 [[ name: "Hanenbow Leaf 5 Y", min: 0.0, max: 1.0, init: 0.46, automatable: false ]];   // MOD-HBLM
-    input event float param6743 [[ name: "Hanenbow Leaf 5 Angle", min: 0.0, max: 1.0, init: 0.66, automatable: false ]];   // MOD-HBLM
+    input event float param6741 [[ name: "Hanenbow Leaf 5 X", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6742 [[ name: "Hanenbow Leaf 5 Y", min: 0.0, max: 1.0, init: 0.33, automatable: false ]];   // MOD-HBLM
+    input event float param6743 [[ name: "Hanenbow Leaf 5 Angle", min: 0.0, max: 1.0, init: 0.84, automatable: false ]];   // MOD-HBLM
     input event float param6744 [[ name: "Hanenbow Leaf 5 Note", min: 0.0, max: 24.0, init: 7.0, automatable: false ]];   // MOD-HBLM
     input event float param6745 [[ name: "Hanenbow Leaf 6 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6746 [[ name: "Hanenbow Leaf 6 X", min: 0.0, max: 1.0, init: 0.51, automatable: false ]];   // MOD-HBLM
-    input event float param6747 [[ name: "Hanenbow Leaf 6 Y", min: 0.0, max: 1.0, init: 0.38, automatable: false ]];   // MOD-HBLM
-    input event float param6748 [[ name: "Hanenbow Leaf 6 Angle", min: 0.0, max: 1.0, init: 0.62, automatable: false ]];   // MOD-HBLM
-    input event float param6749 [[ name: "Hanenbow Leaf 6 Note", min: 0.0, max: 24.0, init: 3.0, automatable: false ]];   // MOD-HBLM
+    input event float param6746 [[ name: "Hanenbow Leaf 6 X", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6747 [[ name: "Hanenbow Leaf 6 Y", min: 0.0, max: 1.0, init: 0.33, automatable: false ]];   // MOD-HBLM
+    input event float param6748 [[ name: "Hanenbow Leaf 6 Angle", min: 0.0, max: 1.0, init: 0.84, automatable: false ]];   // MOD-HBLM
+    input event float param6749 [[ name: "Hanenbow Leaf 6 Note", min: 0.0, max: 24.0, init: 9.0, automatable: false ]];   // MOD-HBLM
     input event float param6750 [[ name: "Hanenbow Leaf 7 On", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
-    input event float param6751 [[ name: "Hanenbow Leaf 7 X", min: 0.0, max: 1.0, init: 0.49, automatable: false ]];   // MOD-HBLM
-    input event float param6752 [[ name: "Hanenbow Leaf 7 Y", min: 0.0, max: 1.0, init: 0.3, automatable: false ]];   // MOD-HBLM
-    input event float param6753 [[ name: "Hanenbow Leaf 7 Angle", min: 0.0, max: 1.0, init: 0.66, automatable: false ]];   // MOD-HBLM
-    input event float param6754 [[ name: "Hanenbow Leaf 7 Note", min: 0.0, max: 24.0, init: 9.0, automatable: false ]];   // MOD-HBLM
+    input event float param6751 [[ name: "Hanenbow Leaf 7 X", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6752 [[ name: "Hanenbow Leaf 7 Y", min: 0.0, max: 1.0, init: 0.2, automatable: false ]];   // MOD-HBLM
+    input event float param6753 [[ name: "Hanenbow Leaf 7 Angle", min: 0.0, max: 1.0, init: 0.85, automatable: false ]];   // MOD-HBLM
+    input event float param6754 [[ name: "Hanenbow Leaf 7 Note", min: 0.0, max: 24.0, init: 3.0, automatable: false ]];   // MOD-HBLM
     input event float param6755 [[ name: "Hanenbow Leaf 8 On", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
-    input event float param6756 [[ name: "Hanenbow Leaf 8 X", min: 0.0, max: 1.0, init: 0.51, automatable: false ]];   // MOD-HBLM
-    input event float param6757 [[ name: "Hanenbow Leaf 8 Y", min: 0.0, max: 1.0, init: 0.22, automatable: false ]];   // MOD-HBLM
-    input event float param6758 [[ name: "Hanenbow Leaf 8 Angle", min: 0.0, max: 1.0, init: 0.62, automatable: false ]];   // MOD-HBLM
+    input event float param6756 [[ name: "Hanenbow Leaf 8 X", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6757 [[ name: "Hanenbow Leaf 8 Y", min: 0.0, max: 1.0, init: 0.2, automatable: false ]];   // MOD-HBLM
+    input event float param6758 [[ name: "Hanenbow Leaf 8 Angle", min: 0.0, max: 1.0, init: 0.85, automatable: false ]];   // MOD-HBLM
     input event float param6759 [[ name: "Hanenbow Leaf 8 Note", min: 0.0, max: 24.0, init: 6.0, automatable: false ]];   // MOD-HBLM
     input event float param6760 [[ name: "Luminaria Every", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6761 [[ name: "Luminaria Scale", min: 0.0, max: 11.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-HBLM
@@ -9587,6 +9588,7 @@ processor Eisenpuls_Synth
     float[8]    hnbVY;
     float[8]    hnbCd;
     float[8]    hnbAge;
+    float[8]    hnbRest;              // time a frog has hardly moved (stuck on a leaf)
     int[8]      hnbOn;
     int[8]      hnbCnt;               // landings on a leaf since its last colour change
     int[8]      hnbSt;                // colour (0..3) of a leaf
@@ -16621,6 +16623,7 @@ processor Eisenpuls_Synth
     event param6715 (float v) { hnbG.at (15) = v; }   // MOD-HBLM
     event param6716 (float v) { hnbG.at (16) = v; }   // MOD-HBLM
     event param6717 (float v) { hnbG.at (17) = v; }   // MOD-HBLM
+    event param6718 (float v) { hnbG.at (18) = v; }   // MOD-HBLM
     event param6720 (float v) { hnbL.at (0) = v; }
     event param6721 (float v) { hnbL.at (1) = v; }
     event param6722 (float v) { hnbL.at (2) = v; }
@@ -18587,7 +18590,7 @@ processor Eisenpuls_Synth
         hnbG.at (0) = 3.0f;
         hnbG.at (1) = 100.0f;
         hnbG.at (2) = 100.0f;
-        hnbG.at (3) = 100.0f;
+        hnbG.at (3) = 120.0f;
         hnbG.at (4) = 60.0f;
         hnbG.at (5) = 8.0f;
         hnbG.at (6) = 24.0f;
@@ -18596,48 +18599,45 @@ processor Eisenpuls_Synth
         hnbG.at (9) = 100.0f;
         hnbG.at (10) = 0.0f;
         hnbG.at (11) = 0.0f;
-        hnbG.at (12) = 12.0f;
+        hnbG.at (12) = 7.0f;
         hnbG.at (13) = 5.0f;
         hnbG.at (14) = 2.0f;
         hnbG.at (15) = 2.0f;
-        hnbG.at (16) = 30.0f;
-        hnbG.at (17) = 25.0f;
+        hnbG.at (16) = 27.0f;
+        hnbG.at (17) = 30.0f;
+        hnbG.at (18) = 64.0f;
         hnbL.at (0) = 1.0f;
-        hnbL.at (1) = 0.49f;
-        hnbL.at (2) = 0.78f;
-        hnbL.at (3) = 0.7f;
+        hnbL.at (2) = 0.69f;
+        hnbL.at (3) = 0.725f;
         hnbL.at (5) = 1.0f;
-        hnbL.at (6) = 0.51f;
-        hnbL.at (7) = 0.7f;
-        hnbL.at (8) = 0.66f;
+        hnbL.at (6) = 1.0f;
+        hnbL.at (7) = 0.69f;
+        hnbL.at (8) = 0.725f;
         hnbL.at (9) = 2.0f;
         hnbL.at (10) = 1.0f;
-        hnbL.at (11) = 0.49f;
-        hnbL.at (12) = 0.62f;
-        hnbL.at (13) = 0.68f;
+        hnbL.at (12) = 0.5f;
+        hnbL.at (13) = 0.73f;
         hnbL.at (14) = 4.0f;
         hnbL.at (15) = 1.0f;
-        hnbL.at (16) = 0.51f;
-        hnbL.at (17) = 0.54f;
-        hnbL.at (18) = 0.64f;
+        hnbL.at (16) = 1.0f;
+        hnbL.at (17) = 0.5f;
+        hnbL.at (18) = 0.73f;
         hnbL.at (19) = 5.0f;
         hnbL.at (20) = 1.0f;
-        hnbL.at (21) = 0.49f;
-        hnbL.at (22) = 0.46f;
-        hnbL.at (23) = 0.66f;
+        hnbL.at (22) = 0.33f;
+        hnbL.at (23) = 0.84f;
         hnbL.at (24) = 7.0f;
         hnbL.at (25) = 1.0f;
-        hnbL.at (26) = 0.51f;
-        hnbL.at (27) = 0.38f;
-        hnbL.at (28) = 0.62f;
-        hnbL.at (29) = 3.0f;
-        hnbL.at (31) = 0.49f;
-        hnbL.at (32) = 0.3f;
-        hnbL.at (33) = 0.66f;
-        hnbL.at (34) = 9.0f;
-        hnbL.at (36) = 0.51f;
-        hnbL.at (37) = 0.22f;
-        hnbL.at (38) = 0.62f;
+        hnbL.at (26) = 1.0f;
+        hnbL.at (27) = 0.33f;
+        hnbL.at (28) = 0.84f;
+        hnbL.at (29) = 9.0f;
+        hnbL.at (32) = 0.2f;
+        hnbL.at (33) = 0.85f;
+        hnbL.at (34) = 3.0f;
+        hnbL.at (36) = 1.0f;
+        hnbL.at (37) = 0.2f;
+        hnbL.at (38) = 0.85f;
         hnbL.at (39) = 6.0f;
         lmg.at (0) = 1.0f;
         lmg.at (1) = 8.0f;
@@ -65820,13 +65820,14 @@ processor Eisenpuls_Synth
         float gr   = max (hnbG.at (2) / 100.0f, 0.2f);
 
         hnbX.at (free)   = clamp (hnbG.at (12) / 100.0f + (sqRand01() - 0.5f) * hnbG.at (13) / 100.0f, 0.03f, 0.97f);
-        hnbY.at (free)   = 1.0f;
+        hnbY.at (free)   = 0.93f;      // under the water, at the launch leaf
         float aim = hnbG.at (17) * 0.0174533f + (sqRand01() - 0.5f) * 0.05f;
         float spd = (1.1f + (sqRand01() - 0.5f) * 0.15f) * jump * sqrt (gr);
         hnbVX.at (free)  = spd * sin (aim);
         hnbVY.at (free)  = -spd * cos (aim);
         hnbCd.at (free)  = 0.0f;
         hnbAge.at (free) = 0.0f;
+        hnbRest.at (free) = 0.0f;
         hnbOn.at (free)  = 1;
     }
 
@@ -65867,7 +65868,7 @@ processor Eisenpuls_Synth
         for (int l = 0; l < 8; ++l)
         {
             float el = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;                // elevation of the leaf: 0.5 = horizontal, above 0.5 = up
-            float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem
+            float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem (X of the leaf is its side)
             hnbEx.at (l) = sd * cos (el) * hl;
             hnbEy.at (l) = -sin (el) * hl;
         }
@@ -65895,7 +65896,7 @@ processor Eisenpuls_Synth
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbL.at (5 * l + 1);   // the leaf is fixed to the stem here and turns around this point
+                    float x1 = hnbG.at (18) / 100.0f;   // the leaf is fixed to the stem here and turns around this point
                     float y1 = hnbL.at (5 * l + 2);
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
@@ -65940,7 +65941,21 @@ processor Eisenpuls_Synth
                 hnbCd.at (b)  = cd;
                 hnbAge.at (b) = hnbAge.at (b) + h;
 
-                if ((y > 1.0f && vy > 0.0f) || hnbAge.at (b) > 6.0f)
+                // a frog that hardly moves (stuck in the angle between leaf and stem) gets a push now and then
+                if (abs (vx) + abs (vy) < 0.12f && y < 0.8f)
+                    hnbRest.at (b) = hnbRest.at (b) + h;
+                else
+                    hnbRest.at (b) = 0.0f;
+
+                if (hnbRest.at (b) > 1.0f)
+                {
+                    hnbRest.at (b) = 0.0f;
+                    hnbVX.at (b)   = (sqRand01() - 0.5f) * 1.2f;
+                    hnbVY.at (b)   = -0.5f;
+                }
+
+                // a frog only disappears when it has fallen into the water (surface at 0.82)
+                if ((y > 0.86f && vy > 0.0f) || hnbAge.at (b) > 30.0f)
                     hnbOn.at (b) = 0;
             }
     }

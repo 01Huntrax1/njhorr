@@ -48,7 +48,7 @@ AR = lambda mode: arp(mode=mode)
 
 # ---- Hanenbow (13): one leaf, flat, in the middle; one frog, no spread, no randomness in x
 off_leaves = [(LF(l, 0), 0) for l in range(8)]
-one = off_leaves + [(LF(0, 0), 1), (LF(0, 1), 0.51), (LF(0, 2), 0.5), (LF(0, 3), 0.5), (LF(0, 4), 0), (HG(0), 1), (HG(13), 0), (HG(5), 0), (HG(6), 24), (HG(12), 65), (HG(17), 0)]
+one = off_leaves + [(LF(0, 0), 1), (LF(0, 1), 1.0), (LF(0, 2), 0.5), (LF(0, 3), 0.5), (LF(0, 4), 0), (HG(0), 1), (HG(13), 0), (HG(5), 0), (HG(6), 24), (HG(12), 65), (HG(17), 0), (HG(18), 50), (HG(3), 100)]
 evs = events(BASE + AR(13) + one, [48], hold=2.5, tag="h1")
 hits_ = [v for v in evs if 3000000 <= v < 4000000]; pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]
 check("Hanenbow: a frog lands on leaf 0", len(hits_) >= 1 and all(h == 3000000 for h in hits_), str(hits_[:5]))
@@ -62,7 +62,7 @@ check("Hanenbow: no leaves, no notes", rms(a[int(0.1 * RATE):int(2.5 * RATE)]) <
 # below the leaf: a leaf above the apex of the jump is never reached; a leaf low in the picture is passed from below (frog goes up through it, lands on it on the way down)
 a = render(BASE + AR(13) + one + [(HG(14), 1), (HG(15), 3), (LF(0, 4), 0)], [48], hold=4.0, tag="h4")
 # colour change: Hits 1, Step 3 -> the pitch moves on after every landing
-evs = events(BASE + AR(13) + one + [(HG(14), 1), (HG(15), 3), (HG(16), 50)], [48], hold=3.5, tag="h5")
+evs = events(BASE + AR(13) + one + [(HG(14), 1), (HG(15), 3), (HG(16), 50)], [48], hold=5.5, tag="h5")
 cs = [v - 30200000 for v in evs if 30200000 <= v < 30300000]
 check("Hanenbow: with Hits 1 the leaf changes colour after every landing (0 -> 1 -> 2 -> 3 -> 0)", len(cs) >= 3 and cs[:4] == [1, 2, 3, 0][:len(cs[:4])], str(cs[:6]))
 # the pitch follows: first landing root + degree 0, after a change +3 degrees (pentatonic major: 0,2,4,7,9,12 ..: degree 3 = +7)
@@ -72,6 +72,15 @@ check("Hanenbow: Rest 100 % is silent", rms(render(BASE + AR(13) + one + [(HG(11
 evs = events(BASE + AR(13) + one + [(LF(0, 3), 0.2)], [48], hold=2.5, tag="h8")
 pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
 check("Hanenbow: a tilted leaf throws the frog to the side", len(xs) > 10 and abs(xs[-1] - xs[0]) > 60 or max(xs) - min(xs) > 60, "x %s .. %s" % (min(xs), max(xs)))
+# the leaf is fixed to the stem: it follows Stem X
+for stem, want in ((30, True), (90, False)):
+    evs = events(BASE + AR(13) + one + [(HG(18), stem), (HG(12), 40)], [48], hold=2.5, tag="hs%d" % stem)
+    n = len([v for v in evs if 3000000 <= v < 4000000])
+    check("Hanenbow: Stem X %d %% %s the leaf under the launch point" % (stem, "puts" if want else "moves away"), (n >= 1) == want, "%d hits" % n)
+# tadpoles only disappear in the water: every one that was reported comes down to y > 0.84 (the surface is at 0.82)
+evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 50), (HG(17), 0), (HG(3), 60)], [48], hold=2.5, tag="hw")
+pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; ys = [v & 1023 for v in pos]
+check("Hanenbow: the tadpole is reported until it has fallen into the water (y > 0.84)", len(ys) > 20 and max(ys[ys.index(min(ys)):]) > 860, "max y after the apex %s" % (max(ys[ys.index(min(ys)):]) if ys else None))
 # Aim 45 degrees: the tadpole leaves the launch leaf to the right
 evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 10), (HG(17), 45)], [48], hold=2.0, tag="h9")
 pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
