@@ -7664,7 +7664,7 @@ processor Eisenpuls_Synth
     input event float param5158 [[ name: "Seq 10 Step 15 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param5159 [[ name: "Seq 10 Step 16 Shape", min: 0.0, max: 7.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ2
     input event float param3920 [[ name: "Arp On", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
-    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 12.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
+    input event float param3921 [[ name: "Arp Mode", min: 0.0, max: 14.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3922 [[ name: "Arp Octaves", min: 1.0, max: 4.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3923 [[ name: "Arp Sync", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-ARP
     input event float param3924 [[ name: "Arp Division", min: 0.0, max: 17.0, init: 11.0, step: 1.0 ]];   // MOD-ARP
@@ -7673,6 +7673,158 @@ processor Eisenpuls_Synth
     input event float param3927 [[ name: "Arp Latch", min: 0.0, max: 1.0, init: 0.0, step: 1.0 ]];   // MOD-ARP
     input event float param3928 [[ name: "Seq Monitor (editor: 0 = none, 1-10 = sequencer shown)", min: 0.0, max: 10.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-SEQ3
     input event float param3929 [[ name: "Seq Key Start (1 = the sequencers only run while a note sounds)", min: 0.0, max: 1.0, init: 1.0, step: 1.0 ]];   // MOD-SEQ4
+    input event float param6700 [[ name: "Hanenbow Frogs", min: 1.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6701 [[ name: "Hanenbow Speed", min: 25.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6702 [[ name: "Hanenbow Gravity", min: 20.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6703 [[ name: "Hanenbow Jump", min: 40.0, max: 200.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6704 [[ name: "Hanenbow Bounce", min: 20.0, max: 110.0, init: 60.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6705 [[ name: "Hanenbow Scale", min: 0.0, max: 11.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6706 [[ name: "Hanenbow Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6707 [[ name: "Hanenbow Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6708 [[ name: "Hanenbow Gate", min: 10.0, max: 400.0, init: 60.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6709 [[ name: "Hanenbow Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6710 [[ name: "Hanenbow Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6711 [[ name: "Hanenbow Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6712 [[ name: "Hanenbow Spawn X", min: 0.0, max: 100.0, init: 50.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6713 [[ name: "Hanenbow Spread", min: 0.0, max: 100.0, init: 40.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6714 [[ name: "Hanenbow Hits", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6715 [[ name: "Hanenbow Step", min: -4.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6716 [[ name: "Hanenbow Leaf Size", min: 8.0, max: 50.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6720 [[ name: "Hanenbow Leaf 1 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6721 [[ name: "Hanenbow Leaf 1 X", min: 0.0, max: 1.0, init: 0.2, automatable: false ]];   // MOD-HBLM
+    input event float param6722 [[ name: "Hanenbow Leaf 1 Y", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-HBLM
+    input event float param6723 [[ name: "Hanenbow Leaf 1 Angle", min: 0.0, max: 1.0, init: 0.62, automatable: false ]];   // MOD-HBLM
+    input event float param6724 [[ name: "Hanenbow Leaf 1 Note", min: 0.0, max: 24.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6725 [[ name: "Hanenbow Leaf 2 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6726 [[ name: "Hanenbow Leaf 2 X", min: 0.0, max: 1.0, init: 0.45, automatable: false ]];   // MOD-HBLM
+    input event float param6727 [[ name: "Hanenbow Leaf 2 Y", min: 0.0, max: 1.0, init: 0.58, automatable: false ]];   // MOD-HBLM
+    input event float param6728 [[ name: "Hanenbow Leaf 2 Angle", min: 0.0, max: 1.0, init: 0.4, automatable: false ]];   // MOD-HBLM
+    input event float param6729 [[ name: "Hanenbow Leaf 2 Note", min: 0.0, max: 24.0, init: 2.0, automatable: false ]];   // MOD-HBLM
+    input event float param6730 [[ name: "Hanenbow Leaf 3 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6731 [[ name: "Hanenbow Leaf 3 X", min: 0.0, max: 1.0, init: 0.7, automatable: false ]];   // MOD-HBLM
+    input event float param6732 [[ name: "Hanenbow Leaf 3 Y", min: 0.0, max: 1.0, init: 0.68, automatable: false ]];   // MOD-HBLM
+    input event float param6733 [[ name: "Hanenbow Leaf 3 Angle", min: 0.0, max: 1.0, init: 0.6, automatable: false ]];   // MOD-HBLM
+    input event float param6734 [[ name: "Hanenbow Leaf 3 Note", min: 0.0, max: 24.0, init: 4.0, automatable: false ]];   // MOD-HBLM
+    input event float param6735 [[ name: "Hanenbow Leaf 4 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6736 [[ name: "Hanenbow Leaf 4 X", min: 0.0, max: 1.0, init: 0.35, automatable: false ]];   // MOD-HBLM
+    input event float param6737 [[ name: "Hanenbow Leaf 4 Y", min: 0.0, max: 1.0, init: 0.4, automatable: false ]];   // MOD-HBLM
+    input event float param6738 [[ name: "Hanenbow Leaf 4 Angle", min: 0.0, max: 1.0, init: 0.55, automatable: false ]];   // MOD-HBLM
+    input event float param6739 [[ name: "Hanenbow Leaf 4 Note", min: 0.0, max: 24.0, init: 5.0, automatable: false ]];   // MOD-HBLM
+    input event float param6740 [[ name: "Hanenbow Leaf 5 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6741 [[ name: "Hanenbow Leaf 5 X", min: 0.0, max: 1.0, init: 0.65, automatable: false ]];   // MOD-HBLM
+    input event float param6742 [[ name: "Hanenbow Leaf 5 Y", min: 0.0, max: 1.0, init: 0.42, automatable: false ]];   // MOD-HBLM
+    input event float param6743 [[ name: "Hanenbow Leaf 5 Angle", min: 0.0, max: 1.0, init: 0.42, automatable: false ]];   // MOD-HBLM
+    input event float param6744 [[ name: "Hanenbow Leaf 5 Note", min: 0.0, max: 24.0, init: 7.0, automatable: false ]];   // MOD-HBLM
+    input event float param6745 [[ name: "Hanenbow Leaf 6 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6746 [[ name: "Hanenbow Leaf 6 X", min: 0.0, max: 1.0, init: 0.85, automatable: false ]];   // MOD-HBLM
+    input event float param6747 [[ name: "Hanenbow Leaf 6 Y", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6748 [[ name: "Hanenbow Leaf 6 Angle", min: 0.0, max: 1.0, init: 0.35, automatable: false ]];   // MOD-HBLM
+    input event float param6749 [[ name: "Hanenbow Leaf 6 Note", min: 0.0, max: 24.0, init: 3.0, automatable: false ]];   // MOD-HBLM
+    input event float param6750 [[ name: "Hanenbow Leaf 7 On", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6751 [[ name: "Hanenbow Leaf 7 X", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6752 [[ name: "Hanenbow Leaf 7 Y", min: 0.0, max: 1.0, init: 0.8, automatable: false ]];   // MOD-HBLM
+    input event float param6753 [[ name: "Hanenbow Leaf 7 Angle", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6754 [[ name: "Hanenbow Leaf 7 Note", min: 0.0, max: 24.0, init: 9.0, automatable: false ]];   // MOD-HBLM
+    input event float param6755 [[ name: "Hanenbow Leaf 8 On", min: 0.0, max: 1.0, init: 0.0, automatable: false ]];   // MOD-HBLM
+    input event float param6756 [[ name: "Hanenbow Leaf 8 X", min: 0.0, max: 1.0, init: 0.12, automatable: false ]];   // MOD-HBLM
+    input event float param6757 [[ name: "Hanenbow Leaf 8 Y", min: 0.0, max: 1.0, init: 0.45, automatable: false ]];   // MOD-HBLM
+    input event float param6758 [[ name: "Hanenbow Leaf 8 Angle", min: 0.0, max: 1.0, init: 0.5, automatable: false ]];   // MOD-HBLM
+    input event float param6759 [[ name: "Hanenbow Leaf 8 Note", min: 0.0, max: 24.0, init: 6.0, automatable: false ]];   // MOD-HBLM
+    input event float param6760 [[ name: "Luminaria Every", min: 1.0, max: 8.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6761 [[ name: "Luminaria Scale", min: 0.0, max: 11.0, init: 8.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6762 [[ name: "Luminaria Range", min: 12.0, max: 48.0, init: 24.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6763 [[ name: "Luminaria Shift", min: -24.0, max: 24.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6764 [[ name: "Luminaria Gate", min: 10.0, max: 400.0, init: 70.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6765 [[ name: "Luminaria Velocity", min: 1.0, max: 127.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6766 [[ name: "Luminaria Chord", min: 0.0, max: 8.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6767 [[ name: "Luminaria Rest", min: 0.0, max: 100.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6768 [[ name: "Luminaria Rotate", min: 0.0, max: 1.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6769 [[ name: "Luminaria Pitch By", min: 0.0, max: 2.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6770 [[ name: "Luminaria Wrap", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6780 [[ name: "Luminaria Walker 1 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6781 [[ name: "Luminaria Walker 1 X", min: 0.0, max: 7.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6782 [[ name: "Luminaria Walker 1 Y", min: 0.0, max: 7.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6783 [[ name: "Luminaria Walker 1 Direction", min: 1.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6784 [[ name: "Luminaria Walker 1 Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6785 [[ name: "Luminaria Walker 2 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6786 [[ name: "Luminaria Walker 2 X", min: 0.0, max: 7.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6787 [[ name: "Luminaria Walker 2 Y", min: 0.0, max: 7.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6788 [[ name: "Luminaria Walker 2 Direction", min: 1.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6789 [[ name: "Luminaria Walker 2 Octave", min: -2.0, max: 2.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6790 [[ name: "Luminaria Walker 3 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6791 [[ name: "Luminaria Walker 3 X", min: 0.0, max: 7.0, init: 6.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6792 [[ name: "Luminaria Walker 3 Y", min: 0.0, max: 7.0, init: 6.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6793 [[ name: "Luminaria Walker 3 Direction", min: 1.0, max: 4.0, init: 4.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6794 [[ name: "Luminaria Walker 3 Octave", min: -2.0, max: 2.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6795 [[ name: "Luminaria Walker 4 On", min: 0.0, max: 1.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6796 [[ name: "Luminaria Walker 4 X", min: 0.0, max: 7.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6797 [[ name: "Luminaria Walker 4 Y", min: 0.0, max: 7.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6798 [[ name: "Luminaria Walker 4 Direction", min: 1.0, max: 4.0, init: 4.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6799 [[ name: "Luminaria Walker 4 Octave", min: -2.0, max: 2.0, init: -1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6800 [[ name: "Luminaria Cell 1", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6801 [[ name: "Luminaria Cell 2", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6802 [[ name: "Luminaria Cell 3", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6803 [[ name: "Luminaria Cell 4", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6804 [[ name: "Luminaria Cell 5", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6805 [[ name: "Luminaria Cell 6", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6806 [[ name: "Luminaria Cell 7", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6807 [[ name: "Luminaria Cell 8", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6808 [[ name: "Luminaria Cell 9", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6809 [[ name: "Luminaria Cell 10", min: 0.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6810 [[ name: "Luminaria Cell 11", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6811 [[ name: "Luminaria Cell 12", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6812 [[ name: "Luminaria Cell 13", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6813 [[ name: "Luminaria Cell 14", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6814 [[ name: "Luminaria Cell 15", min: 0.0, max: 4.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6815 [[ name: "Luminaria Cell 16", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6816 [[ name: "Luminaria Cell 17", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6817 [[ name: "Luminaria Cell 18", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6818 [[ name: "Luminaria Cell 19", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6819 [[ name: "Luminaria Cell 20", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6820 [[ name: "Luminaria Cell 21", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6821 [[ name: "Luminaria Cell 22", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6822 [[ name: "Luminaria Cell 23", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6823 [[ name: "Luminaria Cell 24", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6824 [[ name: "Luminaria Cell 25", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6825 [[ name: "Luminaria Cell 26", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6826 [[ name: "Luminaria Cell 27", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6827 [[ name: "Luminaria Cell 28", min: 0.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6828 [[ name: "Luminaria Cell 29", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6829 [[ name: "Luminaria Cell 30", min: 0.0, max: 4.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6830 [[ name: "Luminaria Cell 31", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6831 [[ name: "Luminaria Cell 32", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6832 [[ name: "Luminaria Cell 33", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6833 [[ name: "Luminaria Cell 34", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6834 [[ name: "Luminaria Cell 35", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6835 [[ name: "Luminaria Cell 36", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6836 [[ name: "Luminaria Cell 37", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6837 [[ name: "Luminaria Cell 38", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6838 [[ name: "Luminaria Cell 39", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6839 [[ name: "Luminaria Cell 40", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6840 [[ name: "Luminaria Cell 41", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6841 [[ name: "Luminaria Cell 42", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6842 [[ name: "Luminaria Cell 43", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6843 [[ name: "Luminaria Cell 44", min: 0.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6844 [[ name: "Luminaria Cell 45", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6845 [[ name: "Luminaria Cell 46", min: 0.0, max: 4.0, init: 4.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6846 [[ name: "Luminaria Cell 47", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6847 [[ name: "Luminaria Cell 48", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6848 [[ name: "Luminaria Cell 49", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6849 [[ name: "Luminaria Cell 50", min: 0.0, max: 4.0, init: 1.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6850 [[ name: "Luminaria Cell 51", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6851 [[ name: "Luminaria Cell 52", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6852 [[ name: "Luminaria Cell 53", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6853 [[ name: "Luminaria Cell 54", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6854 [[ name: "Luminaria Cell 55", min: 0.0, max: 4.0, init: 4.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6855 [[ name: "Luminaria Cell 56", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6856 [[ name: "Luminaria Cell 57", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6857 [[ name: "Luminaria Cell 58", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6858 [[ name: "Luminaria Cell 59", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6859 [[ name: "Luminaria Cell 60", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6860 [[ name: "Luminaria Cell 61", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6861 [[ name: "Luminaria Cell 62", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6862 [[ name: "Luminaria Cell 63", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6863 [[ name: "Luminaria Cell 64", min: 0.0, max: 4.0, init: 0.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6360 [[ name: "Plinko Balls", min: 1.0, max: 8.0, init: 3.0, step: 1.0, automatable: false ]];   // MOD-PLKP
     input event float param6361 [[ name: "Plinko Speed", min: 25.0, max: 300.0, init: 100.0, step: 1.0, automatable: false ]];   // MOD-PLKP
     input event float param6362 [[ name: "Plinko Bounce", min: 20.0, max: 110.0, init: 75.0, step: 1.0, automatable: false ]];   // MOD-PLKP
@@ -9423,6 +9575,30 @@ processor Eisenpuls_Synth
     float       plkAcc = 0.0f;        // time not yet simulated (s)
     float       plkTime = 0.0f;       // simulated time (s), for the sway
     float       plkViz = 0.0f;        // time since the last position report
+    // ---------------- MOD-HBLM: Hanenbow (frogs and leaves) and Luminaria (walkers on a grid) ----------------
+    float[20]   hnbG;                 // Hanenbow globals (6700 + k)
+    float[40]   hnbL;                 // leaves: 8 x (on, x, y, angle, note)
+    float[8]    hnbEx;                // half length of the leaf as a vector (from the angle), recomputed every physics step
+    float[8]    hnbEy;
+    float[8]    hnbX;                 // frogs
+    float[8]    hnbY;
+    float[8]    hnbVX;
+    float[8]    hnbVY;
+    float[8]    hnbCd;
+    float[8]    hnbAge;
+    int[8]      hnbOn;
+    int[8]      hnbCnt;               // landings on a leaf since its last colour change
+    int[8]      hnbSt;                // colour (0..3) of a leaf
+    float       hnbAcc = 0.0f;
+    float       hnbViz = 0.0f;
+    float[16]   lmg;                  // Luminaria globals (6760 + k)
+    float[20]   lmW;                  // walkers: 4 x (on, x, y, dir, octave)
+    float[64]   lmGrid;               // the arrows as set by the parameters
+    int[64]     lmRt;                 // the arrows while playing (Rotate turns them)
+    int[4]      lmX;
+    int[4]      lmY;
+    int[4]      lmD;
+    int         lmDiv = 0;
     int         seqRepVoice = 0;   // MOD-SEQPOS: voice reported for sequencers with Retrig
     int[16]     seqLastPos;        // MOD-SEQPOS
     float       seqRefresh = 0.0f;
@@ -16426,6 +16602,158 @@ processor Eisenpuls_Synth
     event param6685 (float v) { plkB.at (285) = v; }
     event param6686 (float v) { plkB.at (286) = v; }
     event param6687 (float v) { plkB.at (287) = v; }
+    event param6700 (float v) { hnbG.at (0) = v; }   // MOD-HBLM
+    event param6701 (float v) { hnbG.at (1) = v; }   // MOD-HBLM
+    event param6702 (float v) { hnbG.at (2) = v; }   // MOD-HBLM
+    event param6703 (float v) { hnbG.at (3) = v; }   // MOD-HBLM
+    event param6704 (float v) { hnbG.at (4) = v; }   // MOD-HBLM
+    event param6705 (float v) { hnbG.at (5) = v; }   // MOD-HBLM
+    event param6706 (float v) { hnbG.at (6) = v; }   // MOD-HBLM
+    event param6707 (float v) { hnbG.at (7) = v; }   // MOD-HBLM
+    event param6708 (float v) { hnbG.at (8) = v; }   // MOD-HBLM
+    event param6709 (float v) { hnbG.at (9) = v; }   // MOD-HBLM
+    event param6710 (float v) { hnbG.at (10) = v; }   // MOD-HBLM
+    event param6711 (float v) { hnbG.at (11) = v; }   // MOD-HBLM
+    event param6712 (float v) { hnbG.at (12) = v; }   // MOD-HBLM
+    event param6713 (float v) { hnbG.at (13) = v; }   // MOD-HBLM
+    event param6714 (float v) { hnbG.at (14) = v; }   // MOD-HBLM
+    event param6715 (float v) { hnbG.at (15) = v; }   // MOD-HBLM
+    event param6716 (float v) { hnbG.at (16) = v; }   // MOD-HBLM
+    event param6720 (float v) { hnbL.at (0) = v; }
+    event param6721 (float v) { hnbL.at (1) = v; }
+    event param6722 (float v) { hnbL.at (2) = v; }
+    event param6723 (float v) { hnbL.at (3) = v; }
+    event param6724 (float v) { hnbL.at (4) = v; }
+    event param6725 (float v) { hnbL.at (5) = v; }
+    event param6726 (float v) { hnbL.at (6) = v; }
+    event param6727 (float v) { hnbL.at (7) = v; }
+    event param6728 (float v) { hnbL.at (8) = v; }
+    event param6729 (float v) { hnbL.at (9) = v; }
+    event param6730 (float v) { hnbL.at (10) = v; }
+    event param6731 (float v) { hnbL.at (11) = v; }
+    event param6732 (float v) { hnbL.at (12) = v; }
+    event param6733 (float v) { hnbL.at (13) = v; }
+    event param6734 (float v) { hnbL.at (14) = v; }
+    event param6735 (float v) { hnbL.at (15) = v; }
+    event param6736 (float v) { hnbL.at (16) = v; }
+    event param6737 (float v) { hnbL.at (17) = v; }
+    event param6738 (float v) { hnbL.at (18) = v; }
+    event param6739 (float v) { hnbL.at (19) = v; }
+    event param6740 (float v) { hnbL.at (20) = v; }
+    event param6741 (float v) { hnbL.at (21) = v; }
+    event param6742 (float v) { hnbL.at (22) = v; }
+    event param6743 (float v) { hnbL.at (23) = v; }
+    event param6744 (float v) { hnbL.at (24) = v; }
+    event param6745 (float v) { hnbL.at (25) = v; }
+    event param6746 (float v) { hnbL.at (26) = v; }
+    event param6747 (float v) { hnbL.at (27) = v; }
+    event param6748 (float v) { hnbL.at (28) = v; }
+    event param6749 (float v) { hnbL.at (29) = v; }
+    event param6750 (float v) { hnbL.at (30) = v; }
+    event param6751 (float v) { hnbL.at (31) = v; }
+    event param6752 (float v) { hnbL.at (32) = v; }
+    event param6753 (float v) { hnbL.at (33) = v; }
+    event param6754 (float v) { hnbL.at (34) = v; }
+    event param6755 (float v) { hnbL.at (35) = v; }
+    event param6756 (float v) { hnbL.at (36) = v; }
+    event param6757 (float v) { hnbL.at (37) = v; }
+    event param6758 (float v) { hnbL.at (38) = v; }
+    event param6759 (float v) { hnbL.at (39) = v; }
+    event param6760 (float v) { lmg.at (0) = v; }   // MOD-HBLM
+    event param6761 (float v) { lmg.at (1) = v; }   // MOD-HBLM
+    event param6762 (float v) { lmg.at (2) = v; }   // MOD-HBLM
+    event param6763 (float v) { lmg.at (3) = v; }   // MOD-HBLM
+    event param6764 (float v) { lmg.at (4) = v; }   // MOD-HBLM
+    event param6765 (float v) { lmg.at (5) = v; }   // MOD-HBLM
+    event param6766 (float v) { lmg.at (6) = v; }   // MOD-HBLM
+    event param6767 (float v) { lmg.at (7) = v; }   // MOD-HBLM
+    event param6768 (float v) { lmg.at (8) = v; }   // MOD-HBLM
+    event param6769 (float v) { lmg.at (9) = v; }   // MOD-HBLM
+    event param6770 (float v) { lmg.at (10) = v; }   // MOD-HBLM
+    event param6780 (float v) { lmW.at (0) = v; }
+    event param6781 (float v) { lmW.at (1) = v; lmX.at (0) = clamp (int (v + 0.5f), 0, 7); }
+    event param6782 (float v) { lmW.at (2) = v; lmY.at (0) = clamp (int (v + 0.5f), 0, 7); }
+    event param6783 (float v) { lmW.at (3) = v; lmD.at (0) = clamp (int (v + 0.5f), 1, 4); }
+    event param6784 (float v) { lmW.at (4) = v; }
+    event param6785 (float v) { lmW.at (5) = v; }
+    event param6786 (float v) { lmW.at (6) = v; lmX.at (1) = clamp (int (v + 0.5f), 0, 7); }
+    event param6787 (float v) { lmW.at (7) = v; lmY.at (1) = clamp (int (v + 0.5f), 0, 7); }
+    event param6788 (float v) { lmW.at (8) = v; lmD.at (1) = clamp (int (v + 0.5f), 1, 4); }
+    event param6789 (float v) { lmW.at (9) = v; }
+    event param6790 (float v) { lmW.at (10) = v; }
+    event param6791 (float v) { lmW.at (11) = v; lmX.at (2) = clamp (int (v + 0.5f), 0, 7); }
+    event param6792 (float v) { lmW.at (12) = v; lmY.at (2) = clamp (int (v + 0.5f), 0, 7); }
+    event param6793 (float v) { lmW.at (13) = v; lmD.at (2) = clamp (int (v + 0.5f), 1, 4); }
+    event param6794 (float v) { lmW.at (14) = v; }
+    event param6795 (float v) { lmW.at (15) = v; }
+    event param6796 (float v) { lmW.at (16) = v; lmX.at (3) = clamp (int (v + 0.5f), 0, 7); }
+    event param6797 (float v) { lmW.at (17) = v; lmY.at (3) = clamp (int (v + 0.5f), 0, 7); }
+    event param6798 (float v) { lmW.at (18) = v; lmD.at (3) = clamp (int (v + 0.5f), 1, 4); }
+    event param6799 (float v) { lmW.at (19) = v; }
+    event param6800 (float v) { lmGrid.at (0) = v; lmRt.at (0) = clamp (int (v + 0.5f), 0, 4); }
+    event param6801 (float v) { lmGrid.at (1) = v; lmRt.at (1) = clamp (int (v + 0.5f), 0, 4); }
+    event param6802 (float v) { lmGrid.at (2) = v; lmRt.at (2) = clamp (int (v + 0.5f), 0, 4); }
+    event param6803 (float v) { lmGrid.at (3) = v; lmRt.at (3) = clamp (int (v + 0.5f), 0, 4); }
+    event param6804 (float v) { lmGrid.at (4) = v; lmRt.at (4) = clamp (int (v + 0.5f), 0, 4); }
+    event param6805 (float v) { lmGrid.at (5) = v; lmRt.at (5) = clamp (int (v + 0.5f), 0, 4); }
+    event param6806 (float v) { lmGrid.at (6) = v; lmRt.at (6) = clamp (int (v + 0.5f), 0, 4); }
+    event param6807 (float v) { lmGrid.at (7) = v; lmRt.at (7) = clamp (int (v + 0.5f), 0, 4); }
+    event param6808 (float v) { lmGrid.at (8) = v; lmRt.at (8) = clamp (int (v + 0.5f), 0, 4); }
+    event param6809 (float v) { lmGrid.at (9) = v; lmRt.at (9) = clamp (int (v + 0.5f), 0, 4); }
+    event param6810 (float v) { lmGrid.at (10) = v; lmRt.at (10) = clamp (int (v + 0.5f), 0, 4); }
+    event param6811 (float v) { lmGrid.at (11) = v; lmRt.at (11) = clamp (int (v + 0.5f), 0, 4); }
+    event param6812 (float v) { lmGrid.at (12) = v; lmRt.at (12) = clamp (int (v + 0.5f), 0, 4); }
+    event param6813 (float v) { lmGrid.at (13) = v; lmRt.at (13) = clamp (int (v + 0.5f), 0, 4); }
+    event param6814 (float v) { lmGrid.at (14) = v; lmRt.at (14) = clamp (int (v + 0.5f), 0, 4); }
+    event param6815 (float v) { lmGrid.at (15) = v; lmRt.at (15) = clamp (int (v + 0.5f), 0, 4); }
+    event param6816 (float v) { lmGrid.at (16) = v; lmRt.at (16) = clamp (int (v + 0.5f), 0, 4); }
+    event param6817 (float v) { lmGrid.at (17) = v; lmRt.at (17) = clamp (int (v + 0.5f), 0, 4); }
+    event param6818 (float v) { lmGrid.at (18) = v; lmRt.at (18) = clamp (int (v + 0.5f), 0, 4); }
+    event param6819 (float v) { lmGrid.at (19) = v; lmRt.at (19) = clamp (int (v + 0.5f), 0, 4); }
+    event param6820 (float v) { lmGrid.at (20) = v; lmRt.at (20) = clamp (int (v + 0.5f), 0, 4); }
+    event param6821 (float v) { lmGrid.at (21) = v; lmRt.at (21) = clamp (int (v + 0.5f), 0, 4); }
+    event param6822 (float v) { lmGrid.at (22) = v; lmRt.at (22) = clamp (int (v + 0.5f), 0, 4); }
+    event param6823 (float v) { lmGrid.at (23) = v; lmRt.at (23) = clamp (int (v + 0.5f), 0, 4); }
+    event param6824 (float v) { lmGrid.at (24) = v; lmRt.at (24) = clamp (int (v + 0.5f), 0, 4); }
+    event param6825 (float v) { lmGrid.at (25) = v; lmRt.at (25) = clamp (int (v + 0.5f), 0, 4); }
+    event param6826 (float v) { lmGrid.at (26) = v; lmRt.at (26) = clamp (int (v + 0.5f), 0, 4); }
+    event param6827 (float v) { lmGrid.at (27) = v; lmRt.at (27) = clamp (int (v + 0.5f), 0, 4); }
+    event param6828 (float v) { lmGrid.at (28) = v; lmRt.at (28) = clamp (int (v + 0.5f), 0, 4); }
+    event param6829 (float v) { lmGrid.at (29) = v; lmRt.at (29) = clamp (int (v + 0.5f), 0, 4); }
+    event param6830 (float v) { lmGrid.at (30) = v; lmRt.at (30) = clamp (int (v + 0.5f), 0, 4); }
+    event param6831 (float v) { lmGrid.at (31) = v; lmRt.at (31) = clamp (int (v + 0.5f), 0, 4); }
+    event param6832 (float v) { lmGrid.at (32) = v; lmRt.at (32) = clamp (int (v + 0.5f), 0, 4); }
+    event param6833 (float v) { lmGrid.at (33) = v; lmRt.at (33) = clamp (int (v + 0.5f), 0, 4); }
+    event param6834 (float v) { lmGrid.at (34) = v; lmRt.at (34) = clamp (int (v + 0.5f), 0, 4); }
+    event param6835 (float v) { lmGrid.at (35) = v; lmRt.at (35) = clamp (int (v + 0.5f), 0, 4); }
+    event param6836 (float v) { lmGrid.at (36) = v; lmRt.at (36) = clamp (int (v + 0.5f), 0, 4); }
+    event param6837 (float v) { lmGrid.at (37) = v; lmRt.at (37) = clamp (int (v + 0.5f), 0, 4); }
+    event param6838 (float v) { lmGrid.at (38) = v; lmRt.at (38) = clamp (int (v + 0.5f), 0, 4); }
+    event param6839 (float v) { lmGrid.at (39) = v; lmRt.at (39) = clamp (int (v + 0.5f), 0, 4); }
+    event param6840 (float v) { lmGrid.at (40) = v; lmRt.at (40) = clamp (int (v + 0.5f), 0, 4); }
+    event param6841 (float v) { lmGrid.at (41) = v; lmRt.at (41) = clamp (int (v + 0.5f), 0, 4); }
+    event param6842 (float v) { lmGrid.at (42) = v; lmRt.at (42) = clamp (int (v + 0.5f), 0, 4); }
+    event param6843 (float v) { lmGrid.at (43) = v; lmRt.at (43) = clamp (int (v + 0.5f), 0, 4); }
+    event param6844 (float v) { lmGrid.at (44) = v; lmRt.at (44) = clamp (int (v + 0.5f), 0, 4); }
+    event param6845 (float v) { lmGrid.at (45) = v; lmRt.at (45) = clamp (int (v + 0.5f), 0, 4); }
+    event param6846 (float v) { lmGrid.at (46) = v; lmRt.at (46) = clamp (int (v + 0.5f), 0, 4); }
+    event param6847 (float v) { lmGrid.at (47) = v; lmRt.at (47) = clamp (int (v + 0.5f), 0, 4); }
+    event param6848 (float v) { lmGrid.at (48) = v; lmRt.at (48) = clamp (int (v + 0.5f), 0, 4); }
+    event param6849 (float v) { lmGrid.at (49) = v; lmRt.at (49) = clamp (int (v + 0.5f), 0, 4); }
+    event param6850 (float v) { lmGrid.at (50) = v; lmRt.at (50) = clamp (int (v + 0.5f), 0, 4); }
+    event param6851 (float v) { lmGrid.at (51) = v; lmRt.at (51) = clamp (int (v + 0.5f), 0, 4); }
+    event param6852 (float v) { lmGrid.at (52) = v; lmRt.at (52) = clamp (int (v + 0.5f), 0, 4); }
+    event param6853 (float v) { lmGrid.at (53) = v; lmRt.at (53) = clamp (int (v + 0.5f), 0, 4); }
+    event param6854 (float v) { lmGrid.at (54) = v; lmRt.at (54) = clamp (int (v + 0.5f), 0, 4); }
+    event param6855 (float v) { lmGrid.at (55) = v; lmRt.at (55) = clamp (int (v + 0.5f), 0, 4); }
+    event param6856 (float v) { lmGrid.at (56) = v; lmRt.at (56) = clamp (int (v + 0.5f), 0, 4); }
+    event param6857 (float v) { lmGrid.at (57) = v; lmRt.at (57) = clamp (int (v + 0.5f), 0, 4); }
+    event param6858 (float v) { lmGrid.at (58) = v; lmRt.at (58) = clamp (int (v + 0.5f), 0, 4); }
+    event param6859 (float v) { lmGrid.at (59) = v; lmRt.at (59) = clamp (int (v + 0.5f), 0, 4); }
+    event param6860 (float v) { lmGrid.at (60) = v; lmRt.at (60) = clamp (int (v + 0.5f), 0, 4); }
+    event param6861 (float v) { lmGrid.at (61) = v; lmRt.at (61) = clamp (int (v + 0.5f), 0, 4); }
+    event param6862 (float v) { lmGrid.at (62) = v; lmRt.at (62) = clamp (int (v + 0.5f), 0, 4); }
+    event param6863 (float v) { lmGrid.at (63) = v; lmRt.at (63) = clamp (int (v + 0.5f), 0, 4); }
     event param3920 (float v) { arpOn = v; }   // MOD-ARP
     event param3921 (float v) { arpMode = v; }   // MOD-ARP
     event param3922 (float v) { arpOct = v; }   // MOD-ARP
@@ -18254,6 +18582,117 @@ processor Eisenpuls_Synth
         a3Gate.at (62) = 1.0f;
 
         // MOD-SQM defaults
+        hnbG.at (0) = 3.0f;
+        hnbG.at (1) = 100.0f;
+        hnbG.at (2) = 100.0f;
+        hnbG.at (3) = 100.0f;
+        hnbG.at (4) = 60.0f;
+        hnbG.at (5) = 8.0f;
+        hnbG.at (6) = 24.0f;
+        hnbG.at (7) = 0.0f;
+        hnbG.at (8) = 60.0f;
+        hnbG.at (9) = 100.0f;
+        hnbG.at (10) = 0.0f;
+        hnbG.at (11) = 0.0f;
+        hnbG.at (12) = 50.0f;
+        hnbG.at (13) = 40.0f;
+        hnbG.at (14) = 2.0f;
+        hnbG.at (15) = 2.0f;
+        hnbG.at (16) = 24.0f;
+        hnbL.at (0) = 1.0f;
+        hnbL.at (1) = 0.2f;
+        hnbL.at (2) = 0.7f;
+        hnbL.at (3) = 0.62f;
+        hnbL.at (5) = 1.0f;
+        hnbL.at (6) = 0.45f;
+        hnbL.at (7) = 0.58f;
+        hnbL.at (8) = 0.4f;
+        hnbL.at (9) = 2.0f;
+        hnbL.at (10) = 1.0f;
+        hnbL.at (11) = 0.7f;
+        hnbL.at (12) = 0.68f;
+        hnbL.at (13) = 0.6f;
+        hnbL.at (14) = 4.0f;
+        hnbL.at (15) = 1.0f;
+        hnbL.at (16) = 0.35f;
+        hnbL.at (17) = 0.4f;
+        hnbL.at (18) = 0.55f;
+        hnbL.at (19) = 5.0f;
+        hnbL.at (20) = 1.0f;
+        hnbL.at (21) = 0.65f;
+        hnbL.at (22) = 0.42f;
+        hnbL.at (23) = 0.42f;
+        hnbL.at (24) = 7.0f;
+        hnbL.at (25) = 1.0f;
+        hnbL.at (26) = 0.85f;
+        hnbL.at (27) = 0.5f;
+        hnbL.at (28) = 0.35f;
+        hnbL.at (29) = 3.0f;
+        hnbL.at (31) = 0.5f;
+        hnbL.at (32) = 0.8f;
+        hnbL.at (33) = 0.5f;
+        hnbL.at (34) = 9.0f;
+        hnbL.at (36) = 0.12f;
+        hnbL.at (37) = 0.45f;
+        hnbL.at (38) = 0.5f;
+        hnbL.at (39) = 6.0f;
+        lmg.at (0) = 1.0f;
+        lmg.at (1) = 8.0f;
+        lmg.at (2) = 24.0f;
+        lmg.at (3) = 0.0f;
+        lmg.at (4) = 70.0f;
+        lmg.at (5) = 100.0f;
+        lmg.at (6) = 0.0f;
+        lmg.at (7) = 0.0f;
+        lmg.at (8) = 0.0f;
+        lmg.at (9) = 0.0f;
+        lmg.at (10) = 1.0f;
+        lmW.at (0) = 1.0f;
+        lmW.at (1) = 1.0f;
+        lmW.at (2) = 1.0f;
+        lmW.at (3) = 2.0f;
+        lmX.at (0) = 1;
+        lmY.at (0) = 1;
+        lmD.at (0) = 2;
+        lmW.at (5) = 1.0f;
+        lmW.at (6) = 3.0f;
+        lmW.at (7) = 3.0f;
+        lmW.at (8) = 2.0f;
+        lmW.at (9) = 1.0f;
+        lmX.at (1) = 3;
+        lmY.at (1) = 3;
+        lmD.at (1) = 2;
+        lmW.at (10) = 1.0f;
+        lmW.at (11) = 6.0f;
+        lmW.at (12) = 6.0f;
+        lmW.at (13) = 4.0f;
+        lmX.at (2) = 6;
+        lmY.at (2) = 6;
+        lmD.at (2) = 4;
+        lmW.at (15) = 1.0f;
+        lmW.at (16) = 5.0f;
+        lmW.at (17) = 5.0f;
+        lmW.at (18) = 4.0f;
+        lmW.at (19) = -1.0f;
+        lmX.at (3) = 5;
+        lmY.at (3) = 5;
+        lmD.at (3) = 4;
+        lmGrid.at (9) = 2.0f;
+        lmRt.at (9) = 2;
+        lmGrid.at (14) = 3.0f;
+        lmRt.at (14) = 3;
+        lmGrid.at (27) = 2.0f;
+        lmRt.at (27) = 2;
+        lmGrid.at (29) = 3.0f;
+        lmRt.at (29) = 3;
+        lmGrid.at (43) = 1.0f;
+        lmRt.at (43) = 1;
+        lmGrid.at (45) = 4.0f;
+        lmRt.at (45) = 4;
+        lmGrid.at (49) = 1.0f;
+        lmRt.at (49) = 1;
+        lmGrid.at (54) = 4.0f;
+        lmRt.at (54) = 4;
         plg.at (0) = 3.0f;
         plg.at (1) = 100.0f;
         plg.at (2) = 75.0f;
@@ -65329,6 +65768,276 @@ processor Eisenpuls_Synth
         }
     }
 
+    // ---- MOD-HBLM ----
+    void hnbClear()
+    {
+        for (int i = 0; i < 8; ++i)
+        {
+            hnbOn.at (i)  = 0;
+            hnbCnt.at (i) = 0;
+            hnbSt.at (i)  = 0;
+        }
+
+        hnbAcc = 0.0f;
+    }
+
+    void lumClear()
+    {
+        for (int w = 0; w < 4; ++w)
+        {
+            lmX.at (w) = clamp (int (lmW.at (5 * w + 1) + 0.5f), 0, 7);
+            lmY.at (w) = clamp (int (lmW.at (5 * w + 2) + 0.5f), 0, 7);
+            lmD.at (w) = clamp (int (lmW.at (5 * w + 3) + 0.5f), 1, 4);
+        }
+
+        for (int c = 0; c < 64; ++c)
+            lmRt.at (c) = clamp (int (lmGrid.at (c) + 0.5f), 0, 4);
+
+        lmDiv = 0;
+    }
+
+    void hnbSpawn()
+    {
+        int maxB  = clamp (int (hnbG.at (0) + 0.5f), 1, 8);
+        int alive = 0;
+        int free  = -1;
+
+        for (int i = 0; i < 8; ++i)
+        {
+            if (hnbOn.at (i) != 0)
+                alive++;
+            else if (free < 0)
+                free = i;
+        }
+
+        if (free < 0 || alive >= maxB)
+            return;
+
+        float jump = hnbG.at (3) / 100.0f;
+        float gr   = max (hnbG.at (2) / 100.0f, 0.2f);
+
+        hnbX.at (free)   = clamp (hnbG.at (12) / 100.0f + (sqRand01() - 0.5f) * hnbG.at (13) / 100.0f, 0.03f, 0.97f);
+        hnbY.at (free)   = 1.0f;
+        hnbVX.at (free)  = (sqRand01() - 0.5f) * 0.3f;
+        hnbVY.at (free)  = -(1.1f + (sqRand01() - 0.5f) * 0.15f) * jump * sqrt (gr);
+        hnbCd.at (free)  = 0.0f;
+        hnbAge.at (free) = 0.0f;
+        hnbOn.at (free)  = 1;
+    }
+
+    void hnbHit (int l, float speed, float64 now)
+    {
+        if (sqRand01() * 100.0f >= hnbG.at (11))
+        {
+            int   root  = arpHN.at (max (arpN - 1, 0));
+            int   mask  = sqScaleMask (int (hnbG.at (5) + 0.5f));
+            int   range = clamp (int (hnbG.at (6) + 0.5f), 12, 48);
+            int   n     = sqScaleCount (mask, range);
+            int   deg   = int (hnbL.at (5 * l + 4) + 0.5f) + hnbSt.at (l) * int (hnbG.at (15));
+            deg = ((deg % n) + n) % n;
+            int   nn    = root + int (hnbG.at (7)) + sqScaleNote (mask, range, deg);
+            float vel   = clamp (hnbG.at (9) / 127.0f * (0.35f + 0.9f * min (speed, 1.2f)), 0.05f, 1.0f);
+
+            plkAddChord (nn, vel, now, hnbG.at (8) / 100.0f, int (hnbG.at (10) + 0.5f));
+        }
+
+        seqPos <- 3000000 + l;
+        hnbCnt.at (l) = hnbCnt.at (l) + 1;
+
+        if (hnbCnt.at (l) >= int (hnbG.at (14) + 0.5f))
+        {
+            hnbCnt.at (l) = 0;
+            hnbSt.at (l)  = (hnbSt.at (l) + 1) % 4;
+            seqPos <- 30200000 + l * 8 + hnbSt.at (l);
+        }
+    }
+
+    void hnbStep (float h, float64 now)
+    {
+        float grav = 0.9f * hnbG.at (2) / 100.0f;
+        float e0   = clamp (hnbG.at (4) / 100.0f, 0.1f, 1.1f);
+        float hl   = clamp (hnbG.at (16) / 100.0f, 0.06f, 0.5f) * 0.5f;
+        float r    = 0.012f;
+
+        for (int l = 0; l < 8; ++l)
+        {
+            float an = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;
+            hnbEx.at (l) = cos (an) * hl;
+            hnbEy.at (l) = sin (an) * hl;
+        }
+
+        for (int b = 0; b < 8; ++b)
+            if (hnbOn.at (b) != 0)
+            {
+                float x  = hnbX.at (b);
+                float y  = hnbY.at (b);
+                float vx = hnbVX.at (b);
+                float vy = hnbVY.at (b) + grav * h;
+                float cd = hnbCd.at (b) - h;
+
+                x += vx * h;
+                y += vy * h;
+
+                if (x < r)        { x = r;        vx = abs (vx) * e0; }
+                if (x > 1.0f - r) { x = 1.0f - r; vx = -abs (vx) * e0; }
+                if (y < r)        { y = r;        vy = abs (vy) * e0; }
+
+                for (int l = 0; l < 8; ++l)
+                {
+                    if (hnbL.at (5 * l) < 0.5f)
+                        continue;
+
+                    float ex = hnbEx.at (l);
+                    float ey = hnbEy.at (l);
+                    float x1 = hnbL.at (5 * l + 1) - ex;
+                    float y1 = hnbL.at (5 * l + 2) - ey;
+                    float sx = 2.0f * ex;
+                    float sy = 2.0f * ey;
+                    float l2 = sx * sx + sy * sy;
+                    float t  = clamp (((x - x1) * sx + (y - y1) * sy) / max (l2, 0.000001f), 0.0f, 1.0f);
+                    float dx = x - (x1 + t * sx);
+                    float dy = y - (y1 + t * sy);
+                    float re = r + 0.006f;
+                    float d2 = dx * dx + dy * dy;
+
+                    if (d2 < re * re)
+                    {
+                        float d  = sqrt (d2);
+                        float nx = d > 0.00001f ? dx / d : 0.0f;
+                        float ny = d > 0.00001f ? dy / d : -1.0f;
+
+                        if (ny < -0.15f)   // only from above: a frog coming from below passes the leaf
+                        {
+                            x += nx * (re - d);
+                            y += ny * (re - d);
+                            float vn = vx * nx + vy * ny;
+
+                            if (vn < 0.0f)
+                            {
+                                vx -= (1.0f + e0) * vn * nx;
+                                vy -= (1.0f + e0) * vn * ny;
+
+                                if (-vn > 0.08f && cd <= 0.0f)
+                                {
+                                    hnbHit (l, -vn, now);
+                                    cd = 0.06f;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                hnbX.at (b)   = x;
+                hnbY.at (b)   = y;
+                hnbVX.at (b)  = clamp (vx, -3.0f, 3.0f);
+                hnbVY.at (b)  = clamp (vy, -3.0f, 3.0f);
+                hnbCd.at (b)  = cd;
+                hnbAge.at (b) = hnbAge.at (b) + h;
+
+                if ((y > 1.0f && vy > 0.0f) || hnbAge.at (b) > 6.0f)
+                    hnbOn.at (b) = 0;
+            }
+    }
+
+    void hnbPhys (float dt, float64 now)
+    {
+        hnbAcc += dt * hnbG.at (1) / 100.0f;
+
+        while (hnbAcc >= 0.0025f)   // 400 Hz
+        {
+            hnbAcc -= 0.0025f;
+            hnbStep (0.0025f, now);
+        }
+
+        hnbViz += dt;
+
+        if (hnbViz >= 0.033f)
+        {
+            hnbViz = 0.0f;
+
+            for (int b = 0; b < 8; ++b)
+                if (hnbOn.at (b) != 0)
+                    seqPos <- 4000000 + ((b << 21) | (clamp (int (hnbX.at (b) * 1023.0f), 0, 1023) << 11) | clamp (int (hnbY.at (b) * 1023.0f), 0, 1023));
+        }
+    }
+
+    void lumStep (int st)
+    {
+        int every = clamp (int (lmg.at (0) + 0.5f), 1, 8);
+        lmDiv++;
+
+        if (lmDiv < every)
+            return;
+
+        lmDiv = 0;
+
+        int   root  = arpHN.at (max (arpN - 1, 0));
+        int   mask  = sqScaleMask (int (lmg.at (1) + 0.5f));
+        int   range = clamp (int (lmg.at (2) + 0.5f), 12, 48);
+        int   n     = sqScaleCount (mask, range);
+        int   pby   = int (lmg.at (9) + 0.5f);
+        bool  wrap  = lmg.at (10) > 0.5f;
+
+        for (int w = 0; w < 4; ++w)
+        {
+            if (lmW.at (5 * w) < 0.5f)
+                continue;
+
+            int x = lmX.at (w);
+            int y = lmY.at (w);
+            int d = lmD.at (w);
+            int nx = x + (d == 2 ? 1 : (d == 4 ? -1 : 0));
+            int ny = y + (d == 3 ? 1 : (d == 1 ? -1 : 0));
+
+            if (nx < 0 || nx > 7 || ny < 0 || ny > 7)
+            {
+                if (wrap)
+                {
+                    nx = (nx + 8) % 8;
+                    ny = (ny + 8) % 8;
+                }
+                else   // the wall: turn round on the spot
+                {
+                    d  = d == 1 ? 3 : (d == 3 ? 1 : (d == 2 ? 4 : 2));
+                    nx = x;
+                    ny = y;
+                }
+            }
+
+            x = nx;
+            y = ny;
+
+            int cell = y * 8 + x;
+            int ar   = lmRt.at (cell);
+
+            if (ar > 0)
+            {
+                d = ar;
+
+                if (sqRand01() * 100.0f >= lmg.at (7))
+                {
+                    int idx = pby == 0 ? x * (n - 1) / 7 : (pby == 1 ? (7 - y) * (n - 1) / 7 : (x + 7 - y) * (n - 1) / 14);
+                    int nn  = root + int (lmg.at (3)) + sqScaleNote (mask, range, clamp (idx, 0, n - 1)) + 12 * int (lmW.at (5 * w + 4));
+                    float va  = pby == 1 ? float (x) : float (7 - y);
+                    float vel = clamp (lmg.at (5) / 127.0f * (0.65f + 0.35f * va / 7.0f), 0.05f, 1.0f);
+
+                    plkAddChord (nn, vel, float64 (st), lmg.at (4) / 100.0f, int (lmg.at (6) + 0.5f));
+                }
+
+                if (lmg.at (8) > 0.5f)
+                {
+                    lmRt.at (cell) = ar % 4 + 1;
+                    seqPos <- 30100000 + cell * 8 + lmRt.at (cell);
+                }
+            }
+
+            lmX.at (w) = x;
+            lmY.at (w) = y;
+            lmD.at (w) = d;
+            seqPos <- 30000000 + w * 100 + cell;
+        }
+    }
+
     void arpTick (float dt)
     {
         int amd = int (arpMode + 0.5f);   // MOD-SQM
@@ -65359,6 +66068,11 @@ processor Eisenpuls_Synth
             gnReg   = 0;       // MOD-SQM
             bnNext  = 0;       // MOD-PLINKO
             plkClear();        // MOD-PLKP
+            hnbClear();        // MOD-HBLM
+
+            if (amd == 14)
+                lumClear();
+
             celS    = 0;
             celGen  = 0;
             gnDeg   = -1;
@@ -65396,12 +66110,18 @@ processor Eisenpuls_Synth
                     bounceStep (sn);
                 else if (amd == 11)
                     cellularStep (sn);
-                else
+                else if (amd == 12)
                     plkSpawn();
+                else if (amd == 13)
+                    hnbSpawn();
+                else
+                    lumStep (sn);
             }
 
             if (amd == 12)   // MOD-PLKP
                 plkPhys (dt, float64 (arpStep - 1) + float64 (arpPh));
+            else if (amd == 13)   // MOD-HBLM
+                hnbPhys (dt, float64 (arpStep - 1) + float64 (arpPh));
 
             sqTick (float64 (arpStep - 1) + float64 (arpPh));
             return;

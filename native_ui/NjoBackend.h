@@ -40,8 +40,21 @@ namespace njo
         struct BoardBall { float x = 0, y = 0; juce::uint32 ms = 0; };
         BoardBall boardBalls[8];            // Plinko board (Arp Mode 12): the balls the DSP reports every 33 ms
         juce::uint32 boardHitMs[48] = {};   // ... and the time of the last hit of every obstacle
+        // Luminaria (Arp Mode 14, tools/mod/build_hanenbow.py): the walkers, the cells they visited, the arrows Rotate turned; Hanenbow leaf colours
+        int lumWalkCell[4] = { -1, -1, -1, -1 }; juce::uint32 lumWalkMs[4] = {};
+        juce::uint32 lumFlashMs[64] = {};
+        std::vector<int> lumDir = std::vector<int> (64, -1);       // -1: the parameter is the arrow, otherwise the arrow as turned by Rotate
+        int leafState[8] = {};
         void setSeqPos (int v)
         {
+            if (v >= 30000000)
+            {
+                const int c = v - 30000000, now = (int) juce::Time::getMillisecondCounter();
+                if (c < 100000) { const int w = (c / 100) & 3, cell = c % 100; if (cell < 64) { lumWalkCell[w] = cell; lumWalkMs[w] = (juce::uint32) now; lumFlashMs[cell] = (juce::uint32) now; } }
+                else if (c < 200000) { const int d = c - 100000; if ((d >> 3) < 64) lumDir[(size_t) (d >> 3)] = d & 7; }
+                else { const int d = c - 200000; leafState[(d >> 3) & 7] = d & 7; }
+                return;
+            }
             if (v >= 4000000)   // Plinko board: a ball position, (ball << 21 | x << 11 | y) with x, y in 0..1023
             {
                 const int c = v - 4000000, id = (c >> 21) & 7; boardBalls[id].x = (float) ((c >> 11) & 1023) / 1023.0f; boardBalls[id].y = (float) (c & 1023) / 1023.0f; boardBalls[id].ms = juce::Time::getMillisecondCounter();

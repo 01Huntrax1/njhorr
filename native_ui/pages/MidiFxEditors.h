@@ -4,6 +4,7 @@
 #pragma once
 #include "ModUi.h"
 #include <array>
+#include <functional>
 #include <cmath>
 #include <vector>
 
@@ -306,6 +307,248 @@ namespace njo
                 if (drawing) { g.setColour (kindColour (tool >= 3 ? tool - 2 : 0).withAlpha (0.6f)); const auto p1 = P (a.x, a.y), p2 = P (b.x, b.y); if (tool == 1) g.fillEllipse (p1.x - 4.5f, p1.y - 4.5f, 9.0f, 9.0f); else g.drawLine (p1.x, p1.y, p2.x, p2.y, 2.0f); }
                 const float rr = p (14) / 1000.0f * sq.getWidth();
                 for (auto& bl : be.boardBalls) { if (now - bl.ms > 150) continue; const auto c = P (bl.x, bl.y); g.setColour (juce::Colour (0xffffd24a)); g.fillEllipse (c.x - rr, c.y - rr, rr * 2.0f, rr * 2.0f); }
+            }
+        };
+
+        // small toggle / action button of the toolbar rows
+        struct FxChip : juce::Component
+        {
+            juce::String text; bool on = false; juce::Colour tint = juce::Colours::transparentBlack; std::function<void()> click;
+            void paint (juce::Graphics& g) override
+            {
+                auto r = getLocalBounds().toFloat().reduced (0.5f); paintButton (g, r, on, false, false, 3.0f);
+                if (tint.getAlpha() > 0) { g.setColour (tint); g.fillEllipse (r.getX() + 5.0f, r.getCentreY() - 3.0f, 6.0f, 6.0f); }
+                g.setColour (on ? juce::Colours::white : ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds().withTrimmedLeft (tint.getAlpha() > 0 ? 8 : 0), juce::Justification::centred);
+            }
+            void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
+        };
+
+        // ---- Hanenbow (Arp Mode 13): frogs jump out of the water onto leaves you place and tilt (DSP: build_hanenbow.py, parameters 6700.., leaves 6720 + 5 * l + j) ----
+        struct Hanenbow : Base
+        {
+            Backend& be; juce::Rectangle<float> sq; int sel = -1; juce::Point<float> grab; juce::OwnedArray<FxChip> chips;
+            static int lf (int l, int j) { return 6720 + 5 * l + j; }
+            float lv (int l, int j) const { return ctx.get (lf (l, j)); }
+            void setP (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); }
+            void putLeaf (int l, float on, float x, float y, float a, float n) { const float v[5] = { on, x, y, a, n }; for (int j = 0; j < 5; ++j) setP (lf (l, j), v[(size_t) j]); }
+            static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff6fe08a, 0xffe6e05a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
+            explicit Hanenbow (Ctx& c) : Base (c, 6700, 17, { 5, 10 }), be (c.be)
+            {
+                auto add = [this] (const char* t, std::function<void()> f) { auto* ch = new FxChip(); ch->text = t; ch->click = std::move (f); chips.add (ch); addAndMakeVisible (ch); };
+                add ("CLEAR", [this] { for (int l = 0; l < 8; ++l) setP (lf (l, 0), 0.0f); repaint(); });
+                add ("DEFAULT", [this] { setDefault(); });
+                add ("RANDOM", [this] { setRandom(); });
+            }
+            void setDefault()
+            {
+                static const float d[8][5] = { { 1, 0.20f, 0.70f, 0.62f, 0 }, { 1, 0.45f, 0.58f, 0.40f, 2 }, { 1, 0.70f, 0.68f, 0.60f, 4 }, { 1, 0.35f, 0.40f, 0.55f, 5 }, { 1, 0.65f, 0.42f, 0.42f, 7 }, { 1, 0.85f, 0.50f, 0.35f, 3 },
+                                               { 0, 0.50f, 0.80f, 0.50f, 9 }, { 0, 0.12f, 0.45f, 0.50f, 6 } };
+                for (int l = 0; l < 8; ++l) putLeaf (l, d[l][0], d[l][1], d[l][2], d[l][3], d[l][4]);
+                repaint();
+            }
+            void setRandom()
+            {
+                juce::Random rn;
+                for (int l = 0; l < 8; ++l) { if (l < 6) putLeaf (l, 1, 0.1f + rn.nextFloat() * 0.8f, 0.3f + rn.nextFloat() * 0.5f, 0.3f + rn.nextFloat() * 0.4f, (float) rn.nextInt (10)); else setP (lf (l, 0), 0.0f); }
+                repaint();
+            }
+            bool active() const { const auto now = juce::Time::getMillisecondCounter(); for (auto& b : be.boardBalls) if (now - b.ms < 1000) return true; return false; }
+            bool needsRepaint() override
+            {
+                const auto now = juce::Time::getMillisecondCounter();
+                for (auto& b : be.boardBalls) if (now - b.ms < 400) return true;
+                for (int l = 0; l < 8; ++l) if (be.boardHitMs[l] != 0 && now - be.boardHitMs[l] < 400) return true;
+                return false;
+            }
+            void resized() override
+            {
+                Base::resized();
+                auto r = pic.toNearestInt().reduced (2); auto tb = r.removeFromTop (22); r.removeFromTop (4);
+                const int n = chips.size(), cw = juce::jmin (90, tb.getWidth() / juce::jmax (1, n)); for (auto* c : chips) c->setBounds (tb.removeFromLeft (cw).reduced (1, 0));
+                const float side = (float) juce::jmin (r.getWidth(), r.getHeight() - 16); sq = juce::Rectangle<float> (side, side).withCentre ({ (float) r.getCentreX(), (float) r.getY() + side * 0.5f });
+            }
+            float halfLen() const { return juce::jlimit (0.06f, 0.5f, p (16) / 100.0f) * 0.5f; }
+            static float angleOf (float a) { return (a - 0.5f) * 2.4f; }
+            juce::Point<float> toBoard (juce::Point<float> q) const { return { juce::jlimit (0.0f, 1.0f, (q.x - sq.getX()) / sq.getWidth()), juce::jlimit (0.0f, 1.0f, (q.y - sq.getY()) / sq.getHeight()) }; }
+            int leafAt (juce::Point<float> q) const
+            {
+                int best = -1; float bd = 0.05f; const float hl = halfLen();
+                for (int l = 0; l < 8; ++l)
+                {
+                    if (lv (l, 0) < 0.5f) continue;
+                    const float an = angleOf (lv (l, 3)), ex = std::cos (an) * hl, ey = std::sin (an) * hl, cx = lv (l, 1), cy = lv (l, 2);
+                    const float x1 = cx - ex, y1 = cy - ey, sx = 2 * ex, sy = 2 * ey, l2 = sx * sx + sy * sy, t = juce::jlimit (0.0f, 1.0f, ((q.x - x1) * sx + (q.y - y1) * sy) / juce::jmax (l2, 1.0e-6f));
+                    const float d = std::hypot (q.x - (x1 + t * sx), q.y - (y1 + t * sy)); if (d < bd) { bd = d; best = l; }
+                }
+                return best;
+            }
+            void mouseDown (const juce::MouseEvent& e) override
+            {
+                if (! sq.contains (e.position)) return;
+                const auto q = toBoard (e.position); const int l = leafAt (q);
+                if (e.mods.isRightButtonDown()) { if (l >= 0) setP (lf (l, 0), 0.0f); repaint(); return; }
+                if (l >= 0) { sel = l; grab = { q.x - lv (l, 1), q.y - lv (l, 2) }; return; }
+                for (int k = 0; k < 8; ++k) if (lv (k, 0) < 0.5f) { putLeaf (k, 1, q.x, q.y, 0.5f, (float) juce::jlimit (0, 24, juce::roundToInt (q.x * 9.0f))); sel = k; grab = {}; break; }
+                repaint();
+            }
+            void mouseDrag (const juce::MouseEvent& e) override
+            {
+                if (sel < 0 || e.mods.isRightButtonDown()) return;
+                const auto q = toBoard (e.position); setP (lf (sel, 1), juce::jlimit (0.0f, 1.0f, q.x - grab.x)); setP (lf (sel, 2), juce::jlimit (0.0f, 1.0f, q.y - grab.y)); repaint();
+            }
+            void mouseUp (const juce::MouseEvent&) override { sel = -1; }
+            void mouseWheelMove (const juce::MouseEvent& e, const juce::MouseWheelDetails& w) override
+            {
+                if (! sq.contains (e.position)) return;
+                const int l = leafAt (toBoard (e.position)); if (l < 0) return;
+                const float dlt = w.deltaY > 0 ? 1.0f : -1.0f;
+                if (e.mods.isShiftDown()) setP (lf (l, 4), juce::jlimit (0.0f, 24.0f, lv (l, 4) + dlt)); else setP (lf (l, 3), juce::jlimit (0.0f, 1.0f, lv (l, 3) + dlt * 0.04f));
+                repaint();
+            }
+            void paint (juce::Graphics& g) override
+            {
+                paintBack (g, "Click = new leaf, drag = move, wheel = tilt, Shift + wheel = note, right click = remove. Frogs land on the leaves.");
+                g.setColour (juce::Colour (0xff15171a)); g.fillRect (sq);
+                const auto now = juce::Time::getMillisecondCounter();
+                auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x * sq.getWidth(), sq.getY() + y * sq.getHeight()); };
+                g.setColour (juce::Colour (0xff1c4a66).withAlpha (0.55f)); g.fillRect (sq.getX(), P (0, 0.965f).y, sq.getWidth(), sq.getHeight() * 0.035f);
+                g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawRect (sq, 1.0f);
+                const float dx = p (12) / 100.0f, sp = p (13) / 100.0f * 0.5f; g.setColour (red.withAlpha (0.25f)); g.fillRect (P (juce::jmax (0.0f, dx - sp * 0.5f), 0.0f).x, sq.getBottom() - 6.0f, sq.getWidth() * juce::jmin (1.0f, sp), 6.0f);
+                g.setColour (red); g.fillRect (P (dx, 0.0f).x - 1.0f, sq.getBottom() - 10.0f, 2.0f, 10.0f);
+                const float hl = halfLen(); const bool act = active();
+                for (int l = 0; l < 8; ++l)
+                {
+                    if (lv (l, 0) < 0.5f) continue;
+                    const float an = angleOf (lv (l, 3)), ex = std::cos (an) * hl, ey = std::sin (an) * hl, cx = lv (l, 1), cy = lv (l, 2);
+                    const float flash = be.boardHitMs[l] != 0 ? juce::jlimit (0.0f, 1.0f, 1.0f - (float) (now - be.boardHitMs[l]) / 300.0f) : 0.0f;
+                    auto col = stateColour (act ? be.leafState[l] : 0).interpolatedWith (juce::Colours::white, flash);
+                    const auto p1 = P (cx - ex, cy - ey), p2 = P (cx + ex, cy + ey), pc = P (cx, cy);
+                    g.setColour (col.withAlpha (0.3f * flash)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 14.0f);
+                    g.setColour (col.darker (0.4f)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 8.0f);
+                    g.setColour (col); g.drawLine (p1.x, p1.y, p2.x, p2.y, 5.0f);
+                    g.setColour (juce::Colours::white.withAlpha (0.8f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (lv (l, 4))), (int) pc.x - 12, (int) pc.y - 17, 24, 11, juce::Justification::centred);
+                }
+                const float rr = 4.5f;
+                for (auto& bl : be.boardBalls) { if (now - bl.ms > 150) continue; const auto c = P (bl.x, bl.y); g.setColour (juce::Colour (0xff7be04a)); g.fillEllipse (c.x - rr, c.y - rr, rr * 2.0f, rr * 2.0f); g.setColour (juce::Colour (0xff2e6b18)); g.fillEllipse (c.x - 1.5f, c.y - 2.5f, 3.0f, 3.0f); }
+            }
+        };
+
+        // ---- Luminaria (Arp Mode 14): four walkers on an 8 x 8 grid of arrows (DSP: build_hanenbow.py, parameters 6760.., walkers 6780 + 5 * w + j, cells 6800 + 8 * y + x) ----
+        struct Luminaria : Base
+        {
+            Backend& be; juce::Rectangle<float> sq; int tool = 0; juce::OwnedArray<FxChip> chips;
+            static juce::Colour wc (int w) { static const juce::uint32 c[4] = { 0xffffd24a, 0xff6fd0ff, 0xff6fe08a, 0xffe070ff }; return juce::Colour (c[w & 3]); }
+            static int wk (int w, int j) { return 6780 + 5 * w + j; }
+            static int cellId (int c) { return 6800 + c; }
+            void setP (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); }
+            int wv (int w, int j) const { return juce::roundToInt (ctx.get (wk (w, j))); }
+            int cellVal (int c) const { return juce::jlimit (0, 4, juce::roundToInt (ctx.get (cellId (c)))); }
+            void setCell (int c, int v) { setP (cellId (c), (float) v); be.lumDir[(size_t) c] = -1; }
+            void putWalker (int w, int on, int x, int y, int d, int o) { const int v[5] = { on, x, y, d, o }; for (int j = 0; j < 5; ++j) setP (wk (w, j), (float) v[j]); }
+            explicit Luminaria (Ctx& c) : Base (c, 6760, 11, { 1, 6, 8, 9, 10 }), be (c.be)
+            {
+                auto add = [this] (const juce::String& t, std::function<void()> f) { auto* ch = new FxChip(); ch->text = t; ch->click = std::move (f); chips.add (ch); addAndMakeVisible (ch); return ch; };
+                add ("ARROWS", [this] { tool = 0; refreshChips(); });
+                for (int w = 0; w < 4; ++w) { auto* ch = add ("WALKER " + juce::String (w + 1), [this, w] { tool = w + 1; refreshChips(); }); ch->tint = wc (w); }
+                add ("CLEAR", [this] { for (int k = 0; k < 64; ++k) if (cellVal (k) != 0) setCell (k, 0); repaint(); });
+                add ("PRESETS", [this] { presets(); });
+                refreshChips();
+            }
+            void refreshChips() { for (int i = 0; i < 5; ++i) chips[i]->on = (i == tool); for (auto* c : chips) c->repaint(); }
+            void setGrid (const std::vector<std::array<int, 3>>& a) { for (int k = 0; k < 64; ++k) setCell (k, 0); for (auto& e : a) setCell (e[1] * 8 + e[0], e[2]); }
+            void presets()
+            {
+                juce::PopupMenu m; const char* n[] = { "Two loops", "One big loop", "Spiral inwards", "Random" };
+                for (int i = 0; i < 4; ++i) m.addItem (i + 1, n[i]);
+                juce::Component::SafePointer<juce::Component> sp (this);
+                m.showMenuAsync (juce::PopupMenu::Options().withTargetComponent (chips.getLast()), [this, sp] (int r) { if (sp != nullptr && r > 0) preset (r - 1); });
+            }
+            void preset (int i)
+            {
+                if (i == 0)
+                {
+                    setGrid ({ { 1, 1, 2 }, { 6, 1, 3 }, { 6, 6, 4 }, { 1, 6, 1 }, { 3, 3, 2 }, { 5, 3, 3 }, { 5, 5, 4 }, { 3, 5, 1 } });
+                    putWalker (0, 1, 1, 1, 2, 0); putWalker (1, 1, 3, 3, 2, 1); putWalker (2, 1, 6, 6, 4, 0); putWalker (3, 1, 5, 5, 4, -1);
+                }
+                else if (i == 1)
+                {
+                    setGrid ({ { 0, 0, 2 }, { 7, 0, 3 }, { 7, 7, 4 }, { 0, 7, 1 } });
+                    putWalker (0, 1, 0, 0, 2, 0); putWalker (1, 1, 7, 0, 3, 0); putWalker (2, 1, 7, 7, 4, 0); putWalker (3, 1, 0, 7, 1, 0);
+                }
+                else if (i == 2)
+                {
+                    setGrid ({ { 0, 0, 2 }, { 7, 0, 3 }, { 7, 7, 4 }, { 1, 7, 1 }, { 1, 1, 2 }, { 6, 1, 3 }, { 6, 6, 4 }, { 2, 6, 1 }, { 2, 2, 2 }, { 5, 2, 3 }, { 5, 5, 4 }, { 3, 5, 1 }, { 3, 3, 2 }, { 4, 3, 3 }, { 4, 4, 4 }, { 3, 4, 1 } });
+                    putWalker (0, 1, 0, 0, 2, 0); putWalker (1, 0, 0, 0, 2, 0); putWalker (2, 0, 0, 0, 2, 0); putWalker (3, 0, 0, 0, 2, 0);
+                }
+                else
+                {
+                    juce::Random rn; std::vector<std::array<int, 3>> a; for (int k = 0; k < 12; ++k) a.push_back ({ rn.nextInt (8), rn.nextInt (8), 1 + rn.nextInt (4) });
+                    setGrid (a); for (int w = 0; w < 4; ++w) putWalker (w, 1, rn.nextInt (8), rn.nextInt (8), 1 + rn.nextInt (4), w == 3 ? -1 : 0);
+                }
+                repaint();
+            }
+            bool running() const
+            {
+                const auto now = juce::Time::getMillisecondCounter(); bool r = false;
+                for (int w = 0; w < 4; ++w) if (be.lumWalkMs[w] != 0 && now - be.lumWalkMs[w] < 1500) r = true;
+                if (! r) for (auto& d : be.lumDir) d = -1;   // stopped: the DSP starts again from the parameters
+                return r;
+            }
+            bool needsRepaint() override
+            {
+                const auto now = juce::Time::getMillisecondCounter();
+                for (int w = 0; w < 4; ++w) if (be.lumWalkMs[w] != 0 && now - be.lumWalkMs[w] < 1500) return true;
+                return false;
+            }
+            void resized() override
+            {
+                Base::resized();
+                auto r = pic.toNearestInt().reduced (2); auto tb = r.removeFromTop (22); r.removeFromTop (4);
+                const int n = chips.size(), cw = juce::jmin (96, tb.getWidth() / juce::jmax (1, n)); for (auto* c : chips) c->setBounds (tb.removeFromLeft (cw).reduced (1, 0));
+                const float side = (float) juce::jmin (r.getWidth(), r.getHeight() - 16); sq = juce::Rectangle<float> (side, side).withCentre ({ (float) r.getCentreX(), (float) r.getY() + side * 0.5f });
+            }
+            int cellAt (juce::Point<float> q) const { if (! sq.contains (q)) return -1; const int x = juce::jlimit (0, 7, (int) ((q.x - sq.getX()) / sq.getWidth() * 8.0f)), y = juce::jlimit (0, 7, (int) ((q.y - sq.getY()) / sq.getHeight() * 8.0f)); return y * 8 + x; }
+            void mouseDown (const juce::MouseEvent& e) override
+            {
+                const int c = cellAt (e.position); if (c < 0) return;
+                const int x = c % 8, y = c / 8;
+                if (tool == 0) { setCell (c, e.mods.isRightButtonDown() ? 0 : (cellVal (c) + 1) % 5); repaint(); return; }
+                const int w = tool - 1;
+                if (e.mods.isRightButtonDown()) { setP (wk (w, 0), 0.0f); repaint(); return; }
+                if (wv (w, 0) == 1 && wv (w, 1) == x && wv (w, 2) == y) setP (wk (w, 3), (float) (wv (w, 3) % 4 + 1));   // the same cell again: turn the start direction
+                else { setP (wk (w, 0), 1.0f); setP (wk (w, 1), (float) x); setP (wk (w, 2), (float) y); }
+                repaint();
+            }
+            void mouseWheelMove (const juce::MouseEvent& e, const juce::MouseWheelDetails& w) override
+            {
+                if (tool == 0 || ! sq.contains (e.position)) return;
+                setP (wk (tool - 1, 4), (float) juce::jlimit (-2, 2, wv (tool - 1, 4) + (w.deltaY > 0 ? 1 : -1))); repaint();
+            }
+            void paint (juce::Graphics& g) override
+            {
+                paintBack (g, "ARROWS: click turns an arrow, right click clears. WALKER: click = start cell (again = turn), wheel = octave.");
+                g.setColour (juce::Colour (0xff15171a)); g.fillRect (sq); g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawRect (sq, 1.0f);
+                const float cs = sq.getWidth() / 8.0f; const auto now = juce::Time::getMillisecondCounter(); const bool run = running();
+                for (int i = 1; i < 8; ++i) { g.drawVerticalLine ((int) (sq.getX() + cs * (float) i), sq.getY(), sq.getBottom()); g.drawHorizontalLine ((int) (sq.getY() + cs * (float) i), sq.getX(), sq.getRight()); }
+                for (int c = 0; c < 64; ++c)
+                {
+                    int a = cellVal (c); if (run && be.lumDir[(size_t) c] >= 1) a = be.lumDir[(size_t) c];
+                    const float cx = sq.getX() + (float) (c % 8) * cs + cs * 0.5f, cy = sq.getY() + (float) (c / 8) * cs + cs * 0.5f;
+                    const float flash = be.lumFlashMs[c] != 0 ? juce::jlimit (0.0f, 1.0f, 1.0f - (float) (now - be.lumFlashMs[c]) / 350.0f) : 0.0f;
+                    if (a == 0) { if (flash > 0) { g.setColour (juce::Colours::white.withAlpha (0.12f * flash)); g.fillRect (cx - cs * 0.5f + 1, cy - cs * 0.5f + 1, cs - 2, cs - 2); } continue; }
+                    g.setColour (juce::Colour (0xffffd24a).withAlpha (0.12f + 0.35f * flash)); g.fillRect (cx - cs * 0.5f + 1, cy - cs * 0.5f + 1, cs - 2, cs - 2);
+                    const float rot = (float) (a - 1) * juce::MathConstants<float>::halfPi, s = cs * 0.28f;
+                    juce::Path ph; ph.addTriangle (0.0f, -s, s * 0.8f, s * 0.7f, -s * 0.8f, s * 0.7f); ph.applyTransform (juce::AffineTransform::rotation (rot).translated (cx, cy));
+                    g.setColour (juce::Colour (0xffffd24a).interpolatedWith (juce::Colours::white, flash)); g.fillPath (ph);
+                }
+                for (int w = 0; w < 4; ++w)
+                {
+                    if (wv (w, 0) != 1) continue;
+                    int cell = wv (w, 2) * 8 + wv (w, 1); if (run && be.lumWalkMs[w] != 0 && now - be.lumWalkMs[w] < 1500 && be.lumWalkCell[w] >= 0) cell = be.lumWalkCell[w];
+                    const float cx = sq.getX() + (float) (cell % 8) * cs + cs * 0.5f + (float) (w % 2 - 0.5f) * cs * 0.18f, cy = sq.getY() + (float) (cell / 8) * cs + cs * 0.5f + (float) (w / 2 - 0.5f) * cs * 0.18f, r = cs * 0.2f;
+                    g.setColour (wc (w).withAlpha (0.35f)); g.fillEllipse (cx - r * 1.6f, cy - r * 1.6f, r * 3.2f, r * 3.2f); g.setColour (wc (w)); g.fillEllipse (cx - r, cy - r, r * 2.0f, r * 2.0f);
+                    if (! run) { g.setColour (juce::Colour (0xff101112)); g.setFont (font (8.5f, true)); g.drawText (wv (w, 4) == 0 ? juce::String (w + 1) : (wv (w, 4) > 0 ? "+" : "") + juce::String (wv (w, 4)), (int) (cx - r), (int) (cy - r), (int) (r * 2), (int) (r * 2), juce::Justification::centred); }
+                }
             }
         };
     }

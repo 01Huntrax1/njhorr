@@ -20,7 +20,7 @@ namespace njo
 
     namespace
     {
-        const int kFxModes[4] = { 12, 9, 10, 11 };   // tabs PLINKO (board), GALTON, BOUNCE, CELLULAR
+        const int kFxModes[6] = { 12, 9, 10, 11, 13, 14 };   // tabs PLINKO (board), GALTON, BOUNCE, CELLULAR, HANENBOW, LUMINARIA
         const int kGrids[] = { 0, 4, 8, 16, 32 };
         int gGrid = 0;                                    // shared by every editor instance
         std::vector<struct ModEditorsRefresh*> gAll;
@@ -1931,10 +1931,10 @@ namespace njo
         std::unique_ptr<A3Bank> bank;
         std::unique_ptr<ParamWidget> a3Len, mlLen;
         EuclidEditor eu; MelodicEditor ml; GenEditor gn;
-        midifx::Plinko plk; midifx::Bounce bnc; midifx::Cellular cel; midifx::Board brd;
+        midifx::Plinko plk; midifx::Bounce bnc; midifx::Cellular cel; midifx::Board brd; midifx::Hanenbow hnb; midifx::Luminaria lum;
         InspPanel insp;
         struct Tab : juce::Component { juce::String text; bool on = false; std::function<void()> click; void paint (juce::Graphics& g) override { paintButton (g, getLocalBounds().toFloat().reduced (0.5f), on, false, false, 3.0f); g.setColour (on ? juce::Colour (0xff101112) : ink); g.setFont (font (9.0f, true)); g.drawText (text, getLocalBounds(), juce::Justification::centred); } void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); } } tabSeq, tabInsp;
-        bool inspView = false; Tab tabFx[4];
+        bool inspView = false; Tab tabFx[6];
         std::function<void (bool)> showView;
         Ctx* ctxp = nullptr;
         juce::OwnedArray<ParamWidget> w;     // On, Mode, Octaves, Sync, Division, Rate, Gate, Latch
@@ -1942,10 +1942,10 @@ namespace njo
         int mode = 0;   // arp mode: 5 = 303, 6 = Euclid / Poly, 7 = Melodic, 8 = Generative, 9 = Plinko, 10 = Bounce, 11 = Cellular
         void vis (bool sv)   // which editor shows: modes 9..11 have the whole page, without the step sequencer
         {
-            plk.setVisible (sv && mode == 9); bnc.setVisible (sv && mode == 10); cel.setVisible (sv && mode == 11); brd.setVisible (sv && mode == 12);
+            plk.setVisible (sv && mode == 9); bnc.setVisible (sv && mode == 10); cel.setVisible (sv && mode == 11); brd.setVisible (sv && mode == 12); hnb.setVisible (sv && mode == 13); lum.setVisible (sv && mode == 14);
             seq.setVisible (sv && mode < 9);
         }
-        explicit Impl (Ctx& c) : seq (c), a3 (c), eu (c), ml (c), gn (c), plk (c), bnc (c), cel (c), brd (c), insp (c) {}
+        explicit Impl (Ctx& c) : seq (c), a3 (c), eu (c), ml (c), gn (c), plk (c), bnc (c), cel (c), brd (c), hnb (c), lum (c), insp (c) {}
     };
 
     SeqArpPage::SeqArpPage (Ctx& c) : impl (new Impl (c))
@@ -1955,10 +1955,10 @@ namespace njo
         addChildComponent (I.a3);
         I.a3Len = makeWidget (c, A3_LEN, true); I.a3Len->setLook (true); addChildComponent (*I.a3Len);
         I.bank.reset (new A3Bank (c, *this)); addChildComponent (*I.bank);
-        addChildComponent (I.eu); addChildComponent (I.ml); addChildComponent (I.gn); addChildComponent (I.plk); addChildComponent (I.bnc); addChildComponent (I.cel); addChildComponent (I.brd);
+        addChildComponent (I.eu); addChildComponent (I.ml); addChildComponent (I.gn); addChildComponent (I.plk); addChildComponent (I.bnc); addChildComponent (I.cel); addChildComponent (I.brd); addChildComponent (I.hnb); addChildComponent (I.lum);
         addChildComponent (I.insp);
         I.tabSeq.text = "SEQUENCER / ARP"; I.tabInsp.text = "INSPIRATOR"; I.tabSeq.on = true;
-        I.tabFx[0].text = "PLINKO"; I.tabFx[1].text = "GALTON"; I.tabFx[2].text = "BOUNCE"; I.tabFx[3].text = "CELLULAR";
+        I.tabFx[0].text = "PLINKO"; I.tabFx[1].text = "GALTON"; I.tabFx[2].text = "BOUNCE"; I.tabFx[3].text = "CELLULAR"; I.tabFx[4].text = "HANENBOW"; I.tabFx[5].text = "LUMINARIA";
         auto showView = [this] (bool insp)
         {
             auto& J = *impl; J.inspView = insp; J.tabSeq.on = ! insp; J.tabInsp.on = insp;
@@ -1967,13 +1967,13 @@ namespace njo
             const int m = J.mode;
             J.a3.setVisible (! insp && m == 5); J.a3Len->setVisible (! insp && m == 5); J.bank->setVisible (! insp && m == 5);
             J.eu.setVisible (! insp && m == 6); J.ml.setVisible (! insp && m == 7); J.mlLen->setVisible (! insp && m == 7); J.gn.setVisible (! insp && m == 8);
-            J.tabSeq.on = ! insp && J.mode < 9; for (int q = 0; q < 4; ++q) { J.tabFx[q].on = ! insp && J.mode == kFxModes[q]; J.tabFx[q].repaint(); }
+            J.tabSeq.on = ! insp && J.mode < 9; for (int q = 0; q < 6; ++q) { J.tabFx[q].on = ! insp && J.mode == kFxModes[q]; J.tabFx[q].repaint(); }
             J.tabSeq.repaint(); J.tabInsp.repaint(); resized(); repaint();
         };
         I.showView = showView;
         I.tabSeq.click = [this, &c, showView] { if (impl->mode >= 9) { c.begin (ARP_BASE + 1); c.set (ARP_BASE + 1, 0.0f); c.end (ARP_BASE + 1); } showView (false); }; I.tabInsp.click = [showView] { showView (true); };
         addAndMakeVisible (I.tabSeq); addAndMakeVisible (I.tabInsp);
-        for (int q = 0; q < 4; ++q)
+        for (int q = 0; q < 6; ++q)
         {
             addAndMakeVisible (I.tabFx[q]);
             I.tabFx[q].click = [this, &c, q, showView]   // PLINKO / BOUNCE / CELLULAR: switch the arpeggiator on in that mode
@@ -2002,14 +2002,14 @@ namespace njo
     {
         if (num != ARP_BASE + 1) return;
         int m = juce::roundToInt (v);
-        if (m < 5 || m > 12) m = 0;
+        if (m < 5 || m > 14) m = 0;
         if (m != impl->mode)
         {
             auto& I = *impl; I.mode = m;
             const bool sv = ! I.inspView;
             I.a3.setVisible (sv && m == 5); I.a3Len->setVisible (sv && m == 5); I.bank->setVisible (sv && m == 5);
             I.eu.setVisible (sv && m == 6); I.ml.setVisible (sv && m == 7); I.mlLen->setVisible (sv && m == 7); I.gn.setVisible (sv && m == 8);
-            I.vis (sv); I.tabSeq.on = sv && m < 9; for (int q = 0; q < 4; ++q) { I.tabFx[q].on = sv && m == kFxModes[q]; I.tabFx[q].repaint(); } I.tabSeq.repaint();
+            I.vis (sv); I.tabSeq.on = sv && m < 9; for (int q = 0; q < 6; ++q) { I.tabFx[q].on = sv && m == kFxModes[q]; I.tabFx[q].repaint(); } I.tabSeq.repaint();
             resized(); repaint();
         }
     }
@@ -2022,10 +2022,10 @@ namespace njo
         g.setColour (red); g.setFont (impact (11.0f));
         g.drawText ("ARPEGGIATOR", I.arpRect.getX() + 10, I.arpRect.getY() + 4, 260, 16, juce::Justification::centredLeft);
         g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.5f));
-        static const char* hint[13] = { "plays the held keys one after the other instead of as a chord", "", "", "", "", "TB-303 style pattern, up to 64 steps; the root is the last key pressed",
+        static const char* hint[15] = { "plays the held keys one after the other instead of as a chord", "", "", "", "", "TB-303 style pattern, up to 64 steps; the root is the last key pressed",
                                        "Euclidean rhythms: four lanes of different lengths play against each other (polyrhythm); the root is the last key pressed",
                                        "step sequencer with chords, velocity, length (over 100 % ties), probability and ratchets; the root is the last key pressed",
-                                       "generative melodies in a scale (turing machine or random walk); the root is the last key pressed", "", "", "", "" };
+                                       "generative melodies in a scale (turing machine or random walk); the root is the last key pressed", "", "", "", "", "", "" };
         g.drawText (hint[I.mode == 0 ? 0 : I.mode], I.arpRect.getX() + 10, I.arpRect.getBottom() - 16, 700, 12, juce::Justification::centredLeft);
     }
 
@@ -2035,7 +2035,7 @@ namespace njo
         auto b = getLocalBounds();
         {
             auto tb = b.removeFromTop (22); b.removeFromTop (4);
-            I.tabSeq.setBounds (tb.removeFromLeft (130)); tb.removeFromLeft (4); I.tabInsp.setBounds (tb.removeFromLeft (110)); tb.removeFromLeft (14); for (int q = 0; q < 4; ++q) { I.tabFx[q].setBounds (tb.removeFromLeft (q == 3 ? 90 : 76)); tb.removeFromLeft (4); }
+            I.tabSeq.setBounds (tb.removeFromLeft (130)); tb.removeFromLeft (4); I.tabInsp.setBounds (tb.removeFromLeft (110)); tb.removeFromLeft (14); for (int q = 0; q < 6; ++q) { I.tabFx[q].setBounds (tb.removeFromLeft (q == 3 ? 90 : q >= 4 ? 96 : 76)); tb.removeFromLeft (4); }
         }
         if (I.inspView) { I.insp.setBounds (b); I.arpRect = {}; return; }
         if (I.mode >= 9)   // Plinko / Bounce / Cellular: the whole page
@@ -2043,7 +2043,7 @@ namespace njo
             I.arpRect = b; I.seq.setBounds ({});
             auto all = I.arpRect.reduced (12, 4); all.removeFromTop (18); all.removeFromBottom (16);
             auto edAll = all.removeFromBottom (all.getHeight() - 70); edAll.removeFromTop (2);
-            (I.mode == 12 ? static_cast<juce::Component&> (I.brd) : I.mode == 9 ? static_cast<juce::Component&> (I.plk) : I.mode == 10 ? static_cast<juce::Component&> (I.bnc) : static_cast<juce::Component&> (I.cel)).setBounds (edAll);
+            (I.mode == 14 ? static_cast<juce::Component&> (I.lum) : I.mode == 13 ? static_cast<juce::Component&> (I.hnb) : I.mode == 12 ? static_cast<juce::Component&> (I.brd) : I.mode == 9 ? static_cast<juce::Component&> (I.plk) : I.mode == 10 ? static_cast<juce::Component&> (I.bnc) : static_cast<juce::Component&> (I.cel)).setBounds (edAll);
             auto rr = all; const int wd2[8] = { 1, 2, 2, 1, 2, 2, 2, 1 }; int tot2 = 0; for (int v : wd2) tot2 += v; int x2 = rr.getX();
             for (int k = 0; k < 8; ++k) { int ww = (int) ((float) rr.getWidth() * (float) wd2[k] / (float) tot2); const bool kn = k == 5 || k == 6; I.w[(size_t) k]->setBounds (x2 + 3, rr.getY(), ww - 6, kn ? 66 : 48); x2 += ww; }
             return;
