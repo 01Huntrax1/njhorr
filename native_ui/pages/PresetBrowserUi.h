@@ -185,8 +185,10 @@ namespace njo::pbrowse
                     { if (n.trim().isNotEmpty() && sp->src.rename (copy, n.trim())) { const auto old = copy.id; sp->reloadAll(); for (auto& x : sp->all) if (x.name == n.trim() && x.group == copy.group) sp->state.renamed (sp->src.key, old, x.id); sp->state.save (sp->src.root); sp->reloadAll(); } });
                 else if (r == 5)
                 {
-                    if (juce::AlertWindow::showOkCancelBox (juce::MessageBoxIconType::QuestionIcon, "Delete preset", "Delete \"" + copy.name + "\"?", "Delete", "Keep", &b))
-                    { if (b.src.remove (copy)) { b.state.forget (b.src.key, copy.id); b.state.save (b.src.root); b.reloadAll(); } }
+                    auto* w = new juce::AlertWindow ("Delete preset", "Delete \"" + copy.name + "\"?", juce::MessageBoxIconType::QuestionIcon, &b);
+                    w->addButton ("Delete", 1, juce::KeyPress (juce::KeyPress::returnKey)); w->addButton ("Keep", 0, juce::KeyPress (juce::KeyPress::escapeKey));
+                    w->enterModalState (true, juce::ModalCallbackFunction::create ([sp, copy] (int rr)
+                    { if (rr == 1 && sp != nullptr && sp->src.remove (copy)) { sp->state.forget (sp->src.key, copy.id); sp->state.save (sp->src.root); sp->reloadAll(); } }), true);
                 }
                 else if (r == 49) b.askText ("New folder", "Name of the folder:", "", [sp, copy] (const juce::String& n) { if (n.trim().isNotEmpty() && sp->src.move (copy, n.trim())) sp->reloadAll(); });
                 else if (r == 50) { if (b.src.move (copy, {})) b.reloadAll(); }
