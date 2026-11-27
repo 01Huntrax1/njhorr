@@ -323,25 +323,25 @@ namespace njo
             void mouseUp (const juce::MouseEvent& e) override { if (getLocalBounds().contains (e.getPosition()) && click) click(); }
         };
 
-        // ---- Hanenbow (Arp Mode 13): frogs jump out of the water onto leaves you place and tilt (DSP: build_hanenbow.py, parameters 6700.., leaves 6720 + 5 * l + j) ----
+        // ---- Hanenbow (Arp Mode 13): tadpoles jump out of the water onto leaves of a plant that you turn (DSP: build_hanenbow.py, parameters 6700.., leaves 6720 + 5 * l + j) ----
         struct Hanenbow : Base
         {
-            Backend& be; juce::Rectangle<float> sq; int sel = -1; juce::Point<float> grab; juce::OwnedArray<FxChip> chips;
+            Backend& be; juce::Rectangle<float> sq; int sel = -1; bool rot = false; juce::Point<float> grab; juce::OwnedArray<FxChip> chips; juce::Point<float> prevB[8];
             static int lf (int l, int j) { return 6720 + 5 * l + j; }
             float lv (int l, int j) const { return ctx.get (lf (l, j)); }
             void setP (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); }
             void putLeaf (int l, float on, float x, float y, float a, float n) { const float v[5] = { on, x, y, a, n }; for (int j = 0; j < 5; ++j) setP (lf (l, j), v[(size_t) j]); }
-            static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff6fe08a, 0xffe6e05a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
+            static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff4fd36a, 0xffe3e05a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
             explicit Hanenbow (Ctx& c) : Base (c, 6700, 17, { 5, 10 }), be (c.be)
             {
                 auto add = [this] (const char* t, std::function<void()> f) { auto* ch = new FxChip(); ch->text = t; ch->click = std::move (f); chips.add (ch); addAndMakeVisible (ch); };
                 add ("CLEAR", [this] { for (int l = 0; l < 8; ++l) setP (lf (l, 0), 0.0f); repaint(); });
-                add ("DEFAULT", [this] { setDefault(); });
+                add ("PLANT", [this] { setDefault(); });
                 add ("RANDOM", [this] { setRandom(); });
             }
-            void setDefault()
+            void setDefault()   // a plant: leaves left and right of the stem, going up
             {
-                static const float d[8][5] = { { 1, 0.20f, 0.70f, 0.62f, 0 }, { 1, 0.45f, 0.58f, 0.40f, 2 }, { 1, 0.70f, 0.68f, 0.60f, 4 }, { 1, 0.35f, 0.40f, 0.55f, 5 }, { 1, 0.65f, 0.42f, 0.42f, 7 }, { 1, 0.85f, 0.50f, 0.35f, 3 },
+                static const float d[8][5] = { { 1, 0.33f, 0.74f, 0.64f, 0 }, { 1, 0.67f, 0.70f, 0.36f, 2 }, { 1, 0.31f, 0.58f, 0.62f, 4 }, { 1, 0.69f, 0.54f, 0.38f, 5 }, { 1, 0.35f, 0.44f, 0.60f, 7 }, { 1, 0.65f, 0.40f, 0.40f, 3 },
                                                { 0, 0.50f, 0.80f, 0.50f, 9 }, { 0, 0.12f, 0.45f, 0.50f, 6 } };
                 for (int l = 0; l < 8; ++l) putLeaf (l, d[l][0], d[l][1], d[l][2], d[l][3], d[l][4]);
                 repaint();
@@ -353,13 +353,7 @@ namespace njo
                 repaint();
             }
             bool active() const { const auto now = juce::Time::getMillisecondCounter(); for (auto& b : be.boardBalls) if (now - b.ms < 1000) return true; return false; }
-            bool needsRepaint() override
-            {
-                const auto now = juce::Time::getMillisecondCounter();
-                for (auto& b : be.boardBalls) if (now - b.ms < 400) return true;
-                for (int l = 0; l < 8; ++l) if (be.boardHitMs[l] != 0 && now - be.boardHitMs[l] < 400) return true;
-                return false;
-            }
+            bool needsRepaint() override { return isShowing(); }   // the bubbles and the water move all the time
             void resized() override
             {
                 Base::resized();
@@ -387,14 +381,25 @@ namespace njo
                 if (! sq.contains (e.position)) return;
                 const auto q = toBoard (e.position); const int l = leafAt (q);
                 if (e.mods.isRightButtonDown()) { if (l >= 0) setP (lf (l, 0), 0.0f); repaint(); return; }
-                if (l >= 0) { sel = l; grab = { q.x - lv (l, 1), q.y - lv (l, 2) }; return; }
-                for (int k = 0; k < 8; ++k) if (lv (k, 0) < 0.5f) { putLeaf (k, 1, q.x, q.y, 0.5f, (float) juce::jlimit (0, 24, juce::roundToInt (q.x * 9.0f))); sel = k; grab = {}; break; }
+                if (l >= 0)   // the outer half of a leaf turns it, the middle moves it
+                {
+                    sel = l; grab = { q.x - lv (l, 1), q.y - lv (l, 2) };
+                    rot = std::hypot (grab.x, grab.y) > halfLen() * 0.45f; return;
+                }
+                for (int k = 0; k < 8; ++k) if (lv (k, 0) < 0.5f) { putLeaf (k, 1, q.x, q.y, 0.5f, (float) juce::jlimit (0, 24, juce::roundToInt (q.x * 9.0f))); sel = k; grab = {}; rot = false; break; }
                 repaint();
             }
             void mouseDrag (const juce::MouseEvent& e) override
             {
                 if (sel < 0 || e.mods.isRightButtonDown()) return;
-                const auto q = toBoard (e.position); setP (lf (sel, 1), juce::jlimit (0.0f, 1.0f, q.x - grab.x)); setP (lf (sel, 2), juce::jlimit (0.0f, 1.0f, q.y - grab.y)); repaint();
+                const auto q = toBoard (e.position);
+                if (rot)
+                {
+                    float vx = q.x - lv (sel, 1), vy = q.y - lv (sel, 2); if (vx < 0) { vx = -vx; vy = -vy; }
+                    if (std::hypot (vx, vy) > 0.01f) setP (lf (sel, 3), juce::jlimit (0.0f, 1.0f, 0.5f + juce::jlimit (-1.2f, 1.2f, std::atan2 (vy, vx)) / 2.4f));
+                }
+                else { setP (lf (sel, 1), juce::jlimit (0.0f, 1.0f, q.x - grab.x)); setP (lf (sel, 2), juce::jlimit (0.0f, 1.0f, q.y - grab.y)); }
+                repaint();
             }
             void mouseUp (const juce::MouseEvent&) override { sel = -1; }
             void mouseWheelMove (const juce::MouseEvent& e, const juce::MouseWheelDetails& w) override
@@ -407,29 +412,60 @@ namespace njo
             }
             void paint (juce::Graphics& g) override
             {
-                paintBack (g, "Click = new leaf, drag = move, wheel = tilt, Shift + wheel = note, right click = remove. Frogs land on the leaves.");
-                g.setColour (juce::Colour (0xff15171a)); g.fillRect (sq);
-                const auto now = juce::Time::getMillisecondCounter();
+                paintBack (g, "Click = new leaf, drag the middle = move, drag the tip = turn, wheel = tilt, Shift + wheel = note, right click = remove.");
+                const auto now = juce::Time::getMillisecondCounter(); const float tm = (float) (now % 600000) / 1000.0f;
+                juce::Graphics::ScopedSaveState ss (g);
+                juce::Path clip; clip.addRoundedRectangle (sq, 6.0f); g.reduceClipRegion (clip);
                 auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x * sq.getWidth(), sq.getY() + y * sq.getHeight()); };
-                g.setColour (juce::Colour (0xff1c4a66).withAlpha (0.55f)); g.fillRect (sq.getX(), P (0, 0.965f).y, sq.getWidth(), sq.getHeight() * 0.035f);
-                g.setColour (juce::Colours::white.withAlpha (0.08f)); g.drawRect (sq, 1.0f);
-                const float dx = p (12) / 100.0f, sp = p (13) / 100.0f * 0.5f; g.setColour (red.withAlpha (0.25f)); g.fillRect (P (juce::jmax (0.0f, dx - sp * 0.5f), 0.0f).x, sq.getBottom() - 6.0f, sq.getWidth() * juce::jmin (1.0f, sp), 6.0f);
-                g.setColour (red); g.fillRect (P (dx, 0.0f).x - 1.0f, sq.getBottom() - 10.0f, 2.0f, 10.0f);
+                const float W = sq.getWidth();
+                g.setGradientFill (juce::ColourGradient (juce::Colour (0xff3aa845), sq.getX(), sq.getY(), juce::Colour (0xff17642a), sq.getX(), sq.getBottom(), false)); g.fillRect (sq);
+                // bubbles
+                for (int i = 0; i < 16; ++i)
+                {
+                    const float s1 = std::fmod (std::sin ((float) i * 12.9898f) * 43758.5f, 1.0f), s2 = std::fmod (std::sin ((float) i * 78.233f) * 12345.6f, 1.0f);
+                    const float bx = std::abs (s1), spd = 0.025f + 0.04f * std::abs (s2), by = 1.0f - std::fmod (tm * spd + std::abs (s2) * 3.0f, 1.0f), r = 2.0f + 3.5f * std::abs (std::fmod (s1 * 7.0f, 1.0f));
+                    const auto c = P (bx + 0.012f * std::sin (tm * 1.3f + (float) i), by);
+                    g.setColour (juce::Colours::white.withAlpha (0.10f)); g.fillEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f); g.setColour (juce::Colours::white.withAlpha (0.38f)); g.drawEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f, 1.0f);
+                }
+                // the stem
+                juce::Path stem; { const auto a = P (0.5f, 1.0f), b = P (0.5f, 0.12f); const float w0 = W * 0.022f, w1 = W * 0.005f; stem.startNewSubPath (a.x - w0, a.y); stem.lineTo (b.x - w1, b.y); stem.lineTo (b.x + w1, b.y); stem.lineTo (a.x + w0, a.y); stem.closeSubPath(); }
+                g.setGradientFill (juce::ColourGradient (juce::Colour (0xff7a2416), sq.getCentreX() - W * 0.02f, 0.0f, juce::Colour (0xffb5412a), sq.getCentreX() + W * 0.02f, 0.0f, false)); g.fillPath (stem);
                 const float hl = halfLen(); const bool act = active();
                 for (int l = 0; l < 8; ++l)
                 {
                     if (lv (l, 0) < 0.5f) continue;
                     const float an = angleOf (lv (l, 3)), ex = std::cos (an) * hl, ey = std::sin (an) * hl, cx = lv (l, 1), cy = lv (l, 2);
-                    const float flash = be.boardHitMs[l] != 0 ? juce::jlimit (0.0f, 1.0f, 1.0f - (float) (now - be.boardHitMs[l]) / 300.0f) : 0.0f;
-                    auto col = stateColour (act ? be.leafState[l] : 0).interpolatedWith (juce::Colours::white, flash);
                     const auto p1 = P (cx - ex, cy - ey), p2 = P (cx + ex, cy + ey), pc = P (cx, cy);
-                    g.setColour (col.withAlpha (0.3f * flash)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 14.0f);
-                    g.setColour (col.darker (0.4f)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 8.0f);
-                    g.setColour (col); g.drawLine (p1.x, p1.y, p2.x, p2.y, 5.0f);
-                    g.setColour (juce::Colours::white.withAlpha (0.8f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (lv (l, 4))), (int) pc.x - 12, (int) pc.y - 17, 24, 11, juce::Justification::centred);
+                    const float len = std::hypot (p2.x - p1.x, p2.y - p1.y), wd = len * 0.30f; const juce::Point<float> nrm (-(p2.y - p1.y) / len * wd, (p2.x - p1.x) / len * wd);
+                    const float t = be.boardHitMs[l] != 0 ? (float) (now - be.boardHitMs[l]) / 500.0f : 1.0f, flash = juce::jlimit (0.0f, 1.0f, 1.0f - t * 1.6f);
+                    const auto col = stateColour (act ? be.leafState[l] : 0).interpolatedWith (juce::Colours::white, flash * 0.6f);
+                    juce::Path leaf; leaf.startNewSubPath (p1); leaf.quadraticTo (pc + nrm * 1.45f, p2); leaf.quadraticTo (pc - nrm * 1.45f, p1); leaf.closeSubPath();
+                    g.setGradientFill (juce::ColourGradient (col.brighter (0.25f), pc.x - nrm.x, pc.y - nrm.y, col.darker (0.35f), pc.x + nrm.x, pc.y + nrm.y, false)); g.fillPath (leaf);
+                    g.setColour (juce::Colours::white.withAlpha (0.55f)); g.strokePath (leaf, juce::PathStrokeType (1.4f));
+                    g.setColour (juce::Colours::white.withAlpha (0.28f)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 1.2f);
+                    if (t < 1.0f) { const float rr = len * 0.45f * (0.4f + 0.9f * t); g.setColour (juce::Colours::white.withAlpha (0.7f * (1.0f - t))); g.drawEllipse (pc.x - rr, pc.y - rr, rr * 2.0f, rr * 2.0f, 1.6f); }
+                    g.setColour (juce::Colours::white.withAlpha (0.85f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (lv (l, 4))), (int) pc.x - 12, (int) pc.y - 6, 24, 11, juce::Justification::centred);
+                    if (sel == l) { g.setColour (juce::Colours::white.withAlpha (0.8f)); g.fillEllipse (p2.x - 3.0f, p2.y - 3.0f, 6.0f, 6.0f); }
                 }
-                const float rr = 4.5f;
-                for (auto& bl : be.boardBalls) { if (now - bl.ms > 150) continue; const auto c = P (bl.x, bl.y); g.setColour (juce::Colour (0xff7be04a)); g.fillEllipse (c.x - rr, c.y - rr, rr * 2.0f, rr * 2.0f); g.setColour (juce::Colour (0xff2e6b18)); g.fillEllipse (c.x - 1.5f, c.y - 2.5f, 3.0f, 3.0f); }
+                // tadpoles
+                for (int b = 0; b < 8; ++b)
+                {
+                    auto& bl = be.boardBalls[b]; if (now - bl.ms > 150) { prevB[b] = { -1.0f, -1.0f }; continue; }
+                    const auto c = P (bl.x, bl.y); juce::Point<float> d (0.0f, 1.0f);
+                    if (prevB[b].x >= 0 && (prevB[b].x != bl.x || prevB[b].y != bl.y)) { d = { prevB[b].x - bl.x, prevB[b].y - bl.y }; const float n = std::hypot (d.x, d.y); d = { d.x / n, d.y / n }; }
+                    prevB[b] = { bl.x, bl.y };
+                    g.setColour (juce::Colour (0xffff6fa8)); g.drawLine (c.x, c.y, c.x + d.x * 11.0f, c.y + d.y * 11.0f, 2.0f);
+                    g.setColour (juce::Colour (0xffffa0c8)); g.fillEllipse (c.x - 4.0f, c.y - 4.0f, 8.0f, 8.0f); g.setColour (juce::Colour (0xff3a1030)); g.fillEllipse (c.x - 1.2f, c.y - 1.8f, 2.4f, 2.4f);
+                }
+                // the water
+                juce::Path water; { const float y0 = 0.935f; water.startNewSubPath (sq.getX(), sq.getBottom()); const int n = 28;
+                    for (int i = 0; i <= n; ++i) { const float x = (float) i / (float) n, spike = (i % 2 == 0 ? 0.0f : -0.028f) * (0.7f + 0.3f * std::sin (tm * 2.0f + (float) i)); const auto q = P (x, y0 + spike + 0.008f * std::sin (tm * 1.6f + (float) i * 0.7f)); water.lineTo (q); }
+                    water.lineTo (sq.getRight(), sq.getBottom()); water.closeSubPath(); }
+                g.setGradientFill (juce::ColourGradient (juce::Colour (0xcc2aa6d8), sq.getX(), P (0, 0.9f).y, juce::Colour (0xee1a3f9a), sq.getX(), sq.getBottom(), false)); g.fillPath (water);
+                g.setColour (juce::Colours::white.withAlpha (0.35f)); g.strokePath (water, juce::PathStrokeType (1.2f));
+                const float dx = p (12) / 100.0f, sp = p (13) / 100.0f * 0.5f; g.setColour (red.withAlpha (0.35f)); g.fillRect (P (juce::jmax (0.0f, dx - sp * 0.5f), 0.0f).x, sq.getBottom() - 5.0f, W * juce::jmin (1.0f, sp), 5.0f);
+                g.setColour (red); g.fillRect (P (dx, 0.0f).x - 1.0f, sq.getBottom() - 9.0f, 2.0f, 9.0f);
+                g.setColour (juce::Colours::black.withAlpha (0.35f)); g.drawRect (sq, 1.0f);
             }
         };
 
