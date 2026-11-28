@@ -1,7 +1,6 @@
 #include "NjoFactory.h"
 #include <cmath>
 #include <complex>
-#include "NjoFft.h"
 
 namespace njo
 {
@@ -12,7 +11,32 @@ namespace njo
         constexpr double PEAK = 0.97, PI = 3.14159265358979323846;
         using Vec = std::vector<double>;
 
-        void fft (std::vector<cd>& a, int sign) { dsp::fft (a, sign); }
+        // in-place radix-2 FFT, sign -1 forward / +1 inverse (not normalized)
+        void fft (std::vector<cd>& a, int sign)
+        {
+            const size_t n = a.size();
+            for (size_t i = 1, j = 0; i < n; ++i)
+            {
+                size_t bit = n >> 1;
+                for (; j & bit; bit >>= 1) j ^= bit;
+                j ^= bit;
+                if (i < j) std::swap (a[i], a[j]);
+            }
+            for (size_t len = 2; len <= n; len <<= 1)
+            {
+                const double ang = sign * 2.0 * PI / (double) len;
+                const cd wl (std::cos (ang), std::sin (ang));
+                for (size_t i = 0; i < n; i += len)
+                {
+                    cd w (1.0, 0.0);
+                    for (size_t k = 0; k < len / 2; ++k, w *= wl)
+                    {
+                        cd u = a[i + k], v = a[i + k + len / 2] * w;
+                        a[i + k] = u + v; a[i + k + len / 2] = u - v;
+                    }
+                }
+            }
+        }
 
         Vec normalized (Vec x)
         {
