@@ -166,11 +166,12 @@ static int fxFilterShape (int mode)
                 std::vector<int> v;
                 for (int c = 0; c < (int) categories().size(); ++c)
                     if (category < 0 || category == c)
-                        for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c && (im.osc < 0 || fxVoiceType (t))) v.push_back (t);
+                        for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) v.push_back (t);
                 return v;
             }
+            bool available (int type) const { return im.osc < 0 || fxVoiceType (type); }   // the per voice racks of the oscillators only take the types that run per voice
             juce::Rectangle<int> dropRect() const { return { getWidth() - 214, 8, 200, 24 }; }
-            int contentH() const { int n = (int) vis().size(), rows = (n + cols - 1) / cols; return rows * bh + (rows - 1) * gap + 16; }
+            int contentH() const { int n = (int) vis().size(), rows = (n + cols - 1) / cols; return rows * bh + (rows - 1) * gap + 40; }
             int maxScroll() const { return juce::jmax (0, contentH() - (getHeight() - headH)); }
             juce::Rectangle<int> cell (int i) const
             {
@@ -191,7 +192,7 @@ static int fxFilterShape (int mode)
                 g.setColour (ink); g.setFont (impact (14.0f));
                 g.drawText (full ? "THIS RACK IS FULL (16 EFFECTS)" : "ADD AN EFFECT TO " + (im.osc >= 0 ? "OSC " + juce::String (im.osc + 1) : fxRacks()[(size_t) im.current].name).toUpperCase(), getLocalBounds().withHeight (28).withTrimmedTop (6), juce::Justification::centred);
                 g.setColour (dim); g.setFont (font (9.5f));
-                g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.", getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
+                g.drawText (full ? "Remove an effect first." : "The effect is appended to the end of the chain. Drag it in the list to move it.   " + juce::String ((int) fxTypes().size() - 1) + " effects" + (im.osc >= 0 ? ", " + juce::String ([&] { int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) n += fxVoiceType (t) ? 1 : 0; return n; }()) + " run per voice" : juce::String()), getLocalBounds().withTop (30).withHeight (18), juce::Justification::centred);
                 {   // category dropdown
                     auto d = dropRect().toFloat();
                     g.setColour (dim); g.setFont (font (8.5f, true)); g.drawText ("CATEGORY", d.withHeight (10).translated (0, -9).toNearestInt(), juce::Justification::topLeft);
@@ -209,11 +210,17 @@ static int fxFilterShape (int mode)
                 {
                     auto r = cell (i).toFloat();
                     if (r.getBottom() < headH - 4 || r.getY() > getHeight()) continue;
-                    g.setColour (juce::Colour (over == i && ! full ? 0xff282a2d : 0xff161719)); g.fillRoundedRectangle (r, 3.0f);
-                    g.setColour (fxColour (v[(size_t) i]).withAlpha (full ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
-                    g.setColour (full ? dim : ink); g.setFont (font (12.0f, true));
+                    const bool ok = available (v[(size_t) i]);
+                    g.setColour (juce::Colour (over == i && ! full && ok ? 0xff282a2d : 0xff161719)); g.fillRoundedRectangle (r, 3.0f);
+                    g.setColour (fxColour (v[(size_t) i]).withAlpha (full || ! ok ? 0.3f : 1.0f)); g.fillRect (r.getX(), r.getY(), 4.0f, r.getHeight());
+                    g.setColour (full || ! ok ? dim : ink); g.setFont (font (12.0f, true));
                     g.drawText (fxTypes()[(size_t) v[(size_t) i]].name, r.withTrimmedLeft (16).toNearestInt(), juce::Justification::centredLeft);
-                    if (category < 0)
+                    if (! ok)
+                    {
+                        g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.0f));
+                        g.drawText ("MAIN / BUS RACKS ONLY", r.withTrimmedRight (6).withTrimmedTop (r.getHeight() - 13).toNearestInt(), juce::Justification::bottomRight);
+                    }
+                    else if (category < 0)
                     {
                         g.setColour (dim.withAlpha (0.8f)); g.setFont (font (8.0f));
                         g.drawText (categories()[(size_t) categoryOf (v[(size_t) i])], r.withTrimmedRight (6).withTrimmedTop (r.getHeight() - 13).toNearestInt(), juce::Justification::bottomRight);
@@ -237,11 +244,11 @@ static int fxFilterShape (int mode)
             void openMenu()
             {
                 juce::PopupMenu m;
-                m.addItem (1, "All effects", true, category < 0);
+                m.addItem (1, "All effects  (" + juce::String ((int) fxTypes().size() - 1) + ")", true, category < 0);
                 m.addSeparator();
                 for (int c = 0; c < (int) categories().size(); ++c)
                 {
-                    int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c && (im.osc < 0 || fxVoiceType (t))) ++n;
+                    int n = 0; for (int t = 1; t < (int) fxTypes().size(); ++t) if (categoryOf (t) == c) ++n;
                     m.addItem (c + 2, categories()[(size_t) c] + "  (" + juce::String (n) + ")", true, category == c);
                 }
                 auto self = juce::Component::SafePointer<Chooser> (this);
@@ -251,7 +258,7 @@ static int fxFilterShape (int mode)
             void mouseUp (const juce::MouseEvent& e) override
             {
                 if (dropRect().contains (e.getPosition())) { openMenu(); return; }
-                int i = hit (e.getPosition()); if (i >= 0) im.addEffect (vis()[(size_t) i]);
+                int i = hit (e.getPosition()); if (i >= 0 && available (vis()[(size_t) i])) im.addEffect (vis()[(size_t) i]);
             }
             int hit (juce::Point<int> p) const { if (p.y < headH - 4) return -1; int n = (int) vis().size(); for (int i = 0; i < n; ++i) if (cell (i).contains (p)) return i; return -1; }
         };
