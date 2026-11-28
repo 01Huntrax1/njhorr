@@ -334,7 +334,20 @@ namespace njo
             float lv (int l, int j) const { return ctx.get (lf (l, j)); }
             void setP (int id, float v) { ctx.begin (id); ctx.set (id, v); ctx.end (id); }
             void putLeaf (int l, float on, float side, float y, float a, float n) { const float v[5] = { on, side, y, a, n }; for (int j = 0; j < 5; ++j) setP (lf (l, j), v[(size_t) j]); }
-            static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff4fd36a, 0xffe3e05a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
+            static juce::Colour stateColour (int s) { static const juce::uint32 c[4] = { 0xff3fe03a, 0xffe8e84a, 0xffffa040, 0xffff7aa8 }; return juce::Colour (c[s & 3]); }
+            // a leaf like in the toy: round at the stem, a pointed tip, the upper half light and the lower half dark, a grey vein between them
+            static void drawLeaf (juce::Graphics& g, juce::Point<float> p1, juce::Point<float> p2, juce::Colour light, juce::Colour dark, float alpha)
+            {
+                const float L = std::hypot (p2.x - p1.x, p2.y - p1.y); if (L < 1.0f) return;
+                const juce::Point<float> d ((p2.x - p1.x) / L, (p2.y - p1.y) / L); juce::Point<float> n (-d.y, d.x); if (n.y > 0) n = { -n.x, -n.y };   // n: to the upper side
+                auto at = [&] (float a, float b) { return juce::Point<float> (p1.x + d.x * a * L + n.x * b * L, p1.y + d.y * a * L + n.y * b * L); };
+                juce::Path whole, upper;
+                upper.startNewSubPath (p1); upper.cubicTo (at (0.08f, 0.27f), at (0.58f, 0.24f), p2); upper.closeSubPath();
+                whole.startNewSubPath (p1); whole.cubicTo (at (0.08f, 0.27f), at (0.58f, 0.24f), p2); whole.cubicTo (at (0.58f, -0.20f), at (0.08f, -0.22f), p1); whole.closeSubPath();
+                g.setColour (dark.withAlpha (alpha)); g.fillPath (whole);
+                const auto m = at (0.4f, 0.15f); g.setGradientFill (juce::ColourGradient (light.withAlpha (alpha), m.x, m.y, light.interpolatedWith (dark, 0.55f).withAlpha (alpha), p1.x, p1.y, true)); g.fillPath (upper);
+                g.setColour (juce::Colour (0xff86948a).withAlpha (alpha)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 2.0f);
+            }
             explicit Hanenbow (Ctx& c) : Base (c, 6700, 19, { 5, 10 }), be (c.be)
             {
                 auto add = [this] (const char* t, std::function<void()> f) { auto* ch = new FxChip(); ch->text = t; ch->click = std::move (f); chips.add (ch); addAndMakeVisible (ch); };
@@ -468,21 +481,16 @@ namespace njo
                     const float len = std::hypot (p2.x - p1.x, p2.y - p1.y), wd = len * 0.30f; const juce::Point<float> nrm (-(p2.y - p1.y) / len * wd, (p2.x - p1.x) / len * wd);
                     const float t = be.boardHitMs[l] != 0 ? (float) (now - be.boardHitMs[l]) / 500.0f : 1.0f, flash = juce::jlimit (0.0f, 1.0f, 1.0f - t * 1.6f);
                     const auto col = stateColour (act ? be.leafState[l] : 0).interpolatedWith (juce::Colours::white, flash * 0.6f);
-                    juce::Path leaf; leaf.startNewSubPath (p1); leaf.quadraticTo (pc + nrm * 1.45f, p2); leaf.quadraticTo (pc - nrm * 1.45f, p1); leaf.closeSubPath();
-                    g.setGradientFill (juce::ColourGradient (col.brighter (0.25f), pc.x - nrm.x, pc.y - nrm.y, col.darker (0.35f), pc.x + nrm.x, pc.y + nrm.y, false)); g.fillPath (leaf);
-                    g.setColour (juce::Colours::white.withAlpha (0.55f)); g.strokePath (leaf, juce::PathStrokeType (1.4f));
-                    g.setColour (juce::Colours::white.withAlpha (0.28f)); g.drawLine (p1.x, p1.y, p2.x, p2.y, 1.2f);
+                    drawLeaf (g, p1, p2, col, col.darker (0.55f), 1.0f);
                     if (t < 1.0f) { const float rr = len * 0.45f * (0.4f + 0.9f * t); g.setColour (juce::Colours::white.withAlpha (0.7f * (1.0f - t))); g.drawEllipse (pc.x - rr, pc.y - rr, rr * 2.0f, rr * 2.0f, 1.6f); }
-                    g.setColour (juce::Colours::white.withAlpha (0.85f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (lv (l, 4))), (int) pc.x - 12, (int) pc.y - 6, 24, 11, juce::Justification::centred);
+                    g.setColour (juce::Colour (0xff0e3a10).withAlpha (0.8f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (lv (l, 4))), (int) pc.x - 12, (int) pc.y - 6, 24, 11, juce::Justification::centred);
                     if (sel == l) { g.setColour (juce::Colours::white.withAlpha (0.8f)); g.fillEllipse (p2.x - 3.0f, p2.y - 3.0f, 6.0f, 6.0f); }
                 }
                 // the launch leaf (bottom left): the tadpoles start at its base and fly along its direction
                 {
                     juce::Point<float> b0, t0; launchSeg (b0, t0); const auto p1 = P (b0.x, b0.y), p2 = P (t0.x, t0.y), pc = (p1 + p2) * 0.5f;
                     const float len = std::hypot (p2.x - p1.x, p2.y - p1.y), wd = len * 0.30f; const juce::Point<float> nrm (-(p2.y - p1.y) / len * wd, (p2.x - p1.x) / len * wd);
-                    juce::Path leaf; leaf.startNewSubPath (p1); leaf.quadraticTo (pc + nrm * 1.45f, p2); leaf.quadraticTo (pc - nrm * 1.45f, p1); leaf.closeSubPath();
-                    g.setGradientFill (juce::ColourGradient (juce::Colour (0xaa5fe0c0), pc.x - nrm.x, pc.y - nrm.y, juce::Colour (0xaa1f8f78), pc.x + nrm.x, pc.y + nrm.y, false)); g.fillPath (leaf);
-                    g.setColour (juce::Colours::white.withAlpha (0.65f)); g.strokePath (leaf, juce::PathStrokeType (1.4f));
+                    drawLeaf (g, p1, p2, juce::Colour (0xff5fe0c0), juce::Colour (0xff1f8f78), 0.7f);
                     g.setColour (juce::Colours::white.withAlpha (launch == 1 ? 0.8f : 0.4f)); g.drawEllipse (p2.x - W * 0.045f, p2.y - W * 0.045f, W * 0.09f, W * 0.09f, 2.0f);
                     g.setColour (juce::Colours::white.withAlpha (0.85f)); g.setFont (font (8.5f, true)); g.drawText (juce::String (juce::roundToInt (p (17))) + juce::String (juce::CharPointer_UTF8 ("\xc2\xb0")), (int) pc.x - 14, (int) pc.y - 6, 28, 11, juce::Justification::centred);
                 }
