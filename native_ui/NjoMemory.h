@@ -19,7 +19,7 @@ namespace njo
         ~SoundMemory() override;
 
         const Slot* get (Kind, int osc) const;                       // nullptr when empty
-        void load (Kind, int osc, const juce::File&, std::function<void (bool ok, const juce::String& message)> done = {}, int preset = -1);   // preset: SoundFont only (-1 = default)
+        void load (Kind, int osc, const juce::File&, std::function<void (bool ok, const juce::String& message)> done = {}, int preset = -1, bool asSpectrum = false);   // preset: SoundFont only (-1 = default); asSpectrum: FilterTable only, a normal wavetable is read as spectrum (Kilohearts Filter Table style) and the Range is set to 9 octaves
         void set (Kind, int osc, const juce::String& name, const juce::String& libId, std::vector<float> data, std::vector<float> dataRight = {});   // already decoded audio
         void clear (Kind, int osc);
         // SoundFont source: the presets of the loaded file (empty when the file is gone) and switching to another one

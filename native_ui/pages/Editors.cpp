@@ -96,10 +96,11 @@ namespace njo
             {
                 static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = juce::jlimit (0, 4, r - 1); rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF  v") : "RASTER: " + juce::String (rv[rast]) + "  v"; rastBtn->repaint(); owner.repaint();
             });
-            menuBtn ("FILE", [] (juce::PopupMenu& m) { m.addItem (1, "Load a table / wave file..."); m.addItem (2, "Back to the default table"); },
+            menuBtn ("FILE", [this] (juce::PopupMenu& m) { m.addItem (1, "Load a table / wave file..."); if (filter) m.addItem (3, "Load a wavetable as spectrum (Filter Table compatible)..."); m.addItem (2, "Back to the default table"); },
                      [this] (int r)
                      {
-                         if (r == 1) chooseFile();
+                         if (r == 1) chooseFile (false);
+                         else if (r == 3) chooseFile (true);
                          else if (r == 2) defaultTable();
                      });
         }
@@ -254,15 +255,15 @@ namespace njo
                     d[(size_t) (f * 512 + i)] = d[(size_t) i] + (d[(size_t) ((n - 1) * 512 + i)] - d[(size_t) i]) * (float) f / (float) (n - 1);
             touch(); commit();
         }
-        void chooseFile()
+        void chooseFile (bool spectrum = false)
         {
             chooser = std::make_unique<juce::FileChooser> ("Load a table or wave file", juce::File(), SoundMemory::fileWildcard());
-            chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [this] (const juce::FileChooser& fc)
+            chooser->launchAsync (juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [this, spectrum] (const juce::FileChooser& fc)
             {
-                auto f = fc.getResult(); if (f.existsAsFile()) loadFile (f);
+                auto f = fc.getResult(); if (f.existsAsFile()) loadFile (f, spectrum);
             });
         }
-        void loadFile (const juce::File& f) { pushUndo(); mem.load (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os, f, {}); }   // the change listener reloads the frames
+        void loadFile (const juce::File& f, bool spectrum = false) { pushUndo(); mem.load (filter ? SoundMemory::FilterTable : SoundMemory::ShaperTable, os, f, {}, -1, spectrum); }   // the change listener reloads the frames
         void harmonics()
         {
             if (! harmDirty) return;
@@ -413,7 +414,7 @@ namespace njo
     bool TableEditor::isInterestedInFileDrag (const juce::StringArray& f) { for (auto& n : f) if (juce::File (n).hasFileExtension ("wav;aif;aiff;flac;ogg;mp3;vitaltable")) return true; return false; }
     void TableEditor::fileDragEnter (const juce::StringArray&, int, int) { impl->dropOver = true; repaint(); }
     void TableEditor::fileDragExit (const juce::StringArray&) { impl->dropOver = false; repaint(); }
-    void TableEditor::filesDropped (const juce::StringArray& f, int, int) { impl->dropOver = false; if (f.size() > 0) impl->loadFile (juce::File (f[0])); repaint(); }
+    void TableEditor::filesDropped (const juce::StringArray& f, int, int) { impl->dropOver = false; if (f.size() > 0) impl->loadFile (juce::File (f[0]), juce::ModifierKeys::currentModifiers.isShiftDown()); repaint(); }
     void TableEditor::mouseDown (const juce::MouseEvent& e)
     {
         auto pt = e.getPosition(); auto& I = *impl;

@@ -1,6 +1,7 @@
 // Sample / wavetable memory: decoding (JUCE formats + AU + headerless 16 bit dumps), persistence in the instance's stored state
 // (keys njo.mem.osc{o}.{wt|sm} = { name, total, pcm16 (base64 LE int16) }) and streaming into the DSP banks in 256 sample chunks.
 #include "NjoMemory.h"
+#include "NjoFilterTableSpectrum.h"
 #include <juce_audio_formats/juce_audio_formats.h>
 #include "NjoSf2.h"
 #include <cmath>
@@ -483,7 +484,7 @@ namespace njo
         load (SoundFont, o, juce::File (s->srcPath), std::move (done), preset);
     }
 
-    void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done, int preset)
+    void SoundMemory::load (Kind k, int o, const juce::File& f, std::function<void (bool, const juce::String&)> done, int preset, bool asSpectrum)
     {
         if (k == SoundFont)
         {
@@ -502,7 +503,14 @@ namespace njo
             return;
         }
         auto dec = decodeAny (f, k == Wavetable || isTable (k));
-        if (dec.ok && isTable (k)) dec.mono = tableFromMono (dec.mono);
+        const bool spectrum = asSpectrum && k == FilterTable;       // Filter Table compatible: every frame is read as a spectrum
+        if (dec.ok && spectrum)
+        {
+            const int n = (int) dec.mono.size();
+            dec.mono = fts::tableToCurves (dec.mono, n % 4096 == 0 ? 4096 : (n >= 2048 ? 2048 : n), kTblMaxFr);
+            impl->be.setParam (1050 + 64 * o, fts::kRange);         // the Range the curves are made for
+        }
+        else if (dec.ok && isTable (k)) dec.mono = tableFromMono (dec.mono);
         if (! dec.ok)
         {
             status ("UNSUPPORTED FILE");
