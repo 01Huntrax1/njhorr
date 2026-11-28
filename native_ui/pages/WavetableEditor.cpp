@@ -1,3 +1,4 @@
+#include "../NjoFft.h"
 #include "WavetableEditor.h"
 #include "../NjoWt.h"
 #include "OscDisplays.h"
@@ -264,6 +265,11 @@ namespace njo
             add ("NORMALIZE", [this] { edit ([this] { normalize (cur()); }); });
             add ("SMOOTH", [this] { edit ([this] { smooth (cur()); }); });
             add ("INVERT", [this] { edit ([this] { for (auto& x : cur()) x = -x; }); });
+            // spectral tools (FFT of the frame, edit the harmonics, inverse FFT)
+            add ("ZERO PHASE", [this] { edit ([this] { dsp::editHarmonics (cur(), [] (int, dsp::cd& c) { c = std::polar (std::abs (c), -1.5707963267948966); }); normalize (cur()); }); });
+            add ("SPEC LP", [this] { edit ([this] { dsp::editHarmonics (cur(), [] (int k, dsp::cd& c) { if (k > 16) c = 0; }); normalize (cur()); }); });
+            add ("SPEC HP", [this] { edit ([this] { dsp::editHarmonics (cur(), [] (int k, dsp::cd& c) { if (k < 4) c = 0; }); normalize (cur()); }); });
+            add ("SCRAMBLE", [this] { edit ([this] { std::mt19937 r ((unsigned) juce::Time::getMillisecondCounter()); std::uniform_real_distribution<double> u (0.0, 6.283185307); dsp::editHarmonics (cur(), [&] (int, dsp::cd& c) { c = std::polar (std::abs (c), u (r)); }); normalize (cur()); }); });
             add ("REVERSE", [this] { edit ([this] { std::reverse (cur().begin(), cur().end()); }); });
             add ("RANDOM", [this] { edit ([this] { randomize (cur()); }); });
             for (auto nm : { "SINE", "SAW", "SQUARE", "TRI", "PULSE", "NOISE" })
@@ -436,7 +442,7 @@ namespace njo
                 g.setColour (juce::Colours::white.withAlpha (0.8f)); g.strokePath (pp, juce::PathStrokeType (1.2f));
             }
             // harmonics
-            if (harmDirty) { for (int k = 1; k <= NH; ++k) { float a, b; harmonic (cur(), k, a, b); mags[(size_t) k - 1] = std::sqrt (a * a + b * b); } harmDirty = false; }
+            if (harmDirty) { const auto m = dsp::harmonicMagnitudes (cur(), NH); for (int k = 0; k < NH; ++k) mags[(size_t) k] = m[(size_t) k]; harmDirty = false; }   // FFT of the frame
             const float bw = (float) harm.getWidth() / (float) NH;
             for (int k = 0; k < NH; ++k)
             {

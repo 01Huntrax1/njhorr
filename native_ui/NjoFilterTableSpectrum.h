@@ -6,6 +6,7 @@
 #include <cmath>
 #include <algorithm>
 #include <complex>
+#include "NjoFft.h"
 
 namespace njo::fts
 {
@@ -13,30 +14,7 @@ namespace njo::fts
     constexpr float kRange  = 9.0f;       // Range (octaves) the curve is made for; the loader sets the Range parameter to it
     constexpr float kCenter = 24.0f;      // harmonic that sits at the cutoff
 
-    inline void fft (std::vector<std::complex<double>>& a)       // size: power of two
-    {
-        const size_t n = a.size();
-        for (size_t i = 1, j = 0; i < n; ++i)
-        {
-            size_t bit = n >> 1;
-            for (; j & bit; bit >>= 1) j ^= bit;
-            j ^= bit; if (i < j) std::swap (a[i], a[j]);
-        }
-        for (size_t len = 2; len <= n; len <<= 1)
-        {
-            const double ang = -6.283185307179586 / (double) len;
-            const std::complex<double> wl (std::cos (ang), std::sin (ang));
-            for (size_t i = 0; i < n; i += len)
-            {
-                std::complex<double> w (1.0, 0.0);
-                for (size_t k = 0; k < len / 2; ++k, w *= wl)
-                {
-                    auto u = a[i + k], v = a[i + k + len / 2] * w;
-                    a[i + k] = u + v; a[i + k + len / 2] = u - v;
-                }
-            }
-        }
-    }
+    using dsp::fft;
 
     // one frame (any length >= 16, a cycle) -> 512 values v = 2g - 1, g = 0..1 the normalised magnitude along the log axis
     inline std::vector<float> frameToCurve (const float* x, int len)
@@ -48,7 +26,7 @@ namespace njo::fts
             const double p = (double) i * len / n; const int i0 = (int) p, i1 = std::min (i0 + 1, len - 1);
             a[(size_t) i] = (double) x[i0] + ((double) x[i1] - (double) x[i0]) * (p - i0);
         }
-        fft (a);
+        fft (a, -1);
         const int nh = n / 2;
         std::vector<double> mag ((size_t) nh + 1, 0.0);          // magnitude of harmonic k (k cycles per frame)
         for (int k = 1; k <= nh; ++k) mag[(size_t) k] = std::abs (a[(size_t) k]) * 2.0 / n;
