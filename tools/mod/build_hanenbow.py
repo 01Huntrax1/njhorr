@@ -133,6 +133,17 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         lmDiv = 0;
     }
 
+    float hnbStemW (float y)   // half width of the stem at height y (the editor draws the same stem); the leaves are fixed to its edge
+    {
+        if (y >= 0.62f)
+            return 0.04f + (min (y, 1.0f) - 0.62f) / 0.38f * 0.01f;
+
+        if (y >= 0.30f)
+            return 0.026f + (y - 0.30f) / 0.32f * 0.014f;
+
+        return 0.004f + (max (y, 0.085f) - 0.085f) / 0.215f * 0.022f;
+    }
+
     void hnbSpawn()
     {
         int maxB  = clamp (int (hnbG.at (0) + 0.5f), 1, 8);
@@ -204,8 +215,9 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         {
             float el = (hnbL.at (5 * l + 3) - 0.5f) * 2.4f;                // elevation of the leaf: 0.5 = horizontal, above 0.5 = up
             float sd = hnbL.at (5 * l + 1) < 0.5f ? -1.0f : 1.0f;          // left or right of the stem (X of the leaf is its side)
-            hnbEx.at (l) = sd * cos (el) * hl;
-            hnbEy.at (l) = -sin (el) * hl;
+            float fs = clamp (0.5f + 0.72f * hnbL.at (5 * l + 2), 0.6f, 1.1f);   // leaves are longer at the bottom of the plant (as in the toy)
+            hnbEx.at (l) = sd * cos (el) * hl * fs;
+            hnbEy.at (l) = -sin (el) * hl * fs;
         }
 
         for (int b = 0; b < 8; ++b)
@@ -231,8 +243,8 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbG.at (18) / 100.0f * AR;   // the leaf is fixed to the stem here and turns around this point
                     float y1 = hnbL.at (5 * l + 2);
+                    float x1 = hnbG.at (18) / 100.0f * AR + (ex < 0.0f ? -1.0f : 1.0f) * hnbStemW (y1);   // the leaf is fixed to the edge of the stem and turns around this point
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
                     float l2 = sx * sx + sy * sy;

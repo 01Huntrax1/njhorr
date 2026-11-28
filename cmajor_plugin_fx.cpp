@@ -343813,6 +343813,7 @@ namespace performer
             int32_t  l;
             float  el;
             float  sd;
+            float  fs;
             int32_t  b;
             float  x;
             float  y;
@@ -343822,8 +343823,8 @@ namespace performer
             int32_t  l_0;
             float  ex;
             float  ey;
-            float  x1;
             float  y1;
+            float  x1;
             float  sx;
             float  sy;
             float  l2;
@@ -343852,8 +343853,9 @@ namespace performer
                     }
                     el = (_state.hnbL[std__intrinsics___wrap_40 (intrinsics::add (intrinsics::multiply (int32_t {5}, l), int32_t {3}))] - 0.5f) * 2.4f;
                     sd = (_state.hnbL[std__intrinsics___wrap_40 (intrinsics::add (intrinsics::multiply (int32_t {5}, l), int32_t {1}))] < 0.5f) ? -1.0f : 1.0f;
-                    _state.hnbEx[std__intrinsics___wrap_8 (l)] = ((sd * intrinsics::cos (el)) * hl);
-                    _state.hnbEy[std__intrinsics___wrap_8 (l)] = ((- intrinsics::sin (el)) * hl);
+                    fs = intrinsics::clamp (0.5f + (0.72f * _state.hnbL[std__intrinsics___wrap_40 (intrinsics::add (intrinsics::multiply (int32_t {5}, l), int32_t {2}))]), 0.6f, 1.1f);
+                    _state.hnbEx[std__intrinsics___wrap_8 (l)] = (((sd * intrinsics::cos (el)) * hl) * fs);
+                    _state.hnbEy[std__intrinsics___wrap_8 (l)] = (((- intrinsics::sin (el)) * hl) * fs);
                     {
                         intrinsics::addTo (l, 1);
                     }
@@ -343906,8 +343908,8 @@ namespace performer
                                     }
                                     ex = _state.hnbEx[std__intrinsics___wrap_8 (l_0)];
                                     ey = _state.hnbEy[std__intrinsics___wrap_8 (l_0)];
-                                    x1 = (_state.hnbG[int32_t {18}] / 100.0f) * AR;
                                     y1 = _state.hnbL[std__intrinsics___wrap_40 (intrinsics::add (intrinsics::multiply (int32_t {5}, l_0), int32_t {2}))];
+                                    x1 = ((_state.hnbG[int32_t {18}] / 100.0f) * AR) + (((ex < 0.0f) ? -1.0f : 1.0f) * _Eisenpuls_Synth__hnbStemW (y1));
                                     sx = 2.0f * ex;
                                     sy = 2.0f * ey;
                                     l2 = (sx * sx) + (sy * sy);
@@ -343983,6 +343985,19 @@ namespace performer
 
             x = intrinsics::modulo (n, int32_t {40});
             return (x < int32_t {0}) ? intrinsics::add (x, int32_t {40}) : x;
+        }
+
+        float _Eisenpuls_Synth__hnbStemW (float y) noexcept
+        {
+            if (y >= 0.62f)
+            {
+                return 0.04f + (((intrinsics::min (y, 1.0f) - 0.62f) / 0.38f) * 0.01f);
+            }
+            if (y >= 0.3f)
+            {
+                return 0.026f + (((y - 0.3f) / 0.32f) * 0.014f);
+            }
+            return 0.004f + (((intrinsics::max (y, 0.085f) - 0.085f) / 0.215f) * 0.022f);
         }
 
         void _Eisenpuls_Synth__hnbHit (_Eisenpuls_Synth_State& _state, int32_t l, float speed, double now) noexcept

@@ -387,11 +387,18 @@ namespace njo
             }
             float halfLen() const { return juce::jlimit (0.06f, 0.5f, p (16) / 100.0f) * 0.5f; }
             static float elevOf (float a) { return (a - 0.5f) * 2.4f; }
+            // half width of the stem at height y (as the DSP: hnbStemW); the leaves are fixed to its edge
+            static float stemHalf (float y)
+            {
+                if (y >= 0.62f) return 0.04f + (juce::jmin (y, 1.0f) - 0.62f) / 0.38f * 0.01f;
+                if (y >= 0.30f) return 0.026f + (y - 0.30f) / 0.32f * 0.014f;
+                return 0.004f + (juce::jmax (y, 0.085f) - 0.085f) / 0.215f * 0.022f;
+            }
             // a leaf is fixed to the stem at (x, y): it points left (x < 0.5) or right, turned up by its angle
             void leafSeg (int l, juce::Point<float>& b0, juce::Point<float>& t0) const
             {
-                const float el = elevOf (lv (l, 3)), sd = lv (l, 1) < 0.5f ? -1.0f : 1.0f, hl = halfLen();
-                b0 = { p (18) / 100.0f * AR, lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
+                const float el = elevOf (lv (l, 3)), sd = lv (l, 1) < 0.5f ? -1.0f : 1.0f, hl = halfLen() * juce::jlimit (0.6f, 1.1f, 0.5f + 0.72f * lv (l, 2));   // longer leaves at the bottom (as the DSP)
+                b0 = { p (18) / 100.0f * AR + sd * stemHalf (lv (l, 2)), lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
             }
             // the launch leaf: its base is the launch point (Spawn X, bottom), it points along Aim
             void launchSeg (juce::Point<float>& b0, juce::Point<float>& t0) const
@@ -410,7 +417,7 @@ namespace njo
                 for (int l = 0; l < 8; ++l) { if (lv (l, 0) < 0.5f) continue; juce::Point<float> a, b; leafSeg (l, a, b); const float d = segDist (q, a, b); if (d < bd) { bd = d; best = l; } }
                 return best;
             }
-            juce::Point<float> slotPos (int l) const { return { p (18) / 100.0f * AR + (lv (l, 1) < 0.5f ? -0.03f : 0.03f), lv (l, 2) }; }
+            juce::Point<float> slotPos (int l) const { return { p (18) / 100.0f * AR + (lv (l, 1) < 0.5f ? -1.0f : 1.0f) * (stemHalf (lv (l, 2)) + 0.025f), lv (l, 2) }; }
             int slotAt (juce::Point<float> q) const   // a switched-off leaf: its place on the stem
             {
                 for (int l = 0; l < 8; ++l) if (lv (l, 0) < 0.5f && std::hypot (q.x - slotPos (l).x, q.y - slotPos (l).y) < 0.045f) return l;
@@ -425,7 +432,7 @@ namespace njo
                 if (e.mods.isRightButtonDown()) { if (l >= 0) setP (lf (l, 0), 0.0f); repaint(); return; }
                 if (l >= 0) { sel = l; return; }
                 const int k = slotAt (q); if (k >= 0) { setP (lf (k, 0), 1.0f); repaint(); return; }
-                if (std::abs (q.x - p (18) / 100.0f * AR) < 0.03f && q.y > 0.08f && q.y < 0.9f) launch = 3;   // the stem: move the whole plant
+                if (std::abs (q.x - p (18) / 100.0f * AR) < juce::jmax (0.03f, stemHalf (q.y)) && q.y > 0.08f && q.y < 0.9f) launch = 3;   // the stem: move the whole plant
             }
             void mouseDrag (const juce::MouseEvent& e) override
             {
@@ -470,8 +477,11 @@ namespace njo
                 }
                 // the stem: thick at the water, narrowing in steps up to a thin tip
                 const float stemX = p (18) / 100.0f * AR;
-                { juce::Path stem; const auto a0 = P (stemX, 1.0f), b0 = P (stemX, 0.085f), m0 = P (stemX, 0.62f), m1 = P (stemX, 0.30f); const float w0 = W * 0.040f, w1 = W * 0.028f, w2 = W * 0.014f, w3 = W * 0.004f;
-                  stem.startNewSubPath (a0.x - w0, a0.y); stem.lineTo (m0.x - w1, m0.y); stem.lineTo (m1.x - w2, m1.y); stem.lineTo (b0.x - w3, b0.y); stem.lineTo (b0.x + w3, b0.y); stem.lineTo (m1.x + w2, m1.y); stem.lineTo (m0.x + w1, m0.y); stem.lineTo (a0.x + w0, a0.y); stem.closeSubPath();
+                { juce::Path stem;
+                  const float yy[4] = { 1.0f, 0.62f, 0.30f, 0.085f };
+                  for (int i = 0; i < 4; ++i) { const auto q = P (stemX - stemHalf (yy[i]), yy[i]); if (i == 0) stem.startNewSubPath (q); else stem.lineTo (q); }
+                  for (int i = 3; i >= 0; --i) stem.lineTo (P (stemX + stemHalf (yy[i]), yy[i]));
+                  stem.closeSubPath(); const auto a0 = P (stemX, 1.0f); const float w0 = W * stemHalf (1.0f);
                   g.setGradientFill (juce::ColourGradient (juce::Colour (0xff8a2e10), a0.x - w0, 0.0f, juce::Colour (0xffb04a1c), a0.x + w0, 0.0f, false)); g.fillPath (stem); }
                 const bool act = active();
                 for (int l = 0; l < 8; ++l)
