@@ -1,3 +1,4 @@
+#include "../NjoFft.h"
 #include "Editors.h"
 #include "PresetBrowserUi.h"
 #include "OscDisplays.h"
@@ -64,12 +65,20 @@ namespace njo
                 else if (r == 6) { if (clip.size() == 512) edit ([this] (float* v) { std::copy (clip.begin(), clip.end(), v); }); }
                 else if (r == 7) morphAll();
             });
-            menuBtn ("EDIT", [] (juce::PopupMenu& m)
+            menuBtn ("EDIT", [this] (juce::PopupMenu& m)
             {
-                m.addItem (1, "Smooth"); m.addItem (2, "Invert"); m.addItem (3, "Flip (reverse)"); m.addItem (4, "Normalize"); m.addItem (5, "Random"); m.addSeparator();
+                m.addItem (1, "Smooth"); m.addItem (2, "Invert"); m.addItem (3, filter ? "Flip (mirror around the cutoff)" : "Flip (reverse)"); m.addItem (4, "Normalize"); m.addItem (5, "Random"); m.addSeparator();
                 m.addItem (6, "Odd symmetry"); m.addItem (7, "Even symmetry"); m.addItem (8, "Rectify"); m.addItem (9, "Quantise (8 levels)");
+                if (filter)
+                {
+                    m.addSeparator();
+                    juce::PopupMenu f; f.addItem (10, "Shift down 1 octave"); f.addItem (11, "Shift up 1 octave"); f.addItem (12, "Stretch x2 (from the cutoff)"); f.addItem (13, "Squeeze x0.5 (to the cutoff)");
+                    f.addSeparator(); f.addItem (14, "Sharpen peaks"); f.addItem (15, "Soften peaks"); f.addItem (16, "Tilt up (more highs)"); f.addItem (17, "Tilt down (more lows)"); f.addItem (18, "Spectral smooth (FFT, keep the lowest 24 terms)");
+                    m.addSubMenu ("Frequency axis / spectrum", f);
+                }
             }, [this] (int r)
             {
+                if (r >= 10 && r <= 18) { filterTool (r); return; }
                 if (r == 1) edit ([this] (float* v) { smooth (v); });
                 else if (r == 2) edit ([] (float* v) { for (int i = 0; i < 512; ++i) v[i] = -v[i]; });
                 else if (r == 3) edit ([] (float* v) { std::reverse (v, v + 512); });
@@ -96,15 +105,46 @@ namespace njo
             {
                 static const int rv[5] = { 0, 8, 16, 32, 64 }; rast = juce::jlimit (0, 4, r - 1); rastBtn->text = rast == 0 ? juce::String ("RASTER: OFF  v") : "RASTER: " + juce::String (rv[rast]) + "  v"; rastBtn->repaint(); owner.repaint();
             });
-            menuBtn ("FILE", [this] (juce::PopupMenu& m) { m.addItem (1, "Load a table / wave file..."); if (filter) m.addItem (3, "Load a wavetable as spectrum (Filter Table compatible)..."); m.addItem (2, "Back to the default table"); },
+            menuBtn ("FILE", [this] (juce::PopupMenu& m) { m.addItem (1, filter ? "Load a table / wave file as a curve..." : "Load a table / wave file..."); if (filter) { m.addItem (3, "Load a wavetable as spectrum (Filter Table compatible)..."); m.addSeparator(); m.addItem (4, "Set Range to 9 octaves (harmonic 1 .. 540 around the cutoff)"); } m.addItem (2, "Back to the default table"); },
                      [this] (int r)
                      {
                          if (r == 1) chooseFile (false);
                          else if (r == 3) chooseFile (true);
+                         else if (r == 4) { const int id = oscId (os, oscKey ("wfrange")); ctx.begin (id); ctx.set (id, 9.0f); ctx.end (id); owner.repaint(); }
                          else if (r == 2) defaultTable();
                      });
         }
 
+        // Wavefilter only: tools along the frequency axis (512 points over Range octaves, the cutoff in the middle) and on the gain (v = 2 g - 1)
+        void filterTool (int r)
+        {
+            const float range = juce::jmax (2.0f, ctx.get (oscId (os, oscKey ("wfrange")))), per = 511.0f / range;   // points per octave
+            auto at = [] (const float* v, float x) { x = juce::jlimit (0.0f, 511.0f, x); const int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511); return v[i0] + (v[i1] - v[i0]) * (x - (float) i0); };
+            edit ([&] (float* v)
+            {
+                float o[512]; std::copy (v, v + 512, o);
+                for (int i = 0; i < 512; ++i)
+                {
+                    const float x = (float) i, c = 255.5f, t = (float) i / 511.0f * 2.0f - 1.0f;
+                    if (r == 10) v[i] = at (o, x + per);                          // the curve moves down in frequency
+                    else if (r == 11) v[i] = at (o, x - per);
+                    else if (r == 12) v[i] = at (o, c + (x - c) * 0.5f);
+                    else if (r == 13) v[i] = at (o, c + (x - c) * 2.0f);
+                    else if (r == 14) { const float g = (o[i] + 1.0f) * 0.5f; v[i] = 2.0f * g * g - 1.0f; }
+                    else if (r == 15) { const float g = (o[i] + 1.0f) * 0.5f; v[i] = 2.0f * std::sqrt (juce::jmax (0.0f, g)) - 1.0f; }
+                    else if (r == 16) v[i] = juce::jlimit (-1.0f, 1.0f, o[i] + 0.5f * t);
+                    else if (r == 17) v[i] = juce::jlimit (-1.0f, 1.0f, o[i] - 0.5f * t);
+                }
+                if (r == 18)   // FFT low pass over the curve: removes ripples, keeps the shape
+                {
+                    std::vector<dsp::cd> a (512); for (int i = 0; i < 512; ++i) a[(size_t) i] = o[i];
+                    dsp::fft (a, -1);
+                    for (int k = 0; k < 512; ++k) { const int kk = k < 256 ? k : 512 - k; if (kk > 24) a[(size_t) k] = 0; }
+                    dsp::fft (a, +1);
+                    for (int i = 0; i < 512; ++i) v[i] = juce::jlimit (-1.0f, 1.0f, (float) (a[(size_t) i].real() / 512.0));
+                }
+            });
+        }
         void defaultTable() { pushUndo(); fromBuiltIn = true; d.assign (16 * 512, 0.0f); for (int f2 = 0; f2 < 16; ++f2) for (int i = 0; i < 512; ++i) d[(size_t) (f2 * 512 + i)] = oscmodel::tblDefault (filter, f2, i); cur = juce::jlimit (0, 15, cur); name = "EDITED"; setPos(); touch(); commit(); }
         int frames() const { return (int) d.size() / 512; }
         void razorApply()
@@ -317,6 +357,15 @@ namespace njo
             if (filter)
             {
                 const float range = ctx.get (oscId (os, oscKey ("wfrange")));
+                // octave grid with the harmonic number of the frame (Filter Table: harmonic 24 = cutoff), zero line
+                g.setColour (juce::Colours::white.withAlpha (0.07f)); g.drawHorizontalLine ((int) Y (0.0f), canvas.getX() + 1.0f, canvas.getRight() - 1.0f);
+                for (int o = -(int) std::floor (range * 0.5f); o <= (int) std::floor (range * 0.5f); ++o)
+                {
+                    const float x = X (0.5f + (float) o / range), h = 24.0f * std::pow (2.0f, (float) o);
+                    g.setColour (juce::Colours::white.withAlpha (o == 0 ? 0.22f : 0.07f)); g.drawVerticalLine ((int) x, canvas.getY() + 1.0f, canvas.getBottom() - 1.0f);
+                    g.setColour (dim); if (x > canvas.getX() + 30.0f && x < canvas.getRight() - 30.0f) g.drawText ("H" + (h >= 10.0f ? juce::String (juce::roundToInt (h)) : juce::String (h, 1)), juce::Rectangle<float> (x - 20.0f, canvas.getBottom() - 34.0f, 40.0f, 10.0f).toNearestInt(), juce::Justification::centred);
+                }
+                g.setColour (dim);
                 g.drawText (juce::String (-range * 0.5f, 1) + " oct", canvas.reduced (12, 10), juce::Justification::bottomLeft);
                 g.drawText ("CUTOFF", canvas.reduced (12, 10), juce::Justification::centredBottom);
                 g.drawText ("+" + juce::String (range * 0.5f, 1) + " oct", canvas.reduced (12, 10), juce::Justification::bottomRight);
