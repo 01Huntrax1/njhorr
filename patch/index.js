@@ -3345,6 +3345,9 @@ const FX_TYPES = [
     // FX-SPEC: FFT effect (FX type 40), STFT with 512 points, latency 512 samples
     { n: "Spectral", mix: 1, modes: ["Shape", "Freeze", "Gate", "Robot", "Whisper"],
       p: [["Amount", fxPct, 0.5], ["Tilt", fxLin(-100, 100, 0, "%"), 0.5], ["Shift", fxLin(-12, 12, 0, "st"), 0.5], ["Lo Cut", fxPct, 0], ["Hi Cut", fxPct, 0], ["Floor", fxPct, 0]] },
+    // FX-FTAB: Filter Table as in the Kilohearts original: the spectrum of a table frame is the filter response (FFT filter, FX type 41)
+    { n: "Filter Table", mix: 1, modes: ["Linear", "dB"],
+      p: [["Cutoff", fxHz(20, 20000), 0.5], ["Reso", fxPct, 0], ["Frame", fxPct, 0], ["Table", fxLin(1, 6, 0, ""), 0], ["Range", fxLin(2, 14, 1, "oct"), 0.583], ["Gain", fxDb(-12, 12), 0.5]] },
 ];
 // the three racks: slot parameters start at id, the processing-order parameters at ord (Main keeps the ids of the first rack release)
 var FX_RACKS = [{ name: "Main", id: 541, ord: 641 }, { name: "Bus 1", id: 651, ord: 751 }, { name: "Bus 2", id: 761, ord: 861 }];

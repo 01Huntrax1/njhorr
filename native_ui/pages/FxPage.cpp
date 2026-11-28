@@ -34,8 +34,8 @@ static int fxFilterShape (int mode)
 
         juce::Colour fxColour (int type)
         {
-            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58, 0xff90c8a0, 0xffd0a878, 0xffb88860, 0xff98a0d8, 0xff78d0c0 , 0xff7fd0a8, 0xff60e0c8};
-            return juce::Colour (c[juce::jlimit (0, 40, type)]);
+            static const juce::uint32 c[] = { 0xff4e5157, 0xffe0803a, 0xffd860a8, 0xffe0507a, 0xff30d0d8, 0xffe08c40, 0xffa060e0, 0xff80d060, 0xff30c090, 0xff40a0e0, 0xffe8e8e8, 0xffe8c030, 0xff58b8f0, 0xffc8a0f0, 0xfff07a50, 0xfff0a050, 0xff7adf9a, 0xffd8b860, 0xff9ac865, 0xffa0e057, 0xff50c0b0, 0xffd09040, 0xff7a8088, 0xff90c050, 0xffc0a070, 0xff6090d0, 0xffa5d075, 0xff80b0e0, 0xffe04a3c, 0xff7ad8c8, 0xffd87ae0, 0xff6ac0ff, 0xffd8a050, 0xffc08a58, 0xff90c8a0, 0xffd0a878, 0xffb88860, 0xff98a0d8, 0xff78d0c0 , 0xff7fd0a8, 0xff60e0c8, 0xff70b0f0};
+            return juce::Colour (c[juce::jlimit (0, 41, type)]);
         }
 
         class OnToggle : public ParamWidget
@@ -461,6 +461,25 @@ static int fxFilterShape (int mode)
                     fill (p, 0.0); stroke (p);
                     g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (20.0 * std::pow (1000.0, P (0)) / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
                     freqAxis(); label ("TABLE OSC " + juce::String (osc + 1) + "   (approximate response)");
+                }
+                else if (ty == 41)   // Filter Table (FX-FTAB): the response of the frame of the chosen oscillator's filter table, as the FFT filter applies it
+                {
+                    const int osc = juce::jlimit (0, 5, juce::roundToInt (P (3) * 5.0));
+                    float tbl[512];
+                    auto* sl = im.mem.get (SoundMemory::FilterTable, osc);
+                    oscmodel::tblFrame (sl ? &sl->data : nullptr, true, (float) P (2), tbl);
+                    const double lfc = std::log2 (20.0 * std::pow (1000.0, P (0))), width = 2.0 + 12.0 * P (4), ex = std::pow (2.0, P (1) * 3.0), og = std::pow (10.0, (P (5) * 2.0 - 1.0) * 0.6);
+                    auto p = curve ([&] (double t)
+                    {
+                        const double f = 20.0 * std::pow (1000.0, t), tt = juce::jlimit (0.0, 1.0, 0.5 + (std::log2 (f) - lfc) / width), x = tt * 511.0;
+                        const int i0 = (int) x, i1 = juce::jmin (i0 + 1, 511); const double v = tbl[i0] + (tbl[i1] - tbl[i0]) * (x - i0);
+                        double gain = mode == 0 ? v * 0.5 + 0.5 : std::pow (10.0, (v - 1.0) * 1.5);
+                        gain = std::pow (juce::jmax (0.0, gain), ex > 1.001 ? ex : 1.0) * og;
+                        return (juce::jlimit (-48.0, 12.0, 20.0 * std::log10 (juce::jmax (1.0e-5, gain))) + 48.0) / 60.0;
+                    });
+                    fill (p, 0.0); stroke (p);
+                    g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (20.0 * std::pow (1000.0, P (0)) / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
+                    freqAxis (); label ("FILTER TABLE  OSC " + juce::String (osc + 1) + "   frame " + juce::String (P (2) * 100.0, 0) + " %   (FFT filter, zero phase)");
                 }
                 else if (ty == 40)   // Spectral (FFT effect, FX-SPEC): the frequency response of Tilt / Lo Cut / Hi Cut (bins of the 512 point FFT, 93.75 Hz each at 48 kHz), Shift as a marker, mode specific hints
                 {
