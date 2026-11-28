@@ -4022,7 +4022,7 @@ const SPECS = (() => {
         L.push([6713, "Hanenbow Spread", 0, 100, 5, "%", "knb", null, 1, "Spread"]);
         L.push([6714, "Hanenbow Hits", 1, 8, 2, "", "knb", null, 1, "Hits"]);
         L.push([6715, "Hanenbow Step", -4, 4, 2, "", "knb", null, 1, "Step"]);
-        L.push([6716, "Hanenbow Leaf Size", 8, 50, 27, "%", "knb", null, 1, "Leaf Size"]);
+        L.push([6716, "Hanenbow Leaf Size", 8, 50, 35, "%", "knb", null, 1, "Leaf Size"]);
         L.push([6717, "Hanenbow Aim", -80, 80, 30, "deg", "knb", null, 1, "Aim"]);
         L.push([6718, "Hanenbow Stem X", 0, 100, 64, "", "knb", null, 1, "Stem X"]);
         L.push([6720, "Hanenbow Leaf 1 On", 0, 1, 1, "", "knb", null, 1, "On"]);

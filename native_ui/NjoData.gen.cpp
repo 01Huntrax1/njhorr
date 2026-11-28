@@ -5994,7 +5994,7 @@ static void allSpecs_133 (std::vector<Spec>& v)
         Spec { 6713, NJ_S("Hanenbow Spread"), 0.0, 100.0, 5.0, NJ_S("%"), NJ_S("knb"), {  }, 1, NJ_S("Spread"), {  } },
         Spec { 6714, NJ_S("Hanenbow Hits"), 1.0, 8.0, 2.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Hits"), {  } },
         Spec { 6715, NJ_S("Hanenbow Step"), -4.0, 4.0, 2.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Step"), {  } },
-        Spec { 6716, NJ_S("Hanenbow Leaf Size"), 8.0, 50.0, 27.0, NJ_S("%"), NJ_S("knb"), {  }, 1, NJ_S("Leaf Size"), {  } },
+        Spec { 6716, NJ_S("Hanenbow Leaf Size"), 8.0, 50.0, 35.0, NJ_S("%"), NJ_S("knb"), {  }, 1, NJ_S("Leaf Size"), {  } },
         Spec { 6717, NJ_S("Hanenbow Aim"), -80.0, 80.0, 30.0, NJ_S("deg"), NJ_S("knb"), {  }, 1, NJ_S("Aim"), {  } },
         Spec { 6718, NJ_S("Hanenbow Stem X"), 0.0, 100.0, 64.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("Stem X"), {  } },
         Spec { 6720, NJ_S("Hanenbow Leaf 1 On"), 0.0, 1.0, 1.0, NJ_S(""), NJ_S("knb"), {  }, 1, NJ_S("On"), {  } },

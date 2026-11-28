@@ -85,6 +85,8 @@ check("Hanenbow: the tadpole is reported until it has fallen into the water (y >
 evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 10), (HG(17), 45)], [48], hold=2.0, tag="h9")
 pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
 check("Hanenbow: Aim 45 launches the tadpole from Spawn X (10 %) to the right", len(xs) > 10 and abs(xs[0] - 102) < 40 and max(xs) > xs[0] + 150, "x %s .. %s" % (xs[0] if xs else None, max(xs) if xs else None))
+ys9 = [v & 1023 for v in pos]; dx = xs[3] - xs[0]; dy = ys9[0] - ys9[3]
+check("Hanenbow: the picture is wider than tall: a 45 degree launch moves 1.3 x as far in x (in picture fractions) as in y", dy > 20 and 0.8 < dx * 1.3 / dy < 1.25, "dx %d dy %d" % (dx, dy))
 evs = events(BASE + AR(13) + off_leaves + [(HG(0), 1), (HG(13), 0), (HG(12), 90), (HG(17), -45)], [48], hold=2.0, tag="h10")
 pos = [v - 4000000 for v in evs if 4000000 <= v < 30000000]; xs = [(v >> 11) & 1023 for v in pos]
 check("Hanenbow: Aim -45 launches it to the left", len(xs) > 10 and min(xs) < xs[0] - 150, "x %s .. %s" % (xs[0] if xs else None, min(xs) if xs else None))

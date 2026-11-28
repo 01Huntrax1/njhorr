@@ -3,6 +3,8 @@
 // the generations of the cellular automaton.
 #pragma once
 #include "ModUi.h"
+#include "PresetBrowserUi.h"
+#include "../NjoPlantPresets.h"
 #include <array>
 #include <functional>
 #include <cmath>
@@ -326,6 +328,7 @@ namespace njo
         // ---- Hanenbow (Arp Mode 13): tadpoles are launched from a leaf at the bottom (Spawn X, Aim) onto the leaves of a plant; the leaves are fixed to the stem and only turn (DSP: build_hanenbow.py, parameters 6700.., leaves 6720 + 5 * l + j) ----
         struct Hanenbow : Base
         {
+            static constexpr float AR = 1.3f;   // the picture is wider than tall (as in the toy); world x runs 0..AR, y 0..1 (like the DSP)
             Backend& be; juce::Rectangle<float> sq; int sel = -1; int launch = 0; juce::Point<float> grab; juce::OwnedArray<FxChip> chips; juce::Point<float> prevB[8];
             static int lf (int l, int j) { return 6720 + 5 * l + j; }
             float lv (int l, int j) const { return ctx.get (lf (l, j)); }
@@ -338,18 +341,27 @@ namespace njo
                 add ("CLEAR", [this] { for (int l = 0; l < 8; ++l) setP (lf (l, 0), 0.0f); repaint(); });
                 add ("PLANT", [this] { setDefault(); });
                 add ("RANDOM", [this] { setRandom(); });
+                add ("PRESETS", [this] { presets(); });
             }
-            void setDefault()   // a plant as in the toy: three pairs of leaves, a fourth pair off; the launch leaf at the bottom left
+            void applyPlant (const njo::plants::Plant& pl) { for (auto& e : njo::plants::values (pl)) setP (e.first, e.second); repaint(); }
+            void setDefault() { applyPlant (njo::plants::all()[0]); }   // a plant as in the toy: three pairs of leaves, a fourth pair off; the launch leaf at the bottom left
+            // the preset browser: the factory plants and the user plants (<root>/PlantPresets/*.nplant: all Hanenbow parameters and the 8 leaves)
+            void presets()
             {
-                static const float d[8][5] = { { 0, 0.69f, 0.725f, 0, 0 }, { 1, 0.69f, 0.725f, 0, 2 }, { 0, 0.50f, 0.73f, 0, 4 }, { 1, 0.50f, 0.73f, 0, 5 }, { 0, 0.33f, 0.84f, 0, 7 }, { 1, 0.33f, 0.84f, 0, 9 }, { 0, 0.20f, 0.85f, 0, 3 }, { 1, 0.20f, 0.85f, 0, 6 } };
-                for (int l = 0; l < 8; ++l) putLeaf (l, l < 6 ? 1.0f : 0.0f, (float) (l % 2), d[l][1], d[l][2], d[l][4]);
-                setP (6712, 7.0f); setP (6717, 30.0f); setP (6718, 64.0f); setP (6703, 120.0f); setP (6716, 27.0f); repaint();
+                njo::pbrowse::ParamSourceSpec sp; sp.key = "hnb"; sp.title = "Hanenbow plants"; sp.subdir = "PlantPresets"; sp.ext = "nplant"; sp.defaultName = "My plant"; sp.root = ctx.be.rootFolder();
+                const auto& L = njo::plants::all();
+                for (size_t i = 0; i < L.size(); ++i) sp.factory.push_back ({ "f:" + juce::String ((int) i), L[i].name, L[i].group, false });
+                sp.applyFactory = [this] (int n) { applyPlant (njo::plants::all()[(size_t) n]); };
+                sp.ids = [] { std::vector<int> v; for (int k = 0; k < 19; ++k) v.push_back (6700 + k); for (int k = 0; k < 40; ++k) v.push_back (6720 + k); return v; };
+                sp.get = [this] (int id) { return ctx.get (id); };
+                sp.set = [this] (int id, float v) { setP (id, v); };
+                njo::pbrowse::open (*this, njo::pbrowse::makeParamSource (sp));
             }
             void setRandom()
             {
                 juce::Random rn;
                 for (int l = 0; l < 8; ++l) putLeaf (l, l < 4 || rn.nextBool() ? 1.0f : 0.0f, (float) (l % 2), 0.78f - 0.08f * (float) (l / 2) * 1.8f, 0.4f + rn.nextFloat() * 0.5f, (float) rn.nextInt (10));
-                setP (6712, 4.0f + rn.nextFloat() * 20.0f); setP (6717, 15.0f + rn.nextFloat() * 40.0f); setP (6718, 45.0f + rn.nextFloat() * 30.0f); repaint();
+                setP (6712, 4.0f + rn.nextFloat() * 20.0f); setP (6717, 15.0f + rn.nextFloat() * 40.0f); setP (6718, 45.0f + rn.nextFloat() * 30.0f); setP (6716, 30.0f + rn.nextFloat() * 10.0f); repaint();
             }
             bool active() const { const auto now = juce::Time::getMillisecondCounter(); for (auto& b : be.boardBalls) if (now - b.ms < 1000) return true; return false; }
             bool needsRepaint() override { return isShowing(); }   // the bubbles and the water move all the time
@@ -358,7 +370,7 @@ namespace njo
                 Base::resized();
                 auto r = pic.toNearestInt().reduced (2); auto tb = r.removeFromTop (22); r.removeFromTop (4);
                 const int n = chips.size(), cw = juce::jmin (90, tb.getWidth() / juce::jmax (1, n)); for (auto* c : chips) c->setBounds (tb.removeFromLeft (cw).reduced (1, 0));
-                const float side = (float) juce::jmin (r.getWidth(), r.getHeight() - 16); sq = juce::Rectangle<float> (side, side).withCentre ({ (float) r.getCentreX(), (float) r.getY() + side * 0.5f });
+                const float w = juce::jmin ((float) r.getWidth(), ((float) r.getHeight() - 16.0f) * AR), h = w / AR; sq = juce::Rectangle<float> (w, h).withCentre ({ (float) r.getCentreX(), (float) r.getY() + h * 0.5f });
             }
             float halfLen() const { return juce::jlimit (0.06f, 0.5f, p (16) / 100.0f) * 0.5f; }
             static float elevOf (float a) { return (a - 0.5f) * 2.4f; }
@@ -366,26 +378,26 @@ namespace njo
             void leafSeg (int l, juce::Point<float>& b0, juce::Point<float>& t0) const
             {
                 const float el = elevOf (lv (l, 3)), sd = lv (l, 1) < 0.5f ? -1.0f : 1.0f, hl = halfLen();
-                b0 = { p (18) / 100.0f, lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
+                b0 = { p (18) / 100.0f * AR, lv (l, 2) }; t0 = { b0.x + sd * std::cos (el) * 2.0f * hl, b0.y - std::sin (el) * 2.0f * hl };
             }
             // the launch leaf: its base is the launch point (Spawn X, bottom), it points along Aim
             void launchSeg (juce::Point<float>& b0, juce::Point<float>& t0) const
             {
-                const float a = p (17) * juce::MathConstants<float>::pi / 180.0f; b0 = { p (12) / 100.0f, 0.93f }; t0 = { b0.x + std::sin (a) * 0.27f, b0.y - std::cos (a) * 0.27f };
+                const float a = p (17) * juce::MathConstants<float>::pi / 180.0f; b0 = { p (12) / 100.0f * AR, 0.93f }; t0 = { b0.x + std::sin (a) * 0.27f, b0.y - std::cos (a) * 0.27f };
             }
             static float segDist (juce::Point<float> q, juce::Point<float> a, juce::Point<float> b, float* tOut = nullptr)
             {
                 const float sx = b.x - a.x, sy = b.y - a.y, l2 = sx * sx + sy * sy, t = juce::jlimit (0.0f, 1.0f, ((q.x - a.x) * sx + (q.y - a.y) * sy) / juce::jmax (l2, 1.0e-6f));
                 if (tOut) *tOut = t; return std::hypot (q.x - (a.x + t * sx), q.y - (a.y + t * sy));
             }
-            juce::Point<float> toBoard (juce::Point<float> q) const { return { juce::jlimit (0.0f, 1.0f, (q.x - sq.getX()) / sq.getWidth()), juce::jlimit (0.0f, 1.0f, (q.y - sq.getY()) / sq.getHeight()) }; }
+            juce::Point<float> toBoard (juce::Point<float> q) const { return { juce::jlimit (0.0f, AR, (q.x - sq.getX()) / sq.getWidth() * AR), juce::jlimit (0.0f, 1.0f, (q.y - sq.getY()) / sq.getHeight()) }; }
             int leafAt (juce::Point<float> q) const
             {
                 int best = -1; float bd = 0.05f;
                 for (int l = 0; l < 8; ++l) { if (lv (l, 0) < 0.5f) continue; juce::Point<float> a, b; leafSeg (l, a, b); const float d = segDist (q, a, b); if (d < bd) { bd = d; best = l; } }
                 return best;
             }
-            juce::Point<float> slotPos (int l) const { return { p (18) / 100.0f + (lv (l, 1) < 0.5f ? -0.03f : 0.03f), lv (l, 2) }; }
+            juce::Point<float> slotPos (int l) const { return { p (18) / 100.0f * AR + (lv (l, 1) < 0.5f ? -0.03f : 0.03f), lv (l, 2) }; }
             int slotAt (juce::Point<float> q) const   // a switched-off leaf: its place on the stem
             {
                 for (int l = 0; l < 8; ++l) if (lv (l, 0) < 0.5f && std::hypot (q.x - slotPos (l).x, q.y - slotPos (l).y) < 0.045f) return l;
@@ -400,18 +412,18 @@ namespace njo
                 if (e.mods.isRightButtonDown()) { if (l >= 0) setP (lf (l, 0), 0.0f); repaint(); return; }
                 if (l >= 0) { sel = l; return; }
                 const int k = slotAt (q); if (k >= 0) { setP (lf (k, 0), 1.0f); repaint(); return; }
-                if (std::abs (q.x - p (18) / 100.0f) < 0.03f && q.y > 0.08f && q.y < 0.9f) launch = 3;   // the stem: move the whole plant
+                if (std::abs (q.x - p (18) / 100.0f * AR) < 0.03f && q.y > 0.08f && q.y < 0.9f) launch = 3;   // the stem: move the whole plant
             }
             void mouseDrag (const juce::MouseEvent& e) override
             {
                 if (e.mods.isRightButtonDown()) return;
                 const auto q = toBoard (e.position);
                 if (launch == 1) { juce::Point<float> a, b; launchSeg (a, b); const float dg = std::atan2 (q.x - a.x, a.y - q.y) * 180.0f / juce::MathConstants<float>::pi; setP (6717, (float) juce::jlimit (-80, 80, juce::roundToInt (dg))); repaint(); }
-                else if (launch == 2) { setP (6712, (float) juce::jlimit (0, 100, juce::roundToInt (q.x * 100.0f))); repaint(); }
-                else if (launch == 3) { setP (6718, (float) juce::jlimit (25, 90, juce::roundToInt (q.x * 100.0f))); repaint(); }
+                else if (launch == 2) { setP (6712, (float) juce::jlimit (0, 100, juce::roundToInt (q.x / AR * 100.0f))); repaint(); }
+                else if (launch == 3) { setP (6718, (float) juce::jlimit (25, 90, juce::roundToInt (q.x / AR * 100.0f))); repaint(); }
                 else if (sel >= 0)   // turn the leaf around its fixed end
                 {
-                    const float sd = lv (sel, 1) < 0.5f ? -1.0f : 1.0f, vx = (q.x - lv (sel, 1)) * sd, vy = q.y - lv (sel, 2);
+                    juce::Point<float> b0, t0; leafSeg (sel, b0, t0); const float sd = lv (sel, 1) < 0.5f ? -1.0f : 1.0f, vx = (q.x - b0.x) * sd, vy = q.y - b0.y;
                     if (std::hypot (vx, vy) > 0.01f) setP (lf (sel, 3), juce::jlimit (0.0f, 1.0f, 0.5f + juce::jlimit (-1.2f, 1.2f, std::atan2 (-vy, vx)) / 2.4f));
                     repaint();
                 }
@@ -432,19 +444,19 @@ namespace njo
                 const auto now = juce::Time::getMillisecondCounter(); const float tm = (float) (now % 600000) / 1000.0f;
                 juce::Graphics::ScopedSaveState ss (g);
                 juce::Path clip; clip.addRoundedRectangle (sq, 6.0f); g.reduceClipRegion (clip);
-                auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x * sq.getWidth(), sq.getY() + y * sq.getHeight()); };
-                const float W = sq.getWidth();
+                auto P = [&] (float x, float y) { return juce::Point<float> (sq.getX() + x / AR * sq.getWidth(), sq.getY() + y * sq.getHeight()); };   // world -> screen
+                const float W = sq.getHeight();   // sizes are in units of the picture height
                 g.setGradientFill (juce::ColourGradient (juce::Colour (0xff52c400), sq.getX(), sq.getY(), juce::Colour (0xff2c9a12), sq.getX(), sq.getBottom(), false)); g.fillRect (sq);
                 // bubbles
                 for (int i = 0; i < 16; ++i)
                 {
                     const float s1 = std::fmod (std::sin ((float) i * 12.9898f) * 43758.5f, 1.0f), s2 = std::fmod (std::sin ((float) i * 78.233f) * 12345.6f, 1.0f);
                     const float bx = std::abs (s1), spd = 0.025f + 0.04f * std::abs (s2), by = 1.0f - std::fmod (tm * spd + std::abs (s2) * 3.0f, 1.0f), r = 2.0f + 3.5f * std::abs (std::fmod (s1 * 7.0f, 1.0f));
-                    const auto c = P (bx + 0.012f * std::sin (tm * 1.3f + (float) i), by);
+                    const auto c = P ((bx + 0.012f * std::sin (tm * 1.3f + (float) i)) * AR, by);
                     g.setColour (juce::Colours::white.withAlpha (0.10f)); g.fillEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f); g.setColour (juce::Colours::white.withAlpha (0.38f)); g.drawEllipse (c.x - r, c.y - r, r * 2.0f, r * 2.0f, 1.0f);
                 }
                 // the stem: thick at the water, narrowing in steps up to a thin tip
-                const float stemX = p (18) / 100.0f;
+                const float stemX = p (18) / 100.0f * AR;
                 { juce::Path stem; const auto a0 = P (stemX, 1.0f), b0 = P (stemX, 0.085f), m0 = P (stemX, 0.62f), m1 = P (stemX, 0.30f); const float w0 = W * 0.040f, w1 = W * 0.028f, w2 = W * 0.014f, w3 = W * 0.004f;
                   stem.startNewSubPath (a0.x - w0, a0.y); stem.lineTo (m0.x - w1, m0.y); stem.lineTo (m1.x - w2, m1.y); stem.lineTo (b0.x - w3, b0.y); stem.lineTo (b0.x + w3, b0.y); stem.lineTo (m1.x + w2, m1.y); stem.lineTo (m0.x + w1, m0.y); stem.lineTo (a0.x + w0, a0.y); stem.closeSubPath();
                   g.setGradientFill (juce::ColourGradient (juce::Colour (0xff8a2e10), a0.x - w0, 0.0f, juce::Colour (0xffb04a1c), a0.x + w0, 0.0f, false)); g.fillPath (stem); }
@@ -478,15 +490,15 @@ namespace njo
                 for (int b = 0; b < 8; ++b)
                 {
                     auto& bl = be.boardBalls[b]; if (now - bl.ms > 150) { prevB[b] = { -1.0f, -1.0f }; continue; }
-                    const auto c = P (bl.x, bl.y); juce::Point<float> d (0.0f, 1.0f);
-                    if (prevB[b].x >= 0 && (prevB[b].x != bl.x || prevB[b].y != bl.y)) { d = { prevB[b].x - bl.x, prevB[b].y - bl.y }; const float n = std::hypot (d.x, d.y); d = { d.x / n, d.y / n }; }
+                    const auto c = P (bl.x * AR, bl.y); juce::Point<float> d (0.0f, 1.0f);
+                    if (prevB[b].x >= 0 && (prevB[b].x != bl.x || prevB[b].y != bl.y)) { d = { (prevB[b].x - bl.x) * AR, prevB[b].y - bl.y }; const float n = std::hypot (d.x, d.y); d = { d.x / n, d.y / n }; }
                     prevB[b] = { bl.x, bl.y };
                     g.setColour (juce::Colour (0xffff6fa8)); g.drawLine (c.x, c.y, c.x + d.x * 11.0f, c.y + d.y * 11.0f, 2.0f);
                     g.setColour (juce::Colour (0xffffa0c8)); g.fillEllipse (c.x - 4.0f, c.y - 4.0f, 8.0f, 8.0f); g.setColour (juce::Colour (0xff3a1030)); g.fillEllipse (c.x - 1.2f, c.y - 1.8f, 2.4f, 2.4f);
                 }
                 // the water (surface at 0.82, as in the DSP)
                 juce::Path water; { const float y0 = 0.82f; water.startNewSubPath (sq.getX(), sq.getBottom()); const int n = 40;
-                    for (int i = 0; i <= n; ++i) { const float x = (float) i / (float) n, spike = (i % 2 == 0 ? 0.0f : -0.016f) * (0.7f + 0.3f * std::sin (tm * 2.0f + (float) i)); water.lineTo (P (x, y0 + spike + 0.005f * std::sin (tm * 1.6f + (float) i * 0.7f))); }
+                    for (int i = 0; i <= n; ++i) { const float x = (float) i / (float) n, spike = (i % 2 == 0 ? 0.0f : -0.016f) * (0.7f + 0.3f * std::sin (tm * 2.0f + (float) i)); water.lineTo (P (x * AR, y0 + spike + 0.005f * std::sin (tm * 1.6f + (float) i * 0.7f))); }
                     water.lineTo (sq.getRight(), sq.getBottom()); water.closeSubPath(); }
                 g.setGradientFill (juce::ColourGradient (juce::Colour (0xdd20c0b8), sq.getX(), P (0, 0.82f).y, juce::Colour (0xee22349a), sq.getX(), sq.getBottom(), false)); g.fillPath (water);
                 { juce::Graphics::ScopedSaveState ws (g); g.reduceClipRegion (water); g.setColour (juce::Colours::black.withAlpha (0.07f)); for (float yy = P (0, 0.82f).y; yy < sq.getBottom(); yy += 5.0f) g.drawHorizontalLine ((int) yy, sq.getX(), sq.getRight()); }

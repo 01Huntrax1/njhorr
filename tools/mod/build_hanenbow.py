@@ -27,7 +27,7 @@ def rep(old, new):
 
 rep('"Arp Mode", min: 0.0, max: 12.0,', '"Arp Mode", min: 0.0, max: 14.0,')
 HG = [('Frogs', 1, 8, 3), ('Speed', 25, 300, 100), ('Gravity', 20, 300, 100), ('Jump', 40, 200, 120), ('Bounce', 20, 110, 60), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0),
-      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 7), ('Spread', 0, 100, 5), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 27), ('Aim', -80, 80, 30), ('Stem X', 0, 100, 64)]
+      ('Gate', 10, 400, 60), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0), ('Spawn X', 0, 100, 7), ('Spread', 0, 100, 5), ('Hits', 1, 8, 2), ('Step', -4, 4, 2), ('Leaf Size', 8, 50, 35), ('Aim', -80, 80, 30), ('Stem X', 0, 100, 64)]
 LG = [('Every', 1, 8, 1), ('Scale', 0, 11, 8), ('Range', 12, 48, 24), ('Shift', -24, 24, 0), ('Gate', 10, 400, 70), ('Velocity', 1, 127, 100), ('Chord', 0, 8, 0), ('Rest', 0, 100, 0),
       ('Rotate', 0, 1, 0), ('Pitch By', 0, 2, 0), ('Wrap', 0, 1, 1)]
 # leaves: on, x, y, angle, note
@@ -198,6 +198,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         float e0   = clamp (hnbG.at (4) / 100.0f, 0.1f, 1.1f);
         float hl   = clamp (hnbG.at (16) / 100.0f, 0.06f, 0.5f) * 0.5f;
         float r    = 0.012f;
+        float AR   = 1.3f;   // the picture is wider than tall (as in the toy): x runs 0..AR in the physics, 0..1 in the parameters and the reports
 
         for (int l = 0; l < 8; ++l)
         {
@@ -210,7 +211,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
         for (int b = 0; b < 8; ++b)
             if (hnbOn.at (b) != 0)
             {
-                float x  = hnbX.at (b);
+                float x  = hnbX.at (b) * AR;
                 float y  = hnbY.at (b);
                 float vx = hnbVX.at (b);
                 float vy = hnbVY.at (b) + grav * h;
@@ -220,7 +221,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
                 y += vy * h;
 
                 if (x < r)        { x = r;        vx = abs (vx) * e0; }
-                if (x > 1.0f - r) { x = 1.0f - r; vx = -abs (vx) * e0; }
+                if (x > AR - r)   { x = AR - r;   vx = -abs (vx) * e0; }
                 if (y < r)        { y = r;        vy = abs (vy) * e0; }
 
                 for (int l = 0; l < 8; ++l)
@@ -230,7 +231,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbG.at (18) / 100.0f;   // the leaf is fixed to the stem here and turns around this point
+                    float x1 = hnbG.at (18) / 100.0f * AR;   // the leaf is fixed to the stem here and turns around this point
                     float y1 = hnbL.at (5 * l + 2);
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
@@ -268,7 +269,7 @@ ENGINE = r'''    // ---- MOD-HBLM ----
                     }
                 }
 
-                hnbX.at (b)   = x;
+                hnbX.at (b)   = x / AR;
                 hnbY.at (b)   = y;
                 hnbVX.at (b)  = clamp (vx, -3.0f, 3.0f);
                 hnbVY.at (b)  = clamp (vy, -3.0f, 3.0f);

@@ -7689,7 +7689,7 @@ processor Eisenpuls_Synth
     input event float param6713 [[ name: "Hanenbow Spread", min: 0.0, max: 100.0, init: 5.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6714 [[ name: "Hanenbow Hits", min: 1.0, max: 8.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6715 [[ name: "Hanenbow Step", min: -4.0, max: 4.0, init: 2.0, step: 1.0, automatable: false ]];   // MOD-HBLM
-    input event float param6716 [[ name: "Hanenbow Leaf Size", min: 8.0, max: 50.0, init: 27.0, step: 1.0, automatable: false ]];   // MOD-HBLM
+    input event float param6716 [[ name: "Hanenbow Leaf Size", min: 8.0, max: 50.0, init: 35.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6717 [[ name: "Hanenbow Aim", min: -80.0, max: 80.0, init: 30.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6718 [[ name: "Hanenbow Stem X", min: 0.0, max: 100.0, init: 64.0, step: 1.0, automatable: false ]];   // MOD-HBLM
     input event float param6720 [[ name: "Hanenbow Leaf 1 On", min: 0.0, max: 1.0, init: 1.0, automatable: false ]];   // MOD-HBLM
@@ -18592,7 +18592,7 @@ processor Eisenpuls_Synth
         hnbG.at (13) = 5.0f;
         hnbG.at (14) = 2.0f;
         hnbG.at (15) = 2.0f;
-        hnbG.at (16) = 27.0f;
+        hnbG.at (16) = 35.0f;
         hnbG.at (17) = 30.0f;
         hnbG.at (18) = 64.0f;
         hnbL.at (0) = 1.0f;
@@ -65853,6 +65853,7 @@ processor Eisenpuls_Synth
         float e0   = clamp (hnbG.at (4) / 100.0f, 0.1f, 1.1f);
         float hl   = clamp (hnbG.at (16) / 100.0f, 0.06f, 0.5f) * 0.5f;
         float r    = 0.012f;
+        float AR   = 1.3f;   // the picture is wider than tall (as in the toy): x runs 0..AR in the physics, 0..1 in the parameters and the reports
 
         for (int l = 0; l < 8; ++l)
         {
@@ -65865,7 +65866,7 @@ processor Eisenpuls_Synth
         for (int b = 0; b < 8; ++b)
             if (hnbOn.at (b) != 0)
             {
-                float x  = hnbX.at (b);
+                float x  = hnbX.at (b) * AR;
                 float y  = hnbY.at (b);
                 float vx = hnbVX.at (b);
                 float vy = hnbVY.at (b) + grav * h;
@@ -65875,7 +65876,7 @@ processor Eisenpuls_Synth
                 y += vy * h;
 
                 if (x < r)        { x = r;        vx = abs (vx) * e0; }
-                if (x > 1.0f - r) { x = 1.0f - r; vx = -abs (vx) * e0; }
+                if (x > AR - r)   { x = AR - r;   vx = -abs (vx) * e0; }
                 if (y < r)        { y = r;        vy = abs (vy) * e0; }
 
                 for (int l = 0; l < 8; ++l)
@@ -65885,7 +65886,7 @@ processor Eisenpuls_Synth
 
                     float ex = hnbEx.at (l);
                     float ey = hnbEy.at (l);
-                    float x1 = hnbG.at (18) / 100.0f;   // the leaf is fixed to the stem here and turns around this point
+                    float x1 = hnbG.at (18) / 100.0f * AR;   // the leaf is fixed to the stem here and turns around this point
                     float y1 = hnbL.at (5 * l + 2);
                     float sx = 2.0f * ex;
                     float sy = 2.0f * ey;
@@ -65923,7 +65924,7 @@ processor Eisenpuls_Synth
                     }
                 }
 
-                hnbX.at (b)   = x;
+                hnbX.at (b)   = x / AR;
                 hnbY.at (b)   = y;
                 hnbVX.at (b)  = clamp (vx, -3.0f, 3.0f);
                 hnbVY.at (b)  = clamp (vy, -3.0f, 3.0f);
