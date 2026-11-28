@@ -455,6 +455,29 @@ static int fxFilterShape (int mode)
                     g.setColour (col.withAlpha (0.35f)); g.drawVerticalLine ((int) X (std::log (20.0 * std::pow (1000.0, P (0)) / 20.0) / std::log (1000.0)), r.getY(), r.getBottom());
                     freqAxis(); label ("TABLE OSC " + juce::String (osc + 1) + "   (approximate response)");
                 }
+                else if (ty == 40)   // Spectral (FFT effect, FX-SPEC): the frequency response of Tilt / Lo Cut / Hi Cut (bins of the 512 point FFT, 93.75 Hz each at 48 kHz), Shift as a marker, mode specific hints
+                {
+                    const double tilt = P (1) * 2.0 - 1.0, lo = P (3) * P (3) * 200.0, hi = 256.0 * std::pow (0.03125, P (4)), rat = std::pow (2.0, P (2) * 2.0 - 1.0);
+                    auto p = curve ([&] (double t)
+                    {
+                        const double f = 20.0 * std::pow (1000.0, t), k = f / 93.75;
+                        double gain = (k < lo || k > hi) ? 1.0e-5 : (tilt != 0.0 ? juce::jlimit (0.0, 8.0, std::pow (juce::jmax (k, 0.05) * 0.0625, tilt)) : 1.0);
+                        return (juce::jlimit (-48.0, 12.0, 20.0 * std::log10 (juce::jmax (1.0e-5, gain))) + 48.0) / 60.0;
+                    });
+                    fill (p, 0.0); stroke (p);
+                    if (mode == 0 && std::abs (rat - 1.0) > 0.01)    // Shift: arrows from the fundamental region to where it goes
+                    {
+                        g.setColour (col.withAlpha (0.55f));
+                        for (double f0 : { 110.0, 440.0, 1760.0 })
+                        {
+                            const double f1 = f0 * rat, t0 = std::log (f0 / 20.0) / std::log (1000.0), t1 = std::log (juce::jlimit (20.0, 20000.0, f1) / 20.0) / std::log (1000.0);
+                            g.drawArrow (juce::Line<float> (X (t0), Y (0.2), X (t1), Y (0.2)), 1.5f, 6.0f, 6.0f);
+                        }
+                    }
+                    freqAxis();
+                    static const char* nm[] = { "SHAPE   (cuts, tilt, shift; FFT 512)", "FREEZE   (Amount > 50 % holds the spectrum)", "GATE   (bins below the threshold drop to Floor)", "ROBOT   (all phases zero)", "WHISPER   (random phases)" };
+                    label (nm[juce::jlimit (0, 4, mode)]);
+                }
                 else if (ty == 34)   // Shaper Table: transfer curve = frame of the shaper table of the chosen oscillator (FX-SHTAB)
                 {
                     const int osc = juce::jlimit (0, 5, juce::roundToInt (P (2) * 5.0));
